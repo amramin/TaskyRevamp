@@ -1,0 +1,87 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <base href="/" />
+    <link rel="stylesheet" href="@Assets["lib/bootstrap/dist/css/bootstrap.min.css"]" />
+    <link rel="stylesheet" href="@Assets["app.css"]" />
+    <link rel="stylesheet" href="@Assets["TaskyRevamp.styles.css"]" />
+    <ImportMap />
+    <link rel="icon" type="image/png" href="favicon.png" />
+    <HeadOutlet />
+    <link href="./css/bootstrap.min.css" rel="stylesheet" />
+    <!-- Main CSS-->
+    <link href="./css/main.css" rel="stylesheet" />
+    <link href="favico.ico" rel="icon" />
+    <title>Task list</title>
+
+</head>
+
+<body>
+    <Routes />
+
+    <div class="offcanvas offcanvas-end"
+         data-bs-scroll="true"
+         tabindex="-1"
+         id="survey-type-modal"
+         aria-labelledby="offcanvasWithBothOptionsLabel">
+        <div class="offcanvas-header">
+            <button class="btn close" type="button" data-bs-dismiss="offcanvas">
+                <svg class="arrow"
+                     width="20"
+                     height="20"
+                     viewBox="0 0 20 20"
+                     fill="none"
+                     xmlns="http://www.w3.org/2000/svg">
+                    <path d="M5.83326 9.16683H15.4916L13.5749 7.2585C13.4972 7.1808 13.4356 7.08856 13.3935 6.98704C13.3515 6.88552 13.3298 6.77671 13.3298 6.66683C13.3298 6.55695 13.3515 6.44814 13.3935 6.34662C13.4356 6.2451 13.4972 6.15286 13.5749 6.07516C13.6526 5.99746 13.7449 5.93583 13.8464 5.89378C13.9479 5.85173 14.0567 5.83009 14.1666 5.83009C14.2765 5.83009 14.3853 5.85173 14.4868 5.89378C14.5883 5.93583 14.6806 5.99746 14.7583 6.07516L18.0916 9.4085C18.1675 9.48775 18.2269 9.5812 18.2666 9.6835C18.3499 9.88638 18.3499 10.1139 18.2666 10.3168C18.2269 10.4191 18.1675 10.5126 18.0916 10.5918L14.7583 13.9252C14.6808 14.0033 14.5886 14.0653 14.4871 14.1076C14.3855 14.1499 14.2766 14.1717 14.1666 14.1717C14.0566 14.1717 13.9477 14.1499 13.8461 14.1076C13.7446 14.0653 13.6524 14.0033 13.5749 13.9252C13.4968 13.8477 13.4348 13.7555 13.3925 13.654C13.3502 13.5524 13.3284 13.4435 13.3284 13.3335C13.3284 13.2235 13.3502 13.1146 13.3925 13.013C13.4348 12.9115 13.4968 12.8193 13.5749 12.7418L15.4916 10.8335H5.83326C5.61224 10.8335 5.40028 10.7457 5.244 10.5894C5.08772 10.4331 4.99992 10.2212 4.99992 10.0002C4.99992 9.77915 5.08772 9.56719 5.244 9.41091C5.40028 9.25463 5.61224 9.16683 5.83326 9.16683ZM2.49992 3.3335C2.72094 3.3335 2.9329 3.42129 3.08918 3.57757C3.24546 3.73385 3.33326 3.94582 3.33326 4.16683V15.8335C3.33326 16.0545 3.24546 16.2665 3.08918 16.4228C2.9329 16.579 2.72094 16.6668 2.49992 16.6668C2.27891 16.6668 2.06695 16.579 1.91067 16.4228C1.75439 16.2665 1.66659 16.0545 1.66659 15.8335V4.16683C1.66659 3.94582 1.75439 3.73385 1.91067 3.57757C2.06695 3.42129 2.27891 3.3335 2.49992 3.3335Z"
+                          fill="CurrentColor" />
+                </svg>
+            </button>
+            <h5 class="offcanvas-title">Add Task</h5>
+        </div>
+        <div class="offcanvas-body">
+            <form action="">
+                <div class="mb-3">
+                    <label class="form-label">Name Englis <span class="text-danger">*</span></label>
+                    <input placeholder="Type task name "
+                           class="form-control"
+                           required />
+                    <div class="form-text"></div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Description <span class="text-danger">*</span></label>
+                    <textarea class="form-control" rows="4" required></textarea>
+
+                    <div class="form-text"></div>
+                </div>
+
+                <div class="row row-cols-lg-2 row-cols-1 g-2">
+                    <div class="col">
+                        <div class="d-grid">
+                            <button class="btn btn-lg btn-light">Cancel</button>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="d-grid">
+                            <button class="btn btn-lg btn-primary">Save</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!--end AddTask-modal-->
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="js/main.js"></script>
+    <script src="_framework/blazor.web.js"></script>
+    <script>
+        window.blazorCulture = {
+          get: () => localStorage['BlazorCulture'],
+          set: (value) => localStorage['BlazorCulture'] = value
+        };
+    </script>
+</body>
+
+</html>

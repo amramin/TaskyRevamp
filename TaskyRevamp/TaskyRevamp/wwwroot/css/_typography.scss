@@ -1,0 +1,30 @@
+/* start typography*/
+.auth-headline {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--dark-900);
+  margin-bottom: 0;
+}
+.auth-text {
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin-bottom: 0;
+  color: var(--dark-500);
+}
+.page-headline {
+  font-weight: 600;
+  font-size: 1.25rem;
+  line-height: 1.5rem;
+  color: var(--dark-900);
+  margin-bottom: 0;
+  .parent-page-link {
+    text-decoration: none;
+    color: var(--dark-900);
+  }
+  .active-page {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--dark-700);
+  }
+}
+/* End typography*/

@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TaskyRevamp.Dto\TaskyRevamp.Dto.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Models\Department\" />
+    <Folder Include="Models\CheckList\" />
+    <Folder Include="Models\Escalation\" />
+    <Folder Include="Models\Permission\" />
+    <Folder Include="Models\SystemConfiguration\" />
+    <Folder Include="Models\Notifications\" />
+    <Folder Include="Models\Privilege\" />
+    <Folder Include="Models\Task\" />
+  </ItemGroup>
+
+</Project>

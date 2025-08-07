@@ -1,0 +1,6 @@
+@TaskyRevamp.WebAPI_HostAddress = http://localhost:5115
+
+GET {{TaskyRevamp.WebAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

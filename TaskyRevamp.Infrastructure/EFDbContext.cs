@@ -1,0 +1,78 @@
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
+using TaskyRevamp.Domain.Interfaces;
+using TaskyRevamp.Domain.Models.Users;
+using TaskyRevamp.Domain.Models.Users.UserDelegations;
+
+namespace SurveyRevamp.Infrastructure;
+
+public class EfDbContext : DbContext
+{
+    private readonly IHttpContextAccessor _httpContextAccessor;
+    public DbSet<User> Users { get; set; }
+    public DbSet<UserDelegation> UserDelegation { get; set; }
+
+    public EfDbContext(DbContextOptions<EfDbContext> options, IHttpContextAccessor httpContextAccessor)
+        : base(options)
+    {
+        _httpContextAccessor = httpContextAccessor;
+    }
+    public async Task<int> SaveChangeWithoutUpdate()
+    {
+        return await base.SaveChangesAsync();
+    }
+    public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+    {
+        var Id = _httpContextAccessor.HttpContext == null ? "" : _httpContextAccessor.HttpContext.User.Identity?.Name;
+        Guid currentUserId;
+        if (Guid.TryParse(Id, out currentUserId))
+            Guid.TryParse(Id, out currentUserId);
+
+        var insertedEntries = ChangeTracker.Entries()
+            .Where(x => x.State == EntityState.Added).ToList();
+
+        foreach (var insertedEntry in insertedEntries)
+        {
+            if (insertedEntry.Entity is IHasCreationMetaData creationMetaData)
+            {
+                if (creationMetaData.CreatedById == null || (creationMetaData.CreatedById != null && creationMetaData.CreatedById == Guid.Empty))
+                    creationMetaData.CreatedById = currentUserId;
+                creationMetaData.CreateDate = DateTime.UtcNow;
+            }
+            if (insertedEntry.Entity is IHasUpdateMetaData updateData)
+            {
+                if (currentUserId != null && currentUserId != Guid.Empty)
+
+                    updateData.UpdatedById = currentUserId;
+                updateData.UpdateDate = DateTime.UtcNow;
+            }
+        }
+
+        var modifiedEntries = ChangeTracker.Entries()
+            .Where(x => x.State == EntityState.Modified).ToList();
+
+        foreach (var modifiedEntry in modifiedEntries)
+        {
+            if (modifiedEntry.Entity is IHasUpdateMetaData updateMetaData)
+            {
+                if (updateMetaData.UpdatedById == null || (updateMetaData.UpdatedById != null && updateMetaData.UpdatedById == Guid.Empty))
+                    updateMetaData.UpdatedById = currentUserId;
+
+                updateMetaData.UpdateDate = DateTime.UtcNow;
+            }
+        }
+
+        return base.SaveChangesAsync(cancellationToken);
+    }
+
+
+    public EfDbContext(DbContextOptions<EfDbContext> options)
+        : base(options)
+    {
+    }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(EfDbContext).Assembly);
+    }
+}

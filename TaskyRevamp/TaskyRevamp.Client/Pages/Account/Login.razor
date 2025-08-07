@@ -1,0 +1,211 @@
+﻿@page "/Login"
+
+@layout LoginLayout
+@inject AccountConsumer AccountConsumer;
+@inject ILocalStorageService LocalStorageService
+@inject NavigationManager NavigationManager
+@inject Microsoft.Extensions.Localization.IStringLocalizer<TaskyRevamp.Dto.Resources.SharedResources> Loc;
+@using System.Security.Claims
+@using Blazored.LocalStorage
+@using TaskyRevamp.Client.Extensions
+@using TaskyRevamp.Client.Layout
+@using TaskyRevamp.Client.Pages.Consumer
+@using TaskyRevamp.Client.Shared
+@using TaskyRevamp.Dto.Account
+@inject CustomAuthenticationService AuthService
+
+<section class="auth">
+    <header class="main-header">
+        <div class="main-header-body">
+            <img class="img-fluid" src="images/stingray-logo.svg" alt="stingray logo" />
+            <img class="img-fluid" src="images/auth/illustration.svg" alt="stingray logo" />
+        </div>
+    </header>
+    <div class="auth-body row  g-0 justify-content-center ">
+
+        <div class="col-xl-6 px-xl-0 px-3">
+            <div class=" row justify-content-center align-items-center">
+                <div class="col-lg-7 col-md-8">
+                    <div class="auth-box">
+                        <h1 class="auth-headline">@Loc["Login"]</h1>
+                        <p class="auth-text text-center">
+                            @Loc["loginconditions"]
+                        </p>
+                        <EditForm OnValidSubmit="HandleValidSubmit" Model="this"
+                                  class="w-100 ng-untouched ng-pristine ng-invalid">
+
+                            <app-alert _ngcontent-uxv-c2="" _nghost-uxv-c3=""></app-alert>
+                            <div _ngcontent-uxv-c2="" class="mb-2">
+                                <div class="group-input">
+                                    <span class="start-icon">
+                                        <SVGCrud SVGType="SVGCrud.SVGTypeEnum.UserFile"></SVGCrud>
+                                    </span>
+                                    <InputText placeholder="@Loc["IDorUserName"]" @bind-Value="UserName"
+                                               class="form-control ng-untouched ng-pristine ng-invalid" />
+                                </div>
+                                <div _ngcontent-uxv-c2="" class="Valid-Height ng-star-inserted"></div>
+                                <div _ngcontent-uxv-c2="" class="form-control-feedback">
+                                    <i _ngcontent-uxv-c2="" class="icon-user text-muted"></i>
+                                </div>
+                                <div data-lastpass-icon-root="true"
+                                     style="position: relative !important; height: 0px !important; width: 0px !important; float: left !important;">
+                                </div>
+                                @if (IsRequiredName)
+                                {
+
+                                    <div md="3">
+                                        <label class="small text-danger"> @Loc["Required"]</label>
+                                    </div>
+                                }
+                            </div>
+                            <div _ngcontent-uxv-c2="" class="mb-3">
+                                <div class="group-input">
+                                    <span class="start-icon">
+                                        <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Lock"></SVGCrud>
+                                    </span>
+                                    <InputText placeholder="@Loc["Password"]" type="@passwordInputType"
+                                               @bind-Value="Password"
+                                               class="form-control  ng-untouched ng-pristine ng-invalid" />
+                                    <button class="btn btn-show-password" type="button"
+                                            @onclick="TogglePasswordVisibility">
+                                        <SVGCrud SVGType="@(isPasswordVisible? SVGCrud.SVGTypeEnum.OpenEye : SVGCrud.SVGTypeEnum.CloseEye)">
+                                        </SVGCrud>
+                                    </button>
+                                </div>
+
+                                <div _ngcontent-uxv-c2="" class="Valid-Height ng-star-inserted"></div>
+                                <div _ngcontent-uxv-c2="" class="form-control-feedback">
+                                    <i _ngcontent-uxv-c2="" class="icon-lock2 text-muted"></i>
+                                </div>
+                                <div data-lastpass-icon-root="true"
+                                     style="position: relative !important; height: 0px !important; width: 0px !important; float: left !important;">
+                                </div>
+                                @if (IsRequiredPass)
+                                {
+                                    <div md="3">
+                                        <label class="small text-danger"> @Loc["Required"]</label>
+                                    </div>
+                                }
+                            </div>
+                            <div _ngcontent-uxv-c2="" class="d-grid">
+                                @if (Invald)
+                                {
+                                    <div md="3">
+                                        <label class="small text-danger"> @Loc["InvaildUserNameOrPassWord"]</label>
+                                    </div>
+                                }
+                                <button _ngcontent-uxv-c2="" type="submit" class="btn btn-lg btn-primary">
+                                    @Loc["Login"] <i _ngcontent-uxv-c2=""
+                                                     class="feather feather-settings spin icon mt-minus-2"></i>
+                                </button>
+                                <div>
+                                    <CultureSelector @rendermode="StaticClasses.InteractiveWebAssemblyRenderModeFalse" />
+                                </div>
+                            </div>
+
+
+                        </EditForm>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+
+<script src="js/bootstrap.bundle.min.js"></script>
+<script>
+    // Initialize all tooltips on the page
+    var tooltipTriggerList = [].slice.call(
+      document.querySelectorAll('[data-bs-toggle="tooltip"]')
+    );
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+      return new bootstrap.Tooltip(tooltipTriggerEl);
+    });
+</script>
+
+
+
+@code {
+    public string UserName { get; set; }
+    public string Password { get; set; }
+    public bool IsRequiredPass;
+    public bool IsRequiredName;
+    public bool Invald;
+    private bool isPasswordVisible = false;
+    private string passwordInputType = "password";
+    public string userIdentifier = string.Empty;
+    [SupplyParameterFromQuery]
+    [Parameter]
+    public string returnUrl { get; set; }
+
+    private void TogglePasswordVisibility()
+    {
+        isPasswordVisible = !isPasswordVisible;
+        passwordInputType = isPasswordVisible ? "text" : "password";
+    }
+
+    public async Task HandleValidSubmit()
+    {
+        IsRequiredName = false;
+        IsRequiredPass = false;
+        Invald = false;
+        if (string.IsNullOrWhiteSpace(UserName))
+        {
+            IsRequiredName = true;
+        }
+        if (string.IsNullOrWhiteSpace(Password))
+        {
+            IsRequiredPass = true;
+        }
+        if (IsRequiredName || IsRequiredPass)
+        {
+            return;
+        }
+        var ret = await AccountConsumer.Authenticate(new UserLoginDto()
+        {
+            Password = Password,
+            Username = UserName
+        });
+
+        if (string.IsNullOrEmpty(ret.Data))
+        {
+            Invald = true;
+
+            return;
+        }
+        var token = ret.Data;
+        var identity = string.IsNullOrEmpty(token)
+        ? new ClaimsIdentity()
+        : new ClaimsIdentity(StaticMethods.ParseClaimsFromJwt(token), "jwt");
+
+        if (ret.Data != null)
+        {
+
+            var newUser = new ClaimsPrincipal(identity);
+            AuthService.CurrentUser = newUser;
+
+            await LocalStorageService.SetItemAsStringAsync("bearerToken", token);
+            await LocalStorageService.SetItemAsStringAsync("NameEnglish", identity.GetClaim("NameEnglish"));
+            await LocalStorageService.SetItemAsStringAsync("NameArabic", identity.GetClaim("NameArabic"));
+            await LocalStorageService.SetItemAsStringAsync("Username", identity.GetClaim("Username"));
+            await LocalStorageService.SetItemAsStringAsync("Email", identity.GetClaim("Email"));
+            await LocalStorageService.SetItemAsStringAsync("Id", identity.GetClaim("Id"));
+            await LocalStorageService.SetItemAsStringAsync("Roles", identity.GetClaim("Roles"));
+            //await LocalStorageService.SetItemAsStringAsync("Clusters", identity.GetClaim("Clusters"));
+            await LocalStorageService.SetItemAsStringAsync("ClusterId", identity.GetClaim("ClusterId"));
+            await LocalStorageService.SetItemAsStringAsync("DelegatedUsersId", identity.GetClaim("DelegatedUsersId"));
+
+            var roles = await LocalStorageService.GetItemAsStringAsync("Roles");
+            //set roles from local storage
+
+            if (!string.IsNullOrEmpty(returnUrl))
+                NavigationManager.NavigateTo(returnUrl, true);
+            else
+                NavigationManager.NavigateTo("/", true);
+        }
+
+    }
+
+}

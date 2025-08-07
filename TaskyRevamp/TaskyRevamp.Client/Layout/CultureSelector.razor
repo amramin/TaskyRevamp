@@ -1,0 +1,104 @@
+@using System.Globalization
+@inject IJSRuntime JS
+@inject NavigationManager Navigation
+
+<button type="button" class="btn-change-lang btn" @onclick="ToggleLanguage">
+    <span class="en">
+        <SVGCrud SVGType="SVGCrud.SVGTypeEnum.EN"></SVGCrud>
+    </span>
+    <span class="ar">
+        <SVGCrud SVGType="SVGCrud.SVGTypeEnum.AR"></SVGCrud>
+    </span>
+    <span class="icon-text">
+        <span class="icon">
+            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.SwitchLang"></SVGCrud>
+        </span>
+        <span class="ar-text">تحويل إلى العربية</span>
+        <span class="en-text">Change to English</span>
+    </span>
+</button>
+
+
+
+@code
+{
+    private Dictionary<string, string> cultureDict =
+    new()
+            {
+        { "en-US", "English (United States)" },
+        { "ar-EG", "العربية" }
+            };
+
+    private CultureInfo[] supportedCultures = new[]
+    {
+        new CultureInfo("en-US"),
+        new CultureInfo("ar-EG"),
+    };
+
+    private CultureInfo? selectedCulture;
+
+    // protected override void OnInitialized()
+    // {
+    //     selectedCulture = CultureInfo.CurrentCulture;
+    // }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var culture = await JS.InvokeAsync<string>("blazorCulture.get");
+        if (string.IsNullOrEmpty(culture))
+        {
+            // Default to Arabic if no culture is stored
+            selectedCulture = new CultureInfo("ar-EG");
+        }
+        else
+        {
+            selectedCulture = new CultureInfo(culture);
+        }
+
+        // Apply the selected culture to ensure it takes effect
+        ApplyCulture(selectedCulture);
+    }
+
+    private void ApplyCulture(CultureInfo culture)
+    {
+        CultureInfo.CurrentCulture = culture;
+        CultureInfo.CurrentUICulture = culture;
+    }
+
+    private async Task ToggleLanguage()
+    {
+        if (selectedCulture?.Name == "ar-EG")
+        {
+            Console.WriteLine("Switching to en-US");
+            await ApplySelectedCultureAsync("en-US");
+        }
+        else
+        {
+            Console.WriteLine("Switching to ar-EG");
+            await ApplySelectedCultureAsync("ar-EG");
+        }
+    }
+
+    private async Task ApplySelectedCultureAsync(string cultureName)
+    {
+        selectedCulture = new CultureInfo(cultureName);
+
+        if (CultureInfo.CurrentCulture != selectedCulture)
+        {
+            await JS.InvokeVoidAsync("blazorCulture.set", selectedCulture!.Name);
+
+            CultureInfo.CurrentCulture = selectedCulture;
+            CultureInfo.CurrentUICulture = selectedCulture;
+
+            var uri = new Uri(Navigation.Uri)
+            .GetComponents(UriComponents.PathAndQuery, UriFormat.Unescaped);
+            var cultureEscaped = Uri.EscapeDataString(selectedCulture.Name);
+            var isPublicAccess = false; 
+            var uriEscaped = Uri.EscapeDataString(uri) + (isPublicAccess ? (uri.Contains("?") ? "&isPublic=true" : "?isPublic=true") : "");
+
+            Navigation.NavigateTo(
+            $"Culture/Set?culture={cultureEscaped}&redirectUri={uriEscaped}",
+            forceLoad: true);
+        }
+    }
+}
