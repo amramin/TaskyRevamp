@@ -4,7 +4,7 @@
 @inject AccountConsumer AccountConsumer;
 @inject ILocalStorageService LocalStorageService
 @inject NavigationManager NavigationManager
-@inject Microsoft.Extensions.Localization.IStringLocalizer<TaskyRevamp.Dto.Resources.SharedResources> Loc;
+@inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResources> Loc;
 @using System.Security.Claims
 @using Blazored.LocalStorage
 @using TaskyRevamp.Client.Extensions
@@ -12,6 +12,7 @@
 @using TaskyRevamp.Client.Pages.Consumer
 @using TaskyRevamp.Client.Shared
 @using TaskyRevamp.Dto.Account
+@using TaskyRevamp.Localization.Resources
 @inject CustomAuthenticationService AuthService
 
 <section class="auth">
@@ -51,7 +52,7 @@
                         </div>
 
                       
-                        <EditForm OnValidSubmit="HandleValidSubmit" Model="this"
+                        <EditForm OnValidSubmit="HandleValidSubmit" Model="this" FormName="LoginForm"
                                   class="w-100 ng-untouched ng-pristine ng-invalid">
 
                             <app-alert _ngcontent-uxv-c2="" _nghost-uxv-c3=""></app-alert>
@@ -134,16 +135,7 @@
 </section>
 
 
-<script src="js/bootstrap.bundle.min.js"></script>
-<script>
-    // Initialize all tooltips on the page
-    var tooltipTriggerList = [].slice.call(
-      document.querySelectorAll('[data-bs-toggle="tooltip"]')
-    );
-    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-      return new bootstrap.Tooltip(tooltipTriggerEl);
-    });
-</script>
+
 
 
 
@@ -212,9 +204,6 @@
             await LocalStorageService.SetItemAsStringAsync("Username", identity.GetClaim("Username"));
             await LocalStorageService.SetItemAsStringAsync("Email", identity.GetClaim("Email"));
             await LocalStorageService.SetItemAsStringAsync("Id", identity.GetClaim("Id"));
-            await LocalStorageService.SetItemAsStringAsync("Roles", identity.GetClaim("Roles"));
-            //await LocalStorageService.SetItemAsStringAsync("Clusters", identity.GetClaim("Clusters"));
-            await LocalStorageService.SetItemAsStringAsync("ClusterId", identity.GetClaim("ClusterId"));
             await LocalStorageService.SetItemAsStringAsync("DelegatedUsersId", identity.GetClaim("DelegatedUsersId"));
 
             var roles = await LocalStorageService.GetItemAsStringAsync("Roles");
