@@ -32,7 +32,9 @@
 .dropdown-divider {
   border-top-color: var(--light-300);
 }
-
+.fill-primary {
+  fill: var(--primary-color);
+}
 
 /* satr .card */
 .card {
@@ -212,7 +214,13 @@
     .auth-logo-text {
       font-weight: 600;
     }
-
+    .logo-icon {
+      svg,
+      img {
+        height: 2.5rem;
+        color: var(--primary-color);
+      }
+    }
     margin-bottom: 1.5rem;
   }
   .content-text {
@@ -244,9 +252,30 @@
     .lang-text {
       font-family: "Almarai", sans-serif;
     }
-    &:hover {
+    &:hover,&:focus,&:active:focus {
       color: var(--primary-color);
       text-decoration: underline;
+      background-color:transparent;
+      outline:none;
+      box-shadow:none;
+    }
+    .ar,
+    .en {
+      display: none;
+    }
+    .icon-text {
+      padding: 0;
+      display:flex;
+      align-items:center;
+      *{
+font-family: "Almarai", sans-serif !important;
+      }
+      
+      svg {
+        display: block;
+        width: 1rem;
+        height: 1rem;
+      }
     }
   }
 }
@@ -278,7 +307,8 @@
         font-size: 1rem;
 
         .icon {
-          img {
+          img,
+          svg {
             width: 2.25rem;
             height: 2.25rem;
           }

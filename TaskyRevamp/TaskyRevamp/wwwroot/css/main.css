@@ -19,30 +19,7 @@
   --bs-danger-rgb: 232, 44, 44;
 }
 
-@font-face {
-  font-family: "Almarai";
-  src: url(../fonts/Almarai/Almarai-Regular.ttf);
-}
-@font-face {
-  font-family: "Indivisible";
-  src: url("../fonts/Indivisible/Indivisible-Regular.eot");
-  src: local("../fonts/Indivisible/Indivisible Regular"), local("Indivisible-Regular"), url("../fonts/Indivisible/Indivisible-Regular.eot?#iefix") format("embedded-opentype"), url("../fonts/Indivisible/Indivisible-Regular.woff2") format("woff2"), url("../fonts/Indivisible/Indivisible-Regular.woff") format("woff"), url("../fonts/Indivisible/Indivisible-Regular.ttf") format("truetype");
-  font-weight: normal;
-  font-style: normal;
-}
-*:not(i):not(.fa):not(mat-icon) {
-  font-family: "Indivisible";
-}
-
-/* start Global */
-.logo {
-  max-height: 3.5rem;
-}
-
-.dropdown-divider {
-  border-top-color: var(--light-300);
-}
-
+/* start inputs */
 /*start view-scope-toggle*/
 .view-scope-toggle {
   background-color: var(--light-200);
@@ -72,7 +49,6 @@
 }
 
 /*.end view-scope-toggle*/
-/* start inputs */
 .group-input {
   width: 100%;
   position: relative;
@@ -377,26 +353,7 @@
 }
 
 /* end button*/
-/* start icon */
-.circle-icon-56 {
-  width: 3.5rem;
-  height: 3.5rem;
-  border-radius: 50%;
-  border: 1px solid var(--light-300);
-  color: var(--dark-800);
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-}
-
-/* end icon */
-/* start Headlines  & text*/
+/* start typography*/
 .auth-headline {
   font-size: 1.25rem;
   font-weight: 600;
@@ -428,7 +385,35 @@
   color: var(--dark-700);
 }
 
-/* End Headlines & text */
+/* End typography*/
+@font-face {
+  font-family: "Almarai";
+  src: url(../fonts/Almarai/Almarai-Regular.ttf);
+}
+@font-face {
+  font-family: "Indivisible";
+  src: url("../fonts/Indivisible/Indivisible-Regular.eot");
+  src: local("../fonts/Indivisible/Indivisible Regular"), local("Indivisible-Regular"), url("../fonts/Indivisible/Indivisible-Regular.eot?#iefix") format("embedded-opentype"), url("../fonts/Indivisible/Indivisible-Regular.woff2") format("woff2"), url("../fonts/Indivisible/Indivisible-Regular.woff") format("woff"), url("../fonts/Indivisible/Indivisible-Regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+*:not(i):not(.fa):not(mat-icon) {
+  font-family: "Indivisible";
+}
+
+/* start Global */
+.logo {
+  max-height: 3.5rem;
+}
+
+.dropdown-divider {
+  border-top-color: var(--light-300);
+}
+
+.fill-primary {
+  fill: var(--primary-color);
+}
+
 /* satr .card */
 .card {
   border-color: var(--light-300);
@@ -637,6 +622,11 @@
 .auth .auth-logo .auth-logo-text {
   font-weight: 600;
 }
+.auth .auth-logo .logo-icon svg,
+.auth .auth-logo .logo-icon img {
+  height: 2.5rem;
+  color: var(--primary-color);
+}
 .auth .content-text {
   width: 100%;
   display: -webkit-box;
@@ -676,9 +666,34 @@
 .auth .btn-change-lang .lang-text {
   font-family: "Almarai", sans-serif;
 }
-.auth .btn-change-lang:hover {
+.auth .btn-change-lang:hover, .auth .btn-change-lang:focus, .auth .btn-change-lang:active:focus {
   color: var(--primary-color);
   text-decoration: underline;
+  background-color: transparent;
+  outline: none;
+  -webkit-box-shadow: none;
+          box-shadow: none;
+}
+.auth .btn-change-lang .ar,
+.auth .btn-change-lang .en {
+  display: none;
+}
+.auth .btn-change-lang .icon-text {
+  padding: 0;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+.auth .btn-change-lang .icon-text * {
+  font-family: "Almarai", sans-serif !important;
+}
+.auth .btn-change-lang .icon-text svg {
+  display: block;
+  width: 1rem;
+  height: 1rem;
 }
 
 /* end auth*/
@@ -724,7 +739,8 @@
   gap: 0.75rem;
   font-size: 1rem;
 }
-.main-wrapper .side-nav .side-nav-header .side-nav-logo .icon img {
+.main-wrapper .side-nav .side-nav-header .side-nav-logo .icon img,
+.main-wrapper .side-nav .side-nav-header .side-nav-logo .icon svg {
   width: 2.25rem;
   height: 2.25rem;
 }
