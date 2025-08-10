@@ -120,6 +120,12 @@
   <data name="Login" xml:space="preserve">
     <value>تسجيل الدخول</value>
   </data>
+  <data name="PrentNotFound" xml:space="preserve">
+    <value>لا يوجد اب</value>
+  </data>
+  <data name="Required" xml:space="preserve">
+    <value>هذا الحقل مطلوب</value>
+  </data>
   <data name="Welcome" xml:space="preserve">
     <value>مرحبا</value>
   </data>

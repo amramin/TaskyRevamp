@@ -1,4 +1,5 @@
 ﻿using System.Linq.Expressions;
+using TaskyRevamp.Domain.Models.Task;
 using TaskyRevamp.Dto.GeneralDto;
 
 namespace TaskyRevamp.Domain.Repositeries;

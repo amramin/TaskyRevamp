@@ -3,27 +3,28 @@ using System.Text.Json;
 
 namespace TaskyRevamp.Dto.GeneralDto;
 
-public class CommonApiResponse<T> 
+public class CommonApiResponse<T>
 {
     public CommonApiResponse()
     {
+        Data = default!;
     }
 
-    public static CommonApiResponse<T> Create(HttpStatusCode statusCode, T result = default, string errorMessage = null)
+    public static CommonApiResponse<T> Create(int statusCode, T result = default, string errorMessage = null, string details = null, object errors = null)
     {
-        if (statusCode == HttpStatusCode.InternalServerError)
-        {
-            var errorDto = JsonSerializer.Deserialize<ApiErrorDto>(errorMessage,
-                new JsonSerializerOptions()
-                {
-                    PropertyNameCaseInsensitive = true
-                });
+        //if (statusCode == int.Parse(HttpStatusCode.InternalServerError.ToString()))
+        //{
+        //    var errorDto = JsonSerializer.Deserialize<ApiErrorDto>(errorMessage,
+        //        new JsonSerializerOptions()
+        //        {
+        //            PropertyNameCaseInsensitive = true
+        //        });
 
-            return new CommonApiResponse<T>(statusCode, default, errorDto.Detail);
-        }
+        //    return new CommonApiResponse<T>(statusCode, default, errorDto.Detail);
+        //}
 
 
-        return new CommonApiResponse<T>(statusCode, result, null);
+        return new CommonApiResponse<T>(statusCode, result, errorMessage, details, errors);
     }
 
     public static CommonApiResponse<T> CreateError(string errorMessage)
@@ -38,23 +39,27 @@ public class CommonApiResponse<T>
 
     public string ErrorMessage { get; set; }
 
-    public T Data { get; set; }
+    public T? Data { get; set; } = default!;
+    public string Detail { get; set; }
+    public object Errors { get; set; }
 
     protected CommonApiResponse(string errorMessage)
     {
         Count = 0;
         RequestId = Guid.NewGuid().ToString();
-        Data = default;
+        Data = Activator.CreateInstance<T>();
         ErrorMessage = errorMessage;
     }
 
-    protected CommonApiResponse(HttpStatusCode statusCode, T data = default, string errorMessage = null)
+    protected CommonApiResponse(int statusCode, T data = default, string errorMessage = null, string details = null, object errors = null)
     {
         Count = 0;
         RequestId = Guid.NewGuid().ToString();
         Code = null;
         Data = data;
         ErrorMessage = errorMessage;
+        Detail = details;
+        Errors = errors;
     }
 
     public int Count { get; set; }

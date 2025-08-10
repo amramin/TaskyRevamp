@@ -1,21 +1,26 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using SurveyRevamp.Infrastructure;
 using System.Configuration;
+using System.Globalization;
 using System.Reflection;
 using System.Text;
 using TaskyRevamp.Domain.Repositeries;
 using TaskyRevamp.Dto.GeneralDto;
 using TaskyRevamp.Services;
 using TaskyRevamp.Services.Account.Commands;
+using TaskyRevamp.WebAPI;
 using TaskyRevamp.WebAPI.Exeptions;
 using TaskyRevamp.WebAPI.Middleware;
 using TaskyRevamp.WebAPI.Pipeline;
 using Workflow.Infrastructure;
+using FluentValidation;
+using FluentValidation.Validators;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -52,7 +57,23 @@ builder.Services.AddScoped(typeof(IPipelineBehavior<,>), typeof(UnhandledExcepti
 builder.Services.AddScoped<ExceptionHandlingMiddleware>();
 builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("AppSettings"));
 builder.Services.Configure<LdapSettings>(builder.Configuration.GetSection("LDAP"));
+builder.Services.AddExceptionHandler<ApiExceptionHandler>();
+builder.Services.AddProblemDetails();
 
+// Localization
+builder.Services.AddLocalization(options => options.ResourcesPath = "SharedResources");
+var supportedCultures = new[] { "en", "ar" };
+builder.Services.Configure<RequestLocalizationOptions>(options =>
+{
+    options.DefaultRequestCulture = new RequestCulture("en");
+    options.SupportedCultures = supportedCultures.Select(c => new CultureInfo(c)).ToList();
+    options.SupportedUICultures = supportedCultures.Select(c => new CultureInfo(c)).ToList();
+    options.RequestCultureProviders.Insert(0, new AcceptLanguageHeaderRequestCultureProvider());
+});
+
+// MVC + FluentValidation
+builder.Services.AddControllers()
+    .AddDataAnnotationsLocalization();
 
 
 builder.Services.AddAuthentication(options =>
@@ -96,6 +117,10 @@ builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
+app.UseRequestLocalization();
+//app.UseMiddleware<LocalizedExceptionMiddleware>();
+
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -112,6 +137,9 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 
+
 app.MapControllers();
+
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 app.Run();

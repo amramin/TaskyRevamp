@@ -49,7 +49,7 @@ public class AuthenticateCommandHandler : IRequestHandler<AuthenticateCommand, s
             }
 
 
-            User user = new User();
+            var user = new User();
 
             var userResponse = await _userRepository.FindBy(x => x.Username == request.Username);
             if (userResponse.IsFailure || userResponse.Value is null || userResponse.Value.Count == 0)

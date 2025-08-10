@@ -1,6 +1,7 @@
 using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Localization;
+using Microsoft.JSInterop;
 using System.Globalization;
 using TaskyRevamp.Client;
 using TaskyRevamp.Client.Extensions;
@@ -22,13 +23,8 @@ builder.Services.AddScoped<LanguageService>();
 builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
 builder.Services.AddScoped<CustomAuthenticationService>();
 
-
 //Consumers
 builder.Services.AddTransient<AccountConsumer>();
-
-
-// Add localization services
-builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
 
 builder.Services.AddControllersWithViews()
     .AddViewLocalization()

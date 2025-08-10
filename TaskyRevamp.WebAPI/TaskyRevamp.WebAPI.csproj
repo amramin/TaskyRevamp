@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
@@ -21,7 +21,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\TaskyRevamp.Dto\TaskyRevamp.Dto.csproj" />
     <ProjectReference Include="..\TaskyRevamp.Infrastructure\TaskyRevamp.Infrastructure.csproj" />
+    <ProjectReference Include="..\TaskyRevamp.Localization\TaskyRevamp.Localization.csproj" />
     <ProjectReference Include="..\TaskyRevamp.Services\TaskyRevamp.Services.csproj" />
   </ItemGroup>
 

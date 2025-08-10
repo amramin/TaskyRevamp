@@ -1,0 +1,69 @@
+﻿@page "/tasks"
+@inject HttpClient Http
+
+<h3>Create Task</h3>
+<input @bind="title" placeholder="Title" />
+<input @bind="description" placeholder="Description" />
+<button @onclick="CreateTask">Create</button>
+
+<h3>Update Status</h3>
+<input @bind="taskId" placeholder="Task ID" />
+<select @bind="status">
+    <option value="Pending">Pending</option>
+    <option value="InProgress">In Progress</option>
+    <option value="Completed">Completed</option>
+</select>
+<button @onclick="UpdateStatus">Update</button>
+
+@if (!string.IsNullOrEmpty(message))
+{
+    <p>@message</p>
+}
+
+@code {
+    string title = "";
+    string description = "";
+    string taskId = "";
+    string status = "Pending";
+    string message = "";
+
+    async Task CreateTask()
+    {
+        var dto = new { Title = title, Description = description };
+        var response = await Http.PostAsJsonAsync("api/tasks", dto);
+
+        await HandleResponse(response);
+    }
+
+    async Task UpdateStatus()
+    {
+        var dto = new { TaskId = Guid.Parse(taskId), Status = status };
+        var response = await Http.PutAsJsonAsync("api/tasks/status", dto);
+
+        await HandleResponse(response);
+    }
+
+    async Task HandleResponse(HttpResponseMessage response)
+    {
+        if (response.IsSuccessStatusCode)
+        {
+            var result = await response.Content.ReadFromJsonAsync<ApiResponse>();
+            message = result?.Message ?? "";
+        }
+        else
+        {
+            var error = await response.Content.ReadFromJsonAsync<ValidationErrorResponse>();
+            message = string.Join("\n", error?.Errors ?? []);
+        }
+    }
+
+    public class ApiResponse
+    {
+        public string Message { get; set; }
+    }
+
+    public class ValidationErrorResponse
+    {
+        public List<string> Errors { get; set; }
+    }
+}

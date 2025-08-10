@@ -21,6 +21,7 @@
 
   <ItemGroup>
     <Folder Include="Account\Query\" />
+    <Folder Include="Tasks\Query\" />
   </ItemGroup>
 
 </Project>

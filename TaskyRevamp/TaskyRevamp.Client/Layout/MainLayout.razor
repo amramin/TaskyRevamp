@@ -5,6 +5,8 @@
 @inject ILocalStorageService localStorageService
 @inject NavigationManager NavigationManager
 @inject TaskyService taskyService
+@inject LanguageService LanguageService
+@inject IJSRuntime JS
 
 <main class="main-wrapper">
     <NavMenu />
@@ -44,7 +46,11 @@
                     </div>
                 </div>
                 <div class="end">
-                    <button class="btn-change-lang btn" onclick="@ChangeLanguage">
+                    <button @onclick="ToggleLanguage" class="lang-btn">
+                        @currentLangDisplay
+                    </button>
+                   @*  <CultureSelector @rendermode="StaticClasses.InteractiveServerRenderModeFalse" /> *@
+                    @*                     <button class="btn-change-lang btn" onclick="@ChangeLanguage">
                         <span class="ar">
                             <svg viewBox="0 0 12 12"
                                  fill="none"
@@ -61,7 +67,7 @@
                                       fill="CurrentColor" />
                             </svg>
                         </span>
-                    </button>
+                    </button> *@
                     <div class="dropdown notifcation-dropdown">
                         <button class="btn btn-action"
                                 data-bs-toggle="dropdown"
@@ -488,31 +494,35 @@
 
 
 @code {
-
-    // [Inject] LanguageService LanguageService { get; set; } = default!;
-    private string currentLang = "ar";
+    private string currentLang = "en";
+    private string currentLangDisplay => currentLang == "en" ? "العربية" : "English";
     private bool IsAuthChecked = false;
-
-    protected override async Task OnInitializedAsync()
-    {
-        //currentLang = await LanguageService.GetLanguageAsync();
-    }
-
-    private async Task ChangeLanguage(ChangeEventArgs e)
-    {
-        // currentLang = e.Value?.ToString() ?? "ar";
-        // await LanguageService.SetLanguageAsync(currentLang);
-    }
+    private bool langInitialized = false;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
+        if (firstRender)
+        {
+            // ✅ Safe: JSInterop after first render
+            currentLang = await LanguageService.GetLanguageAsync();
+            LanguageService.OnLanguageChanged += StateHasChanged;
+            langInitialized = true;
+            StateHasChanged();
+        }
+
+        // ✅ Auth check after first render
         await CheckAuth(firstRender);
-        await base.OnAfterRenderAsync(firstRender);
     }
+
+    private async Task ToggleLanguage()
+    {
+        currentLang = currentLang == "en" ? "ar" : "en";
+        await LanguageService.SetLanguageAsync(currentLang);
+        await JS.InvokeVoidAsync("location.reload");
+    }
+
     private async Task CheckAuth(bool firstRender)
     {
-
-
         if (firstRender || IsAuthChecked)
             return;
 
@@ -527,11 +537,9 @@
         }
 
         var token = await localStorageService.GetItemAsStringAsync("bearerToken");
-
         if (taskyService.IsTokenExpired(token))
         {
             taskyService.NavigateToLogin();
         }
     }
-
 }

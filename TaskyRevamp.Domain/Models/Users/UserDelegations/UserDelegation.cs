@@ -1,4 +1,5 @@
 ﻿using TaskyRevamp.Domain.Interfaces;
+using TaskyRevamp.Domain.Models.Task;
 
 namespace TaskyRevamp.Domain.Models.Users.UserDelegations;
 

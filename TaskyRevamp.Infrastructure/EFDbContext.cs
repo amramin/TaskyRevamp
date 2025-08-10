@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using TaskyRevamp.Domain.Interfaces;
+using TaskyRevamp.Domain.Models.Task;
 using TaskyRevamp.Domain.Models.Users;
 using TaskyRevamp.Domain.Models.Users.UserDelegations;
 
@@ -11,7 +12,7 @@ public class EfDbContext : DbContext
     private readonly IHttpContextAccessor _httpContextAccessor;
     public DbSet<User> Users { get; set; }
     public DbSet<UserDelegation> UserDelegation { get; set; }
-
+    public DbSet<TaskItem> TaskItem { get; set; }
     public EfDbContext(DbContextOptions<EfDbContext> options, IHttpContextAccessor httpContextAccessor)
         : base(options)
     {

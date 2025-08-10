@@ -72,7 +72,7 @@ public class ResponseWrapper
                 context.Response.Body = originalBody;
                 context.Response.Headers.Remove("Content-Length");
 
-                var response = CommonApiResponse<object>.Create((HttpStatusCode)context.Response.StatusCode, objResult, readToEnd);
+                var response = CommonApiResponse<object>.Create((int)context.Response.StatusCode, objResult, readToEnd);
                 var jsonResponse = JsonConvert.SerializeObject(response);
 
                 context.Response.ContentType = "application/json";

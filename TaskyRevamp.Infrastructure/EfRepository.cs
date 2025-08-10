@@ -2,6 +2,7 @@
 using EFCore.BulkExtensions;
 using Microsoft.EntityFrameworkCore;
 using TaskyRevamp.Domain;
+using TaskyRevamp.Domain.Models.Task;
 using TaskyRevamp.Domain.Repositeries;
 using TaskyRevamp.Dto.GeneralDto;
 using static System.Runtime.InteropServices.JavaScript.JSType;

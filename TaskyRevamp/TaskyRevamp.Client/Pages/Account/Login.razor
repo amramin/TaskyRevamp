@@ -4,7 +4,7 @@
 @inject AccountConsumer AccountConsumer;
 @inject ILocalStorageService LocalStorageService
 @inject NavigationManager NavigationManager
-@inject Microsoft.Extensions.Localization.IStringLocalizer<TaskyRevamp.Dto.Resources.SharedResources> Loc;
+@inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResources> Loc;
 @using System.Security.Claims
 @using Blazored.LocalStorage
 @using TaskyRevamp.Client.Extensions
@@ -12,6 +12,7 @@
 @using TaskyRevamp.Client.Pages.Consumer
 @using TaskyRevamp.Client.Shared
 @using TaskyRevamp.Dto.Account
+@using TaskyRevamp.Localization.Resources
 @inject CustomAuthenticationService AuthService
 
 <section class="auth">
@@ -99,7 +100,7 @@
                                                      class="feather feather-settings spin icon mt-minus-2"></i>
                                 </button>
                                 <div>
-                                    <CultureSelector @rendermode="StaticClasses.InteractiveWebAssemblyRenderModeFalse" />
+                                    <CultureSelector @rendermode="StaticClasses.InteractiveServerRenderModeFalse" />
                                 </div>
                             </div>
 
