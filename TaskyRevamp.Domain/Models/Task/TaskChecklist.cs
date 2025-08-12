@@ -5,7 +5,7 @@ using TaskyRevamp.Domain.Models.Users;
 
 namespace TaskyRevamp.Domain.Models.Task;
 
-public class TaskChecklist
+public class TaskChecklist : Entity
 {
     private readonly TaskItem _task;
     private readonly List<ChecklistItem> _items = new();
@@ -14,6 +14,10 @@ public class TaskChecklist
     internal TaskChecklist(TaskItem task)
     {
         _task = task;
+    }
+
+    public TaskChecklist()
+    {
     }
 
     public void AddItem(string text, User by)

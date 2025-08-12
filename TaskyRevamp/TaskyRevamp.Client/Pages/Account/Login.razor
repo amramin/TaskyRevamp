@@ -14,25 +14,26 @@
 @using TaskyRevamp.Dto.Account
 @using TaskyRevamp.Localization.Resources
 @inject CustomAuthenticationService AuthService
+@rendermode InteractiveServer
 
 <section class="auth">
-  
+
     <div class="row row-cols-1 row-cols-lg-2 g-4 align-items-center">
         <div class="col d-none d-lg-flex">
             <div class="auth-img-container w-100 p-lg-4">
-            <div class="row w-100 flex-column gap-5 align-items-center justify-content-center">
+                <div class="row w-100 flex-column gap-5 align-items-center justify-content-center">
                     <div class="col-lg-6 text-center">
                         <img class="img-fluid"
                              src="images/stingray-logo.svg"
                              alt="stingray logo" />
-                </div>
-               
-                <div class="col-lg-10 col-xl-8">
+                    </div>
+
+                    <div class="col-lg-10 col-xl-8">
                         <SVGCrud SVGType="SVGCrud.SVGTypeEnum.AuthIllustraion"></SVGCrud>
                     </div>
                 </div>
             </div>
-            
+
         </div>
         <div class="col">
             <div class="auth-form row justify-content-center align-items-center">
@@ -40,7 +41,7 @@
                     <div class="d-flex justify-content-start align-items-center flex-column">
                         <div class="auth-logo">
                             <span class="logo-icon">
-                              <SVGCrud SVGType="SVGCrud.SVGTypeEnum.TaskyIcon"></SVGCrud>
+                                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.TaskyIcon"></SVGCrud>
                             </span>
                             <h6 class="auth-logo-text">Tasky</h6>
                         </div>
@@ -51,8 +52,8 @@
                             </p>
                         </div>
 
-                      
-                        <EditForm OnValidSubmit="HandleValidSubmit" Model="this" FormName="LoginForm"
+
+                        <EditForm OnValidSubmit="HandleValidSubmit" Model="loginModel" FormName="LoginForm"
                                   class="w-100 ng-untouched ng-pristine ng-invalid">
 
                             <app-alert _ngcontent-uxv-c2="" _nghost-uxv-c3=""></app-alert>
@@ -61,7 +62,7 @@
                                     <span class="start-icon">
                                         <SVGCrud SVGType="SVGCrud.SVGTypeEnum.User"></SVGCrud>
                                     </span>
-                                    <InputText placeholder="@Loc["IDorUserName"]" @bind-Value="UserName"
+                                    <InputText placeholder="@Loc["IDorUserName"]" @bind-value="loginModel.UserName"
                                                class="form-control ng-untouched ng-pristine ng-invalid" />
                                 </div>
                                 <div _ngcontent-uxv-c2="" class="Valid-Height ng-star-inserted"></div>
@@ -85,7 +86,7 @@
                                         <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Lock"></SVGCrud>
                                     </span>
                                     <InputText placeholder="@Loc["Password"]" type="@passwordInputType"
-                                               @bind-Value="Password"
+                                               @bind-value="loginModel.Password"
                                                class="form-control  ng-untouched ng-pristine ng-invalid" />
                                     <button class="btn btn-show-password" type="button"
                                             @onclick="TogglePasswordVisibility">
@@ -120,10 +121,9 @@
                                                      class="feather feather-settings spin icon mt-minus-2"></i>
                                 </button>
                                 <div class="mt-4">
-                                    <CultureSelector @rendermode="StaticClasses.InteractiveWebAssemblyRenderModeFalse" />
+                                    <CultureSelector />
                                 </div>
                             </div>
-
 
                         </EditForm>
                     </div>
@@ -140,8 +140,14 @@
 
 
 @code {
-    public string UserName { get; set; }
-    public string Password { get; set; }
+
+    public class LoginModel
+    {
+        public string UserName { get; set; }
+        public string Password { get; set; }
+    }
+    private LoginModel loginModel = new LoginModel();
+
     public bool IsRequiredPass;
     public bool IsRequiredName;
     public bool Invald;
@@ -163,11 +169,11 @@
         IsRequiredName = false;
         IsRequiredPass = false;
         Invald = false;
-        if (string.IsNullOrWhiteSpace(UserName))
+        if (string.IsNullOrWhiteSpace(loginModel.UserName))
         {
             IsRequiredName = true;
         }
-        if (string.IsNullOrWhiteSpace(Password))
+        if (string.IsNullOrWhiteSpace(loginModel.Password))
         {
             IsRequiredPass = true;
         }
@@ -177,8 +183,8 @@
         }
         var ret = await AccountConsumer.Authenticate(new UserLoginDto()
         {
-            Password = Password,
-            Username = UserName
+            Password = loginModel.Password,
+            Username = loginModel.UserName
         });
 
         if (string.IsNullOrEmpty(ret.Data))

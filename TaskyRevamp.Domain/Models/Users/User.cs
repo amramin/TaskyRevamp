@@ -23,7 +23,6 @@ public class User : Entity
         Id = id;
         Username = userName;
         Department = dept;
-        SetCreated(by);
     }
     public void Update(string userName, Department dept, User by)
     {

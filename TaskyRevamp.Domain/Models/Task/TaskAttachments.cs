@@ -4,7 +4,7 @@ using TaskyRevamp.Domain.Models.Users;
 
 namespace TaskyRevamp.Domain.Models.Task;
 
-public class TaskAttachments
+public class TaskAttachments : Entity
 {
     private readonly TaskItem _task;
     private readonly List<Attachment> _items = new();
@@ -13,6 +13,10 @@ public class TaskAttachments
     internal TaskAttachments(TaskItem task)
     {
         _task = task;
+    }
+
+    public TaskAttachments()
+    {
     }
 
     public void Add(string fileName, byte[] content, User by)

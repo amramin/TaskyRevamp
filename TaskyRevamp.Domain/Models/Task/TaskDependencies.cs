@@ -3,7 +3,7 @@ using TaskyRevamp.Domain.Models.Users;
 
 namespace TaskyRevamp.Domain.Models.Task;
 
-public class TaskDependencies
+public class TaskDependencies : Entity
 {
     private readonly TaskItem _task;
     private readonly List<TaskItem> _items = new();
@@ -12,6 +12,10 @@ public class TaskDependencies
     internal TaskDependencies(TaskItem task)
     {
         _task = task;
+    }
+
+    public TaskDependencies()
+    {
     }
 
     public void Add(TaskItem dependency, User by)

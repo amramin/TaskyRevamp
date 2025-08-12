@@ -13,8 +13,12 @@ public class TaskType : Entity
         Name = name;
         Description = desc;
         IsActive = isActive;
-        SetCreated(by);
     }
+
+    public TaskType()
+    {
+    }
+
     public void Update(string name, string? desc, bool isActive, User by)
     {
         Name = name;

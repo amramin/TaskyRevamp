@@ -47,7 +47,12 @@ public class CommonApiResponse<T>
     {
         Count = 0;
         RequestId = Guid.NewGuid().ToString();
-        Data = Activator.CreateInstance<T>();
+        if (typeof(T) == typeof(string))
+            Data = (T)(object)string.Empty;
+        else if (typeof(T).IsValueType)
+            Data = Activator.CreateInstance<T>();
+        else
+            Data = Activator.CreateInstance<T>();
         ErrorMessage = errorMessage;
     }
 

@@ -74,6 +74,18 @@ public class EfDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        base.OnModelCreating(modelBuilder);
+
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(EfDbContext).Assembly);
+
+
+        foreach (var fk in modelBuilder.Model
+         .GetEntityTypes()
+         .SelectMany(t => t.GetForeignKeys())
+         .Where(fk => fk.PrincipalEntityType.ClrType == typeof(User)))
+        {
+            fk.DeleteBehavior = DeleteBehavior.Restrict;
+        }
+
     }
 }

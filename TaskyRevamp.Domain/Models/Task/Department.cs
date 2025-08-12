@@ -9,8 +9,12 @@ public class Department : Entity
     {
         Id = id;
         Name = name;
-        SetCreated(by);
     }
+
+    public Department()
+    {
+    }
+
     public void Update(string name, User by)
     {
         Name = name;

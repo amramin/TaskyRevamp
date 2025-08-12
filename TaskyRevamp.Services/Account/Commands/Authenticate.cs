@@ -78,9 +78,6 @@ public class AuthenticateCommandHandler : IRequestHandler<AuthenticateCommand, s
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_appSettingsOptions.Value.Secret);
             var tokenExpiry = GetTokenExpirySettingsQuery();
-            List<string> clusters = new List<string>();
-            List<string> roles = new List<string>();
-            List<string> clusterId = new List<string>();
             List<string> delegateUsersNames = new List<string>();
             List<Guid> delegateUsersIds = new List<Guid>();
             List<User> delegateUsers = GetDelegatedUsers(user);
@@ -88,31 +85,17 @@ public class AuthenticateCommandHandler : IRequestHandler<AuthenticateCommand, s
             delegateUsersNames.AddRange(delegateUsers.Select(x => x.Username));
             delegateUsersIds.AddRange(delegateUsers.Select(x => x.Id));
 
-
-            //foreach (var delegateUser in delegateUsersNames)
-            //{
-            //    GetUserClusters(_ldapPath.Value.Path, delegateUser, ref clusters, ref clusterId);
-            //    roles.AddRange(GetUserRoles(user));
-            //}
-
-            clusters = clusters.Distinct().ToList();
-            roles = roles.Distinct().ToList();
-
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new Claim[]
                 {
                 new(ClaimTypes.Name, user.Id.ToString()),
                 new(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                new(ClaimTypes.Role,  string.Join(",", roles)),
                 new("Username", user.Username),
                 new("Email", user.Email),
                 new("NameEnglish", user.NameEnglish),
                 new("NameArabic", user.NameArabic),
                 new("Id", user.Id.ToString()),
-                //new("Clusters", string.Join(",", clusters)),
-                new("ClusterId",  string.Join(",", clusterId)),
-                new("Roles", string.Join(",", roles)),
                 new("DelegatedUsersId", string.Join(",", delegateUsersIds)),
                 }),
                 Expires = DateTime.UtcNow.AddHours(tokenExpiry),

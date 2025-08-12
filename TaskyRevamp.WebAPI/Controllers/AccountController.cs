@@ -19,15 +19,15 @@ public class AccountController : ControllerBase
     }
 
     [HttpPost("Authenticate")]
-    public async Task<ActionResult<string>> Authenticate([FromBody] UserLoginDto User)
+    public async Task<ActionResult<CommonApiResponse<string>>> Authenticate([FromBody] UserLoginDto user)
     {
-        throw new Exception(APIError.PrentNotFound);
-        var token = await _mediator.Send(new AuthenticateCommand(User.Username, User.Password));
+        var token = await _mediator.Send(new AuthenticateCommand(user.Username, user.Password));
+
         if (token is null)
         {
-            return Unauthorized();
+            return Unauthorized(CommonApiResponse<string>.CreateError("Invalid username or password."));
         }
 
-        return Ok(token);
+        return Ok(CommonApiResponse<string>.Create(StatusCodes.Status200OK, token));
     }
 }

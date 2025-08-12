@@ -13,8 +13,12 @@ public class TaskSource : Entity
         Name = name;
         Description = desc;
         IsActive = isActive;
-        SetCreated(by);
     }
+
+    public TaskSource()
+    {
+    }
+
     public void Update(string name, string? desc, bool isActive, User by)
     {
         Name = name;

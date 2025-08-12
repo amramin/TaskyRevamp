@@ -5,7 +5,7 @@ using TaskyRevamp.Domain.Models.Users;
 
 namespace TaskyRevamp.Domain.Models.Task;
 
-public class TaskComments
+public class TaskComments : Entity
 {
     private readonly TaskItem _task;
     private readonly List<Comment> _comments = new();
@@ -14,6 +14,10 @@ public class TaskComments
     internal TaskComments(TaskItem task)
     {
         _task = task;
+    }
+
+    public TaskComments()
+    {
     }
 
     public void Add(string content, User by)

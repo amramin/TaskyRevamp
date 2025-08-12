@@ -4,7 +4,7 @@ using TaskyRevamp.Domain.Models.Users;
 
 namespace TaskyRevamp.Domain.Models.Task;
 
-public class TaskAssignees
+public class TaskAssignees : Entity
 {
     private readonly TaskItem _task;
     private readonly List<User> _items = new();
@@ -14,6 +14,10 @@ public class TaskAssignees
     internal TaskAssignees(TaskItem task)
     {
         _task = task;
+    }
+
+    public TaskAssignees()
+    {
     }
 
     public void Add(User user, User by)
@@ -32,7 +36,7 @@ public class TaskAssignees
             _task.AddHistoryEntry(by, $"removed assignee {user.Username}");
         }
     }
-    
+
     internal void ClearAndAdd(User user, User by)
     {
         _items.Clear();

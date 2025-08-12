@@ -4,6 +4,7 @@ namespace TaskyRevamp.Domain.Models.Task;
 
 public class Attachment : Entity
 {
+    private Attachment() { }
     public string FileName { get; private set; }
     public byte[] Content { get; private set; }
     public long Size => Content.LongLength;

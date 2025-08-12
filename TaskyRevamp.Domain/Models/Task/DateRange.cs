@@ -10,4 +10,8 @@ public record DateRange
         Start = start;
         End = end;
     }
+
+    protected DateRange()
+    {
+    }
 }

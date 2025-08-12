@@ -20,6 +20,11 @@ public class TaskEscalation : Entity
         RequestedAt = DateTime.UtcNow;
         Status = EscalationStatus.Active;
     }
+
+    public TaskEscalation()
+    {
+    }
+
     public void Resolve(User by)
     {
         Status = EscalationStatus.Resolved;

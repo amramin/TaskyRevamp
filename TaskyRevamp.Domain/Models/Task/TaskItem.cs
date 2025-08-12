@@ -108,7 +108,6 @@ public class TaskItem : Entity
 
     public User Creator { get; private set; }
 
-    public Department CreatorDepartment => CreatedBy.Department;
     public TaskAssignees Assignees { get; private set; }
     public IEnumerable<Department> AssignedDepartments => Assignees.Departments;
     public TaskDependencies Dependencies { get; private set; }
@@ -143,7 +142,6 @@ public class TaskItem : Entity
         _status = TaskStatus.NotStarted;
         _actualWeight = new Weight(0);
         Creator = creator;
-        SetCreated(creator);
         Checklist = new TaskChecklist(this);
         Comments = new TaskComments(this);
         Attachments = new TaskAttachments(this);
@@ -326,7 +324,7 @@ public class TaskItem : Entity
         _status = TaskStatus.NotStarted;
         if (reassignToCreator)
         {
-            Assignees.ClearAndAdd(CreatedBy, by);
+           // Assignees.ClearAndAdd(CreatedBy, by);
         }
         AddHistoryEntry(by, $"restored the task");
     }

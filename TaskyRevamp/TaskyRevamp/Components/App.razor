@@ -1,5 +1,6 @@
-﻿<!DOCTYPE html>
-<html lang="en">
+﻿@using System.Globalization
+<!DOCTYPE html>
+<html dir="@(@CultureInfo.CurrentCulture.Name == "en-US" ? "ltr" : "rtl")">
 
 <head>
     <meta charset="utf-8" />
@@ -16,7 +17,6 @@
     <link href="./css/main.css" rel="stylesheet" />
     <link href="favico.ico" rel="icon" />
     <title>Task list</title>
-
 </head>
 
 <body>
@@ -81,11 +81,6 @@
           get: () => localStorage['BlazorCulture'],
           set: (value) => localStorage['BlazorCulture'] = value
         };
-    </script>
-    <script>
-        const lang = localStorage.getItem("lang") || "en";
-        document.documentElement.lang = lang;
-        document.documentElement.dir = lang === "ar" ? "rtl" : "ltr";
     </script>
 </body>
 

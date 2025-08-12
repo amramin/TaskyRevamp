@@ -1,6 +1,7 @@
 @using System.Globalization
 @inject IJSRuntime JS
 @inject NavigationManager Navigation
+@rendermode InteractiveServer
 
 <button type="button" class="btn-change-lang btn" @onclick="ToggleLanguage">
     <span class="en">
@@ -34,28 +35,30 @@
     };
 
     private CultureInfo? selectedCulture;
+    private bool cultureLoaded = false;
 
-    // protected override void OnInitialized()
-    // {
-    //     selectedCulture = CultureInfo.CurrentCulture;
-    // }
-
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        var culture = await JS.InvokeAsync<string>("blazorCulture.get");
-        if (string.IsNullOrEmpty(culture))
+        if (firstRender) // ✅ Only run on first render
         {
-            // Default to Arabic if no culture is stored
-            selectedCulture = new CultureInfo("ar-EG");
-        }
-        else
-        {
-            selectedCulture = new CultureInfo(culture);
-        }
+            var culture = await JS.InvokeAsync<string>("blazorCulture.get");
 
-        // Apply the selected culture to ensure it takes effect
-        ApplyCulture(selectedCulture);
+            if (string.IsNullOrEmpty(culture))
+            {
+                selectedCulture = new CultureInfo("ar-EG");
+            }
+            else
+            {
+                selectedCulture = new CultureInfo(culture);
+            }
+
+            ApplyCulture(selectedCulture);
+            cultureLoaded = true;
+
+            StateHasChanged(); // ✅ Refresh UI after loading culture
+        }
     }
+
 
     private void ApplyCulture(CultureInfo culture)
     {
@@ -79,24 +82,38 @@
 
     private async Task ApplySelectedCultureAsync(string cultureName)
     {
-        selectedCulture = new CultureInfo(cultureName);
+        var newCulture = new CultureInfo(cultureName);
 
-        if (CultureInfo.CurrentCulture != selectedCulture)
+        if (!Equals(CultureInfo.CurrentCulture, newCulture))
         {
-            await JS.InvokeVoidAsync("blazorCulture.set", selectedCulture!.Name);
+            selectedCulture = newCulture;
 
+            // Persist culture in browser storage
+            await JS.InvokeVoidAsync("blazorCulture.set", selectedCulture.Name);
+
+            // Apply culture immediately in the current session
             CultureInfo.CurrentCulture = selectedCulture;
             CultureInfo.CurrentUICulture = selectedCulture;
 
-            var uri = new Uri(Navigation.Uri)
-            .GetComponents(UriComponents.PathAndQuery, UriFormat.Unescaped);
-            var cultureEscaped = Uri.EscapeDataString(selectedCulture.Name);
-            var isPublicAccess = false; 
-            var uriEscaped = Uri.EscapeDataString(uri) + (isPublicAccess ? (uri.Contains("?") ? "&isPublic=true" : "?isPublic=true") : "");
+            // If you have a backend Culture/Set endpoint, use it here:
+            bool useServerCultureEndpoint = false;
 
-            Navigation.NavigateTo(
-            $"Culture/Set?culture={cultureEscaped}&redirectUri={uriEscaped}",
-            forceLoad: true);
+            if (useServerCultureEndpoint)
+            {
+                var currentPath = new Uri(Navigation.Uri)
+                    .GetComponents(UriComponents.PathAndQuery, UriFormat.Unescaped);
+
+                var cultureEscaped = Uri.EscapeDataString(selectedCulture.Name);
+                var uriEscaped = Uri.EscapeDataString(currentPath);
+
+                Navigation.NavigateTo($"Culture/Set?culture={cultureEscaped}&redirectUri={uriEscaped}", forceLoad: true);
+            }
+            else
+            {
+                // Just reload current page to apply culture
+                Navigation.NavigateTo(Navigation.Uri, forceLoad: true);
+            }
         }
     }
+
 }

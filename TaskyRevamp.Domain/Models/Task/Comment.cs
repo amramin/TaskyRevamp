@@ -4,6 +4,7 @@ namespace TaskyRevamp.Domain.Models.Task;
 
 public class Comment : Entity
 {
+    protected Comment() { }
     public User Author { get; private set; }
     public string Content { get; private set; }
     public DateTime CreatedAt { get; private set; }

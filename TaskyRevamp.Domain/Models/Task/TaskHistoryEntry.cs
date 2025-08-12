@@ -16,4 +16,8 @@ public class TaskHistoryEntry : Entity
         Action = action;
         Timestamp = ts;
     }
+
+    public TaskHistoryEntry()
+    {
+    }
 }

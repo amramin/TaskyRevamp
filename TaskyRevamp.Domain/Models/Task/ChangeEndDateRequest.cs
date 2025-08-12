@@ -4,6 +4,8 @@ namespace TaskyRevamp.Domain.Models.Task;
 
 public class ChangeEndDateRequest : Entity
 {
+    private ChangeEndDateRequest() { }
+
     public TaskItem Task { get; private set; }
     public DateTime NewEndDate { get; private set; }
     public string Reason { get; private set; }

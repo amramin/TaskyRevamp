@@ -5,7 +5,6 @@
 @inject ILocalStorageService localStorageService
 @inject NavigationManager NavigationManager
 @inject TaskyService taskyService
-@inject LanguageService LanguageService
 @inject IJSRuntime JS
 
 <main class="main-wrapper">
@@ -15,9 +14,9 @@
             <div class="main-header-body">
                 <div class="start">
                     <button class="btn btn-action-40 btn-outline-light">
-                         <span class="icon">
-                              <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Menu"></SVGCrud>
-                            </span>
+                        <span class="icon">
+                            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Menu"></SVGCrud>
+                        </span>
                     </button>
                     <div class="group-input">
                         <span class="start-icon">
@@ -30,10 +29,7 @@
                     </div>
                 </div>
                 <div class="end">
-                    <button @onclick="ToggleLanguage" class="lang-btn">
-                        @currentLangDisplay
-                    </button>
-                   @*  <CultureSelector @rendermode="StaticClasses.InteractiveServerRenderModeFalse" /> *@
+                    <CultureSelector />
                     @*                     <button class="btn-change-lang btn" onclick="@ChangeLanguage">
                         <span class="ar">
                             <SVGCrud SVGType="SVGCrud.SVGTypeEnum.AR"></SVGCrud>
@@ -128,7 +124,7 @@
                                 aria-selected="false">
                             <span class="icon">
                                 <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Kanban"></SVGCrud>
-                               
+
                             </span>
                             Kanban view
                         </button>
@@ -144,7 +140,7 @@
                                 aria-selected="false">
                             <span class="icon">
                                 <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Gantt"></SVGCrud>
-                               
+
                             </span>
                             Gantt chart
                         </button>
@@ -203,7 +199,7 @@
                                         title="Filter"
                                         class="btn btn-action-40 btn-outline-light-pimary">
                                     <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Filter"></SVGCrud>
-                                 
+
                                 </button>
                                 <button type="button"
                                         data-bs-toggle="tooltip"
@@ -211,7 +207,7 @@
                                         title="View column"
                                         class="btn btn-action-40 btn-outline-light-pimary">
                                     <SVGCrud SVGType="SVGCrud.SVGTypeEnum.AddColumn"></SVGCrud>
-                                   
+
                                 </button>
                                 <button type="button"
                                         data-bs-toggle="tooltip"
@@ -294,8 +290,16 @@
                          aria-labelledby="gannt-tab">
                         <div class="page-body"></div>
                     </div>
+                    <CascadingValue Value="ToggleDialog">
+                        <CascadingValue Value="SetRenderFragment">
+                            @Body
+                        </CascadingValue>
+                    </CascadingValue>
+
                 </div>
             </div>
+
+
             <footer class="page-footer">
                 <span class="start-text">
                     Copyright &copy;
@@ -307,38 +311,41 @@
                     <a href="#" class="primary-link-btn text-decoration-none">Stingray</a>
                 </span>
             </footer>
+            <Popup />
         </section>
     </section>
 </main>
 
 
 @code {
-    private string currentLang = "en";
-    private string currentLangDisplay => currentLang == "en" ? "العربية" : "English";
     private bool IsAuthChecked = false;
     private bool langInitialized = false;
+    string HeaderName;
+    RenderFragment Content { get; set; }
+    bool IsShowDialog = false;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if (firstRender)
-        {
-            // ✅ Safe: JSInterop after first render
-            currentLang = await LanguageService.GetLanguageAsync();
-            LanguageService.OnLanguageChanged += StateHasChanged;
-            langInitialized = true;
-            StateHasChanged();
-        }
-
-        // ✅ Auth check after first render
         await CheckAuth(firstRender);
     }
 
-    private async Task ToggleLanguage()
+    void SetRenderFragment(RenderFragment content, string headerName)
     {
-        currentLang = currentLang == "en" ? "ar" : "en";
-        await LanguageService.SetLanguageAsync(currentLang);
-        await JS.InvokeVoidAsync("location.reload");
+        HeaderName = headerName;
+        Content = content;
+        StateHasChanged();
     }
+    public void Logout()
+    {
+        taskyService.NavigateToLogin();
+    }
+
+    void ToggleDialog(bool isShow)
+    {
+        IsShowDialog = isShow;
+        StateHasChanged();
+    }
+
 
     private async Task CheckAuth(bool firstRender)
     {

@@ -1,39 +1,47 @@
+using Blazored.LocalStorage;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using Microsoft.JSInterop;
 using System.Globalization;
 using TaskyRevamp.Client;
 using TaskyRevamp.Client.Extensions;
 using TaskyRevamp.Client.Pages.Consumer;
-using Microsoft.JSInterop;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 
 
-//If you want browser-based detection:
-//var js = builder.Services.BuildServiceProvider().GetRequiredService<IJSRuntime>();
-//var lang = await js.InvokeAsync<string>("navigator.language");
-//client.DefaultRequestHeaders.AcceptLanguage.ParseAdd(lang);
-
-builder.Services.AddScoped(sp =>
+builder.Services.AddBlazoredLocalStorage();
+builder.Services.AddLocalization();
+builder.Services.Configure<RequestLocalizationOptions>(options =>
 {
-    var client = new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) };
-
-    // Example: set from browser's culture
-    var culture = CultureInfo.CurrentUICulture.Name; // e.g., "ar", "en-US"
-    client.DefaultRequestHeaders.AcceptLanguage.ParseAdd(culture);
-
-    return client;
+    var supportedCultures = new[] { "en-US", "ar-EG" };
+    options.SetDefaultCulture("ar-EG")
+           .AddSupportedCultures(supportedCultures)
+           .AddSupportedUICultures(supportedCultures);
 });
 
 
 
-builder.Services.AddScoped<LanguageService>();
 builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
 builder.Services.AddScoped<CustomAuthenticationService>();
-builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
-builder.Services.AddScoped<IJSRuntime>();
+
 
 //Consumers
 builder.Services.AddTransient<AccountConsumer>();
 
-await builder.Build().RunAsync();
+var host = builder.Build();
+
+const string defaultCulture = "ar-EG";
+var js = host.Services.GetRequiredService<IJSRuntime>();
+var result = await js.InvokeAsync<string>("blazorCulture.get");
+var culture = CultureInfo.GetCultureInfo(result ?? defaultCulture);
+if (result == null)
+{
+    await js.InvokeVoidAsync("blazorCulture.set", defaultCulture);
+}
+
+CultureInfo.DefaultThreadCurrentCulture = culture;
+CultureInfo.DefaultThreadCurrentUICulture = culture;
+
+await host.RunAsync();

@@ -4,6 +4,7 @@ namespace TaskyRevamp.Domain.Models.Task;
 
 public class ChecklistItem : Entity
 {
+    protected ChecklistItem() { }   
     public string Description { get; private set; }
     public bool IsCompleted { get; private set; }
     public User CreatedBy { get; private set; }
