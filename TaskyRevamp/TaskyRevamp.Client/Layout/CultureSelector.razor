@@ -22,16 +22,16 @@
 {
     private Dictionary<string, string> cultureDict =
     new()
-            {
-        { "en-US", "English (United States)" },
-        { "ar-EG", "العربية" }
-            };
+    {
+{ "en-US", "English (United States)" },
+{ "ar-EG", "العربية" }
+    };
 
     private CultureInfo[] supportedCultures = new[]
     {
-        new CultureInfo("en-US"),
-        new CultureInfo("ar-EG"),
-    };
+new CultureInfo("en-US"),
+new CultureInfo("ar-EG"),
+};
 
     private CultureInfo? selectedCulture;
     private bool cultureLoaded = false;
@@ -71,6 +71,7 @@
         {
             Console.WriteLine("Switching to en-US");
             await ApplySelectedCultureAsync("en-US");
+
         }
         else
         {
@@ -100,7 +101,7 @@
             if (useServerCultureEndpoint)
             {
                 var currentPath = new Uri(Navigation.Uri)
-                    .GetComponents(UriComponents.PathAndQuery, UriFormat.Unescaped);
+                .GetComponents(UriComponents.PathAndQuery, UriFormat.Unescaped);
 
                 var cultureEscaped = Uri.EscapeDataString(selectedCulture.Name);
                 var uriEscaped = Uri.EscapeDataString(currentPath);

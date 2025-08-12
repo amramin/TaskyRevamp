@@ -2,7 +2,7 @@
 @using Microsoft.AspNetCore.Localization
 
 <!DOCTYPE html>
-<html dir="@(@CultureInfo.CurrentCulture.Name == "en-US" ? "ltr" : "rtl")">
+<html dir="@(@CultureInfo.CurrentCulture.Name == "ar-EG" ? "rtl" : "ltr")">
 
 <head>
     <meta charset="utf-8" />
@@ -16,18 +16,19 @@
     <HeadOutlet />
 @*     <link href="./css/bootstrap.min.css" rel="stylesheet" /> *@
     <!-- Main CSS-->
-    <link href="./css/main.css" rel="stylesheet" />
+   
     <link href="favico.ico" rel="icon" />
 
-    @if (CultureInfo.CurrentCulture.Name == "en-US")
-    {
-        <link rel="stylesheet" href="./css/bootstrap.min.css" />
-    }
-    else
+    @if (CultureInfo.CurrentCulture.Name == "ar-EG")
     {
         <link rel="stylesheet" href="./css/bootstrap.rtl.min.css" />
     }
-
+    else
+    {
+        <link rel="stylesheet" href="./css/bootstrap.min.css" />
+      
+    }
+    <link href="./css/main.css" rel="stylesheet" />
     <title>Task list</title>
 </head>
 
