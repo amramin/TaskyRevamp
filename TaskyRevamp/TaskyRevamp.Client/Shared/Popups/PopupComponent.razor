@@ -1,0 +1,83 @@
+﻿@inject IJSRuntime _js
+
+<div class="modal fade" data-bs-backdrop="@(CloseOnClickOutside ? "true" : "static")" 
+     data-bs-keyboard="@(CloseOnEscap ? "true" : "false")" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true" @ref="ModalRef">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable @(IsLarge ? "modal-lg" : "modal-xl")"
+        style=@($"max-width:{MaxWidth}")>
+        <div class="modal-content">
+            @if (ShowHeaderWithCloseButton)
+            {
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5">@HeaderText</h1>
+                    <button type="button" class="btn-close align-self-center" aria-label="Close" @onclick="@CloseModal"></button>
+                </div>
+            }
+            <div class="modal-body">
+                @ChildContent
+            </div>
+            @if (FooterContent is not null)
+            {
+                <div class="modal-footer">
+                    @FooterContent
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@code {
+
+    [Parameter] public bool Visible { get; set; }
+    [Parameter] public bool IsLarge { get; set; } = false;
+    [Parameter] public EventCallback<bool> VisibleChanged { get; set; }
+    [Parameter] public RenderFragment ChildContent { get; set; }
+    [Parameter] public RenderFragment FooterContent { get; set; }
+    [Parameter] public bool CloseOnClickOutside { get; set; } = true;
+    [Parameter] public bool CloseOnEscap { get; set; } = true;
+    [Parameter] public string MaxWidth { get; set; } = "";
+    [Parameter] public string HeaderText { get; set; } = "";
+    [Parameter] public bool ShowHeaderWithCloseButton { get; set; } = false;
+
+    private Guid UniqueId = Guid.NewGuid();
+    private ElementReference ModalRef { get; set; }
+    private DotNetObjectReference<PopupComponent> dotNetHelper;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (Visible)
+        {
+            await _js.InvokeVoidAsync("OpenModel", ModalRef);
+        }
+        else
+        {
+            await _js.InvokeVoidAsync("CloseModel", ModalRef);
+        }
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            if (ModalRef.Context is not null)
+            {
+                dotNetHelper = DotNetObjectReference.Create(this);
+                await _js.InvokeVoidAsync("DotNetHelper.setDotNetHelper", dotNetHelper, UniqueId.ToString());
+                await _js.InvokeVoidAsync("AddCloseHandeling", ModalRef, UniqueId.ToString());
+            }
+            else
+            {
+                Console.WriteLine("ModalRef is null or not rendered yet.");
+            }
+        }
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    [JSInvokable("CloseModal")]
+    public async Task CloseModal()
+    {
+        Visible = false;
+        await VisibleChanged.InvokeAsync(false);
+    }
+
+}

@@ -1,0 +1,76 @@
+@inject IJSRuntime _js
+
+
+<div class="@($"offcanvas offcanvas-end " + $"{(IsLarge ? "offcanvas-50-lg" : "")}")"
+    data-bs-keyboard="@(CloseOnEscap ? "true" : "false")" data-bs-scroll="true" tabindex="-1" id="survey-type-modal"
+    aria-labelledby="offcanvasWithBothOptionsLabel" @ref="ModalRef">
+    <div class="offcanvas-header">
+        <button class="btn close" type="button" data-bs-dismiss="offcanvas">
+            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Gantt"></SVGCrud>
+        </button>
+        <h5 class="offcanvas-title">@HeaderText</h5>
+    </div>
+
+    @if (Visible)
+    {
+        @ChildContent
+    }
+
+</div>
+
+@code {
+    [Parameter] public bool Visible { get; set; }
+
+
+    [Parameter] public bool IsLarge { get; set; } = false;
+    [Parameter] public EventCallback<bool> VisibleChanged { get; set; }
+    [Parameter] public RenderFragment ChildContent { get; set; }
+    [Parameter] public RenderFragment FooterContent { get; set; }
+    [Parameter] public bool CloseOnClickOutside { get; set; } = true;
+    [Parameter] public bool CloseOnEscap { get; set; } = true;
+    [Parameter] public string MaxWidth { get; set; } = "50%";
+    [Parameter] public string HeaderText { get; set; } = "";
+    [Parameter] public bool ShowHeaderWithCloseButton { get; set; } = false;
+    private DotNetObjectReference<NewPopUpComponent> dotNetHelper;
+    private ElementReference ModalRef { get; set; }
+    bool isVisibleFirstTime = false;
+    bool isCloseButtonClicked = false;
+
+    bool VisibleOldValue = false;
+    public Guid Id { get; set; } = Guid.NewGuid();
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (VisibleOldValue == Visible)
+        {
+            return;
+        }
+        VisibleOldValue = Visible;
+        if (Visible)
+        {
+            await _js.InvokeVoidAsync("OpenSideBar", ModalRef, Id);
+        }
+        else
+        {
+            await _js.InvokeVoidAsync("CloseSideBar", Id);
+        }
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            dotNetHelper = DotNetObjectReference.Create(this);
+            await _js.InvokeVoidAsync("DotNetHelper.setDotNetHelper", dotNetHelper, Id.ToString());
+            await _js.InvokeVoidAsync("AddCloseHandelingSideBar", ModalRef, Id.ToString());
+        }
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    [JSInvokable("CloseSideBarBlazor")]
+    public async Task CloseModal()
+    {
+        Visible = false;
+        await VisibleChanged.InvokeAsync(false);
+    }
+}

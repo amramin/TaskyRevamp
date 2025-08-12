@@ -5,7 +5,7 @@
 <h3>Create Task</h3>
 <input @bind="title" placeholder="Title" />
 <input @bind="description" placeholder="Description" />
-<button @onclick="AskDelete">Create</button>
+<button @onclick="CreateTask">Create</button>
 
 <h3>Update Status</h3>
 <input @bind="taskId" placeholder="Task ID" />
@@ -16,8 +16,10 @@
 </select>
 <button @onclick="UpdateStatus">Update</button>
 
-<button @onclick="ShowPopup">Show Popup</button>
-
+<button @onclick="ShowConfirmationPopup">Show Confirmation Popup</button>
+<button @onclick="ShowInvalidPopup">Show Invalid Popup</button>
+<button @onclick="ShowNewPopup">Show New Popup</button>
+<button @onclick="ShowStandardPopup">Show Standard Popup</button>
 @if (!string.IsNullOrEmpty(message))
 {
     <p>@message</p>
@@ -70,21 +72,29 @@
         public List<string> Errors { get; set; }
     }
 
-    void AskDelete()
+    private void ShowConfirmationPopup()
     {
-        PopupService.Show(
-            "Delete Item",
-            "Are you sure you want to delete this?",
-            async () => { await CreateTask(); }
-        );
+        PopupService.ShowConfirmation(
+           "Are you sure you want to delete this?",
+           "Yes, Delete",
+           async (confirmed) =>
+           {
+               if (confirmed) await CreateTask();
+           }
+       );
     }
 
-    private void ShowPopup()
+    private void ShowInvalidPopup()
     {
-        PopupService.Show(
-            "Delete Item",
-            "Are you sure you want to delete this?",
-            async () => { await Task.Delay(500); Console.WriteLine("Confirmed"); }
-        );
+        PopupService.ShowInvalid("This form contains errors.");
+    }
+
+    private void ShowNewPopup()
+    {
+        PopupService.ShowNew(@<div><h3>Hello from New Popup!</h3></div>);
+    }
+    private void ShowStandardPopup()
+    {
+        PopupService.ShowStandard(@<div><h3>Hello from New Popup!</h3></div>);
     }
 }

@@ -1,5 +1,6 @@
 ﻿@using System.Globalization
 @using Blazored.LocalStorage
+@using TaskyRevamp.Client.Shared.Popups
 @inherits LayoutComponentBase
 @inject Blazored.LocalStorage.ILocalStorageService LocalStorage
 @inject ILocalStorageService localStorageService
@@ -313,7 +314,7 @@
         </section>
     </section>
 </main>
-<Popup />
+<PopupHost />
 
 @code {
     private bool IsAuthChecked = false;

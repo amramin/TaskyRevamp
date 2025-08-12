@@ -1,0 +1,43 @@
+﻿@using TaskyRevamp.Dto.Enums
+@inject PopupService PopupService
+
+@inject PopupService PopupService
+
+@if (currentType is not null)
+{
+    <DynamicComponent Type="@currentType" Parameters="@currentParameters" />
+}
+
+@code {
+    private Type? currentType;
+    private Dictionary<string, object>? currentParameters;
+
+    protected override void OnInitialized()
+    {
+        PopupService.OnShow += (type, parameters) =>
+        {
+            currentType = type switch
+            {
+                PopupType.Confirmation => typeof(ConfirmationPopup),
+                PopupType.InValid => typeof(InValidPopup),
+                PopupType.New => typeof(NewPopUpComponent),
+                PopupType.Standard => typeof(PopupComponent),
+                _ => null
+            };
+
+            currentParameters = parameters
+                .GetType()
+                .GetProperties()
+                .ToDictionary(p => p.Name, p => p.GetValue(parameters));
+
+            InvokeAsync(StateHasChanged);
+        };
+
+        PopupService.OnHide += () =>
+        {
+            currentType = null;
+            currentParameters = null;
+            InvokeAsync(StateHasChanged);
+        };
+    }
+}

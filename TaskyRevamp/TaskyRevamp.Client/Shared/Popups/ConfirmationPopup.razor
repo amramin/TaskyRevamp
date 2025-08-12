@@ -1,0 +1,67 @@
+﻿@using Microsoft.Extensions.Localization
+@using TaskyRevamp.Localization.Resources
+@inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResources> Loc;
+@code {
+
+    [Parameter]
+    public bool IsVisible { get; set; }
+
+    [Parameter]
+    public string Message { get; set; }
+    [Parameter]
+    public string ButtonText { get; set; } 
+
+    [Parameter]
+    public string ButtonClass { get; set; } = "btn-danger";
+
+    [Parameter]
+    public string iconSrc { get; set; } = "Canceled.gif";
+
+
+    [Parameter]
+    public EventCallback<bool> OnConfirm { get; set; }
+
+    private async Task Confirm(bool value)
+    {
+        IsVisible = false;
+        await OnConfirm.InvokeAsync(value);
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (string.IsNullOrEmpty(ButtonText))
+        ButtonText = Loc["YesDelete"];
+    }
+}
+
+@if (IsVisible)
+{
+    <div class="popup-overlay">
+        <div class="popup-content">
+            @if (!string.IsNullOrEmpty(iconSrc))
+            {
+                <img src="images/icons/@iconSrc" class="popup-icon" />
+            }
+            <h6 class="popup-title mb-3">@Message</h6>
+
+            <div class="row g-2">
+                <div class="col-6">
+                    <div class="d-grid">
+                        <button class="btn btn-light" @onclick="() => Confirm(false)">
+                            @Loc["Cancel"]
+                        </button>
+                    </div>
+                </div>
+
+                <div class="col-6">
+                    <div class="d-grid">
+                        <button class="btn @(ButtonClass)" @onclick="() => Confirm(true)">
+                            @ButtonText
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
