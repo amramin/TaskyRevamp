@@ -29,7 +29,7 @@
                     </div>
                 </div>
                 <div class="end">
-                    <CultureSelector />
+                    <CultureSelector @rendermode="StaticClasses.InteractiveAutoRenderModeFalse" />
                     @*                     <button class="btn-change-lang btn" onclick="@ChangeLanguage">
                         <span class="ar">
                             <SVGCrud SVGType="SVGCrud.SVGTypeEnum.AR"></SVGCrud>
@@ -292,13 +292,12 @@
                     </div>
                     <CascadingValue Value="ToggleDialog">
                         <CascadingValue Value="SetRenderFragment">
-                            @Body
+                            @Body                           
                         </CascadingValue>
                     </CascadingValue>
 
                 </div>
             </div>
-
 
             <footer class="page-footer">
                 <span class="start-text">
@@ -310,12 +309,11 @@
                     Power by
                     <a href="#" class="primary-link-btn text-decoration-none">Stingray</a>
                 </span>
-            </footer>
-            <Popup />
+            </footer>           
         </section>
     </section>
 </main>
-
+<Popup />
 
 @code {
     private bool IsAuthChecked = false;

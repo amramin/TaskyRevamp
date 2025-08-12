@@ -26,6 +26,7 @@ builder.Services.AddBlazoredLocalStorage();
 builder.Services.AddHttpClient<TaskyService>();
 builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
 builder.Services.AddScoped<CustomAuthenticationService>();
+builder.Services.AddScoped<PopupService>();
 
 //Consumers
 builder.Services.AddTransient<AccountConsumer>();

@@ -14,7 +14,7 @@
 @using TaskyRevamp.Dto.Account
 @using TaskyRevamp.Localization.Resources
 @inject CustomAuthenticationService AuthService
-@rendermode InteractiveServer
+@* @rendermode InteractiveServer *@
 
 <section class="auth">
 
@@ -121,7 +121,7 @@
                                                      class="feather feather-settings spin icon mt-minus-2"></i>
                                 </button>
                                 <div class="mt-4">
-                                    <CultureSelector />
+                                    <CultureSelector @rendermode="StaticClasses.InteractiveAutoRenderModeFalse" />
                                 </div>
                             </div>
 

@@ -1,4 +1,6 @@
 ﻿@using System.Globalization
+@using Microsoft.AspNetCore.Localization
+
 <!DOCTYPE html>
 <html dir="@(@CultureInfo.CurrentCulture.Name == "en-US" ? "ltr" : "rtl")">
 
@@ -12,15 +14,26 @@
     <ImportMap />
     <link rel="icon" type="image/png" href="favicon.png" />
     <HeadOutlet />
-    <link href="./css/bootstrap.min.css" rel="stylesheet" />
+@*     <link href="./css/bootstrap.min.css" rel="stylesheet" /> *@
     <!-- Main CSS-->
     <link href="./css/main.css" rel="stylesheet" />
     <link href="favico.ico" rel="icon" />
+
+    @if (CultureInfo.CurrentCulture.Name == "en-US")
+    {
+        <link rel="stylesheet" href="./css/bootstrap.min.css" />
+    }
+    else
+    {
+        <link rel="stylesheet" href="./css/bootstrap.rtl.min.css" />
+    }
+
     <title>Task list</title>
 </head>
 
 <body>
-    <Routes />
+    <TaskyRevamp.Client.Routes @rendermode="StaticClasses.InteractiveWebAssemblyRenderModeFalse" />
+
 
     <div class="offcanvas offcanvas-end"
          data-bs-scroll="true"
@@ -78,10 +91,58 @@
     <script src="_framework/blazor.web.js"></script>
     <script>
         window.blazorCulture = {
-          get: () => localStorage['BlazorCulture'],
-          set: (value) => localStorage['BlazorCulture'] = value
+            get: () => window.localStorage['BlazorCulture'],
+            set: (value) => window.localStorage['BlazorCulture'] = value
+        };
+
+        window.BlazorDownloadFile = (fileName, base64Content) => {
+            const link = document.createElement('a');
+            link.download = fileName;
+            link.href = `data:application/octet-stream;base64,${base64Content}`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
         };
     </script>
 </body>
 
 </html>
+
+@code {
+    [CascadingParameter]
+    public HttpContext? HttpContext { get; set; }
+
+
+    protected override void OnInitialized()
+    {
+        // Set the default language to Arabic ('ar-EG') if no culture is set
+        var defaultCulture = "ar-EG"; // Default to Arabic (Egypt)
+
+        // Check if the culture cookie is not already set
+        if (HttpContext?.Request.Cookies[CookieRequestCultureProvider.DefaultCookieName] == null)
+        {
+            HttpContext?.Response.Cookies.Append(
+            CookieRequestCultureProvider.DefaultCookieName,
+            CookieRequestCultureProvider.MakeCookieValue(
+            new RequestCulture(defaultCulture, defaultCulture)),
+            new CookieOptions { Expires = DateTimeOffset.UtcNow.AddYears(1) }
+            );
+
+            CultureInfo.CurrentCulture = new CultureInfo(defaultCulture);
+            CultureInfo.CurrentUICulture = new CultureInfo(defaultCulture);
+        }
+        else
+        {
+            // Use the existing culture if it's already set
+            var currentCulture = HttpContext.Request.Cookies[CookieRequestCultureProvider.DefaultCookieName];
+            var cultureInfo = CookieRequestCultureProvider.ParseCookieValue(currentCulture);
+            var culture = cultureInfo?.Cultures?.FirstOrDefault().Value ?? defaultCulture;  // Ensure correct fallback to default culture
+
+            HttpContext?.Response.Cookies.Append(
+            CookieRequestCultureProvider.DefaultCookieName,
+            CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(culture, culture)),
+            new CookieOptions { Expires = DateTimeOffset.UtcNow.AddYears(1) }
+            );
+        }
+    }
+}

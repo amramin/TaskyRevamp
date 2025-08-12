@@ -1,10 +1,11 @@
 ﻿@page "/tasks"
 @inject HttpClient Http
+@inject PopupService PopupService
 
 <h3>Create Task</h3>
 <input @bind="title" placeholder="Title" />
 <input @bind="description" placeholder="Description" />
-<button @onclick="CreateTask">Create</button>
+<button @onclick="AskDelete">Create</button>
 
 <h3>Update Status</h3>
 <input @bind="taskId" placeholder="Task ID" />
@@ -14,6 +15,8 @@
     <option value="Completed">Completed</option>
 </select>
 <button @onclick="UpdateStatus">Update</button>
+
+<button @onclick="ShowPopup">Show Popup</button>
 
 @if (!string.IsNullOrEmpty(message))
 {
@@ -65,5 +68,23 @@
     public class ValidationErrorResponse
     {
         public List<string> Errors { get; set; }
+    }
+
+    void AskDelete()
+    {
+        PopupService.Show(
+            "Delete Item",
+            "Are you sure you want to delete this?",
+            async () => { await CreateTask(); }
+        );
+    }
+
+    private void ShowPopup()
+    {
+        PopupService.Show(
+            "Delete Item",
+            "Are you sure you want to delete this?",
+            async () => { await Task.Delay(500); Console.WriteLine("Confirmed"); }
+        );
     }
 }

@@ -41,3 +41,7 @@ window.blazorCulture = {
         localStorage.setItem('BlazorCulture', value);
     }
 };
+
+window.setDocumentDirection = function (dir) {
+    document.documentElement.setAttribute("dir", dir);
+};
