@@ -332,6 +332,7 @@
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         await CheckAuth(firstRender);
+        await base.OnAfterRenderAsync(firstRender);
     }
 
     protected override void OnInitialized()

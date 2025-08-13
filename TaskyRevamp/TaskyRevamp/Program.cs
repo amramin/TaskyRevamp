@@ -77,6 +77,8 @@ builder.Services.AddAuthentication(options =>
 
 var app = builder.Build();
 
+app.MapControllers();
+
 var supportedCultures = new[] { "ar-EG", "en-US" };
 var localizationOptions = new RequestLocalizationOptions()
     .SetDefaultCulture("ar-EG")  // Set Arabic (Egypt) as the default culture

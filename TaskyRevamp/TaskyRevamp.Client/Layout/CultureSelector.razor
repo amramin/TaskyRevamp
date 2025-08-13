@@ -10,7 +10,9 @@
         <SVGCrud SVGType="SVGCrud.SVGTypeEnum.AR"></SVGCrud>
     </span>
     <span class="icon-text">
-        <SVGCrud SVGType="SVGCrud.SVGTypeEnum.SwitchLang"></SVGCrud>
+        <span class="icon">
+            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.SwitchLang"></SVGCrud>
+        </span>
         <span class="ar-text">تحويل إلى العربية</span>
         <span class="en-text">Change to English</span>
     </span>
@@ -34,28 +36,22 @@ new CultureInfo("ar-EG"),
 };
 
     private CultureInfo? selectedCulture;
-    private bool cultureLoaded = false;
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
+    protected override async Task OnInitializedAsync()
     {
-        if (firstRender) // ✅ Only run on first render
+        var culture = await JS.InvokeAsync<string>("blazorCulture.get");
+        if (string.IsNullOrEmpty(culture))
         {
-            var culture = await JS.InvokeAsync<string>("blazorCulture.get");
-
-            if (string.IsNullOrEmpty(culture))
-            {
-                selectedCulture = new CultureInfo("ar-EG");
-            }
-            else
-            {
-                selectedCulture = new CultureInfo(culture);
-            }
-
-            ApplyCulture(selectedCulture);
-            cultureLoaded = true;
-
-            StateHasChanged(); // ✅ Refresh UI after loading culture
+            // Default to Arabic if no culture is stored
+            selectedCulture = new CultureInfo("ar-EG");
         }
+        else
+        {
+            selectedCulture = new CultureInfo(culture);
+        }
+
+        // Apply the selected culture to ensure it takes effect
+        ApplyCulture(selectedCulture);
     }
 
 
@@ -95,24 +91,15 @@ new CultureInfo("ar-EG"),
             CultureInfo.CurrentCulture = selectedCulture;
             CultureInfo.CurrentUICulture = selectedCulture;
 
-            // If you have a backend Culture/Set endpoint, use it here:
-            bool useServerCultureEndpoint = false;
 
-            if (useServerCultureEndpoint)
-            {
-                var currentPath = new Uri(Navigation.Uri)
-                .GetComponents(UriComponents.PathAndQuery, UriFormat.Unescaped);
+            var currentPath = new Uri(Navigation.Uri)
+            .GetComponents(UriComponents.PathAndQuery, UriFormat.Unescaped);
 
-                var cultureEscaped = Uri.EscapeDataString(selectedCulture.Name);
-                var uriEscaped = Uri.EscapeDataString(currentPath);
+            var cultureEscaped = Uri.EscapeDataString(selectedCulture.Name);
+            var uriEscaped = Uri.EscapeDataString(currentPath);
 
-                Navigation.NavigateTo($"Culture/Set?culture={cultureEscaped}&redirectUri={uriEscaped}", forceLoad: true);
-            }
-            else
-            {
-                // Just reload current page to apply culture
-                Navigation.NavigateTo(Navigation.Uri, forceLoad: true);
-            }
+            Navigation.NavigateTo($"Culture/Set?culture={cultureEscaped}&redirectUri={uriEscaped}", forceLoad: true);
+
         }
     }
 
