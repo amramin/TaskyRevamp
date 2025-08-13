@@ -117,8 +117,26 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Custom" xml:space="preserve">
+    <value>مخصص</value>
+  </data>
+  <data name="Days7" xml:space="preserve">
+    <value>7 أيام</value>
+  </data>
+  <data name="Days15" xml:space="preserve">
+    <value>15 يوم</value>
+  </data>
+  <data name="Days30" xml:space="preserve">
+    <value>30 يوم</value>
+  </data>
+  <data name="Days60" xml:space="preserve">
+    <value>60 يوم</value>
+  </data>
   <data name="Login" xml:space="preserve">
     <value>تسجيل الدخول</value>
+  </data>
+  <data name="Never" xml:space="preserve">
+    <value>أبدا</value>
   </data>
   <data name="PrentNotFound" xml:space="preserve">
     <value>لا يوجد اب</value>

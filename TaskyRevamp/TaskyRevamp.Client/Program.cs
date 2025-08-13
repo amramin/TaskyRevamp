@@ -31,6 +31,7 @@ builder.Services.AddScoped<PopupService>();
 builder.Services.AddScoped<TaskyService>();
 //Consumers
 builder.Services.AddTransient<AccountConsumer>();
+builder.Services.AddTransient<RecycleBinSettingConsumer>();
 
 var configuration = builder.Configuration;
 var apiUrl = configuration.GetValue<string>("TaskyService");

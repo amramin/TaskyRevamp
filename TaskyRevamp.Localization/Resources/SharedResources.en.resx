@@ -117,8 +117,26 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Custom" xml:space="preserve">
+    <value>Custom</value>
+  </data>
+  <data name="Days7" xml:space="preserve">
+    <value>7 days</value>
+  </data>
+  <data name="Days15" xml:space="preserve">
+    <value>15 days</value>
+  </data>
+  <data name="Days30" xml:space="preserve">
+    <value>30 days</value>
+  </data>
+  <data name="Days60" xml:space="preserve">
+    <value>60 days</value>
+  </data>
   <data name="Login" xml:space="preserve">
     <value>Login</value>
+  </data>
+  <data name="Never" xml:space="preserve">
+    <value>Never</value>
   </data>
   <data name="PrentNotFound" xml:space="preserve">
     <value>Parent Not Found Testt</value>

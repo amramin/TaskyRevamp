@@ -117,6 +117,12 @@ builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
+app.UseResponseWrapper();
+
+app.UseCors(x =>
+{
+    x.WithOrigins("https://localhost:7159").AllowAnyMethod().AllowAnyHeader().AllowCredentials();
+}); //
 app.UseRequestLocalization();
 //app.UseMiddleware<LocalizedExceptionMiddleware>();
 
@@ -136,7 +142,6 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
-
 
 app.MapControllers();
 
