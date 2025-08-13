@@ -336,9 +336,16 @@
 
     protected override void OnInitialized()
     {
-        // Loader
-        LoaderService.OnShow += () => { isLoaderVisible = true; StateHasChanged(); };
-        LoaderService.OnHide += () => { isLoaderVisible = false; StateHasChanged(); };
+        LoaderService.OnShow += () =>
+        {
+            isLoaderVisible = true;
+            InvokeAsync(StateHasChanged); // force UI refresh
+        };
+        LoaderService.OnHide += () =>
+        {
+            isLoaderVisible = false;
+            InvokeAsync(StateHasChanged); // force UI refresh
+        };
     }
 
     void SetRenderFragment(RenderFragment content, string headerName)

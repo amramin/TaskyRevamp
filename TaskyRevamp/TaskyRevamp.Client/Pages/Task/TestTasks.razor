@@ -3,6 +3,7 @@
 @inject HttpClient Http
 @inject PopupService PopupService
 @inject ToastService ToastService
+@inject LoaderService LoaderService
 
 <h3>Create Task</h3>
 <input @bind="title" placeholder="Title" />
@@ -25,8 +26,11 @@
 <button @onclick="ShowStandardPopup">Show Standard Popup</button>
 
 <br />
-
 <button class="btn btn-primary" @onclick="ShowToast">Show Toast Message</button>
+
+<br />
+<button @onclick="TestLoader">Test Loader</button>
+
 @if (!string.IsNullOrEmpty(message))
 {
     <p>@message</p>
@@ -113,5 +117,12 @@
 
         // Show toast
         await ToastService.ShowToastAsync("Data saved successfully!", "success");
+    }
+
+    private async Task TestLoader()
+    {
+        LoaderService.Show();
+        await Task.Delay(2000);
+        LoaderService.Hide();
     }
 }

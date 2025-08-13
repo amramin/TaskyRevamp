@@ -1,11 +1,12 @@
-using Microsoft.JSInterop;
-using System.Net.Http.Headers;
-using Microsoft.AspNetCore.Components;
 using Blazored.LocalStorage;
-using System.IdentityModel.Tokens.Jwt;
-using TaskyRevamp.Dto.GeneralDto;
+using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 using Newtonsoft.Json;
+using System.IdentityModel.Tokens.Jwt;
+using System.Net.Http.Headers;
 using TaskyRevamp.Client.Extensions;
+using TaskyRevamp.Client.Services;
+using TaskyRevamp.Dto.GeneralDto;
 
 namespace TaskyRevamp.Client;
 
@@ -20,14 +21,16 @@ public class TaskyService
     public IJSRuntime JS;
     private readonly ILocalStorageService _localStorage;
     private NavigationManager NavigationManager;
+    private readonly LoaderService _loader;
 
-    public TaskyService(HttpClient httpClient, IJSRuntime js, ILocalStorageService localStorage, NavigationManager navigationManager)
+    public TaskyService(HttpClient httpClient, IJSRuntime js, ILocalStorageService localStorage, NavigationManager navigationManager, LoaderService loader)
     {
         this.httpClient = httpClient;
 
         JS = js;
         _localStorage = localStorage;
         NavigationManager = navigationManager;
+        _loader = loader;
     }
 
     private readonly string[] _validImageExtensions = [".jpg", ".jpeg", ".png"];
@@ -68,7 +71,7 @@ public class TaskyService
                 httpClient.DefaultRequestHeaders.Add("BlazorCulture", bearerCulture);
             }
 
-        
+
             bearerToken = await _localStorage.GetItemAsStringAsync("bearerToken");
 
 
@@ -117,130 +120,187 @@ public class TaskyService
     public async Task<CommonApiResponse<T>> PostJsonAsyncWithJsonConvert<T, T1>(string url, T1 loginDto, bool checkForToken = true)
 
     {
-        if (checkForToken)
-            if (!await CheckForToken())
-                return new CommonApiResponse<T>();
+        try
+        {
+            _loader.Show();
+            if (checkForToken)
+                if (!await CheckForToken())
+                    return new CommonApiResponse<T>();
 
-        var response = await httpClient.PostJsonAsyncWithJsonConvert<T, T1>(url, loginDto);
-        return response;
+            var response = await httpClient.PostJsonAsyncWithJsonConvert<T, T1>(url, loginDto);
+            return response;
+        }
+        finally { _loader.Hide(); }
     }
 
     public async Task<CommonApiResponse<T>> PostJsonAsync<T, T1>(string url, T1 componenetFilters) where T : class
     {
-        if (!await CheckForToken())
-            return new CommonApiResponse<T>();
+        try
+        {
+            _loader.Show();
+            if (!await CheckForToken())
+                return new CommonApiResponse<T>();
 
-        var response = await httpClient.PostJsonAsync<T, T1>(url, componenetFilters);
-        return response;
+            var response = await httpClient.PostJsonAsync<T, T1>(url, componenetFilters);
+            return response;
+        }
+        finally { _loader.Hide(); }
     }
 
     public async Task<CommonApiResponse<T>> PostFileAsync<T>(string url, MultipartFormDataContent value)
         where T : class
     {
-        if (!await CheckForToken())
-            return new CommonApiResponse<T>();
+        try
+        {
+            _loader.Show();
+            if (!await CheckForToken())
+                return new CommonApiResponse<T>();
 
-        var response = await httpClient.PostFileAsync<T>(url, value);
-        return response;
+            var response = await httpClient.PostFileAsync<T>(url, value);
+            return response;
+        }
+        finally { _loader.Hide(); }
     }
 
     public async Task<CommonApiResponse<T>> PostJsonAsync<T>(string url, object value)
     {
-        if (!await CheckForToken())
-            return new CommonApiResponse<T>();
+        try
+        {
+            _loader.Show();
+            if (!await CheckForToken())
+                return new CommonApiResponse<T>();
 
-        var response = await httpClient.PostJsonAsync<T>(url, value);
-        return response;
+            var response = await httpClient.PostJsonAsync<T>(url, value);
+            return response;
+        }
+        finally { _loader.Hide(); }
     }
 
     public async Task<CommonApiResponse<T>> GetJsonAsync<T>(string apiWavestatusGetwavestatuslist)
     {
-        if (!await CheckForToken())
-            return new CommonApiResponse<T>();
+        try
+        {
+            _loader.Show();
+            if (!await CheckForToken())
+                return new CommonApiResponse<T>();
 
-        var response = await httpClient.GetJsonAsync<T>(apiWavestatusGetwavestatuslist);
-        return response;
+            var response = await httpClient.GetJsonAsync<T>(apiWavestatusGetwavestatuslist);
+            return response;
+        }
+        finally { _loader.Hide(); }
     }
 
     public async Task<HttpResponseMessage> PostAsJsonAsync<T>(string url, T componenetFilters) where T : class
     {
-        if (!await CheckForToken())
-            return new HttpResponseMessage();
-
-        var settings = new JsonSerializerSettings
+        try
         {
-            ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
-            Formatting = Formatting.Indented
-        };
-        var json = JsonConvert.SerializeObject(componenetFilters, settings);
-        var response = await httpClient.PostAsync(url, new StringContent(json, System.Text.Encoding.UTF8, "application/json"));
-        return response;
+            _loader.Show();
+            if (!await CheckForToken())
+                return new HttpResponseMessage();
+
+            var settings = new JsonSerializerSettings
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+                Formatting = Formatting.Indented
+            };
+            var json = JsonConvert.SerializeObject(componenetFilters, settings);
+            var response = await httpClient.PostAsync(url, new StringContent(json, System.Text.Encoding.UTF8, "application/json"));
+            return response;
+
+        }
+        finally { _loader.Hide(); }
     }
 
     public async Task<T> GetFromJsonAsync<T>(string url) where T : class
     {
-        if (!await CheckForToken())
-            return await Task.FromResult<T>(null);
-
-        var settings = new JsonSerializerSettings
+        try
         {
-            ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
-            Formatting = Formatting.Indented
-        };
+            _loader.Show();
+            if (!await CheckForToken())
+                return await Task.FromResult<T>(null);
 
-        var response = await httpClient.GetStringAsync(url);
-        var result = JsonConvert.DeserializeObject<T>(response, settings);
-        return result;
+            var settings = new JsonSerializerSettings
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+                Formatting = Formatting.Indented
+            };
+
+            var response = await httpClient.GetStringAsync(url);
+            var result = JsonConvert.DeserializeObject<T>(response, settings);
+            return result;
+        }
+        finally { _loader.Hide(); }
     }
 
     public async Task<T> DeleteFromJsonAsync<T>(string url) where T : class
     {
-        if (!await CheckForToken())
-            return await Task.FromResult<T>(null);
-
-        var settings = new JsonSerializerSettings
+        try
         {
-            ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
-            Formatting = Formatting.Indented
-        };
-        var response = await httpClient.DeleteAsync(url);
-        var responseString = await response.Content.ReadAsStringAsync();
-        var result = JsonConvert.DeserializeObject<T>(responseString, settings);
-        return result;
+            _loader.Show();
+            if (!await CheckForToken())
+                return await Task.FromResult<T>(null);
+
+            var settings = new JsonSerializerSettings
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+                Formatting = Formatting.Indented
+            };
+            var response = await httpClient.DeleteAsync(url);
+            var responseString = await response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<T>(responseString, settings);
+            return result;
+        }
+        finally { _loader.Hide(); }
     }
     public async Task<HttpResponseMessage> PutAsJsonAsync<T>(string url, T value) where T : class
     {
-        if (!await CheckForToken())
-            return new HttpResponseMessage();
-
-        var settings = new JsonSerializerSettings
+        try
         {
-            ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
-            Formatting = Formatting.Indented
-        };
+            _loader.Show();
+            if (!await CheckForToken())
+                return new HttpResponseMessage();
 
-        var json = JsonConvert.SerializeObject(value, settings);
-        var response = await httpClient.PutAsync(url, new StringContent(json, System.Text.Encoding.UTF8, "application/json"));
-        return response;
+            var settings = new JsonSerializerSettings
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+                Formatting = Formatting.Indented
+            };
+
+            var json = JsonConvert.SerializeObject(value, settings);
+            var response = await httpClient.PutAsync(url, new StringContent(json, System.Text.Encoding.UTF8, "application/json"));
+            return response;
+        }
+        finally { _loader.Hide(); }
     }
 
     public async Task<CommonApiResponse<T>> GetJsonAsyncWithJsonConvert<T>(string url) where T : class
     {
-        if (!await CheckForToken())
-            return new CommonApiResponse<T>();
+        try
+        {
+            _loader.Show();
+            if (!await CheckForToken())
+                return new CommonApiResponse<T>();
 
-        var response = await httpClient.GetJsonAsyncWithJsonConvert<T>(url);
-        return response;
+            var response = await httpClient.GetJsonAsyncWithJsonConvert<T>(url);
+            return response;
+        }
+        finally { _loader.Hide(); }
     }
 
     public async Task<string?> GetStringAsync(string url)
     {
-        if (!await CheckForToken())
-            return "";
+        try
+        {
+            _loader.Show();
 
-        var response = await httpClient.GetStringAsync(url);
-        return response;
+            if (!await CheckForToken())
+                return "";
+
+            var response = await httpClient.GetStringAsync(url);
+            return response;
+        }
+        finally { _loader.Hide(); }
     }
-   
+
 
 }
