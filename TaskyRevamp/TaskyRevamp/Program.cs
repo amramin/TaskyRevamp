@@ -10,6 +10,7 @@ using TaskyRevamp.Client;
 using TaskyRevamp.Client.Extensions;
 using TaskyRevamp.Client.Pages;
 using TaskyRevamp.Client.Pages.Consumer;
+using TaskyRevamp.Client.Services;
 using TaskyRevamp.Components;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -27,6 +28,8 @@ builder.Services.AddHttpClient<TaskyService>();
 builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
 builder.Services.AddScoped<CustomAuthenticationService>();
 builder.Services.AddScoped<PopupService>();
+builder.Services.AddScoped<ToastService>();
+builder.Services.AddSingleton<LoaderService>();
 
 //Consumers
 builder.Services.AddTransient<AccountConsumer>();

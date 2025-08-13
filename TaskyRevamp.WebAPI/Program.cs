@@ -73,7 +73,11 @@ builder.Services.Configure<RequestLocalizationOptions>(options =>
 
 // MVC + FluentValidation
 builder.Services.AddControllers()
-    .AddDataAnnotationsLocalization();
+    .AddDataAnnotationsLocalization()
+            .AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.Converters.Add(new JsonDateTimeConverter("yyyy-MM-dd HH:mm:ss"));
+            });
 
 
 builder.Services.AddAuthentication(options =>

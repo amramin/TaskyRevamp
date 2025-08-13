@@ -1,0 +1,54 @@
+﻿@using TaskyRevamp.Client.Services
+@inject ToastService ToastService
+
+<div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 1100;">
+    @if (isVisible)
+    {
+        <div class="toast align-items-center text-white @GetBackgroundClass() show" role="alert">
+            <div class="d-flex">
+                <div class="toast-body">@message</div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" @onclick="Hide"></button>
+            </div>
+        </div>
+    }
+</div>
+
+@code {
+    private bool isVisible;
+    private string message;
+    private string type;
+
+    protected override void OnInitialized()
+    {
+        ToastService.OnShow += Show;
+    }
+
+    public void Dispose()
+    {
+        ToastService.OnShow -= Show; // unsubscribe when component is destroyed
+    }
+
+    private async Task Show(string message, string type)
+    {
+        this.message = message;
+        this.type = type;
+        isVisible = true;
+        StateHasChanged();
+
+        await Task.Delay(5000); // 5 Seconds
+        isVisible = false;
+        StateHasChanged();
+    }
+
+    private void Hide()
+    {
+        isVisible = false;
+    }
+
+    private string GetBackgroundClass() => type switch
+    {
+        "success" => "bg-success",
+        "error" => "bg-danger",
+        _ => "bg-primary"
+    };
+}
