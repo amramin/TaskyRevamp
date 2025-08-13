@@ -1,9 +1,12 @@
 ﻿@page "/tasks"
 @using TaskyRevamp.Client.Services
+@using TaskyRevamp.Dto.GeneralDto
+@using TaskyRevamp.Localization.Resources
 @inject HttpClient Http
 @inject PopupService PopupService
 @inject ToastService ToastService
 @inject LoaderService LoaderService
+@inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResources> Loc
 
 <h3>Create Task</h3>
 <input @bind="title" placeholder="Title" />
@@ -116,7 +119,7 @@
         await Task.Delay(500); // simulate work
 
         // Show toast
-        await ToastService.ShowToastAsync("Data saved successfully!", "success");
+        await ToastService.ShowToastAsync(Loc[MessagesMap.DataSavedSuccessfully], "success");
     }
 
     private async Task TestLoader()

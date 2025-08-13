@@ -117,11 +117,14 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="DataSavedSuccessfully" xml:space="preserve">
+    <value>Data Saved Successfully</value>
+  </data>
   <data name="Login" xml:space="preserve">
     <value>Login</value>
   </data>
-  <data name="PrentNotFound" xml:space="preserve">
-    <value>Parent Not Found Testt</value>
+  <data name="ParentNotFound" xml:space="preserve">
+    <value>Parent Not Found </value>
   </data>
   <data name="Required" xml:space="preserve">
     <value>This Field Required</value>
