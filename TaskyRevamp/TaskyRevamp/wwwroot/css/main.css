@@ -1,5 +1,6 @@
 :root {
   --primary-color: #1740a5;
+  --active-primary: #2E53AE;
   --primary-linear: linear-gradient(200.29deg, #f4f5fa -22.81%, #f5f8fd 86.51%);
   --white-opacity-10: rgba(255, 255, 255, 0.1);
   --dark-900: #15171c;
@@ -223,8 +224,14 @@
 }
 
 .btn-primary {
-  background-color: var(--primary-color);
-  border-color: var(--primary-color);
+  --bs-btn-color: #fff;
+  --bs-btn-bg: var(--primary-color) !important;
+  --bs-btn-border-color: var(--primary-color) !important;
+  --bs-btn-hover-bg: var(--active-primary) !important;
+  --bs-btn-hover-border-color: var(--active-primary) !important;
+  --bs-btn-active-color: #fff;
+  --bs-btn-active-bg: var(--active-primary) !important;
+  --bs-btn-active-border-color: var(--active-primary) !important;
 }
 .btn-primary:hover, .btn-primary:focus, .btn-primary:first-child:active, .btn-primary:active {
   background-color: var(--primary-color);
@@ -911,6 +918,9 @@
           align-items: center;
   gap: 0.75rem;
 }
+.main-wrapper .main-header .main-header-body .end .btn-change-lang .icon-text {
+  display: none;
+}
 .main-wrapper .main-header .main-header-body .logo {
   max-height: 1.5rem;
 }
@@ -1184,35 +1194,27 @@ html[dir=rtl] .btn-change-lang span.ar {
 }/*# sourceMappingURL=main.css.map */
 
 
-.popup-overlay {
+.loader-overlay {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background-color: rgba(0, 0, 0, 0.5); /* dim background */
+    inset: 0;
+    background: rgba(0,0,0,0.3);
     display: flex;
-    align-items: center;
     justify-content: center;
-    z-index: 9999; /* make sure it's above everything */
+    align-items: center;
+    z-index: 9999;
 }
 
-.popup-content {
-    background: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0px 4px 15px rgba(0,0,0,0.3);
-    max-width: 400px;
-    width: 90%;
-    text-align: center;
+.spinner {
+    width: 50px;
+    height: 50px;
+    border: 6px solid #ddd;
+    border-top: 6px solid #3498db;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
 }
 
-.popup-icon {
-    width: 60px;
-    height: auto;
-    margin-bottom: 15px;
-}
-
-.popup-title {
-    margin-bottom: 15px;
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
 }

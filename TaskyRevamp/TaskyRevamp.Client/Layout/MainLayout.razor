@@ -1,5 +1,6 @@
 ﻿@using System.Globalization
 @using Blazored.LocalStorage
+@using TaskyRevamp.Client.Services
 @using TaskyRevamp.Client.Shared.Popups
 @inherits LayoutComponentBase
 @inject Blazored.LocalStorage.ILocalStorageService LocalStorage
@@ -7,6 +8,7 @@
 @inject NavigationManager NavigationManager
 @inject TaskyService taskyService
 @inject IJSRuntime JS
+@inject LoaderService LoaderService
 
 <main class="main-wrapper">
     <NavMenu />
@@ -314,11 +316,15 @@
         </section>
     </section>
 </main>
+<Toast />
 <PopupHost />
+<Loader IsVisible="@isLoaderVisible" />
 
 @code {
     private bool IsAuthChecked = false;
     private bool langInitialized = false;
+    private bool isLoaderVisible;
+
     string HeaderName;
     RenderFragment Content { get; set; }
     bool IsShowDialog = false;
@@ -326,6 +332,21 @@
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         await CheckAuth(firstRender);
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    protected override void OnInitialized()
+    {
+        LoaderService.OnShow += () =>
+        {
+            isLoaderVisible = true;
+            InvokeAsync(StateHasChanged); // force UI refresh
+        };
+        LoaderService.OnHide += () =>
+        {
+            isLoaderVisible = false;
+            InvokeAsync(StateHasChanged); // force UI refresh
+        };
     }
 
     void SetRenderFragment(RenderFragment content, string headerName)

@@ -1,3 +1,26 @@
+@using TaskyRevamp.Client.Services
 @inherits LayoutComponentBase
+@inject LoaderService LoaderService
 
 @Body
+
+<Loader IsVisible="@isLoaderVisible" />
+
+@code {
+
+    private bool isLoaderVisible;
+
+    protected override void OnInitialized()
+    {
+        LoaderService.OnShow += () =>
+        {
+            isLoaderVisible = true;
+            InvokeAsync(StateHasChanged); // force UI refresh
+        };
+        LoaderService.OnHide += () =>
+        {
+            isLoaderVisible = false;
+            InvokeAsync(StateHasChanged); // force UI refresh
+        };
+    }
+}

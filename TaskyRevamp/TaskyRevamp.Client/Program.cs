@@ -9,6 +9,7 @@ using System.Text.Json;
 using TaskyRevamp.Client;
 using TaskyRevamp.Client.Extensions;
 using TaskyRevamp.Client.Pages.Consumer;
+using TaskyRevamp.Client.Services;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 
@@ -29,6 +30,10 @@ builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStat
 builder.Services.AddScoped<CustomAuthenticationService>();
 builder.Services.AddScoped<PopupService>();
 builder.Services.AddScoped<TaskyService>();
+builder.Services.AddSingleton<ToastService>();
+builder.Services.AddSingleton<LoaderService>();
+
+
 //Consumers
 builder.Services.AddTransient<AccountConsumer>();
 builder.Services.AddTransient<RecycleBinSettingConsumer>();

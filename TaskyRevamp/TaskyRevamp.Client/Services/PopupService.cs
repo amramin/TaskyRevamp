@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using TaskyRevamp.Dto.Enums;
 
-namespace TaskyRevamp.Client;
+namespace TaskyRevamp.Client.Services;
 
 public class PopupService
 {

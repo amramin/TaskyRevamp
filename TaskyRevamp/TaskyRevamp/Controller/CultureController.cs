@@ -4,17 +4,22 @@ using Microsoft.AspNetCore.Mvc;
 namespace TaskyRevamp.Controller;
 
 [Route("[controller]/[action]")]
-public class CultureController : ControllerBase
+public class CultureController : Microsoft.AspNetCore.Mvc.Controller
 {
-    [HttpGet("Set")]
     public IActionResult Set(string culture, string redirectUri)
     {
-        // Save culture in a cookie so server knows for future requests
-        Response.Cookies.Append(
-            CookieRequestCultureProvider.DefaultCookieName,
-            CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(culture)),
-            new CookieOptions { Expires = DateTimeOffset.UtcNow.AddYears(1) }
-        );
+        if (!string.IsNullOrEmpty(culture))
+        {
+            var cookieValue = CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(culture, culture));
+            HttpContext.Response.Cookies.Append(
+                CookieRequestCultureProvider.DefaultCookieName,
+                cookieValue,
+                new CookieOptions { IsEssential = true, Expires = DateTimeOffset.UtcNow.AddYears(1) }
+            );
+
+            // Log the culture and cookie value to confirm it's being set
+            Console.WriteLine($"Setting culture cookie: {cookieValue}");
+        }
 
         return LocalRedirect(redirectUri);
     }

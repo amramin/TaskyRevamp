@@ -22,8 +22,17 @@
   }
 }
 .btn-primary {
-  background-color: var(--primary-color);
-  border-color: var(--primary-color);
+  --bs-btn-color: #fff;
+  --bs-btn-bg: var(--primary-color) !important;
+  --bs-btn-border-color: var(--primary-color) !important;
+
+  --bs-btn-hover-bg: var(--active-primary) !important;
+  --bs-btn-hover-border-color: var(--active-primary) !important;
+
+  --bs-btn-active-color: #fff;
+  --bs-btn-active-bg: var(--active-primary) !important;
+  --bs-btn-active-border-color: var(--active-primary) !important;
+
   &:hover,
   &:focus,
   &:first-child:active,
