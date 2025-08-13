@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TaskyRevamp.Domain.Interfaces;
 using TaskyRevamp.Domain.Models.Task;
 using TaskyRevamp.Domain.Models.Users;
@@ -86,6 +87,22 @@ public class EfDbContext : DbContext
         {
             fk.DeleteBehavior = DeleteBehavior.Restrict;
         }
+
+        //var serverTimeZone = TimeZoneInfo.Local; // Your server's timezone
+
+        //foreach (var entityType in modelBuilder.Model.GetEntityTypes())
+        //{
+        //    foreach (var property in entityType.GetProperties()
+        //                 .Where(p => p.ClrType == typeof(DateTime) || p.ClrType == typeof(DateTime?)))
+        //    {
+        //        var converter = new ValueConverter<DateTime, DateTime>(
+        //            v => v.ToUniversalTime(), // When saving: convert to UTC
+        //            v => TimeZoneInfo.ConvertTimeFromUtc(DateTime.SpecifyKind(v, DateTimeKind.Utc), serverTimeZone) // When reading: convert to local
+        //        );
+
+        //        property.SetValueConverter(converter);
+        //    }
+        //}
 
     }
 }

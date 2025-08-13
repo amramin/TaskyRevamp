@@ -73,7 +73,11 @@ builder.Services.Configure<RequestLocalizationOptions>(options =>
 
 // MVC + FluentValidation
 builder.Services.AddControllers()
-    .AddDataAnnotationsLocalization();
+    .AddDataAnnotationsLocalization()
+            .AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.Converters.Add(new JsonDateTimeConverter("yyyy-MM-dd HH:mm:ss"));
+            });
 
 
 builder.Services.AddAuthentication(options =>
@@ -115,7 +119,26 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.AddAuthorization();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAllOrigins", builder =>
+    {
+        builder
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowCredentials()
+            .SetIsOriginAllowed(_ => true); // Allow all origins for testing
+    });
+});
+
+
 var app = builder.Build();
+
+app.UseCors(x =>
+{
+    x.SetIsOriginAllowed(_ => true).AllowAnyMethod().AllowAnyHeader().AllowCredentials();
+
+});
 
 app.UseRequestLocalization();
 //app.UseMiddleware<LocalizedExceptionMiddleware>();

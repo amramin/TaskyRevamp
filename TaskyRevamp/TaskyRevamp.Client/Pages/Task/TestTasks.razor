@@ -1,6 +1,9 @@
 ﻿@page "/tasks"
+@using TaskyRevamp.Client.Services
 @inject HttpClient Http
 @inject PopupService PopupService
+@inject ToastService ToastService
+@inject LoaderService LoaderService
 
 <h3>Create Task</h3>
 <input @bind="title" placeholder="Title" />
@@ -16,10 +19,18 @@
 </select>
 <button @onclick="UpdateStatus">Update</button>
 
+<br />
 <button @onclick="ShowConfirmationPopup">Show Confirmation Popup</button>
 <button @onclick="ShowInvalidPopup">Show Invalid Popup</button>
 <button @onclick="ShowNewPopup">Show New Popup</button>
 <button @onclick="ShowStandardPopup">Show Standard Popup</button>
+
+<br />
+<button class="btn btn-primary" @onclick="ShowToast">Show Toast Message</button>
+
+<br />
+<button @onclick="TestLoader">Test Loader</button>
+
 @if (!string.IsNullOrEmpty(message))
 {
     <p>@message</p>
@@ -96,5 +107,22 @@
     private void ShowStandardPopup()
     {
         PopupService.ShowStandard(@<div><h3>Hello from New Popup!</h3></div>);
+    }
+
+
+    private async Task ShowToast()
+    {
+        // Perform your action here...
+        await Task.Delay(500); // simulate work
+
+        // Show toast
+        await ToastService.ShowToastAsync("Data saved successfully!", "success");
+    }
+
+    private async Task TestLoader()
+    {
+        LoaderService.Show();
+        await Task.Delay(2000);
+        LoaderService.Hide();
     }
 }
