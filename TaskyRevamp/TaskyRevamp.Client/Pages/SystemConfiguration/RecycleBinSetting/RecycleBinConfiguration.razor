@@ -53,9 +53,13 @@
         }
     }
 
-    private void SaveSettings()
+    private async void SaveSettings()
     {
-        //Call update recycle bin setting request from consumer here
+        var res = await _recycleBinSettingConsumer.UpdateRecycleBinSetting(RecycleBinSetting);
+        if (res.Success)
+        {
+            
+        }
     }
 
     private void CancelSettings()

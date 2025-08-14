@@ -1,5 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using TaskyRevamp.Dto.SystemConfiguration;
+using TaskyRevamp.Services.SystemConfiguration.RecycleBinSettings.Command;
 using TaskyRevamp.Services.SystemConfiguration.RecycleBinSettings.Query;
 
 namespace TaskyRevamp.WebAPI.Controllers
@@ -21,5 +23,12 @@ namespace TaskyRevamp.WebAPI.Controllers
             return Ok(await _mediator.Send(new GetRecycleBinSettingQuery()));
         }
 
-    }
+		[HttpPost("UpdatetRecycleBinSetting")]
+		public async Task<IActionResult> UpdateRecycleBinSetting([FromBody]RecycleBinSettingDto _recycleBinSettingDto)
+		{
+
+			return Ok(await _mediator.Send(new UpdateRecycleBinSettingCommand(_recycleBinSettingDto)));
+		}
+
+	}
 }
