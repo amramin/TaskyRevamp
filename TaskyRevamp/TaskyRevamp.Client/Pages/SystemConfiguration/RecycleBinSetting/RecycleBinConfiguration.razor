@@ -1,14 +1,17 @@
 ﻿@page "/RecycleBinConfiguration"
 
-@using  TaskyRevamp.Client.Pages.Consumer;
+@using TaskyRevamp.Client.Pages.Consumer;
 @using TaskyRevamp.Dto.SystemConfiguration;
+@using TaskyRevamp.Client.Services
 @using TaskyRevamp.Dto.Enums;
-@inject  RecycleBinSettingConsumer _recycleBinSettingConsumer
+@inject RecycleBinSettingConsumer _recycleBinSettingConsumer
+@inject IStringLocalizer<SharedResources> Loc
+@inject ToastService ToastService
 
-<h6>Retention Period Options</h6>
+<h6>@Loc["RetentionPeriodOptions"]</h6>
 
 <div class="container">
-    <InputRadioGroup @bind-Value="RecycleBinSetting.PeriodType">
+    <InputRadioGroup TValue="PeriodType" Value="RecycleBinSetting.PeriodType" ValueChanged="OnSettingChange" ValueExpression="() => RecycleBinSetting.PeriodType">
         @foreach (var value in PeriodTypes)
         {
             <div>
@@ -16,10 +19,10 @@
 
                 @if (RecycleBinSetting.PeriodType == PeriodType.Custom && value == PeriodType.Custom)
                 {
-                    <input type="text"
+                    <input type="number" min="0"
                            class="form-control mt-1"
-                           placeholder="Enter custom period..."
-                           @bind="RecycleBinSetting.CustomDays" />
+                           @bind="RecycleBinSetting.CustomDays"
+                           @oninput="OnCustomDaysChange" />
                 }
             </div>
             <br />
@@ -27,8 +30,8 @@
     </InputRadioGroup>
 
     <div class="mt-3">
-        <button class="btn btn-secondary" @onclick="CancelSettings">Cancel</button>
-        <button class="btn btn-primary me-2" @onclick="SaveSettings">Save</button>
+        <button class="btn btn-secondary" @onclick="CancelSettings">@Loc["Cancel"]</button>
+        <button class="btn btn-primary me-2" @onclick="SaveSettings">@Loc["Save"]</button>
     </div>
 
 </div>
@@ -45,7 +48,7 @@
         if (res.Success)
         {
             var setting = res.Data;
-            if(setting != null && setting.Id != Guid.Empty)
+            if (setting != null && setting.Id != Guid.Empty)
             {
                 RecycleBinSetting = setting;
             }
@@ -58,12 +61,40 @@
         var res = await _recycleBinSettingConsumer.UpdateRecycleBinSetting(RecycleBinSetting);
         if (res.Success)
         {
-            
+            await ToastService.ShowToastAsync(Loc["EditSuccess"], "success");
         }
     }
 
     private void CancelSettings()
     {
 
+    }
+
+    private void OnSettingChange(PeriodType newValue)
+    {
+        if (newValue != PeriodType.Custom)
+            RecycleBinSetting.CustomDays = null;
+
+        RecycleBinSetting.PeriodType = newValue;
+    }
+
+    private void OnCustomDaysChange(ChangeEventArgs e)
+    {
+        var input = e.Value?.ToString();
+
+        if (string.IsNullOrWhiteSpace(input))
+        {
+            RecycleBinSetting.CustomDays = null;
+            return;
+        }
+
+        if (int.TryParse(input, out var number))
+        {
+            RecycleBinSetting.CustomDays = number < 0 ? 0 : number;
+        }
+        else
+        {
+            RecycleBinSetting.CustomDays = 0;
+        }
     }
 }
