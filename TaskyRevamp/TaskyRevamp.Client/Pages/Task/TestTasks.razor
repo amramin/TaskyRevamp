@@ -1,5 +1,8 @@
 ﻿@page "/tasks"
+@using TaskyRevamp.Client.Pages.Consumer
 @using TaskyRevamp.Client.Services
+@using TaskyRevamp.Dto
+@using TaskyRevamp.Dto.Account
 @using TaskyRevamp.Dto.GeneralDto
 @using TaskyRevamp.Localization.Resources
 @inject HttpClient Http
@@ -7,6 +10,7 @@
 @inject ToastService ToastService
 @inject LoaderService LoaderService
 @inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResources> Loc
+@inject AccountConsumer AccountConsumer
 
 <h3>Create Task</h3>
 <input @bind="title" placeholder="Title" />
@@ -34,10 +38,32 @@
 <br />
 <button @onclick="TestLoader">Test Loader</button>
 
-@if (!string.IsNullOrEmpty(message))
-{
-    <p>@message</p>
-}
+<br />
+<h3>Users</h3>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Users)
+        {
+            <tr>
+                <td>@user.userNameEN</td>
+                <td>@user.Email</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<Pagination CurrentPage="@currentPage"
+            TotalPages="@totalPages"
+            PageChanged="ChangePage" />
+
+
 
 @code {
     string title = "";
@@ -128,4 +154,38 @@
         await Task.Delay(2000);
         LoaderService.Hide();
     }
+
+
+    // Pagination 
+
+    private List<UserDto> Users = new();
+    private int currentPage = 1;
+    private int totalPages = 1;
+    private const int pageSize = 10;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadUsers(currentPage);
+    }
+
+    private async Task ChangePage(int page)
+    {
+        currentPage = page; // update state in parent
+        await LoadUsers(page);
+    }
+
+
+    private async Task LoadUsers(int page)
+    {
+        currentPage = page; // update first
+        var resp = await AccountConsumer.GetUsers(page, pageSize);
+        if (!(resp?.Success ?? false) || resp.Data is null)
+            return;
+
+        var data = resp.Data;
+        Users = data.Items.ToList();
+        totalPages = data.TotalPages;
+    }
+
+
 }

@@ -599,4 +599,40 @@ public class EfRepository<TEntity> : IRepository<TEntity> where TEntity : Entity
         await _context.BulkUpdateAsync(entities.ToList());
         _context.ChangeTracker.Clear();
     }
+
+    public async Task<PagedResult<TEntity>> GetPagedAsync(
+       int pageNumber,
+       int pageSize,
+       Expression<Func<TEntity, bool>>? filter = null,
+       Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
+       string includeProperties = "")
+    {
+        IQueryable<TEntity> query = _dbSet;
+
+        if (filter != null)
+            query = query.Where(filter);
+
+        foreach (var includeProperty in includeProperties.Split(
+            new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+        {
+            query = query.Include(includeProperty);
+        }
+
+        if (orderBy != null)
+            query = orderBy(query);
+
+        var totalCount = await query.CountAsync();
+        var items = await query
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync();
+
+        return new PagedResult<TEntity>
+        {
+            Items = items,
+            TotalCount = totalCount,
+            PageNumber = pageNumber,
+            PageSize = pageSize
+        };
+    }
 }

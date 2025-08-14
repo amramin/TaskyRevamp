@@ -12,6 +12,7 @@ using TaskyRevamp.Client.Pages;
 using TaskyRevamp.Client.Pages.Consumer;
 using TaskyRevamp.Client.Services;
 using TaskyRevamp.Components;
+using TaskyRevamp.Dto.GeneralDto;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -38,6 +39,9 @@ builder.Services.AddControllersWithViews()
     .AddViewLocalization()
     .AddDataAnnotationsLocalization();
 
+
+builder.Services.Configure<PaginationSettings>(
+    builder.Configuration.GetSection("Pagination"));
 
 builder.Services.Configure<RequestLocalizationOptions>(options =>
 {

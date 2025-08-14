@@ -60,6 +60,9 @@ builder.Services.Configure<LdapSettings>(builder.Configuration.GetSection("LDAP"
 builder.Services.AddExceptionHandler<ApiExceptionHandler>();
 builder.Services.AddProblemDetails();
 
+builder.Services.Configure<PaginationSettings>(
+    builder.Configuration.GetSection("Pagination"));
+
 // Localization
 builder.Services.AddLocalization(options => options.ResourcesPath = "SharedResources");
 var supportedCultures = new[] { "en", "ar" };
