@@ -39,6 +39,7 @@ builder.Services.AddSingleton<LoaderService>();
 
 //Consumers
 builder.Services.AddTransient<AccountConsumer>();
+builder.Services.AddTransient<RecycleBinSettingConsumer>();
 
 var configuration = builder.Configuration;
 

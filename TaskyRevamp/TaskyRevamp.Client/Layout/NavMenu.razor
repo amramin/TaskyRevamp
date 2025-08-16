@@ -1,4 +1,6 @@
-﻿<aside class="side-nav">
+﻿@inject IStringLocalizer<SharedResources> Loc;
+
+<aside class="side-nav">
     <div class="side-nav-header">
         <div class="side-nav-logo">
             <span class="icon">
@@ -41,13 +43,13 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">
+                <a class="nav-link" href="/RecycleBinConfiguration">
                     <div class="icon-text">
                         <span class="nav-icon">
                             <SVGCrud SVGType="SVGCrud.SVGTypeEnum.RecycleBin"></SVGCrud>
 
                         </span>
-                        <span class="text"> Recycle bin </span>
+                        <span class="text"> @Loc["RecycleBinConfiguration"] </span>
                     </div>
                 </a>
             </li>
@@ -77,4 +79,4 @@
             </li>
         </ul>
     </div>
-</aside>
+</aside>    

@@ -12,19 +12,27 @@ public class CommonApiResponse<T>
 
     public static CommonApiResponse<T> Create(int statusCode, T result = default, string errorMessage = null, string details = null, object errors = null)
     {
-        //if (statusCode == int.Parse(HttpStatusCode.InternalServerError.ToString()))
-        //{
-        //    var errorDto = JsonSerializer.Deserialize<ApiErrorDto>(errorMessage,
-        //        new JsonSerializerOptions()
-        //        {
-        //            PropertyNameCaseInsensitive = true
-        //        });
+        if (statusCode == (int)HttpStatusCode.InternalServerError)
+        {
+            try
+            {
+                var errorDto = JsonSerializer.Deserialize<ApiErrorDto>(errorMessage,
+                new JsonSerializerOptions()
+                {
+                    PropertyNameCaseInsensitive = true
+                });
 
-        //    return new CommonApiResponse<T>(statusCode, default, errorDto.Detail);
-        //}
+                return new CommonApiResponse<T>(statusCode, default, errorDto.Detail, details, errors);
+            }
+            catch (Exception)
+            {
+                // If deserialization fails, we can just return the error message as is.
+                return new CommonApiResponse<T>(statusCode, default, errorMessage, details, errors);
+            }            
+        }
 
-
-        return new CommonApiResponse<T>(statusCode, result, errorMessage, details, errors);
+        return new CommonApiResponse<T>(statusCode, result, null);
+        //return new CommonApiResponse<T>(statusCode, result, errorMessage, details, errors);
     }
 
     public static CommonApiResponse<T> CreateError(string errorMessage)

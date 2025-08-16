@@ -117,19 +117,52 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="DataSavedSuccessfully" xml:space="preserve">
-    <value>تم حفظ البيانات بنجاح</value>
+  <data name="Custom" xml:space="preserve">
+    <value>مخصص</value>
+  </data>
+  <data name="Days7" xml:space="preserve">
+    <value>7 أيام</value>
+  </data>
+  <data name="Days15" xml:space="preserve">
+    <value>15 يوم</value>
+  </data>
+  <data name="Days30" xml:space="preserve">
+    <value>30 يوم</value>
+  </data>
+  <data name="Days60" xml:space="preserve">
+    <value>60 يوم</value>
   </data>
   <data name="Login" xml:space="preserve">
     <value>تسجيل الدخول</value>
   </data>
-  <data name="ParentNotFound" xml:space="preserve">
-    <value>لا يوجد اب</value>
+  <data name="Never" xml:space="preserve">
+    <value>أبدا</value>
   </data>
   <data name="Required" xml:space="preserve">
     <value>هذا الحقل مطلوب</value>
   </data>
   <data name="Welcome" xml:space="preserve">
     <value>مرحبا</value>
+  </data>
+  <data name="DataSavedSuccessfully" xml:space="preserve">
+    <value>تم حفظ البيانات بنجاح</value>
+  </data>
+  <data name="ParentNotFound" xml:space="preserve">
+    <value>لا يوجد اب</value>
+  </data>
+  <data name="RecycleBinConfiguration" xml:space="preserve">
+    <value>إعدادات سلة المحذوفات</value>
+  </data>
+  <data name="RetentionPeriodOptions" xml:space="preserve">
+    <value>خيارات فترة الإحتفاظ</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>إلغاء</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>حفظ</value>
+  </data>
+  <data name="EditSuccess" xml:space="preserve">
+    <value>تم التعديل بنجاح</value>
   </data>
 </root>
