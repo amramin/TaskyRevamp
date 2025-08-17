@@ -165,4 +165,19 @@
   <data name="EditSuccess" xml:space="preserve">
     <value>تم التعديل بنجاح</value>
   </data>
+  <data name="Hours24" xml:space="preserve">
+    <value>ساعة 24 </value>
+  </data>
+  <data name="Week" xml:space="preserve">
+    <value>أسبوع</value>
+  </data>
+  <data name="Days3" xml:space="preserve">
+    <value>3 أيام</value>
+  </data>
+  <data name="RejectionConfiguration" xml:space="preserve">
+    <value>إعدادات رفض المهمة</value>
+  </data>
+  <data name="RejectionPeriodOptions" xml:space="preserve">
+    <value>خيارات فترة الرفض</value>
+  </data>
 </root>

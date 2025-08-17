@@ -165,4 +165,19 @@
   <data name="EditSuccess" xml:space="preserve">
     <value>Edited successfully</value>
   </data>
+  <data name="Hours24" xml:space="preserve">
+    <value>24 hours</value>
+  </data>
+  <data name="Week" xml:space="preserve">
+    <value>1 week</value>
+  </data>
+  <data name="Days3" xml:space="preserve">
+    <value>3 days</value>
+  </data>
+  <data name="RejectionConfiguration" xml:space="preserve">
+    <value>Task Rejection Configuration</value>
+  </data>
+  <data name="RejectionPeriodOptions" xml:space="preserve">
+    <value>Rejection Period Options</value>
+  </data>
 </root>

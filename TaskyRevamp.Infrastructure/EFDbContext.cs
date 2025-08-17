@@ -16,6 +16,7 @@ public class EfDbContext : DbContext
     public DbSet<UserDelegation> UserDelegation { get; set; }
     public DbSet<TaskItem> TaskItem { get; set; }
     public DbSet<RecycleBinSettings> RecycleBinSettings { get; set; }
+    public DbSet<RejectionSettings> RejectionSettings { get; set; }
     public EfDbContext(DbContextOptions<EfDbContext> options, IHttpContextAccessor httpContextAccessor)
         : base(options)
     {
