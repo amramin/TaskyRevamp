@@ -32,7 +32,17 @@ builder.Services.AddControllers();
 builder.Services.AddRazorPages();
 builder.Services.AddOpenApi();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Title = "TaskyRevamp API v1",
+        Version = "v1"
+    });
+});
+
+
+
 builder.Services.AddMediatR(cfg =>
 {
     cfg.RegisterServicesFromAssembly(typeof(AuthenticateCommand).Assembly);
@@ -133,7 +143,11 @@ builder.Services.AddCors(options =>
 
 
 var app = builder.Build();
-
+app.UseSwagger();
+app.UseSwaggerUI(c =>
+{
+    c.SwaggerEndpoint("/swagger", "TaskyRevamp API v1");
+});
 app.UseCors(x =>
 {
     x.SetIsOriginAllowed(_ => true).AllowAnyMethod().AllowAnyHeader().AllowCredentials();
@@ -145,16 +159,16 @@ app.UseRequestLocalization();
 
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI(c =>
-    {
-        c.SwaggerEndpoint("/swagger", "TaskyRevamp API v1");
-    });
-    app.UseDeveloperExceptionPage();
-    app.MapOpenApi();
-}
+//if (app.Environment.IsDevelopment())
+//{
+//    app.UseSwagger();
+//    app.UseSwaggerUI(c =>
+//    {
+//        c.SwaggerEndpoint("/swagger", "TaskyRevamp API v1");
+//    });
+//    app.UseDeveloperExceptionPage();
+//    app.MapOpenApi();
+//}
 
 app.UseHttpsRedirection();
 app.UseAuthentication();
