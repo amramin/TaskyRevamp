@@ -32,17 +32,7 @@ builder.Services.AddControllers();
 builder.Services.AddRazorPages();
 builder.Services.AddOpenApi();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(c =>
-{
-    c.SwaggerDoc("v1", new OpenApiInfo
-    {
-        Title = "TaskyRevamp API v1",
-        Version = "v1"
-    });
-});
-
-
-
+builder.Services.AddSwaggerGen();
 builder.Services.AddMediatR(cfg =>
 {
     cfg.RegisterServicesFromAssembly(typeof(AuthenticateCommand).Assembly);
@@ -69,9 +59,6 @@ builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("AppSet
 builder.Services.Configure<LdapSettings>(builder.Configuration.GetSection("LDAP"));
 builder.Services.AddExceptionHandler<ApiExceptionHandler>();
 builder.Services.AddProblemDetails();
-
-builder.Services.Configure<PaginationSettings>(
-    builder.Configuration.GetSection("Pagination"));
 
 // Localization
 builder.Services.AddLocalization(options => options.ResourcesPath = "SharedResources");
@@ -147,7 +134,6 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
-app.UseResponseWrapper();
 app.UseCors(x =>
 {
     x.SetIsOriginAllowed(_ => true).AllowAnyMethod().AllowAnyHeader().AllowCredentials();
@@ -159,20 +145,21 @@ app.UseRequestLocalization();
 
 
 // Configure the HTTP request pipeline.
-//if (app.Environment.IsDevelopment())
-//{
-//    app.UseSwagger();
-//    app.UseSwaggerUI(c =>
-//    {
-//        c.SwaggerEndpoint("/swagger", "TaskyRevamp API v1");
-//    });
-//    app.UseDeveloperExceptionPage();
-//    app.MapOpenApi();
-//}
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger", "TaskyRevamp API v1");
+    });
+    app.UseDeveloperExceptionPage();
+    app.MapOpenApi();
+}
 
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
+
 
 app.MapControllers();
 
