@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SurveyRevamp.Infrastructure;
 
@@ -11,9 +12,11 @@ using SurveyRevamp.Infrastructure;
 namespace TaskyRevamp.Infrastructure.Migrations
 {
     [DbContext(typeof(EfDbContext))]
-    partial class EfDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250816203813_addRejectionSettings")]
+    partial class addRejectionSettings
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -217,12 +220,7 @@ namespace TaskyRevamp.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("TaskItemId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("TaskItemId");
 
                     b.ToTable("TaskAssignees");
                 });
@@ -351,13 +349,8 @@ namespace TaskyRevamp.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.PrimitiveCollection<string>("AssignedDepartmentIds")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.PrimitiveCollection<string>("AssignedIds")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<Guid>("AssigneesId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("AttachmentsId")
                         .HasColumnType("uniqueidentifier");
@@ -368,23 +361,13 @@ namespace TaskyRevamp.Infrastructure.Migrations
                     b.Property<Guid>("CommentsId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime>("CreateDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("CreatedById")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<Guid>("CreatorId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("DependenciesId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("DescriptionArabic")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("DescriptionEnglish")
+                    b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -406,35 +389,22 @@ namespace TaskyRevamp.Infrastructure.Migrations
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
-                    b.Property<string>("TitleArabic")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("TitleEnglish")
+                    b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("TypeId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime?>("UpdateDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("UpdatedById")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("UpdateddById")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("Id");
+
+                    b.HasIndex("AssigneesId");
 
                     b.HasIndex("AttachmentsId");
 
                     b.HasIndex("ChecklistId");
 
                     b.HasIndex("CommentsId");
-
-                    b.HasIndex("CreatedById");
 
                     b.HasIndex("CreatorId");
 
@@ -445,8 +415,6 @@ namespace TaskyRevamp.Infrastructure.Migrations
                     b.HasIndex("SourceId");
 
                     b.HasIndex("TypeId");
-
-                    b.HasIndex("UpdateddById");
 
                     b.ToTable("TaskItem");
                 });
@@ -662,13 +630,6 @@ namespace TaskyRevamp.Infrastructure.Migrations
                         .HasForeignKey("TaskItemId");
                 });
 
-            modelBuilder.Entity("TaskyRevamp.Domain.Models.Task.TaskAssignees", b =>
-                {
-                    b.HasOne("TaskyRevamp.Domain.Models.Task.TaskItem", null)
-                        .WithMany("Assignees")
-                        .HasForeignKey("TaskItemId");
-                });
-
             modelBuilder.Entity("TaskyRevamp.Domain.Models.Task.TaskEscalation", b =>
                 {
                     b.HasOne("TaskyRevamp.Domain.Models.Users.User", "EscalatedTo")
@@ -725,6 +686,12 @@ namespace TaskyRevamp.Infrastructure.Migrations
 
             modelBuilder.Entity("TaskyRevamp.Domain.Models.Task.TaskItem", b =>
                 {
+                    b.HasOne("TaskyRevamp.Domain.Models.Task.TaskAssignees", "Assignees")
+                        .WithMany()
+                        .HasForeignKey("AssigneesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("TaskyRevamp.Domain.Models.Task.TaskAttachments", "Attachments")
                         .WithMany()
                         .HasForeignKey("AttachmentsId")
@@ -741,12 +708,6 @@ namespace TaskyRevamp.Infrastructure.Migrations
                         .WithMany()
                         .HasForeignKey("CommentsId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("TaskyRevamp.Domain.Models.Users.User", "CreatedBy")
-                        .WithMany()
-                        .HasForeignKey("CreatedById")
-                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("TaskyRevamp.Domain.Models.Users.User", "Creator")
@@ -776,11 +737,6 @@ namespace TaskyRevamp.Infrastructure.Migrations
                         .HasForeignKey("TypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("TaskyRevamp.Domain.Models.Users.User", "UpdateddBy")
-                        .WithMany()
-                        .HasForeignKey("UpdateddById")
-                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.OwnsOne("TaskyRevamp.Domain.Models.Task.Progress", "ActualProgress", b1 =>
                         {
@@ -840,13 +796,13 @@ namespace TaskyRevamp.Infrastructure.Migrations
                     b.Navigation("ActualWeight")
                         .IsRequired();
 
+                    b.Navigation("Assignees");
+
                     b.Navigation("Attachments");
 
                     b.Navigation("Checklist");
 
                     b.Navigation("Comments");
-
-                    b.Navigation("CreatedBy");
 
                     b.Navigation("Creator");
 
@@ -862,8 +818,6 @@ namespace TaskyRevamp.Infrastructure.Migrations
                     b.Navigation("Source");
 
                     b.Navigation("Type");
-
-                    b.Navigation("UpdateddBy");
                 });
 
             modelBuilder.Entity("TaskyRevamp.Domain.Models.Users.User", b =>
@@ -929,8 +883,6 @@ namespace TaskyRevamp.Infrastructure.Migrations
             modelBuilder.Entity("TaskyRevamp.Domain.Models.Task.TaskItem", b =>
                 {
                     b.Navigation("AssignedDepartments");
-
-                    b.Navigation("Assignees");
 
                     b.Navigation("ChangeRequests");
 
