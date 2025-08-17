@@ -1,4 +1,5 @@
 using TaskyRevamp.Domain.Models.Task;
+using TaskyRevamp.Dto.Account;
 
 namespace TaskyRevamp.Domain.Models.Users;
 
@@ -13,7 +14,7 @@ public class User : Entity
     public string? Mobile { get; set; }
     public bool IsActive { get; set; }
     public bool IsManager { get; set; }
-    public Department Department { get; private set; }
+    public Department? Department { get; private set; }
     public User()
     {
 
@@ -28,6 +29,19 @@ public class User : Entity
     {
         Username = userName;
         Department = dept;
-        
+
+    }
+
+    public virtual UserDto CopyToDto()
+    {
+        UserDto dto = new UserDto()
+        {
+            Id = Id,
+            userNameAR = NameArabic,
+            userNameEN = NameEnglish,
+            Email = Email,
+        };
+
+        return dto;
     }
 }

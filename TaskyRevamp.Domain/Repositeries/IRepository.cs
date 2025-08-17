@@ -119,4 +119,10 @@ public interface IRepository<TEntity> where TEntity : Entity
     Task<(List<TResult> Data, int Count)> FindByWithSelectorPaginated<TResult>(Expression<Func<TEntity, bool>> predicate, Expression<Func<TEntity, TResult>> selector, int pageSize, int offset);
     Task<TResult?> FindByIdWithSelector<TResult>(Guid id, Expression<Func<TEntity, TResult>> selector);
     Task<List<TResult>> FindByWithSelector<TResult>(Expression<Func<TEntity, bool>> predicate, Expression<Func<TEntity, TResult>> selector);
+    Task<PagedResult<TEntity>> GetPagedAsync(
+       int pageNumber,
+       int pageSize,
+       Expression<Func<TEntity, bool>>? filter = null,
+       Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
+       string includeProperties = "");
 }

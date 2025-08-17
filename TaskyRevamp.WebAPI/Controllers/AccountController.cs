@@ -1,9 +1,13 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using TaskyRevamp.Domain.Exceptions;
 using TaskyRevamp.Dto.Account;
 using TaskyRevamp.Dto.GeneralDto;
 using TaskyRevamp.Services.Account.Commands;
+using TaskyRevamp.Services.Account.Query;
+using TaskyRevamp.Services.Jobs.ActiveDirectory;
+using TaskyRevamp.Services.Jobs.ActiveDirectory.SyncFirstTime;
 
 namespace TaskyRevamp.WebAPI.Controllers;
 
@@ -29,5 +33,32 @@ public class AccountController : ControllerBase
         }
 
         return Ok(CommonApiResponse<string>.Create(StatusCodes.Status200OK, token));
+    }
+
+    //[HttpGet("GetUsers")]
+    //public async Task<CommonApiResponse<PagedResult<UserDto>>> GetUsers(int pageNumber = 1, int pageSize = 10)
+    //{
+    //    var result = await _mediator.Send(new GetUsersQuery(pageNumber, pageSize));
+    //    return CommonApiResponse<PagedResult<UserDto>>.Create(StatusCodes.Status200OK, result);
+    //}
+    [HttpGet("GetUsers")]
+    public async Task<CommonApiResponse<PagedResult<UserDto>>> GetUsers(
+            [FromServices] IOptions<PaginationSettings> paginationSettings,
+    [FromQuery] int pageNumber = 1,
+    [FromQuery] int? pageSize = null)
+    {
+        var size = pageSize ?? paginationSettings.Value.DefaultPageSize;
+        var result = await _mediator.Send(new GetUsersQuery(pageNumber, size));
+        return CommonApiResponse<PagedResult<UserDto>>.Create(StatusCodes.Status200OK, result);
+    }
+
+
+
+
+    [HttpPost("SyncUsers")]
+    public async Task<bool> SyncUsers()
+    {
+        var data = await _mediator.Send(new SyncAllUsersFT());
+        return data;
     }
 }

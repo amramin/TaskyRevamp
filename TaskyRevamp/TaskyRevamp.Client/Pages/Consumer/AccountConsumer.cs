@@ -20,13 +20,18 @@ public class AccountConsumer
         var url = $"api/Account/Authenticate";
         try
         {
-            Console.WriteLine($"LoaderService instance Consumer: {_loader.GetHashCode()}");
-
             _loader.Show();
             var ret = await _taskyService.PostJsonAsyncWithJsonConvert<string, UserLoginDto>(url, loginDto, false);
             return ret;
         }
         finally { _loader.Hide(); }
 
+    }
+
+    public async Task<CommonApiResponse<PagedResult<UserDto>>> GetUsers(int pageNumber, int? pageSize)
+    {
+        var ret = await _taskyService.httpClient
+        .GetFromJsonAsync<CommonApiResponse<PagedResult<UserDto>>>($"api/Account/GetUsers?pageNumber={pageNumber}&pageSize={pageSize}");
+        return ret;
     }
 }

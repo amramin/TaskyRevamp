@@ -17,7 +17,7 @@ public record SyncAllUsersFT : IRequest<bool>;
 
 public class SyncAllUsersFTHandler : IRequestHandler<SyncAllUsersFT, bool>
 {
-    private readonly IRepository<User> _userRepository;
+    private readonly IRepository<Domain.Models.Users.User> _userRepository;
     private readonly IOptions<LdapSettings> _ldapPath;
 
     public SyncAllUsersFTHandler(IOptions<LdapSettings> ldapSettings, IRepository<Domain.Models.Users.User> userRepository)
