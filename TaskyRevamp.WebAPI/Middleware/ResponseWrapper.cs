@@ -72,8 +72,31 @@ public class ResponseWrapper
                 context.Response.Body = originalBody;
                 context.Response.Headers.Remove("Content-Length");
 
-                var response = CommonApiResponse<object>.Create((int)context.Response.StatusCode, objResult, readToEnd);
+                //var response = CommonApiResponse<object>.Create((int)context.Response.StatusCode, objResult, readToEnd);
+
+                var statusCode = context.Response.StatusCode;
+                CommonApiResponse<object> response;
+
+                if (statusCode >= 400)
+                {
+                    // Error → put body into ErrorMessage
+                    response = CommonApiResponse<object>.Create(statusCode, default, readToEnd);
+                }
+                else
+                {
+                    // Success → put parsed object into Data
+                    response = CommonApiResponse<object>.Create(statusCode, objResult);
+                }
+
                 var jsonResponse = JsonConvert.SerializeObject(response);
+
+                if (readToEnd.TrimStart().StartsWith("{") && readToEnd.Contains("\"version\"") && readToEnd.Contains("\"data\""))
+                {
+                    // Already wrapped, just return it directly
+                    context.Response.Body = originalBody;
+                    await context.Response.WriteAsync(readToEnd);
+                    return;
+                }
 
                 context.Response.ContentType = "application/json";
                 await context.Response.WriteAsync(jsonResponse);

@@ -20,8 +20,6 @@ public class AccountConsumer
         var url = $"api/Account/Authenticate";
         try
         {
-            Console.WriteLine($"LoaderService instance Consumer: {_loader.GetHashCode()}");
-
             _loader.Show();
             var ret = await _taskyService.PostJsonAsyncWithJsonConvert<string, UserLoginDto>(url, loginDto, false);
             return ret;
