@@ -20,12 +20,15 @@ public class CreateTaskHandler : IRequestHandler<CreateTaskCommand, Guid>
 
     public async Task<Guid> Handle(CreateTaskCommand request, CancellationToken cancellationToken)
     {
-        return Guid.NewGuid();
-             /*
-        var task =  new TaskItem(request.CreateTaskDto.Id,request.CreateTaskDto.Title, request.CreateTaskDto.Description);
+
+     
+       var task = new TaskItem(request.CreateTaskDto.Id, request.CreateTaskDto.TitleEnglish,request.CreateTaskDto.TitleArabic, request.CreateTaskDto.DescriptionEnglish,request.CreateTaskDto.DescriptionArabic,new TaskType() {Id= request.CreateTaskDto.TypeId },new TaskSource() { Id = request.CreateTaskDto.SourceId },request.CreateTaskDto.StartDate,request.CreateTaskDto.EndDate,
+            (Priority)request.CreateTaskDto.Priority 
+           ,new Weight( request.CreateTaskDto.weight),new Domain.Models.Users.User() { Id = request.CreateTaskDto.CreatedBy });
+       
         await _taskRepository.Insert(task);
         await _taskRepository.SaveChangesAsync();
         return task.Id;
-             */
+
     }
 }

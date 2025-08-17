@@ -1,12 +1,17 @@
+using TaskyRevamp.Domain.Interfaces;
 using TaskyRevamp.Domain.Models.Users;
 
 namespace TaskyRevamp.Domain.Models.Task;
 
 
-public class TaskItem : Entity
+public class TaskItem : Entity, IHasCreationMetaData, IHasUpdateMetaData
 {
-    public string Title { get; private set; }
-    public string Description { get; private set; }
+    public string TitleEnglish { get; private set; }
+    public string TitleArabic { get; private set; }
+
+    public string DescriptionEnglish { get; private set; }
+    public string DescriptionArabic { get; private set; }
+
     public TaskType Type { get; private set; }
     public TaskSource Source { get; private set; }
     public DateTime StartDate { get; private set; }
@@ -14,13 +19,13 @@ public class TaskItem : Entity
     public int Duration => (EndDate.Date - StartDate.Date).Days + 1;
     public Reminder? Reminder { get; private set; }
     public Priority Priority { get; private set; }
-    private Weight _plannedWeight;
+    private Weight weight;
     public Weight PlannedWeight
     {
         get
         {
             if (!_subtasks.Any())
-                return _plannedWeight;
+                return weight;
 
             double averageWeight = _subtasks.Average(st => st.PlannedWeight.Value);
             int roundedWeight = (int)Math.Round(averageWeight, MidpointRounding.AwayFromZero);
@@ -28,7 +33,7 @@ public class TaskItem : Entity
 
             return new Weight(finalWeight);
         }
-        private set => _plannedWeight = value;
+        private set => weight = value;
     }
     private Weight _actualWeight;
     public Weight ActualWeight
@@ -108,9 +113,14 @@ public class TaskItem : Entity
 
     public User Creator { get; private set; }
 
-    public TaskAssignees Assignees { get; private set; }
-    public IEnumerable<Department> AssignedDepartments => Assignees.Departments;
+    public IEnumerable<TaskAssignees> Assignees { get; private set; }
+    public List<Guid> AssignedDepartmentIds { set; get; }
+    public List<Guid> AssignedIds { set; get; }
+
+    public IEnumerable<Department> AssignedDepartments { set; get; }
     public TaskDependencies Dependencies { get; private set; }
+  //  public List<Guid> DependenciesIds { set; get; }
+
     public TaskItem? Parent { get; private set; }
     private readonly List<TaskItem> _subtasks = new();
     public IReadOnlyCollection<TaskItem> Subtasks => _subtasks.AsReadOnly();
@@ -125,28 +135,38 @@ public class TaskItem : Entity
     private readonly List<TaskEscalation> _escalations = new();
     public IReadOnlyCollection<TaskEscalation> Escalations => _escalations.AsReadOnly();
     public int Level => GetLevel();
+
+    public Guid CreatedById { get; set; }
+    public DateTime CreateDate { get; set; }
+    public User CreatedBy { get; set ; }
+    public Guid? UpdatedById { get ; set ; }
+    public DateTime? UpdateDate { get ; set; }
+    public User? UpdateddBy { get ; set ; }
+
     private TaskItem() {  }
-    public TaskItem(Guid id, string title, string desc, TaskType type, TaskSource source, DateTime start, DateTime end, Priority priority, Weight plannedWeight, User creator)
+    public TaskItem(Guid id, string titleEnglish,string titleArabic, string descEN,string descAR, TaskType type, TaskSource source, DateTime start, DateTime end, Priority priority, Weight plannedWeight, User creator)
     {
         if (end < start) throw new ArgumentException("End date must be after start date.");
         Id = id;
-        Title = title;
-        Description = desc;
+        TitleEnglish = titleEnglish;
+        TitleArabic= titleArabic;
+
+        DescriptionEnglish = descEN;
+        DescriptionArabic= descAR;
         Type = type;
         Source = source;
         StartDate = start;
         EndDate = end;
         Priority = priority;
-        _plannedWeight = plannedWeight;
+        weight = plannedWeight;
         _actualProgress = new Progress(0);
         _status = TaskStatus.NotStarted;
         _actualWeight = new Weight(0);
         Creator = creator;
+        
         Checklist = new TaskChecklist(this);
         Comments = new TaskComments(this);
         Attachments = new TaskAttachments(this);
-        Assignees = new TaskAssignees(this);
-        Dependencies = new TaskDependencies(this);
         AddHistoryEntry(creator, $"created the task");
     }
     private int GetLevel()
@@ -160,15 +180,22 @@ public class TaskItem : Entity
         }
         return level;
     }
-    public void UpdateTitle(string title, User by)
+    public void UpdateTitle(string titleEn,string titleAR, User by)
     {
-        Title = title;
+        TitleEnglish = titleEn;
+        TitleArabic= titleAR;
         AddHistoryEntry(by, $"updated the title");
     }
-
-    public void UpdateDescription(string desc, User by)
+    public void UpdateStatus(TaskStatus taskStus, User by)
     {
-        Description = desc;
+        _status=taskStus;
+        AddHistoryEntry(by, $"updated the TaskStatus");
+    }
+
+    public void UpdateDescription(string descEN,string descAR, User by)
+    {
+        DescriptionEnglish = descEN;
+        DescriptionArabic= descAR;
         AddHistoryEntry(by, $"updated the description");
     }
 
@@ -186,13 +213,13 @@ public class TaskItem : Entity
         AddHistoryEntry(by, $"set a reminder for {remindAt}");
     }
 
-    public void UpdatePlannedWeight(int weight, User by)
+    public void UpdatePlannedWeight(int wght, User by)
     {
         if (_subtasks.Any())
         {
             throw new InvalidOperationException("Cannot manually update planned weight for a parent task. Weight is calculated from its subtasks.");
         }
-        _plannedWeight = new Weight(weight);
+        weight = new Weight(wght);
         AddHistoryEntry(by, $"updated planned weight to {weight}");
     }
 
@@ -287,20 +314,20 @@ public class TaskItem : Entity
             throw new InvalidOperationException("A parent task with subtasks cannot be rejected. Please delete subtasks first.");
         }
 
-        if (!Assignees.Items.Contains(assigneeToReject))
-        {
-            throw new InvalidOperationException($"User {assigneeToReject.Username} is not an assignee of this task and cannot reject it.");
-        }
+        //if (!Assignees.Items.Contains(assigneeToReject))
+        //{
+        //    throw new InvalidOperationException($"User {assigneeToReject.Username} is not an assignee of this task and cannot reject it.");
+        //}
 
         Comments.Add($"Task rejection reason: {reason}", by);
         AddHistoryEntry(by, $"Task rejected by {assigneeToReject.Username}.");
 
-        Assignees.Remove(assigneeToReject, by);
+        //Assignees.Remove(assigneeToReject, by);
 
-        if (!Assignees.Items.Any())
-        {
-            Assignees.Add(Creator, by);
-        }
+        //if (!Assignees.Items.Any())
+        //{
+        //    Assignees.Add(Creator, by);
+        //}
     }
 
     public void SoftDelete(User by)
@@ -342,9 +369,9 @@ public class TaskItem : Entity
 
     private void EnsureAllPrerequisitesAreMet()
     {
-        if (Dependencies.Items.Any(d => d.Status != TaskStatus.Closed))
-        {
-            throw new InvalidOperationException("This task cannot be marked as Closed because one or more prerequisite tasks are still in progress, Delayed, or Returned.");
-        }
+        //if (Dependencies.Any().Items.Any(d => d.Status != TaskStatus.Closed))
+        //{
+        //    throw new InvalidOperationException("This task cannot be marked as Closed because one or more prerequisite tasks are still in progress, Delayed, or Returned.");
+        //}
     }
 }
