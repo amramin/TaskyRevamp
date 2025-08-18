@@ -40,15 +40,7 @@
 
 @code {
 
-    //public List<RejectionPeriodType> PeriodTypes = Enum.GetValues(typeof(RejectionPeriodType)).Cast<RejectionPeriodType>().ToList();
-    public List<RejectionPeriodType> PeriodTypes = new List<RejectionPeriodType>
-    {
-        RejectionPeriodType.Hours24,
-        RejectionPeriodType.Days3,
-        RejectionPeriodType.Week,
-        RejectionPeriodType.Custom,
-        RejectionPeriodType.Never
-    };
+    public List<RejectionPeriodType> PeriodTypes = EnumExtensions.GetOrderedValues<RejectionPeriodType>();
     public RejectionSettingsDto RejectionSetting { get; set; } = new RejectionSettingsDto { PeriodType = RejectionPeriodType.Days3 };
 
     protected async override Task OnInitializedAsync()
@@ -60,10 +52,6 @@
             var setting = res.Data;
             if (setting != null && setting.Id != Guid.Empty)
             {
-                if (setting.PeriodType == RejectionPeriodType.Never)
-                {
-                    setting.PeriodType = RejectionPeriodType.Days3;
-                }
                 RejectionSetting = setting;
             }
 

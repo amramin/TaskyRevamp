@@ -4,9 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 using TaskyRevamp.Domain.Models.SystemConfiguration;
 using TaskyRevamp.Dto.GeneralDto;
 using TaskyRevamp.Dto.SystemConfiguration;
-using TaskyRevamp.Services.SystemConfiguration.RecycleBinSettings.Command;
-using TaskyRevamp.Services.SystemConfiguration.RecycleBinSettings.Query;
 using TaskyRevamp.Services.SystemConfiguration.RejectionSettings.Command;
+using TaskyRevamp.Services.SystemConfiguration.RejectionSettings.Query;
 
 namespace TaskyRevamp.WebAPI.Controllers
 {
@@ -22,13 +21,13 @@ namespace TaskyRevamp.WebAPI.Controllers
 		}
 
 		[HttpGet("GetRejectionSetting")]
-		public async Task<ActionResult<CommonApiResponse<string>>> GetRejectionSetting()
+		public async Task<ActionResult> GetRejectionSetting()
 		{
-			return Ok(await _mediator.Send(new GetRecycleBinSettingQuery()));
+			return Ok(await _mediator.Send(new GetRejectionSettingsQuery()));
 		}
 
 		[HttpPost("UpdateRejectionSetting")]
-		public async Task<ActionResult<CommonApiResponse<string>>> UpdateRejectionSetting([FromBody] RejectionSettingsDto _RejectionSettingsDto)
+		public async Task<ActionResult> UpdateRejectionSetting([FromBody] RejectionSettingsDto _RejectionSettingsDto)
 		{
 			return Ok(await _mediator.Send(new UpdateRejectionSettingCommand(_RejectionSettingsDto)));
 		}

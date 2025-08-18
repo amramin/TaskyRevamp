@@ -134,6 +134,7 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
+app.UseResponseWrapper();
 app.UseCors(x =>
 {
     x.SetIsOriginAllowed(_ => true).AllowAnyMethod().AllowAnyHeader().AllowCredentials();
