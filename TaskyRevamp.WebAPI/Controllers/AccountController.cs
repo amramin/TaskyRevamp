@@ -23,7 +23,7 @@ public class AccountController : ControllerBase
     }
 
     [HttpPost("Authenticate")]
-    public async Task<ActionResult<CommonApiResponse<string>>> Authenticate([FromBody] UserLoginDto user)
+    public async Task<ActionResult> Authenticate([FromBody] UserLoginDto user)
     {
         var token = await _mediator.Send(new AuthenticateCommand(user.Username, user.Password));
 
@@ -35,21 +35,15 @@ public class AccountController : ControllerBase
         return Ok(CommonApiResponse<string>.Create(StatusCodes.Status200OK, token));
     }
 
-    //[HttpGet("GetUsers")]
-    //public async Task<CommonApiResponse<PagedResult<UserDto>>> GetUsers(int pageNumber = 1, int pageSize = 10)
-    //{
-    //    var result = await _mediator.Send(new GetUsersQuery(pageNumber, pageSize));
-    //    return CommonApiResponse<PagedResult<UserDto>>.Create(StatusCodes.Status200OK, result);
-    //}
     [HttpGet("GetUsers")]
-    public async Task<CommonApiResponse<PagedResult<UserDto>>> GetUsers(
+    public async Task<ActionResult<PagedResult<UserDto>>> GetUsers(
             [FromServices] IOptions<PaginationSettings> paginationSettings,
     [FromQuery] int pageNumber = 1,
     [FromQuery] int? pageSize = null)
     {
         var size = pageSize ?? paginationSettings.Value.DefaultPageSize;
         var result = await _mediator.Send(new GetUsersQuery(pageNumber, size));
-        return CommonApiResponse<PagedResult<UserDto>>.Create(StatusCodes.Status200OK, result);
+        return Ok(result);
     }
 
 

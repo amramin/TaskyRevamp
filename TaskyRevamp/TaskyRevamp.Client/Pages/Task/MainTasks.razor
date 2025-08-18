@@ -1,0 +1,202 @@
+﻿@page "/MainTasks"
+<div class="tab-pills flex-grow-1">
+    <ul class="nav nav-pills" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active"
+                    id="List-view"
+                    data-bs-toggle="tab"
+                    data-bs-target="#List-view-tab"
+                    type="button"
+                    role="tab"
+                    aria-controls="List-view-tab"
+                    aria-selected="true">
+                <span class="icon">
+                    <SVGCrud SVGType="SVGCrud.SVGTypeEnum.List"></SVGCrud>
+                </span>
+                List view
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link"
+                    data-bs-toggle="tab"
+                    data-bs-target="#kanban-view-tab"
+                    type="button"
+                    role="tab"
+                    aria-controls="profile"
+                    aria-selected="false">
+                <span class="icon">
+                    <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Kanban"></SVGCrud>
+
+                </span>
+                Kanban view
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link"
+                    id="gannt-tab"
+                    data-bs-toggle="tab"
+                    data-bs-target="#gannt-view-tab"
+                    type="button"
+                    role="tab"
+                    aria-controls="gannt-tab"
+                    aria-selected="false">
+                <span class="icon">
+                    <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Gantt"></SVGCrud>
+
+                </span>
+                Gantt chart
+            </button>
+        </li>
+    </ul>
+    <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active"
+             id="List-view-tab"
+             role="tabpanel"
+             aria-labelledby="List-view-tab">
+            <div class="page-header">
+                <div class="title-block">
+                    <h1 class="page-headline">Task list</h1>
+                    <div class="view-scope-toggle"
+                         role="group"
+                         aria-label="Basic radio toggle button group">
+                        <input type="radio"
+                               class="btn-check"
+                               name="taskRadio"
+                               id="mineRadio-task"
+                               autocomplete="off"
+                               checked />
+                        <label class="btn" for="mineRadio-task">
+                            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.User"></SVGCrud>
+                            <span>Mine</span>
+                        </label>
+
+                        <input type="radio"
+                               class="btn-check"
+                               name="taskRadio"
+                               id="teamRadio-task"
+                               autocomplete="off" />
+                        <label class="btn" for="teamRadio-task">
+                            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Users"></SVGCrud>
+
+                            <span>Team</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="action-btn-list">
+                    <button class="btn btn-primary"
+                            type="button"
+                            data-bs-toggle="offcanvas"
+                            data-bs-target="#survey-type-modal"
+                            aria-controls="offcanvasWithBothOptions">
+                        <span class="icon">
+                            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Pluse"></SVGCrud>
+                        </span>
+                        Add Task
+                    </button>
+
+                    <button type="button"
+                            data-bs-toggle="tooltip"
+                            data-bs-placement="top"
+                            title="Filter"
+                            class="btn btn-action-40 btn-outline-light-pimary">
+                        <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Filter"></SVGCrud>
+
+                    </button>
+                    <button type="button"
+                            data-bs-toggle="tooltip"
+                            data-bs-placement="top"
+                            title="View column"
+                            class="btn btn-action-40 btn-outline-light-pimary">
+                        <SVGCrud SVGType="SVGCrud.SVGTypeEnum.AddColumn"></SVGCrud>
+
+                    </button>
+                    <button type="button"
+                            data-bs-toggle="tooltip"
+                            data-bs-placement="top"
+                            title="Card View"
+                            class="btn btn-action-40 btn-outline-light-pimary">
+                        <SVGCrud SVGType="SVGCrud.SVGTypeEnum.CardView"></SVGCrud>
+                    </button>
+                    <button type="button"
+                            data-bs-toggle="tooltip"
+                            data-bs-placement="top"
+                            title="Export Excel"
+                            class="btn btn-action-40 btn-outline-light-pimary">
+                        <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Excel"></SVGCrud>
+                    </button>
+                </div>
+            </div>
+            <div class="page-body"></div>
+        </div>
+        <div class="tab-pane fade"
+             id="kanban-view-tab"
+             role="tabpanel"
+             aria-labelledby="kanban-tab">
+            <div class="page-header">
+                <div class="title-block">
+                    <h1 class="page-headline">Task list</h1>
+                    <div class="view-scope-toggle"
+                         role="group"
+                         aria-label="Basic radio toggle button group">
+                        <input type="radio"
+                               class="btn-check"
+                               name="btnradio"
+                               id="mineRadio"
+                               autocomplete="off"
+                               checked />
+                        <label class="btn" for="mineRadio">
+                            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.User"></SVGCrud>
+                            <span>Mine</span>
+                        </label>
+
+                        <input type="radio"
+                               class="btn-check"
+                               name="btnradio"
+                               id="teamRadio"
+                               autocomplete="off" />
+                        <label class="btn" for="teamRadio">
+                            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Users"></SVGCrud>
+
+                            <span>Team</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="action-btn-list">
+                    <button class="btn btn-primary"
+                            type="button"
+                            data-bs-toggle="offcanvas"
+                            data-bs-target="#survey-type-modal"
+                            aria-controls="offcanvasWithBothOptions">
+                        <span class="icon">
+                            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Pluse"></SVGCrud>
+                        </span>
+                        Add Task
+                    </button>
+
+                    <button type="button"
+                            data-bs-toggle="tooltip"
+                            data-bs-placement="top"
+                            title="Filter"
+                            class="btn btn-action-40 btn-outline-light-pimary">
+                        <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Filter"></SVGCrud>
+                    </button>
+                </div>
+            </div>
+            <div class="page-body"></div>
+        </div>
+        <div class="tab-pane fade"
+             id="gannt-view-tab"
+             role="tabpanel"
+             aria-labelledby="gannt-tab">
+            <div class="page-body"></div>
+        </div>
+
+
+    </div>
+</div>
+
+@code {
+
+}

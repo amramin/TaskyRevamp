@@ -2,43 +2,69 @@
 @using TaskyRevamp.Dto.Enums
 @inject PopupService PopupService
 
-@inject PopupService PopupService
-
-@if (currentType is not null)
-{
-    <DynamicComponent Type="@currentType" Parameters="@currentParameters" />
-}
+<div>
+    @if (_popupType == PopupType.Confirmation && _parameters is ConfirmationPopupParams confirmParams)
+    {
+        <div class="popup confirmation">
+            <p>@confirmParams.Message</p>
+            <button @onclick="() => Confirm(true, confirmParams.OnConfirm)">@confirmParams.ButtonText</button>
+            <button @onclick="() => Confirm(false, confirmParams.OnConfirm)">Cancel</button>
+        </div>
+    }
+    else if (_popupType == PopupType.InValid && _parameters is InvalidPopupParams invalidParams)
+    {
+        <div class="popup invalid">
+            <p>@invalidParams.Message</p>
+            <button @onclick="PopupService.Hide">OK</button>
+        </div>
+    }
+    else if (_popupType == PopupType.New && _parameters is NewPopupParams newParams)
+    {
+        <div class="popup new">
+            @newParams.ChildContent
+            <button @onclick="PopupService.Hide">Close</button>
+        </div>
+    }
+    else if (_popupType == PopupType.Standard && _parameters is StandardPopupParams stdParams)
+    {
+        <div class="popup standard">
+            <h4>@stdParams.HeaderText</h4>
+            @stdParams.ChildContent
+            <button @onclick="PopupService.Hide">Close</button>
+        </div>
+    }
+</div>
 
 @code {
-    private Type? currentType;
-    private Dictionary<string, object>? currentParameters;
+    private PopupType _popupType;
+    private object? _parameters;
 
     protected override void OnInitialized()
     {
-        PopupService.OnShow += (type, parameters) =>
+        PopupService.OnShow += ShowPopup;
+        PopupService.OnHide += HidePopup;
+    }
+
+    private void ShowPopup(PopupType type, object parameters)
+    {
+        _popupType = type;
+        _parameters = parameters;
+        InvokeAsync(StateHasChanged); // 👈 force UI refresh immediately
+    }
+
+    private void HidePopup()
+    {
+        _popupType = default;
+        _parameters = null;
+        InvokeAsync(StateHasChanged);
+    }
+
+    private async Task Confirm(bool value, EventCallback<bool> callback)
+    {
+        if (callback.HasDelegate)
         {
-            currentType = type switch
-            {
-                PopupType.Confirmation => typeof(ConfirmationPopup),
-                PopupType.InValid => typeof(InValidPopup),
-                PopupType.New => typeof(NewPopUpComponent),
-                PopupType.Standard => typeof(PopupComponent),
-                _ => null
-            };
-
-            currentParameters = parameters
-                .GetType()
-                .GetProperties()
-                .ToDictionary(p => p.Name, p => p.GetValue(parameters));
-
-            InvokeAsync(StateHasChanged);
-        };
-
-        PopupService.OnHide += () =>
-        {
-            currentType = null;
-            currentParameters = null;
-            InvokeAsync(StateHasChanged);
-        };
+            await callback.InvokeAsync(value);
+        }
+        PopupService.Hide();
     }
 }

@@ -19,12 +19,10 @@ public class PopupService
         OnHide?.Invoke();
     }
 
-    // Shortcuts for each popup type
     public void ShowConfirmation(string message, string buttonText = "OK", Func<bool, Task>? onConfirm = null)
     {
-        Show(PopupType.Confirmation, new
+        Show(PopupType.Confirmation, new ConfirmationPopupParams
         {
-            IsVisible = true,
             Message = message,
             ButtonText = buttonText,
             OnConfirm = EventCallback.Factory.Create<bool>(this, async (value) =>
@@ -37,30 +35,52 @@ public class PopupService
 
     public void ShowInvalid(string message)
     {
-        Show(PopupType.InValid, new
+        Show(PopupType.InValid, new InvalidPopupParams
         {
-            IsVisible = true,
             Message = message
         });
     }
 
     public void ShowNew(RenderFragment childContent)
     {
-        Show(PopupType.New, new
+        Show(PopupType.New, new NewPopupParams
         {
-            Visible = true,
             ChildContent = childContent
         });
     }
 
     public void ShowStandard(RenderFragment childContent, string header = "")
     {
-        Show(PopupType.Standard, new
+        Show(PopupType.Standard, new StandardPopupParams
         {
-            Visible = true,
-            ChildContent = childContent,
-            HeaderText = header
+            HeaderText = header,
+            ChildContent = childContent
         });
     }
+
 }
+
+public class ConfirmationPopupParams
+{
+    public string Message { get; set; } = "";
+    public string ButtonText { get; set; } = "OK";
+    public EventCallback<bool> OnConfirm { get; set; }
+}
+
+public class InvalidPopupParams
+{
+    public string Message { get; set; } = "";
+}
+
+public class NewPopupParams
+{
+    public RenderFragment? ChildContent { get; set; }
+}
+
+public class StandardPopupParams
+{
+    public string HeaderText { get; set; } = "";
+    public RenderFragment? ChildContent { get; set; }
+}
+
 

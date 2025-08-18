@@ -1,7 +1,7 @@
 ﻿using TaskyRevamp.Dto.GeneralDto;
 using TaskyRevamp.Dto.SystemConfiguration;
 
-namespace TaskyRevamp.Client.Pages.Consumer
+namespace TaskyRevamp.Client.Consumer
 {
     public class RecycleBinSettingConsumer
     {

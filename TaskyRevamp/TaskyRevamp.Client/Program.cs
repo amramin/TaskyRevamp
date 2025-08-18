@@ -9,10 +9,10 @@ using System.Globalization;
 using System.Text.Json;
 using TaskyRevamp.Client;
 using TaskyRevamp.Client.Extensions;
-using TaskyRevamp.Client.Pages.Consumer;
 using TaskyRevamp.Client.Services;
 using TaskyRevamp.Dto.GeneralDto;
 using Microsoft.Extensions.Options;
+using TaskyRevamp.Client.Consumer;
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 
 
@@ -31,7 +31,7 @@ builder.Services.Configure<RequestLocalizationOptions>(options =>
 
 builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
 builder.Services.AddScoped<CustomAuthenticationService>();
-builder.Services.AddScoped<PopupService>();
+builder.Services.AddSingleton<PopupService>();
 builder.Services.AddScoped<TaskyService>();
 builder.Services.AddSingleton<ToastService>();
 builder.Services.AddSingleton<LoaderService>();

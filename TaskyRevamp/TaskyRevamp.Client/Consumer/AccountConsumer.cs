@@ -3,7 +3,7 @@ using TaskyRevamp.Client.Services;
 using TaskyRevamp.Dto.Account;
 using TaskyRevamp.Dto.GeneralDto;
 
-namespace TaskyRevamp.Client.Pages.Consumer;
+namespace TaskyRevamp.Client.Consumer;
 
 public class AccountConsumer
 {
@@ -30,8 +30,7 @@ public class AccountConsumer
 
     public async Task<CommonApiResponse<PagedResult<UserDto>>> GetUsers(int pageNumber, int? pageSize)
     {
-        var ret = await _taskyService.httpClient
-        .GetFromJsonAsync<CommonApiResponse<PagedResult<UserDto>>>($"api/Account/GetUsers?pageNumber={pageNumber}&pageSize={pageSize}");
+        var ret = await _taskyService.GetFromJsonAsync<CommonApiResponse<PagedResult<UserDto>>>($"api/Account/GetUsers?pageNumber={pageNumber}&pageSize={pageSize}");
         return ret;
     }
 }

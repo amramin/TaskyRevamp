@@ -8,10 +8,12 @@
 
             @for (int i = 1; i <= TotalPages; i++)
             {
-                <li class="page-item @(i == CurrentPage ? "active" : "")">
-                    <button class="page-link" @onclick="() => OnPageChanged(i)">@i</button>
-                </li>
+                var pageNumber = i;  // local copy fixes closure issue
+                                     <li class="page-item @(pageNumber == CurrentPage ? "active" : "")">
+                                         <button class="page-link" @onclick="() => OnPageChanged(pageNumber)">@pageNumber</button>
+                                     </li>
             }
+
 
             <li class="page-item @(CurrentPage == TotalPages ? "disabled" : "")">
                 <button class="page-link" @onclick="() => OnPageChanged(CurrentPage + 1)">Next</button>
