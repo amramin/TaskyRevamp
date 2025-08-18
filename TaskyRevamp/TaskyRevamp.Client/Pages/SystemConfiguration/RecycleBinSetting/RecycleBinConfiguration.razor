@@ -38,7 +38,7 @@
 
 @code {
 
-    public List<PeriodType> PeriodTypes = Enum.GetValues(typeof(PeriodType)).Cast<PeriodType>().ToList();
+    public List<PeriodType> PeriodTypes = EnumExtensions.GetOrderedValues<PeriodType>();
     public RecycleBinSettingDto RecycleBinSetting { get; set; } = new RecycleBinSettingDto { PeriodType = PeriodType.Days30 };
 
     protected async override Task OnInitializedAsync()

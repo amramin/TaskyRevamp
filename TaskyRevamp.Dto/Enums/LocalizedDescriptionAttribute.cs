@@ -33,7 +33,7 @@ namespace TaskyRevamp.Dto.Enums
         public ResourceManager ResourceManager => _resource;
     }
 
-    public static class EnumExtensions
+    public static partial class EnumExtensions
     {
         public static string GetDescription(this Enum enumValue)
         {

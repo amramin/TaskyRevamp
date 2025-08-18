@@ -10,14 +10,19 @@ namespace TaskyRevamp.Dto.Enums
 	public enum RejectionPeriodType
 	{
 		[LocalizedDescription("Hours24", typeof(SharedResources))]
-		Hours24 = 1,
+		[Order(2)]
+        Hours24 = 1,
 		[LocalizedDescription("Days3", typeof(SharedResources))]
-		Days3 = 3,
+		[Order(3)]
+        Days3 = 3,
 		[LocalizedDescription("Week", typeof(SharedResources))]
-		Week = 7,
+		[Order(4)]
+        Week = 7,
 		[LocalizedDescription("Custom", typeof(SharedResources))]
-		Custom = 2,
+		[Order(5)]
+        Custom = 2,
 		[LocalizedDescription("Never", typeof(SharedResources))]
-		Never = 0,
+		[Order(1)]
+        Never = 0,
 	}
 }
