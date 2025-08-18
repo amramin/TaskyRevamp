@@ -18,6 +18,7 @@ public class TaskyController : ControllerBase
         _mediator = mediator;
     }
 
+    [HttpPost("CreateTask")]
     public async Task<ActionResult<CommonApiResponse<string>>> CreateTask([FromBody] CreateTaskDto taskDto)
     {
         var res = await _mediator.Send(new CreateTaskCommand(taskDto));

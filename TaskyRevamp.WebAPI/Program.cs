@@ -30,7 +30,7 @@ var configuration = builder.Configuration;
 
 builder.Services.AddControllers();
 builder.Services.AddRazorPages();
-builder.Services.AddOpenApi();
+//builder.Services.AddOpenApi();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddMediatR(cfg =>
@@ -148,12 +148,9 @@ app.UseRequestLocalization();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI(c =>
-    {
-        c.SwaggerEndpoint("/swagger", "TaskyRevamp API v1");
-    });
+    app.UseSwaggerUI();
     app.UseDeveloperExceptionPage();
-    app.MapOpenApi();
+  //  app.MapOpenApi();
 }
 
 app.UseHttpsRedirection();
