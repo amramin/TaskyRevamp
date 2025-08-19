@@ -16,6 +16,16 @@ public class ResponseWrapper
     public async Task Invoke(HttpContext context)
     {
         var originalBody = context.Response.Body;
+        var path = context.Request.Path.Value ?? string.Empty;
+
+        if (path.StartsWith("/swagger", StringComparison.OrdinalIgnoreCase) ||
+            path.EndsWith(".js", StringComparison.OrdinalIgnoreCase) ||
+            path.EndsWith(".css", StringComparison.OrdinalIgnoreCase) ||
+            path.StartsWith("/favicon", StringComparison.OrdinalIgnoreCase))
+        {
+            await _next(context);
+            return;
+        }
 
         // Skip wrapping for specific paths or status codes
         if (context.Request.Path.Value.Contains("Table/save"))

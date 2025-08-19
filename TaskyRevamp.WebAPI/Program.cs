@@ -32,7 +32,15 @@ builder.Services.AddControllers();
 builder.Services.AddRazorPages();
 //builder.Services.AddOpenApi();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
+    {
+        Title = "My API",
+        Version = "v1"
+    });
+    // If you use [Authorize], also add a Bearer scheme here (optional).
+});
 builder.Services.AddMediatR(cfg =>
 {
     cfg.RegisterServicesFromAssembly(typeof(AuthenticateCommand).Assembly);
@@ -142,16 +150,20 @@ app.UseCors(x =>
 });
 
 app.UseRequestLocalization();
-//app.UseMiddleware<LocalizedExceptionMiddleware>();
+app.UseMiddleware<LocalizedExceptionMiddleware>();
 
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API v1");
+        c.RoutePrefix = "swagger";
+    });
     app.UseDeveloperExceptionPage();
-  //  app.MapOpenApi();
+    app.MapOpenApi();
 }
 
 app.UseHttpsRedirection();
