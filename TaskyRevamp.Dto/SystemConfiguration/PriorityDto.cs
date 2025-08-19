@@ -13,7 +13,6 @@ namespace TaskyRevamp.Dto.SystemConfiguration
 		public string NameArabic { get; set; }
 		public string NameColor { get; set; }
 		public string BackgroundColor { get; set; }
-		public int Ranking { get; set; }
 		public int Order { get; set; }
 	}
 }

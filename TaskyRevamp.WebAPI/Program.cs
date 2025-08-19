@@ -12,6 +12,7 @@ using System.Reflection;
 using System.Text;
 using TaskyRevamp.Domain.Repositeries;
 using TaskyRevamp.Dto.GeneralDto;
+using TaskyRevamp.Infrastructure.Seeders;
 using TaskyRevamp.Services;
 using TaskyRevamp.Services.Account.Commands;
 using TaskyRevamp.WebAPI;
@@ -141,6 +142,13 @@ builder.Services.AddCors(options =>
 
 
 var app = builder.Build();
+
+// Run DB seeding
+using (var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider.GetRequiredService<EfDbContext>();
+    DbSeeder.Seed(context);
+}
 
 app.UseResponseWrapper();
 app.UseCors(x =>
