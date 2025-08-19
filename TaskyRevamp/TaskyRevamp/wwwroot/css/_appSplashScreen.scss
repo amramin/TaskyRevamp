@@ -20,21 +20,19 @@
     .headline-6{
       font-size:1.5rem;
     }
-     .icon svg {
-      width:3.5rem;
-      height:3.5rem;
-  transform: perspective(500px) rotateY(-42deg);
-  -webkit-transform: perspective(500px) rotateY(-42deg);
-  -moz-transform: perspective(500px) rotateY(-42deg);
-  -ms-transform: perspective(500px) rotateY(-42deg);
-  -o-transform: perspective(500px) rotateY(-42deg);
-  animation-name: rotate-windows;
-  animation-iteration-count: infinite;
-  animation-duration: 3s;
-  animation-fill-mode: forwards;
-}
-
-
+    .icon svg {
+          width:3.5rem;
+          height:3.5rem;
+          transform: perspective(500px) rotateY(-42deg);
+          -webkit-transform: perspective(500px) rotateY(-42deg);
+          -moz-transform: perspective(500px) rotateY(-42deg);
+          -ms-transform: perspective(500px) rotateY(-42deg);
+          -o-transform: perspective(500px) rotateY(-42deg);
+          animation-name: rotate-windows;
+          animation-iteration-count: infinite;
+          animation-duration: 3s;
+          animation-fill-mode: forwards;
+    }
   }
 }
 @keyframes rotate-windows {
