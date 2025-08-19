@@ -1,5 +1,8 @@
-﻿<div class="loader-overlay" style="@(IsVisible ? "display:flex;" : "display:none;")">
-    <div class="spinner"></div>
+﻿<div class="app-splash-screen" style="@(IsVisible ? "display:flex;" : "display:none;")">
+    <div class="content">
+        <SVGCrud SVGType="SVGCrud.SVGTypeEnum.TaskyIcon"></SVGCrud>
+        <h6 class="headline-6">Loading</h6>
+    </div>
 </div>
 
 @code {
