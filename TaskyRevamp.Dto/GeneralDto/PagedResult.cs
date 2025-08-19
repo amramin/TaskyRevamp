@@ -6,11 +6,12 @@ using System.Threading.Tasks;
 
 namespace TaskyRevamp.Dto.GeneralDto;
 
-public class PagedResult<T>
+public class PagedResult<TEntity>
 {
-    public IEnumerable<T> Items { get; set; } = new List<T>();
+    public List<TEntity> Items { get; set; } = new();
     public int TotalCount { get; set; }
     public int PageNumber { get; set; }
     public int PageSize { get; set; }
-    public int TotalPages => (int)Math.Ceiling(TotalCount / (double)PageSize);
+
+    public int TotalPages => (int)Math.Ceiling((double)TotalCount / PageSize);
 }

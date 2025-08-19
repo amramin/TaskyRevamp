@@ -1,35 +1,88 @@
-﻿@if (TotalPages > 1)
+﻿@if (TotalPages > 1 || ShowPageSize)
 {
-    <nav>
-        <ul class="pagination">
-            <li class="page-item @(CurrentPage == 1 ? "disabled" : "")">
-                <button class="page-link" @onclick="() => OnPageChanged(CurrentPage - 1)">Prev</button>
-            </li>
+    <div class="d-flex justify-content-between align-items-center">
+        <!-- Left: Page size dropdown -->
+        @if (ShowPageSize)
+        {
+            <div class="me-3">
+                <label>Items per page: </label>
+                <select class="form-select d-inline-block w-auto ms-2"
+                        @onchange="PageSizeChanged">
+                    @foreach (var size in PageSizeOptions)
+                    {
+                        <option value="@size" selected="@(size == PageSize)">
+                            @size
+                        </option>
+                    }
+                </select>
+            </div>
+        }
 
-            @for (int i = 1; i <= TotalPages; i++)
+        <!-- Middle: Pagination controls -->
+        <nav>
+            <ul class="pagination mb-0">
+                <li class="page-item @(CurrentPage == 1 ? "disabled" : "")">
+                    <button class="page-link" @onclick="() => OnPageChanged(1)">First</button>
+                </li>
+
+                <li class="page-item @(CurrentPage == 1 ? "disabled" : "")">
+                    <button class="page-link" @onclick="() => OnPageChanged(CurrentPage - 1)">Prev</button>
+                </li>
+
+                @for (int i = 1; i <= TotalPages; i++)
+                {
+                    var pageNumber = i;
+                    <li class="page-item @(pageNumber == CurrentPage ? "active" : "")">
+                        <button class="page-link" @onclick="() => OnPageChanged(pageNumber)">
+                            @pageNumber
+                        </button>
+                    </li>
+                }
+
+                <li class="page-item @(CurrentPage == TotalPages ? "disabled" : "")">
+                    <button class="page-link" @onclick="() => OnPageChanged(CurrentPage + 1)">Next</button>
+                </li>
+
+                <li class="page-item @(CurrentPage == TotalPages ? "disabled" : "")">
+                    <button class="page-link" @onclick="() => OnPageChanged(TotalPages)">Last</button>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- Right: Items counter -->
+        <div class="ms-3">
+            @if (TotalCount > 0)
             {
-                var pageNumber = i;  // local copy fixes closure issue
-                                     <li class="page-item @(pageNumber == CurrentPage ? "active" : "")">
-                                         <button class="page-link" @onclick="() => OnPageChanged(pageNumber)">@pageNumber</button>
-                                     </li>
+                <span>
+                    @((CurrentPage - 1) * PageSize + 1) -
+                    @(Math.Min(CurrentPage * PageSize, TotalCount))
+                    of @TotalCount
+                </span>
             }
-
-
-            <li class="page-item @(CurrentPage == TotalPages ? "disabled" : "")">
-                <button class="page-link" @onclick="() => OnPageChanged(CurrentPage + 1)">Next</button>
-            </li>
-        </ul>
-    </nav>
+        </div>
+    </div>
 }
 
 @code {
     [Parameter] public int CurrentPage { get; set; }
     [Parameter] public int TotalPages { get; set; }
+    [Parameter] public int TotalCount { get; set; }
+    [Parameter] public int PageSize { get; set; } = 10;
     [Parameter] public EventCallback<int> PageChanged { get; set; }
+    [Parameter] public EventCallback<int> PageSizeChangedCallback { get; set; }
+
+    [Parameter] public bool ShowPageSize { get; set; } = true;
+    private int[] PageSizeOptions = new[] { 5, 10, 25, 100 };
 
     private async Task OnPageChanged(int page)
     {
         if (page >= 1 && page <= TotalPages)
             await PageChanged.InvokeAsync(page);
+    }
+
+    private async Task PageSizeChanged(ChangeEventArgs e)
+    {
+        if (int.TryParse(e.Value?.ToString(), out int newSize))
+            await PageSizeChangedCallback.InvokeAsync(newSize);
     }
 }
