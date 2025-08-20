@@ -1,6 +1,6 @@
 ﻿@inject IStringLocalizer<SharedResources> Loc;
 
-<aside class="side-nav">
+<aside class="side-nav side-nav @(IsSettingOpen ? "setting-nav-open" : "")">
     <div class="side-nav-header">
         <div class="side-nav-logo">
             <span class="icon">
@@ -10,9 +10,9 @@
         </div>
     </div>
     <div class="sid-nav-body">
-        <ul class="nav flex-column">
+        <ul class="nav menu flex-column">
             <li class="nav-item">
-                <NavLink href="/tasks" class="nav-link" Match="NavLinkMatch.All">
+                <NavLink href="/tasks" class="nav-link" Match="NavLinkMatch.All" @onclick="CloseSettingsNav">
                     <div class="icon-text">
                         <span class="nav-icon">
                             <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Dashboard"></SVGCrud>
@@ -23,7 +23,7 @@
             </li>
 
             <li class="nav-item">
-                <NavLink href="/MainTasks" class="nav-link" Match="NavLinkMatch.All">
+                <NavLink href="/MainTasks" class="nav-link" Match="NavLinkMatch.All" @onclick="CloseSettingsNav">
                     <div class="icon-text">
                         <span class="nav-icon">
                             <SVGCrud SVGType="SVGCrud.SVGTypeEnum.List"></SVGCrud>
@@ -33,7 +33,7 @@
                 </NavLink>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#" data-id="completed-list">
+                <a class="nav-link" href="#" data-id="completed-list" @onclick="CloseSettingsNav">
                     <div class="icon-text">
                         <span class="nav-icon">
                             <SVGCrud SVGType="SVGCrud.SVGTypeEnum.CompletedList"></SVGCrud>
@@ -43,27 +43,17 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/RecycleBinConfiguration">
+                <a class="nav-link" href="#" @onclick="CloseSettingsNav">
                     <div class="icon-text">
                         <span class="nav-icon">
                             <SVGCrud SVGType="SVGCrud.SVGTypeEnum.RecycleBin"></SVGCrud>
 
                         </span>
-                        <span class="text"> @Loc["RecycleBinConfiguration"] </span>
+                        <span class="text"> Recycle bin</span>
                     </div>
                 </a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/RejectionConfiguration">
-                    <div class="icon-text">
-                        <span class="nav-icon">
-                            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Reject"></SVGCrud>
 
-                        </span>
-                        <span class="text"> @Loc["RejectionConfiguration"] </span>
-                    </div>
-                </a>
-            </li>
             <li class="nav-item">
                 <a class="nav-link" href="#">
                     <div class="icon-text">
@@ -76,18 +66,269 @@
                 </a>
             </li>
         </ul>
-        <ul class="nav flex-column">
-            <li class="nav-item">
-                <a class="nav-link" href="#">
+        <ul class="nav menu flex-column">
+            <li class="nav-item ">
+                <a class="nav-link toggle-btn" href="/RejectionConfiguration" @onclick="SettingNav" role="button">
                     <div class="icon-text">
                         <span class="nav-icon">
                             <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Config"></SVGCrud>
-
                         </span>
                         <span class="text"> Settings </span>
                     </div>
                 </a>
+
+                <ul class="nav setting-menu">
+                    @foreach (var item in MenuItems)
+                    {
+                        <li class="nav-item dropdown @(item.IsOpen ? "open" : "")">
+                            <button class="nav-link dropdown-toggler" @onclick="() => ToggleMenu(item)">
+                                <span class="nav-icon">
+                                    @if (item.IsOpen)
+                                    {
+                                        <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Minus"></SVGCrud>
+                                    }
+                                    else
+                                    {
+                                        <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Pluse"></SVGCrud>
+                                    }
+                                </span>
+                                @Loc[item.Title]
+                            </button>
+                            <ul class="dropdown-menu @(item.IsOpen ? "show" : "")">
+                                @foreach (var child in item.Children)
+                                {
+                                    <li class="nav-item">
+                                        <a class="nav-link" data-id="@child.DataId" href="@child.Url">
+                                            <div class="icon-text">
+                                                <span class="nav-icon">
+                                                    <SVGCrud SVGType="@child.Icon"></SVGCrud>
+                                                </span>
+                                                <span class="text">@Loc[child.Text]</span>
+                                            </div>
+                                        </a>
+                                    </li>
+                                }
+                            </ul>
+                        </li>
+                    }
+                </ul>
             </li>
+
         </ul>
+
     </div>
-</aside>    
+</aside>
+@code {
+    private bool IsSettingOpen { get; set; } = false;
+
+    private void SettingNav()
+    {
+        IsSettingOpen = !IsSettingOpen;
+    }
+    private void CloseSettingsNav()
+    {
+        IsSettingOpen = false;
+    }
+    class MenuItem
+    {
+        public string Title { get; set; }
+        public bool IsOpen { get; set; }
+        public List<ChildItem> Children { get; set; } = new();
+    }
+
+    class ChildItem
+    {
+        public string Text { get; set; }
+        public string Url { get; set; }
+        public SVGCrud.SVGTypeEnum Icon { get; set; }
+        public string DataId { get; set; }
+    }
+
+    List<MenuItem> MenuItems = new();
+
+    protected override void OnInitialized()
+    {
+        MenuItems = new List<MenuItem>
+{
+new MenuItem
+{
+Title = "General",
+IsOpen = true,
+Children = new List<ChildItem>
+{
+new ChildItem {
+Text = "RecycleBinConfiguration",
+Url = "/RecycleBinConfiguration",
+Icon = SVGCrud.SVGTypeEnum.RecycleBinConfig ,
+DataId = "recycle-config"
+}
+,
+new ChildItem {
+Text = "RejectionConfiguration",
+Url = "/RejectionConfiguration",
+Icon = SVGCrud.SVGTypeEnum.Reject,
+DataId = "rejection-config"
+}
+,
+new ChildItem {
+Text = "Priority",
+Url = "/Priority",
+Icon = SVGCrud.SVGTypeEnum.ArrowsUp,
+DataId = "priorty-config"
+}
+,
+new ChildItem {
+Text = "Status",
+Url = "/Status",
+Icon = SVGCrud.SVGTypeEnum.Repeat,
+DataId = "status-config"
+}
+,
+new ChildItem {
+Text = "DefaultColumns",
+Url = "/DefaultColumns",
+Icon = SVGCrud.SVGTypeEnum.Columns,
+DataId = "defaultColumns-config"
+}
+,
+new ChildItem {
+Text = "FilterFields",
+Url = "/FilterFields",
+Icon = SVGCrud.SVGTypeEnum.Filter,
+DataId = "filterFields-config"
+}
+,
+new ChildItem {
+Text = "WorkingDays",
+Url = "/DefaultColumns",
+Icon = SVGCrud.SVGTypeEnum.CalnderPluse,
+DataId = "calnderPluse-config"
+}
+,
+new ChildItem {
+Text = "TaskSource",
+Url = "/TaskSource",
+Icon = SVGCrud.SVGTypeEnum.DataFlow,
+DataId = "taskSource-config"
+}
+,
+new ChildItem {
+Text = "TaskType",
+Url = "/TaskType",
+Icon = SVGCrud.SVGTypeEnum.TaskType,
+DataId = "taskType-config"
+}
+,
+new ChildItem {
+Text = "TasksViews",
+Url = "/TasksViews",
+Icon = SVGCrud.SVGTypeEnum.List,
+DataId = "taskViews-config"
+}
+,
+new ChildItem {
+Text = "WeeklyReport",
+Url = "/WeeklyReport",
+Icon = SVGCrud.SVGTypeEnum.BarChartSquarPluse,
+DataId = "weeklyReport-config"
+}
+}
+},
+new MenuItem
+{
+Title = "Appearance",
+IsOpen = false,
+Children = new List<ChildItem>
+{
+new ChildItem {
+Text = "SystemIdentity",
+Url = "/SystemIdentity",
+Icon = SVGCrud.SVGTypeEnum.RollerBrush,
+DataId = "systemIdentity-config"
+
+}
+}
+},
+new MenuItem
+{
+Title = "Management",
+IsOpen = false,
+Children = new List<ChildItem>
+{
+new ChildItem {
+Text = "Users",
+Url = "/Users",
+Icon = SVGCrud.SVGTypeEnum.UsersEdit,
+DataId = "users-config"
+
+},
+new ChildItem {
+Text = "Departments",
+Url = "/Departments",
+Icon = SVGCrud.SVGTypeEnum.DataFlow,
+DataId = "departments-config"
+
+}
+,
+new ChildItem {
+Text = "Privilege",
+Url = "/Privilege",
+Icon = SVGCrud.SVGTypeEnum.PrivilegeConfig,
+DataId = "Privilege-config"
+
+}
+},
+
+},
+new MenuItem
+{
+Title = "Notification",
+IsOpen = false,
+Children = new List<ChildItem>
+{
+new ChildItem {
+Text = "EmailNotification",
+Url = "/EmailNotification",
+Icon = SVGCrud.SVGTypeEnum.NotificationMessage,
+DataId = "notification-message-config"
+
+},
+new ChildItem {
+Text = "SystemNotification",
+Url = "/SystemNotification",
+Icon = SVGCrud.SVGTypeEnum.BellPluse,
+DataId = "systemNotifcation-config"
+
+}
+,
+new ChildItem {
+Text = "TaskHistory",
+Url = "/TaskHistory",
+Icon = SVGCrud.SVGTypeEnum.ClockRewind,
+DataId = "taskHistory-config"
+
+}
+},
+
+},
+
+
+};
+    }
+
+    void ToggleMenu(MenuItem clicked)
+    {
+        if (clicked.IsOpen)
+        {
+
+            clicked.IsOpen = false;
+        }
+        else
+        {
+
+            foreach (var item in MenuItems)
+                item.IsOpen = false;
+            clicked.IsOpen = true;
+        }
+    }
+}
