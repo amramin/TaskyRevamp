@@ -1,0 +1,64 @@
+﻿@page "/Update-Priority/{Id:guid}"
+
+@using TaskyRevamp.Client.Consumer
+@using TaskyRevamp.Client.Services
+@using TaskyRevamp.Dto.SystemConfiguration
+@inject IStringLocalizer<SharedResources> Loc
+@inject PrioritySettingConsumer _prioritySettingConsumer
+@inject ToastService ToastService
+@inject NavigationManager navigationManager
+
+<div class="container mt-4">    
+    <PriorityForm 
+        Priority="@_priority"
+        OnValidSubmit="@Save"
+        SubmitButtonText="Save"
+        OnCancel="@Cancel"/>
+</div>
+
+@code {
+    [Parameter] public Guid Id { get; set; }
+    [Parameter] public EventCallback<PriorityDto> OnValidSubmit { get; set; }
+    [Parameter] public EventCallback OnCancel { get; set; }
+    private PriorityDto _priority = new PriorityDto();
+    public List<PriorityDto> Priorities = new List<PriorityDto>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var res = await _prioritySettingConsumer.GetPriorities();
+        if(res.Success && res != null && res.Data != null)
+        {
+            Priorities = res.Data;
+            _priority = Priorities.FirstOrDefault(p => p.Id == Id)!;
+        }
+
+    }
+
+    private async Task Save(EditContext args)
+    {
+        var message = new ValidationMessageStore(args);
+        message.Clear();
+        if (Priorities.Any(p => string.Equals(p.NameEnglish, _priority.NameEnglish, StringComparison.OrdinalIgnoreCase))
+            || Priorities.Any(p => string.Equals(p.NameArabic, _priority.NameArabic, StringComparison.OrdinalIgnoreCase)))
+        {
+            message.Add(new FieldIdentifier(_priority, string.Empty), Loc["duplicateValidation"]);
+            args.NotifyValidationStateChanged();
+            return;
+        }
+
+        var res = await _prioritySettingConsumer.UpdatePriority(_priority);
+        if (res.Success)
+        {
+            await OnValidSubmit.InvokeAsync(_priority);
+            await ToastService.ShowToastAsync(Loc["EditSuccess"], "success");
+        }
+        navigationManager.NavigateTo("/PrioritySettings");
+    }
+
+    
+    private async Task Cancel()
+    {
+        //await OnCancel.InvokeAsync();
+        navigationManager.NavigateTo("/PrioritySettings");
+    }
+}

@@ -1,0 +1,70 @@
+﻿@using TaskyRevamp.Dto.SystemConfiguration
+@inject IStringLocalizer<SharedResources> Loc
+
+<EditForm Model="@Priority" OnValidSubmit="@OnValidSubmitHandler">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="mb-3">
+        <label class="form-label">@Loc["Name English"]</label>
+        <InputText class="form-control" @bind-Value="Priority.NameEnglish" placeholder="Enter Priority Name English" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">@Loc["Name Arabic"]</label>
+        <InputText class="form-control" @bind-Value="Priority.NameArabic" placeholder="Enter Priority Name Arabic" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">@Loc["Name Color Indicator"]</label>
+        <div class="input-group">
+            <InputText class="form-control" @bind-Value="Priority.NameColor" />
+            <span class="input-group-text">
+                <input type="color" class="form-control form-control-color border-0 p-0"
+                       style="width: 2rem;" @bind="Priority.NameColor" />
+            </span>
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">@Loc["Background Color Indicator"]</label>
+        <div class="input-group">
+            <InputText class="form-control" @bind-Value="Priority.BackgroundColor" />
+            <span class="input-group-text">
+                <input type="color" class="form-control form-control-color border-0 p-0"
+                       style="width: 2rem;" @bind="Priority.BackgroundColor" />
+            </span>
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">@Loc["Order"]</label>
+        <input type="number" min="0" class="form-control mt-1" @bind="Priority.Order" />
+    </div>
+
+    <div class="d-flex justify-content-end gap-2 mt-4">
+        <button type="button" class="btn btn-light" @onclick="OnCancelClick">@Loc["Cancel"]</button>
+        <button type="submit" class="btn btn-primary">@Loc[@SubmitButtonText]</button>
+    </div>
+</EditForm>
+
+
+@code {
+
+    [Parameter] public PriorityDto Priority { get; set; } = new PriorityDto();
+    [Parameter] public EventCallback<EditContext> OnValidSubmit { get; set; }
+    [Parameter] public EventCallback OnCancel { get; set; }
+    [Parameter] public string SubmitButtonText { get; set; } = "Save";
+
+    
+
+    private async Task OnValidSubmitHandler(EditContext context)
+    {
+        await OnValidSubmit.InvokeAsync(context);
+    }
+
+    private async Task OnCancelClick()
+    {
+        await OnCancel.InvokeAsync();
+    }
+}

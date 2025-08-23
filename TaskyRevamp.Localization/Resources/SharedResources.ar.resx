@@ -180,4 +180,52 @@
   <data name="RejectionPeriodOptions" xml:space="preserve">
     <value>خيارات فترة الرفض</value>
   </data>
+  <data name="Priority" xml:space="preserve">
+    <value>إعدادات أولوية المهام</value>
+  </data>
+  <data name="Added successfully" xml:space="preserve">
+    <value>تمت الإضافة بنجاح</value>
+  </data>
+  <data name="Name English" xml:space="preserve">
+    <value>الإسم بالإنجليزي</value>
+  </data>
+  <data name="Name Arabic" xml:space="preserve">
+    <value>الإسم بالعربي</value>
+  </data>
+  <data name="Background Color Indicator" xml:space="preserve">
+    <value>مؤشر لون الخلفية</value>
+  </data>
+  <data name="Name Color Indicator" xml:space="preserve">
+    <value>مؤشر لون الاسم</value>
+  </data>
+  <data name="Order" xml:space="preserve">
+    <value>ترتيب الأولوية</value>
+  </data>
+  <data name="EditPriority" xml:space="preserve">
+    <value>تعديل أولوية</value>
+  </data>
+  <data name="AddPriority" xml:space="preserve">
+    <value>إضافة أولوية جديدة</value>
+  </data>
+  <data name="Sure" xml:space="preserve">
+    <value>هل أنت متأكد أنك تريد حذف هذه الأولوية؟</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>حذف</value>
+  </data>
+  <data name="Deleted successfully" xml:space="preserve">
+    <value>تم الحذف بنجاح</value>
+  </data>
+  <data name="duplicateValidation" xml:space="preserve">
+    <value>لا يمكنك تكرار اسم الأولوية</value>
+  </data>
+  <data name="PriorityConfiguration" xml:space="preserve">
+    <value>Priority Configuration</value>
+  </data>
+  <data name="PriorityOptions" xml:space="preserve">
+    <value>Priority Options</value>
+  </data>
+  <data name="req" xml:space="preserve">
+    <value>مطلوب</value>
+  </data>
 </root>
