@@ -14,11 +14,13 @@ namespace TaskyRevamp.Infrastructure.Seeders
         {
             var seeders = new List<ISeeder>
             {
-                new PrioritySeeder()
+                new PrioritySeeder(),
+                new StatusSeeder()
             };
 
             foreach (var seeder in seeders)
                 seeder.Seed(context);
+
         }
     }
 }

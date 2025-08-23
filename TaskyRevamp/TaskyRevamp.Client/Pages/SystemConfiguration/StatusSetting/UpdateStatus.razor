@@ -1,0 +1,86 @@
+﻿@page "/Update-Status/{Id:guid}"
+
+@using TaskyRevamp.Client.Consumer
+@using TaskyRevamp.Client.Services
+@using TaskyRevamp.Dto.SystemConfiguration
+@inject NavigationManager navigationManager
+@inject IStringLocalizer<SharedResources> Loc
+@inject StatusSettingConsumer _statusSettingConsumer
+@inject ToastService ToastService
+
+<div class="container mt-4">
+    <h3>Edit Status</h3>
+
+    <EditForm Model="_statusDto" OnValidSubmit="Save">
+        <DataAnnotationsValidator />
+        <ValidationSummary/>
+
+        <div class="mb-3">
+            <label class="form-label">@Loc["Name English"]</label>
+            <InputText class="form-control" @bind-Value="_statusDto.NameEnglish" placeholder="Enter Priority Name English" />
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">@Loc["Name Arabic"]</label>
+            <InputText class="form-control" @bind-Value="_statusDto.NameArabic" placeholder="Enter Priority Name Arabic" />
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">@Loc["Name Color Indicator"]</label>
+            <div class="input-group">
+                <InputText class="form-control" @bind-Value="_statusDto.NameColor" />
+                <span class="input-group-text">
+                    <input type="color" class="form-control form-control-color border-0 p-0"
+                           style="width: 2rem;" @bind="_statusDto.NameColor" />
+                </span>
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">@Loc["Background Color Indicator"]</label>
+            <div class="input-group">
+                <InputText class="form-control" @bind-Value="_statusDto.BackgroundColor" />
+                <span class="input-group-text">
+                    <input type="color" class="form-control form-control-color border-0 p-0"
+                           style="width: 2rem;" @bind="_statusDto.BackgroundColor" />
+                </span>
+            </div>
+        </div>
+
+
+        <div class="d-flex justify-content-end gap-2 mt-4">
+            <button type="button" class="btn btn-light" @onclick="Cancel">@Loc["Cancel"]</button>
+            <button type="submit" class="btn btn-primary">@Loc["Save"]</button>
+        </div>
+
+    </EditForm>
+</div>
+
+@code {
+
+    [Parameter] public Guid Id { get; set; }
+    private StatusSettingsDto _statusDto = new StatusSettingsDto();
+    public List<StatusSettingsDto> Status = new List<StatusSettingsDto>();
+
+    protected override async Task OnParametersSetAsync()
+    {
+        var res = await _statusSettingConsumer.GetStatusById(Id);
+        if (res.Success && res != null && res.Data != null)
+        {
+            _statusDto = res.Data;
+        }
+    }
+    private async Task Save()
+    {
+        var res = await _statusSettingConsumer.UpdateStatusConfiguration(_statusDto);
+        if (res.Success)
+        {
+            await ToastService.ShowToastAsync(Loc["EditSuccess"], "success");
+            navigationManager.NavigateTo("/StatusSetting");
+        }
+    }
+    private void Cancel()
+    {
+        navigationManager.NavigateTo("/StatusSetting");
+    }
+}

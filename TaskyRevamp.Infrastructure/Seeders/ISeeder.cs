@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace TaskyRevamp.Infrastructure.Seeders
 {
-    internal interface ISeeder
-    {
-        void Seed(EfDbContext context);
-    }
+	internal interface ISeeder
+	{
+		void Seed(EfDbContext context);
+	}
 }

@@ -18,7 +18,8 @@ public class EfDbContext : DbContext
     public DbSet<RecycleBinSettings> RecycleBinSettings { get; set; }
     public DbSet<RejectionSettings> RejectionSettings { get; set; }
     public DbSet<PrioritySettings> PrioritySettings { get; set; }
-    public EfDbContext(DbContextOptions<EfDbContext> options, IHttpContextAccessor httpContextAccessor)
+	public DbSet<StatusSettings> StatusSettings { get; set; }
+	public EfDbContext(DbContextOptions<EfDbContext> options, IHttpContextAccessor httpContextAccessor)
         : base(options)
     {
         _httpContextAccessor = httpContextAccessor;
