@@ -5,9 +5,9 @@
   --white-opacity-10: rgba(255, 255, 255, 0.1);
   --dark-900: #15171c;
   --dark-800: #444549;
-  --dark-700: #6c758a;
+  --dark-700: #5B5D60;
   --dark-600: #56617d;
-  --dark-500: #6c758a;
+  --dark-500: #6C758A;
   --dark-400: #979eab;
   --light-600: #b8bec3;
   --light-500: #eff4fe;
@@ -1259,4 +1259,157 @@ html[dir=rtl] .btn-change-lang span.ar {
 }
 * ::-webkit-scrollbar-thumb:hover {
   background: #555;
-}/*# sourceMappingURL=main.css.map */
+}
+
+/* start pagination-container*/
+.pagination-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  gap: 0.5rem;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+}
+.pagination-container .start {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  gap: 1rem;
+}
+.pagination-container .start label {
+  color: var(--dark-800);
+}
+@media (max-width: 992px) {
+  .pagination-container .start {
+    width: 100%;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    padding-top: 0.5rem;
+  }
+}
+.pagination-container .start .table-dropdown {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  gap: 0.5rem;
+}
+.pagination-container .start .table-dropdown label {
+  white-space: nowraP;
+}
+.pagination-container .start .table-dropdown .form-control {
+  padding-block: 0.35rem;
+}
+.pagination-container .end {
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  gap: 1rem;
+}
+.pagination-container .end .entries {
+  border: 1px solid var(--light-300);
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--dark-500);
+  padding-inline: 0.5rem;
+  border-radius: var(--bs-border-radius);
+  -ms-flex-item-align: stretch;
+      align-self: stretch;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+.pagination-container .pagination {
+  -webkit-padding-start: 0;
+          padding-inline-start: 0;
+  padding-left: 0;
+  padding-right: 0;
+  list-style: none;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
+  width: 100%;
+  gap: 0.25rem;
+}
+@media (max-width: 992px) {
+  .pagination-container .pagination {
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+  }
+}
+.pagination-container .pagination .page-item .page-link {
+  border-radius: var(--bs-border-radius);
+  padding: 0.25rem;
+  min-width: 2rem;
+  height: 2rem;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  border: 1px solid var(--light-300);
+  text-decoration: none;
+  color: var(--dark-800);
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+.pagination-container .pagination .page-item .page-link .icon {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+.pagination-container .pagination .page-item .page-link .arrow {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+.pagination-container .pagination .page-item .page-link.action-btn {
+  background-color: var(--light-btn);
+  color: var(--primary-color);
+}
+.pagination-container .pagination .page-item.disabled .page-link {
+  opacity: 0.5;
+}
+.pagination-container .pagination .page-item.active .page-link {
+  background-color: var(--primary-color);
+  color: var(--bs-white);
+  border-color: var(--primary-color);
+}
+
+/* end pagination-container*//*# sourceMappingURL=main.css.map */

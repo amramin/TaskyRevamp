@@ -11,8 +11,12 @@
 @inject LoaderService LoaderService
 @inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResources> Loc
 @inject AccountConsumer AccountConsumer
-
-<h3>Create Task</h3>
+<div class="page-header">
+    <div class="title-block">
+        <h1 class="page-headline">Create Task</h1>
+    </div>
+</div>
+<div class="page-body">
 <input @bind="title" placeholder="Title" />
 <input @bind="description" placeholder="Description" />
 <button @onclick="CreateTask">Create</button>
@@ -66,7 +70,7 @@
             PageChanged="ChangePage"
             PageSizeChangedCallback="ChangePageSize" />
 
-
+</div>
 
 
 @code {
