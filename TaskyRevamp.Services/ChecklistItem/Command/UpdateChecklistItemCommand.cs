@@ -26,7 +26,7 @@ public class UpdateChecklistItemCommandHandler : IRequestHandler<UpdateChecklist
             return false;
         }
         var updated = ChecklistItemResponse.Value;
-      updated.SetData(request.ChecklistItem);
+        updated.SetData(request.ChecklistItem);
         await _ChecklistItemRepository.Update(updated);
 
         return true;

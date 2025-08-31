@@ -1,3 +1,4 @@
+using TaskyRevamp.Domain.Interfaces;
 using TaskyRevamp.Domain.Models.Users;
 using TaskyRevamp.Dto.ChecklistItem;
 using TaskyRevamp.Dto.Enums;
@@ -6,7 +7,7 @@ using TaskyRevamp.Dto.TaskDto;
 
 namespace TaskyRevamp.Domain.Models.Task;
 
-public class ChecklistItem : Entity
+public class ChecklistItem : Entity, IHasCreationMetaData
 {
     protected ChecklistItem() { }
 
@@ -19,7 +20,9 @@ public class ChecklistItem : Entity
     public DateTime EndDate { get; set; }
     public User CreatedBy { get;  set; }
     public User AssignedUser { get; set; }
-    public DateTime CreatedAt { get;  set; }
+    public Guid CreatedById { get ; set; }
+    public DateTime CreateDate { get; set; }
+
     public bool SetData(ChecklistItemDto checklistItemDto)
     {
         Id= checklistItemDto.Id;
@@ -52,7 +55,7 @@ public class ChecklistItem : Entity
         TitleEnglish = titleEN;
         TitleArabic = titleAR;  
         CreatedBy = by;
-        CreatedAt = DateTime.UtcNow;
+        CreateDate = DateTime.UtcNow;
     }
     public void UpdateText(string titleEN, string titleAR, User by)
     {
