@@ -19,7 +19,7 @@ public class DepartmentController : ControllerBase
         _mediator = mediator;
     }
 
-    [HttpPost("CreateTask")]
+    [HttpPost("CreateDepartment")]
     public async Task<ActionResult<string>> CreateDepartment([FromBody] DepartmentDto DepartmentDto)
     {
         var res = await _mediator.Send(new CreateDepartmentCommand(DepartmentDto));
@@ -40,7 +40,7 @@ public class DepartmentController : ControllerBase
     {
         return Ok(await _mediator.Send(new DeleteDepartmentCommand(Guid.Parse(id))));
     }
-    [HttpPost("GetAllAllTask")]
+    [HttpPost("GetAllDepartments")]
     public async Task<IActionResult> AllTask([FromBody] QueryModel? query = null)
     {
 
