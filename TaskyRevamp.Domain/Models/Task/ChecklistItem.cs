@@ -4,21 +4,34 @@ namespace TaskyRevamp.Domain.Models.Task;
 
 public class ChecklistItem : Entity
 {
-    protected ChecklistItem() { }   
-    public string Description { get; private set; }
-    public bool IsCompleted { get; private set; }
-    public User CreatedBy { get; private set; }
-    public DateTime CreatedAt { get; private set; }
-    public ChecklistItem(Guid id, string desc, User by)
+    protected ChecklistItem() { }
+
+    public TaskChecklist TaskChecklist {  get; set; }
+    public string TitleEnglish { get;  set; }
+    public string TitleArabic { get; set; }
+
+    public TaskStatus Status { get; set; }
+    public bool IsCompleted { get;  set; }
+    public DateTime EndDate { get; set; }
+    public User CreatedBy { get;  set; }
+    public User AssignedUser { get; set; }
+    public DateTime CreatedAt { get;  set; }
+    public ChecklistItem(Guid id, string titleEN,string titleAR, User by)
     {
         Id = id;
-        Description = desc;
+        TitleEnglish = titleEN;
+        TitleArabic = titleAR;  
         CreatedBy = by;
         CreatedAt = DateTime.UtcNow;
     }
-    public void UpdateText(string newDesc, User by)
+    public void UpdateText(string titleEN, string titleAR, User by)
     {
-        Description = newDesc;
+        TitleEnglish = titleEN;
+        TitleArabic = titleAR;
+    }
+    public void UpdateStatus(TaskStatus status)
+    {
+        Status = status;
     }
     public void MarkComplete(User by)
     {

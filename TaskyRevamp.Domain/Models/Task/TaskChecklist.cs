@@ -8,6 +8,8 @@ namespace TaskyRevamp.Domain.Models.Task;
 public class TaskChecklist : Entity
 {
     private readonly TaskItem _task;
+    public string TitleEnglish { get; set; }
+    public string TitleArabic { get; set; }
     private readonly List<ChecklistItem> _items = new();
     public IReadOnlyCollection<ChecklistItem> Items => _items.AsReadOnly();
 
@@ -20,18 +22,18 @@ public class TaskChecklist : Entity
     {
     }
 
-    public void AddItem(string text, User by)
+    public void AddItem(string textEN,string textAR, User by)
     {
-        var item = new ChecklistItem(Guid.NewGuid(), text, by);
+        var item = new ChecklistItem(Guid.NewGuid(), textEN,textAR, by);
         _items.Add(item);
-        _task.AddHistoryEntry(by, $"added checklist item '{text}'");
+        _task.AddHistoryEntry(by, $"added checklist item '{textEN}''{textEN}'");
     }
 
-    public void EditItem(Guid itemId, string newText, User by)
+    public void EditItem(Guid itemId, string newTextEN,string newtextAR, User by)
     {
         var item = _items.FirstOrDefault(x => x.Id == itemId) ?? throw new KeyNotFoundException();
-        item.UpdateText(newText, by);
-        _task.AddHistoryEntry(by, $"edited checklist item '{newText}'");
+        item.UpdateText(newTextEN,newtextAR, by);
+        _task.AddHistoryEntry(by, $"edited checklist item '{newTextEN}''{newtextAR}'");
     }
 
     public void DeleteItem(Guid itemId, User by)
@@ -40,7 +42,7 @@ public class TaskChecklist : Entity
         if (item != null)
         {
             _items.Remove(item);
-            _task.AddHistoryEntry(by, $"deleted checklist item '{item.Description}'");
+            _task.AddHistoryEntry(by, $"deleted checklist item '{item.TitleEnglish}'");
         }
     }
 }

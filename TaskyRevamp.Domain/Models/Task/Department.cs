@@ -4,7 +4,7 @@ namespace TaskyRevamp.Domain.Models.Task;
 
 public class Department : Entity
 {
-    public string Name { get; private set; }
+    public string Name { get;  set; }
     public Department(Guid id, string name, User by)
     {
         Id = id;
