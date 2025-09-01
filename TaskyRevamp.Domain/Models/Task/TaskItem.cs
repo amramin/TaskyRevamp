@@ -128,9 +128,9 @@ public class TaskItem : Entity, IHasCreationMetaData, IHasUpdateMetaData
      readonly List<TaskItem> _subtasks = new();
     public IReadOnlyCollection<TaskItem> Subtasks => _subtasks.AsReadOnly();
 
-    public TaskChecklist Checklist { get;  set; }
-    public TaskComments Comments { get;  set; }
-    public TaskAttachments Attachments { get;  set; }
+    public TaskChecklist? Checklist { get;  set; }
+    public TaskComments? Comments { get;  set; }
+    public TaskAttachments? Attachments { get;  set; }
      readonly List<TaskHistoryEntry> _history = new();
     public IReadOnlyCollection<TaskHistoryEntry> History => _history.AsReadOnly();
      readonly List<ChangeEndDateRequest> _changeRequests = new();
@@ -147,13 +147,15 @@ public class TaskItem : Entity, IHasCreationMetaData, IHasUpdateMetaData
     public User? UpdateddBy { get ; set ; }
 
      TaskItem() {  }
-    public TaskItem(Guid id, string titleEnglish,string titleArabic, string descEN,string descAR, TaskType type, TaskSource source, DateTime start, DateTime end, Priority priority, Weight plannedWeight, User creator, List<Department> assgndep)
+    public TaskItem(Guid id, string titleEnglish,string titleArabic, string descEN,string descAR, TaskType type, TaskSource source, DateTime start, DateTime end, Priority priority, Weight plannedWeight, User creator, List<Department> assgndep,List<Guid>assigids)
     {
         if (end < start) throw new ArgumentException("End date must be after start date.");
         Id = id;
         TitleEnglish = titleEnglish;
         TitleArabic= titleArabic;
         AssignedDepartments = assgndep;
+        AssignedDepartmentIds = assgndep.Select(k => k.Id).ToList();
+        AssignedIds = assigids;
         DescriptionEnglish = descEN;
         DescriptionArabic= descAR;
         Type = type;
@@ -167,9 +169,9 @@ public class TaskItem : Entity, IHasCreationMetaData, IHasUpdateMetaData
         _actualWeight = new Weight(0);
         Creator = creator;
         
-        Checklist = new TaskChecklist(this);
-        Comments = new TaskComments(this);
-        Attachments = new TaskAttachments(this);
+       // Checklist = new TaskChecklist(this);
+        //Comments = new TaskComments(this);
+        //Attachments = new TaskAttachments(this);
         AddHistoryEntry(creator, $"created the task");
     }
      int GetLevel()

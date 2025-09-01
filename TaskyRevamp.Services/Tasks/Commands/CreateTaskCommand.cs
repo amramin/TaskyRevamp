@@ -30,7 +30,7 @@ public class CreateTaskHandler : IRequestHandler<CreateTaskCommand, Guid>
      
        var task = new TaskItem(request.CreateTaskDto.Id, request.CreateTaskDto.TitleEnglish,request.CreateTaskDto.TitleArabic, request.CreateTaskDto.DescriptionEnglish,request.CreateTaskDto.DescriptionArabic,new TaskType() {Id= request.CreateTaskDto.TypeId },new TaskSource() { Id = request.CreateTaskDto.SourceId },request.CreateTaskDto.StartDate,request.CreateTaskDto.EndDate,
             (Priority)request.CreateTaskDto.Priority 
-           ,new Weight( request.CreateTaskDto.weight),user.Value, departs.Value.ToList());
+           ,new Weight( request.CreateTaskDto.weight),user.Value, departs.Value.ToList(),request.CreateTaskDto.AssignedIds);
        
         await _taskRepository.Insert(task);
         await _taskRepository.SaveChangesAsync();
