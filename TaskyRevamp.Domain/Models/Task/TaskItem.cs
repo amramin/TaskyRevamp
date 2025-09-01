@@ -147,13 +147,13 @@ public class TaskItem : Entity, IHasCreationMetaData, IHasUpdateMetaData
     public User? UpdateddBy { get ; set ; }
 
      TaskItem() {  }
-    public TaskItem(Guid id, string titleEnglish,string titleArabic, string descEN,string descAR, TaskType type, TaskSource source, DateTime start, DateTime end, Priority priority, Weight plannedWeight, User creator)
+    public TaskItem(Guid id, string titleEnglish,string titleArabic, string descEN,string descAR, TaskType type, TaskSource source, DateTime start, DateTime end, Priority priority, Weight plannedWeight, User creator, List<Department> assgndep)
     {
         if (end < start) throw new ArgumentException("End date must be after start date.");
         Id = id;
         TitleEnglish = titleEnglish;
         TitleArabic= titleArabic;
-
+        AssignedDepartments = assgndep;
         DescriptionEnglish = descEN;
         DescriptionArabic= descAR;
         Type = type;

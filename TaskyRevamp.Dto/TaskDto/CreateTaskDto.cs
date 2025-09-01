@@ -29,7 +29,6 @@ public class CreateTaskDto
     public DateTime EndDate { get;  set; }
     public Guid TypeId { get;  set; }
     public Guid SourceId { get;  set; }
-    public Guid? ReminderId { get;  set; }
     public int Priority { get;  set; }
     public int weight { get;  set; }
     public int Duration => (EndDate.Date - StartDate.Date).Days + 1;
