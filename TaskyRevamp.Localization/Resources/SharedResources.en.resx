@@ -216,7 +216,7 @@
   <data name="Deleted successfully" xml:space="preserve">
     <value>Deleted successfully</value>
   </data>
-  <data name="duplicateValidation" xml:space="preserve">
+  <data name="PriorityDuplicateValidation" xml:space="preserve">
     <value>You can't duplicate the priority name</value>
   </data>
   <data name="PriorityConfiguration" xml:space="preserve">

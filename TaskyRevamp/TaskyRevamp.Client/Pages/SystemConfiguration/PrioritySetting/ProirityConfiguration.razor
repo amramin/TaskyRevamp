@@ -33,20 +33,29 @@
                     <span class="rounded-circle p-2" style="background-color:@p.BackgroundColor"></span>
                     <span class="rounded-circle p-2" style="background-color:@p.NameColor"></span>
 
-
-                    <button class="btn btn-sm btn-outline-success" @onclick=" () => Edit(p.Id)">
-                        <i class="bi bi-pencil"></i>
+                    <button class="btn btn-action-40 btn-outline-success" @onclick=" () => Edit(p.Id)">
+                        <span class="icon">
+                            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Edit"></SVGCrud>
+                        </span>
                     </button>
-                    <button class="btn btn-sm btn-outline-danger" @onclick=" () => ShowDeleteConfirm(p)">
-                        <i class="bi bi-trash"></i>
+
+                    <button class="btn btn-action-40 btn-outline-danger" @onclick=" () => ShowDeleteConfirm(p)">
+                        <span class="icon">
+                            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.RecycleBin"></SVGCrud>
+                        </span>
                     </button>
 
                     <div class="btn-group-vertical">
-                        <button class="btn btn-sm btn-outline-secondary" @onclick=" () => MoveUp(p)">
-                            <i class="bi bi-arrow-up"></i>
+                        <button class="btn btn-action-40 btn-outline-secondary" @onclick=" () => MoveUp(p)">
+                            <span class="icon">
+                                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Pluse"></SVGCrud>
+                            </span>
                         </button>
-                        <button class="btn btn-sm btn-outline-secondary" @onclick="() => MoveDown(p)">
-                            <i class="bi bi-arrow-down"></i>
+
+                        <button class="btn btn-action-40 btn-outline-secondary" @onclick="() => MoveDown(p)">
+                            <span class="icon">
+                                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Pluse"></SVGCrud>
+                            </span>
                         </button>
                     </div>
                 </div>

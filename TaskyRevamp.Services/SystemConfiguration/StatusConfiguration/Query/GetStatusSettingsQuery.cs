@@ -12,11 +12,11 @@ using statusSettings = TaskyRevamp.Domain.Models.SystemConfiguration.StatusSetti
 namespace TaskyRevamp.Services.SystemConfiguration.StatusConfiguration.Query
 {
 	public record GetStatusSettingsQuery() : IRequest<List<StatusSettingsDto>>;
-	public class GetStatusSettingsQueryHandler : IRequestHandler<GetStatusSettingsQuery, List<StatusSettingsDto>>
+	public class GetStatusSettingsHandler : IRequestHandler<GetStatusSettingsQuery, List<StatusSettingsDto>>
 	{
 		private readonly IRepository<statusSettings> _StatusRepository;
 
-		public GetStatusSettingsQueryHandler(IRepository<statusSettings> _statusRepository)
+		public GetStatusSettingsHandler(IRepository<statusSettings> _statusRepository)
 		{
 			_StatusRepository = _statusRepository;
 		}

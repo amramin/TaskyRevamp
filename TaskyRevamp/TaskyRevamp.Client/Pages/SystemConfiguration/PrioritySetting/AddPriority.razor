@@ -8,7 +8,8 @@
 @inject ToastService ToastService
 
 <div class="container mt-4">
-       <PriorityForm 
+       <PriorityForm
+           @ref="form"
            OnCancel="Cancel" 
            OnValidSubmit="@Save"
            Priority="_newPriority" 
@@ -21,6 +22,8 @@
     public List<PriorityDto> Priorities = new List<PriorityDto>();
     [Parameter] public EventCallback<PriorityDto> OnValidSubmit { get; set; }
     [Parameter] public EventCallback OnCancel { get; set; }
+
+    private PriorityForm form;
 
     protected async override Task OnInitializedAsync()
     {
@@ -39,26 +42,21 @@
         }
     }
 
-    private async Task Save(EditContext args)
+    private async Task Save(EditContext editContext)
     {
-        var message = new ValidationMessageStore(args);
-        message.Clear();
-        if ( Priorities.Any(p => string.Equals(p.NameEnglish, _newPriority.NameEnglish, StringComparison.OrdinalIgnoreCase))
-            || Priorities.Any(p => string.Equals(p.NameArabic, _newPriority.NameArabic, StringComparison.OrdinalIgnoreCase)))
+
+        var res = await _prioritySettingConsumer.AddPriority(_newPriority);
+        if (res.Success)
         {
-            message.Add(new FieldIdentifier(_newPriority, string.Empty), Loc["duplicateValidation"]);
-            args.NotifyValidationStateChanged();
-            return;
+            await OnValidSubmit.InvokeAsync(_newPriority);
+            await ToastService.ShowToastAsync(Loc["Added successfully"], "success");
+
+            navigationManager.NavigateTo("/PrioritySettings");
         }
         else
         {
-            var res = await _prioritySettingConsumer.AddPriority(_newPriority);
-            if (res.Success)
-            {
-                await OnValidSubmit.InvokeAsync(_newPriority);
-                await ToastService.ShowToastAsync(Loc["Added successfully"], "success");
-                navigationManager.NavigateTo("/PrioritySettings");
-            }
+            if (res.Errors != null && res.Errors.Count > 0)
+                form.AddErrorsToEditContext(res.Errors);
         }
     }
     private async Task Cancel()

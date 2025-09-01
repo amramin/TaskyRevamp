@@ -33,7 +33,7 @@ namespace TaskyRevamp.WebAPI.Controllers
 		[HttpPost("UpdateStatusSettings")]
 		public async Task<ActionResult> UpdateStatus([FromBody] StatusSettingsDto _statusDto)
 		{
-			return Ok(await _mediator.Send(new UpdateStatusQuery(_statusDto)));
+			return Ok(await _mediator.Send(new UpdateStatusCommand(_statusDto)));
 		}
 	}
 }

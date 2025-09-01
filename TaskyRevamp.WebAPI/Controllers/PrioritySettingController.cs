@@ -27,19 +27,19 @@ namespace TaskyRevamp.WebAPI.Controllers
 		[HttpPost("AddPriority")]
 		public async Task<IActionResult> AddPriority([FromBody] PriorityDto priorityDto)
 		{
-			return Ok(await _mediator.Send(new AddPriorityQuery(priorityDto)));
+			return Ok(await _mediator.Send(new CreatePriorityCommand(priorityDto)));
 		}
 
 		[HttpPost("UpdatePriority")]
 		public async Task<IActionResult> UpdatePriority([FromBody] PriorityDto priorityDto)
 		{
-			return Ok(await _mediator.Send(new UpdateProrityQuery(priorityDto)));
+			return Ok(await _mediator.Send(new UpdateProrityCommand(priorityDto)));
 		}
 
 		[HttpDelete("DeletePriority/{id}")]
 		public async Task<IActionResult> DeletePriority(Guid id)
 		{
-			return Ok(await _mediator.Send(new DeletePriorityQuery(new PriorityDto { Id = id })));
+			return Ok(await _mediator.Send(new DeletePriorityCommand(new PriorityDto { Id = id })));
 		}
 	}
 }

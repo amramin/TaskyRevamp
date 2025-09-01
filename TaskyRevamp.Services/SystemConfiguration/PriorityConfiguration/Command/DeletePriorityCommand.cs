@@ -10,16 +10,16 @@ using PrioritySetting = TaskyRevamp.Domain.Models.SystemConfiguration.PrioritySe
 
 namespace TaskyRevamp.Services.SystemConfiguration.PriorityConfiguration.Command
 {
-	public record DeletePriorityQuery(PriorityDto PriorityDto): IRequest<bool>;
-	public class DeletePriorityQueryHandler : IRequestHandler<DeletePriorityQuery, bool>
+	public record DeletePriorityCommand(PriorityDto PriorityDto): IRequest<bool>;
+	public class DeletePriorityHandler : IRequestHandler<DeletePriorityCommand, bool>
 	{
 		private readonly IRepository<PrioritySetting> _PriorityRepository;
 
-		public DeletePriorityQueryHandler(IRepository<PrioritySetting> _priorityRepository)
+		public DeletePriorityHandler(IRepository<PrioritySetting> _priorityRepository)
 		{
 			_PriorityRepository = _priorityRepository;
 		}
-		public async Task<bool> Handle(DeletePriorityQuery request, CancellationToken cancellationToken)
+		public async Task<bool> Handle(DeletePriorityCommand request, CancellationToken cancellationToken)
 		{
 			var res = await _PriorityRepository.FindByKey(request.PriorityDto.Id);
 			if(res != null && res.Value != null && res.Success)

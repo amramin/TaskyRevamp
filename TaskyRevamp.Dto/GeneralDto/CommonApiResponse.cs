@@ -10,34 +10,36 @@ public class CommonApiResponse<T>
         Data = default!;
     }
 
-    public static CommonApiResponse<T> Create(int statusCode, T result = default, string errorMessage = null, string details = null, object errors = null)
+    public static CommonApiResponse<T> Create(int statusCode, T result = default, string errorMessage = null, string details = null, Dictionary<string, List<string>> errors = null)
     {
-        //if (statusCode == (int)HttpStatusCode.InternalServerError)
-        //{
-        //    try
-        //    {
-        //        var errorDto = JsonSerializer.Deserialize<ApiErrorDto>(errorMessage,
-        //        new JsonSerializerOptions()
-        //        {
-        //            PropertyNameCaseInsensitive = true
-        //        });
+        List<int> errorStatusCodes = new List<int> { 204, 400, 401, 404, 406, 422, 500 };
 
-        //        return new CommonApiResponse<T>(statusCode, default, errorDto.Detail, details, errors);
-        //    }
-        //    catch (Exception)
-        //    {
-        //        // If deserialization fails, we can just return the error message as is.
-        //        return new CommonApiResponse<T>(statusCode, default, errorMessage, details, errors);
-        //    }
-        //}
+        if (errorStatusCodes.Contains(statusCode))
+        {
+            try
+            {
+                var errorDto = JsonSerializer.Deserialize<ApiErrorDto>(errorMessage,
+                new JsonSerializerOptions()
+                {
+                    PropertyNameCaseInsensitive = true
+                });
+
+                return new CommonApiResponse<T>(statusCode, default, errorDto.Detail, details, errorDto.Errors);
+            }
+            catch (Exception)
+            {
+                // If deserialization fails, we can just return the error message as is.
+                return new CommonApiResponse<T>(statusCode, default, errorMessage, details, errors);
+            }
+        }
 
         //return new CommonApiResponse<T>(statusCode, result, null);
         return new CommonApiResponse<T>(statusCode, result, errorMessage, details, errors);
     }
 
-    public static CommonApiResponse<T> CreateError(string errorMessage)
+    public static CommonApiResponse<T> CreateError(string errorMessage, Dictionary<string, List<string>>? errors = null)
     {
-        return new CommonApiResponse<T>(errorMessage);
+        return new CommonApiResponse<T>(errorMessage, errors);
     }
 
     public string Version => "1.2.3";
@@ -49,9 +51,9 @@ public class CommonApiResponse<T>
 
     public T? Data { get; set; } = default!;
     public string Detail { get; set; }
-    public object Errors { get; set; }
+    public Dictionary<string, List<string>>? Errors { get; set; }
 
-    protected CommonApiResponse(string errorMessage)
+    protected CommonApiResponse(string errorMessage, Dictionary<string, List<string>>? errors)
     {
         Count = 0;
         RequestId = Guid.NewGuid().ToString();
@@ -62,9 +64,10 @@ public class CommonApiResponse<T>
         else
             Data = Activator.CreateInstance<T>();
         ErrorMessage = errorMessage;
+        Errors = errors;
     }
 
-    protected CommonApiResponse(int statusCode, T data = default, string errorMessage = null, string details = null, object errors = null)
+    protected CommonApiResponse(int statusCode, T data = default, string errorMessage = null, string details = null, Dictionary<string, List<string>> errors = null)
     {
         Count = 0;
         RequestId = Guid.NewGuid().ToString();
