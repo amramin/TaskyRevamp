@@ -180,4 +180,7 @@
   <data name="RejectionPeriodOptions" xml:space="preserve">
     <value>خيارات فترة الرفض</value>
   </data>
+  <data name="AllrightsKSA" xml:space="preserve">
+    <value>جميع الحقوق محفوظة - المملكة العربية السعودية</value>
+  </data>
 </root>

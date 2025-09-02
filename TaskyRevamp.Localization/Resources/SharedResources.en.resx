@@ -180,4 +180,8 @@
   <data name="RejectionPeriodOptions" xml:space="preserve">
     <value>Rejection Period Options</value>
   </data>
+  <data name="AllrightsKSA" xml:space="preserve">
+    <value>All rights are safe - Kingdom of Saudi Arabia</value>
+  </data>
+  
 </root>
