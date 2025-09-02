@@ -2,22 +2,53 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using TaskyRevamp.Domain.Models.Users;
+using TaskyRevamp.Dto.TaskChecklist;
+using TaskyRevamp.Dto.TaskDto;
 
 namespace TaskyRevamp.Domain.Models.Task;
 
 public class TaskChecklist : Entity
 {
-    private readonly TaskItem _task;
+    public Guid TaskId { get; set; }
+    public  TaskItem _task { set; get; }
     public string TitleEnglish { get; set; }
     public string TitleArabic { get; set; }
     private readonly List<ChecklistItem> _items = new();
     public IReadOnlyCollection<ChecklistItem> Items => _items.AsReadOnly();
+    public bool SetData(TaskChecklistDto taskChecklistDto)
+    {
+        Id = Id;
+        TitleEnglish = taskChecklistDto.TitleEnglish;
+        TitleArabic = taskChecklistDto.TitleArabic;
+        TaskId = taskChecklistDto.TaskId;
+        return true;
 
+    }
+    public TaskChecklistDto CopyToDto()
+    {
+        return new TaskChecklistDto
+        {
+            Id = Id,
+            TaskId = TaskId,
+            TitleEnglish = TitleEnglish,
+            TitleArabic = TitleArabic,
+        
+
+
+
+
+        };
+    }
     internal TaskChecklist(TaskItem task)
     {
         _task = task;
     }
-
+    public TaskChecklist(Guid taskid,string titleEN,string titleAR)
+    {
+        TaskId = taskid;
+        TitleEnglish= titleEN;
+        TitleArabic= titleAR;
+    }
     public TaskChecklist()
     {
     }
