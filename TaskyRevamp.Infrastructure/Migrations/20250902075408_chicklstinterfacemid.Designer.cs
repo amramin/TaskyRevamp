@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SurveyRevamp.Infrastructure;
 
@@ -11,9 +12,11 @@ using SurveyRevamp.Infrastructure;
 namespace TaskyRevamp.Infrastructure.Migrations
 {
     [DbContext(typeof(EfDbContext))]
-    partial class EfDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250902075408_chicklstinterfacemid")]
+    partial class chicklstinterfacemid
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -397,7 +400,10 @@ namespace TaskyRevamp.Infrastructure.Migrations
                     b.Property<Guid>("CreatedById")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("DependenciesId")
+                    b.Property<Guid>("CreatorId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("DependenciesId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("DescriptionArabic")
@@ -455,6 +461,8 @@ namespace TaskyRevamp.Infrastructure.Migrations
                     b.HasIndex("CommentsId");
 
                     b.HasIndex("CreatedById");
+
+                    b.HasIndex("CreatorId");
 
                     b.HasIndex("DependenciesId");
 
@@ -774,9 +782,17 @@ namespace TaskyRevamp.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("TaskyRevamp.Domain.Models.Users.User", "Creator")
+                        .WithMany()
+                        .HasForeignKey("CreatorId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("TaskyRevamp.Domain.Models.Task.TaskDependencies", "Dependencies")
                         .WithMany("Items")
-                        .HasForeignKey("DependenciesId");
+                        .HasForeignKey("DependenciesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("TaskyRevamp.Domain.Models.Task.TaskItem", "Parent")
                         .WithMany("Subtasks")
@@ -864,6 +880,8 @@ namespace TaskyRevamp.Infrastructure.Migrations
                     b.Navigation("Comments");
 
                     b.Navigation("CreatedBy");
+
+                    b.Navigation("Creator");
 
                     b.Navigation("Dependencies");
 

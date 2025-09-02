@@ -29,7 +29,7 @@ public class TaskAttachments : Entity
     public void Delete(Guid attachmentId, User by)
     {
         var a = _items.FirstOrDefault(x => x.Id == attachmentId) ?? throw new KeyNotFoundException();
-        if (a.UploadedBy != by && _task.Creator != by) throw new InvalidOperationException("Cannot delete this attachment.");
+        if (a.UploadedBy != by && _task.CreatedBy != by) throw new InvalidOperationException("Cannot delete this attachment.");
         _items.Remove(a);
         _task.AddHistoryEntry(by, $"deleted attachment '{a.FileName}'");
     }

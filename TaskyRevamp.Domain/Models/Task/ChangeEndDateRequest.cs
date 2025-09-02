@@ -24,7 +24,7 @@ public class ChangeEndDateRequest : Entity
     }
     public void Approve(User by)
     {
-        if (by.Id != Task.Creator.Id)
+        if (by.Id != Task.CreatedById)
         {
             throw new InvalidOperationException("Only the task creator can approve end date change requests.");
         }
@@ -34,7 +34,7 @@ public class ChangeEndDateRequest : Entity
     }
     public void Reject(User by)
     {
-        if (by.Id != Task.Creator.Id)
+        if (by.Id != Task.CreatedById)
         {
             throw new InvalidOperationException("Only the task creator can reject end date change requests.");
         }

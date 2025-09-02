@@ -14,8 +14,9 @@ public class TaskItem : Entity, IHasCreationMetaData, IHasUpdateMetaData
 
     public string DescriptionEnglish { get;  set; }
     public string DescriptionArabic { get;  set; }
-
+    public Guid TaskTypeId {set; get; }
     public TaskType Type { get;  set; }
+    public Guid TaskSourceId { set; get; }
     public TaskSource Source { get;  set; }
     public DateTime StartDate { get;  set; }
     public DateTime EndDate { get;  set; }
@@ -114,14 +115,15 @@ public class TaskItem : Entity, IHasCreationMetaData, IHasUpdateMetaData
          set => _status = value;
     }
 
-    public User Creator { get;  set; }
+    //public Guid CreatorId { set; get; }
+    //public User Creator { get;  set; }
 
     public IEnumerable<TaskAssignees> Assignees { get;  set; }
     public List<Guid> AssignedDepartmentIds { set; get; }
     public List<Guid> AssignedIds { set; get; }
-
-    public IEnumerable<Department> AssignedDepartments { set; get; }
-    public TaskDependencies Dependencies { get;  set; }
+    
+   // public IEnumerable<Department>? AssignedDepartments { set; get; }
+    public TaskDependencies? Dependencies { get;  set; }
   //  public List<Guid> DependenciesIds { set; get; }
 
     public TaskItem? Parent { get;  set; }
@@ -147,19 +149,19 @@ public class TaskItem : Entity, IHasCreationMetaData, IHasUpdateMetaData
     public User? UpdateddBy { get ; set ; }
 
      TaskItem() {  }
-    public TaskItem(Guid id, string titleEnglish,string titleArabic, string descEN,string descAR, TaskType type, TaskSource source, DateTime start, DateTime end, Priority priority, Weight plannedWeight, User creator, List<Department> assgndep,List<Guid>assigids)
+    public TaskItem(Guid id, string titleEnglish,string titleArabic, string descEN,string descAR, Guid type, Guid source, DateTime start, DateTime end, Priority priority, Weight plannedWeight, Guid creatorid, List<Department> assgndep,List<Guid>assigids)
     {
         if (end < start) throw new ArgumentException("End date must be after start date.");
         Id = id;
         TitleEnglish = titleEnglish;
         TitleArabic= titleArabic;
-        AssignedDepartments = assgndep;
+        //AssignedDepartments = assgndep;
         AssignedDepartmentIds = assgndep.Select(k => k.Id).ToList();
         AssignedIds = assigids;
         DescriptionEnglish = descEN;
         DescriptionArabic= descAR;
-        Type = type;
-        Source = source;
+        TaskTypeId = type;
+        TaskSourceId = source;
         StartDate = start;
         EndDate = end;
         Priority = priority;
@@ -167,12 +169,13 @@ public class TaskItem : Entity, IHasCreationMetaData, IHasUpdateMetaData
         _actualProgress = new Progress(0);
         _status = TaskStatus.NotStarted;
         _actualWeight = new Weight(0);
-        Creator = creator;
+        CreatedById = creatorid;
+        //Creator = creator;
         
        // Checklist = new TaskChecklist(this);
         //Comments = new TaskComments(this);
         //Attachments = new TaskAttachments(this);
-        AddHistoryEntry(creator, $"created the task");
+        //AddHistoryEntry(CreatedBy, $"created the task");
     }
      int GetLevel()
     {
