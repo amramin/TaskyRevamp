@@ -33,7 +33,7 @@ public class GetTaskChecklistsHandler : IRequestHandler<GetTaskChecklistsQuery, 
 
         foreach (var TaskChecklist in data.Value)
         {
-        ;
+   
             TaskChecklistss.Add(TaskChecklist.CopyToDto());
         }
 
