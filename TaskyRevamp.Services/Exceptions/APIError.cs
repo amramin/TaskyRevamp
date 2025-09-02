@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TaskyRevamp.Domain.Exceptions;
+namespace TaskyRevamp.Services.Exceptions;
 
 public static class APIError
 {

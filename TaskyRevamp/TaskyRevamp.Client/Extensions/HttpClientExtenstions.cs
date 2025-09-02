@@ -37,7 +37,7 @@ public static class HttpClientExtenstions
                     {
                         PropertyNameCaseInsensitive = true
                     });
-                return CommonApiResponse<T>.CreateError(error.ErrorMessage);
+                return CommonApiResponse<T>.CreateError(error.ErrorMessage, error?.Errors ?? null);
             }
         }
         catch (Exception ex)
@@ -67,7 +67,7 @@ public static class HttpClientExtenstions
             {
                 var responseString = await httpResponse.Content.ReadAsStringAsync();
                 var error = JsonConvert.DeserializeObject<CommonApiResponse<ApiErrorDto>>(responseString);
-                return CommonApiResponse<T>.CreateError(error.Data.Detail);
+                return CommonApiResponse<T>.CreateError(error.Data.Detail, error?.Errors ?? null);
             }
         }
         catch (Exception ex)
@@ -104,7 +104,7 @@ public static class HttpClientExtenstions
                     {
                         PropertyNameCaseInsensitive = true
                     });
-                return CommonApiResponse<TReturn>.CreateError(error.Data.Detail);
+                return CommonApiResponse<TReturn>.CreateError(error.Data.Detail, error?.Errors ?? null);
             }
         }
         catch (Exception ex)
@@ -141,7 +141,7 @@ public static class HttpClientExtenstions
                     {
                         PropertyNameCaseInsensitive = true
                     });
-                return CommonApiResponse<TReturn>.CreateError(error.Data.Detail);
+                return CommonApiResponse<TReturn>.CreateError(error.Data.Detail, error?.Errors ?? null);
             }
         }
         catch (Exception ex)
@@ -179,7 +179,7 @@ public static class HttpClientExtenstions
                     {
                         PropertyNameCaseInsensitive = true
                     });
-                return CommonApiResponse<TReturn>.CreateError(error?.ErrorMessage?? "");
+                return CommonApiResponse<TReturn>.CreateError(error?.ErrorMessage?? "", error?.Errors?? null);
             }
         }
         catch (Exception ex)
@@ -212,7 +212,7 @@ public static class HttpClientExtenstions
                 var error = JsonConvert.DeserializeObject<CommonApiResponse<ApiErrorDto>>(responseString);
                 try
                 {
-                    return CommonApiResponse<TReturn>.CreateError(error.Data.Detail);
+                    return CommonApiResponse<TReturn>.CreateError(error.Data.Detail, error?.Errors ?? null);
                 }
                 catch
                 {

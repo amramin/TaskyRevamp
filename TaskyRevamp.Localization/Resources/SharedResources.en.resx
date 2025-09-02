@@ -180,4 +180,55 @@
   <data name="RejectionPeriodOptions" xml:space="preserve">
     <value>Rejection Period Options</value>
   </data>
+  <data name="Priority" xml:space="preserve">
+    <value>Tasks priority Configuration</value>
+  </data>
+  <data name="Added successfully" xml:space="preserve">
+    <value>Added successfully</value>
+  </data>
+  <data name="Name English" xml:space="preserve">
+    <value>Name English</value>
+  </data>
+  <data name="Name Arabic" xml:space="preserve">
+    <value>Name Arabic</value>
+  </data>
+  <data name="Background Color Indicator" xml:space="preserve">
+    <value>Background Color Indicator</value>
+  </data>
+  <data name="Name Color Indicator" xml:space="preserve">
+    <value>Name Color Indicator</value>
+  </data>
+  <data name="Order" xml:space="preserve">
+    <value>Priority Ranking</value>
+  </data>
+  <data name="EditPriority" xml:space="preserve">
+    <value>Edit Priority</value>
+  </data>
+  <data name="AddPriority" xml:space="preserve">
+    <value>Add New Priority</value>
+  </data>
+  <data name="Sure" xml:space="preserve">
+    <value>Are you sure you want to delete this priority?</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="Deleted successfully" xml:space="preserve">
+    <value>Deleted successfully</value>
+  </data>
+  <data name="PriorityDuplicateValidation" xml:space="preserve">
+    <value>You can't duplicate the priority name</value>
+  </data>
+  <data name="PriorityConfiguration" xml:space="preserve">
+    <value>Priority Configuration</value>
+  </data>
+  <data name="PriorityOptions" xml:space="preserve">
+    <value>Priority Options</value>
+  </data>
+  <data name="StatusConfig" xml:space="preserve">
+    <value>Tasks status Configuration </value>
+  </data>
+  <data name="StatusOptions" xml:space="preserve">
+    <value>Status Options</value>
+  </data>
 </root>

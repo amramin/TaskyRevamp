@@ -1,10 +1,8 @@
 ﻿using Microsoft.Extensions.Localization;
 using System.Text.Json;
-using TaskyRevamp.Domain.Exceptions;
 using TaskyRevamp.Dto.GeneralDto;
 using TaskyRevamp.Localization.Resources;
-using TaskyRevamp.WebAPI.Exeptions;
-using ApplicationException = TaskyRevamp.WebAPI.Exeptions.ApplicationException;
+using TaskyRevamp.Services.Exceptions;
 
 namespace TaskyRevamp.WebAPI.Middleware;
 
@@ -47,10 +45,10 @@ internal sealed class ExceptionHandlingMiddleware : IMiddleware
     {
         return exception switch
         {
-            BadRequestException => StatusCodes.Status400BadRequest,
-            NotFoundException => StatusCodes.Status404NotFound,
-            ValidationException => StatusCodes.Status422UnprocessableEntity,
-            NoDataException => StatusCodes.Status204NoContent,
+            BadRequestException => (exception as BadRequestException).StatusCode,
+            NotFoundException => (exception as NotFoundException).StatusCode,
+            ValidationException => (exception as ValidationException).StatusCode,
+            NoDataException => (exception as NoDataException).StatusCode,
             _ => StatusCodes.Status500InternalServerError
         };
     }
@@ -68,9 +66,9 @@ internal sealed class ExceptionHandlingMiddleware : IMiddleware
         //};
     }
 
-    private IReadOnlyDictionary<string, string[]> GetErrors(Exception exception)
+    private Dictionary<string, List<string>> GetErrors(Exception exception)
     {
-        IReadOnlyDictionary<string, string[]> errors = null;
+        Dictionary<string, List<string>> errors = null;
         if (exception is ValidationException validationException) errors = validationException.ErrorsDictionary;
         return errors;
     }

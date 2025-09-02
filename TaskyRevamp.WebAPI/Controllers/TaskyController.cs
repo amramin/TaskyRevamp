@@ -1,6 +1,5 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using TaskyRevamp.Domain.Exceptions;
 using TaskyRevamp.Dto.GeneralDto;
 using TaskyRevamp.Dto.TaskDto;
 using TaskyRevamp.Services.Tasks.Commands;

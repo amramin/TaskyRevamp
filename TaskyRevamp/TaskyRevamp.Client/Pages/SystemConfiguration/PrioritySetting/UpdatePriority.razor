@@ -1,0 +1,70 @@
+﻿@page "/Update-Priority/{Id:guid}"
+
+@using TaskyRevamp.Client.Consumer
+@using TaskyRevamp.Client.Services
+@using TaskyRevamp.Dto.SystemConfiguration
+@using Newtonsoft.Json.Linq;
+@using Newtonsoft.Json;
+
+
+@inject IStringLocalizer<SharedResources> Loc
+@inject PrioritySettingConsumer _prioritySettingConsumer
+@inject ToastService ToastService
+@inject NavigationManager navigationManager
+
+<div class="container mt-4">    
+    <PriorityForm 
+        @ref="form"
+        Priority="@_priority"
+        OnValidSubmit="@Save"
+        SubmitButtonText="Save"
+        OnCancel="@Cancel"/>
+</div>
+
+@code {
+    [Parameter] public Guid Id { get; set; }
+    [Parameter] public EventCallback<PriorityDto> OnValidSubmit { get; set; }
+    [Parameter] public EventCallback OnCancel { get; set; }
+    private PriorityDto _priority = new PriorityDto();
+    public List<PriorityDto> Priorities = new List<PriorityDto>();
+
+    private PriorityForm form;
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        var res = await _prioritySettingConsumer.GetPriorities();
+        if(res.Success && res != null && res.Data != null)
+        {
+            Priorities = res.Data;
+            var priority = Priorities.FirstOrDefault(p => p.Id == Id)!;
+            _priority = PriorityDto.CopyFrom(priority);
+        }
+
+    }
+
+    private async Task Save(EditContext editContext)
+    {
+        var res = await _prioritySettingConsumer.UpdatePriority(_priority);
+        if (res.Success)
+        {
+            await OnValidSubmit.InvokeAsync(_priority);
+            await ToastService.ShowToastAsync(Loc["EditSuccess"], "success");
+
+            navigationManager.NavigateTo("/PrioritySettings");
+        }
+        else
+        {
+            if(res.Errors != null && res.Errors.Count > 0)
+                form.AddErrorsToEditContext(res.Errors);
+        }
+
+    }
+
+
+    private async Task Cancel()
+    {
+        //await OnCancel.InvokeAsync();
+        navigationManager.NavigateTo("/PrioritySettings");
+    }
+}
