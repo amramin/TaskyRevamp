@@ -20,6 +20,13 @@ namespace TaskyRevamp.Client.Consumer
 			return res;
 		}
 
+		public async Task<CommonApiResponse<PriorityDto>> GetPriorityById(Guid id)
+		{
+			var url = $"api/PrioritySetting/GetPriorityById/{id}";
+			var res = await _taskyService.GetFromJsonAsync<CommonApiResponse<PriorityDto>>(url);
+			return res;
+		}
+
 		public async Task<CommonApiResponse<bool>> AddPriority(PriorityDto priorityDto)
 		{
 			var url = $"api/PrioritySetting/AddPriority";
@@ -32,6 +39,14 @@ namespace TaskyRevamp.Client.Consumer
 		{
 			var url = $"api/PrioritySetting/UpdatePriority";
 			var res = await _taskyService.PostJsonAsync<bool>(url, priorityDto);
+
+			return res;
+		}
+
+		public async Task<CommonApiResponse<bool>> UpdatePrioritiesOrder(List<PriorityDto> priorities)
+		{
+			var url = $"api/PrioritySetting/UpdatePrioritiesOrder";
+			var res = await _taskyService.PostJsonAsync<bool>(url, priorities);
 
 			return res;
 		}
