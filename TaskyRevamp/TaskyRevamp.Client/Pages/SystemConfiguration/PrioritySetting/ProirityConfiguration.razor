@@ -33,20 +33,29 @@
                     <span class="rounded-circle p-2" style="background-color:@p.BackgroundColor"></span>
                     <span class="rounded-circle p-2" style="background-color:@p.NameColor"></span>
 
-
-                    <button class="btn btn-sm btn-outline-success" @onclick=" () => Edit(p.Id)">
-                        <i class="bi bi-pencil"></i>
+                    <button class="btn btn-action-40 btn-outline-success" @onclick=" () => Edit(p.Id)">
+                        <span class="icon">
+                            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Edit"></SVGCrud>
+                        </span>
                     </button>
-                    <button class="btn btn-sm btn-outline-danger" @onclick=" () => ShowDeleteConfirm(p)">
-                        <i class="bi bi-trash"></i>
+
+                    <button class="btn btn-action-40 btn-outline-danger" @onclick=" () => ShowDeleteConfirm(p)">
+                        <span class="icon">
+                            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.RecycleBin"></SVGCrud>
+                        </span>
                     </button>
 
                     <div class="btn-group-vertical">
-                        <button class="btn btn-sm btn-outline-secondary" @onclick=" () => MoveUp(p)">
-                            <i class="bi bi-arrow-up"></i>
+                        <button class="btn btn-action-40 btn-outline-secondary" @onclick=" () => MoveUp(p)">
+                            <span class="icon">
+                                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Pluse"></SVGCrud>
+                            </span>
                         </button>
-                        <button class="btn btn-sm btn-outline-secondary" @onclick="() => MoveDown(p)">
-                            <i class="bi bi-arrow-down"></i>
+
+                        <button class="btn btn-action-40 btn-outline-secondary" @onclick="() => MoveDown(p)">
+                            <span class="icon">
+                                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Pluse"></SVGCrud>
+                            </span>
                         </button>
                     </div>
                 </div>
@@ -89,7 +98,7 @@
     private PriorityDto? selectedPriority;
     private bool showConfirm;
     private bool isOrdered = false;
-    //List<PriorityDto> OriginalPriorities = new();
+    List<PriorityDto>? OriginalPriorities;
 
     protected async override Task OnInitializedAsync()
     {
@@ -97,19 +106,16 @@
         if (res.Success  && res.Data != null)
         {
             Priorities = res.Data;
-            //OriginalPriorities = Priorities;
+            OriginalPriorities = CopyPriorites();
         }
     }
-
     private void Add() => navigationManager.NavigateTo("/Add-Priority");
-
     private void Edit(Guid id)
     {
         //IsShowEditDialog = true;
         //SelectedPriorityId = id;
         navigationManager.NavigateTo($"/Update-Priority/{id}");
     }
-
     private void ShowDeleteConfirm(PriorityDto p)
     {
         confirmMessage = @Loc["Sure"];
@@ -134,24 +140,23 @@
     }
     private void MoveUp(PriorityDto p)
     {
-        if (p.Order >= 1)
+        if (p.Order > 1)
         {
-            var abovePriority = Priorities.FirstOrDefault(pr => pr.Order == p.Order-1);
-            if(abovePriority != null)
-            {
+            var abovePriority = Priorities.FirstOrDefault(pr => pr.Order == p.Order - 1);
+            if (abovePriority != null) 
+            { 
                 abovePriority.Order++;
                 p.Order--;
-
             }
         }
         isOrdered = true;
     }
     private void MoveDown(PriorityDto p)
     {
-        if(p.Order <= Priorities.Count())
+        if (p.Order < Priorities.Count())
         {
-            var belowPriority = Priorities.FirstOrDefault(pr => pr.Order == p.Order+1);
-            if(belowPriority != null)
+            var belowPriority = Priorities.FirstOrDefault(pr => pr.Order == p.Order + 1);
+            if (belowPriority != null)
             {
                 belowPriority.Order--;
                 p.Order++;
@@ -159,21 +164,45 @@
         }
         isOrdered = true;
     }
-
     private async Task Save(MouseEventArgs args)
     {
-        // if (isOrdered)
-        // {
-
-        // }
+        if (isOrdered)
+        {
+            var res = await _prioritySettingConsumer.UpdatePrioritiesOrder(Priorities);
+            if (res.Success)
+            {
+                isOrdered = false;
+                await ToastService.ShowToastAsync(Loc["EditSuccess"], "success");
+                OriginalPriorities = CopyPriorites();
+            }
+        }
     }
     private void Cancel(MouseEventArgs args)
     {
-        // Priorities = OriginalPriorities;
-        // isOrdered = false;
-        // StateHasChanged();
+        Priorities = OriginalPriorities!.Select(p => new PriorityDto
+        {
+            Id = p.Id,
+            NameEnglish = p.NameEnglish,
+            NameArabic = p.NameArabic,
+            NameColor = p.NameColor,
+            BackgroundColor = p.BackgroundColor,
+            Order = p.Order
+        }).ToList();
+        isOrdered = false;
+        StateHasChanged();
     }
-
+    private List<PriorityDto> CopyPriorites()
+    {
+        return Priorities.Select(p => new PriorityDto
+        {
+            Id = p.Id,
+            NameEnglish = p.NameEnglish,
+            NameArabic = p.NameArabic,
+            NameColor = p.NameColor,
+            BackgroundColor = p.BackgroundColor,
+            Order = p.Order
+        }).ToList();
+    }
     // private async void ResetPage(PriorityDto args)
     // {
     //     var res = await _prioritySettingConsumer.GetPriorities();

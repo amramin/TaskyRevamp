@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using TaskyRevamp.Dto.SystemConfiguration;
 using TaskyRevamp.Services.SystemConfiguration.PriorityConfiguration.Command;
 using TaskyRevamp.Services.SystemConfiguration.PriorityConfiguration.Query;
+using TaskyRevamp.Services.SystemConfiguration.StatusConfiguration.Query;
 
 namespace TaskyRevamp.WebAPI.Controllers
 {
@@ -24,22 +25,34 @@ namespace TaskyRevamp.WebAPI.Controllers
 			return Ok(await _mediator.Send(new GetProrityQuery()));
 		}
 
+		[HttpGet("GetPriorityById/{id}")]
+		public async Task<IActionResult> GetPriorityByID(Guid id)
+		{
+			return Ok(await _mediator.Send(new GetPriorityByIdQuery(id)));
+		}
+
 		[HttpPost("AddPriority")]
 		public async Task<IActionResult> AddPriority([FromBody] PriorityDto priorityDto)
 		{
-			return Ok(await _mediator.Send(new AddPriorityQuery(priorityDto)));
+			return Ok(await _mediator.Send(new CreatePriorityCommand(priorityDto)));
 		}
 
 		[HttpPost("UpdatePriority")]
 		public async Task<IActionResult> UpdatePriority([FromBody] PriorityDto priorityDto)
 		{
-			return Ok(await _mediator.Send(new UpdateProrityQuery(priorityDto)));
+			return Ok(await _mediator.Send(new UpdateProrityCommand(priorityDto)));
+		}
+
+		[HttpPost("UpdatePrioritiesOrder")]
+		public async Task<IActionResult> UpdatePrioritesOrder([FromBody] List<PriorityDto> priorities)
+		{
+			return Ok(await _mediator.Send(new UpdatePrioritiesOrder(priorities)));
 		}
 
 		[HttpDelete("DeletePriority/{id}")]
 		public async Task<IActionResult> DeletePriority(Guid id)
 		{
-			return Ok(await _mediator.Send(new DeletePriorityQuery(new PriorityDto { Id = id })));
+			return Ok(await _mediator.Send(new DeletePriorityCommand(new PriorityDto { Id = id })));
 		}
 	}
 }

@@ -9,11 +9,16 @@
 @inject RejectionSettingConsumer _rejectionSettingConsumer
 @inject IStringLocalizer<SharedResources> Loc
 @inject ToastService ToastService
+<div class="page-header">
+    <div class="title-block">
+        <h1 class="page-headline">@Loc["RejectionPeriodOptions"]</h1>
+    </div>
+</div>
 
-<h6>@Loc["RejectionPeriodOptions"]</h6>
 
-<div class="container">
-    <InputRadioGroup TValue="RejectionPeriodType" Value="RejectionSetting.PeriodType" ValueChanged="OnSettingChange" ValueExpression="() => RejectionSetting.PeriodType">
+<div class="page-body">
+    <InputRadioGroup TValue="RejectionPeriodType" Value="RejectionSetting.PeriodType" ValueChanged="OnSettingChange"
+        ValueExpression="() => RejectionSetting.PeriodType">
         @foreach (var value in PeriodTypes)
         {
             <div>
@@ -21,10 +26,8 @@
 
                 @if (RejectionSetting.PeriodType == RejectionPeriodType.Custom && value == RejectionPeriodType.Custom)
                 {
-                    <input type="number" min="0"
-                           class="form-control mt-1"
-                           @bind="RejectionSetting.CustomDays"
-                           @oninput="OnCustomDaysChange" />
+                    <input type="number" min="0" class="form-control mt-1" @bind="RejectionSetting.CustomDays"
+                        @oninput="OnCustomDaysChange" />
                 }
             </div>
             <br />
@@ -41,7 +44,11 @@
 @code {
 
     public List<RejectionPeriodType> PeriodTypes = EnumExtensions.GetOrderedValues<RejectionPeriodType>();
-    public RejectionSettingsDto RejectionSetting { get; set; } = new RejectionSettingsDto { PeriodType = RejectionPeriodType.Days3 };
+    public RejectionSettingsDto RejectionSetting { get; set; } = new RejectionSettingsDto
+    {
+        PeriodType =
+    RejectionPeriodType.Days3
+    };
 
     protected async override Task OnInitializedAsync()
     {
@@ -100,4 +107,3 @@
         }
     }
 }
-

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using SurveyRevamp.Infrastructure;
@@ -20,8 +21,6 @@ using TaskyRevamp.WebAPI.Exeptions;
 using TaskyRevamp.WebAPI.Middleware;
 using TaskyRevamp.WebAPI.Pipeline;
 using Workflow.Infrastructure;
-using FluentValidation;
-using FluentValidation.Validators;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -70,7 +69,8 @@ builder.Services.AddExceptionHandler<ApiExceptionHandler>();
 builder.Services.AddProblemDetails();
 
 // Localization
-builder.Services.AddLocalization(options => options.ResourcesPath = "SharedResources");
+//builder.Services.AddLocalization(options => options.ResourcesPath = "SharedResources");
+builder.Services.AddLocalization();
 var supportedCultures = new[] { "en", "ar" };
 builder.Services.Configure<RequestLocalizationOptions>(options =>
 {
@@ -142,6 +142,9 @@ builder.Services.AddCors(options =>
 
 
 var app = builder.Build();
+
+var locOptions = app.Services.GetRequiredService<IOptions<RequestLocalizationOptions>>();
+app.UseRequestLocalization(locOptions.Value);
 
 // Run DB seeding
 using (var scope = app.Services.CreateScope())

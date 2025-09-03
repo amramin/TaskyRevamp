@@ -22,8 +22,10 @@
                     <span class="rounded-circle p-2" style="background-color:@status.BackgroundColor"></span>
                     <span class="rounded-circle p-2" style="background-color:@status.NameColor"></span>
 
-                    <button class="btn btn-sm btn-outline-success" @onclick=" () => Edit(status.Id)">
-                        <i class="bi bi-pencil"></i>
+                    <button class="btn btn-action-40 btn-outline-success" @onclick=" () => Edit(status.Id)">
+                        <span class="icon">
+                            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Edit"></SVGCrud>
+                        </span>
                     </button>
                 
                 </div>

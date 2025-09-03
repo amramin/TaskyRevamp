@@ -9,16 +9,16 @@ using TaskyRevamp.Dto.SystemConfiguration;
 using statusSetting = TaskyRevamp.Domain.Models.SystemConfiguration.StatusSettings;
 namespace TaskyRevamp.Services.SystemConfiguration.StatusConfiguration.Command
 {
-	public record UpdateStatusQuery(StatusSettingsDto StatusSettingsDto) : IRequest<bool>;
-	public class UpdateStatusQueryHandler : IRequestHandler<UpdateStatusQuery, bool>
+	public record UpdateStatusCommand(StatusSettingsDto StatusSettingsDto) : IRequest<bool>;
+	public class UpdateStatusHandler : IRequestHandler<UpdateStatusCommand, bool>
 	{
 		private readonly IRepository<statusSetting> _StatusRepository;
-		public UpdateStatusQueryHandler(IRepository<statusSetting> _statusRepository)
+		public UpdateStatusHandler(IRepository<statusSetting> _statusRepository)
 		{
 			_StatusRepository = _statusRepository;
 		}
 
-		public async Task<bool> Handle(UpdateStatusQuery request, CancellationToken cancellationToken)
+		public async Task<bool> Handle(UpdateStatusCommand request, CancellationToken cancellationToken)
 		{
 			var resStatus = await _StatusRepository.FindByKey(request.StatusSettingsDto.Id);
 			if (resStatus.Success && resStatus != null && resStatus.Value != null)

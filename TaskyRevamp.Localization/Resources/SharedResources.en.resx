@@ -151,7 +151,7 @@
     <value>Parent Not Found</value>
   </data>
   <data name="RecycleBinConfiguration" xml:space="preserve">
-    <value>Recycle Bin Configuration</value>
+    <value>Recycle Bin timeframe</value>
   </data>
   <data name="RetentionPeriodOptions" xml:space="preserve">
     <value>Retention Period Options</value>
@@ -175,7 +175,7 @@
     <value>3 days</value>
   </data>
   <data name="RejectionConfiguration" xml:space="preserve">
-    <value>Task Rejection Configuration</value>
+    <value>Task Rejection </value>
   </data>
   <data name="RejectionPeriodOptions" xml:space="preserve">
     <value>Rejection Period Options</value>
@@ -216,7 +216,7 @@
   <data name="Deleted successfully" xml:space="preserve">
     <value>Deleted successfully</value>
   </data>
-  <data name="duplicateValidation" xml:space="preserve">
+  <data name="PriorityDuplicateValidation" xml:space="preserve">
     <value>You can't duplicate the priority name</value>
   </data>
   <data name="PriorityConfiguration" xml:space="preserve">

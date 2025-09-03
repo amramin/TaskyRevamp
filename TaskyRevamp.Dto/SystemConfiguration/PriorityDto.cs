@@ -22,5 +22,18 @@ namespace TaskyRevamp.Dto.SystemConfiguration
 		[Required]
 		public string BackgroundColor { get; set; }
 		public int Order { get; set; }
-	}
+
+        public static PriorityDto CopyFrom(PriorityDto source)
+        {
+            return new PriorityDto
+            {
+                Id = source.Id,
+                NameEnglish = source.NameEnglish,
+                NameArabic = source.NameArabic,
+                NameColor = source.NameColor,
+                BackgroundColor = source.BackgroundColor,
+                Order = source.Order
+            };
+        }
+    }
 }

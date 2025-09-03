@@ -28,7 +28,15 @@ namespace TaskyRevamp.WebAPI.Exeptions
             using (StreamWriter sw = File.AppendText(logFile))
             {
                 sw.WriteLine("****************************** {0} : {1} ******************************", token, DateTime.UtcNow);
-                sw.WriteLine(JsonConvert.SerializeObject(exc));
+                var exceptionDetails = new
+                {
+                    exc.Message,
+                    exc.StackTrace,
+                    InnerException = exc.InnerException?.Message,
+                    exc.Source
+                };
+
+                sw.WriteLine(JsonConvert.SerializeObject(exceptionDetails, Formatting.Indented));
                 sw.WriteLine("******************************");
 
                 sw.WriteLine("Source: " + source);

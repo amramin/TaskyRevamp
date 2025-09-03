@@ -216,7 +216,7 @@
   <data name="Deleted successfully" xml:space="preserve">
     <value>تم الحذف بنجاح</value>
   </data>
-  <data name="duplicateValidation" xml:space="preserve">
+  <data name="PriorityDuplicateValidation" xml:space="preserve">
     <value>لا يمكنك تكرار اسم الأولوية</value>
   </data>
   <data name="PriorityConfiguration" xml:space="preserve">
