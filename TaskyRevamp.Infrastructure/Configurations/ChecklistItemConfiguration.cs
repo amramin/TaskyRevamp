@@ -10,16 +10,18 @@ using TaskyRevamp.Domain.Models.Task;
 
 namespace TaskyRevamp.Infrastructure.Configurations;
 
-internal class TaskChecklistConfiguration : IEntityTypeConfiguration<TaskChecklist>
+internal class ChecklistItemConfiguration : IEntityTypeConfiguration<ChecklistItem>
 {
-    public void Configure(EntityTypeBuilder<TaskChecklist> builder)
+    public void Configure(EntityTypeBuilder<ChecklistItem> builder)
     {
         builder
-   .HasOne(te => te.taskItem)
-   .WithMany(tc=>tc.taskChecklists).HasForeignKey(p=>p.TaskItemId)
-   .OnDelete(DeleteBehavior.Restrict); // or NoAction in EF Core 5+
+   .HasOne(te => te.TaskChecklist)
+   .WithMany(tc=>tc.items)
+   .HasForeignKey(ci => ci.TaskChecklistId)  // Use this FK
 
-        
+   .OnDelete(DeleteBehavior.Restrict); // or NoAction in EF Core 5+
+   
+
 
     }
 }

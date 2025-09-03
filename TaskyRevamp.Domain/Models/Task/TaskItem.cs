@@ -20,6 +20,7 @@ public class TaskItem : Entity, IHasCreationMetaData, IHasUpdateMetaData
     public TaskSource Source { get;  set; }
     public DateTime StartDate { get;  set; }
     public DateTime EndDate { get;  set; }
+    public List<TaskChecklist> taskChecklists { get; set; }
     public int Duration => (EndDate.Date - StartDate.Date).Days + 1;
     public Reminder? Reminder { get;  set; }
     public Priority Priority { get;  set; }

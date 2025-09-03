@@ -11,6 +11,7 @@ public class ChecklistItem : Entity, IHasCreationMetaData
 {
     protected ChecklistItem() { }
 
+    public Guid TaskChecklistId { set; get; }
     public TaskChecklist TaskChecklist {  get; set; }
     public string TitleEnglish { get;  set; }
     public string TitleArabic { get; set; }
