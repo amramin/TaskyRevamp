@@ -11,21 +11,21 @@ namespace TaskyRevamp.Dto.Enums
 	{
 		[LocalizedDescription("List", typeof(SharedResources))]
 		List = 1,
-			[LocalizedDescription("Dashboard", typeof(SharedResources))]
+			[LocalizedDescription("List_Dashboard", typeof(SharedResources))]
 			List_Dashboard = 11,
-			[LocalizedDescription("Overall", typeof(SharedResources))]
+			[LocalizedDescription("List_Overall", typeof(SharedResources))]
 			List_Overall = 12,
-			[LocalizedDescription("Timeline", typeof(SharedResources))]
+			[LocalizedDescription("List_Timeline", typeof(SharedResources))]
 			List_Timeline = 13,
-			[LocalizedDescription("Source", typeof(SharedResources))]
+			[LocalizedDescription("List_Source", typeof(SharedResources))]
 			List_Source = 14,
-			[LocalizedDescription("Type", typeof(SharedResources))]
+			[LocalizedDescription("List_Type", typeof(SharedResources))]
 			List_Type = 15,
-			[LocalizedDescription("Card", typeof(SharedResources))]
+			[LocalizedDescription("List_Card", typeof(SharedResources))]
 			List_Card = 16,
-			[LocalizedDescription("kanbanView", typeof(SharedResources))]
-			List_kanban = 17,
-			[LocalizedDescription("Calendar", typeof(SharedResources))]
+			[LocalizedDescription("List_Kanban", typeof(SharedResources))]
+			List_Kanban = 17,
+			[LocalizedDescription("List_Calendar", typeof(SharedResources))]
 			List_Calendar = 18,
 		[LocalizedDescription("Kanban", typeof(SharedResources))]
 		Kanban = 2,

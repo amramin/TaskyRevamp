@@ -12,6 +12,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <None Include="..\TaskyRevamp.Client\Pages\SystemConfiguration\ViewTaskSetting\InputSwitch.razor" Link="InputSwitch.razor" />
 	  <None Include="compilerconfig.json" />
 	</ItemGroup>
 

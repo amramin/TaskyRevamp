@@ -168,7 +168,7 @@
   <data name="Hours24" xml:space="preserve">
     <value>24 hours</value>
   </data>
-  <data name="Week" xml:space="preserve">
+  <data name="ListWeek" xml:space="preserve">
     <value>1 week</value>
   </data>
   <data name="Days3" xml:space="preserve">
@@ -230,5 +230,41 @@
   </data>
   <data name="StatusOptions" xml:space="preserve">
     <value>Status Options</value>
+  </data>
+  <data name="List" xml:space="preserve">
+    <value>List view</value>
+  </data>
+  <data name="Gantt" xml:space="preserve">
+    <value>Gantt Chart view</value>
+  </data>
+  <data name="Kanban" xml:space="preserve">
+    <value>Kanban view</value>
+  </data>
+  <data name="List_Calendar" xml:space="preserve">
+    <value>Calendar View</value>
+  </data>
+  <data name="List_Kanban" xml:space="preserve">
+    <value>Kanban View</value>
+  </data>
+  <data name="List_Card" xml:space="preserve">
+    <value>Card view</value>
+  </data>
+  <data name="List_Type" xml:space="preserve">
+    <value>Type View</value>
+  </data>
+  <data name="List_Source" xml:space="preserve">
+    <value>Source View</value>
+  </data>
+  <data name="List_Timeline" xml:space="preserve">
+    <value>Timeline view</value>
+  </data>
+  <data name="List_Overall" xml:space="preserve">
+    <value>Overall view</value>
+  </data>
+  <data name="List_Dashboard" xml:space="preserve">
+    <value>Dashboard</value>
+  </data>
+  <data name="Tasksviews" xml:space="preserve">
+    <value>Tasks views</value>
   </data>
 </root>

@@ -1,0 +1,100 @@
+﻿@page "/ViewTaskSetting"
+
+@using TaskyRevamp.Client.Consumer
+@using TaskyRevamp.Client.Services
+@using TaskyRevamp.Dto.Enums
+@using TaskyRevamp.Dto.SystemConfiguration
+@inject ViewTaskSettingConsumer _viewTaskSettingConsumer
+@inject IStringLocalizer<SharedResources> Loc
+@inject ToastService ToastService
+
+<div class ="card p-3">
+    <h4 class="mb-4">View Options</h4>
+
+    @if (TaskViews != null)
+    {
+        <!-- List View -->
+        <div class="d-flex align-items-center justify-content-between border border-primary rounded p-2 mb-2 ms-2">
+            <span class="text-primary">@Loc["List"]</span>
+            <div class="form-check form-switch m-0">
+                <InputCheckbox @bind-Value="ListView!.IsActive" class="form-check-input" />
+            </div>
+        </div>
+
+        <!-- Children of List -->
+        @foreach (var child in TaskViews.Where(v => (int)v.ViewType >= 11 && (int)v.ViewType <= 18))
+        {
+            <div class="d-flex align-items-center justify-content-between border border-primary rounded p-2 mb-2 ms-4 me-4">
+                <span class="text-primary">@Loc[child.ViewType.ToString()]</span>
+                <div class="form-check form-switch m-0">
+                    <InputCheckbox @bind-Value="child.IsActive"
+                                   class="form-check-input"
+                                   disabled="@(ListView.IsActive == false)" />
+                </div>
+            </div>
+        }
+        @foreach (var view in TaskViews.Where(v => (int)v.ViewType < 11 || (int)v.ViewType > 18))
+        {
+            if (view.ViewType != ViewType.List)
+            {
+                <div class="d-flex align-items-center justify-content-between border border-primary rounded p-2 mb-2 ms-2">
+                    <span class="text-primary">@Loc[view.ViewType.ToString()]</span>
+                    <div class="form-check form-switch m-0">
+                        <InputCheckbox @bind-Value="view.IsActive" class="form-check-input" />
+                    </div>
+                </div>
+            }
+        }
+    }
+
+    <div class="d-flex justify-content-end gap-2 mt-4">
+        <button class="btn btn-light px-4" @onclick="Cancel">@Loc["Cancel"]</button>
+        <button class="btn btn-primary px-4" @onclick="Save">@Loc["Save"]</button>
+    </div>
+</div>
+@code {
+    private List<ViewTaskSettingsDto> TaskViews = new List<ViewTaskSettingsDto>();
+    private ViewTaskSettingsDto? ListView;
+    private List<ViewTaskSettingsDto> originalViews = new();
+    private bool isChanged = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var res = await _viewTaskSettingConsumer.GetViewTaskSetting();
+        if (res.Success && res.Data != null)
+        {
+            TaskViews = res.Data;
+            originalViews = TaskViews.Select(t => new ViewTaskSettingsDto
+            {
+                ViewType = t.ViewType,
+                IsActive = t.IsActive
+            }).ToList();
+            ListView = TaskViews.FirstOrDefault(v => v.ViewType == ViewType.List)!;
+        }
+    }
+    private void Cancel(MouseEventArgs args)
+    {
+        TaskViews = originalViews.Select(t => new ViewTaskSettingsDto
+        {
+            ViewType = t.ViewType,
+            IsActive = t.IsActive
+        }).ToList();
+        ListView = TaskViews.FirstOrDefault(v => v.ViewType == ViewType.List)!;
+    }
+    private async void Save(MouseEventArgs args)
+    {
+        var res = await _viewTaskSettingConsumer.UpdateTaskViewSetting(TaskViews);
+        if (res.Success)
+        {
+            originalViews = TaskViews.Select(t => new ViewTaskSettingsDto
+            {
+                ViewType = t.ViewType,
+                IsActive = t.IsActive
+            }).ToList();
+
+            await ToastService.ShowToastAsync(Loc["EditSuccess"], "success");
+        }
+    }
+  
+    
+}

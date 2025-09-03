@@ -43,6 +43,7 @@ builder.Services.AddTransient<RecycleBinSettingConsumer>();
 builder.Services.AddTransient<RejectionSettingConsumer>();
 builder.Services.AddTransient<PrioritySettingConsumer>();
 builder.Services.AddTransient<StatusSettingConsumer>();
+builder.Services.AddTransient<ViewTaskSettingConsumer>();
 
 var configuration = builder.Configuration;
 
