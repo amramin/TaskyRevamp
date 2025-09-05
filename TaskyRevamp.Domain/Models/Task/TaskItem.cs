@@ -132,7 +132,7 @@ public class TaskItem : Entity, IHasCreationMetaData, IHasUpdateMetaData
     public IReadOnlyCollection<TaskItem> Subtasks => _subtasks.AsReadOnly();
 
     public TaskChecklist? Checklist { get;  set; }
-    public TaskComments? Comments { get;  set; }
+    public TaskComment? Comments { get;  set; }
     public TaskAttachments? Attachments { get;  set; }
      readonly List<TaskHistoryEntry> _history = new();
     public IReadOnlyCollection<TaskHistoryEntry> History => _history.AsReadOnly();
@@ -330,7 +330,7 @@ public class TaskItem : Entity, IHasCreationMetaData, IHasUpdateMetaData
         var request = new ChangeEndDateRequest(Guid.NewGuid(), this, newEnd, reason, requester);
         _changeRequests.Add(request);
         AddHistoryEntry(requester, $"requested end-date change to {newEnd:yyyy-MM-dd}");
-        Comments.Add($"End date request reason: {reason}", requester);
+       // Comments.Add($"End date request reason: {reason}", requester);
         return request;
     }
 
@@ -353,7 +353,7 @@ public class TaskItem : Entity, IHasCreationMetaData, IHasUpdateMetaData
         //    throw new InvalidOperationException($"User {assigneeToReject.Username} is not an assignee of this task and cannot reject it.");
         //}
 
-        Comments.Add($"Task rejection reason: {reason}", by);
+        //Comments.Add($"Task rejection reason: {reason}", by);
         AddHistoryEntry(by, $"Task rejected by {assigneeToReject.Username}.");
 
         //Assignees.Remove(assigneeToReject, by);
