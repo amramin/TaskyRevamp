@@ -327,7 +327,7 @@ public class TaskItem : Entity, IHasCreationMetaData, IHasUpdateMetaData
             throw new InvalidOperationException("The new end date should be equal to or greater than the current date.");
         }
 
-        var request = new ChangeEndDateRequest(Guid.NewGuid(), this, newEnd, reason, requester);
+        var request = new ChangeEndDateRequest(Guid.NewGuid(),Id , newEnd, reason, requester.Id);
         _changeRequests.Add(request);
         AddHistoryEntry(requester, $"requested end-date change to {newEnd:yyyy-MM-dd}");
        // Comments.Add($"End date request reason: {reason}", requester);
