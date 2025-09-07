@@ -1,10 +1,11 @@
 ﻿@if (TotalPages > 1 || ShowPageSize)
 {
-    <div class="d-flex justify-content-between align-items-center">
+    <div class="pagination-container">
         <!-- Left: Page size dropdown -->
+        <div class="start">
         @if (ShowPageSize)
         {
-            <div class="me-3">
+            <div>
                 <label>Items per page: </label>
                 <select class="form-select d-inline-block w-auto ms-2"
                         @onchange="PageSizeChanged">
@@ -17,16 +18,36 @@
                 </select>
             </div>
         }
-
+        </div>
+        <div class="end">
+        <!-- Right: Items counter -->
+        <div class="entries">
+            @if (TotalCount > 0)
+            {
+                <span>
+                    @((CurrentPage - 1) * PageSize + 1) -
+                    @(Math.Min(CurrentPage * PageSize, TotalCount))
+                    of @TotalCount  Entries
+                </span>
+            }
+        </div>
         <!-- Middle: Pagination controls -->
         <nav>
             <ul class="pagination mb-0">
                 <li class="page-item @(CurrentPage == 1 ? "disabled" : "")">
-                    <button class="page-link" @onclick="() => OnPageChanged(1)">First</button>
+                    <button class="page-link action-btn" @onclick="() => OnPageChanged(1)">
+                       <span class="icon">
+                         <SVGCrud SVGType="SVGCrud.SVGTypeEnum.ChevronDoubleStart"></SVGCrud>
+                       </span>
+                    </button>
                 </li>
 
                 <li class="page-item @(CurrentPage == 1 ? "disabled" : "")">
-                    <button class="page-link" @onclick="() => OnPageChanged(CurrentPage - 1)">Prev</button>
+                    <button class="page-link action-btn" @onclick="() => OnPageChanged(CurrentPage - 1)">
+                        <span class="icon">
+                         <SVGCrud SVGType="SVGCrud.SVGTypeEnum.ChevronStart"></SVGCrud>
+                       </span>
+                    </button>
                 </li>
 
                 @for (int i = 1; i <= TotalPages; i++)
@@ -40,26 +61,24 @@
                 }
 
                 <li class="page-item @(CurrentPage == TotalPages ? "disabled" : "")">
-                    <button class="page-link" @onclick="() => OnPageChanged(CurrentPage + 1)">Next</button>
+                    <button class="page-link action-btn" @onclick="() => OnPageChanged(CurrentPage + 1)">
+                        <span class="icon">
+                            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.ChevronEnd"></SVGCrud>
+                       </span>
+                    </button>
                 </li>
 
                 <li class="page-item @(CurrentPage == TotalPages ? "disabled" : "")">
-                    <button class="page-link" @onclick="() => OnPageChanged(TotalPages)">Last</button>
+                    <button class="page-link action-btn" @onclick="() => OnPageChanged(TotalPages)"> 
+                       <span class="icon">
+                            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.ChevronDoubleEnd"></SVGCrud>
+                       </span>
+                    </button>
                 </li>
             </ul>
         </nav>
-
-        <!-- Right: Items counter -->
-        <div class="ms-3">
-            @if (TotalCount > 0)
-            {
-                <span>
-                    @((CurrentPage - 1) * PageSize + 1) -
-                    @(Math.Min(CurrentPage * PageSize, TotalCount))
-                    of @TotalCount
-                </span>
-            }
         </div>
+       
     </div>
 }
 
