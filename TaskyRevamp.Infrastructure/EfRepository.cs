@@ -9,7 +9,7 @@ using TaskyRevamp.Dto.GeneralDto;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 
-namespace Workflow.Infrastructure;
+namespace TaskyRevamp.Infrastructure;
 
 public class EfRepository<TEntity> : IRepository<TEntity> where TEntity : Entity
 {
@@ -344,7 +344,7 @@ public class EfRepository<TEntity> : IRepository<TEntity> where TEntity : Entity
         if (paging is not null)
         {
             paging.Total = _queryable.Count();
-            _queryable = _queryable.Skip((paging.Page) * paging.PageSize).Take(paging.PageSize);
+            _queryable = _queryable.Skip(paging.Page * paging.PageSize).Take(paging.PageSize);
         }
     }
     private IQueryable<TEntity> GetAllIncluding
