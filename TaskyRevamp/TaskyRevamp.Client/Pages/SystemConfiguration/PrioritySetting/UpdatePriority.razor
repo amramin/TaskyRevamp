@@ -26,19 +26,15 @@
     [Parameter] public EventCallback<PriorityDto> OnValidSubmit { get; set; }
     [Parameter] public EventCallback OnCancel { get; set; }
     private PriorityDto _priority = new PriorityDto();
-    public List<PriorityDto> Priorities = new List<PriorityDto>();
-
     private PriorityForm form;
 
     protected override async Task OnInitializedAsync()
     {
 
-        var res = await _prioritySettingConsumer.GetPriorities();
+        var res = await _prioritySettingConsumer.GetPriorityById(Id);
         if(res.Success && res != null && res.Data != null)
         {
-            Priorities = res.Data;
-            var priority = Priorities.FirstOrDefault(p => p.Id == Id)!;
-            _priority = PriorityDto.CopyFrom(priority);
+            _priority = res.Data;
         }
 
     }
