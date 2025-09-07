@@ -175,6 +175,11 @@
                 NavigationManager.NavigateTo(firstChild.Url);
             }
         }
+
+        // Step 1: Open settings panel
+        IsSettingOpen = true;
+        StateHasChanged(); // Force UI update immediately
+        StateHasChanged(); // Force UI update immediately
     }
 
 
