@@ -21,6 +21,8 @@ public class ChecklistItem : Entity, IHasCreationMetaData
     public DateTime EndDate { get; set; }
     public User CreatedBy { get;  set; }
     public User AssignedUser { get; set; }
+
+    public Guid AssignedUserId { get; set; }
     public Guid CreatedById { get ; set; }
     public DateTime CreateDate { get; set; }
 
@@ -42,7 +44,7 @@ public class ChecklistItem : Entity, IHasCreationMetaData
        Id= Id,
        TitleEnglish= TitleEnglish,
        TitleArabic= TitleArabic,
-       AssignedUserId=AssignedUser.Id,
+       AssignedUserId=AssignedUserId,
        
        EndDate= EndDate,
        IsCompleted= IsCompleted,
@@ -50,12 +52,14 @@ public class ChecklistItem : Entity, IHasCreationMetaData
 
         };
     }
-    public ChecklistItem(Guid id, string titleEN,string titleAR, User by)
+    public ChecklistItem(Guid id, string titleEN,string titleAR,Guid taskChecklistId, Guid by,Guid assignedId)
     {
         Id = id;
         TitleEnglish = titleEN;
         TitleArabic = titleAR;  
-        CreatedBy = by;
+        CreatedById = by;
+        AssignedUserId=assignedId;
+        TaskChecklistId = taskChecklistId;
         CreateDate = DateTime.UtcNow;
     }
     public void UpdateText(string titleEN, string titleAR, User by)

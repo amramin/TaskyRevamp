@@ -20,7 +20,7 @@ public class CreateChecklistItemHandler : IRequestHandler<CreateChecklistItemCom
 
     public async Task<Guid> Handle(CreateChecklistItemCommand request, CancellationToken cancellationToken)
     {
-        ChecklistItem ChecklistItem = new ChecklistItem(request.checklistItemDto.Id, request.checklistItemDto.TitleEnglish, request.checklistItemDto.TitleArabic, new TaskyRevamp.Domain.Models.Users.User() { });
+        ChecklistItem ChecklistItem = new ChecklistItem(request.checklistItemDto.Id, request.checklistItemDto.TitleEnglish, request.checklistItemDto.TitleArabic,request.checklistItemDto.TaskChecklistId, request.checklistItemDto.CreatedById,request.checklistItemDto.AssignedUserId);
 
 
         await _ChecklistItemRepository.Insert(ChecklistItem);

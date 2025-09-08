@@ -52,9 +52,9 @@ public class TaskChecklist : Entity
     {
     }
 
-    public void AddItem(string textEN,string textAR,User by)
+    public void AddItem(string textEN,string textAR,User by,Guid assigned)
     {
-        var item = new ChecklistItem(Guid.NewGuid(), textEN,textAR, by);
+        var item = new ChecklistItem(Guid.NewGuid(), textEN,textAR, Id,by.Id,assigned);
         items.Add(item);
         taskItem.AddHistoryEntry(by, $"added checklist item '{textEN}''{textEN}'");
     }

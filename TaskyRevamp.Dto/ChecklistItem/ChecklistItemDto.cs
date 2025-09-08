@@ -17,5 +17,8 @@ namespace TaskyRevamp.Dto.ChecklistItem
         public bool IsCompleted { get; set; }
         public DateTime EndDate { get; set; }
         public Guid AssignedUserId { get; set; }
+
+        public Guid CreatedById { get; set; }
+
     }
 }

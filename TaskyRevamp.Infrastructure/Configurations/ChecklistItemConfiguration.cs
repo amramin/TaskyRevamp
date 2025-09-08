@@ -20,7 +20,15 @@ internal class ChecklistItemConfiguration : IEntityTypeConfiguration<ChecklistIt
    .HasForeignKey(ci => ci.TaskChecklistId)  // Use this FK
 
    .OnDelete(DeleteBehavior.Restrict); // or NoAction in EF Core 5+
-   
+
+        builder
+.HasOne(te => te.AssignedUser)
+.WithMany()
+.HasForeignKey(ci => ci.AssignedUserId)  // Use this FK
+
+.OnDelete(DeleteBehavior.Restrict); // or NoAction in EF Core 5+
+
+
 
 
     }
