@@ -334,9 +334,9 @@ public class TaskItem : Entity, IHasCreationMetaData, IHasUpdateMetaData
         return request;
     }
 
-    public void Escalate(User toUser, string reason, User by)
+    public void Escalate(User toUser, string reason, User by,int level,int tregrAfter,int trgerstatus)
     {
-        var esc = new TaskEscalation(Guid.NewGuid(), this, toUser, reason, by);
+        var esc = new TaskEscalation(Guid.NewGuid(), this, toUser, reason, level, tregrAfter, trgerstatus, by);
         _escalations.Add(esc);
         AddHistoryEntry(by, $"escalated task to {toUser.Username} for reason: {reason}");
     }
