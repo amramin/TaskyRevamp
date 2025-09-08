@@ -49,7 +49,6 @@ public class ChangeEndDateRequest : Entity, IHasCreationMetaData
             Status=(int)Status,
 
             IsAproved= IsAproved,
-            CreatedBy = CreatedById,
             NewEndDate = NewEndDate,
 
 

@@ -18,7 +18,7 @@ namespace TaskyRevamp.Dto.ChangeEndDateRequest
         public bool IsAproved { get;  set; }
         public Guid CreatedById { get; set; }
         public DateTime CreateDate { get; set; }
-        public Guid CreatedBy { get; set; }
+       
 
     }
 }
