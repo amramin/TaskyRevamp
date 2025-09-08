@@ -22,7 +22,6 @@
   <ItemGroup>
     <Folder Include="Account\Query\" />
     <Folder Include="SystemConfiguration\RecycleBinSettings\Command\" />
-    <Folder Include="Tasks\Query\" />
   </ItemGroup>
 
 </Project>
