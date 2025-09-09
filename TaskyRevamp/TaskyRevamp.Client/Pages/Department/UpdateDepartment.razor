@@ -1,0 +1,67 @@
+﻿@page "/Update-Department/{Id:guid}"
+
+@using TaskyRevamp.Client.Consumer
+@using TaskyRevamp.Client.Services
+@using TaskyRevamp.Dto.Department
+@using TaskyRevamp.Dto.SystemConfiguration
+@using Newtonsoft.Json.Linq;
+@using Newtonsoft.Json;
+
+
+@inject IStringLocalizer<SharedResources> Loc
+@inject DepartmentConsumer  _DepartmentConsumer
+@inject ToastService ToastService
+@inject NavigationManager navigationManager
+
+<div class="container mt-4">    
+    <DepartmentForm 
+        @ref="form"
+        Department="@department"
+        OnValidSubmit="@Save"
+        SubmitButtonText="Save"
+        OnCancel="@Cancel"/>
+</div>
+
+@code {
+    [Parameter] public Guid Id { get; set; }
+    [Parameter] public EventCallback<DepartmentDto> OnValidSubmit { get; set; }
+    [Parameter] public EventCallback OnCancel { get; set; }
+    private DepartmentDto department = new DepartmentDto();
+    private DepartmentForm form;
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        var res = await _DepartmentConsumer.GetDepartmentById(Id);
+        // if(res.Success && res != null && res.Data != null)
+        // {
+            department = res;
+        //}
+
+    }
+
+    private async Task Save(EditContext editContext)
+    {
+        var res = await _DepartmentConsumer.UpdateDepartment(department);
+       // if (res.Success)
+        //{
+            await OnValidSubmit.InvokeAsync(department);
+            await ToastService.ShowToastAsync(Loc["EditSuccess"], "success");
+
+            navigationManager.NavigateTo("/DepartmentSettings");
+      //  }
+        // else
+        // {
+        //     if(res.Errors != null && res.Errors.Count > 0)
+        //         form.AddErrorsToEditContext(res.Errors);
+        // }
+
+    }
+
+
+    private async Task Cancel()
+    {
+        //await OnCancel.InvokeAsync();
+        navigationManager.NavigateTo("/DepartmentSettings");
+    }
+}

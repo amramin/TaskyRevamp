@@ -1,0 +1,93 @@
+﻿@using TaskyRevamp.Dto.Department
+@using TaskyRevamp.Dto.SystemConfiguration
+@inject IStringLocalizer<SharedResources> Loc
+
+<EditForm EditContext="@editContext" OnSubmit="@OnSubmitHandler">
+    <DataAnnotationsValidator />
+
+    <div class="mb-3">
+        <label class="form-label">@Loc["Name English"]</label>
+        <InputText class="form-control" @bind-Value="Department.NameEnglish" placeholder="Enter Department Name English" />
+        <ValidationMessage class="small text-danger" For="@(() => Department.NameEnglish)"></ValidationMessage>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">@Loc["Name Arabic"]</label>
+        <InputText class="form-control" @bind-Value="Department.NameArabic" placeholder="Enter Department Name Arabic" />
+        <ValidationMessage class="small text-danger" For="@(() => Department.NameArabic)"></ValidationMessage>
+    </div>
+
+  
+
+
+    <div class="d-flex justify-content-end gap-2 mt-4">
+        <button type="button" class="btn btn-light" @onclick="OnCancelClick">@Loc["Cancel"]</button>
+        <button type="submit" class="btn btn-primary">@Loc[@SubmitButtonText]</button>
+    </div>
+</EditForm>
+
+
+@code {
+
+    [Parameter] public DepartmentDto Department { get; set; } = new DepartmentDto();
+    [Parameter] public EventCallback<EditContext> OnValidSubmit { get; set; }
+    [Parameter] public EventCallback OnCancel { get; set; }
+    [Parameter] public string SubmitButtonText { get; set; } = "Save";
+
+    private EditContext editContext;
+    private ValidationMessageStore messageStore;
+
+    protected override void OnParametersSet()
+    {
+        if (editContext == null || editContext.Model != Department)
+        {
+            editContext = new EditContext(Department);
+            messageStore = new ValidationMessageStore(editContext);
+        }
+    }
+
+
+
+    private async Task OnSubmitHandler(EditContext context)
+    {
+        ClearValidationMessages();
+        if (!editContext.Validate())
+            return; // client-side validation failed → stop
+
+        await OnValidSubmit.InvokeAsync(context);
+    }
+
+    private async Task OnCancelClick()
+    {
+        await OnCancel.InvokeAsync();
+    }
+
+    public void AddErrorsToEditContext(IReadOnlyDictionary<string, List<string>> errors)
+    {
+        messageStore.Clear();
+
+        foreach (var error in errors)
+        {
+            var property = typeof(DepartmentDto).GetProperty(error.Key);
+
+            if (property != null)
+            {
+                var fieldIdentifier = new FieldIdentifier(Department, property.Name);
+
+                foreach (var errorMessage in error.Value)
+                {
+                    messageStore.Add(fieldIdentifier, errorMessage);
+                }
+            }
+        }
+
+        // Tell Blazor to re-render the validation messages
+        editContext.NotifyValidationStateChanged();
+    }
+
+    public void ClearValidationMessages()
+    {
+        messageStore.Clear();
+        editContext.NotifyValidationStateChanged();
+    }
+}

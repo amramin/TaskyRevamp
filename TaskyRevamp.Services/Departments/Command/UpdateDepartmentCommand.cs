@@ -26,7 +26,7 @@ public class UpdateDepartmentCommandHandler : IRequestHandler<UpdateDepartmentCo
             return false;
         }
         var updated = DepartmentResponse.Value;
-      updated.Name=request.Department.Name;
+        updated.SetData(request.Department);
         await _DepartmentRepository.Update(updated);
 
         return true;

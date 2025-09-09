@@ -40,7 +40,7 @@ public class DepartmentController : ControllerBase
     {
         return Ok(await _mediator.Send(new DeleteDepartmentCommand(Guid.Parse(id))));
     }
-    [HttpPost("GetAllDepartments")]
+    [HttpGet("GetAllDepartments")]
     public async Task<IActionResult> AllTask([FromBody] QueryModel? query = null)
     {
 

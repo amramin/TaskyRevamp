@@ -34,10 +34,8 @@ public class GetDepartmentsHandler : IRequestHandler<GetDepartmentsQuery, List<D
         foreach (var Department in data.Value)
         {
         ;
-            Departmentss.Add(new DepartmentDto()
-            {
-                Id = Department.Id,Name = Department.Name,
-            });
+            Departmentss.Add(Department.CopyToDto());
+            
         }
 
        // return Departments.ToList();

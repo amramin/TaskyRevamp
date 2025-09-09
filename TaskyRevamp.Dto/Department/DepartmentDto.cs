@@ -9,6 +9,8 @@ namespace TaskyRevamp.Dto.Department
     public  class DepartmentDto
     {
         public Guid Id { get; set; }
-        public string Name { get; set; }
+        public string NameEnglish { get; set; }
+        public string NameArabic { get; set; }
+
     }
 }

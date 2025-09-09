@@ -42,6 +42,8 @@ builder.Services.AddTransient<AccountConsumer>();
 builder.Services.AddTransient<RecycleBinSettingConsumer>();
 builder.Services.AddTransient<RejectionSettingConsumer>();
 builder.Services.AddTransient<PrioritySettingConsumer>();
+builder.Services.AddTransient<DepartmentConsumer>();
+
 builder.Services.AddTransient<StatusSettingConsumer>();
 
 var configuration = builder.Configuration;

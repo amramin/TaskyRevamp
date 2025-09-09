@@ -21,12 +21,7 @@ public class GetDepartmentByIdHandler : IRequestHandler<GetDepartmentQuery, Depa
     public async Task<DepartmentDto> Handle(GetDepartmentQuery request, CancellationToken cancellationToken)
     {
         var res = await _DepartmentRepository.FindByKey(request.Id);
-        DepartmentDto DepartmentModel = new DepartmentDto()
-        {
-            Id = res.Value.Id,
-            Name = res.Value.Name
-        };
-
+        DepartmentDto DepartmentModel = res.Value.CopyToDto();
         return DepartmentModel;
     }
 
