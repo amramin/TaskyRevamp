@@ -13,29 +13,24 @@
 
     @if (TaskViews != null)
     {
-        <!-- List View -->
-        <div class="d-flex align-items-center justify-content-between border border-primary rounded p-2 mb-2 ms-2">
-            <span class="text-primary">@Loc["List"]</span>
-            <div class="form-check form-switch m-0">
-                <InputCheckbox @bind-Value="ListView!.IsActive" class="form-check-input" />
-            </div>
-        </div>
-
-        <!-- Children of List -->
-        @foreach (var child in TaskViews.Where(v => (int)v.ViewType >= 11 && (int)v.ViewType <= 18))
+        bool isListView = false;
+        @foreach (var view in TaskViews)
         {
-            <div class="d-flex align-items-center justify-content-between border border-primary rounded p-2 mb-2 ms-4 me-4">
-                <span class="text-primary">@Loc[child.ViewType.ToString()]</span>
-                <div class="form-check form-switch m-0">
-                    <InputCheckbox @bind-Value="child.IsActive"
-                                   class="form-check-input"
-                                   disabled="@(ListView.IsActive == false)" />
+            if ((int)view.ViewType >= 11 && (int)view.ViewType <= 14)
+            {
+                if (!isListView)
+                {
+                    <div class="fw-bold text-dark mb-2 ms-2">@Loc["List"]</div>
+                    isListView = true;
+                }
+                <div class="d-flex align-items-center justify-content-between border border-primary rounded p-2 mb-2 ms-4 me-4">
+                    <span class="text-primary">@Loc[view.ViewType.ToString()]</span>
+                    <div class="form-check form-switch m-0">
+                        <InputCheckbox @bind-Value="view.IsActive" class="form-check-input" />
+                    </div>
                 </div>
-            </div>
-        }
-        @foreach (var view in TaskViews.Where(v => (int)v.ViewType < 11 || (int)v.ViewType > 18))
-        {
-            if (view.ViewType != ViewType.List)
+            }
+            else
             {
                 <div class="d-flex align-items-center justify-content-between border border-primary rounded p-2 mb-2 ms-2">
                     <span class="text-primary">@Loc[view.ViewType.ToString()]</span>
@@ -44,6 +39,7 @@
                     </div>
                 </div>
             }
+            
         }
     }
 
@@ -54,7 +50,6 @@
 </div>
 @code {
     private List<ViewTaskSettingsDto> TaskViews = new List<ViewTaskSettingsDto>();
-    private ViewTaskSettingsDto? ListView;
     private List<ViewTaskSettingsDto> originalViews = new();
     private bool isChanged = false;
 
@@ -63,13 +58,16 @@
         var res = await _viewTaskSettingConsumer.GetViewTaskSetting();
         if (res.Success && res.Data != null)
         {
-            TaskViews = res.Data;
+            var orderedEnums = EnumExtensions.GetOrderedValues<ViewType>();
+            TaskViews = orderedEnums
+                .Select(enumVal => res.Data.FirstOrDefault(d => d.ViewType == enumVal))
+                .Where(d => d != null)
+                .ToList()!;
             originalViews = TaskViews.Select(t => new ViewTaskSettingsDto
             {
                 ViewType = t.ViewType,
                 IsActive = t.IsActive
             }).ToList();
-            ListView = TaskViews.FirstOrDefault(v => v.ViewType == ViewType.List)!;
         }
     }
     private void Cancel(MouseEventArgs args)
@@ -79,7 +77,6 @@
             ViewType = t.ViewType,
             IsActive = t.IsActive
         }).ToList();
-        ListView = TaskViews.FirstOrDefault(v => v.ViewType == ViewType.List)!;
     }
     private async void Save(MouseEventArgs args)
     {

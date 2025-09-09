@@ -240,13 +240,7 @@
   <data name="Kanban" xml:space="preserve">
     <value>عرض كانبان</value>
   </data>
-  <data name="List_Calendar" xml:space="preserve">
-    <value>عرض التقويم</value>
-  </data>
-  <data name="List_Kanban" xml:space="preserve">
-    <value>عرض اللوحة</value>
-  </data>
-  <data name="List_Card" xml:space="preserve">
+  <data name="Card" xml:space="preserve">
     <value>عرض البطاقة</value>
   </data>
   <data name="List_Type" xml:space="preserve">
@@ -261,7 +255,7 @@
   <data name="List_Overall" xml:space="preserve">
     <value>عرض عام</value>
   </data>
-  <data name="List_Dashboard" xml:space="preserve">
+  <data name="Dashboard" xml:space="preserve">
     <value>لوحة المعلومات</value>
   </data>
   <data name="Tasksviews" xml:space="preserve">

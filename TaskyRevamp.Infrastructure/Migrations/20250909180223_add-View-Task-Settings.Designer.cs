@@ -12,7 +12,7 @@ using SurveyRevamp.Infrastructure;
 namespace TaskyRevamp.Infrastructure.Migrations
 {
     [DbContext(typeof(EfDbContext))]
-    [Migration("20250903141006_add-View-Task-Settings")]
+    [Migration("20250909180223_add-View-Task-Settings")]
     partial class addViewTaskSettings
     {
         /// <inheritdoc />
