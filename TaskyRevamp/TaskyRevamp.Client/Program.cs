@@ -44,6 +44,7 @@ builder.Services.AddTransient<RejectionSettingConsumer>();
 builder.Services.AddTransient<PrioritySettingConsumer>();
 builder.Services.AddTransient<StatusSettingConsumer>();
 builder.Services.AddTransient<ViewTaskSettingConsumer>();
+builder.Services.AddTransient<DefaultViewSettingConsumer>();
 
 var configuration = builder.Configuration;
 

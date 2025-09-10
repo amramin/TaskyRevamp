@@ -261,4 +261,10 @@
   <data name="Tasksviews" xml:space="preserve">
     <value>Tasks views</value>
   </data>
+  <data name="Default View Error" xml:space="preserve">
+    <value>The selected default page is no longer active.</value>
+  </data>
+  <data name="Default view" xml:space="preserve">
+    <value>Default View</value>
+  </data>
 </root>

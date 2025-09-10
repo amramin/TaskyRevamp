@@ -261,4 +261,10 @@
   <data name="Tasksviews" xml:space="preserve">
     <value>عرض المهام</value>
   </data>
+  <data name="Default View Error" xml:space="preserve">
+    <value>الصفحة الافتراضية المحددة لم تعد مفعّلة</value>
+  </data>
+  <data name="Default view" xml:space="preserve">
+    <value>العرض الافتراضي</value>
+  </data>
 </root>
