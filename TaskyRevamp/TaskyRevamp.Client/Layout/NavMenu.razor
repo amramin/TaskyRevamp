@@ -47,17 +47,6 @@
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" href="/RecycleBinConfiguration" @onclick="CloseSettingsNav">
-                    <div class="icon-text">
-                        <span class="nav-icon">
-                            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.RecycleBin"></SVGCrud>
-                        </span>
-                        <span class="text"> Recycle bin</span>
-                    </div>
-                </a>
-            </li>
-
-            <li class="nav-item">
                 <a class="nav-link" href="/PrioritySettings" @onclick="CloseSettingsNav">
                     <div class="icon-text">
                         <span class="nav-icon">
@@ -216,8 +205,9 @@
                     new ChildItem { Text = "RejectionConfiguration", Url = "/RejectionConfiguration", Icon = SVGCrud.SVGTypeEnum.Reject, DataId = "rejection-config" },
                     new ChildItem { Text = "Priority", Url = "/Priority", Icon = SVGCrud.SVGTypeEnum.ArrowsUp, DataId = "priorty-config" },
                     new ChildItem { Text = "Status", Url = "/Status", Icon = SVGCrud.SVGTypeEnum.Repeat, DataId = "status-config" },
-                    new ChildItem { Text = "DefaultColumns", Url = "/DefaultColumns", Icon = SVGCrud.SVGTypeEnum.Columns, DataId = "defaultColumns-config" },
-                    new ChildItem { Text = "FilterFields", Url = "/FilterFields", Icon = SVGCrud.SVGTypeEnum.Filter, DataId = "filterFields-config" },
+                    new ChildItem { Text = "DefaultColumnsConfiguration", Url = "/DefaultColumnsConfiguration", Icon = SVGCrud.SVGTypeEnum.Columns, DataId = "defaultColumns-config" },
+                    new ChildItem { Text = "FilterFields", Url = "/FilterFieldsConfiguration", Icon = SVGCrud.SVGTypeEnum.Filter, DataId = "filterFields-config" },
+                    new ChildItem { Text = "AddTaskFieldsConfiguration", Url = "/AddTaskConfiguration", Icon = SVGCrud.SVGTypeEnum.Filter, DataId = "addTask-config" },
                     new ChildItem { Text = "WorkingDays", Url = "/DefaultColumns", Icon = SVGCrud.SVGTypeEnum.CalnderPluse, DataId = "calnderPluse-config" },
                     new ChildItem { Text = "TaskSource", Url = "/TaskSource", Icon = SVGCrud.SVGTypeEnum.DataFlow, DataId = "taskSource-config" },
                     new ChildItem { Text = "TaskType", Url = "/TaskType", Icon = SVGCrud.SVGTypeEnum.TaskType, DataId = "taskType-config" },

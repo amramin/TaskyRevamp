@@ -15,7 +15,10 @@ namespace TaskyRevamp.Infrastructure.Seeders
             var seeders = new List<ISeeder>
             {
                 new PrioritySeeder(),
-                new StatusSeeder()
+                new StatusSeeder(),
+                new DefaultColumnsSettingSeeder(),
+                new FilterFieldsSettingSeeder(),
+                new AddTaskSettingSeeder()
             };
 
             foreach (var seeder in seeders)

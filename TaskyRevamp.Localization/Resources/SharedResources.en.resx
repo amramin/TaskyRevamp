@@ -151,7 +151,7 @@
     <value>Parent Not Found</value>
   </data>
   <data name="RecycleBinConfiguration" xml:space="preserve">
-    <value>Recycle Bin timeframe</value>
+    <value>Recycle Bin Configuration</value>
   </data>
   <data name="RetentionPeriodOptions" xml:space="preserve">
     <value>Retention Period Options</value>
@@ -181,7 +181,7 @@
     <value>Rejection Period Options</value>
   </data>
   <data name="Priority" xml:space="preserve">
-    <value>Tasks priority Configuration</value>
+    <value>Priority</value>
   </data>
   <data name="Added successfully" xml:space="preserve">
     <value>Added successfully</value>
@@ -233,5 +233,92 @@
   </data>
   <data name="AllrightsKSA" xml:space="preserve">
     <value>All rights are safe - Kingdom of Saudi Arabia</value>
+  </data>
+  <data name="Title" xml:space="preserve">
+    <value>Title</value>
+  </data>
+  <data name="ActualProgress" xml:space="preserve">
+    <value>Actual Progress</value>
+  </data>
+  <data name="Source" xml:space="preserve">
+    <value>Source</value>
+  </data>
+  <data name="StartDate" xml:space="preserve">
+    <value>Start Date</value>
+  </data>
+  <data name="EndDate" xml:space="preserve">
+    <value>End Date</value>
+  </data>
+  <data name="Weight" xml:space="preserve">
+    <value>Weight</value>
+  </data>
+  <data name="AssignedTo" xml:space="preserve">
+    <value>Assigned To</value>
+  </data>
+  <data name="CreatorDepartment" xml:space="preserve">
+    <value>Creator Department</value>
+  </data>
+  <data name="AssignedToDepartment" xml:space="preserve">
+    <value>Assigned To Department</value>
+  </data>
+  <data name="Mandatory" xml:space="preserve">
+    <value>Mandatory</value>
+  </data>
+  <data name="Status" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="Dependency" xml:space="preserve">
+    <value>Dependency</value>
+  </data>
+  <data name="CreatedBy" xml:space="preserve">
+    <value>Created By</value>
+  </data>
+  <data name="CreatedByDepartment" xml:space="preserve">
+    <value>Created By Department</value>
+  </data>
+  <data name="Duration" xml:space="preserve">
+    <value>Duration</value>
+  </data>
+  <data name="PlannedProgress" xml:space="preserve">
+    <value>Planned Progress</value>
+  </data>
+  <data name="CreationDate" xml:space="preserve">
+    <value>Creation Date</value>
+  </data>
+  <data name="Type" xml:space="preserve">
+    <value>Type</value>
+  </data>
+  <data name="ActualWeight" xml:space="preserve">
+    <value>Actual Weight</value>
+  </data>
+  <data name="PlannedWeight" xml:space="preserve">
+    <value>Planned Weight</value>
+  </data>
+  <data name="FromStartDate" xml:space="preserve">
+    <value>From Start Date</value>
+  </data>
+  <data name="ToStartDate" xml:space="preserve">
+    <value>To Start Date</value>
+  </data>
+  <data name="FromEndDate" xml:space="preserve">
+    <value>From End Date</value>
+  </data>
+  <data name="ToEndDate" xml:space="preserve">
+    <value>To End Date</value>
+  </data>
+  <data name="FromCreationDate" xml:space="preserve">
+    <value>From Creation Date</value>
+  </data>
+  <data name="ToCreationDate" xml:space="preserve">
+    <value>To Creation Date</value>
+  </data>
+  <data name="DefaultColumnsConfiguration" xml:space="preserve">
+    <value>Default Columns Configuration</value>
+  </data>
+  <data name="FilterFields" xml:space="preserve">
+    <value>Filter Fields</value>
+  </data>
+  <data name="AddTaskFieldsConfiguration" xml:space="preserve">
+    <value>Add Task Fields Configuration</value>
   </data>
 </root>
