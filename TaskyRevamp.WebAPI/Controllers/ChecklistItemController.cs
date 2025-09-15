@@ -1,11 +1,10 @@
-﻿using ChecklistItemyRevamp.Services.ChecklistItems.Commands;
-using ChecklistItemyRevamp.Services.ChecklistItems.Query;
-using MediatR;
+﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using TaskyRevamp.Dto.ChecklistItem;
 using TaskyRevamp.Dto.GeneralDto;
 using TaskyRevamp.Dto.SystemConfiguration;
-using TaskyRevamp.Services.ChecklistItems.Commands;
+using TaskyRevamp.Services.ChecklistItems.Command;
+using TaskyRevamp.Services.ChecklistItems.Query;
 using TaskyRevamp.Services.SystemConfiguration.RecycleBinSettings.Command;
 using TaskyRevamp.Services.SystemConfiguration.RecycleBinSettings.Query;
 

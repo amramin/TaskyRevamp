@@ -12,36 +12,36 @@ using RejectionSetting = TaskyRevamp.Domain.Models.SystemConfiguration.Rejection
 
 namespace TaskyRevamp.Services.SystemConfiguration.RejectionSettings.Command
 {
-	public record UpdateRejectionSettingCommand(RejectionSettingsDto __RejectionSettingDto) : IRequest<bool>;
+	public record UpdateRejectionSettingCommand(RejectionSettingsDto RejectionSettingDto) : IRequest<bool>;
 
 	public class UpdateRejectionSettingQueryHandler : IRequestHandler<UpdateRejectionSettingCommand, bool>
 	{
-		private readonly IRepository<RejectionSetting> _RejectionSettingsRepository;
-		public UpdateRejectionSettingQueryHandler(IRepository<RejectionSetting> _rejectionSettingsRepository)
+		private readonly IRepository<RejectionSetting> _rejectionSettingsRepository;
+		public UpdateRejectionSettingQueryHandler(IRepository<RejectionSetting> rejectionSettingsRepository)
 		{
-			_RejectionSettingsRepository = _rejectionSettingsRepository;
+			this._rejectionSettingsRepository = rejectionSettingsRepository;
 		}
 
 		public async Task<bool> Handle(UpdateRejectionSettingCommand request, CancellationToken cancellationToken)
 		{
-			var res = await _RejectionSettingsRepository.AllAsNoTracking();
+			var res = await _rejectionSettingsRepository.AllAsNoTracking();
 			if (res != null && res.Success)
 			{
 				if (res.Value == null || (res.Value != null && res.Value.Count() == 0))
 				{
 
-					RejectionSetting rejectionSettings = new RejectionSetting(request.__RejectionSettingDto.PeriodType, request.__RejectionSettingDto.CustomDays);
-					await _RejectionSettingsRepository.Insert(rejectionSettings);
+					var rejectionSettings = new RejectionSetting(request.RejectionSettingDto.PeriodType, request.RejectionSettingDto.CustomDays);
+					await _rejectionSettingsRepository.Insert(rejectionSettings);
 				}
 				else
 				{
 					var rejectionRecord = res.Value.FirstOrDefault();
-					if (request.__RejectionSettingDto.PeriodType != RejectionPeriodType.Custom)
+					if (request.RejectionSettingDto.PeriodType != RejectionPeriodType.Custom)
 					{
-						request.__RejectionSettingDto.CustomDays = null;
+						request.RejectionSettingDto.CustomDays = null;
 					}
-					rejectionRecord.Update(request.__RejectionSettingDto.PeriodType, request.__RejectionSettingDto.CustomDays);
-					await _RejectionSettingsRepository.Update(rejectionRecord);
+					rejectionRecord.Update(request.RejectionSettingDto.PeriodType, request.RejectionSettingDto.CustomDays);
+					await _rejectionSettingsRepository.Update(rejectionRecord);
 				}
 
 			}

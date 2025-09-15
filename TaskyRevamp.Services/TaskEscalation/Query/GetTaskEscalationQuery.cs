@@ -1,29 +1,26 @@
-﻿
-using MediatR;
-using TaskyRevamp.Domain.Models.Task;
+﻿using MediatR;
 using TaskyRevamp.Domain.Repositeries;
 using TaskyRevamp.Dto.TaskEscalation;
 
-
-namespace TaskEscalationyRevamp.Services.TaskEscalations.Query;
+namespace TaskyRevamp.Services.TaskEscalation.Query;
 
 public record GetTaskEscalationQuery(Guid Id) : IRequest<TaskEscalationDto>;
 
 public class GetTaskEscalationByIdHandler : IRequestHandler<GetTaskEscalationQuery, TaskEscalationDto>
 {
-    private readonly IRepository<TaskEscalation> _TaskEscalationRepository;
+    private readonly IRepository<Domain.Models.Task.TaskEscalation> _taskEscalationRepository;
 
-    public GetTaskEscalationByIdHandler(IRepository<TaskEscalation> TaskEscalationRepository)
+    public GetTaskEscalationByIdHandler(IRepository<Domain.Models.Task.TaskEscalation> taskEscalationRepository)
     {
-        _TaskEscalationRepository = TaskEscalationRepository;
+        _taskEscalationRepository = taskEscalationRepository;
     }
 
     public async Task<TaskEscalationDto> Handle(GetTaskEscalationQuery request, CancellationToken cancellationToken)
     {
-        var res = await _TaskEscalationRepository.FindByKey(request.Id);
-        TaskEscalationDto TaskEscalationModel = res.Value.CopyToDto();
+        var res = await _taskEscalationRepository.FindByKey(request.Id);
+        var taskEscalationModel = res.Value.CopyToDto();
 
-        return TaskEscalationModel;
+        return taskEscalationModel;
     }
 
  

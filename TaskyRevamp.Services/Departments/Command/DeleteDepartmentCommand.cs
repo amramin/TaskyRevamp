@@ -2,7 +2,7 @@
 using TaskyRevamp.Domain.Models.Task;
 using TaskyRevamp.Domain.Repositeries;
 
-namespace TaskyRevamp.Services.Departments.Commands;
+namespace TaskyRevamp.Services.Departments.Command;
 
 public record DeleteDepartmentCommand(Guid Id) : IRequest<bool>;
 

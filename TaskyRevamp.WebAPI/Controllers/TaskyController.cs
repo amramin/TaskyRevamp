@@ -44,7 +44,7 @@ public class TaskyController : ControllerBase
     {
 
 
-        var all = await _mediator.Send(new GetTaksQuery(query));
+        var all = await _mediator.Send(new GetTasksQuery(query));
 
         return Ok(all);
     }

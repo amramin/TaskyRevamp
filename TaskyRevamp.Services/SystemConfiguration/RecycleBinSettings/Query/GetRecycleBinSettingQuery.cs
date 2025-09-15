@@ -23,7 +23,7 @@ namespace TaskyRevamp.Services.SystemConfiguration.RecycleBinSettings.Query
 
         public async Task<RecycleBinSettingDto> Handle(GetRecycleBinSettingQuery request, CancellationToken cancellationToken)
         {
-            RecycleBinSettingDto recycleBinSettingDto = new RecycleBinSettingDto();
+            var recycleBinSettingDto = new RecycleBinSettingDto();
 
             var settingsResponse = await _recycleBinSettingsRepository.AllAsNoTracking();
 

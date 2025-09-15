@@ -1,45 +1,41 @@
-﻿
-using MediatR;
-using System.Linq.Expressions;
-using TaskyRevamp.Domain.Models.Task;
+﻿using MediatR;
 using TaskyRevamp.Domain.Repositeries;
-using TaskyRevamp.Dto.TaskAssignees;
 using TaskyRevamp.Dto.GeneralDto;
+using TaskyRevamp.Dto.TaskAssignees;
 
-
-namespace TaskAssigneesyRevamp.Services.TaskAssigneess.Query;
+namespace TaskyRevamp.Services.TaskAssignees.Query;
 
 public record GetTaskAssigneessQuery(QueryModel? Query) : IRequest<List<TaskAssigneesDto>>;
 
 public class GetTaskAssigneessHandler : IRequestHandler<GetTaskAssigneessQuery, List<TaskAssigneesDto>>
 {
-    private readonly IRepository<TaskAssignees> _TaskAssigneesRepository;
+    private readonly IRepository<Domain.Models.Task.TaskAssignees> _taskAssigneesRepository;
 
 
-    public GetTaskAssigneessHandler(IRepository<TaskAssignees> TaskAssigneesRepository)
+    public GetTaskAssigneessHandler(IRepository<Domain.Models.Task.TaskAssignees> taskAssigneesRepository)
     {
-        _TaskAssigneesRepository = TaskAssigneesRepository;
+        _taskAssigneesRepository = taskAssigneesRepository;
       
     }
 
     public async Task<List<TaskAssigneesDto>> Handle(GetTaskAssigneessQuery request, CancellationToken cancellationToken)
     {
-        List<TaskAssigneesDto> TaskAssigneesss = new List<TaskAssigneesDto>();
+        var taskAssigneesss = new List<TaskAssigneesDto>();
        
 
-        var data = await _TaskAssigneesRepository.All();
+        var data = await _taskAssigneesRepository.All();
 
 
 
-        foreach (var TaskAssignees in data.Value)
+        foreach (var taskAssignees in data.Value)
         {
         ;
-            TaskAssigneesss.Add(TaskAssignees.CopyToDto());
+            taskAssigneesss.Add(taskAssignees.CopyToDto());
         }
 
        // return TaskAssigneess.ToList();
 
-        return  TaskAssigneesss;
+        return  taskAssigneesss;
     }
 
    

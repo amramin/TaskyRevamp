@@ -1,33 +1,30 @@
 ﻿using MediatR;
-using TaskyRevamp.Domain.Models.Task;
 using TaskyRevamp.Domain.Repositeries;
 using TaskyRevamp.Dto.TaskComment;
 
-
-
-namespace TaskCommentyRevamp.Services.TaskComments.Commands;
+namespace TaskyRevamp.Services.TaskComment.Command;
 
 public record UpdateTaskCommentCommand(TaskCommentDto TaskComment) : IRequest<bool>;
 
 public class UpdateTaskCommentCommandHandler : IRequestHandler<UpdateTaskCommentCommand, bool>
 {
-    private readonly IRepository<TaskComment> _TaskCommentRepository;
+    private readonly IRepository<Domain.Models.Task.TaskComment> _taskCommentRepository;
 
-    public UpdateTaskCommentCommandHandler(IRepository<TaskComment> TaskCommentRepository)
+    public UpdateTaskCommentCommandHandler(IRepository<Domain.Models.Task.TaskComment> taskCommentRepository)
     {
-        _TaskCommentRepository = TaskCommentRepository;
+        _taskCommentRepository = taskCommentRepository;
     }
 
     public async Task<bool> Handle(UpdateTaskCommentCommand request, CancellationToken cancellationToken)
     {
-        var TaskCommentResponse = await _TaskCommentRepository.FindByKey(request.TaskComment.Id);
-        if (!TaskCommentResponse.Success)
+        var taskCommentResponse = await _taskCommentRepository.FindByKey(request.TaskComment.Id);
+        if (!taskCommentResponse.Success)
         {
             return false;
         }
-        var updated = TaskCommentResponse.Value;
+        var updated = taskCommentResponse.Value;
         updated.SetData(request.TaskComment);
-        await _TaskCommentRepository.Update(updated);
+        await _taskCommentRepository.Update(updated);
 
         return true;
     }

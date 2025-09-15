@@ -1,10 +1,9 @@
-﻿using DepartmentyRevamp.Services.Departments.Commands;
-using DepartmentyRevamp.Services.Departments.Query;
-using MediatR;
+﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using TaskyRevamp.Dto.Department;
 using TaskyRevamp.Dto.GeneralDto;
-using TaskyRevamp.Services.Departments.Commands;
+using TaskyRevamp.Services.Departments.Command;
+using TaskyRevamp.Services.Departments.Query;
 
 namespace DepartmentRevamp.WebAPI.Controllers;
 

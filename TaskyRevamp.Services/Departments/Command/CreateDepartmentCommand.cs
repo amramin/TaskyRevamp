@@ -1,31 +1,26 @@
 ﻿using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 using TaskyRevamp.Domain.Models.Task;
 using TaskyRevamp.Domain.Repositeries;
 using TaskyRevamp.Dto.Department;
 
-namespace DepartmentyRevamp.Services.Departments.Commands;
+namespace TaskyRevamp.Services.Departments.Command;
 
-public record CreateDepartmentCommand(DepartmentDto departmentDto) : IRequest<Guid>;
+public record CreateDepartmentCommand(DepartmentDto DepartmentDto) : IRequest<Guid>;
 
 public class CreateDepartmentHandler : IRequestHandler<CreateDepartmentCommand, Guid>
 {
-    private readonly IRepository<Department> _DepartmentRepository;
+    private readonly IRepository<Department> _departmentRepository;
 
-    public CreateDepartmentHandler(IRepository<Department> DepartmentRepository) => _DepartmentRepository = DepartmentRepository;
+    public CreateDepartmentHandler(IRepository<Department> departmentRepository) =>
+        _departmentRepository = departmentRepository;
 
     public async Task<Guid> Handle(CreateDepartmentCommand request, CancellationToken cancellationToken)
     {
-        Department department=new Department();
-        department.Name=request.departmentDto.Name;
-       
-        await _DepartmentRepository.Insert(department);
-        await _DepartmentRepository.SaveChangesAsync();
-        return department.Id;
+        var department = new Department();
+        department.Name = request.DepartmentDto.Name;
 
+        await _departmentRepository.Insert(department);
+        await _departmentRepository.SaveChangesAsync();
+        return department.Id;
     }
 }

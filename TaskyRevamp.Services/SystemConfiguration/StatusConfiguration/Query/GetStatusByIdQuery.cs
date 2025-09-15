@@ -10,19 +10,19 @@ using statusSetting = TaskyRevamp.Domain.Models.SystemConfiguration.StatusSettin
 
 namespace TaskyRevamp.Services.SystemConfiguration.StatusConfiguration.Query
 {
-	public record GetStatusByIdQuery(Guid id) : IRequest<StatusSettingsDto>;
+	public record GetStatusByIdQuery(Guid Id) : IRequest<StatusSettingsDto>;
 	public class GetStatusByIdHandler : IRequestHandler<GetStatusByIdQuery, StatusSettingsDto>
 	{
-		private readonly IRepository<statusSetting> _StatusRepository;
-		public GetStatusByIdHandler(IRepository<statusSetting> _statusRepository)
+		private readonly IRepository<statusSetting> _statusRepository;
+		public GetStatusByIdHandler(IRepository<statusSetting> statusRepository)
 		{
-			_StatusRepository = _statusRepository;
+			this._statusRepository = statusRepository;
 		}
 
 		public async Task<StatusSettingsDto> Handle(GetStatusByIdQuery request, CancellationToken cancellationToken)
 		{
-			StatusSettingsDto statusQuery = new StatusSettingsDto();
-			var res = await _StatusRepository.FindByKey(request.id);
+			var statusQuery = new StatusSettingsDto();
+			var res = await _statusRepository.FindByKey(request.Id);
 			if (res.Success && res != null)
 			{
 				statusQuery = res.Value.CopyToDto();

@@ -13,20 +13,20 @@ namespace TaskyRevamp.Services.SystemConfiguration.PriorityConfiguration.Query
 	public record GetProrityQuery() :IRequest<List<PriorityDto>>;
 	public class GetPriorityConfigurationsHandler : IRequestHandler<GetProrityQuery, List<PriorityDto>>
 	{
-		private readonly IRepository<prioritySettings> _PriorityRepository;
-		public GetPriorityConfigurationsHandler(IRepository<prioritySettings> _priorityRepository)
+		private readonly IRepository<prioritySettings> _priorityRepository;
+		public GetPriorityConfigurationsHandler(IRepository<prioritySettings> priorityRepository)
 		{
-			_PriorityRepository = _priorityRepository;
+			this._priorityRepository = priorityRepository;
 		}
 		public async Task<List<PriorityDto>> Handle(GetProrityQuery request, CancellationToken cancellationToken)
 		{
-			List<PriorityDto> _priorityDto = new List<PriorityDto>();
-			var priortiyQuieriesResponse = await _PriorityRepository.AllAsNoTracking();
+			var priorityDto = new List<PriorityDto>();
+			var priortiyQuieriesResponse = await _priorityRepository.AllAsNoTracking();
 			if (priortiyQuieriesResponse.Success && priortiyQuieriesResponse.Value != null && priortiyQuieriesResponse.Value.Any())
 			{
-				_priorityDto = priortiyQuieriesResponse.Value.Select(q => q.CopyToDto()).ToList();
+				priorityDto = priortiyQuieriesResponse.Value.Select(q => q.CopyToDto()).ToList();
 			}
-			return _priorityDto;
+			return priorityDto;
 		}
 	}
 }

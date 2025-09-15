@@ -17,12 +17,9 @@ public class DeleteGroupCommandHandler : IRequestHandler<DeleteTaskCommand, bool
 
     public async Task<bool> Handle(DeleteTaskCommand request, CancellationToken cancellationToken)
     {
-      
-      
+        await _tskRepository.Delete(request.Id);
 
-            await _tskRepository.Delete(request.Id);
 
-      
         return true;
     }
 }

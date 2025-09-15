@@ -23,7 +23,7 @@ namespace TaskyRevamp.Services.SystemConfiguration.DefaultColumnsSettings.Query
 
         public async Task<List<DefaultColumnsSettingDto>> Handle(GetDefaultColumnsSettingsQuery request, CancellationToken cancellationToken)
         {
-            List<DefaultColumnsSettingDto> defaultColumnsSettingsDto = new List<DefaultColumnsSettingDto>();
+            var defaultColumnsSettingsDto = new List<DefaultColumnsSettingDto>();
 
             var settingsResponse = await _defaultColumnsSettingRepository.AllAsNoTracking();
 

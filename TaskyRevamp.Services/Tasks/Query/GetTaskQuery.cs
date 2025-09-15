@@ -1,5 +1,5 @@
-﻿
-using MediatR;
+﻿using MediatR;
+using TaskyRevamp.Domain.Interfaces.Repositeries;
 using TaskyRevamp.Domain.Models.Task;
 using TaskyRevamp.Domain.Repositeries;
 using TaskyRevamp.Dto.TaskDto;
@@ -10,18 +10,24 @@ public record GetTaskQuery(Guid Id) : IRequest<CreateTaskDto>;
 
 public class GetTaskByIdHandler : IRequestHandler<GetTaskQuery, CreateTaskDto>
 {
-    private readonly IRepository<TaskItem> _TaskRepository;
+ 
+    private readonly ITaskRepository _taskRepository;
 
-    public GetTaskByIdHandler(IRepository<TaskItem> TaskRepository)
+    public GetTaskByIdHandler(ITaskRepository taskRepository)
     {
-        _TaskRepository = TaskRepository;
+        _taskRepository = taskRepository;
     }
+
 
     public async Task<CreateTaskDto> Handle(GetTaskQuery request, CancellationToken cancellationToken)
     {
-        var res = await _TaskRepository.FindByKey(request.Id);
-        CreateTaskDto TaskModel =    res.Value.CopyToDto();
+        var res =  await _taskRepository.GetTaskById(request.Id);
+        if (res is null)
+        {
+            throw new Exception("Task not found");
+        }
+        var taskDto = res.CopyToDto();
 
-        return TaskModel;
+        return taskDto;
     }
 }
