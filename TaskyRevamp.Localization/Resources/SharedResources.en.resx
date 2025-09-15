@@ -267,4 +267,25 @@
   <data name="Default view" xml:space="preserve">
     <value>Default View</value>
   </data>
+  <data name="Subtask_Level" xml:space="preserve">
+    <value>subtask level</value>
+  </data>
+  <data name="subtask_hint" xml:space="preserve">
+    <value>Set the maximum number of subtask levels allowed when creating a task. This controls how deeply tasks can be nested.</value>
+  </data>
+  <data name="Maximum_Subtask_Level" xml:space="preserve">
+    <value>Maximum subtask level</value>
+  </data>
+  <data name="sub_task_warning" xml:space="preserve">
+    <value>Displaying more than 3 levels may impact the user interface performance and readability</value>
+  </data>
+  <data name="ViewTaskSettingHint" xml:space="preserve">
+    <value>Use this option to enable different task views in your system for better task management and visualization.</value>
+  </data>
+  <data name="DefaultViewHint" xml:space="preserve">
+    <value>Select your default page after login</value>
+  </data>
+  <data name="ViewOptions" xml:space="preserve">
+    <value>View Options</value>
+  </data>
 </root>

@@ -9,8 +9,8 @@
 @inject ToastService ToastService
 
 <div class ="card p-3">
-    <h4 class="mb-4">View Options</h4>
-
+    <h4 class="mb-4">@Loc["ViewOptions"]</h4>
+    <p>@Loc["ViewTaskSettingHint"]</p>
     @if (TaskViews != null)
     {
         bool isListView = false;

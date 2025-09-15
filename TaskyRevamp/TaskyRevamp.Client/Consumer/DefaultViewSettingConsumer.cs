@@ -26,5 +26,13 @@ namespace TaskyRevamp.Client.Consumer
 
 			return res;
 		}
+
+		public async Task<CommonApiResponse<bool>> UpdateSubTaskLevelDefaultViewSetting(DefaultViewSettingsDto defaultViewDto)
+		{
+			var url = $"api/DefaultViewSettings/UpdateSubTaskLevelDefaultViewSetting";
+			var res = await _taskyService.PostJsonAsync<bool>(url, defaultViewDto);
+
+			return res;
+		}
 	}
 }

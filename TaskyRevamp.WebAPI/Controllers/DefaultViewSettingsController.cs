@@ -28,5 +28,11 @@ namespace TaskyRevamp.WebAPI.Controllers
 		{
 			return	Ok(await _mediator.Send(new UpdateDefaultViewSettingCommand(viewSettingsDto)));
 		}
+
+		[HttpPost("UpdateSubTaskLevelDefaultViewSetting")]
+		public async Task<IActionResult> UpdateSubTaskLevelDefultViewSetting(DefaultViewSettingsDto viewSettingsDto)
+		{
+			return Ok(await _mediator.Send(new UpdateSubTaskDefaultViewSettingCommand(viewSettingsDto)));
+		}
 	}
 }

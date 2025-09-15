@@ -10,7 +10,7 @@ namespace TaskyRevamp.Domain.Models.SystemConfiguration
 	public class DefaultViewSettings : Entity
 	{
 		public int DefaultSelected { get; set; }
-		public int SubTaskLevels { get; set; }
+		public int SubTaskLevels { get; set; } = 3;
 
 		public DefaultViewSettings()
 		{

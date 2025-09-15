@@ -11,7 +11,7 @@
 
 <div class="card p-3">
     <h4> @Loc["Default view"]</h4>
-
+    <p>@Loc["DefaultViewHint"]</p>
     <InputRadioGroup TValue="ViewType" Value="ViewTaskSetting.ViewType" ValueChanged="OnSettingChange" ValueExpression="() => ViewTaskSetting.ViewType">
         @foreach (var value in ViewTypes)
         {

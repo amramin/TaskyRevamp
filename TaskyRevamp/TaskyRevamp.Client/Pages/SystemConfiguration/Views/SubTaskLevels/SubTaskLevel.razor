@@ -1,5 +1,84 @@
-﻿<h3>SubTaskLevel</h3>
+﻿@page "/sub_task"
+
+@using TaskyRevamp.Client.Consumer
+@using TaskyRevamp.Client.Services
+@using TaskyRevamp.Dto.SystemConfiguration
+@inject IStringLocalizer<SharedResources> Loc
+@inject ToastService ToastService
+@inject DefaultViewSettingConsumer _defaultViewSettingConsumer
+
+<div class="card p-3">
+
+    <h5>@Loc["Subtask_Level"]</h5>
+    <p>@Loc["subtask_hint"]</p>
+
+    <div class="form-group mt-3">
+        <label for="maxSubtaskLevel" class="form-label">
+           @Loc["Maximum_Subtask_Level"]<span class="text-danger">*</span>
+        </label>
+        <input type="number" min="0" class="form-control mt-1" @bind="ViewSetting.SubTaskLevels"
+               @oninput="OnCustomDaysChange" />
+    </div>
+
+    @if (ViewSetting.SubTaskLevels > 3)
+    {
+        <div class="alert alert-warning mt-3 p-2">
+            @Loc["sub_task_warning"]
+        </div>
+    }
+    
+
+    <!-- Buttons -->
+    <div class="d-flex justify-content-end gap-2 mt-4">
+        <button class="btn btn-light px-4" @onclick="Cancel">@Loc["Cancel"]</button>
+        <button class="btn btn-primary px-4" @onclick="Save">@Loc["Save"]</button>
+    </div>
+</div>
 
 @code {
+    private DefaultViewSettingsDto ViewSetting { get; set; } = new DefaultViewSettingsDto();
+    protected override async Task OnInitializedAsync()
+    {
+        var res = await _defaultViewSettingConsumer.GetDefaultViewSetting();
+        if (res.Success)
+        {
+            var resData = res.Data;
+            if(resData != null)
+            {
+                ViewSetting = resData;
+            }
+        }
+    }
+    private async Task Save(MouseEventArgs args)
+    {
+        var res = await _defaultViewSettingConsumer.UpdateSubTaskLevelDefaultViewSetting(ViewSetting);
+        if (res.Success)
+        {
+            await ToastService.ShowToastAsync(Loc["EditSuccess"], "success");
+        }
+    }
+    private void OnCustomDaysChange(ChangeEventArgs e)
+    {
+        var input = e.Value?.ToString();
+
+        if (string.IsNullOrWhiteSpace(input))
+        {
+            ViewSetting.SubTaskLevels = 0;
+            return;
+        }
+
+        if (int.TryParse(input, out var number))
+        {
+            ViewSetting.SubTaskLevels = number < 0 ? 0 : number;
+        }
+        else
+        {
+            ViewSetting.SubTaskLevels = 0;
+        }
+    }
+    private void Cancel(MouseEventArgs args)
+    {
+        throw new NotImplementedException();
+    }
 
 }

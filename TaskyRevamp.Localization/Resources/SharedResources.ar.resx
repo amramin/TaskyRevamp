@@ -267,4 +267,25 @@
   <data name="Default view" xml:space="preserve">
     <value>العرض الافتراضي</value>
   </data>
+  <data name="Subtask_Level" xml:space="preserve">
+    <value>مستوى المهمة الفرعية</value>
+  </data>
+  <data name="subtask_hint" xml:space="preserve">
+    <value>حدد الحد الأقصى لمستويات المهام الفرعية المسموح بها عند إنشاء مهمة. هذا الخيار يتحكم في عمق تداخل المهام</value>
+  </data>
+  <data name="Maximum_Subtask_Level" xml:space="preserve">
+    <value>أقصى مستوى للمهمة الفرعية</value>
+  </data>
+  <data name="sub_task_warning" xml:space="preserve">
+    <value> قد يؤثر عرض أكثر من 3 مستويات على أداء واجهة المستخدم وقابليتها للقراءة</value>
+  </data>
+  <data name="ViewTaskSettingHint" xml:space="preserve">
+    <value>استخدم هذا الخيار لتفعيل طرق عرض المهام المختلفة في نظامك لتحسين إدارة المهام وعرضها</value>
+  </data>
+  <data name="DefaultViewHint" xml:space="preserve">
+    <value>حدد صفحتك الافتراضية بعد تسجيل الدخول</value>
+  </data>
+  <data name="ViewOptions" xml:space="preserve">
+    <value>عرض الخيارات</value>
+  </data>
 </root>
