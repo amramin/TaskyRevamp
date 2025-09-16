@@ -141,9 +141,6 @@
   <data name="Required" xml:space="preserve">
     <value>هذا الحقل مطلوب</value>
   </data>
-  <data name="Welcome" xml:space="preserve">
-    <value>مرحبا</value>
-  </data>
   <data name="DataSavedSuccessfully" xml:space="preserve">
     <value>تم حفظ البيانات بنجاح</value>
   </data>
@@ -287,5 +284,32 @@
   </data>
   <data name="ViewOptions" xml:space="preserve">
     <value>عرض الخيارات</value>
+  </data>
+  <data name="WorkingDaysConfiguration" xml:space="preserve">
+    <value>إعدادات أيام العمل</value>
+  </data>
+  <data name="workingDaysHint" xml:space="preserve">
+    <value> حدد أيام العمل الرسمية لمؤسستك. سيتم استخدام هذا الإعداد في جدولة المهام، المواعيد النهائية، وحساب أعباء العمل</value>
+  </data>
+  <data name="Saturday" xml:space="preserve">
+    <value>السبت</value>
+  </data>
+  <data name="Friday" xml:space="preserve">
+    <value>الجمعه</value>
+  </data>
+  <data name="Thursday" xml:space="preserve">
+    <value>الخميس</value>
+  </data>
+  <data name="Wednesday" xml:space="preserve">
+    <value>الأربعاء</value>
+  </data>
+  <data name="Tuesday" xml:space="preserve">
+    <value>الثلاثاء</value>
+  </data>
+  <data name="Monday" xml:space="preserve">
+    <value>الإثنين</value>
+  </data>
+  <data name="Sunday" xml:space="preserve">
+    <value>الأحد</value>
   </data>
 </root>

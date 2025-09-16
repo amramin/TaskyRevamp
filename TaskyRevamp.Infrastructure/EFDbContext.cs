@@ -21,6 +21,8 @@ public class EfDbContext : DbContext
 	public DbSet<StatusSettings> StatusSettings { get; set; }
     public DbSet<ViewTaskSettings> ViewTaskSettings { get; set; }
     public DbSet<DefaultViewSettings> DefaultViewSettings { get; set; }
+
+    public DbSet<WorkingDaysSettings> WorkingDaysSettings { get; set; }
 	public EfDbContext(DbContextOptions<EfDbContext> options, IHttpContextAccessor httpContextAccessor)
         : base(options)
     {

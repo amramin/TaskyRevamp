@@ -16,7 +16,8 @@ namespace TaskyRevamp.Infrastructure.Seeders
             {
                 new PrioritySeeder(),
                 new StatusSeeder(),
-                new ViewTaskListSeeder()
+                new ViewTaskListSeeder(),
+                new WorkingDaysSeeder(),
             };
 
             foreach (var seeder in seeders)

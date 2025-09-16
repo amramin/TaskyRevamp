@@ -45,6 +45,7 @@ builder.Services.AddTransient<PrioritySettingConsumer>();
 builder.Services.AddTransient<StatusSettingConsumer>();
 builder.Services.AddTransient<ViewTaskSettingConsumer>();
 builder.Services.AddTransient<DefaultViewSettingConsumer>();
+builder.Services.AddTransient<WorkingDaysSettingConsumer>();
 
 var configuration = builder.Configuration;
 
