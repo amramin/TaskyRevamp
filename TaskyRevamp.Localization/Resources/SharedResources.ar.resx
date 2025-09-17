@@ -312,4 +312,28 @@
   <data name="Sunday" xml:space="preserve">
     <value>الأحد</value>
   </data>
+  <data name="WeeklyReport" xml:space="preserve">
+    <value>التقرير الإسبوعي</value>
+  </data>
+  <data name="English" xml:space="preserve">
+    <value>اللغة الإنجليزية</value>
+  </data>
+  <data name="Arabic" xml:space="preserve">
+    <value>اللغة العربية</value>
+  </data>
+  <data name="weeklyReportHint" xml:space="preserve">
+    <value>حدد اليوم والوقت الذي سيتم فيه إرسال التقرير الأسبوعي</value>
+  </data>
+  <data name="languageHint" xml:space="preserve">
+    <value>يمكنك إختيار لغة التقرير الذي سيرسل أسبوعياََ</value>
+  </data>
+  <data name="ReportLanguage" xml:space="preserve">
+    <value>لغة التقرير</value>
+  </data>
+  <data name="Day" xml:space="preserve">
+    <value>اليوم</value>
+  </data>
+  <data name="Time" xml:space="preserve">
+    <value>الوقت</value>
+  </data>
 </root>

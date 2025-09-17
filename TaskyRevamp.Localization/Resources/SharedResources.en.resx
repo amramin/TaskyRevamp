@@ -312,4 +312,28 @@
   <data name="Sunday" xml:space="preserve">
     <value>Sunday</value>
   </data>
+  <data name="WeeklyReport" xml:space="preserve">
+    <value>Weekly report</value>
+  </data>
+  <data name="English" xml:space="preserve">
+    <value>English</value>
+  </data>
+  <data name="Arabic" xml:space="preserve">
+    <value>Arabic</value>
+  </data>
+  <data name="weeklyReportHint" xml:space="preserve">
+    <value>Select the weekly report sent day and time</value>
+  </data>
+  <data name="languageHint" xml:space="preserve">
+    <value>You can select the report language that will be sent via email.</value>
+  </data>
+  <data name="ReportLanguage" xml:space="preserve">
+    <value>Report Language</value>
+  </data>
+  <data name="Day" xml:space="preserve">
+    <value>Day</value>
+  </data>
+  <data name="Time" xml:space="preserve">
+    <value>Time</value>
+  </data>
 </root>
