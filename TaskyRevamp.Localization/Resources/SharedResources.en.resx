@@ -288,4 +288,16 @@
   <data name="ViewOptions" xml:space="preserve">
     <value>View Options</value>
   </data>
+  <data name="rejectionHint" xml:space="preserve">
+    <value>Set maximum allowed rejection period for the task from the assignee</value>
+  </data>
+  <data name="Week" xml:space="preserve">
+    <value>1 week</value>
+  </data>
+  <data name="priorityHint" xml:space="preserve">
+    <value>The parent task’s priority is automatically set to match the highest priority among its sub-tasks.</value>
+  </data>
+  <data name="recycleHint" xml:space="preserve">
+    <value>Set the auto deletion period from the system for deleted tasks inside the recycle bin</value>
+  </data>
 </root>

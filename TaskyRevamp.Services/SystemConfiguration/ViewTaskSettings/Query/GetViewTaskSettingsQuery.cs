@@ -6,16 +6,16 @@ using System.Text;
 using System.Threading.Tasks;
 using TaskyRevamp.Domain.Repositeries;
 using TaskyRevamp.Dto.SystemConfiguration;
-using ViewTasSetting = TaskyRevamp.Domain.Models.SystemConfiguration.ViewTaskSettings;
+using ViewTaskSetting = TaskyRevamp.Domain.Models.SystemConfiguration.ViewTaskSettings;
 
 namespace TaskyRevamp.Services.SystemConfiguration.ViewTaskSettings.Query
 {
 	public record GetViewTaskSettingsQuery(): IRequest<List<ViewTaskSettingsDto>>;
-	public class GetViewTaskSettingsQueryHandler : IRequestHandler<GetViewTaskSettingsQuery, List<ViewTaskSettingsDto>>
+	public class GetViewTaskSettingsHandler : IRequestHandler<GetViewTaskSettingsQuery, List<ViewTaskSettingsDto>>
 	{
-		private readonly IRepository<ViewTasSetting> _ViewTaskRepository;
+		private readonly IRepository<ViewTaskSetting> _ViewTaskRepository;
 
-		public GetViewTaskSettingsQueryHandler(IRepository<ViewTasSetting> _viewTaskRepository)
+		public GetViewTaskSettingsHandler(IRepository<ViewTaskSetting> _viewTaskRepository)
 		{
 			_ViewTaskRepository = _viewTaskRepository; 	
 		}

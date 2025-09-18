@@ -12,10 +12,10 @@ using RejectionSetting = TaskyRevamp.Domain.Models.SystemConfiguration.Rejection
 namespace TaskyRevamp.Services.SystemConfiguration.RejectionSettings.Query
 {
 	public record GetRejectionSettingsQuery() : IRequest<RejectionSettingsDto>;
-	public class GetRejectionSettingsQueryHandler : IRequestHandler<GetRejectionSettingsQuery, RejectionSettingsDto>
+	public class GetRejectionSettingsHandler : IRequestHandler<GetRejectionSettingsQuery, RejectionSettingsDto>
 	{
 		private readonly IRepository<RejectionSetting> _RejectionSettingRepositry;
-		public GetRejectionSettingsQueryHandler(IRepository<RejectionSetting> _rejectionSettingRepositry)
+		public GetRejectionSettingsHandler(IRepository<RejectionSetting> _rejectionSettingRepositry)
 		{
 			_RejectionSettingRepositry = _rejectionSettingRepositry;
 		}

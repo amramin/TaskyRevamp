@@ -9,7 +9,7 @@
 @inject ToastService ToastService
 
 <h6>@Loc["RetentionPeriodOptions"]</h6>
-
+<p>@Loc["recycleHint"]</p>
 <div class="container">
     <InputRadioGroup TValue="PeriodType" Value="RecycleBinSetting.PeriodType" ValueChanged="OnSettingChange" ValueExpression="() => RecycleBinSetting.PeriodType">
         @foreach (var value in PeriodTypes)

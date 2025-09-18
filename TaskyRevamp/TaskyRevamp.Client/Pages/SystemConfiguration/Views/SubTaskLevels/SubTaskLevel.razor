@@ -17,7 +17,7 @@
            @Loc["Maximum_Subtask_Level"]<span class="text-danger">*</span>
         </label>
         <input type="number" min="0" class="form-control mt-1" @bind="ViewSetting.SubTaskLevels"
-               @oninput="OnCustomDaysChange" />
+               @oninput="OnCustomDaysChange"/>
     </div>
 
     @if (ViewSetting.SubTaskLevels > 3)
@@ -31,7 +31,7 @@
     <!-- Buttons -->
     <div class="d-flex justify-content-end gap-2 mt-4">
         <button class="btn btn-light px-4" @onclick="Cancel">@Loc["Cancel"]</button>
-        <button class="btn btn-primary px-4" @onclick="Save">@Loc["Save"]</button>
+        <button class="btn btn-primary px-4" @onclick="Save" disabled="@(ViewSetting.SubTaskLevels < 0)">@Loc["Save"]</button>
     </div>
 </div>
 
@@ -51,6 +51,10 @@
     }
     private async Task Save(MouseEventArgs args)
     {
+        if (ViewSetting.SubTaskLevels < 0)
+        {
+            return;
+        }
         var res = await _defaultViewSettingConsumer.UpdateSubTaskLevelDefaultViewSetting(ViewSetting);
         if (res.Success)
         {
@@ -61,12 +65,10 @@
     {
         var input = e.Value?.ToString();
 
-        if (string.IsNullOrWhiteSpace(input))
+        if (string.IsNullOrWhiteSpace(input) || int.Parse(input) < 0)
         {
-            ViewSetting.SubTaskLevels = 0;
             return;
         }
-
         if (int.TryParse(input, out var number))
         {
             ViewSetting.SubTaskLevels = number < 0 ? 0 : number;
@@ -80,5 +82,4 @@
     {
         throw new NotImplementedException();
     }
-
 }

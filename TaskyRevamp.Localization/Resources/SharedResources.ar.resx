@@ -288,4 +288,16 @@
   <data name="ViewOptions" xml:space="preserve">
     <value>عرض الخيارات</value>
   </data>
+  <data name="rejectionHint" xml:space="preserve">
+    <value>تعيين الحد الأقصى لفترة الرفض المسموح بها للمهمة من المسند إليه</value>
+  </data>
+  <data name="Week" xml:space="preserve">
+    <value>أسبوع</value>
+  </data>
+  <data name="priorityHint" xml:space="preserve">
+    <value>يتم تعيين أولوية المهمة الرئيسية تلقائيًا لتتطابق مع أعلى أولوية بين المهام الفرعية.</value>
+  </data>
+  <data name="recycleHint" xml:space="preserve">
+    <value>تعيين فترة الحذف التلقائي من النظام للمهام المحذوفة داخل سلة المحذوفات</value>
+  </data>
 </root>

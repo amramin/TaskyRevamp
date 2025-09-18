@@ -11,10 +11,10 @@ using DefaultSettings = TaskyRevamp.Domain.Models.SystemConfiguration.DefaultVie
 namespace TaskyRevamp.Services.SystemConfiguration.DefaultViewSetting.Query
 {
 	public record GetDefaultViewSettingQuery() :IRequest<DefaultViewSettingsDto>;
-	public class GetDefaultViewSettingQueryHandler : IRequestHandler<GetDefaultViewSettingQuery, DefaultViewSettingsDto>
+	public class GetDefaultViewSettingHandler : IRequestHandler<GetDefaultViewSettingQuery, DefaultViewSettingsDto>
 	{
 		private readonly IRepository<DefaultSettings> _DefaultSettingsRepository;
-		public GetDefaultViewSettingQueryHandler(IRepository<DefaultSettings> _defaultSettingsRepository)
+		public GetDefaultViewSettingHandler(IRepository<DefaultSettings> _defaultSettingsRepository)
 		{
 			_DefaultSettingsRepository = _defaultSettingsRepository;
 		}
