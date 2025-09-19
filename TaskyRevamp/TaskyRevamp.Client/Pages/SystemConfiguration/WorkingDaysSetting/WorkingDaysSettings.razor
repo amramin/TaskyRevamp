@@ -58,6 +58,10 @@
     }
     private async Task Save(MouseEventArgs args)
     {
+        if(!workingDaysSettingsDtos.Any(w => w.IsActive))
+        {
+            return;
+        }
         var res = await _workingDaysSettingConsumer.UpdateTaskViewSetting(workingDaysSettingsDtos);
         if (res.Success)
         {

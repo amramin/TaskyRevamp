@@ -11,11 +11,11 @@ using ViewTaskSetting = TaskyRevamp.Domain.Models.SystemConfiguration.ViewTaskSe
 namespace TaskyRevamp.Services.SystemConfiguration.ViewTaskSettings.Command
 {
 	public record UpdateViewTaskSettingActivationCommand(List<ViewTaskSettingsDto> TaskViews):IRequest<bool>;
-	public class UpdateViewTaskSettingActivationCommandHandler : IRequestHandler<UpdateViewTaskSettingActivationCommand, bool>
+	public class UpdateViewTaskSettingActivationHandler : IRequestHandler<UpdateViewTaskSettingActivationCommand, bool>
 	{
 		private readonly IRepository<ViewTaskSetting> _ViewTaskRepository;
 
-		public UpdateViewTaskSettingActivationCommandHandler(IRepository<ViewTaskSetting> _viewTaskRepository)
+		public UpdateViewTaskSettingActivationHandler(IRepository<ViewTaskSetting> _viewTaskRepository)
 		{
 			_ViewTaskRepository = _viewTaskRepository;
 		}

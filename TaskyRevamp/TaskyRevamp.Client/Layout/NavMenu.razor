@@ -53,51 +53,6 @@
                     </div>
                 </a>
             </li>
-
-            <li class="nav-item">
-                <a class="nav-link" href="/PrioritySettings">
-                    <div class="icon-text">
-                        <span class="nav-icon">
-                            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Gantt"></SVGCrud>
-
-                        </span>
-                        <span class="text"> @Loc["Priority"] </span>
-                    </div>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/StatusSetting">
-                    <div class="icon-text">
-                        <span class="nav-icon">
-                            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.SwitchLang"></SVGCrud>
-
-                        </span>
-                        <span class="text"> @Loc["StatusConfig"] </span>
-                    </div>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/Views">
-                    <div class="icon-text">
-                        <span class="nav-icon">
-                            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.List"></SVGCrud>
-
-                        </span>
-                        <span class="text"> @Loc["Tasksviews"] </span>
-                    </div>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/WorkingDaysSetting">
-                    <div class="icon-text">
-                        <span class="nav-icon">
-                            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.CalnderPluse"></SVGCrud>
-
-                        </span>
-                        <span class="text"> @Loc["WorkingDaysConfiguration"] </span>
-                    </div>
-                </a>
-            </li>
             <li class="nav-item">
                 <a class="nav-link" href="/RejectionConfiguration">
                     <div class="icon-text">
@@ -212,29 +167,29 @@ IsOpen = true,
 Children = new List<ChildItem>
 {
 new ChildItem {
-Text = "RecycleBinConfiguration",
+Text = @Loc["RecycleBinConfiguration"],
 Url = "/RecycleBinConfiguration",
 Icon = SVGCrud.SVGTypeEnum.RecycleBinConfig ,
 DataId = "recycle-config"
 }
 ,
 new ChildItem {
-Text = "RejectionConfiguration",
+Text = @Loc["RejectionConfiguration"],
 Url = "/RejectionConfiguration",
 Icon = SVGCrud.SVGTypeEnum.Reject,
 DataId = "rejection-config"
 }
 ,
 new ChildItem {
-Text = "Priority",
-Url = "/Priority",
+Text = @Loc["Priority"],
+Url = "/PrioritySettings",
 Icon = SVGCrud.SVGTypeEnum.ArrowsUp,
 DataId = "priorty-config"
 }
 ,
 new ChildItem {
-Text = "Status",
-Url = "/Status",
+Text = @Loc["StatusConfig"],
+Url = "/StatusSetting",
 Icon = SVGCrud.SVGTypeEnum.Repeat,
 DataId = "status-config"
 }
@@ -254,8 +209,8 @@ DataId = "filterFields-config"
 }
 ,
 new ChildItem {
-Text = "WorkingDays",
-Url = "/DefaultColumns",
+Text = @Loc["WorkingDaysConfiguration"],
+Url = "/WorkingDaysSetting",
 Icon = SVGCrud.SVGTypeEnum.CalnderPluse,
 DataId = "calnderPluse-config"
 }
@@ -275,8 +230,8 @@ DataId = "taskType-config"
 }
 ,
 new ChildItem {
-Text = "TasksViews",
-Url = "/TasksViews",
+Text = @Loc["Tasksviews"],
+Url = "/Views",
 Icon = SVGCrud.SVGTypeEnum.List,
 DataId = "taskViews-config"
 }

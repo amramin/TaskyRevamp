@@ -23,6 +23,12 @@ namespace TaskyRevamp.WebAPI.Controllers
 			return Ok(await _mediator.Send(new GetViewTaskSettingsQuery()));	
 		}
 
+		[HttpGet("GetActiveViewTaskSettings")]
+		public async Task<IActionResult> GetActiveViewTaskSettings()
+		{
+			return Ok(await _mediator.Send(new GetActiveViewTaskSettingsQuery()));
+		}
+
 		[HttpPost("UpdateTaskViewsActivation")]
 		public async Task<IActionResult> UpdateTaskViewSetting(List<ViewTaskSettingsDto> TaskViews)
 		{

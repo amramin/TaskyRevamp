@@ -26,7 +26,6 @@
         <button class="btn btn-light px-4" @onclick="Cancel">@Loc["Cancel"]</button>
         <button class="btn btn-primary px-4" @onclick="Save">@Loc["Save"]</button>
     </div>
-
 </div>
 
 @code {
@@ -41,8 +40,6 @@
         {
             defaultViewSettingsDto = res.Data;
         }
-
-
     }
     private void OnSettingChange(ViewType viewType)
     {
@@ -56,28 +53,23 @@
     private async Task Save(MouseEventArgs args)
     {
 
-        var viewRes = await _viewTaskSettingConsumer.GetViewTaskSetting();
+        var viewRes = await _viewTaskSettingConsumer.GetActiveViewTaskSetting();
         if (viewRes.Success && viewRes != null && viewRes.Data != null)
         {
             var viewQuery = viewRes.Data.FirstOrDefault(v => v.ViewType == ViewTaskSetting.ViewType);
-            if(viewQuery != null)
+            if (viewQuery != null)
             {
-                if (viewQuery.IsActive)
+                var res = await _defaultViewSettingConsumer.UpdateDefaultViewSetting(defaultViewSettingsDto);
+                if (res.Success)
                 {
-                    var res = await _defaultViewSettingConsumer.UpdateDefaultViewSetting(defaultViewSettingsDto);
-                    if (res.Success)
-                    {
-                        await ToastService.ShowToastAsync(Loc["EditSuccess"], "success");
-                        StateHasChanged();
-                    }
+                    await ToastService.ShowToastAsync(Loc["EditSuccess"], "success");
+                    StateHasChanged();
                 }
-                else
-                {
-                    await ToastService.ShowToastAsync(Loc["Default View Error"], "error");  
-                }
+            }
+            else
+            {
+                await ToastService.ShowToastAsync(Loc["Default View Error"], "error");
             }
         }
     }
-
-    
 }

@@ -19,6 +19,14 @@ namespace TaskyRevamp.Client.Consumer
 			return res;
 		}
 
+		public async Task<CommonApiResponse<List<ViewTaskSettingsDto>>> GetActiveViewTaskSetting()
+		{
+			var url = $"api/ViewTaskSetting/GetActiveViewTaskSettings";
+			var res = await _taskyService.GetFromJsonAsync<CommonApiResponse<List<ViewTaskSettingsDto>>>(url);
+
+			return res;
+		}
+
 		public async Task<CommonApiResponse<bool>> UpdateTaskViewSetting(List<ViewTaskSettingsDto> TaskViews)
 		{
 			var url = $"api/ViewTaskSetting/UpdateTaskViewsActivation";

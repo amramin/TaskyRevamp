@@ -13,11 +13,11 @@ using ViewSettings = TaskyRevamp.Domain.Models.SystemConfiguration.ViewTaskSetti
 namespace TaskyRevamp.Services.SystemConfiguration.DefaultViewSetting.Command
 {
 	public record UpdateDefaultViewSettingCommand (DefaultViewSettingsDto ViewSettingsDto): IRequest<bool>;
-	public class UpdateDefaultViewSettingCommandHandler : IRequestHandler<UpdateDefaultViewSettingCommand, bool>
+	public class UpdateDefaultViewSettingHandler : IRequestHandler<UpdateDefaultViewSettingCommand, bool>
 	{
 		private readonly IRepository<DefaultSettings> _DefaultSettingsRepository;
 		private readonly IRepository<ViewSettings> _ViewSettingsRepository;
-		public UpdateDefaultViewSettingCommandHandler(IRepository<DefaultSettings> _defaultSettingsRepository, IRepository<ViewSettings> _viewSettingsRepository)
+		public UpdateDefaultViewSettingHandler(IRepository<DefaultSettings> _defaultSettingsRepository, IRepository<ViewSettings> _viewSettingsRepository)
 		{
 			_DefaultSettingsRepository = _defaultSettingsRepository;	
 			_ViewSettingsRepository = _viewSettingsRepository;
