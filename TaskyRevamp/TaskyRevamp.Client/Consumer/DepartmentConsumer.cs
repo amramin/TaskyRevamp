@@ -13,44 +13,44 @@ namespace TaskyRevamp.Client.Consumer
 			_taskyService = taskyService;
 		}
 
-		public async Task<List<DepartmentDto>> GetDepartments()
+		public async Task<CommonApiResponse<List<DepartmentDto>>> GetDepartments()
 		{
 			var url = $"api/Department/GetAllDepartments";
-			var res = await _taskyService.GetFromJsonAsync<List<DepartmentDto>>(url);
+			var res = await _taskyService.GetFromJsonAsync<CommonApiResponse<List<DepartmentDto>>>(url);
 
 			return res;
 		}
 
-		public async Task<DepartmentDto> GetDepartmentById(Guid id)
+		public async Task<CommonApiResponse<DepartmentDto>> GetDepartmentById(Guid id)
 		{
 			var url = $"api/Department/GetDepartmentById/{id}";
-			var res = await _taskyService.GetFromJsonAsync<DepartmentDto>(url);
+			var res = await _taskyService.GetFromJsonAsync<CommonApiResponse<DepartmentDto>>(url);
 			return res;
 		}
 
-		public async Task<bool>AddDepartment(DepartmentDto DepartmentDto)
+		public async Task<CommonApiResponse<bool>>AddDepartment(DepartmentDto DepartmentDto)
 		{
 			var url = $"api/Department/CreateDepartment";
-			var res = await _taskyService.PostJsonAsync<bool>(url, DepartmentDto);
+			var res = await _taskyService.PostJsonAsync<CommonApiResponse<bool>>(url, DepartmentDto);
 
 			return res.Data;
 		}
 
-		public async Task<bool> UpdateDepartment(DepartmentDto DepartmentDto)
+		public async Task<CommonApiResponse<bool>>UpdateDepartment(DepartmentDto DepartmentDto)
 		{
 			var url = $"api/Department/UpdateDepartment";
-			var res = await _taskyService.PostJsonAsync<bool>(url, DepartmentDto);
+			var res = await _taskyService.PostJsonAsync<CommonApiResponse<bool>>(url, DepartmentDto);
 
 			return res.Data;
 		}
 
 	
-		public async Task<bool> DeleteDepartment(Guid id)
+		public async Task<CommonApiResponse<bool>> DeleteDepartment(Guid id)
 		{
 			var url = $"api/Department/DeleteDepartment/{id}";
 			var res = await _taskyService.DeleteFromJsonAsync<CommonApiResponse<bool>>(url);
 
-			return res.Data;
+			return res;
 		}
 	}
 }

@@ -35,9 +35,9 @@
         var res = await _DepartmentConsumer.GetDepartmentById(Id);
         // if(res.Success && res != null && res.Data != null)
         // {
-            department = res;
+        department = res.Data;
         //}
-
+        StateHasChanged();
     }
 
     private async Task Save(EditContext editContext)
@@ -48,7 +48,7 @@
             await OnValidSubmit.InvokeAsync(department);
             await ToastService.ShowToastAsync(Loc["EditSuccess"], "success");
 
-            navigationManager.NavigateTo("/DepartmentSettings");
+        navigationManager.NavigateTo("/Departments");
       //  }
         // else
         // {
@@ -62,6 +62,6 @@
     private async Task Cancel()
     {
         //await OnCancel.InvokeAsync();
-        navigationManager.NavigateTo("/DepartmentSettings");
+        navigationManager.NavigateTo("/Departments");
     }
 }

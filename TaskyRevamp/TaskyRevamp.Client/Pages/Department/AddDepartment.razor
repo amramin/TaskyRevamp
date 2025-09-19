@@ -40,7 +40,7 @@
     {
 
         var res = await _DepartmentConsumer.AddDepartment(_newDepartment);
-        if (res)
+        if (res.Success)
         {
             await OnValidSubmit.InvokeAsync(_newDepartment);
             await ToastService.ShowToastAsync(Loc["Added successfully"], "success");
