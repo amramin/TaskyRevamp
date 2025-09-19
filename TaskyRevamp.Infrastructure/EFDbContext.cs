@@ -19,7 +19,10 @@ public class EfDbContext : DbContext
     public DbSet<RejectionSettings> RejectionSettings { get; set; }
     public DbSet<PrioritySettings> PrioritySettings { get; set; }
 	public DbSet<StatusSettings> StatusSettings { get; set; }
-	public EfDbContext(DbContextOptions<EfDbContext> options, IHttpContextAccessor httpContextAccessor)
+    public DbSet<DefaultColumnsSettings> DefaultColumnsSettings { get; set; }
+    public DbSet<FilterFieldsSettings> FilterFieldsSettings { get; set; }
+    public DbSet<AddTaskSettings> AddTaskSettings { get; set; }
+    public EfDbContext(DbContextOptions<EfDbContext> options, IHttpContextAccessor httpContextAccessor)
         : base(options)
     {
         _httpContextAccessor = httpContextAccessor;

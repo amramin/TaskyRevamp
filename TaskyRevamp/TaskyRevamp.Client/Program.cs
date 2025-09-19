@@ -45,6 +45,9 @@ builder.Services.AddTransient<PrioritySettingConsumer>();
 builder.Services.AddTransient<DepartmentConsumer>();
 
 builder.Services.AddTransient<StatusSettingConsumer>();
+builder.Services.AddTransient<DefaultColumnsSettingConsumer>();
+builder.Services.AddTransient<FilterFieldsSettingConsumer>();
+builder.Services.AddTransient<AddTaskSettingConsumer>();
 
 var configuration = builder.Configuration;
 
