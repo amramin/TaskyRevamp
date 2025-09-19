@@ -17,7 +17,7 @@
         <label for="daylabel" class="form-label">
             @Loc["Day"]<span class="text-danger">*</span>
         </label>
-        <select class="form-select" @onchange="onDayChanged">
+        <select class="form-select" @bind="settingsDto.Day">
             @if (workingDaysSettingsDtos != null)
             {
                 @foreach (var day in workingDaysSettingsDtos.Where(w => w.IsActive == true))
@@ -32,7 +32,7 @@
             <label for="timelabel" class="form-label">
                 @Loc["Time"]<span class="text-danger">*</span>
             </label>
-            <select @onchange="OnTimeChanged" class="form-select">
+            <select @bind="settingsDto.Time" class="form-select">
                 @if(TimeSlots != null)
                 {
                     @foreach (var time in TimeSlots)
@@ -116,16 +116,8 @@
 
         return times;
     }
-    private void OnTimeChanged(ChangeEventArgs e)
-    {
-        settingsDto.Time = TimeSpan.Parse(e.Value!.ToString()!);
-    }
     private void OnSettingChange(Language newValue)
     {
         settingsDto.Language = newValue;
-    }
-    private void onDayChanged(ChangeEventArgs args)
-    {
-        settingsDto.Day = Enum.Parse<WeekDays>(args.Value!.ToString()!);
     }
 }

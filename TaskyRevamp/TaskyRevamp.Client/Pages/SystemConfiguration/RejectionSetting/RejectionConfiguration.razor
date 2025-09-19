@@ -12,10 +12,11 @@
 <div class="page-header">
     <div class="title-block">
         <h1 class="page-headline">@Loc["RejectionPeriodOptions"]</h1>
+        
     </div>
 </div>
 
-
+<p>@Loc["rejectionHint"]</p>
 <div class="page-body">
     <InputRadioGroup TValue="RejectionPeriodType" Value="RejectionSetting.PeriodType" ValueChanged="OnSettingChange"
         ValueExpression="() => RejectionSetting.PeriodType">
@@ -46,13 +47,11 @@
     public List<RejectionPeriodType> PeriodTypes = EnumExtensions.GetOrderedValues<RejectionPeriodType>();
     public RejectionSettingsDto RejectionSetting { get; set; } = new RejectionSettingsDto
     {
-        PeriodType =
-    RejectionPeriodType.Days3
+        PeriodType = RejectionPeriodType.Days3
     };
 
     protected async override Task OnInitializedAsync()
     {
-
         var res = await _rejectionSettingConsumer.GetRejectionSetting();
         if (res.Success)
         {

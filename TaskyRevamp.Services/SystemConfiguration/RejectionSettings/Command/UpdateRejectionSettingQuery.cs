@@ -14,10 +14,10 @@ namespace TaskyRevamp.Services.SystemConfiguration.RejectionSettings.Command
 {
 	public record UpdateRejectionSettingCommand(RejectionSettingsDto __RejectionSettingDto) : IRequest<bool>;
 
-	public class UpdateRejectionSettingQueryHandler : IRequestHandler<UpdateRejectionSettingCommand, bool>
+	public class UpdateRejectionSettingHandler : IRequestHandler<UpdateRejectionSettingCommand, bool>
 	{
 		private readonly IRepository<RejectionSetting> _RejectionSettingsRepository;
-		public UpdateRejectionSettingQueryHandler(IRepository<RejectionSetting> _rejectionSettingsRepository)
+		public UpdateRejectionSettingHandler(IRepository<RejectionSetting> _rejectionSettingsRepository)
 		{
 			_RejectionSettingsRepository = _rejectionSettingsRepository;
 		}
