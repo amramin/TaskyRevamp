@@ -20,7 +20,9 @@ using TaskyRevamp.WebAPI;
 using TaskyRevamp.WebAPI.Exeptions;
 using TaskyRevamp.WebAPI.Middleware;
 using TaskyRevamp.WebAPI.Pipeline;
-using Workflow.Infrastructure;
+using FluentValidation;
+using FluentValidation.Validators;
+using TaskyRevamp.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 

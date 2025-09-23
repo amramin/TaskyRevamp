@@ -16,8 +16,16 @@ internal class ChangeEndDateRequestConfiguration : IEntityTypeConfiguration<Chan
     {
         builder
     .HasOne(r => r.Task)
-    .WithMany()
-    .OnDelete(DeleteBehavior.Cascade);
+    .WithMany().HasForeignKey(r => r.TaskId)
+    .OnDelete(DeleteBehavior.NoAction);
+        builder
+.HasOne(r => r.CreatedBy)
+.WithMany().HasForeignKey(r => r.CreatedById)
+.OnDelete(DeleteBehavior.NoAction);
+        builder
+.HasOne(r => r.Requester)
+.WithMany().HasForeignKey(r => r.RequesterId)
+.OnDelete(DeleteBehavior.NoAction);
 
     }
 }

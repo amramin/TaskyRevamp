@@ -23,7 +23,10 @@ public class EfDbContext : DbContext
     public DbSet<DefaultViewSettings> DefaultViewSettings { get; set; }
     public DbSet<WorkingDaysSettings> WorkingDaysSettings { get; set; }
     public DbSet<WeeklyReportSettings> WeeklyReportSettings { get; set; }
-	public EfDbContext(DbContextOptions<EfDbContext> options, IHttpContextAccessor httpContextAccessor)
+    public DbSet<DefaultColumnsSettings> DefaultColumnsSettings { get; set; }
+    public DbSet<FilterFieldsSettings> FilterFieldsSettings { get; set; }
+    public DbSet<AddTaskSettings> AddTaskSettings { get; set; }
+    public EfDbContext(DbContextOptions<EfDbContext> options, IHttpContextAccessor httpContextAccessor)
         : base(options)
     {
         _httpContextAccessor = httpContextAccessor;

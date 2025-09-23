@@ -1,4 +1,5 @@
-﻿@inject IStringLocalizer<SharedResources> Loc;
+﻿@inject IStringLocalizer<SharedResources> Loc
+@inject NavigationManager NavigationManager
 
 <aside class="side-nav side-nav @(IsSettingOpen ? "setting-nav-open" : "")">
     <div class="side-nav-header">
@@ -9,6 +10,7 @@
             <span class="text">Tasky</span>
         </div>
     </div>
+
     <div class="sid-nav-body">
         <ul class="nav menu flex-column">
             <li class="nav-item">
@@ -32,6 +34,7 @@
                     </div>
                 </NavLink>
             </li>
+
             <li class="nav-item">
                 <a class="nav-link" href="#" data-id="completed-list" @onclick="CloseSettingsNav">
                     <div class="icon-text">
@@ -42,43 +45,22 @@
                     </div>
                 </a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/RecycleBinConfiguration" @onclick="CloseSettingsNav">
-                    <div class="icon-text">
-                        <span class="nav-icon">
-                            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.RecycleBin"></SVGCrud>
 
-                        </span>
-                        <span class="text"> @Loc["RecycleBinConfiguration"]</span>
-                    </div>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/RejectionConfiguration">
-                    <div class="icon-text">
-                        <span class="nav-icon">
-                            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Reject"></SVGCrud>
-
-                        </span>
-                        <span class="text"> @Loc["RejectionConfiguration"] </span>
-                    </div>
-                </a>
-            </li>
             <li class="nav-item">
                 <a class="nav-link" href="#">
                     <div class="icon-text">
                         <span class="nav-icon">
-                            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Delegation"></SVGCrud>
+                            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Delegation" @onclick="CloseSettingsNav"></SVGCrud>
                         </span>
-
                         <span class="text">Delegation </span>
                     </div>
                 </a>
             </li>
         </ul>
+
         <ul class="nav menu flex-column">
             <li class="nav-item ">
-                <a class="nav-link toggle-btn" href="/RejectionConfiguration" @onclick="SettingNav" role="button">
+                <a class="nav-link toggle-btn" @onclick="SettingNav" role="button">
                     <div class="icon-text">
                         <span class="nav-icon">
                             <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Config"></SVGCrud>
@@ -123,22 +105,56 @@
                     }
                 </ul>
             </li>
-
         </ul>
-
     </div>
 </aside>
+
 @code {
     private bool IsSettingOpen { get; set; } = false;
 
-    private void SettingNav()
+    private async Task SettingNav()
     {
-        IsSettingOpen = !IsSettingOpen;
+        if (IsSettingOpen)
+        {
+            IsSettingOpen = false;
+            return;
+        }
+
+        // Step 1: Open settings panel
+        IsSettingOpen = true;
+        StateHasChanged(); // Force UI update immediately
+
+        // Step 2: Allow UI to render before expanding/clicking menu
+        await Task.Yield(); // let render cycle complete
+
+        // Step 3: Open first menu section and navigate
+        var firstMenu = MenuItems.FirstOrDefault();
+        if (firstMenu != null)
+        {
+            foreach (var item in MenuItems)
+                item.IsOpen = false;
+
+            firstMenu.IsOpen = true;
+
+            var firstChild = firstMenu.Children.FirstOrDefault();
+            if (firstChild != null)
+            {
+                NavigationManager.NavigateTo(firstChild.Url);
+            }
+        }
+
+        // Step 1: Open settings panel
+        IsSettingOpen = true;
+        StateHasChanged(); // Force UI update immediately
+        StateHasChanged(); // Force UI update immediately
     }
+
+
     private void CloseSettingsNav()
     {
         IsSettingOpen = false;
     }
+
     class MenuItem
     {
         public string Title { get; set; }
@@ -156,189 +172,63 @@
 
     List<MenuItem> MenuItems = new();
 
+    private void SetMenu()
+    {
+        MenuItems = new List<MenuItem> {
+            new MenuItem {
+                Title = "General",
+                IsOpen = false,
+                Children = new List<ChildItem> {
+                    new ChildItem { Text = "RecycleBinConfiguration", Url = "/RecycleBinConfiguration", Icon = SVGCrud.SVGTypeEnum.RecycleBinConfig , DataId = "recycle-config" },
+                    new ChildItem { Text = "RejectionConfiguration", Url = "/RejectionConfiguration", Icon = SVGCrud.SVGTypeEnum.Reject, DataId = "rejection-config" },
+                    new ChildItem { Text = "Priority", Url = "/PrioritySettings", Icon = SVGCrud.SVGTypeEnum.ArrowsUp, DataId = "priorty-config" },
+                    new ChildItem { Text = "StatusConfig", Url = "/StatusSetting", Icon = SVGCrud.SVGTypeEnum.Repeat, DataId = "status-config" },
+                    new ChildItem { Text = "DefaultColumnsConfiguration", Url = "/DefaultColumnsConfiguration", Icon = SVGCrud.SVGTypeEnum.Columns, DataId = "defaultColumns-config" },
+                    new ChildItem { Text = "FilterFields", Url = "/FilterFieldsConfiguration", Icon = SVGCrud.SVGTypeEnum.Filter, DataId = "filterFields-config" },
+                    new ChildItem { Text = "AddTaskFieldsConfiguration", Url = "/AddTaskConfiguration", Icon = SVGCrud.SVGTypeEnum.Filter, DataId = "addTask-config" },
+                    new ChildItem { Text = "WorkingDaysConfiguration", Url = "/WorkingDaysSetting", Icon = SVGCrud.SVGTypeEnum.CalnderPluse, DataId = "calnderPluse-config" },
+                    new ChildItem { Text = "TaskSource", Url = "/TaskSource", Icon = SVGCrud.SVGTypeEnum.DataFlow, DataId = "taskSource-config" },
+                    new ChildItem { Text = "TaskType", Url = "/TaskType", Icon = SVGCrud.SVGTypeEnum.TaskType, DataId = "taskType-config" },
+                    new ChildItem { Text = "Tasksviews", Url = "/Views", Icon = SVGCrud.SVGTypeEnum.List, DataId = "taskViews-config" },
+                    new ChildItem { Text = "WeeklyReport", Url = "/WeeklyReportSetting", Icon = SVGCrud.SVGTypeEnum.BarChartSquarPluse, DataId = "weeklyReport-config" }
+                }
+            },
+            new MenuItem {
+                Title = "Appearance", IsOpen = false,
+                Children = new List<ChildItem> {
+                    new ChildItem { Text = "SystemIdentity", Url = "/SystemIdentity", Icon = SVGCrud.SVGTypeEnum.RollerBrush, DataId = "systemIdentity-config" }
+                }
+            },
+            new MenuItem {
+                Title = "Management", IsOpen = false,
+                Children = new List<ChildItem> {
+                    new ChildItem { Text = "Users", Url = "/Users", Icon = SVGCrud.SVGTypeEnum.UsersEdit, DataId = "users-config"  },
+                    new ChildItem { Text = "Departments", Url = "/Departments", Icon = SVGCrud.SVGTypeEnum.DataFlow, DataId = "departments-config"  },
+                    new ChildItem { Text = "Privilege", Url = "/Privilege", Icon = SVGCrud.SVGTypeEnum.PrivilegeConfig, DataId = "Privilege-config"  }
+                }
+            },
+            new MenuItem {
+                Title = "Notification", IsOpen = false,
+                Children = new List<ChildItem> {
+                    new ChildItem { Text = "EmailNotification", Url = "/EmailNotification", Icon = SVGCrud.SVGTypeEnum.NotificationMessage, DataId = "notification-message-config"  },
+                    new ChildItem { Text = "SystemNotification", Url = "/SystemNotification", Icon = SVGCrud.SVGTypeEnum.BellPluse, DataId = "systemNotifcation-config"  },
+                    new ChildItem { Text = "TaskHistory", Url = "/TaskHistory", Icon = SVGCrud.SVGTypeEnum.ClockRewind, DataId = "taskHistory-config"  }
+                }
+            },
+        };
+    }
+
     protected override void OnInitialized()
     {
-        MenuItems = new List<MenuItem>
-{
-new MenuItem
-{
-Title = "General",
-IsOpen = true,
-Children = new List<ChildItem>
-{
-new ChildItem {
-Text = @Loc["RecycleBinConfiguration"],
-Url = "/RecycleBinConfiguration",
-Icon = SVGCrud.SVGTypeEnum.RecycleBinConfig ,
-DataId = "recycle-config"
-}
-,
-new ChildItem {
-Text = @Loc["RejectionConfiguration"],
-Url = "/RejectionConfiguration",
-Icon = SVGCrud.SVGTypeEnum.Reject,
-DataId = "rejection-config"
-}
-,
-new ChildItem {
-Text = @Loc["Priority"],
-Url = "/PrioritySettings",
-Icon = SVGCrud.SVGTypeEnum.ArrowsUp,
-DataId = "priorty-config"
-}
-,
-new ChildItem {
-Text = @Loc["StatusConfig"],
-Url = "/StatusSetting",
-Icon = SVGCrud.SVGTypeEnum.Repeat,
-DataId = "status-config"
-}
-,
-new ChildItem {
-Text = "DefaultColumns",
-Url = "/DefaultColumns",
-Icon = SVGCrud.SVGTypeEnum.Columns,
-DataId = "defaultColumns-config"
-}
-,
-new ChildItem {
-Text = "FilterFields",
-Url = "/FilterFields",
-Icon = SVGCrud.SVGTypeEnum.Filter,
-DataId = "filterFields-config"
-}
-,
-new ChildItem {
-Text = @Loc["WorkingDaysConfiguration"],
-Url = "/WorkingDaysSetting",
-Icon = SVGCrud.SVGTypeEnum.CalnderPluse,
-DataId = "calnderPluse-config"
-}
-,
-new ChildItem {
-Text = "TaskSource",
-Url = "/TaskSource",
-Icon = SVGCrud.SVGTypeEnum.DataFlow,
-DataId = "taskSource-config"
-}
-,
-new ChildItem {
-Text = "TaskType",
-Url = "/TaskType",
-Icon = SVGCrud.SVGTypeEnum.TaskType,
-DataId = "taskType-config"
-}
-,
-new ChildItem {
-Text = @Loc["Tasksviews"],
-Url = "/Views",
-Icon = SVGCrud.SVGTypeEnum.List,
-DataId = "taskViews-config"
-}
-,
-new ChildItem {
-Text = @Loc["WeeklyReport"],
-Url = "/WeeklyReportSetting",
-Icon = SVGCrud.SVGTypeEnum.BarChartSquarPluse,
-DataId = "weeklyReport-config"
-}
-}
-},
-new MenuItem
-{
-Title = "Appearance",
-IsOpen = false,
-Children = new List<ChildItem>
-{
-new ChildItem {
-Text = "SystemIdentity",
-Url = "/SystemIdentity",
-Icon = SVGCrud.SVGTypeEnum.RollerBrush,
-DataId = "systemIdentity-config"
-
-}
-}
-},
-new MenuItem
-{
-Title = "Management",
-IsOpen = false,
-Children = new List<ChildItem>
-{
-new ChildItem {
-Text = "Users",
-Url = "/Users",
-Icon = SVGCrud.SVGTypeEnum.UsersEdit,
-DataId = "users-config"
-
-},
-new ChildItem {
-Text = "Departments",
-Url = "/Departments",
-Icon = SVGCrud.SVGTypeEnum.DataFlow,
-DataId = "departments-config"
-
-}
-,
-new ChildItem {
-Text = "Privilege",
-Url = "/Privilege",
-Icon = SVGCrud.SVGTypeEnum.PrivilegeConfig,
-DataId = "Privilege-config"
-
-}
-},
-
-},
-new MenuItem
-{
-Title = "Notification",
-IsOpen = false,
-Children = new List<ChildItem>
-{
-new ChildItem {
-Text = "EmailNotification",
-Url = "/EmailNotification",
-Icon = SVGCrud.SVGTypeEnum.NotificationMessage,
-DataId = "notification-message-config"
-
-},
-new ChildItem {
-Text = "SystemNotification",
-Url = "/SystemNotification",
-Icon = SVGCrud.SVGTypeEnum.BellPluse,
-DataId = "systemNotifcation-config"
-
-}
-,
-new ChildItem {
-Text = "TaskHistory",
-Url = "/TaskHistory",
-Icon = SVGCrud.SVGTypeEnum.ClockRewind,
-DataId = "taskHistory-config"
-
-}
-},
-
-},
-
-
-};
+        SetMenu();
     }
 
     void ToggleMenu(MenuItem clicked)
     {
-        if (clicked.IsOpen)
-        {
+        foreach (var item in MenuItems)
+            item.IsOpen = false;
 
-            clicked.IsOpen = false;
-        }
-        else
-        {
-
-            foreach (var item in MenuItems)
-                item.IsOpen = false;
-            clicked.IsOpen = true;
-        }
+        clicked.IsOpen = true;
     }
 }
+
