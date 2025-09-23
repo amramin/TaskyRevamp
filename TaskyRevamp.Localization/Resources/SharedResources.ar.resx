@@ -321,4 +321,8 @@
   <data name="AddTaskFieldsConfiguration" xml:space="preserve">
     <value>إعدادات حقول إضافة المهمة</value>
   </data>
+  <data name="NodepartmentavailableAdd" xml:space="preserve">
+    <value> لا توجد إدارة متاحة
+أضف إدارة جديدة للبدء</value>
+  </data>
 </root>

@@ -321,4 +321,8 @@
   <data name="AddTaskFieldsConfiguration" xml:space="preserve">
     <value>Add Task Fields Configuration</value>
   </data>
+  <data name="NodepartmentavailableAdd" xml:space="preserve">
+    <value> No department available
+Add a new department to get started</value>
+  </data>
 </root>

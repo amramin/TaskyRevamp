@@ -20,7 +20,8 @@ public class CreateDepartmentHandler : IRequestHandler<CreateDepartmentCommand, 
 
     public async Task<Guid> Handle(CreateDepartmentCommand request, CancellationToken cancellationToken)
     {
-        Department department = new Department(new Guid(), request.departmentDto.NameEnglish, request.departmentDto.NameArabic);
+        Department department = new Department();
+        department.SetData(request.departmentDto);
        
        
         await _DepartmentRepository.Insert(department);

@@ -30,7 +30,7 @@ public class DepartmentController : ControllerBase
     }
 
 
-    [HttpPut]
+    [HttpPost("UpdateDepartment")]
     public async Task<IActionResult> UpdateDepartment([FromBody] DepartmentDto Department)
     {
         return Ok(await _mediator.Send(new UpdateDepartmentCommand(Department)));
@@ -53,7 +53,7 @@ public class DepartmentController : ControllerBase
 
 
 
-    [HttpGet("{id}")]
+    [HttpGet("GetDepartmentById/{id}")]
     public async Task<IActionResult> GetOne(string id)
     {
 
