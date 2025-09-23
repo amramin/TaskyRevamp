@@ -31,7 +31,7 @@
         <div class="card mb-2">
             <div class="card-body d-flex justify-content-between align-items-center">
 
-                <span class="badge" style="background-color:blue; color:gray">
+                    <span class="badge" style=" background-color:#E5F2FF; color:#007BFF">
                     @p.NameEnglish - @p.NameArabic  - @p.CreatedBy -@p.CreateDate  -@p.UpdatedBy -@p.UpdateDate 
                 </span>
 
@@ -86,7 +86,7 @@
         var res = await _DepartmentConsumer.GetDepartments();
         // if (res.Success  && res.Data != null)
         //{
-        departmentDtos = res.Data;
+        departmentDtos = res.Data.ToList().OrderBy(k=>k.CreateDate).ToList();
         // OriginalDeptes = CopyPriorites();
         //}
         StateHasChanged();
