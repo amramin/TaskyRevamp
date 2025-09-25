@@ -1,0 +1,53 @@
+﻿@page "/EditSource/{Id:guid}"
+
+@using TaskyRevamp.Client.Consumer
+@using TaskyRevamp.Client.Services
+@using TaskyRevamp.Dto.SystemConfiguration
+@inject NavigationManager navigationManager
+@inject IStringLocalizer<SharedResources> Loc
+@inject ToastService ToastService
+@inject SourceSettingConsumer _sourceSettingConsumer
+
+<div class="container mt-4">
+    <h3>@Loc["EditTaskSource"]</h3>
+    <SourceForm @ref="form"
+                OnCancel="Cancel"
+                OnValidSubmit="@Save"
+                source="@source"
+                SubmitButtonText="Save" />
+</div>
+
+@code {
+    [Parameter] public Guid Id { get; set; }
+    private SourceDto source = new SourceDto();
+    [Parameter] public EventCallback<SourceDto> OnValidSubmit { get; set; }
+    [Parameter] public EventCallback OnCancel { get; set; }
+    private SourceForm form;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var res = await _sourceSettingConsumer.GetSourceById(Id);
+        if (res.Success && res != null && res.Data != null)
+        {
+            source = res.Data;
+        }
+    }
+
+    private async Task Save(EditContext editContext)
+    {
+
+        var res = await _sourceSettingConsumer.UpdateSource(source);
+        if (res.Success)
+        {
+            await OnValidSubmit.InvokeAsync(source);
+            await ToastService.ShowToastAsync(Loc["EditSuccess"], "success");
+
+            navigationManager.NavigateTo("/SourceSettings");
+        }
+    }
+    private async Task Cancel()
+    {
+        //await OnCancel.InvokeAsync();
+        navigationManager.NavigateTo("/SourceSettings");
+    }
+}

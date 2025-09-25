@@ -23,6 +23,7 @@ public class EfDbContext : DbContext
     public DbSet<DefaultViewSettings> DefaultViewSettings { get; set; }
     public DbSet<WorkingDaysSettings> WorkingDaysSettings { get; set; }
     public DbSet<WeeklyReportSettings> WeeklyReportSettings { get; set; }
+    public DbSet<Source> Source { get; set; }
 	public EfDbContext(DbContextOptions<EfDbContext> options, IHttpContextAccessor httpContextAccessor)
         : base(options)
     {

@@ -348,4 +348,40 @@
   <data name="recycleHint" xml:space="preserve">
     <value>تعيين فترة الحذف التلقائي من النظام للمهام المحذوفة داخل سلة المحذوفات</value>
   </data>
+  <data name="SourceConfiguration" xml:space="preserve">
+    <value>إعدادات مصادر المهام</value>
+  </data>
+  <data name="AddTaskSource" xml:space="preserve">
+    <value>إضافة مصدر المهمة</value>
+  </data>
+  <data name="EditTaskSource" xml:space="preserve">
+    <value>تعديل مصدر المهمة</value>
+  </data>
+  <data name="DeleteTaskSource" xml:space="preserve">
+    <value>حذف مصدر المهمة</value>
+  </data>
+  <data name="active" xml:space="preserve">
+    <value>نشط</value>
+  </data>
+  <data name="inactive" xml:space="preserve">
+    <value>غيرنشط</value>
+  </data>
+  <data name="name" xml:space="preserve">
+    <value>الاسم </value>
+  </data>
+  <data name="CreationDate" xml:space="preserve">
+    <value>تاريخ الإنشاء</value>
+  </data>
+  <data name="CreatedBy" xml:space="preserve">
+    <value>المنشئ </value>
+  </data>
+  <data name="UpdateDate" xml:space="preserve">
+    <value>تاريخ التعديل</value>
+  </data>
+  <data name="UpdatedBy" xml:space="preserve">
+    <value>تم تعديله بواسطة</value>
+  </data>
+  <data name="SourceSure" xml:space="preserve">
+    <value>هل أنت متأكد من أنك تريد حذف مصدر المهمة؟</value>
+  </data>
 </root>

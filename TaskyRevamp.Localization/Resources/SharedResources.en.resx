@@ -348,4 +348,40 @@
   <data name="recycleHint" xml:space="preserve">
     <value>Set the auto deletion period from the system for deleted tasks inside the recycle bin</value>
   </data>
+  <data name="SourceConfiguration" xml:space="preserve">
+    <value>Task source Configuration</value>
+  </data>
+  <data name="AddTaskSource" xml:space="preserve">
+    <value>Add Task Source</value>
+  </data>
+  <data name="EditTaskSource" xml:space="preserve">
+    <value>Edit Task Source</value>
+  </data>
+  <data name="DeleteTaskSource" xml:space="preserve">
+    <value>Delete Task Source</value>
+  </data>
+  <data name="active" xml:space="preserve">
+    <value>Active</value>
+  </data>
+  <data name="inactive" xml:space="preserve">
+    <value>Inactive</value>
+  </data>
+  <data name="name" xml:space="preserve">
+    <value>Name </value>
+  </data>
+  <data name="CreationDate" xml:space="preserve">
+    <value>Creation Date</value>
+  </data>
+  <data name="CreatedBy" xml:space="preserve">
+    <value>Created By</value>
+  </data>
+  <data name="UpdateDate" xml:space="preserve">
+    <value>Update Date</value>
+  </data>
+  <data name="UpdatedBy" xml:space="preserve">
+    <value>Updated By</value>
+  </data>
+  <data name="SourceSure" xml:space="preserve">
+    <value>Are you sure you want to delete this task source?</value>
+  </data>
 </root>

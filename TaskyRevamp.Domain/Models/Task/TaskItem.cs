@@ -141,7 +141,7 @@ public class TaskItem : Entity, IHasCreationMetaData, IHasUpdateMetaData
     public User CreatedBy { get; set ; }
     public Guid? UpdatedById { get ; set ; }
     public DateTime? UpdateDate { get ; set; }
-    public User? UpdateddBy { get ; set ; }
+    public User? UpdatedBy { get ; set ; }
 
     private TaskItem() {  }
     public TaskItem(Guid id, string titleEnglish,string titleArabic, string descEN,string descAR, TaskType type, TaskSource source, DateTime start, DateTime end, Priority priority, Weight plannedWeight, User creator)
