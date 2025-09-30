@@ -16,8 +16,11 @@
 		<PackageReference Include="Microsoft.AspNetCore.Localization" Version="2.3.0" />
 		<PackageReference Include="Microsoft.Extensions.Localization" Version="9.0.8" />
 		<PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="9.0.8" />
+		
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 		<PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.13.0" />
+		<PackageReference Include="Stingray.Components.MultiSelectComponent" Version="1.0.22"/>
+
 	</ItemGroup>
 
 	<ItemGroup>

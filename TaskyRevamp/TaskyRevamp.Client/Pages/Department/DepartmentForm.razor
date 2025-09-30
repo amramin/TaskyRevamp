@@ -1,5 +1,9 @@
-﻿@using TaskyRevamp.Dto.Department
+﻿@using Stingray.Components.MultiSelectComponent
+@using TaskyRevamp.Client.Consumer
+@using TaskyRevamp.Dto.Department
 @using TaskyRevamp.Dto.SystemConfiguration
+@inject DepartmentConsumer _DepartmentConsumer
+
 @inject IStringLocalizer<SharedResources> Loc
 
 <EditForm EditContext="@editContext" OnSubmit="@OnSubmitHandler">
@@ -16,8 +20,17 @@
         <InputText class="form-control" @bind-Value="Department.NameArabic" placeholder="Enter Department Name Arabic" />
         <ValidationMessage class="small text-danger" For="@(() => Department.NameArabic)"></ValidationMessage>
     </div>
+   <SearchableSingleDropdownOffline TInput=DepartmentDto
+                                                             TOutput=Guid
+                                                             TextSelector="(DepartmentDto x)=> x.Name"
+                                                             OutputSelector="x => x.Id"
+                                                             Datasource="AllDepartments"
+                                                             MinCharacterCount="1"
+                                                             SelectedOption="@Department.ParentdepartmentId"
+                                     PlaceHolder="@($"--{Loc["SelectParent"]}--")" />
 
-  
+
+
 
 
     <div class="d-flex justify-content-end gap-2 mt-4">
@@ -33,21 +46,31 @@
     [Parameter] public EventCallback<EditContext> OnValidSubmit { get; set; }
     [Parameter] public EventCallback OnCancel { get; set; }
     [Parameter] public string SubmitButtonText { get; set; } = "Save";
-
+    public List<DepartmentDto> AllDepartments  = new  List<DepartmentDto> ();
     private EditContext editContext;
     private ValidationMessageStore messageStore;
+    public async Task savedep(Guid id, Guid parnt)
+    {
+        Department.ParentdepartmentId = id;
+        
+        await InvokeAsync(StateHasChanged);
+        // StateHasChanged();
+    }
 
-    protected override void OnParametersSet()
+    protected override async Task OnInitializedAsync()
     {
         if (editContext == null || editContext.Model != Department)
         {
             editContext = new EditContext(Department);
             messageStore = new ValidationMessageStore(editContext);
         }
+        var Departs = await _DepartmentConsumer.GetDepartments();
+        AllDepartments = Departs.Data;
+        StateHasChanged();
     }
 
 
-
+  
     private async Task OnSubmitHandler(EditContext context)
     {
         ClearValidationMessages();

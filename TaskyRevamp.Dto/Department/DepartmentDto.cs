@@ -22,7 +22,12 @@ namespace TaskyRevamp.Dto.Department
      ErrorMessageResourceName = ValidationDto.Required
  )]
         public string NameArabic { get; set; }
+
+        public string Name => Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName.Equals("ar") ? NameArabic : NameEnglish;
+
         public Guid CreatedBy { get; set; }
+        public Guid ParentdepartmentId { get; set; }
+
         public DateTime? CreateDate { get; set; }
         public Guid? UpdatedBy { get; set; }
         public DateTime? UpdateDate { get; set; }

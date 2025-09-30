@@ -19,6 +19,12 @@ internal class DepartmentConfiguration : IEntityTypeConfiguration<Department>
 .HasOne(r => r.CreatedBy)
 .WithMany().HasForeignKey(r => r.CreatedById)
 .OnDelete(DeleteBehavior.NoAction);
+
+        builder
+       .HasOne(r => r.department)
+.WithMany().HasForeignKey(r => r.ParentdepartmentId)
+.OnDelete(DeleteBehavior.NoAction);
+        
         builder
 
 .HasOne(r => r.UpdateddBy)

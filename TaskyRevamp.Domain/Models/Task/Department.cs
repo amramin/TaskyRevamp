@@ -10,6 +10,11 @@ public class Department : Entity, IHasCreationMetaData, IHasUpdateMetaData
     public string NameEnglish { get;  set; }
     public string NameArabic { get; set; }
     public Guid CreatedById { get ; set ; }
+
+    public Guid? ParentdepartmentId { get; set; }
+
+    public Department department { get; set; }
+
     public DateTime CreateDate { get ; set ; }
     public User CreatedBy { get ; set ; }
     public Guid? UpdatedById { get ; set ; }
@@ -35,6 +40,7 @@ public class Department : Entity, IHasCreationMetaData, IHasUpdateMetaData
         NameArabic= departmentDto.NameArabic;
         CreatedById = departmentDto.CreatedBy;
         UpdatedById = departmentDto.UpdatedBy;
+        ParentdepartmentId= departmentDto.ParentdepartmentId;
         CreateDate=departmentDto.CreateDate??DateTime.Now;
         return true;
 
@@ -50,7 +56,7 @@ public class Department : Entity, IHasCreationMetaData, IHasUpdateMetaData
            UpdatedBy= UpdatedById,
            CreateDate= CreateDate,
            UpdateDate= UpdateDate,
-
+           ParentdepartmentId=ParentdepartmentId.Value,
 
         };
     }
