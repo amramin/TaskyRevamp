@@ -6,7 +6,7 @@
 
 @inject IStringLocalizer<SharedResources> Loc
 
-<EditForm EditContext="@editContext" OnSubmit="@OnSubmitHandler">
+<EditForm Model="@Department"  OnSubmit="@OnSubmitHandler">
     <DataAnnotationsValidator />
 
     <div class="mb-3">
@@ -26,7 +26,7 @@
                                                              OutputSelector="x => x.Id"
                                                              Datasource="AllDepartments"
                                                              MinCharacterCount="1"
-                                                             SelectedOption="@Department.ParentdepartmentId"
+                                     SelectedOption="@Department.ParentdepartmentId"
                                      PlaceHolder="@($"--{Loc["SelectParent"]}--")" />
 
 
@@ -52,22 +52,18 @@
     public async Task savedep(Guid id, Guid parnt)
     {
         Department.ParentdepartmentId = id;
-        
+
         await InvokeAsync(StateHasChanged);
         // StateHasChanged();
     }
-
     protected override async Task OnInitializedAsync()
-    {
-        if (editContext == null || editContext.Model != Department)
-        {
-            editContext = new EditContext(Department);
-            messageStore = new ValidationMessageStore(editContext);
+{
+         
+            var Departs = await _DepartmentConsumer.GetDepartments();
+            AllDepartments = Departs.Data.ToList();
+            StateHasChanged();
         }
-        var Departs = await _DepartmentConsumer.GetDepartments();
-        AllDepartments = Departs.Data;
-        StateHasChanged();
-    }
+    
 
 
   

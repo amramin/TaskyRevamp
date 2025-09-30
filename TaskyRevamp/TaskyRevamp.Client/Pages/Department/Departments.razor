@@ -19,6 +19,7 @@
     </div>
 
     <h6 class="mb-3">@Loc["Departments"]</h6>
+    </div>
     @if (departmentDtos == null || departmentDtos.Count() == 0)
     {
         <h6 class="mb-3">@Loc["NodepartmentavailableAdd"]</h6>
@@ -26,15 +27,42 @@
     }
     else{
 
+        <div class="table-responsive sticky-header-custom">
+            <table class="table custom-table">
+
+                <thead>
+                    <tr>
+                        <th>@Loc["Name"]</th>
+                            <th>@Loc["Name"]</th>
+                        <th>@Loc["CreatedBy"]</th>
+                        <th>@Loc["CreatedDate"]</th>
+                            <th>@Loc["CreatedBy"]</th>
+                            <th>@Loc["CreatedDate"]</th>
+             
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                        @if (departmentDtos != null && departmentDtos.Any())
+                    {
     @foreach (var p in departmentDtos)
     {
+
+                                <tr>
+                                    <td>@p.NameEnglish</td>
+                                    <td>@p.NameArabic</td>
+                                    <td>@p.CreatedBy</td>
+                                  
+                                   
+                                    <td>@p.CreateDate</td>
+                                    <td>@p.UpdatedBy</td>
+                                    <td>@p.UpdateDate</td>
+                                 
+                                    <td>
         <div class="card mb-2">
             <div class="card-body d-flex justify-content-between align-items-center">
 
-                    <span class="badge" style=" background-color:#E5F2FF; color:#007BFF">
-                    @p.NameEnglish - @p.NameArabic  - @p.CreatedBy -@p.CreateDate  -@p.UpdatedBy -@p.UpdateDate 
-                </span>
-
+                  
                 <div class="d-flex align-items-center gap-2">
                     <span class="rounded-circle p-2" ></span>
                     <span class="rounded-circle p-2"></span>
@@ -55,9 +83,19 @@
                 </div>
             </div>
         </div>
+        </td>
+        </tr>
     }
 
     }
+    </tbody>
+    </table>
+
+    }
+
+  
+                 
+               
 
     <ConfirmationPopup ButtonText="@Loc["Delete"]"
                        IsVisible="@showConfirm"
@@ -70,7 +108,7 @@
     </div>
 
 </div>
-
+}
 @code {
     public List<DepartmentDto> departmentDtos = new List<DepartmentDto>();
 
