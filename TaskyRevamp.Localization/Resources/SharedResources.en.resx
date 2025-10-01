@@ -384,4 +384,13 @@
   <data name="SourceSure" xml:space="preserve">
     <value>Are you sure you want to delete this task source?</value>
   </data>
+  <data name="Action" xml:space="preserve">
+    <value>Action </value>
+  </data>
+  <data name="No Task Sources Available" xml:space="preserve">
+    <value>No Task Sources Available</value>
+  </data>
+  <data name="Add a new task source to get started." xml:space="preserve">
+    <value>Add a new task source to get started.</value>
+  </data>
 </root>

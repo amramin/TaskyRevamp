@@ -24,10 +24,12 @@ namespace TaskyRevamp.WebAPI.Controllers
 		public async Task<IActionResult> GetSourceSettings(
 			[FromServices] IOptions<PaginationSettings> paginationSettings,
 			[FromQuery] int pageNumber = 1,
-			[FromQuery] int? pageSize = null)
+			[FromQuery] int? pageSize = null,
+			[FromQuery] string sortByColumnName = "CreateDate",
+			[FromQuery] bool sortAscending = true)
 		{
 			var size = pageSize ?? paginationSettings.Value.DefaultPageSize;
-			var result = await _mediator.Send(new GetSourceConfigurationQuery(pageNumber, size));
+			var result = await _mediator.Send(new GetSourceConfigurationQuery(pageNumber, size, sortByColumnName, sortAscending));
 			return Ok(result);
 		}
 
