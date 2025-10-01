@@ -1,0 +1,54 @@
+﻿@using TaskyRevamp.Dto.SystemConfiguration
+@inject IStringLocalizer<SharedResources> Loc
+
+
+<EditForm EditContext="@editContext" OnValidSubmit="@OnSubmitHandler">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <div class="mb-3">
+        <label class="form-label">@Loc["Name English"]</label>
+        <InputText class="form-control" @bind-Value="type.NameEnglish" placeholder="Enter Task Type Name English" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">@Loc["Name Arabic"]</label>
+        <InputText class="form-control" @bind-Value="type.NameArabic" placeholder="Enter Task Type Name Arabic" />
+    </div>
+
+    <div class="form-check form-switch">
+        <InputCheckbox @bind-Value="type.IsActive" class="form-check-input" id="inactiveSwitch" />
+        <label class="form-check-label" for="inactiveSwitch">
+            @Loc[type.IsActive ? "inactive" : "active"]
+        </label>
+    </div>
+
+    <div class="d-flex justify-content-end gap-2 mt-4">
+        <button type="button" class="btn btn-light" @onclick="OnCancelClick">@Loc["Cancel"]</button>
+        <button type="submit" class="btn btn-primary">@Loc[@SubmitButtonText]</button>
+    </div>
+</EditForm>
+
+@code {
+    [Parameter] public TypeDto type { get; set; } = new TypeDto();
+    [Parameter] public EventCallback<EditContext> OnValidSubmit { get; set; }
+    [Parameter] public EventCallback OnCancel { get; set; }
+    [Parameter] public string SubmitButtonText { get; set; } = "Save";
+    private EditContext editContext;
+
+    protected override void OnParametersSet()
+    {
+        if (editContext == null || editContext.Model != type)
+        {
+            editContext = new EditContext(type);
+        }
+    }
+
+    private async Task OnSubmitHandler(EditContext context)
+    {
+        await OnValidSubmit.InvokeAsync(context);
+    }
+    private async void OnCancelClick()
+    {
+        await OnCancel.InvokeAsync();
+    }
+}

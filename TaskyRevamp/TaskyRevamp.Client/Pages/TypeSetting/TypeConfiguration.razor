@@ -1,0 +1,197 @@
+﻿@page "/TypeConfiguration"
+@using TaskyRevamp.Client.Consumer
+@using TaskyRevamp.Client.Services
+@using TaskyRevamp.Client.Shared.Popups
+@using TaskyRevamp.Dto.SystemConfiguration
+@inject NavigationManager navigationManager
+@inject IStringLocalizer<SharedResources> Loc
+@inject ToastService ToastService
+@inject TypeSettingConsumer _typeSettingConsumer
+
+
+<div class="card p-4 m-2">
+    @if (types != null && types.Any())
+    {
+        <div class="card shadow-sm border-1 ms-2">
+            <div class="card-header d-flex justify-content-between align-items-center bg-white">
+                <h5 class="mb-0 fw-bold">@Loc["TaskTypeConfiguration"]</h5>
+                <div class="d-flex">
+                    <input type="text" class="form-control form-control-sm me-2" placeholder="Search..." oninput="SearchOption" style="max-width: 400px;" />
+                    <button class="btn btn-sm btn-primary" style="width:300px" @onclick="AddType"> + @Loc["AddTaskType"]</button>
+                </div>
+            </div>
+            <div class="table-responsive flex-grow-1">
+                <table class="table table-sm table-hover align-middle m-2">
+                    <thead class="table-light small">
+                        <tr>
+                            <th @onclick='() => SortBy("DisplayedName")' style="cursor:pointer">
+                                @Loc["name"]
+                                <span class="ms-1">
+                                    @(currentSortColumn == "DisplayedName" ? (sortAscending ? "↑" : "↓") : "↕")
+                                </span>
+                            </th>
+                            <th @onclick='() => SortBy("CreateDate")' style="cursor:pointer">
+                                @Loc["CreationDate"]
+                                 <span class="ms-1">
+                                    @(currentSortColumn == "CreateDate" ? (sortAscending ? "↑" : "↓") : "↕")
+                                </span>
+                            </th>
+                            <th @onclick='() => SortBy("CreatedBy")' style="cursor:pointer">
+                                @Loc["CreatedBy"]
+                                 <span class="ms-1">
+                                    @(currentSortColumn == "CreatedBy" ? (sortAscending ? "↑" : "↓") : "↕")
+                                </span>
+                            </th>
+                            <th @onclick='() => SortBy("UpdateDate")' style="cursor:pointer">
+                                @Loc["UpdatedDate"]
+                                 <span class="ms-1">
+                                    @(currentSortColumn == "UpdateDate" ? (sortAscending ? "↑" : "↓") : "↕")
+                                </span>
+                            </th>
+                            <th @onclick='() => SortBy("UpdatedBy")' style="cursor:pointer">
+                                @Loc["UpdatedBy"]
+                                 <span class="ms-1">
+                                    @(currentSortColumn == "UpdatedBy" ? (sortAscending ? "↑" : "↓") : "↕")
+                                </span>
+                            </th>
+                            <th class="text-center">@Loc["active"]</th>
+                            <th class="text-center">@Loc["Action"]</th>
+                        </tr>
+                    </thead>
+                    <tbody class="small">
+                        @foreach (var item in types)
+                        {
+                            <tr>
+                                <td>@item.Type.DisplayedName</td>
+                                <td>@item.Type.CreateDate.ToLocalTime().ToString("dd/MM/yyyy")</td>
+                                <td>@item.CreatedByName</td>
+                                <td>@(item.Type.UpdateDate.HasValue? item.Type.UpdateDate.Value.ToLocalTime().ToString("dd/MM/yyyy"): "")</td>
+                                <td>@item.UpdatedByName</td>
+                                <td class="text-center">
+                                    <div class="form-check form-switch d-flex justify-content-center">
+                                        <InputCheckbox @bind-Value="item.Type.IsActive" class="form-check-input" id="inactiveSwitch" />
+                                    </div>
+                                </td>
+                                <td class="text-center">
+                                    <button class="btn btn-sm btn-success me-2" @onclick="@(() => EditType(item.Type.Id))">
+                                        <span class="icon">
+                                            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Edit"></SVGCrud>
+                                        </span>
+                                    </button>
+                                    <button class="btn btn-sm btn-danger" @onclick="@(() => DeleteType(item))">
+                                        <span class="icon">
+                                            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.RecycleBin"></SVGCrud>
+                                        </span>
+                                    </button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div class="card-footer bg-white">
+                <Pagination CurrentPage="@currentPage"
+                            TotalPages="@totalPages"
+                            TotalCount="@totalCount"
+                            PageSize="@pageSize"
+                            PageChanged="ChangePage"
+                            PageSizeChangedCallback="ChangePageSize" />
+            </div>
+        </div>
+    }
+    else
+    {
+
+        <div class="d-flex flex-column align-sources-center justify-content-center p-5">
+            <h6 class="mt-4 fw-semibold text-muted">@Loc["NoTaskTypeAvailable"]</h6>
+            <p class="text-muted">@Loc["Add a new task type to get started."]</p>
+            <button class="btn btn-primary mt-3" @onclick="AddType"> + @Loc["AddTaskType"] </button>
+        </div>
+
+    }
+    <ConfirmationPopup ButtonText="@Loc["Delete"]"
+                       IsVisible="@showConfirm"
+                       OnConfirm="OnDeleteConfirmed"
+                       Message="@confirmMessage" />
+</div>
+@code {
+    List<TypeDtoWithName> types = new();
+    private bool showConfirm;
+    private string confirmMessage = "";
+    private TypeDtoWithName? selectedType;
+    private int currentPage = 1;
+    private int totalPages = 1;
+    private int totalCount = 0;
+    private int pageSize = 10;
+    private string currentSortColumn = "CreateDate";
+    private bool sortAscending = true;
+
+    private async Task ChangePage(int page)
+    {
+        currentPage = page;
+        await LoadTypes();
+    }
+
+    private async Task ChangePageSize(int newSize)
+    {
+        pageSize = newSize;
+        currentPage = 1;
+        await LoadTypes();
+    }
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadTypes();
+    }
+    private async Task LoadTypes()
+    {
+        var resp = await _typeSettingConsumer.GetTypes(currentPage, pageSize, currentSortColumn, sortAscending);
+        if (!(resp?.Success ?? false) || resp.Data is null)
+            return;
+
+        var data = resp.Data;
+        types = data.Items.ToList();
+        totalPages = data.TotalPages;
+        totalCount = data.TotalCount;
+    }
+    private void AddType() => navigationManager.NavigateTo("/AddType");
+    private void EditType(Guid id) => navigationManager.NavigateTo($"EditType/{id}");
+    private void DeleteType(TypeDtoWithName t)
+    {
+        confirmMessage = @Loc["TypeSure"];
+        selectedType = t;
+        showConfirm = true;
+    }
+    private async Task OnDeleteConfirmed(bool confirmed)
+    {
+        if (confirmed && selectedType != null)
+        {
+            var result = await _typeSettingConsumer.DeleteType(selectedType.Type.Id);
+            if (result.Success)
+            {
+                types.Remove(selectedType);
+                showConfirm = false;
+                StateHasChanged();
+                await ToastService.ShowToastAsync(Loc["Deleted successfully"], "success");
+            }
+        }
+        selectedType = null;
+        await LoadTypes();
+    }
+    private async Task SortBy(string columnName)
+    {
+        if(currentSortColumn == columnName)
+        {
+            sortAscending = !sortAscending;
+        }
+        else
+        {
+            currentSortColumn = columnName;
+            sortAscending = true;
+        }
+        await LoadTypes();
+    }
+    private void OnSearchChanged(ChangeEventArgs args)
+    {
+        throw new NotImplementedException();
+    }
+}

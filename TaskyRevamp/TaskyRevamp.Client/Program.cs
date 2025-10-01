@@ -48,6 +48,7 @@ builder.Services.AddTransient<DefaultViewSettingConsumer>();
 builder.Services.AddTransient<WorkingDaysSettingConsumer>();
 builder.Services.AddTransient<WeeklyReportSettingConsumer>();
 builder.Services.AddTransient<SourceSettingConsumer>();
+builder.Services.AddTransient<TypeSettingConsumer>();
 
 var configuration = builder.Configuration;
 

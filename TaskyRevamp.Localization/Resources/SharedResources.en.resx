@@ -384,4 +384,19 @@
   <data name="SourceSure" xml:space="preserve">
     <value>Are you sure you want to delete this task source?</value>
   </data>
+  <data name="TaskTypeConfiguration" xml:space="preserve">
+    <value>Tasks type Configuration</value>
+  </data>
+  <data name="TypeSure" xml:space="preserve">
+    <value>Are you sure you want to delete this task type?</value>
+  </data>
+  <data name="AddTaskType" xml:space="preserve">
+    <value>Add Type</value>
+  </data>
+  <data name="NoTaskTypeAvailable" xml:space="preserve">
+    <value>No Task Type Available</value>
+  </data>
+  <data name="Add a new task type to get started." xml:space="preserve">
+    <value>Add a new task type to get started.</value>
+  </data>
 </root>
