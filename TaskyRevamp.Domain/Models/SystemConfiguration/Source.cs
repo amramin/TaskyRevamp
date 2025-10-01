@@ -25,7 +25,7 @@ namespace TaskyRevamp.Domain.Models.SystemConfiguration
 		{
 
 		}
-		public Source(string nameEnglish, string nameArabic, string descriptionEnglish, string descriptionArabic, bool isActive)
+		public Source(string nameEnglish, string nameArabic, bool isActive)
 		{
 			NameEnglish = nameEnglish;
 			NameArabic = nameArabic;

@@ -384,6 +384,15 @@
   <data name="SourceSure" xml:space="preserve">
     <value>هل أنت متأكد من أنك تريد حذف مصدر المهمة؟</value>
   </data>
+  <data name="Action" xml:space="preserve">
+    <value>الإجراء</value>
+  </data>
+  <data name="No Task Sources Available" xml:space="preserve">
+    <value>لا تتوفر مصادر مهام</value>
+  </data>
+  <data name="Add a new task source to get started." xml:space="preserve">
+    <value>أضف مصدر مهمة جديدًا للبدء</value>
+  </data>
   <data name="TaskTypeConfiguration" xml:space="preserve">
     <value>إعدادات أنواع المهام</value>
   </data>

@@ -10,7 +10,9 @@ namespace TaskyRevamp.Dto.SystemConfiguration
 	public class SourceDto
 	{
 		public Guid Id { get; set; }
+		[Required]
 		public string NameEnglish { get; set; }
+		[Required]
 		public string NameArabic { get; set; }
 
 		public string DisplayedName { 

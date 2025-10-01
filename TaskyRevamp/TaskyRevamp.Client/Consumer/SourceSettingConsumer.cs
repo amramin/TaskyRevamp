@@ -12,9 +12,9 @@ namespace TaskyRevamp.Client.Consumer
 			_taskyService = taskyService;
 		}
 
-		public async Task<CommonApiResponse<PagedResult<SourceDtoWithName>>> GetSources(int pageNumber, int pageSize)
+		public async Task<CommonApiResponse<PagedResult<SourceDtoWithName>>> GetSources(int pageNumber, int pageSize, string sortByColumnName, bool sortAscending)
 		{
-			var url = $"api/SourceSetting/GetSourceSettings?pageNumber={pageNumber}&pageSize={pageSize}";
+			var url = $"api/SourceSetting/GetSourceSettings?pageNumber={pageNumber}&pageSize={pageSize}&sortByColumnName={sortByColumnName}&sortAscending={sortAscending}";
 			var res = await _taskyService.GetFromJsonAsync<CommonApiResponse<PagedResult<SourceDtoWithName>>>(url);
 
 			return res;
