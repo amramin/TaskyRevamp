@@ -41,11 +41,13 @@ public class PopupService
         });
     }
 
-    public void ShowNew(RenderFragment childContent)
+    public void ShowNew(RenderFragment childContent, string headerText = "")
     {
         Show(PopupType.New, new NewPopupParams
         {
-            ChildContent = childContent
+            ChildContent = childContent,
+            HeaderText = headerText
+
         });
     }
 
@@ -74,6 +76,7 @@ public class InvalidPopupParams
 
 public class NewPopupParams
 {
+    public string HeaderText { get; set; } = "";
     public RenderFragment? ChildContent { get; set; }
 }
 

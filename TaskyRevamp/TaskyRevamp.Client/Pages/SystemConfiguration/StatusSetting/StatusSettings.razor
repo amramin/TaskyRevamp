@@ -56,7 +56,10 @@
 
     private void Edit(Guid id)
     {
-        PopupService.ShowNew(@<UpdateStatus Id="id" OnValidSubmit="OnInitializedAsync" />);
+       PopupService.ShowNew(
+        @<UpdateStatus Id="id" OnValidSubmit="OnInitializedAsync" />,
+        headerText: Loc["EditStatus"]
+    );
     }
 
     private void Cancel(MouseEventArgs args)
