@@ -44,11 +44,16 @@
                 else if (_popupType == PopupType.New && _parameters is NewPopupParams newParams)
                 {
                     <div class="offcanvas offcanvas-end show d-block h-100" tabindex="-1" style="visibility:visible;" @onclick="PopupService.Hide">
+                        <div class="offcanvas-header" @onclick:stopPropagation>
+                            <h5 class="offcanvas-title">@newParams.HeaderText</h5>
+                            <button type="button" class="btn-close" @onclick="PopupService.Hide"></button>
+                        </div>
                         <div class="offcanvas-body" @onclick:stopPropagation>
                             @newParams.ChildContent
                         </div>
                     </div>
                 }
+
                 else if (_popupType == PopupType.Standard && _parameters is StandardPopupParams stdParams)
                 {
                     <div class="modal-header">
