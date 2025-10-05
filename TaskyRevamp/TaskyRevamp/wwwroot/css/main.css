@@ -402,6 +402,12 @@
   font-weight: 600;
 }
 
+.small-medium-text {
+  font-size: 0.875rem;
+  color: var(--dark-600);
+  font-weight: 500;
+}
+
 /* End typography*/
 /* start app-splash-screen*/
 .app-splash-screen {
@@ -505,6 +511,51 @@
   }
 }
 /* End app-splash-screen*/
+/* start offcabvas popup */
+.offcanvas .offcanvas-header .close svg {
+  width: 1.12rem;
+  height: 1.12rem;
+}
+
+/* end offcabvas popup */
+/* start confirmation-popup*/
+.modal .modal-content.confirmation-popup {
+  border-radius: 1rem;
+}
+.modal .modal-content.confirmation-popup .modal-body {
+  padding: 2.5rem 1.5rem;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  text-align: center;
+  border-radius: 1rem;
+}
+.modal .modal-content.confirmation-popup .modal-body .confirm-icon {
+  margin-bottom: 1rem;
+}
+.modal .modal-content.confirmation-popup .modal-body .confirm-icon svg {
+  width: 4.5rem;
+  height: 4.5rem;
+  color: var(--primary-color);
+}
+.modal .modal-content.confirmation-popup .modal-footer {
+  border-top: 0;
+  padding-bottom: 2.5rem;
+}
+@media (min-width: 400px) {
+  .modal .modal-content.confirmation-popup {
+    max-width: 330px;
+  }
+}
+
+/* end confirmation-popup*/
 @font-face {
   font-family: "Almarai";
   src: url(../fonts/Almarai/Almarai-Regular.ttf);
@@ -701,7 +752,7 @@
   inset-inline-start: 0;
   top: 0;
   background-color: var(--primary-color) !important;
-  z-index: 1080;
+  z-index: 1000;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;

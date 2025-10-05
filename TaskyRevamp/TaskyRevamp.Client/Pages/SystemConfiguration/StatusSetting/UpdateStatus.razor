@@ -7,9 +7,7 @@
 @inject ToastService ToastService
 @inject PopupService PopupService
 
-<div class="container mt-4 offcanvas-body">
-    <h3>Edit Status</h3>
-
+<div class="offcanvas-body">
     <EditForm Model="_statusDto" OnValidSubmit="Save">
         <DataAnnotationsValidator />
         <ValidationSummary />
