@@ -7,12 +7,11 @@
 @inject ToastService ToastService
 @inject PopupService PopupService
 
-<div class="container mt-4 offcanvas-body">
 
-    <EditForm Model="_statusDto" OnValidSubmit="Save">
-        <DataAnnotationsValidator />
-        <ValidationSummary />
-
+<EditForm Model="_statusDto" OnValidSubmit="Save">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <div class="offcanvas-body">
         <div class="mb-3">
             <label class="form-label">@Loc["Name English"]</label>
             <InputText class="form-control" @bind-Value="_statusDto.NameEnglish" />
@@ -28,8 +27,8 @@
             <div class="input-group">
                 <InputText class="form-control" @bind-Value="_statusDto.NameColor" />
                 <span class="input-group-text">
-                    <input type="color" class="form-control form-control-color border-0 p-0"
-                           style="width: 2rem;" @bind="_statusDto.NameColor" />
+                    <input type="color" class="form-control form-control-color border-0 p-0" style="width: 2rem;"
+                        @bind="_statusDto.NameColor" />
                 </span>
             </div>
         </div>
@@ -39,18 +38,19 @@
             <div class="input-group">
                 <InputText class="form-control" @bind-Value="_statusDto.BackgroundColor" />
                 <span class="input-group-text">
-                    <input type="color" class="form-control form-control-color border-0 p-0"
-                           style="width: 2rem;" @bind="_statusDto.BackgroundColor" />
+                    <input type="color" class="form-control form-control-color border-0 p-0" style="width: 2rem;"
+                        @bind="_statusDto.BackgroundColor" />
                 </span>
             </div>
         </div>
+    </div>
 
-        <div class="d-flex justify-content-end gap-2 mt-4">
-            <button type="button" class="btn btn-light" @onclick="Cancel">@Loc["Cancel"]</button>
-            <button type="submit" class="btn btn-primary">@Loc["Save"]</button>
-        </div>
-    </EditForm>
-</div>
+    <div class="offcanvas-footer">
+        <button type="button" class="btn btn-light" @onclick="Cancel">@Loc["Cancel"]</button>
+        <button type="submit" class="btn btn-primary">@Loc["Save"]</button>
+    </div>
+</EditForm>
+
 
 @code {
     [Parameter] public Guid Id { get; set; }
@@ -72,7 +72,7 @@
         if (res.Success)
         {
             await ToastService.ShowToastAsync(Loc["EditSuccess"], "success");
-            PopupService.Hide(); // close popup after save            
+            PopupService.Hide(); // close popup after save
 
             if (OnValidSubmit.HasDelegate)
                 await OnValidSubmit.InvokeAsync(_statusDto);

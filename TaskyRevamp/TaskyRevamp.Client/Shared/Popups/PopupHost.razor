@@ -9,27 +9,39 @@
 
     <!-- Modal -->
     <div class="modal fade show d-block" tabindex="-1" @onclick="PopupService.Hide">
-        <div class="modal-dialog" @onclick:stopPropagation>
-            <div class="modal-content">
+        <div class="modal-dialog  modal-dialog-centered" @onclick:stopPropagation>
+          
 
                 @if (_popupType == PopupType.Confirmation && _parameters is ConfirmationPopupParams confirmParams)
                 {
-                    <div class="modal-header">
+                    <div class="modal-content confirmation-popup">
+                    <div class="">
+                        @* <div class="modal-header">
                         <h5 class="modal-title">Confirmation</h5>
                         <button type="button" class="btn-close" @onclick="PopupService.Hide"></button>
+                    </div> *@
+                        <div class="modal-body">
+                            <span class="confirm-icon">
+                                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.RecycleVectore"></SVGCrud>
+                            </span>
+                            <h6 class="modal-title headline-6">Move to trash ?</h6>
+                            <p class="small-medium-text">@confirmParams.Message</p>
+                              <div class="action d-grid w-100">
+                            <button class="btn btn-lg btn-primary" @onclick="() => Confirm(true, confirmParams.OnConfirm)">
+                                @confirmParams.ButtonText
+                            </button>
+                            <button class="btn btn-lg"
+                                @onclick="() => Confirm(false, confirmParams.OnConfirm)">Cancel</button>
+                        </div>
+                        </div>
+                      
                     </div>
-                    <div class="modal-body">
-                        <p>@confirmParams.Message</p>
                     </div>
-                    <div class="modal-footer">
-                        <button class="btn btn-primary" @onclick="() => Confirm(true, confirmParams.OnConfirm)">
-                            @confirmParams.ButtonText
-                        </button>
-                        <button class="btn btn-secondary" @onclick="() => Confirm(false, confirmParams.OnConfirm)">Cancel</button>
-                    </div>
+
                 }
                 else if (_popupType == PopupType.InValid && _parameters is InvalidPopupParams invalidParams)
                 {
+                <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title">Invalid</h5>
                         <button type="button" class="btn-close" @onclick="PopupService.Hide"></button>
@@ -40,6 +52,8 @@
                     <div class="modal-footer">
                         <button class="btn btn-primary" @onclick="PopupService.Hide">OK</button>
                     </div>
+                    </div>
+
                 }
                 else if (_popupType == PopupType.New && _parameters is NewPopupParams newParams)
                 {
@@ -48,7 +62,7 @@
                             <h5 class="offcanvas-title">@newParams.HeaderText</h5>
                             <button type="button" class="btn-close" @onclick="PopupService.Hide"></button>
                         </div>
-                        <div class="offcanvas-body" @onclick:stopPropagation>
+                        <div  @onclick:stopPropagation>
                             @newParams.ChildContent
                         </div>
                     </div>
@@ -56,6 +70,7 @@
 
                 else if (_popupType == PopupType.Standard && _parameters is StandardPopupParams stdParams)
                 {
+                    <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title">@stdParams.HeaderText</h5>
                         <button type="button" class="btn-close" @onclick="PopupService.Hide"></button>
@@ -66,9 +81,10 @@
                     <div class="modal-footer">
                         <button class="btn btn-secondary" @onclick="PopupService.Hide">Close</button>
                     </div>
+                     </div>
                 }
 
-            </div>
+           
         </div>
     </div>
 }

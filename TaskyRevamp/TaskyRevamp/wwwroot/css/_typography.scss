@@ -27,8 +27,13 @@
     color: var(--dark-700);
   }
 }
-.headline-6{
-  font-size:1rem;
-  font-weight:600;
+.headline-6 {
+  font-size: 1rem;
+  font-weight: 600;
+}
+.small-medium-text {
+  font-size: 0.875rem;
+  color: var(--dark-600);
+  font-weight: 500;
 }
 /* End typography*/
