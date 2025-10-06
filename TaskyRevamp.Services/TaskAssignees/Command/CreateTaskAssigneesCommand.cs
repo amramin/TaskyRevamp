@@ -1,31 +1,25 @@
 ﻿using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using TaskyRevamp.Domain.Models.Task;
 using TaskyRevamp.Domain.Repositeries;
 using TaskyRevamp.Dto.TaskAssignees;
 
-namespace TaskAssigneesyRevamp.Services.TaskAssigneess.Commands;
+namespace TaskyRevamp.Services.TaskAssignees.Command;
 
 public record CreateTaskAssigneesCommand(TaskAssigneesDto TaskAssigneesDto) : IRequest<Guid>;
 
 public class CreateTaskAssigneesHandler : IRequestHandler<CreateTaskAssigneesCommand, Guid>
 {
-    private readonly IRepository<TaskAssignees> _TaskAssigneesRepository;
+    private readonly IRepository<Domain.Models.Task.TaskAssignees> _taskAssigneesRepository;
 
-    public CreateTaskAssigneesHandler(IRepository<TaskAssignees> TaskAssigneesRepository) => _TaskAssigneesRepository = TaskAssigneesRepository;
+    public CreateTaskAssigneesHandler(IRepository<Domain.Models.Task.TaskAssignees> taskAssigneesRepository) => _taskAssigneesRepository = taskAssigneesRepository;
 
     public async Task<Guid> Handle(CreateTaskAssigneesCommand request, CancellationToken cancellationToken)
     {
-        TaskAssignees TaskAssignees=new TaskAssignees();
-        TaskAssignees.SetData(request.TaskAssigneesDto);
+        var taskAssignees=new Domain.Models.Task.TaskAssignees();
+        taskAssignees.SetData(request.TaskAssigneesDto);
        
-        await _TaskAssigneesRepository.Insert(TaskAssignees);
-        await _TaskAssigneesRepository.SaveChangesAsync();
-        return TaskAssignees.Id;
+        await _taskAssigneesRepository.Insert(taskAssignees);
+        await _taskAssigneesRepository.SaveChangesAsync();
+        return taskAssignees.Id;
 
     }
 }

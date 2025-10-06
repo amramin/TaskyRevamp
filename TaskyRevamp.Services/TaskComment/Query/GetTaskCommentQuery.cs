@@ -1,30 +1,27 @@
-﻿
-using MediatR;
-using TaskyRevamp.Domain.Models.Task;
+﻿using MediatR;
 using TaskyRevamp.Domain.Repositeries;
 using TaskyRevamp.Dto.TaskComment;
 
-
-namespace TaskCommentyRevamp.Services.TaskComments.Query;
+namespace TaskyRevamp.Services.TaskComment.Query;
 
 public record GetTaskCommentQuery(Guid Id) : IRequest<TaskCommentDto>;
 
 public class GetTaskCommentByIdHandler : IRequestHandler<GetTaskCommentQuery, TaskCommentDto>
 {
-    private readonly IRepository<TaskComment> _TaskCommentRepository;
+    private readonly IRepository<Domain.Models.Task.TaskComment> _taskCommentRepository;
 
-    public GetTaskCommentByIdHandler(IRepository<TaskComment> TaskCommentRepository)
+    public GetTaskCommentByIdHandler(IRepository<Domain.Models.Task.TaskComment> taskCommentRepository)
     {
-        _TaskCommentRepository = TaskCommentRepository;
+        _taskCommentRepository = taskCommentRepository;
     }
 
     public async Task<TaskCommentDto> Handle(GetTaskCommentQuery request, CancellationToken cancellationToken)
     {
-        var res = await _TaskCommentRepository.FindByKey(request.Id);
-        TaskCommentDto TaskCommentModel= res.Value.CopyToDto();
+        var res = await _taskCommentRepository.FindByKey(request.Id);
+        var taskCommentModel= res.Value.CopyToDto();
       
 
-        return TaskCommentModel;
+        return taskCommentModel;
     }
 
  

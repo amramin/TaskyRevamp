@@ -51,7 +51,7 @@ public class AccountController : ControllerBase
     [HttpPost("SyncUsers")]
     public async Task<bool> SyncUsers()
     {
-        var data = await _mediator.Send(new SyncAllUsersFT());
+        var data = await _mediator.Send(new SyncAllUsersFt());
         return data;
     }
 }

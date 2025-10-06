@@ -1,33 +1,30 @@
 ﻿using MediatR;
-using TaskyRevamp.Domain.Models.Task;
 using TaskyRevamp.Domain.Repositeries;
 using TaskyRevamp.Dto.TaskEscalation;
 
-
-
-namespace TaskEscalationyRevamp.Services.TaskEscalations.Commands;
+namespace TaskyRevamp.Services.TaskEscalation.Command;
 
 public record UpdateTaskEscalationCommand(TaskEscalationDto TaskEscalation) : IRequest<bool>;
 
 public class UpdateTaskEscalationCommandHandler : IRequestHandler<UpdateTaskEscalationCommand, bool>
 {
-    private readonly IRepository<TaskEscalation> _TaskEscalationRepository;
+    private readonly IRepository<Domain.Models.Task.TaskEscalation> _taskEscalationRepository;
 
-    public UpdateTaskEscalationCommandHandler(IRepository<TaskEscalation> TaskEscalationRepository)
+    public UpdateTaskEscalationCommandHandler(IRepository<Domain.Models.Task.TaskEscalation> taskEscalationRepository)
     {
-        _TaskEscalationRepository = TaskEscalationRepository;
+        _taskEscalationRepository = taskEscalationRepository;
     }
 
     public async Task<bool> Handle(UpdateTaskEscalationCommand request, CancellationToken cancellationToken)
     {
-        var TaskEscalationResponse = await _TaskEscalationRepository.FindByKey(request.TaskEscalation.Id);
-        if (!TaskEscalationResponse.Success)
+        var taskEscalationResponse = await _taskEscalationRepository.FindByKey(request.TaskEscalation.Id);
+        if (!taskEscalationResponse.Success)
         {
             return false;
         }
-        var updated = TaskEscalationResponse.Value;
+        var updated = taskEscalationResponse.Value;
       updated.SetData(request.TaskEscalation);
-        await _TaskEscalationRepository.Update(updated);
+        await _taskEscalationRepository.Update(updated);
 
         return true;
     }

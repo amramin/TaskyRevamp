@@ -11,37 +11,37 @@ using RecycleBinSetting = TaskyRevamp.Domain.Models.SystemConfiguration.RecycleB
 
 namespace TaskyRevamp.Services.SystemConfiguration.RecycleBinSettings.Command
 {
-	public record UpdateRecycleBinSettingCommand(RecycleBinSettingDto _RecycleBinSettingDto) : IRequest<bool>;
+	public record UpdateRecycleBinSettingCommand(RecycleBinSettingDto RecycleBinSettingDto) : IRequest<bool>;
 
 	public class UpdateRecycleBinSettingHandler : IRequestHandler<UpdateRecycleBinSettingCommand, bool>
 	{
-		private readonly IRepository<TaskyRevamp.Domain.Models.SystemConfiguration.RecycleBinSettings> _RecycleBinSettingsRepository;
+		private readonly IRepository<TaskyRevamp.Domain.Models.SystemConfiguration.RecycleBinSettings> _recycleBinSettingsRepository;
 
-		public UpdateRecycleBinSettingHandler(IRepository<Domain.Models.SystemConfiguration.RecycleBinSettings> RecycleBinSettingsRepository)
+		public UpdateRecycleBinSettingHandler(IRepository<Domain.Models.SystemConfiguration.RecycleBinSettings> recycleBinSettingsRepository)
 		{
-			_RecycleBinSettingsRepository = RecycleBinSettingsRepository;
+			_recycleBinSettingsRepository = recycleBinSettingsRepository;
 		}
 
 		public async Task<bool> Handle(UpdateRecycleBinSettingCommand request, CancellationToken cancellationToken)
 		{
-			var res = await _RecycleBinSettingsRepository.AllAsNoTracking();
+			var res = await _recycleBinSettingsRepository.AllAsNoTracking();
 			if (res != null && res.Success)
 			{
 				if(res.Value == null || (res.Value != null && res.Value.Count() == 0))
 				{
 					
-					RecycleBinSetting recycleBinSettings = new RecycleBinSetting(request._RecycleBinSettingDto.PeriodType, request._RecycleBinSettingDto.CustomDays);
-					await _RecycleBinSettingsRepository.Insert(recycleBinSettings);
+					var recycleBinSettings = new RecycleBinSetting(request.RecycleBinSettingDto.PeriodType, request.RecycleBinSettingDto.CustomDays);
+					await _recycleBinSettingsRepository.Insert(recycleBinSettings);
 				}
 				else
 				{
 					var recycleBinRecord = res.Value.FirstOrDefault();
-					if (request._RecycleBinSettingDto.PeriodType != PeriodType.Custom)
+					if (request.RecycleBinSettingDto.PeriodType != PeriodType.Custom)
 					{
-						request._RecycleBinSettingDto.CustomDays = null;
+						request.RecycleBinSettingDto.CustomDays = null;
 					}
-					recycleBinRecord.Update(request._RecycleBinSettingDto.PeriodType, request._RecycleBinSettingDto.CustomDays);
-					await _RecycleBinSettingsRepository.Update(recycleBinRecord);
+					recycleBinRecord.Update(request.RecycleBinSettingDto.PeriodType, request.RecycleBinSettingDto.CustomDays);
+					await _recycleBinSettingsRepository.Update(recycleBinRecord);
 				}
 				
 			}

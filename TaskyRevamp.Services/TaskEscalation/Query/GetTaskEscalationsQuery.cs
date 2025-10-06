@@ -1,45 +1,41 @@
-﻿
-using MediatR;
-using System.Linq.Expressions;
-using TaskyRevamp.Domain.Models.Task;
+﻿using MediatR;
 using TaskyRevamp.Domain.Repositeries;
-using TaskyRevamp.Dto.TaskEscalation;
 using TaskyRevamp.Dto.GeneralDto;
+using TaskyRevamp.Dto.TaskEscalation;
 
-
-namespace TaskEscalationyRevamp.Services.TaskEscalations.Query;
+namespace TaskyRevamp.Services.TaskEscalation.Query;
 
 public record GetTaskEscalationsQuery(QueryModel? Query) : IRequest<List<TaskEscalationDto>>;
 
 public class GetTaskEscalationsHandler : IRequestHandler<GetTaskEscalationsQuery, List<TaskEscalationDto>>
 {
-    private readonly IRepository<TaskEscalation> _TaskEscalationRepository;
+    private readonly IRepository<Domain.Models.Task.TaskEscalation> _taskEscalationRepository;
 
 
-    public GetTaskEscalationsHandler(IRepository<TaskEscalation> TaskEscalationRepository)
+    public GetTaskEscalationsHandler(IRepository<Domain.Models.Task.TaskEscalation> taskEscalationRepository)
     {
-        _TaskEscalationRepository = TaskEscalationRepository;
+        _taskEscalationRepository = taskEscalationRepository;
       
     }
 
     public async Task<List<TaskEscalationDto>> Handle(GetTaskEscalationsQuery request, CancellationToken cancellationToken)
     {
-        List<TaskEscalationDto> TaskEscalationss = new List<TaskEscalationDto>();
+        var taskEscalationss = new List<TaskEscalationDto>();
        
 
-        var data = await _TaskEscalationRepository.All();
+        var data = await _taskEscalationRepository.All();
 
 
 
-        foreach (var TaskEscalation in data.Value)
+        foreach (var taskEscalation in data.Value)
         {
         ;
-            TaskEscalationss.Add(TaskEscalation.CopyToDto());
+            taskEscalationss.Add(taskEscalation.CopyToDto());
         }
 
        // return TaskEscalations.ToList();
 
-        return  TaskEscalationss;
+        return  taskEscalationss;
     }
 
    

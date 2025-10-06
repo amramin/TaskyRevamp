@@ -3,31 +3,35 @@ using TaskyRevamp.Domain.Models.Task;
 using TaskyRevamp.Domain.Repositeries;
 using TaskyRevamp.Dto.Department;
 
-
-
-namespace DepartmentyRevamp.Services.Departments.Commands;
+namespace TaskyRevamp.Services.Departments.Command;
 
 public record UpdateDepartmentCommand(DepartmentDto Department) : IRequest<bool>;
 
 public class UpdateDepartmentCommandHandler : IRequestHandler<UpdateDepartmentCommand, bool>
 {
-    private readonly IRepository<Department> _DepartmentRepository;
+    private readonly IRepository<Department> _departmentRepository;
 
-    public UpdateDepartmentCommandHandler(IRepository<Department> DepartmentRepository)
+    public UpdateDepartmentCommandHandler(IRepository<Department> departmentRepository)
     {
-        _DepartmentRepository = DepartmentRepository;
+        _departmentRepository = departmentRepository;
     }
 
     public async Task<bool> Handle(UpdateDepartmentCommand request, CancellationToken cancellationToken)
     {
-        var DepartmentResponse = await _DepartmentRepository.FindByKey(request.Department.Id);
-        if (!DepartmentResponse.Success)
+        var departmentResponse = await _departmentRepository.FindByKey(request.Department.Id);
+        if (!departmentResponse.Success)
         {
             return false;
         }
-        var updated = DepartmentResponse.Value;
-      updated.Name=request.Department.Name;
-        await _DepartmentRepository.Update(updated);
+        
+        if( departmentResponse?.Value is null)
+        {
+            throw new Exception("Department not found");
+        }
+
+        var updated = departmentResponse.Value;
+        updated.Name = request.Department.Name;
+        await _departmentRepository.Update(updated);
 
         return true;
     }

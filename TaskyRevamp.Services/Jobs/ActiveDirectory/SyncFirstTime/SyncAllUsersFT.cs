@@ -13,34 +13,34 @@ using TaskyRevamp.Domain.Repositeries;
 
 namespace TaskyRevamp.Services.Jobs.ActiveDirectory.SyncFirstTime;
 
-public record SyncAllUsersFT : IRequest<bool>;
+public record SyncAllUsersFt : IRequest<bool>;
 
-public class SyncAllUsersFTHandler : IRequestHandler<SyncAllUsersFT, bool>
+public class SyncAllUsersFtHandler : IRequestHandler<SyncAllUsersFt, bool>
 {
     private readonly IRepository<Domain.Models.Users.User> _userRepository;
     private readonly IOptions<LdapSettings> _ldapPath;
 
-    public SyncAllUsersFTHandler(IOptions<LdapSettings> ldapSettings, IRepository<Domain.Models.Users.User> userRepository)
+    public SyncAllUsersFtHandler(IOptions<LdapSettings> ldapSettings, IRepository<Domain.Models.Users.User> userRepository)
     {
         _userRepository = userRepository;
         _ldapPath = ldapSettings;
     }
 
-    public async Task<bool> Handle(SyncAllUsersFT request, CancellationToken cancellationToken)
+    public async Task<bool> Handle(SyncAllUsersFt request, CancellationToken cancellationToken)
     {
         try
         {
-            await SyncAllADUsers();
+            await SyncAllAdUsers();
             return true;
         }
         catch (Exception ex) { Console.WriteLine(ex); return false; }
 
     }
 
-    private async Task SyncAllADUsers()
+    private async Task SyncAllAdUsers()
     {
         string ldapPath = _ldapPath.Value.Path;
-        List<User> adUsers = await GetAllActiveDirectoryUsers(ldapPath, _ldapPath.Value.Username, _ldapPath.Value.Password);
+        var adUsers = await GetAllActiveDirectoryUsers(ldapPath, _ldapPath.Value.Username, _ldapPath.Value.Password);
         await SaveUsersToDatabaseBulk(adUsers);
 
         Console.WriteLine("Active Directory users successfully saved to the database.");
@@ -48,11 +48,11 @@ public class SyncAllUsersFTHandler : IRequestHandler<SyncAllUsersFT, bool>
     }
     public async Task<List<User>> GetAllActiveDirectoryUsers(string ldapPath, string userName, string password)
     {
-        List<User> users = new List<User>();
+        var users = new List<User>();
 
-        using (DirectoryEntry entry = new DirectoryEntry(ldapPath, userName, password))
+        using (var entry = new DirectoryEntry(ldapPath, userName, password))
         {
-            using (DirectorySearcher searcher = new DirectorySearcher(entry))
+            using (var searcher = new DirectorySearcher(entry))
             {
                 // Filter to get user objects
                 searcher.PageSize = 5000;
@@ -120,16 +120,16 @@ public class SyncAllUsersFTHandler : IRequestHandler<SyncAllUsersFT, bool>
         try
         {
             // Create a DirectoryEntry for the LDAP path
-            using (DirectoryEntry entry = new DirectoryEntry(ldapPath, userName, password))
+            using (var entry = new DirectoryEntry(ldapPath, userName, password))
             {
                 // Create a DirectorySearcher to search for the manager by distinguished name (DN)
-                using (DirectorySearcher searcher = new DirectorySearcher(entry))
+                using (var searcher = new DirectorySearcher(entry))
                 {
                     searcher.Filter = $"(distinguishedName={managerDn})";
                     searcher.PropertiesToLoad.Add("sAMAccountName"); // Manager's username
 
                     // Perform the search for the manager
-                    SearchResult result = searcher.FindOne();
+                    var result = searcher.FindOne();
 
                     if (result != null && result.Properties.Contains("sAMAccountName"))
                     {

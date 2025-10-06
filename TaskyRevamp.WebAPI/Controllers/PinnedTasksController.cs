@@ -1,10 +1,9 @@
-﻿using PinnedTasksyRevamp.Services.PinnedTaskss.Commands;
-using PinnedTasksyRevamp.Services.PinnedTaskss.Query;
-using MediatR;
+﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using TaskyRevamp.Dto.PinnedTasks;
 using TaskyRevamp.Dto.GeneralDto;
-using TaskyRevamp.Services.PinnedTaskss.Commands;
+using TaskyRevamp.Services.PinnedTasks.Command;
+using TaskyRevamp.Services.PinnedTasks.Query;
 
 namespace PinnedTasksRevamp.WebAPI.Controllers;
 
@@ -45,7 +44,7 @@ public class PinnedTasksController : ControllerBase
     {
 
 
-        var all = await _mediator.Send(new GetPinnedTaskssQuery(query));
+        var all = await _mediator.Send(new GetPinnedTasksQuery(query));
 
         return Ok(all);
     }
@@ -57,7 +56,7 @@ public class PinnedTasksController : ControllerBase
     public async Task<IActionResult> GetOne(string id)
     {
 
-        var Task = await _mediator.Send(new GetPinnedTasksQuery(new Guid(id)));
+        var Task = await _mediator.Send(new GetPinnedTaskQuery(new Guid(id)));
 
 
         return Ok(Task);

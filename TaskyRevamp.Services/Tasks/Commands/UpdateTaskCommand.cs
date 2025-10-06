@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using TaskyRevamp.Domain.Interfaces.Repositeries;
 using TaskyRevamp.Domain.Models.Task;
 using TaskyRevamp.Domain.Repositeries;
 using TaskyRevamp.Dto.TaskDto;
@@ -10,23 +11,24 @@ public record UpdateTaskCommand(CreateTaskDto Task) : IRequest<bool>;
 
 public class UpdateTaskCommandHandler : IRequestHandler<UpdateTaskCommand, bool>
 {
-    private readonly IRepository<TaskItem> _taskRepository;
+    private readonly ITaskRepository _taskRepository;
 
-    public UpdateTaskCommandHandler(IRepository<TaskItem> taskRepository)
+    public UpdateTaskCommandHandler(ITaskRepository taskRepository)
     {
         _taskRepository = taskRepository;
     }
 
     public async Task<bool> Handle(UpdateTaskCommand request, CancellationToken cancellationToken)
     {
-        var TaskResponse = await _taskRepository.FindByKey(request.Task.Id);
-        if (!TaskResponse.Success)
+        var task = await _taskRepository.GetTaskById(request.Task.Id);
+        if(task == null)
         {
-            return false;
+            throw new Exception("Task not found");
         }
-        var updated = TaskResponse.Value;
-      updated.SetData(request.Task);
-        await _taskRepository.Update(updated);
+ 
+
+        task.SetData(request.Task);
+        await _taskRepository.UpdateTask(task);
 
         return true;
     }

@@ -1,32 +1,26 @@
 ﻿using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using TaskyRevamp.Domain.Models.Task;
 using TaskyRevamp.Domain.Repositeries;
 using TaskyRevamp.Dto.TaskComment;
 
-namespace TaskCommentyRevamp.Services.TaskComments.Commands;
+namespace TaskyRevamp.Services.TaskComment.Command;
 
 public record CreateTaskCommentCommand(TaskCommentDto TaskCommentDto) : IRequest<Guid>;
 
 public class CreateTaskCommentHandler : IRequestHandler<CreateTaskCommentCommand, Guid>
 {
-    private readonly IRepository<TaskComment> _TaskCommentRepository;
+    private readonly IRepository<Domain.Models.Task.TaskComment> _taskCommentRepository;
 
-    public CreateTaskCommentHandler(IRepository<TaskComment> TaskCommentRepository) => _TaskCommentRepository = TaskCommentRepository;
+    public CreateTaskCommentHandler(IRepository<Domain.Models.Task.TaskComment> taskCommentRepository) => _taskCommentRepository = taskCommentRepository;
 
     public async Task<Guid> Handle(CreateTaskCommentCommand request, CancellationToken cancellationToken)
     {
-        TaskComment TaskComment=new TaskComment( request.TaskCommentDto.TaskItemId,
+        var taskComment=new Domain.Models.Task.TaskComment( request.TaskCommentDto.TaskItemId,
             request.TaskCommentDto.Content,request.TaskCommentDto.CreatedById);
  
        
-        await _TaskCommentRepository.Insert(TaskComment);
-        await _TaskCommentRepository.SaveChangesAsync();
-        return TaskComment.Id;
+        await _taskCommentRepository.Insert(taskComment);
+        await _taskCommentRepository.SaveChangesAsync();
+        return taskComment.Id;
 
     }
 }

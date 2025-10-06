@@ -23,7 +23,7 @@ namespace TaskyRevamp.Services.SystemConfiguration.FilterFieldsSettings.Query
 
         public async Task<List<FilterFieldsSettingDto>> Handle(GetFilterFieldsSettingsQuery request, CancellationToken cancellationToken)
         {
-            List<FilterFieldsSettingDto> filterFieldsSettingDtos = new List<FilterFieldsSettingDto>();
+            var filterFieldsSettingDtos = new List<FilterFieldsSettingDto>();
 
             var settingsResponse = await _filterFieldsSettingRepository.AllAsNoTracking();
 

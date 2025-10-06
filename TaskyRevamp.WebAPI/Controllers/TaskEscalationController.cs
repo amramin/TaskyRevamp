@@ -1,10 +1,9 @@
-﻿using TaskEscalationyRevamp.Services.TaskEscalations.Commands;
-using TaskEscalationyRevamp.Services.TaskEscalations.Query;
-using MediatR;
+﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using TaskyRevamp.Dto.TaskEscalation;
 using TaskyRevamp.Dto.GeneralDto;
-using TaskyRevamp.Services.TaskEscalations.Commands;
+using TaskyRevamp.Services.TaskEscalation.Command;
+using TaskyRevamp.Services.TaskEscalation.Query;
 
 namespace TaskEscalationRevamp.WebAPI.Controllers;
 

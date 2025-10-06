@@ -11,31 +11,31 @@ using PrioritySetting = TaskyRevamp.Domain.Models.SystemConfiguration.PrioritySe
 namespace TaskyRevamp.Services.SystemConfiguration.PriorityConfiguration.Command
 {
 	public record UpdatePrioritiesOrder(List<PriorityDto> PriorityDtos):IRequest<bool>;
-	public class UpdatePrioritiesOrderHandler : IRequestHandler<UpdatePrioritiesOrder, bool>
+	public class UpdatePrioritiesOrderCommandHanler : IRequestHandler<UpdatePrioritiesOrder, bool>
 	{
-		private readonly IRepository<PrioritySetting> _PriorityRepository;
+		private readonly IRepository<PrioritySetting> _priorityRepository;
 
-		public UpdatePrioritiesOrderHandler(IRepository<PrioritySetting> _priorityRepository)
+		public UpdatePrioritiesOrderCommandHanler(IRepository<PrioritySetting> priorityRepository)
 		{
-			_PriorityRepository = _priorityRepository;
+			this._priorityRepository = priorityRepository;
 		}
 
 		public async Task<bool> Handle(UpdatePrioritiesOrder request, CancellationToken cancellationToken)
 		{
-			var EditedPriorities = request.PriorityDtos.ToList();
-			foreach (var priority in EditedPriorities)
+			var editedPriorities = request.PriorityDtos.ToList();
+			foreach (var priority in editedPriorities)
 			{
-				var editedpriority = await _PriorityRepository.FindByKey(priority.Id);
+				var editedpriority = await _priorityRepository.FindByKey(priority.Id);
 				if (editedpriority != null && editedpriority.Success && editedpriority.Value != null)
 				{
 					if (editedpriority.Value.Order != priority.Order)
 					{
 						editedpriority.Value.Order = priority.Order;
-						await _PriorityRepository.Update(editedpriority.Value);
+						await _priorityRepository.Update(editedpriority.Value);
 					}
 				}
 			}
-			await _PriorityRepository.SaveChangesAsync();
+			await _priorityRepository.SaveChangesAsync();
 			return true;
 		}
 	}

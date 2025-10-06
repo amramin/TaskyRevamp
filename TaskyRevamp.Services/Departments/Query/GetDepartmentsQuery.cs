@@ -1,49 +1,36 @@
-﻿
-using MediatR;
-using System.Linq.Expressions;
+﻿using MediatR;
 using TaskyRevamp.Domain.Models.Task;
 using TaskyRevamp.Domain.Repositeries;
 using TaskyRevamp.Dto.Department;
 using TaskyRevamp.Dto.GeneralDto;
 
-
-namespace DepartmentyRevamp.Services.Departments.Query;
+namespace TaskyRevamp.Services.Departments.Query;
 
 public record GetDepartmentsQuery(QueryModel? Query) : IRequest<List<DepartmentDto>>;
 
 public class GetDepartmentsHandler : IRequestHandler<GetDepartmentsQuery, List<DepartmentDto>>
 {
-    private readonly IRepository<Department> _DepartmentRepository;
+    private readonly IRepository<Department> _departmentRepository;
 
 
-    public GetDepartmentsHandler(IRepository<Department> DepartmentRepository)
+    public GetDepartmentsHandler(IRepository<Department> departmentRepository)
     {
-        _DepartmentRepository = DepartmentRepository;
-      
+        _departmentRepository = departmentRepository;
     }
 
     public async Task<List<DepartmentDto>> Handle(GetDepartmentsQuery request, CancellationToken cancellationToken)
     {
-        List<DepartmentDto> Departmentss = new List<DepartmentDto>();
-       
-
-        var data = await _DepartmentRepository.All();
-
-
-
-        foreach (var Department in data.Value)
+        var departmentsDto = new List<DepartmentDto>();
+        var departments = await _departmentRepository.All();
+        
+        foreach (var department in departments?.Value ??[])
         {
-        ;
-            Departmentss.Add(new DepartmentDto()
+            departmentsDto.Add(new DepartmentDto()
             {
-                Id = Department.Id,Name = Department.Name,
+                Id = department.Id, Name = department.Name,
             });
         }
-
-       // return Departments.ToList();
-
-        return  Departmentss;
+        
+        return departmentsDto;
     }
-
-   
 }

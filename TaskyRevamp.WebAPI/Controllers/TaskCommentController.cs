@@ -1,10 +1,9 @@
-﻿using TaskCommentyRevamp.Services.TaskComments.Commands;
-using TaskCommentyRevamp.Services.TaskComments.Query;
-using MediatR;
+﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using TaskyRevamp.Dto.TaskComment;
 using TaskyRevamp.Dto.GeneralDto;
-using TaskyRevamp.Services.TaskComments.Commands;
+using TaskyRevamp.Services.TaskComment.Command;
+using TaskyRevamp.Services.TaskComment.Query;
 
 namespace TaskCommentRevamp.WebAPI.Controllers;
 

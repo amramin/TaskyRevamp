@@ -10,12 +10,15 @@ namespace TaskyRevamp.Domain.Models.Task;
 public class PinnedTasks : Entity, IHasCreationMetaData
 {
     public Guid TaskId { get; set; }
+
     public TaskItem Task { get; set; }
+
     //public DateTime PinnedAt { get; set; }
-   // public User PinnedBy { get; set; }
-    public Guid CreatedById { get ; set ; }
-    public DateTime CreateDate { get ; set ; }
-    public User CreatedBy { get ; set ; }
+    // public User PinnedBy { get; set; }
+    public Guid CreatedById { get; set; }
+    public DateTime CreateDate { get; set; }
+    public User CreatedBy { get; set; }
+
     public bool SetData(PinnedTasksDto pinnedTasksDto)
     {
         Id = Id;
@@ -23,8 +26,8 @@ public class PinnedTasks : Entity, IHasCreationMetaData
         CreatedById = pinnedTasksDto.CreatedById;
         CreateDate = pinnedTasksDto.CreateDate;
         return true;
-
     }
+
     public PinnedTasksDto CopyToDto()
     {
         return new PinnedTasksDto
@@ -33,11 +36,6 @@ public class PinnedTasks : Entity, IHasCreationMetaData
             TaskId = TaskId,
             CreateDate = CreateDate,
             CreatedById = CreatedById,
-
-
-
-
         };
     }
-
 }
