@@ -69,13 +69,13 @@
                     <span class="rounded-circle p-2" ></span>
                     <span class="rounded-circle p-2"></span>
 
-                    <button class="btn btn-action-40 btn-outline-success" onclick="@(() =>Edit(p.Id))">
+                    <button class="btn btn-action-40 btn-outline-success" @onclick="@(() =>Edit(p.Id))">
                         <span class="icon">
                             <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Edit"></SVGCrud>
                         </span>
                     </button>
 
-                    <button class="btn btn-action-40 btn-outline-danger" onclick="@(() => ShowDeleteConfirm(p))">
+                    <button class="btn btn-action-40 btn-outline-danger" @onclick="@(() => ShowDeleteConfirm(p))">
                         <span class="icon">
                             <SVGCrud SVGType="SVGCrud.SVGTypeEnum.RecycleBin"></SVGCrud>
                         </span>
