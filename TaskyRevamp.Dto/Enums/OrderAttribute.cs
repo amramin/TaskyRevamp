@@ -14,7 +14,13 @@ namespace TaskyRevamp.Dto.Enums
 
     public static partial class EnumExtensions
     {
-        public static List<T> GetOrderedValues<T>() where T : Enum
+		public static int GetOrder(this Enum value)
+		{
+			var field = value.GetType().GetField(value.ToString());
+			var attr = (OrderAttribute)Attribute.GetCustomAttribute(field!, typeof(OrderAttribute))!;
+			return attr?.Order ?? int.MaxValue;
+		}
+		public static List<T> GetOrderedValues<T>() where T : Enum
         {
             return typeof(T).GetFields()
                 .Where(f => f.IsLiteral)

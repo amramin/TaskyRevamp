@@ -1,0 +1,76 @@
+﻿@page "/WorkingDaysSetting"
+
+@using TaskyRevamp.Client.Consumer
+@using TaskyRevamp.Client.Services
+@using TaskyRevamp.Dto.Enums
+@using TaskyRevamp.Dto.SystemConfiguration
+@inject WorkingDaysSettingConsumer _workingDaysSettingConsumer
+@inject IStringLocalizer<SharedResources> Loc
+@inject ToastService ToastService
+
+
+<h4>@Loc["WorkingDaysConfiguration"]</h4>
+<div class ="card p-3">
+    <p>@Loc["workingDaysHint"]</p>
+    @if(workingDaysSettingsDtos != null)
+    {
+        foreach (var daySetting in workingDaysSettingsDtos)
+        {
+            <div class="d-flex align-items-center justify-content-between border border-primary rounded p-2 mb-2 ms-2">
+                <span class="text-primary">@Loc[daySetting.Day.ToString()]</span>
+                <div class="form-check form-switch m-0">
+                    <InputCheckbox @bind-Value="daySetting.IsActive" class="form-check-input" />
+                </div>
+            </div>
+        }
+    }
+
+    <div class="d-flex justify-content-end gap-2 mt-4">
+        <button class="btn btn-light px-4" @onclick="Cancel">@Loc["Cancel"]</button>
+        <button class="btn btn-primary px-4" @onclick="Save">@Loc["Save"]</button>
+    </div>
+</div>
+@code {
+    public List<WeekDays> weekDays = EnumExtensions.GetOrderedValues<WeekDays>();
+    List<WorkingDaysSettingsDto> workingDaysSettingsDtos = new List<WorkingDaysSettingsDto>();
+    List<WorkingDaysSettingsDto> orginalWorkingdays = new List<WorkingDaysSettingsDto>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var res = await _workingDaysSettingConsumer.GetWorkingDaysSetting();
+        if(res.Success && res != null && res.Data != null)
+        {
+            workingDaysSettingsDtos = res.Data.ToList();
+            orginalWorkingdays = workingDaysSettingsDtos.Select(d => new WorkingDaysSettingsDto
+            {
+                Day = d.Day,
+                IsActive = d.IsActive
+            }).ToList();
+        }
+    }
+    private void Cancel(MouseEventArgs args)
+    {
+        workingDaysSettingsDtos = orginalWorkingdays.Select(d => new WorkingDaysSettingsDto
+        {
+            Day = d.Day,
+            IsActive = d.IsActive
+        }).ToList();
+    }
+    private async Task Save(MouseEventArgs args)
+    {
+        if(!workingDaysSettingsDtos.Any(w => w.IsActive))
+        {
+            return;
+        }
+        var res = await _workingDaysSettingConsumer.UpdateTaskViewSetting(workingDaysSettingsDtos);
+        if (res.Success)
+        {
+            orginalWorkingdays = workingDaysSettingsDtos.Select(d => new WorkingDaysSettingsDto
+            {
+                Day = d.Day,
+                IsActive = d.IsActive
+            }).ToList();
+            await ToastService.ShowToastAsync(Loc["EditSuccess"], "success");
+        }
+    }
+}

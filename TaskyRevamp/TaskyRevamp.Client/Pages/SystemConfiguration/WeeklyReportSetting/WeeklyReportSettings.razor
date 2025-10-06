@@ -1,0 +1,123 @@
+﻿@page "/WeeklyReportSetting"
+
+@using TaskyRevamp.Client.Consumer
+@using TaskyRevamp.Client.Services
+@using TaskyRevamp.Dto.Enums
+@using TaskyRevamp.Dto.SystemConfiguration
+@inject WeeklyReportSettingConsumer _weeklyReportSettingConsumer
+@inject WorkingDaysSettingConsumer _workingDaysSettingConsumer
+@inject IStringLocalizer<SharedResources> Loc
+@inject ToastService ToastService
+
+<h3>@Loc["WeeklyReport"]</h3>
+<div class="card p-4">
+    <p>@Loc["weeklyReportHint"]</p>
+
+    <div class="form-group mt-3">
+        <label for="daylabel" class="form-label">
+            @Loc["Day"]<span class="text-danger">*</span>
+        </label>
+        <select class="form-select" @bind="settingsDto.Day">
+            @if (workingDaysSettingsDtos != null)
+            {
+                @foreach (var day in workingDaysSettingsDtos.Where(w => w.IsActive == true))
+                {
+                    <option value="@day.Day">@Loc[day.Day.ToString()]</option>
+                }
+            }
+        </select>
+    </div>
+
+    <div class="form-group mt-3">
+            <label for="timelabel" class="form-label">
+                @Loc["Time"]<span class="text-danger">*</span>
+            </label>
+            <select @bind="settingsDto.Time" class="form-select">
+                @if(TimeSlots != null)
+                {
+                    @foreach (var time in TimeSlots)
+                    {
+                        <option value="@time.Value">@time.Text</option>
+                    }
+                }
+            </select>
+    </div>
+
+    <div class="form-group mt-3">
+        <label class="form-label">@Loc["ReportLanguage"]</label>
+        <p>@Loc["languageHint"]</p>
+        <InputRadioGroup TValue="Language" Value="settingsDto.Language" ValueChanged="OnSettingChange" ValueExpression="() => settingsDto.Language">
+            @foreach (var value in languages)
+            {
+                <div>
+                    <InputRadio Value="@value" /> @value.GetDescription()
+                </div>
+                <br />
+            }
+        </InputRadioGroup>
+    </div>
+
+    <div class="d-flex justify-content-end gap-2 mt-4">
+        <button class="btn btn-light px-4" @onclick="Cancel">@Loc["Cancel"]</button>
+        <button class="btn btn-primary px-4" @onclick="Save">@Loc["Save"]</button>
+    </div>
+</div>
+
+
+@code {
+    public WeeklyReportSettingsDto settingsDto { get; set; } = new WeeklyReportSettingsDto { Language = Language.English };
+    private List<WorkingDaysSettingsDto> workingDaysSettingsDtos = new List<WorkingDaysSettingsDto>();
+    private List<(string Value, string Text)>? TimeSlots { get; set; }
+    public List<Language> languages = EnumExtensions.GetOrderedValues<Language>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var defaultRes = await _workingDaysSettingConsumer.GetWorkingDaysSetting();
+        if (defaultRes.Success && defaultRes != null && defaultRes.Data != null)
+        {
+            workingDaysSettingsDtos = defaultRes.Data;
+        }
+
+        var res = await _weeklyReportSettingConsumer.GetWeeklyReportSetting();
+        if(res.Success && res != null && res.Data != null)
+        {
+            settingsDto = res.Data;
+        }
+        TimeSlots = GenerateTimeSlots();
+    }
+
+    private void Cancel(MouseEventArgs args)
+    {
+        throw new NotImplementedException();
+    }
+
+    private async Task Save(MouseEventArgs args)
+    {
+        var res = await _weeklyReportSettingConsumer.UpdateWeeklyReportSetting(settingsDto);
+        if (res.Success)
+        {
+            await ToastService.ShowToastAsync(Loc["EditSuccess"], "success");
+        }
+    }
+    private List<(string Value, string Text)> GenerateTimeSlots()
+    {
+        var times = new List<(string Value, string Text)>();
+        var start = new TimeSpan(0, 0, 0);
+        var end = new TimeSpan(23, 45, 0); 
+
+        while (start <= end)
+        {
+            var value = start.ToString(@"hh\:mm\:ss");
+            var text = DateTime.Today.Add(start).ToString("hh:mm tt");
+
+            times.Add((value, text));
+            start = start.Add(new TimeSpan(0, 15, 0));
+        }
+
+        return times;
+    }
+    private void OnSettingChange(Language newValue)
+    {
+        settingsDto.Language = newValue;
+    }
+}

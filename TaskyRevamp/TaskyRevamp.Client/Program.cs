@@ -45,6 +45,10 @@ builder.Services.AddTransient<PrioritySettingConsumer>();
 builder.Services.AddTransient<DepartmentConsumer>();
 
 builder.Services.AddTransient<StatusSettingConsumer>();
+builder.Services.AddTransient<ViewTaskSettingConsumer>();
+builder.Services.AddTransient<DefaultViewSettingConsumer>();
+builder.Services.AddTransient<WorkingDaysSettingConsumer>();
+builder.Services.AddTransient<WeeklyReportSettingConsumer>();   
 builder.Services.AddTransient<DefaultColumnsSettingConsumer>();
 builder.Services.AddTransient<FilterFieldsSettingConsumer>();
 builder.Services.AddTransient<AddTaskSettingConsumer>();

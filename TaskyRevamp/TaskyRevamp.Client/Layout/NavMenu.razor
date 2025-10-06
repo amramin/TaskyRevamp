@@ -47,28 +47,6 @@
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" href="/PrioritySettings" @onclick="CloseSettingsNav">
-                    <div class="icon-text">
-                        <span class="nav-icon">
-                            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Gantt"></SVGCrud>
-                        </span>
-                        <span class="text"> @Loc["Priority"] </span>
-                    </div>
-                </a>
-            </li>
-
-            <li class="nav-item">
-                <a class="nav-link" href="/StatusSetting" @onclick="CloseSettingsNav">
-                    <div class="icon-text">
-                        <span class="nav-icon">
-                            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.SwitchLang"></SVGCrud>
-                        </span>
-                        <span class="text"> @Loc["StatusConfig"] </span>
-                    </div>
-                </a>
-            </li>
-
-            <li class="nav-item">
                 <a class="nav-link" href="#">
                     <div class="icon-text">
                         <span class="nav-icon">
@@ -203,16 +181,16 @@
                 Children = new List<ChildItem> {
                     new ChildItem { Text = "RecycleBinConfiguration", Url = "/RecycleBinConfiguration", Icon = SVGCrud.SVGTypeEnum.RecycleBinConfig , DataId = "recycle-config" },
                     new ChildItem { Text = "RejectionConfiguration", Url = "/RejectionConfiguration", Icon = SVGCrud.SVGTypeEnum.Reject, DataId = "rejection-config" },
-                    new ChildItem { Text = "Priority", Url = "/Priority", Icon = SVGCrud.SVGTypeEnum.ArrowsUp, DataId = "priorty-config" },
-                    new ChildItem { Text = "Status", Url = "/Status", Icon = SVGCrud.SVGTypeEnum.Repeat, DataId = "status-config" },
+                    new ChildItem { Text = "Priority", Url = "/PrioritySettings", Icon = SVGCrud.SVGTypeEnum.ArrowsUp, DataId = "priorty-config" },
+                    new ChildItem { Text = "StatusConfig", Url = "/StatusSetting", Icon = SVGCrud.SVGTypeEnum.Repeat, DataId = "status-config" },
                     new ChildItem { Text = "DefaultColumnsConfiguration", Url = "/DefaultColumnsConfiguration", Icon = SVGCrud.SVGTypeEnum.Columns, DataId = "defaultColumns-config" },
                     new ChildItem { Text = "FilterFields", Url = "/FilterFieldsConfiguration", Icon = SVGCrud.SVGTypeEnum.Filter, DataId = "filterFields-config" },
                     new ChildItem { Text = "AddTaskFieldsConfiguration", Url = "/AddTaskConfiguration", Icon = SVGCrud.SVGTypeEnum.Filter, DataId = "addTask-config" },
-                    new ChildItem { Text = "WorkingDays", Url = "/DefaultColumns", Icon = SVGCrud.SVGTypeEnum.CalnderPluse, DataId = "calnderPluse-config" },
+                    new ChildItem { Text = "WorkingDaysConfiguration", Url = "/WorkingDaysSetting", Icon = SVGCrud.SVGTypeEnum.CalnderPluse, DataId = "calnderPluse-config" },
                     new ChildItem { Text = "TaskSource", Url = "/TaskSource", Icon = SVGCrud.SVGTypeEnum.DataFlow, DataId = "taskSource-config" },
                     new ChildItem { Text = "TaskType", Url = "/TaskType", Icon = SVGCrud.SVGTypeEnum.TaskType, DataId = "taskType-config" },
-                    new ChildItem { Text = "TasksViews", Url = "/TasksViews", Icon = SVGCrud.SVGTypeEnum.List, DataId = "taskViews-config" },
-                    new ChildItem { Text = "WeeklyReport", Url = "/WeeklyReport", Icon = SVGCrud.SVGTypeEnum.BarChartSquarPluse, DataId = "weeklyReport-config" }
+                    new ChildItem { Text = "Tasksviews", Url = "/Views", Icon = SVGCrud.SVGTypeEnum.List, DataId = "taskViews-config" },
+                    new ChildItem { Text = "WeeklyReport", Url = "/WeeklyReportSetting", Icon = SVGCrud.SVGTypeEnum.BarChartSquarPluse, DataId = "weeklyReport-config" }
                 }
             },
             new MenuItem {

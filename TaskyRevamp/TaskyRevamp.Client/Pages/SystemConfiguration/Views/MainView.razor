@@ -1,0 +1,45 @@
+﻿@page "/Views"
+
+<div class="d-flex">
+    <div class="bg-light border-end d-flex flex-column align-items-center py-3" style="width: 60px;">
+        <button class="btn btn-light mb-3 @(activeTab == 'v' ? "active" : "")"
+                @onclick="() => SetTab('v')">
+            <span class="icon">
+                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.OpenEye"></SVGCrud>
+            </span>
+        </button>
+        <button class="btn btn-light mb-3 @(activeTab == 'd' ? "active" : "")"
+                @onclick="() => SetTab('d')">
+            <span class="icon">
+                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Columns"></SVGCrud>
+            </span>
+        </button>
+        <button class="btn btn-light @(activeTab == 's' ? "active" : "")"
+                @onclick="() => SetTab('s')">
+            <span class="icon">
+                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Menu"></SVGCrud>
+            </span>
+        </button>
+    </div>
+    <!-- Main Content -->
+    <div class="flex-grow-1 p-4">
+        @if (activeTab == 'v')
+        {
+            <TaskyRevamp.Client.Pages.SystemConfiguration.Views.ViewTaskSetting.ViewTaskSettings/>
+        }
+        else if (activeTab == 'd')
+        {
+           <TaskyRevamp.Client.Pages.SystemConfiguration.Views.DefaultViewSetting.DefaultViewSetting/>
+        }
+        else if (activeTab == 's')
+        {
+            <TaskyRevamp.Client.Pages.SystemConfiguration.Views.SubTaskLevels.SubTaskLevel/>
+        }
+    </div>
+
+ </div>
+
+@code {
+    private char activeTab = 'v';
+    private void SetTab(char tab) => activeTab = tab;
+}

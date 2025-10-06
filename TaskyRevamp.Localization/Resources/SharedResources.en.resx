@@ -141,9 +141,6 @@
   <data name="Required" xml:space="preserve">
     <value>This Field Required</value>
   </data>
-  <data name="Welcome" xml:space="preserve">
-    <value>Welcome</value>
-  </data>
   <data name="DataSavedSuccessfully" xml:space="preserve">
     <value>Data Saved Successfully</value>
   </data>
@@ -168,7 +165,7 @@
   <data name="Hours24" xml:space="preserve">
     <value>24 hours</value>
   </data>
-  <data name="Week" xml:space="preserve">
+  <data name="ListWeek" xml:space="preserve">
     <value>1 week</value>
   </data>
   <data name="Days3" xml:space="preserve">
@@ -230,6 +227,126 @@
   </data>
   <data name="StatusOptions" xml:space="preserve">
     <value>Status Options</value>
+  </data>
+  <data name="List" xml:space="preserve">
+    <value>List view</value>
+  </data>
+  <data name="Gantt" xml:space="preserve">
+    <value>Gantt Chart view</value>
+  </data>
+  <data name="Kanban" xml:space="preserve">
+    <value>Kanban view</value>
+  </data>
+  <data name="Card" xml:space="preserve">
+    <value>Card view</value>
+  </data>
+  <data name="List_Type" xml:space="preserve">
+    <value>Type View</value>
+  </data>
+  <data name="List_Source" xml:space="preserve">
+    <value>Source View</value>
+  </data>
+  <data name="List_Timeline" xml:space="preserve">
+    <value>Timeline view</value>
+  </data>
+  <data name="List_Overall" xml:space="preserve">
+    <value>Overall view</value>
+  </data>
+  <data name="Dashboard" xml:space="preserve">
+    <value>Dashboard</value>
+  </data>
+  <data name="Tasksviews" xml:space="preserve">
+    <value>Tasks views</value>
+  </data>
+  <data name="Default View Error" xml:space="preserve">
+    <value>The selected default page is no longer active.</value>
+  </data>
+  <data name="Default view" xml:space="preserve">
+    <value>Default View</value>
+  </data>
+  <data name="Subtask_Level" xml:space="preserve">
+    <value>subtask level</value>
+  </data>
+  <data name="subtask_hint" xml:space="preserve">
+    <value>Set the maximum number of subtask levels allowed when creating a task. This controls how deeply tasks can be nested.</value>
+  </data>
+  <data name="Maximum_Subtask_Level" xml:space="preserve">
+    <value>Maximum subtask level</value>
+  </data>
+  <data name="sub_task_warning" xml:space="preserve">
+    <value>Displaying more than 3 levels may impact the user interface performance and readability</value>
+  </data>
+  <data name="ViewTaskSettingHint" xml:space="preserve">
+    <value>Use this option to enable different task views in your system for better task management and visualization.</value>
+  </data>
+  <data name="DefaultViewHint" xml:space="preserve">
+    <value>Select your default page after login</value>
+  </data>
+  <data name="ViewOptions" xml:space="preserve">
+    <value>View Options</value>
+  </data>
+  <data name="WorkingDaysConfiguration" xml:space="preserve">
+    <value>Working days Configuration</value>
+  </data>
+  <data name="workingDaysHint" xml:space="preserve">
+    <value>Define the official working days for your organization. This configuration will be used for task scheduling, deadlines, and workload calculations</value>
+  </data>
+  <data name="Saturday" xml:space="preserve">
+    <value>Saturday</value>
+  </data>
+  <data name="Friday" xml:space="preserve">
+    <value>Friday</value>
+  </data>
+  <data name="Thursday" xml:space="preserve">
+    <value>Thursday</value>
+  </data>
+  <data name="Wednesday" xml:space="preserve">
+    <value>Wednesday</value>
+  </data>
+  <data name="Tuesday" xml:space="preserve">
+    <value>Tuesday</value>
+  </data>
+  <data name="Monday" xml:space="preserve">
+    <value>Monday</value>
+  </data>
+  <data name="Sunday" xml:space="preserve">
+    <value>Sunday</value>
+  </data>
+  <data name="WeeklyReport" xml:space="preserve">
+    <value>Weekly report</value>
+  </data>
+  <data name="English" xml:space="preserve">
+    <value>English</value>
+  </data>
+  <data name="Arabic" xml:space="preserve">
+    <value>Arabic</value>
+  </data>
+  <data name="weeklyReportHint" xml:space="preserve">
+    <value>Select the weekly report sent day and time</value>
+  </data>
+  <data name="languageHint" xml:space="preserve">
+    <value>You can select the report language that will be sent via email.</value>
+  </data>
+  <data name="ReportLanguage" xml:space="preserve">
+    <value>Report Language</value>
+  </data>
+  <data name="Day" xml:space="preserve">
+    <value>Day</value>
+  </data>
+  <data name="Time" xml:space="preserve">
+    <value>Time</value>
+  </data>
+  <data name="rejectionHint" xml:space="preserve">
+    <value>Set maximum allowed rejection period for the task from the assignee</value>
+  </data>
+  <data name="Week" xml:space="preserve">
+    <value>1 week</value>
+  </data>
+  <data name="priorityHint" xml:space="preserve">
+    <value>The parent task’s priority is automatically set to match the highest priority among its sub-tasks.</value>
+  </data>
+  <data name="recycleHint" xml:space="preserve">
+    <value>Set the auto deletion period from the system for deleted tasks inside the recycle bin</value>
   </data>
   <data name="AllrightsKSA" xml:space="preserve">
     <value>All rights are safe - Kingdom of Saudi Arabia</value>
@@ -354,5 +471,14 @@ Add a new department to get started</value>
   </data>
   <data name="UpdateDate" xml:space="preserve">
     <value>Updated Date</value>
+  </data>
+  <data name="DefaultColumnsHint" xml:space="preserve">
+    <value>Customize the columns you want to display and set the default column view that will appear when the user logs into the system.</value>
+  </data>
+  <data name="TaskFilterHint" xml:space="preserve">
+    <value>Select which fields to display in any task filter</value>
+  </data>
+  <data name="AddTaskHint" xml:space="preserve">
+    <value>Use this option to activate the fields that will appear on the task creation/editing page. You can also specify which fields should be marked as mandatory.</value>
   </data>
 </root>

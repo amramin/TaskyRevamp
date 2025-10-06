@@ -16,6 +16,9 @@ namespace TaskyRevamp.Infrastructure.Seeders
             {
                 new PrioritySeeder(),
                 new StatusSeeder(),
+                new ViewTaskListSeeder(),
+                new SubTaskLevelSeeder(),
+                new WorkingDaysSeeder(),
                 new DefaultColumnsSettingSeeder(),
                 new FilterFieldsSettingSeeder(),
                 new AddTaskSettingSeeder()

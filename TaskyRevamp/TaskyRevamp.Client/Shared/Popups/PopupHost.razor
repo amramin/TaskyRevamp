@@ -2,42 +2,97 @@
 @using TaskyRevamp.Dto.Enums
 @inject PopupService PopupService
 
-<div>
-    @if (_popupType == PopupType.Confirmation && _parameters is ConfirmationPopupParams confirmParams)
-    {
-        <div class="popup confirmation">
-            <p>@confirmParams.Message</p>
-            <button @onclick="() => Confirm(true, confirmParams.OnConfirm)">@confirmParams.ButtonText</button>
-            <button @onclick="() => Confirm(false, confirmParams.OnConfirm)">Cancel</button>
+@if (isVisible)
+{
+    <!-- Backdrop (clicking this will close) -->
+    <div class="modal-backdrop fade show" @onclick="PopupService.Hide"></div>
+
+    <!-- Modal -->
+    <div class="modal fade show d-block" tabindex="-1" @onclick="PopupService.Hide">
+        <div class="modal-dialog  modal-dialog-centered" @onclick:stopPropagation>
+          
+
+                @if (_popupType == PopupType.Confirmation && _parameters is ConfirmationPopupParams confirmParams)
+                {
+                    <div class="modal-content confirmation-popup">
+                    <div class="">
+                        @* <div class="modal-header">
+                        <h5 class="modal-title">Confirmation</h5>
+                        <button type="button" class="btn-close" @onclick="PopupService.Hide"></button>
+                    </div> *@
+                        <div class="modal-body">
+                            <span class="confirm-icon">
+                                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.RecycleVectore"></SVGCrud>
+                            </span>
+                            <h6 class="modal-title headline-6">Move to trash ?</h6>
+                            <p class="small-medium-text">@confirmParams.Message</p>
+                              <div class="action d-grid w-100">
+                            <button class="btn btn-lg btn-primary" @onclick="() => Confirm(true, confirmParams.OnConfirm)">
+                                @confirmParams.ButtonText
+                            </button>
+                            <button class="btn btn-lg"
+                                @onclick="() => Confirm(false, confirmParams.OnConfirm)">Cancel</button>
+                        </div>
+                        </div>
+                      
+                    </div>
+                    </div>
+
+                }
+                else if (_popupType == PopupType.InValid && _parameters is InvalidPopupParams invalidParams)
+                {
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Invalid</h5>
+                        <button type="button" class="btn-close" @onclick="PopupService.Hide"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>@invalidParams.Message</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-primary" @onclick="PopupService.Hide">OK</button>
+                    </div>
+                    </div>
+
+                }
+                else if (_popupType == PopupType.New && _parameters is NewPopupParams newParams)
+                {
+                    <div class="offcanvas offcanvas-end show d-block h-100" tabindex="-1" style="visibility:visible;" @onclick="PopupService.Hide">
+                        <div class="offcanvas-header" @onclick:stopPropagation>
+                            <h5 class="offcanvas-title">@newParams.HeaderText</h5>
+                            <button type="button" class="btn-close" @onclick="PopupService.Hide"></button>
+                        </div>
+                        <div  @onclick:stopPropagation>
+                            @newParams.ChildContent
+                        </div>
+                    </div>
+                }
+
+                else if (_popupType == PopupType.Standard && _parameters is StandardPopupParams stdParams)
+                {
+                    <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">@stdParams.HeaderText</h5>
+                        <button type="button" class="btn-close" @onclick="PopupService.Hide"></button>
+                    </div>
+                    <div class="modal-body">
+                        @stdParams.ChildContent
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" @onclick="PopupService.Hide">Close</button>
+                    </div>
+                     </div>
+                }
+
+           
         </div>
-    }
-    else if (_popupType == PopupType.InValid && _parameters is InvalidPopupParams invalidParams)
-    {
-        <div class="popup invalid">
-            <p>@invalidParams.Message</p>
-            <button @onclick="PopupService.Hide">OK</button>
-        </div>
-    }
-    else if (_popupType == PopupType.New && _parameters is NewPopupParams newParams)
-    {
-        <div class="popup new">
-            @newParams.ChildContent
-            <button @onclick="PopupService.Hide">Close</button>
-        </div>
-    }
-    else if (_popupType == PopupType.Standard && _parameters is StandardPopupParams stdParams)
-    {
-        <div class="popup standard">
-            <h4>@stdParams.HeaderText</h4>
-            @stdParams.ChildContent
-            <button @onclick="PopupService.Hide">Close</button>
-        </div>
-    }
-</div>
+    </div>
+}
 
 @code {
     private PopupType _popupType;
     private object? _parameters;
+    private bool isVisible;
 
     protected override void OnInitialized()
     {
@@ -49,13 +104,15 @@
     {
         _popupType = type;
         _parameters = parameters;
-        InvokeAsync(StateHasChanged); // 👈 force UI refresh immediately
+        isVisible = true;
+        InvokeAsync(StateHasChanged);
     }
 
     private void HidePopup()
     {
         _popupType = default;
         _parameters = null;
+        isVisible = false;
         InvokeAsync(StateHasChanged);
     }
 
