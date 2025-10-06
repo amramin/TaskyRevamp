@@ -1,0 +1,15 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace TaskyRevamp.Dto.SystemConfiguration
+{
+	public class DefaultViewSettingsDto
+	{
+		public Guid Id { get; set; }
+		public int DefaultSelected {  get; set; }
+		public int SubTaskLevels { get; set; }
+	}
+}

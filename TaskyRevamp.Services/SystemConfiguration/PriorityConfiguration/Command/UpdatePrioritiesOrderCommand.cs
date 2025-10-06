@@ -11,11 +11,11 @@ using PrioritySetting = TaskyRevamp.Domain.Models.SystemConfiguration.PrioritySe
 namespace TaskyRevamp.Services.SystemConfiguration.PriorityConfiguration.Command
 {
 	public record UpdatePrioritiesOrder(List<PriorityDto> PriorityDtos):IRequest<bool>;
-	public class UpdatePrioritiesOrderCommandHanler : IRequestHandler<UpdatePrioritiesOrder, bool>
+	public class UpdatePrioritiesOrderHandler : IRequestHandler<UpdatePrioritiesOrder, bool>
 	{
 		private readonly IRepository<PrioritySetting> _PriorityRepository;
 
-		public UpdatePrioritiesOrderCommandHanler(IRepository<PrioritySetting> _priorityRepository)
+		public UpdatePrioritiesOrderHandler(IRepository<PrioritySetting> _priorityRepository)
 		{
 			_PriorityRepository = _priorityRepository;
 		}

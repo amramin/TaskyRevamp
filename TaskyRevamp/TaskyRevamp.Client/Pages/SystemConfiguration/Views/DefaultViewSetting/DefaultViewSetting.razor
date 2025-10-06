@@ -1,0 +1,75 @@
+﻿@page "/DefaultView"
+
+@using TaskyRevamp.Client.Consumer
+@using TaskyRevamp.Client.Services
+@using TaskyRevamp.Dto.Enums
+@using TaskyRevamp.Dto.SystemConfiguration
+@inject IStringLocalizer<SharedResources> Loc
+@inject ToastService ToastService
+@inject DefaultViewSettingConsumer _defaultViewSettingConsumer
+@inject ViewTaskSettingConsumer _viewTaskSettingConsumer
+
+<div class="card p-3">
+    <h4> @Loc["Default view"]</h4>
+    <p>@Loc["DefaultViewHint"]</p>
+    <InputRadioGroup TValue="ViewType" Value="ViewTaskSetting.ViewType" ValueChanged="OnSettingChange" ValueExpression="() => ViewTaskSetting.ViewType">
+        @foreach (var value in ViewTypes)
+        {
+            <div class="d-flex align-items-center border border-primary rounded p-2 mb-2">
+                <InputRadio Value="@value" /> @value.GetDescription()
+            </div>
+            <br />
+        }
+    </InputRadioGroup>
+
+    <div class="d-flex justify-content-end gap-2 mt-4">
+        <button class="btn btn-light px-4" @onclick="Cancel">@Loc["Cancel"]</button>
+        <button class="btn btn-primary px-4" @onclick="Save">@Loc["Save"]</button>
+    </div>
+</div>
+
+@code {
+    public List<ViewType> ViewTypes = EnumExtensions.GetOrderedValues<ViewType>();
+    public ViewTaskSettingsDto ViewTaskSetting { get; set; } = new ViewTaskSettingsDto { ViewType = ViewType.List_Timeline };
+    public DefaultViewSettingsDto defaultViewSettingsDto = new DefaultViewSettingsDto();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var res = await _defaultViewSettingConsumer.GetDefaultViewSetting();
+        if (res.Success && res != null && res.Data != null)
+        {
+            defaultViewSettingsDto = res.Data;
+        }
+    }
+    private void OnSettingChange(ViewType viewType)
+    {
+        ViewTaskSetting.ViewType = viewType;
+        defaultViewSettingsDto.DefaultSelected = (int)ViewTaskSetting.ViewType;
+    }
+    private void Cancel(MouseEventArgs args)
+    {
+
+    }
+    private async Task Save(MouseEventArgs args)
+    {
+
+        var viewRes = await _viewTaskSettingConsumer.GetActiveViewTaskSetting();
+        if (viewRes.Success && viewRes != null && viewRes.Data != null)
+        {
+            var viewQuery = viewRes.Data.FirstOrDefault(v => v.ViewType == ViewTaskSetting.ViewType);
+            if (viewQuery != null)
+            {
+                var res = await _defaultViewSettingConsumer.UpdateDefaultViewSetting(defaultViewSettingsDto);
+                if (res.Success)
+                {
+                    await ToastService.ShowToastAsync(Loc["EditSuccess"], "success");
+                    StateHasChanged();
+                }
+            }
+            else
+            {
+                await ToastService.ShowToastAsync(Loc["Default View Error"], "error");
+            }
+        }
+    }
+}

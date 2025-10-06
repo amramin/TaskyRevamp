@@ -11,10 +11,10 @@ using PrioritySetting = TaskyRevamp.Domain.Models.SystemConfiguration.PrioritySe
 namespace TaskyRevamp.Services.SystemConfiguration.PriorityConfiguration.Query
 {
 	public record GetPriorityByIdQuery(Guid Id): IRequest<PriorityDto>;
-	public class GetPriorityByIdQueryHandler : IRequestHandler<GetPriorityByIdQuery, PriorityDto>
+	public class GetPriorityByIdHandler : IRequestHandler<GetPriorityByIdQuery, PriorityDto>
 	{
 		private readonly IRepository<PrioritySetting> _PriorityRepository;
-		public GetPriorityByIdQueryHandler(IRepository<PrioritySetting> _priorityRepository)
+		public GetPriorityByIdHandler(IRepository<PrioritySetting> _priorityRepository)
 		{
 			_PriorityRepository = _priorityRepository;
 		}

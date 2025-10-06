@@ -141,9 +141,6 @@
   <data name="Required" xml:space="preserve">
     <value>هذا الحقل مطلوب</value>
   </data>
-  <data name="Welcome" xml:space="preserve">
-    <value>مرحبا</value>
-  </data>
   <data name="DataSavedSuccessfully" xml:space="preserve">
     <value>تم حفظ البيانات بنجاح</value>
   </data>
@@ -168,7 +165,7 @@
   <data name="Hours24" xml:space="preserve">
     <value>ساعة 24 </value>
   </data>
-  <data name="Week" xml:space="preserve">
+  <data name="ListWeek" xml:space="preserve">
     <value>أسبوع</value>
   </data>
   <data name="Days3" xml:space="preserve">
@@ -230,6 +227,126 @@
   </data>
   <data name="StatusOptions" xml:space="preserve">
     <value>Status Options</value>
+  </data>
+  <data name="List" xml:space="preserve">
+    <value>عرض قائمة</value>
+  </data>
+  <data name="Gantt" xml:space="preserve">
+    <value>عرض مخطط جانت</value>
+  </data>
+  <data name="Kanban" xml:space="preserve">
+    <value>عرض كانبان</value>
+  </data>
+  <data name="Card" xml:space="preserve">
+    <value>عرض البطاقة</value>
+  </data>
+  <data name="List_Type" xml:space="preserve">
+    <value>عرض النوع</value>
+  </data>
+  <data name="List_Source" xml:space="preserve">
+    <value>عرض المصدر</value>
+  </data>
+  <data name="List_Timeline" xml:space="preserve">
+    <value>عرض الجدول الزمني</value>
+  </data>
+  <data name="List_Overall" xml:space="preserve">
+    <value>عرض عام</value>
+  </data>
+  <data name="Dashboard" xml:space="preserve">
+    <value>لوحة المعلومات</value>
+  </data>
+  <data name="Tasksviews" xml:space="preserve">
+    <value>عرض المهام</value>
+  </data>
+  <data name="Default View Error" xml:space="preserve">
+    <value>الصفحة الافتراضية المحددة لم تعد مفعّلة</value>
+  </data>
+  <data name="Default view" xml:space="preserve">
+    <value>العرض الافتراضي</value>
+  </data>
+  <data name="Subtask_Level" xml:space="preserve">
+    <value>مستوى المهمة الفرعية</value>
+  </data>
+  <data name="subtask_hint" xml:space="preserve">
+    <value>حدد الحد الأقصى لمستويات المهام الفرعية المسموح بها عند إنشاء مهمة. هذا الخيار يتحكم في عمق تداخل المهام</value>
+  </data>
+  <data name="Maximum_Subtask_Level" xml:space="preserve">
+    <value>أقصى مستوى للمهمة الفرعية</value>
+  </data>
+  <data name="sub_task_warning" xml:space="preserve">
+    <value> قد يؤثر عرض أكثر من 3 مستويات على أداء واجهة المستخدم وقابليتها للقراءة</value>
+  </data>
+  <data name="ViewTaskSettingHint" xml:space="preserve">
+    <value>استخدم هذا الخيار لتفعيل طرق عرض المهام المختلفة في نظامك لتحسين إدارة المهام وعرضها</value>
+  </data>
+  <data name="DefaultViewHint" xml:space="preserve">
+    <value>حدد صفحتك الافتراضية بعد تسجيل الدخول</value>
+  </data>
+  <data name="ViewOptions" xml:space="preserve">
+    <value>عرض الخيارات</value>
+  </data>
+  <data name="WorkingDaysConfiguration" xml:space="preserve">
+    <value>إعدادات أيام العمل</value>
+  </data>
+  <data name="workingDaysHint" xml:space="preserve">
+    <value> حدد أيام العمل الرسمية لمؤسستك. سيتم استخدام هذا الإعداد في جدولة المهام، المواعيد النهائية، وحساب أعباء العمل</value>
+  </data>
+  <data name="Saturday" xml:space="preserve">
+    <value>السبت</value>
+  </data>
+  <data name="Friday" xml:space="preserve">
+    <value>الجمعه</value>
+  </data>
+  <data name="Thursday" xml:space="preserve">
+    <value>الخميس</value>
+  </data>
+  <data name="Wednesday" xml:space="preserve">
+    <value>الأربعاء</value>
+  </data>
+  <data name="Tuesday" xml:space="preserve">
+    <value>الثلاثاء</value>
+  </data>
+  <data name="Monday" xml:space="preserve">
+    <value>الإثنين</value>
+  </data>
+  <data name="Sunday" xml:space="preserve">
+    <value>الأحد</value>
+  </data>
+  <data name="WeeklyReport" xml:space="preserve">
+    <value>التقرير الإسبوعي</value>
+  </data>
+  <data name="English" xml:space="preserve">
+    <value>اللغة الإنجليزية</value>
+  </data>
+  <data name="Arabic" xml:space="preserve">
+    <value>اللغة العربية</value>
+  </data>
+  <data name="weeklyReportHint" xml:space="preserve">
+    <value>حدد اليوم والوقت الذي سيتم فيه إرسال التقرير الأسبوعي</value>
+  </data>
+  <data name="languageHint" xml:space="preserve">
+    <value>يمكنك إختيار لغة التقرير الذي سيرسل أسبوعياََ</value>
+  </data>
+  <data name="ReportLanguage" xml:space="preserve">
+    <value>لغة التقرير</value>
+  </data>
+  <data name="Day" xml:space="preserve">
+    <value>اليوم</value>
+  </data>
+  <data name="Time" xml:space="preserve">
+    <value>الوقت</value>
+  </data>
+  <data name="rejectionHint" xml:space="preserve">
+    <value>تعيين الحد الأقصى لفترة الرفض المسموح بها للمهمة من المسند إليه</value>
+  </data>
+  <data name="Week" xml:space="preserve">
+    <value>أسبوع</value>
+  </data>
+  <data name="priorityHint" xml:space="preserve">
+    <value>يتم تعيين أولوية المهمة الرئيسية تلقائيًا لتتطابق مع أعلى أولوية بين المهام الفرعية.</value>
+  </data>
+  <data name="recycleHint" xml:space="preserve">
+    <value>تعيين فترة الحذف التلقائي من النظام للمهام المحذوفة داخل سلة المحذوفات</value>
   </data>
   <data name="AllrightsKSA" xml:space="preserve">
     <value>جميع الحقوق محفوظة - المملكة العربية السعودية</value>
@@ -320,5 +437,14 @@
   </data>
   <data name="AddTaskFieldsConfiguration" xml:space="preserve">
     <value>إعدادات حقول إضافة المهمة</value>
+  </data>
+  <data name="DefaultColumnsHint" xml:space="preserve">
+    <value>قم بتخصيص الأعمدة التي ترغب في عرضها، وحدد العرض الافتراضي للأعمدة الذي سيظهر عند تسجيل دخول المستخدم إلى النظام</value>
+  </data>
+  <data name="TaskFilterHint" xml:space="preserve">
+    <value>حدد الحقول التي تريد عرضها في أي مرشح مهمة</value>
+  </data>
+  <data name="AddTaskHint" xml:space="preserve">
+    <value>استخدم هذا الخيار لتفعيل الحقول التي ستظهر في صفحة إنشاء/تعديل المهمة، ويمكنك أيضًا تحديد الحقول التي يجب أن تكون إلزامية.</value>
   </data>
 </root>
