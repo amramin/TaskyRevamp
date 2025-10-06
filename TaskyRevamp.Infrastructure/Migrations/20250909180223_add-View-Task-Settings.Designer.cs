@@ -854,7 +854,7 @@ namespace TaskyRevamp.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("TaskyRevamp.Domain.Models.Users.User", "UpdateddBy")
+                    b.HasOne("TaskyRevamp.Domain.Models.Users.User", "UpdatedBy")
                         .WithMany()
                         .HasForeignKey("UpdateddById")
                         .OnDelete(DeleteBehavior.Restrict);
@@ -940,7 +940,7 @@ namespace TaskyRevamp.Infrastructure.Migrations
 
                     b.Navigation("Type");
 
-                    b.Navigation("UpdateddBy");
+                    b.Navigation("UpdatedBy");
                 });
 
             modelBuilder.Entity("TaskyRevamp.Domain.Models.Users.User", b =>
@@ -964,14 +964,14 @@ namespace TaskyRevamp.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("TaskyRevamp.Domain.Models.Users.User", "UpdateddBy")
+                    b.HasOne("TaskyRevamp.Domain.Models.Users.User", "UpdatedBy")
                         .WithMany()
                         .HasForeignKey("UpdateddById")
                         .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("CreatedBy");
 
-                    b.Navigation("UpdateddBy");
+                    b.Navigation("UpdatedBy");
                 });
 
             modelBuilder.Entity("TaskyRevamp.Domain.Models.Task.TaskAssignees", b =>

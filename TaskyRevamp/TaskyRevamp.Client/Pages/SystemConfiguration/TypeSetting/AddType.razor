@@ -1,0 +1,53 @@
+﻿@page "/AddType"
+
+@using TaskyRevamp.Client.Consumer
+@using TaskyRevamp.Client.Services
+@using TaskyRevamp.Dto.SystemConfiguration
+@inject NavigationManager navigationManager
+@inject IStringLocalizer<SharedResources> Loc
+@inject ToastService ToastService
+@inject TypeSettingConsumer _typeSettingConsumer
+
+<div class="container mt-4">
+    <h3>@Loc["AddTaskType"]</h3>
+       <TypeForm @ref="form"
+                   OnCancel="Cancel" 
+                   OnValidSubmit="@Save"
+                   type="_newType"
+                   SubmitButtonText="Save" />
+</div>
+
+@code {
+    private TypeDto _newType = new TypeDto { IsActive = true};
+    [Parameter] public EventCallback<TypeDto> OnValidSubmit { get; set; }
+    [Parameter] public EventCallback OnCancel { get; set; }
+    private TypeForm form;
+
+    protected override Task OnInitializedAsync()
+    {
+        return base.OnInitializedAsync();
+    }
+
+    private async Task Save(EditContext editContext)
+    {
+
+        var res = await _typeSettingConsumer.CreateType(_newType);
+        if (res.Success)
+        {
+            await OnValidSubmit.InvokeAsync(_newType);
+            await ToastService.ShowToastAsync(Loc["Added successfully"], "success");
+
+            navigationManager.NavigateTo("/TypeConfiguration");
+        }
+        else
+        {
+            if (res.Errors != null && res.Errors.Count > 0)
+                form.AddErrorsToEditContext(res.Errors);
+        }
+    }
+    private async Task Cancel()
+    {
+        //await OnCancel.InvokeAsync();
+        navigationManager.NavigateTo("/TypeConfiguration");
+    }
+}

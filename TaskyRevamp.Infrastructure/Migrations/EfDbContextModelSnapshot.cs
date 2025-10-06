@@ -22,6 +22,59 @@ namespace TaskyRevamp.Infrastructure.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("TaskyRevamp.Domain.Models.SystemConfiguration.AddTaskSettings", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsMandatory")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("NameArabic")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NameEnglish")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("Order")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("AddTaskSettings");
+                });
+
+            modelBuilder.Entity("TaskyRevamp.Domain.Models.SystemConfiguration.DefaultColumnsSettings", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("NameArabic")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NameEnglish")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("Order")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("DefaultColumnsSettings");
+                });
+
             modelBuilder.Entity("TaskyRevamp.Domain.Models.SystemConfiguration.DefaultViewSettings", b =>
                 {
                     b.Property<Guid>("Id")
@@ -37,6 +90,31 @@ namespace TaskyRevamp.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("DefaultViewSettings");
+                });
+
+            modelBuilder.Entity("TaskyRevamp.Domain.Models.SystemConfiguration.FilterFieldsSettings", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("NameArabic")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NameEnglish")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("Order")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("FilterFieldsSettings");
                 });
 
             modelBuilder.Entity("TaskyRevamp.Domain.Models.SystemConfiguration.PrioritySettings", b =>
@@ -103,6 +181,44 @@ namespace TaskyRevamp.Infrastructure.Migrations
                     b.ToTable("RejectionSettings");
                 });
 
+            modelBuilder.Entity("TaskyRevamp.Domain.Models.SystemConfiguration.Source", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("CreatedById")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("NameArabic")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NameEnglish")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("UpdateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("UpdatedById")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedById");
+
+                    b.HasIndex("UpdatedById");
+
+                    b.ToTable("Source");
+                });
+
             modelBuilder.Entity("TaskyRevamp.Domain.Models.SystemConfiguration.StatusSettings", b =>
                 {
                     b.Property<Guid>("Id")
@@ -128,6 +244,44 @@ namespace TaskyRevamp.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("StatusSettings");
+                });
+
+            modelBuilder.Entity("TaskyRevamp.Domain.Models.SystemConfiguration.Type", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("CreatedById")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("NameArabic")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NameEnglish")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("UpdateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("UpdatedById")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedById");
+
+                    b.HasIndex("UpdatedById");
+
+                    b.ToTable("Type");
                 });
 
             modelBuilder.Entity("TaskyRevamp.Domain.Models.SystemConfiguration.ViewTaskSettings", b =>
@@ -183,84 +337,6 @@ namespace TaskyRevamp.Infrastructure.Migrations
 
                     b.ToTable("WorkingDaysSettings");
                 });
-
-            modelBuilder.Entity("TaskyRevamp.Domain.Models.SystemConfiguration.AddTaskSettings", b =>
-            {
-                b.Property<Guid>("Id")
-                    .ValueGeneratedOnAdd()
-                    .HasColumnType("uniqueidentifier");
-
-                b.Property<bool>("IsActive")
-                    .HasColumnType("bit");
-
-                b.Property<bool>("IsMandatory")
-                    .HasColumnType("bit");
-
-                b.Property<string>("NameArabic")
-                    .IsRequired()
-                    .HasColumnType("nvarchar(max)");
-
-                b.Property<string>("NameEnglish")
-                    .IsRequired()
-                    .HasColumnType("nvarchar(max)");
-
-                b.Property<int?>("Order")
-                    .HasColumnType("int");
-
-                b.HasKey("Id");
-
-                b.ToTable("AddTaskSettings");
-            });
-
-            modelBuilder.Entity("TaskyRevamp.Domain.Models.SystemConfiguration.DefaultColumnsSettings", b =>
-            {
-                b.Property<Guid>("Id")
-                    .ValueGeneratedOnAdd()
-                    .HasColumnType("uniqueidentifier");
-
-                b.Property<bool>("IsActive")
-                    .HasColumnType("bit");
-
-                b.Property<string>("NameArabic")
-                    .IsRequired()
-                    .HasColumnType("nvarchar(max)");
-
-                b.Property<string>("NameEnglish")
-                    .IsRequired()
-                    .HasColumnType("nvarchar(max)");
-
-                b.Property<int?>("Order")
-                    .HasColumnType("int");
-
-                b.HasKey("Id");
-
-                b.ToTable("DefaultColumnsSettings");
-            });
-
-            modelBuilder.Entity("TaskyRevamp.Domain.Models.SystemConfiguration.FilterFieldsSettings", b =>
-            {
-                b.Property<Guid>("Id")
-                    .ValueGeneratedOnAdd()
-                    .HasColumnType("uniqueidentifier");
-
-                b.Property<bool>("IsActive")
-                    .HasColumnType("bit");
-
-                b.Property<string>("NameArabic")
-                    .IsRequired()
-                    .HasColumnType("nvarchar(max)");
-
-                b.Property<string>("NameEnglish")
-                    .IsRequired()
-                    .HasColumnType("nvarchar(max)");
-
-                b.Property<int?>("Order")
-                    .HasColumnType("int");
-
-                b.HasKey("Id");
-
-                b.ToTable("FilterFieldsSettings");
-            });
 
             modelBuilder.Entity("TaskyRevamp.Domain.Models.Task.Attachment", b =>
                 {
@@ -539,16 +615,13 @@ namespace TaskyRevamp.Infrastructure.Migrations
                     b.Property<Guid?>("UpdatedById")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("UpdateddById")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("Id");
 
                     b.HasIndex("CreatedById");
 
                     b.HasIndex("TaskItemId");
 
-                    b.HasIndex("UpdateddById");
+                    b.HasIndex("UpdatedById");
 
                     b.ToTable("TaskComment");
                 });
@@ -719,9 +792,6 @@ namespace TaskyRevamp.Infrastructure.Migrations
                     b.Property<Guid?>("UpdatedById")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("UpdateddById")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("Id");
 
                     b.HasIndex("AttachmentsId");
@@ -738,7 +808,7 @@ namespace TaskyRevamp.Infrastructure.Migrations
 
                     b.HasIndex("TaskTypeId");
 
-                    b.HasIndex("UpdateddById");
+                    b.HasIndex("UpdatedById");
 
                     b.ToTable("TaskItem");
                 });
@@ -858,16 +928,49 @@ namespace TaskyRevamp.Infrastructure.Migrations
                     b.Property<Guid?>("UpdatedById")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("UpdateddById")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("Id");
 
                     b.HasIndex("CreatedById");
 
-                    b.HasIndex("UpdateddById");
+                    b.HasIndex("UpdatedById");
 
                     b.ToTable("UserDelegation");
+                });
+
+            modelBuilder.Entity("TaskyRevamp.Domain.Models.SystemConfiguration.Source", b =>
+                {
+                    b.HasOne("TaskyRevamp.Domain.Models.Users.User", "CreatedBy")
+                        .WithMany()
+                        .HasForeignKey("CreatedById")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("TaskyRevamp.Domain.Models.Users.User", "UpdatedBy")
+                        .WithMany()
+                        .HasForeignKey("UpdatedById")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("CreatedBy");
+
+                    b.Navigation("UpdatedBy");
+                });
+
+            modelBuilder.Entity("TaskyRevamp.Domain.Models.SystemConfiguration.Type", b =>
+                {
+                    b.HasOne("TaskyRevamp.Domain.Models.Users.User", "CreatedBy")
+                        .WithMany()
+                        .HasForeignKey("CreatedById")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("TaskyRevamp.Domain.Models.Users.User", "UpdatedBy")
+                        .WithMany()
+                        .HasForeignKey("UpdatedById")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("CreatedBy");
+
+                    b.Navigation("UpdatedBy");
                 });
 
             modelBuilder.Entity("TaskyRevamp.Domain.Models.Task.Attachment", b =>
@@ -1022,14 +1125,14 @@ namespace TaskyRevamp.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("TaskyRevamp.Domain.Models.Users.User", "UpdateddBy")
+                    b.HasOne("TaskyRevamp.Domain.Models.Users.User", "UpdatedBy")
                         .WithMany()
-                        .HasForeignKey("UpdateddById")
+                        .HasForeignKey("UpdatedById")
                         .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("CreatedBy");
 
-                    b.Navigation("UpdateddBy");
+                    b.Navigation("UpdatedBy");
 
                     b.Navigation("taskItem");
                 });
@@ -1125,9 +1228,9 @@ namespace TaskyRevamp.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("TaskyRevamp.Domain.Models.Users.User", "UpdateddBy")
+                    b.HasOne("TaskyRevamp.Domain.Models.Users.User", "UpdatedBy")
                         .WithMany()
-                        .HasForeignKey("UpdateddById")
+                        .HasForeignKey("UpdatedById")
                         .OnDelete(DeleteBehavior.Restrict);
 
                     b.OwnsOne("TaskyRevamp.Domain.Models.Task.Progress", "ActualProgress", b1 =>
@@ -1207,7 +1310,7 @@ namespace TaskyRevamp.Infrastructure.Migrations
 
                     b.Navigation("Type");
 
-                    b.Navigation("UpdateddBy");
+                    b.Navigation("UpdatedBy");
                 });
 
             modelBuilder.Entity("TaskyRevamp.Domain.Models.Users.User", b =>
@@ -1227,14 +1330,14 @@ namespace TaskyRevamp.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("TaskyRevamp.Domain.Models.Users.User", "UpdateddBy")
+                    b.HasOne("TaskyRevamp.Domain.Models.Users.User", "UpdatedBy")
                         .WithMany()
-                        .HasForeignKey("UpdateddById")
+                        .HasForeignKey("UpdatedById")
                         .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("CreatedBy");
 
-                    b.Navigation("UpdateddBy");
+                    b.Navigation("UpdatedBy");
                 });
 
             modelBuilder.Entity("TaskyRevamp.Domain.Models.Task.TaskAttachments", b =>
