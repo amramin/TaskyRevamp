@@ -178,7 +178,7 @@
     <value>خيارات فترة الرفض</value>
   </data>
   <data name="Priority" xml:space="preserve">
-    <value>إعدادات أولوية المهام</value>
+    <value>الأولوية</value>
   </data>
   <data name="Added successfully" xml:space="preserve">
     <value>تمت الإضافة بنجاح</value>
@@ -369,6 +369,57 @@
   <data name="name" xml:space="preserve">
     <value>الاسم </value>
   </data>
+  <data name="AllrightsKSA" xml:space="preserve">
+    <value>جميع الحقوق محفوظة - المملكة العربية السعودية</value>
+  </data>
+  <data name="Title" xml:space="preserve">
+    <value>العنوان</value>
+  </data>
+  <data name="ActualProgress" xml:space="preserve">
+    <value>التقدم الفعلي</value>
+  </data>
+  <data name="Source" xml:space="preserve">
+    <value>المصدر</value>
+  </data>
+  <data name="StartDate" xml:space="preserve">
+    <value>تاريخ البدء</value>
+  </data>
+  <data name="EndDate" xml:space="preserve">
+    <value>تاريخ الإنتهاء</value>
+  </data>
+  <data name="Weight" xml:space="preserve">
+    <value>الوزن</value>
+  </data>
+  <data name="AssignedTo" xml:space="preserve">
+    <value>المسند إليه</value>
+  </data>
+  <data name="CreatorDepartment" xml:space="preserve">
+    <value>إدارة المنشئ</value>
+  </data>
+  <data name="AssignedToDepartment" xml:space="preserve">
+    <value>إدارة المسند إليه</value>
+  </data>
+  <data name="Mandatory" xml:space="preserve">
+    <value>الزامي</value>
+  </data>
+  <data name="Status" xml:space="preserve">
+    <value>الحالة</value>
+  </data>
+  <data name="Dependency" xml:space="preserve">
+    <value>تبعية المهمة</value>
+  </data>
+  <data name="CreatedBy" xml:space="preserve">
+    <value>المنشئ</value>
+  </data>
+  <data name="CreatedByDepartment" xml:space="preserve">
+    <value>إدارة المنشئ</value>
+  </data>
+  <data name="Duration" xml:space="preserve">
+    <value>المدة</value>
+  </data>
+  <data name="PlannedProgress" xml:space="preserve">
+    <value>التقدم المخطط</value>
+  </data>
   <data name="CreationDate" xml:space="preserve">
     <value>تاريخ الإنشاء</value>
   </data>
@@ -407,5 +458,50 @@
   </data>
   <data name="Add a new task type to get started." xml:space="preserve">
     <value>أضف نوع مهمة جديدًا للبدء</value>
+  </data>
+  <data name="Type" xml:space="preserve">
+    <value>النوع</value>
+  </data>
+  <data name="ActualWeight" xml:space="preserve">
+    <value>الوزن الفعلي</value>
+  </data>
+  <data name="PlannedWeight" xml:space="preserve">
+    <value>الوزن المخطط</value>
+  </data>
+  <data name="FromStartDate" xml:space="preserve">
+    <value>من تاريخ البدء</value>
+  </data>
+  <data name="ToStartDate" xml:space="preserve">
+    <value>إلى تاريخ البدء</value>
+  </data>
+  <data name="FromEndDate" xml:space="preserve">
+    <value>من تاريخ الإنتهاء</value>
+  </data>
+  <data name="ToEndDate" xml:space="preserve">
+    <value>إلى تاريخ الإنتهاء</value>
+  </data>
+  <data name="FromCreationDate" xml:space="preserve">
+    <value>من تاريخ الإنشاء</value>
+  </data>
+  <data name="ToCreationDate" xml:space="preserve">
+    <value>إلى تاريخ الإنشاء</value>
+  </data>
+  <data name="DefaultColumnsConfiguration" xml:space="preserve">
+    <value>إعدادات الأعمدة الافتراضية</value>
+  </data>
+  <data name="FilterFields" xml:space="preserve">
+    <value>حقول المرشح</value>
+  </data>
+  <data name="AddTaskFieldsConfiguration" xml:space="preserve">
+    <value>إعدادات حقول إضافة المهمة</value>
+  </data>
+  <data name="DefaultColumnsHint" xml:space="preserve">
+    <value>قم بتخصيص الأعمدة التي ترغب في عرضها، وحدد العرض الافتراضي للأعمدة الذي سيظهر عند تسجيل دخول المستخدم إلى النظام</value>
+  </data>
+  <data name="TaskFilterHint" xml:space="preserve">
+    <value>حدد الحقول التي تريد عرضها في أي مرشح مهمة</value>
+  </data>
+  <data name="AddTaskHint" xml:space="preserve">
+    <value>استخدم هذا الخيار لتفعيل الحقول التي ستظهر في صفحة إنشاء/تعديل المهمة، ويمكنك أيضًا تحديد الحقول التي يجب أن تكون إلزامية.</value>
   </data>
 </root>

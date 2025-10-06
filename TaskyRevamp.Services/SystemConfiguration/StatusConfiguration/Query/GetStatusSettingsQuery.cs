@@ -14,21 +14,21 @@ namespace TaskyRevamp.Services.SystemConfiguration.StatusConfiguration.Query
 	public record GetStatusSettingsQuery() : IRequest<List<StatusSettingsDto>>;
 	public class GetStatusSettingsHandler : IRequestHandler<GetStatusSettingsQuery, List<StatusSettingsDto>>
 	{
-		private readonly IRepository<statusSettings> _StatusRepository;
+		private readonly IRepository<statusSettings> _statusRepository;
 
-		public GetStatusSettingsHandler(IRepository<statusSettings> _statusRepository)
+		public GetStatusSettingsHandler(IRepository<statusSettings> statusRepository)
 		{
-			_StatusRepository = _statusRepository;
+			this._statusRepository = statusRepository;
 		}
 		public async Task<List<StatusSettingsDto>> Handle(GetStatusSettingsQuery request, CancellationToken cancellationToken)
 		{
-			List<StatusSettingsDto> _statusSettingsDto = new List<StatusSettingsDto>();
-			var statusQuieriesResponse = await _StatusRepository.AllAsNoTracking();
+			var statusSettingsDto = new List<StatusSettingsDto>();
+			var statusQuieriesResponse = await _statusRepository.AllAsNoTracking();
 			if (statusQuieriesResponse.Success && statusQuieriesResponse.Value != null && statusQuieriesResponse.Value.Any())
 			{
-				_statusSettingsDto = statusQuieriesResponse.Value.Select(q => q.CopyToDto()).ToList();
+				statusSettingsDto = statusQuieriesResponse.Value.Select(q => q.CopyToDto()).ToList();
 			}
-			return _statusSettingsDto;
+			return statusSettingsDto;
 		}
 	}
 }

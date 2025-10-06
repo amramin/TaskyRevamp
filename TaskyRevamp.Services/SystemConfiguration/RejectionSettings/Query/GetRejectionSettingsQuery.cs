@@ -12,19 +12,19 @@ using RejectionSetting = TaskyRevamp.Domain.Models.SystemConfiguration.Rejection
 namespace TaskyRevamp.Services.SystemConfiguration.RejectionSettings.Query
 {
 	public record GetRejectionSettingsQuery() : IRequest<RejectionSettingsDto>;
-	public class GetRejectionSettingsHandler : IRequestHandler<GetRejectionSettingsQuery, RejectionSettingsDto>
+	public class GetRejectionSettingsQueryHandler : IRequestHandler<GetRejectionSettingsQuery, RejectionSettingsDto>
 	{
-		private readonly IRepository<RejectionSetting> _RejectionSettingRepositry;
-		public GetRejectionSettingsHandler(IRepository<RejectionSetting> _rejectionSettingRepositry)
+		private readonly IRepository<RejectionSetting> _rejectionSettingRepositry;
+		public GetRejectionSettingsQueryHandler(IRepository<RejectionSetting> rejectionSettingRepositry)
 		{
-			_RejectionSettingRepositry = _rejectionSettingRepositry;
+			this._rejectionSettingRepositry = rejectionSettingRepositry;
 		}
 
 		public async Task<RejectionSettingsDto> Handle(GetRejectionSettingsQuery request, CancellationToken cancellationToken)
 		{
-			RejectionSettingsDto rejectionSettingDto = new RejectionSettingsDto();
+			var rejectionSettingDto = new RejectionSettingsDto();
 
-			var settingsResponse = await _RejectionSettingRepositry.AllAsNoTracking();
+			var settingsResponse = await _rejectionSettingRepositry.AllAsNoTracking();
 
 			if (settingsResponse.Success && settingsResponse.Value != null && settingsResponse.Value.Any())
 			{

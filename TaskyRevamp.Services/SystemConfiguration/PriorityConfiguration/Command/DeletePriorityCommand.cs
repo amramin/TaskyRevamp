@@ -13,20 +13,20 @@ namespace TaskyRevamp.Services.SystemConfiguration.PriorityConfiguration.Command
 	public record DeletePriorityCommand(PriorityDto PriorityDto): IRequest<bool>;
 	public class DeletePriorityHandler : IRequestHandler<DeletePriorityCommand, bool>
 	{
-		private readonly IRepository<PrioritySetting> _PriorityRepository;
+		private readonly IRepository<PrioritySetting> _priorityRepository;
 
-		public DeletePriorityHandler(IRepository<PrioritySetting> _priorityRepository)
+		public DeletePriorityHandler(IRepository<PrioritySetting> priorityRepository)
 		{
-			_PriorityRepository = _priorityRepository;
+			this._priorityRepository = priorityRepository;
 		}
 		public async Task<bool> Handle(DeletePriorityCommand request, CancellationToken cancellationToken)
 		{
-			var res = await _PriorityRepository.FindByKey(request.PriorityDto.Id);
+			var res = await _priorityRepository.FindByKey(request.PriorityDto.Id);
 			if(res != null && res.Value != null && res.Success)
 			{
 				var priority = res.Value;
-				await _PriorityRepository.Delete(priority.Id);
-				await _PriorityRepository.SaveChangesAsync();
+				await _priorityRepository.Delete(priority.Id);
+				await _priorityRepository.SaveChangesAsync();
 			}
 			return true;
 		}

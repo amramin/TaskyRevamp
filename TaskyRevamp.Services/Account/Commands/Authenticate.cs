@@ -78,9 +78,9 @@ public class AuthenticateCommandHandler : IRequestHandler<AuthenticateCommand, s
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_appSettingsOptions.Value.Secret);
             var tokenExpiry = GetTokenExpirySettingsQuery();
-            List<string> delegateUsersNames = new List<string>();
-            List<Guid> delegateUsersIds = new List<Guid>();
-            List<User> delegateUsers = GetDelegatedUsers(user);
+            var delegateUsersNames = new List<string>();
+            var delegateUsersIds = new List<Guid>();
+            var delegateUsers = GetDelegatedUsers(user);
 
             delegateUsersNames.AddRange(delegateUsers.Select(x => x.Username));
             delegateUsersIds.AddRange(delegateUsers.Select(x => x.Id));
@@ -116,7 +116,7 @@ public class AuthenticateCommandHandler : IRequestHandler<AuthenticateCommand, s
     {
         try
         {
-            using (DirectoryEntry entry = new DirectoryEntry(ldapPath, username, password))
+            using (var entry = new DirectoryEntry(ldapPath, username, password))
             {
                 // Bind to the directory and authenticate
                 object nativeObject = entry.NativeObject;
@@ -141,12 +141,12 @@ public class AuthenticateCommandHandler : IRequestHandler<AuthenticateCommand, s
     {
         try
         {
-            using (DirectoryEntry entry = new DirectoryEntry(ldapPath, _ldapPath.Value.Username, _ldapPath.Value.Password))
+            using (var entry = new DirectoryEntry(ldapPath, _ldapPath.Value.Username, _ldapPath.Value.Password))
             {
-                using (DirectorySearcher searcher = new DirectorySearcher(entry))
+                using (var searcher = new DirectorySearcher(entry))
                 {
                     // Search for users created within the last 7 days
-                    DateTime fromDate = DateTime.UtcNow.AddDays(-1);
+                    var fromDate = DateTime.UtcNow.AddDays(-1);
                     string filter = searcher.Filter = $"(sAMAccountName={username})";
 
                     searcher.Filter = filter;
@@ -186,7 +186,7 @@ public class AuthenticateCommandHandler : IRequestHandler<AuthenticateCommand, s
                         }
 
                         // Add the AD user to the list
-                        User newUser = new User
+                        var newUser = new User
                         {
                             Username = samAccountName,
                             NameArabic = displayName,
@@ -222,16 +222,16 @@ public class AuthenticateCommandHandler : IRequestHandler<AuthenticateCommand, s
         try
         {
             // Create a DirectoryEntry for the LDAP path
-            using (DirectoryEntry entry = new DirectoryEntry(ldapPath, _ldapPath.Value.Username, _ldapPath.Value.Password))
+            using (var entry = new DirectoryEntry(ldapPath, _ldapPath.Value.Username, _ldapPath.Value.Password))
             {
                 // Create a DirectorySearcher to search for the manager by distinguished name (DN)
-                using (DirectorySearcher searcher = new DirectorySearcher(entry))
+                using (var searcher = new DirectorySearcher(entry))
                 {
                     searcher.Filter = $"(distinguishedName={managerDn})";
                     searcher.PropertiesToLoad.Add("sAMAccountName"); // Manager's username
 
                     // Perform the search for the manager
-                    SearchResult result = searcher.FindOne();
+                    var result = searcher.FindOne();
 
                     if (result != null && result.Properties.Contains("sAMAccountName"))
                     {
@@ -252,13 +252,13 @@ public class AuthenticateCommandHandler : IRequestHandler<AuthenticateCommand, s
 
     private List<User> GetDelegatedUsers(User user)
     {
-        List<User> users = new List<User>();
+        var users = new List<User>();
         users.Add(user);
 
         var data = _delegateRepository.FindBy(x => x.ToUserId == user.Id && x.FromDate <= DateTime.UtcNow && x.ToDate >= DateTime.UtcNow);
         if (data == null) { return new List<User>() { user }; }
         var toUsers = data.Result.Value?.ToList();
-        List<Guid> guids = toUsers.Select(x => x.FromUserId).ToList();
+        var guids = toUsers.Select(x => x.FromUserId).ToList();
 
         var data2 = _userRepository.FindBy(x => guids.Contains(x.Id));
         if (data2 == null) { return new List<User>() { user }; }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TaskyRevamp.Services.Exceptions;
 
-public static class APIError
+public static class ApiError
 {
     public static string PrentNotFound = "PrentNotFound";
 }

@@ -1,10 +1,12 @@
 ﻿@page "/StatusSetting"
 
 @using TaskyRevamp.Client.Consumer
+@using TaskyRevamp.Client.Services
 @using TaskyRevamp.Dto.SystemConfiguration
 @inject NavigationManager navigationManager
 @inject IStringLocalizer<SharedResources> Loc
 @inject StatusSettingConsumer _statusSettingConsumer
+@inject PopupService PopupService
 
 <h6 class="mb-3">@Loc["StatusOptions"]</h6>
 
@@ -22,12 +24,12 @@
                     <span class="rounded-circle p-2" style="background-color:@status.BackgroundColor"></span>
                     <span class="rounded-circle p-2" style="background-color:@status.NameColor"></span>
 
-                    <button class="btn btn-action-40 btn-outline-success" @onclick=" () => Edit(status.Id)">
+                    <button class="btn btn-action-40 btn-outline-success" type="button" @onclick=" () => Edit(status.Id)">
                         <span class="icon">
                             <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Edit"></SVGCrud>
                         </span>
                     </button>
-                
+
                 </div>
             </div>
         </div>
@@ -46,22 +48,26 @@
     protected override async Task OnInitializedAsync()
     {
         var res = await _statusSettingConsumer.GetStatusConfiguration();
-        if(res.Success && res != null && res.Data != null)
+        if (res.Success && res != null && res.Data != null)
         {
             Status = res.Data;
         }
     }
 
-    private void Edit(Guid Id)
+    private void Edit(Guid id)
     {
-        navigationManager.NavigateTo($"/Update-Status/{Id}");
+       PopupService.ShowNew(
+        @<UpdateStatus Id="id" OnValidSubmit="OnInitializedAsync" />,
+        headerText: Loc["EditStatus"]
+    );
     }
+
     private void Cancel(MouseEventArgs args)
     {
-        
+
     }
-    private void Save(MouseEventArgs args)
+    private async Task Save(MouseEventArgs args)
     {
-        
+
     }
 }

@@ -12,28 +12,29 @@ namespace TaskyRevamp.Dto.TaskDto;
 public class CreateTaskDto
 {
     public Guid Id { get; set; }
-    [Required(
-      ErrorMessageResourceType = typeof(SharedResources),
-      ErrorMessageResourceName = ValidationDto.Required
-  )]
-    public string TitleEnglish { get; private set; }
-    [Required(
-    ErrorMessageResourceType = typeof(SharedResources),
-    ErrorMessageResourceName = ValidationDto.Required
-)]
-    public string TitleArabic { get; private set; }
 
-    public string DescriptionEnglish { get; private set; }
-    public string DescriptionArabic { get; private set; }
-    public DateTime StartDate { get; private set; }
-    public DateTime EndDate { get; private set; }
-    public Guid TypeId { get; private set; }
-    public Guid SourceId { get; private set; }
-    public Guid? ReminderId { get; private set; }
-    public int Priority { get; private set; }
-    public int weight { get; private set; }
+    [Required(
+        ErrorMessageResourceType = typeof(SharedResources),
+        ErrorMessageResourceName = ValidationDto.Required
+    )]
+    public string TitleEnglish { get; set; }
+
+    [Required(
+        ErrorMessageResourceType = typeof(SharedResources),
+        ErrorMessageResourceName = ValidationDto.Required
+    )]
+    public string TitleArabic { get; set; }
+
+    public string DescriptionEnglish { get; set; }
+    public string DescriptionArabic { get; set; }
+    public DateTime StartDate { get; set; }
+    public DateTime EndDate { get; set; }
+    public Guid TypeId { get; set; }
+    public Guid SourceId { get; set; }
+    public int Priority { get; set; }
+    public int weight { get; set; }
     public int Duration => (EndDate.Date - StartDate.Date).Days + 1;
-    public int TaskStatus { get; private set; }
+    public int TaskStatus { get; set; }
     public List<Guid> AssignedDepartmentIds { set; get; }
     public List<Guid> AssignedIds { set; get; }
     public Guid CreatedBy { get; set; }

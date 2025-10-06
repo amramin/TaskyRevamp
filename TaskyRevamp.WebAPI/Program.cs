@@ -20,7 +20,11 @@ using TaskyRevamp.WebAPI;
 using TaskyRevamp.WebAPI.Exeptions;
 using TaskyRevamp.WebAPI.Middleware;
 using TaskyRevamp.WebAPI.Pipeline;
-using Workflow.Infrastructure;
+using FluentValidation;
+using FluentValidation.Validators;
+using TaskyRevamp.Domain.Interfaces.Repositeries;
+using TaskyRevamp.Infrastructure;
+using TaskyRevamp.Infrastructure.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -54,6 +58,8 @@ builder.Services.AddDbContext<EfDbContext>(options =>
                 maxRetryDelay: TimeSpan.FromSeconds(10),
                 errorNumbersToAdd: null);
         }));
+builder.Services.AddScoped<ITaskRepository,TaskRepository>();
+
 
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<HttpContextAccessor>();

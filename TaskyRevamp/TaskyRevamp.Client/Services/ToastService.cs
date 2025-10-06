@@ -8,7 +8,7 @@ public class ToastService
     {
         if (OnShow != null)
         {
-            await OnShow.Invoke(message, type);
+            _ = OnShow.Invoke(message, type);
         }
     }
 }

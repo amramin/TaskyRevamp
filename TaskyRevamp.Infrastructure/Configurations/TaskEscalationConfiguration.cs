@@ -16,17 +16,17 @@ internal class TaskEscalationConfiguration : IEntityTypeConfiguration<TaskEscala
     {
         builder
    .HasOne(te => te.EscalatedTo)
-   .WithMany()
+   .WithMany().HasForeignKey(k=>k.EscalatedToId)
    .OnDelete(DeleteBehavior.Restrict); // or NoAction in EF Core 5+
 
-        builder
-            .HasOne(te => te.RequestedBy)
-            .WithMany()
-            .OnDelete(DeleteBehavior.Restrict);
+        //builder
+        //    .HasOne(te => te.RequestedBy)
+        //    .WithMany()
+        //    .OnDelete(DeleteBehavior.Restrict);
 
         builder
             .HasOne(te => te.Task)
-            .WithMany()
-            .OnDelete(DeleteBehavior.Cascade);
+            .WithMany().HasForeignKey(k=>k.TaskId)
+            .OnDelete(DeleteBehavior.Restrict);
     }
 }

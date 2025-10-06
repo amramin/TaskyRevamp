@@ -11,22 +11,22 @@ using PrioritySetting = TaskyRevamp.Domain.Models.SystemConfiguration.PrioritySe
 namespace TaskyRevamp.Services.SystemConfiguration.PriorityConfiguration.Query
 {
 	public record GetPriorityByIdQuery(Guid Id): IRequest<PriorityDto>;
-	public class GetPriorityByIdHandler : IRequestHandler<GetPriorityByIdQuery, PriorityDto>
+	public class GetPriorityByIdQueryHandler : IRequestHandler<GetPriorityByIdQuery, PriorityDto>
 	{
-		private readonly IRepository<PrioritySetting> _PriorityRepository;
-		public GetPriorityByIdHandler(IRepository<PrioritySetting> _priorityRepository)
+		private readonly IRepository<PrioritySetting> _priorityRepository;
+		public GetPriorityByIdQueryHandler(IRepository<PrioritySetting> priorityRepository)
 		{
-			_PriorityRepository = _priorityRepository;
+			this._priorityRepository = priorityRepository;
 		}
 		public async Task<PriorityDto> Handle(GetPriorityByIdQuery request, CancellationToken cancellationToken)
 		{
-			PriorityDto PriorityQuery = new PriorityDto();
-			var res = await _PriorityRepository.FindByKey(request.Id);
+			var priorityQuery = new PriorityDto();
+			var res = await _priorityRepository.FindByKey(request.Id);
 			if (res.Success && res != null && res.Value != null)
 			{
-				PriorityQuery = res.Value.CopyToDto();
+				priorityQuery = res.Value.CopyToDto();
 			}
-			return PriorityQuery;
+			return priorityQuery;
 		}
 	}
 }

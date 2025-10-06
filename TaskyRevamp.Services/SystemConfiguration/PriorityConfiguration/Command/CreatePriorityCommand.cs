@@ -18,12 +18,12 @@ namespace TaskyRevamp.Services.SystemConfiguration.PriorityConfiguration.Command
 	public record CreatePriorityCommand(PriorityDto PriorityDto):IRequest<bool>;
 	public class CreatePriorityHandler : IRequestHandler<CreatePriorityCommand, bool>
 	{
-		private readonly IRepository<PrioritySetting> _PriorityRepository;
+		private readonly IRepository<PrioritySetting> _priorityRepository;
         private readonly IStringLocalizer<SharedResources> _localizer;
 
-        public CreatePriorityHandler(IRepository<PrioritySetting> _priorityRepositry, IStringLocalizer<SharedResources> localizer)
+        public CreatePriorityHandler(IRepository<PrioritySetting> priorityRepositry, IStringLocalizer<SharedResources> localizer)
         {
-            _PriorityRepository = _priorityRepositry;
+            _priorityRepository = priorityRepositry;
             _localizer = localizer;
         }
         public async Task<bool> Handle(CreatePriorityCommand request, CancellationToken cancellationToken)
@@ -32,7 +32,7 @@ namespace TaskyRevamp.Services.SystemConfiguration.PriorityConfiguration.Command
 
             var priorityDto = request.PriorityDto;
 
-            PrioritySetting priority = new PrioritySetting(
+            var priority = new PrioritySetting(
 				priorityDto.NameEnglish,
 				priorityDto.NameArabic,
 				priorityDto.NameColor,
@@ -40,15 +40,15 @@ namespace TaskyRevamp.Services.SystemConfiguration.PriorityConfiguration.Command
 				priorityDto.Order
 			); 
 
-			await _PriorityRepository.Insert(priority);
-			await _PriorityRepository.SaveChangesAsync();
+			await _priorityRepository.Insert(priority);
+			await _priorityRepository.SaveChangesAsync();
 
 			return true;
 		}
 
         private async Task ValidatePriority(PriorityDto priorityDto)
         {
-            var exists = await _PriorityRepository.FindBy(p => p.Id != priorityDto.Id && (p.NameEnglish.ToLower() == priorityDto.NameEnglish.ToLower() || p.NameArabic.ToLower() == priorityDto.NameArabic.ToLower()));
+            var exists = await _priorityRepository.FindBy(p => p.Id != priorityDto.Id && (p.NameEnglish.ToLower() == priorityDto.NameEnglish.ToLower() || p.NameArabic.ToLower() == priorityDto.NameArabic.ToLower()));
             if (exists?.Value?.Count > 0)
             {
                 var priorities = exists.Value;

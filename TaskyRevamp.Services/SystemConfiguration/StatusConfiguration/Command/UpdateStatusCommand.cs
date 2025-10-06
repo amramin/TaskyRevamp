@@ -12,15 +12,15 @@ namespace TaskyRevamp.Services.SystemConfiguration.StatusConfiguration.Command
 	public record UpdateStatusCommand(StatusSettingsDto StatusSettingsDto) : IRequest<bool>;
 	public class UpdateStatusHandler : IRequestHandler<UpdateStatusCommand, bool>
 	{
-		private readonly IRepository<statusSetting> _StatusRepository;
-		public UpdateStatusHandler(IRepository<statusSetting> _statusRepository)
+		private readonly IRepository<statusSetting> _statusRepository;
+		public UpdateStatusHandler(IRepository<statusSetting> statusRepository)
 		{
-			_StatusRepository = _statusRepository;
+			this._statusRepository = statusRepository;
 		}
 
 		public async Task<bool> Handle(UpdateStatusCommand request, CancellationToken cancellationToken)
 		{
-			var resStatus = await _StatusRepository.FindByKey(request.StatusSettingsDto.Id);
+			var resStatus = await _statusRepository.FindByKey(request.StatusSettingsDto.Id);
 			if (resStatus.Success && resStatus != null && resStatus.Value != null)
 			{
 				var status = resStatus.Value;
@@ -29,8 +29,8 @@ namespace TaskyRevamp.Services.SystemConfiguration.StatusConfiguration.Command
 				status.NameColor = request.StatusSettingsDto.NameColor;
 				status.BackgroundColor = request.StatusSettingsDto.BackgroundColor;
 
-				await _StatusRepository.Update(status);
-				await _StatusRepository.SaveChangesAsync();
+				await _statusRepository.Update(status);
+				await _statusRepository.SaveChangesAsync();
 			}
 			return true;
 		}
