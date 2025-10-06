@@ -409,7 +409,7 @@
     <value>تبعية المهمة</value>
   </data>
   <data name="CreatedBy" xml:space="preserve">
-    <value>المنشئ</value>
+    <value>المنشئ </value>
   </data>
   <data name="CreatedByDepartment" xml:space="preserve">
     <value>إدارة المنشئ</value>
@@ -422,9 +422,6 @@
   </data>
   <data name="CreationDate" xml:space="preserve">
     <value>تاريخ الإنشاء</value>
-  </data>
-  <data name="CreatedBy" xml:space="preserve">
-    <value>المنشئ </value>
   </data>
   <data name="UpdateDate" xml:space="preserve">
     <value>تاريخ التعديل</value>
@@ -503,5 +500,8 @@
   </data>
   <data name="AddTaskHint" xml:space="preserve">
     <value>استخدم هذا الخيار لتفعيل الحقول التي ستظهر في صفحة إنشاء/تعديل المهمة، ويمكنك أيضًا تحديد الحقول التي يجب أن تكون إلزامية.</value>
+  </data>
+  <data name="Confirm" xml:space="preserve">
+    <value>تأكيد</value>
   </data>
 </root>
