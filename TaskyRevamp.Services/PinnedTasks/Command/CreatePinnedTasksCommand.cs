@@ -8,24 +8,24 @@ using TaskyRevamp.Domain.Models.Task;
 using TaskyRevamp.Domain.Repositeries;
 using TaskyRevamp.Dto.PinnedTasks;
 
-namespace PinnedTasksyRevamp.Services.PinnedTaskss.Commands;
+namespace TaskyRevamp.Services.PinnedTasks.Command;
 
 public record CreatePinnedTasksCommand(PinnedTasksDto PinnedTasksDto) : IRequest<Guid>;
 
 public class CreatePinnedTasksHandler : IRequestHandler<CreatePinnedTasksCommand, Guid>
 {
-    private readonly IRepository<PinnedTasks> _PinnedTasksRepository;
+    private readonly IRepository<Domain.Models.Task.PinnedTasks> _pinnedTasksRepository;
 
-    public CreatePinnedTasksHandler(IRepository<PinnedTasks> PinnedTasksRepository) => _PinnedTasksRepository = PinnedTasksRepository;
+    public CreatePinnedTasksHandler(IRepository<Domain.Models.Task.PinnedTasks> pinnedTasksRepository) => _pinnedTasksRepository = pinnedTasksRepository;
 
     public async Task<Guid> Handle(CreatePinnedTasksCommand request, CancellationToken cancellationToken)
     {
-        PinnedTasks PinnedTasks=new PinnedTasks();
-        PinnedTasks.SetData(request.PinnedTasksDto);
+        var pinnedTasks=new Domain.Models.Task.PinnedTasks();
+        pinnedTasks.SetData(request.PinnedTasksDto);
        
-        await _PinnedTasksRepository.Insert(PinnedTasks);
-        await _PinnedTasksRepository.SaveChangesAsync();
-        return PinnedTasks.Id;
+        await _pinnedTasksRepository.Insert(pinnedTasks);
+        await _pinnedTasksRepository.SaveChangesAsync();
+        return pinnedTasks.Id;
 
     }
 }

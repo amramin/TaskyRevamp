@@ -1,27 +1,24 @@
-﻿
-using MediatR;
-using TaskyRevamp.Domain.Models.Task;
+﻿using MediatR;
 using TaskyRevamp.Domain.Repositeries;
 using TaskyRevamp.Dto.ChecklistItem;
 
-
-namespace ChecklistItemyRevamp.Services.ChecklistItems.Query;
+namespace TaskyRevamp.Services.ChecklistItems.Query;
 
 public record GetChecklistItemQuery(Guid Id) : IRequest<ChecklistItemDto>;
 
 public class GetChecklistItemByIdHandler : IRequestHandler<GetChecklistItemQuery, ChecklistItemDto>
 {
-    private readonly IRepository<ChecklistItem> _ChecklistItemRepository;
+    private readonly IRepository<Domain.Models.Task.ChecklistItem> _checklistItemRepository;
 
-    public GetChecklistItemByIdHandler(IRepository<ChecklistItem> ChecklistItemRepository)
+    public GetChecklistItemByIdHandler(IRepository<Domain.Models.Task.ChecklistItem> checklistItemRepository)
     {
-        _ChecklistItemRepository = ChecklistItemRepository;
+        _checklistItemRepository = checklistItemRepository;
     }
 
     public async Task<ChecklistItemDto> Handle(GetChecklistItemQuery request, CancellationToken cancellationToken)
     {
-        var res = await _ChecklistItemRepository.FindByKey(request.Id);
-        ChecklistItemDto ChecklistItemModel = new ChecklistItemDto()
+        var res = await _checklistItemRepository.FindByKey(request.Id);
+        var checklistItemModel = new ChecklistItemDto()
         {
             Id = res.Value.Id,
           TitleArabic= res.Value.TitleArabic,
@@ -32,7 +29,7 @@ public class GetChecklistItemByIdHandler : IRequestHandler<GetChecklistItemQuery
           AssignedUserId=res.Value.AssignedUser.Id
         };
 
-        return ChecklistItemModel;
+        return checklistItemModel;
     }
 
  

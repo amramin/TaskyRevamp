@@ -3,6 +3,7 @@ using TaskyRevamp.Domain.Models.Task;
 using TaskyRevamp.Domain.Repositeries;
 using TaskyRevamp.Dto.PinnedTasks;
 
+namespace TaskyRevamp.Services.PinnedTasks.Command;
 
 
 namespace PinnedTasksyRevamp.Services.PinnedTaskss.Commands;
@@ -11,23 +12,28 @@ public record UpdatePinnedTasksCommand(PinnedTasksDto PinnedTasks) : IRequest<bo
 
 public class UpdatePinnedTasksCommandHandler : IRequestHandler<UpdatePinnedTasksCommand, bool>
 {
-    private readonly IRepository<PinnedTasks> _PinnedTasksRepository;
+    private readonly IRepository<Domain.Models.Task.PinnedTasks> _pinnedTasksRepository;
 
-    public UpdatePinnedTasksCommandHandler(IRepository<PinnedTasks> PinnedTasksRepository)
+    public UpdatePinnedTasksCommandHandler(IRepository<Domain.Models.Task.PinnedTasks> pinnedTasksRepository)
     {
-        _PinnedTasksRepository = PinnedTasksRepository;
+        _pinnedTasksRepository = pinnedTasksRepository;
     }
 
     public async Task<bool> Handle(UpdatePinnedTasksCommand request, CancellationToken cancellationToken)
     {
-        var PinnedTasksResponse = await _PinnedTasksRepository.FindByKey(request.PinnedTasks.Id);
-        if (!PinnedTasksResponse.Success)
+        var pinnedTasksResponse = await _pinnedTasksRepository.FindByKey(request.PinnedTasks.Id);
+        if (!pinnedTasksResponse.Success)
         {
             return false;
         }
-        var updated = PinnedTasksResponse.Value;
-        updated.CopyToDto();
-        await _PinnedTasksRepository.Update(updated);
+
+        if (pinnedTasksResponse?.Value is null)
+        {
+            throw new Exception("Pinned Task not found");
+        }
+        var pinnedTask = pinnedTasksResponse.Value;
+        pinnedTask.CopyToDto();
+        await _pinnedTasksRepository.Update(pinnedTask);
 
         return true;
     }

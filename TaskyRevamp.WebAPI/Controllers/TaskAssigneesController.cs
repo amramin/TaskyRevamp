@@ -1,10 +1,9 @@
-﻿using TaskAssigneesyRevamp.Services.TaskAssigneess.Commands;
-using TaskAssigneesyRevamp.Services.TaskAssigneess.Query;
-using MediatR;
+﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using TaskyRevamp.Dto.TaskAssignees;
 using TaskyRevamp.Dto.GeneralDto;
-using TaskyRevamp.Services.TaskAssigneess.Commands;
+using TaskyRevamp.Services.TaskAssignees.Command;
+using TaskyRevamp.Services.TaskAssignees.Query;
 
 namespace TaskAssigneesRevamp.WebAPI.Controllers;
 

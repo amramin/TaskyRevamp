@@ -23,7 +23,7 @@ namespace TaskyRevamp.Services.SystemConfiguration.AddTaskSettings.Query
 
         public async Task<List<AddTaskSettingDto>> Handle(GetAddTaskSettingsQuery request, CancellationToken cancellationToken)
         {
-            List<AddTaskSettingDto> addTaskSettingsDto = new List<AddTaskSettingDto>();
+            var addTaskSettingsDto = new List<AddTaskSettingDto>();
 
             var settingsResponse = await _addTaskSettingRepository.AllAsNoTracking();
 

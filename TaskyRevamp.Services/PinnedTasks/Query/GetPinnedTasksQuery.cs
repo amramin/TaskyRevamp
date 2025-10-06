@@ -2,29 +2,33 @@
 using MediatR;
 using TaskyRevamp.Domain.Models.Task;
 using TaskyRevamp.Domain.Repositeries;
+using TaskyRevamp.Dto.GeneralDto;
 using TaskyRevamp.Dto.PinnedTasks;
 
+namespace TaskyRevamp.Services.PinnedTasks.Query;
 
-namespace PinnedTasksyRevamp.Services.PinnedTaskss.Query;
+public record GetPinnedTasksQuery(QueryModel? Query) : IRequest<List<PinnedTasksDto>>;
 
-public record GetPinnedTasksQuery(Guid Id) : IRequest<PinnedTasksDto>;
-
-public class GetPinnedTasksByIdHandler : IRequestHandler<GetPinnedTasksQuery, PinnedTasksDto>
+public class GetPinnedTaskssHandler : IRequestHandler<GetPinnedTasksQuery, List<PinnedTasksDto>>
 {
-    private readonly IRepository<PinnedTasks> _PinnedTasksRepository;
+    private readonly IRepository<Domain.Models.Task.PinnedTasks> _pinnedTasksRepository;
 
-    public GetPinnedTasksByIdHandler(IRepository<PinnedTasks> PinnedTasksRepository)
+
+    public GetPinnedTaskssHandler(IRepository<Domain.Models.Task.PinnedTasks> pinnedTasksRepository)
     {
-        _PinnedTasksRepository = PinnedTasksRepository;
+        _pinnedTasksRepository = pinnedTasksRepository;
     }
 
-    public async Task<PinnedTasksDto> Handle(GetPinnedTasksQuery request, CancellationToken cancellationToken)
+    public async Task<List<PinnedTasksDto>> Handle(GetPinnedTasksQuery request, CancellationToken cancellationToken)
     {
-        var res = await _PinnedTasksRepository.FindByKey(request.Id);
-        PinnedTasksDto PinnedTasksModel = res.Value.CopyToDto();
-
-        return PinnedTasksModel;
+        var pinnedTasksDtos = new List<PinnedTasksDto>();
+        var pinnedTasks = await _pinnedTasksRepository.All();
+        
+        foreach (var pinnedTask in   pinnedTasks?.Value??[])
+        {
+            pinnedTasksDtos.Add(pinnedTask.CopyToDto());
+        }
+        
+        return pinnedTasksDtos;
     }
-
- 
 }

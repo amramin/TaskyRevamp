@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using FluentValidation;
+﻿using FluentValidation;
 using Microsoft.Extensions.Localization;
-
 using TaskyRevamp.Services.Tasks.Commands;
-namespace TaskyRevamp.Dto.TaskDto;
+
+namespace TaskyRevamp.Services.Tasks.Validators;
 
 public class CreateTaskValidator : AbstractValidator<CreateTaskCommand>
 {

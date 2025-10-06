@@ -1,21 +1,19 @@
-﻿
-using MediatR;
+﻿using MediatR;
 using TaskyRevamp.Domain.Models.Task;
 using TaskyRevamp.Domain.Repositeries;
 using TaskyRevamp.Dto.Department;
 
-
-namespace DepartmentyRevamp.Services.Departments.Query;
+namespace TaskyRevamp.Services.Departments.Query;
 
 public record GetDepartmentQuery(Guid Id) : IRequest<DepartmentDto>;
 
 public class GetDepartmentByIdHandler : IRequestHandler<GetDepartmentQuery, DepartmentDto>
 {
-    private readonly IRepository<Department> _DepartmentRepository;
+    private readonly IRepository<Department> _departmentRepository;
 
-    public GetDepartmentByIdHandler(IRepository<Department> DepartmentRepository)
+    public GetDepartmentByIdHandler(IRepository<Department> departmentRepository)
     {
-        _DepartmentRepository = DepartmentRepository;
+        _departmentRepository = departmentRepository;
     }
 
     public async Task<DepartmentDto> Handle(GetDepartmentQuery request, CancellationToken cancellationToken)

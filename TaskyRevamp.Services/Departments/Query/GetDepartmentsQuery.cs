@@ -1,25 +1,21 @@
-﻿
-using MediatR;
-using System.Linq.Expressions;
+﻿using MediatR;
 using TaskyRevamp.Domain.Models.Task;
 using TaskyRevamp.Domain.Repositeries;
 using TaskyRevamp.Dto.Department;
 using TaskyRevamp.Dto.GeneralDto;
 
-
-namespace DepartmentyRevamp.Services.Departments.Query;
+namespace TaskyRevamp.Services.Departments.Query;
 
 public record GetDepartmentsQuery(QueryModel? Query) : IRequest<List<DepartmentDto>>;
 
 public class GetDepartmentsHandler : IRequestHandler<GetDepartmentsQuery, List<DepartmentDto>>
 {
-    private readonly IRepository<Department> _DepartmentRepository;
+    private readonly IRepository<Department> _departmentRepository;
 
 
-    public GetDepartmentsHandler(IRepository<Department> DepartmentRepository)
+    public GetDepartmentsHandler(IRepository<Department> departmentRepository)
     {
-        _DepartmentRepository = DepartmentRepository;
-      
+        _departmentRepository = departmentRepository;
     }
 
     public async Task<List<DepartmentDto>> Handle(GetDepartmentsQuery request, CancellationToken cancellationToken)
@@ -39,11 +35,7 @@ public class GetDepartmentsHandler : IRequestHandler<GetDepartmentsQuery, List<D
             Departmentss.Add(dep);
             
         }
-
-       // return Departments.ToList();
-
-        return  Departmentss;
+        
+        return departmentsDto;
     }
-
-   
 }

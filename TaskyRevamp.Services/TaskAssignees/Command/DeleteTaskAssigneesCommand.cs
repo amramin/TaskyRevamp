@@ -1,16 +1,15 @@
 ﻿using MediatR;
-using TaskyRevamp.Domain.Models.Task;
 using TaskyRevamp.Domain.Repositeries;
 
-namespace TaskyRevamp.Services.TaskAssigneess.Commands;
+namespace TaskyRevamp.Services.TaskAssignees.Command;
 
 public record DeleteTaskAssigneesCommand(Guid Id) : IRequest<bool>;
 
 public class DeleteGroupCommandHandler : IRequestHandler<DeleteTaskAssigneesCommand, bool>
 {
-    private readonly IRepository<TaskAssignees> _tskRepository;
+    private readonly IRepository<Domain.Models.Task.TaskAssignees> _tskRepository;
 
-    public DeleteGroupCommandHandler(IRepository<TaskAssignees> tskRepository)
+    public DeleteGroupCommandHandler(IRepository<Domain.Models.Task.TaskAssignees> tskRepository)
     {
         _tskRepository = tskRepository;
     }

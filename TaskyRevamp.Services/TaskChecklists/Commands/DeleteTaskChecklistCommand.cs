@@ -17,12 +17,9 @@ public class DeleteGroupCommandHandler : IRequestHandler<DeleteTaskChecklistComm
 
     public async Task<bool> Handle(DeleteTaskChecklistCommand request, CancellationToken cancellationToken)
     {
-      
-      
+        await _tskRepository.Delete(request.Id);
 
-            await _tskRepository.Delete(request.Id);
 
-      
         return true;
     }
 }

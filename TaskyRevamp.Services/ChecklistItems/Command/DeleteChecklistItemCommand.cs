@@ -1,16 +1,15 @@
 ﻿using MediatR;
-using TaskyRevamp.Domain.Models.Task;
 using TaskyRevamp.Domain.Repositeries;
 
-namespace TaskyRevamp.Services.ChecklistItems.Commands;
+namespace TaskyRevamp.Services.ChecklistItems.Command;
 
 public record DeleteChecklistItemCommand(Guid Id) : IRequest<bool>;
 
 public class DeleteGroupCommandHandler : IRequestHandler<DeleteChecklistItemCommand, bool>
 {
-    private readonly IRepository<ChecklistItem> _tskRepository;
+    private readonly IRepository<Domain.Models.Task.ChecklistItem> _tskRepository;
 
-    public DeleteGroupCommandHandler(IRepository<ChecklistItem> tskRepository)
+    public DeleteGroupCommandHandler(IRepository<Domain.Models.Task.ChecklistItem> tskRepository)
     {
         _tskRepository = tskRepository;
     }

@@ -1,45 +1,41 @@
-﻿
-using MediatR;
-using System.Linq.Expressions;
-using TaskyRevamp.Domain.Models.Task;
+﻿using MediatR;
 using TaskyRevamp.Domain.Repositeries;
-using TaskyRevamp.Dto.TaskComment;
 using TaskyRevamp.Dto.GeneralDto;
+using TaskyRevamp.Dto.TaskComment;
 
-
-namespace TaskCommentyRevamp.Services.TaskComments.Query;
+namespace TaskyRevamp.Services.TaskComment.Query;
 
 public record GetTaskCommentsQuery(QueryModel? Query) : IRequest<List<TaskCommentDto>>;
 
 public class GetTaskCommentsHandler : IRequestHandler<GetTaskCommentsQuery, List<TaskCommentDto>>
 {
-    private readonly IRepository<TaskComment> _TaskCommentRepository;
+    private readonly IRepository<Domain.Models.Task.TaskComment> _taskCommentRepository;
 
 
-    public GetTaskCommentsHandler(IRepository<TaskComment> TaskCommentRepository)
+    public GetTaskCommentsHandler(IRepository<Domain.Models.Task.TaskComment> taskCommentRepository)
     {
-        _TaskCommentRepository = TaskCommentRepository;
+        _taskCommentRepository = taskCommentRepository;
       
     }
 
     public async Task<List<TaskCommentDto>> Handle(GetTaskCommentsQuery request, CancellationToken cancellationToken)
     {
-        List<TaskCommentDto> TaskCommentss = new List<TaskCommentDto>();
+        var taskCommentss = new List<TaskCommentDto>();
        
 
-        var data = await _TaskCommentRepository.All();
+        var data = await _taskCommentRepository.All();
 
 
 
-        foreach (var TaskComment in data.Value)
+        foreach (var taskComment in data.Value)
         {
         ;
-            TaskCommentss.Add(TaskComment.CopyToDto());
+            taskCommentss.Add(taskComment.CopyToDto());
         }
 
        // return TaskComments.ToList();
 
-        return  TaskCommentss;
+        return  taskCommentss;
     }
 
    

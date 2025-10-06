@@ -1,16 +1,15 @@
 ﻿using MediatR;
-using TaskyRevamp.Domain.Models.Task;
 using TaskyRevamp.Domain.Repositeries;
 
-namespace TaskyRevamp.Services.TaskEscalations.Commands;
+namespace TaskyRevamp.Services.TaskEscalation.Command;
 
 public record DeleteTaskEscalationCommand(Guid Id) : IRequest<bool>;
 
 public class DeleteGroupCommandHandler : IRequestHandler<DeleteTaskEscalationCommand, bool>
 {
-    private readonly IRepository<TaskEscalation> _tskRepository;
+    private readonly IRepository<Domain.Models.Task.TaskEscalation> _tskRepository;
 
-    public DeleteGroupCommandHandler(IRepository<TaskEscalation> tskRepository)
+    public DeleteGroupCommandHandler(IRepository<Domain.Models.Task.TaskEscalation> tskRepository)
     {
         _tskRepository = tskRepository;
     }

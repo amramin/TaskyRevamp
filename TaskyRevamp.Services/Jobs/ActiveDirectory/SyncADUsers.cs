@@ -11,13 +11,13 @@ using TaskyRevamp.Domain.Repositeries;
 
 namespace TaskyRevamp.Services.Jobs.ActiveDirectory;
 
-public class SyncADUsers
+public class SyncAdUsers
 {
 
     private readonly IRepository<User> _userRepository;
     IOptions<LdapSettings> _ldapPath;
 
-    public SyncADUsers(IOptions<LdapSettings> ldapSettings, IRepository<User> userRepository)
+    public SyncAdUsers(IOptions<LdapSettings> ldapSettings, IRepository<User> userRepository)
     {
         _userRepository = userRepository;
         _ldapPath = ldapSettings;
@@ -28,21 +28,21 @@ public class SyncADUsers
     {
         try
         {
-            await SyncAllADUsers();
+            await SyncAllAdUsers();
         }
         catch (Exception ex) { Console.WriteLine(ex); }
     }
 
-    private async Task SyncAllADUsers()
+    private async Task SyncAllAdUsers()
     {
         // Define the directory entry for the root of the domain
         string ldapPath = _ldapPath.Value.Path;
 
         // Step 1: Query AD for all new users
-        List<User> adUsers = await CheckNewAddedUser(ldapPath, _ldapPath.Value.Username, _ldapPath.Value.Password);
+        var adUsers = await CheckNewAddedUser(ldapPath, _ldapPath.Value.Username, _ldapPath.Value.Password);
 
         // Step 1: Query AD for all modified users
-        List<User> adUsersModified = await CheckUsersChanges(ldapPath, _ldapPath.Value.Username, _ldapPath.Value.Password);
+        var adUsersModified = await CheckUsersChanges(ldapPath, _ldapPath.Value.Username, _ldapPath.Value.Password);
 
         var allAdUsers = adUsers.Concat(adUsersModified)
                                   .GroupBy(u => u.Username)
@@ -57,14 +57,14 @@ public class SyncADUsers
     }
     public async Task<List<User>> CheckNewAddedUser(string ldapPath, string userName, string password)
     {
-        List<User> users = new List<User>();
+        var users = new List<User>();
 
-        using (DirectoryEntry entry = new DirectoryEntry(ldapPath, userName, password))
+        using (var entry = new DirectoryEntry(ldapPath, userName, password))
         {
-            using (DirectorySearcher searcher = new DirectorySearcher(entry))
+            using (var searcher = new DirectorySearcher(entry))
             {
                 // Search for users created within the last 7 days
-                DateTime fromDate = DateTime.UtcNow.AddDays(-1);
+                var fromDate = DateTime.UtcNow.AddDays(-1);
                 string filter = $"(&(objectClass=user)(!(sAMAccountName=*$))(|(userAccountControl=512)(userAccountControl=66048))(whenCreated>={fromDate.ToString("yyyyMMddHHmmss.0Z")}))";
 
                 searcher.PageSize = 5000;
@@ -129,14 +129,14 @@ public class SyncADUsers
     }
     public async Task<List<User>> CheckUsersChanges(string ldapPath, string userName, string password)
     {
-        List<User> users = new List<User>();
+        var users = new List<User>();
 
-        using (DirectoryEntry entry = new DirectoryEntry(ldapPath, userName, password))
+        using (var entry = new DirectoryEntry(ldapPath, userName, password))
         {
-            using (DirectorySearcher searcher = new DirectorySearcher(entry))
+            using (var searcher = new DirectorySearcher(entry))
             {
                 // Calculate the date 1 days ago
-                DateTime fromDate = DateTime.UtcNow.AddDays(-1);
+                var fromDate = DateTime.UtcNow.AddDays(-1);
                 //string fromDateString = fromDate.ToString("yyyyMMddHHmmss.0Z");
 
                 searcher.PageSize = 5000;
@@ -160,7 +160,7 @@ public class SyncADUsers
                 {
                     string samAccountName = result.Properties["samAccountName"][0].ToString();
                     int userAccountControl = (int)result.Properties["userAccountControl"][0];
-                    DateTime whenChanged = (DateTime)result.Properties["whenChanged"][0];
+                    var whenChanged = (DateTime)result.Properties["whenChanged"][0];
                     string displayName = result.Properties.Contains("displayName") ? result.Properties["displayName"][0].ToString() : string.Empty;
                     string email = result.Properties.Contains("mail") ? result.Properties["mail"][0].ToString() : string.Empty;
                     string distinguishedName = result.Properties.Contains("distinguishedName") ? result.Properties["distinguishedName"][0].ToString() : string.Empty;
@@ -213,16 +213,16 @@ public class SyncADUsers
         try
         {
             // Create a DirectoryEntry for the LDAP path
-            using (DirectoryEntry entry = new DirectoryEntry(ldapPath, userName, password))
+            using (var entry = new DirectoryEntry(ldapPath, userName, password))
             {
                 // Create a DirectorySearcher to search for the manager by distinguished name (DN)
-                using (DirectorySearcher searcher = new DirectorySearcher(entry))
+                using (var searcher = new DirectorySearcher(entry))
                 {
                     searcher.Filter = $"(distinguishedName={managerDn})";
                     searcher.PropertiesToLoad.Add("sAMAccountName"); // Manager's username
 
                     // Perform the search for the manager
-                    SearchResult result = searcher.FindOne();
+                    var result = searcher.FindOne();
 
                     if (result != null && result.Properties.Contains("sAMAccountName"))
                     {

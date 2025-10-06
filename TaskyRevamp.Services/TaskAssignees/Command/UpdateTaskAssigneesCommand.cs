@@ -1,33 +1,30 @@
 ﻿using MediatR;
-using TaskyRevamp.Domain.Models.Task;
 using TaskyRevamp.Domain.Repositeries;
 using TaskyRevamp.Dto.TaskAssignees;
 
-
-
-namespace TaskAssigneesyRevamp.Services.TaskAssigneess.Commands;
+namespace TaskyRevamp.Services.TaskAssignees.Command;
 
 public record UpdateTaskAssigneesCommand(TaskAssigneesDto TaskAssignees) : IRequest<bool>;
 
 public class UpdateTaskAssigneesCommandHandler : IRequestHandler<UpdateTaskAssigneesCommand, bool>
 {
-    private readonly IRepository<TaskAssignees> _TaskAssigneesRepository;
+    private readonly IRepository<Domain.Models.Task.TaskAssignees> _taskAssigneesRepository;
 
-    public UpdateTaskAssigneesCommandHandler(IRepository<TaskAssignees> TaskAssigneesRepository)
+    public UpdateTaskAssigneesCommandHandler(IRepository<Domain.Models.Task.TaskAssignees> taskAssigneesRepository)
     {
-        _TaskAssigneesRepository = TaskAssigneesRepository;
+        _taskAssigneesRepository = taskAssigneesRepository;
     }
 
     public async Task<bool> Handle(UpdateTaskAssigneesCommand request, CancellationToken cancellationToken)
     {
-        var TaskAssigneesResponse = await _TaskAssigneesRepository.FindByKey(request.TaskAssignees.Id);
-        if (!TaskAssigneesResponse.Success)
+        var taskAssigneesResponse = await _taskAssigneesRepository.FindByKey(request.TaskAssignees.Id);
+        if (!taskAssigneesResponse.Success)
         {
             return false;
         }
-        var updated = TaskAssigneesResponse.Value;
+        var updated = taskAssigneesResponse.Value;
         updated.SetData(request.TaskAssignees);
-        await _TaskAssigneesRepository.Update(updated);
+        await _taskAssigneesRepository.Update(updated);
 
         return true;
     }

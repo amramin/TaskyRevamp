@@ -12,7 +12,7 @@ using TaskyRevamp.Localization.Resources;
 using TaskyRevamp.Services.Exceptions;
 namespace DepartmentyRevamp.Services.Departments.Commands;
 
-public record CreateDepartmentCommand(DepartmentDto departmentDto) : IRequest<Guid>;
+public record CreateDepartmentCommand(DepartmentDto DepartmentDto) : IRequest<Guid>;
 
 public class CreateDepartmentHandler : IRequestHandler<CreateDepartmentCommand, Guid>
 {
@@ -32,7 +32,6 @@ public class CreateDepartmentHandler : IRequestHandler<CreateDepartmentCommand, 
         await _DepartmentRepository.Insert(department);
         await _DepartmentRepository.SaveChangesAsync();
         return department.Id;
-
     }
     private async Task ValidateDepartment(DepartmentDto departmentDto)
     {

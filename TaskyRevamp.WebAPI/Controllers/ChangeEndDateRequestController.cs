@@ -1,10 +1,9 @@
-﻿using ChangeEndDateRequestyRevamp.Services.ChangeEndDateRequests.Commands;
-using ChangeEndDateRequestyRevamp.Services.ChangeEndDateRequests.Query;
-using MediatR;
+﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using TaskyRevamp.Dto.ChangeEndDateRequest;
 using TaskyRevamp.Dto.GeneralDto;
 using TaskyRevamp.Services.ChangeEndDateRequests.Commands;
+using TaskyRevamp.Services.ChangeEndDateRequests.Query;
 
 namespace ChangeEndDateRequestRevamp.WebAPI.Controllers;
 

@@ -8,21 +8,17 @@ public record DeleteChangeEndDateRequestCommand(Guid Id) : IRequest<bool>;
 
 public class DeleteGroupCommandHandler : IRequestHandler<DeleteChangeEndDateRequestCommand, bool>
 {
-    private readonly IRepository<ChangeEndDateRequest> _tskRepository;
+    private readonly IRepository<ChangeEndDateRequest> _taskRepository;
 
-    public DeleteGroupCommandHandler(IRepository<ChangeEndDateRequest> tskRepository)
+    public DeleteGroupCommandHandler(IRepository<ChangeEndDateRequest> taskRepository)
     {
-        _tskRepository = tskRepository;
+        _taskRepository = taskRepository;
     }
 
     public async Task<bool> Handle(DeleteChangeEndDateRequestCommand request, CancellationToken cancellationToken)
     {
-      
-      
-
-            await _tskRepository.Delete(request.Id);
-
-      
+        await _taskRepository.Delete(request.Id);
+        
         return true;
     }
 }
