@@ -15,15 +15,15 @@ namespace TaskyRevamp.Services.SystemConfiguration.TypeConfigurarion.Query
 	public record GetTypeConfigurationQuery(int PageNumber, int pageSize, string sortByColumn, bool sortAscending) : IRequest<PagedResult<TypeDtoWithName>>;
 	public class GetTypeConfigurationHandler : IRequestHandler<GetTypeConfigurationQuery, PagedResult<TypeDtoWithName>>
 	{
-		private readonly IRepository<Types> _TypeRepository;
-		public GetTypeConfigurationHandler(IRepository<Types> _typeRepository)
+		private readonly IRepository<Types> _typeRepository;
+		public GetTypeConfigurationHandler(IRepository<Types> typeRepository)
 		{
-			_TypeRepository = _typeRepository;
+			_typeRepository = typeRepository;
 		}
 		public async Task<PagedResult<TypeDtoWithName>> Handle(GetTypeConfigurationQuery request, CancellationToken cancellationToken)
 		{
 			var orderBy = GetOrderBy(request.sortByColumn, request.sortAscending);
-			var res = await _TypeRepository.GetPagedAsync(
+			var res = await _typeRepository.GetPagedAsync(
 								request.PageNumber,
 								request.pageSize,
 								null,

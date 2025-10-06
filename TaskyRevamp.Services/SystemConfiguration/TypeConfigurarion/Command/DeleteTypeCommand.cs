@@ -12,18 +12,18 @@ namespace TaskyRevamp.Services.SystemConfiguration.TypeConfigurarion.Command
 	public record DeleteTypeCommand(Guid id) : IRequest<bool>;
 	public class DeleteTypeHandler : IRequestHandler<DeleteTypeCommand, bool>
 	{
-		private readonly IRepository<Types> _TypeRepository;
-		public DeleteTypeHandler(IRepository<Types> _typeRepository)
+		private readonly IRepository<Types> _typeRepository;
+		public DeleteTypeHandler(IRepository<Types> typeRepository)
 		{
-			_TypeRepository = _typeRepository;
+			_typeRepository = typeRepository;
 		}
 		public async Task<bool> Handle(DeleteTypeCommand request, CancellationToken cancellationToken)
 		{
-			var res = await _TypeRepository.FindByKey(request.id);
+			var res = await _typeRepository.FindByKey(request.id);
 			if (res.Success && res != null && res.Value != null)
 			{
 				var type = res.Value;
-				await _TypeRepository.Delete(type.Id);
+				await _typeRepository.Delete(type.Id);
 			}
 			return true;
 		}

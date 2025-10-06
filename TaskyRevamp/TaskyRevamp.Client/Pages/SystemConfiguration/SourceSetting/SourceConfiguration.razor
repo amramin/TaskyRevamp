@@ -44,7 +44,7 @@
                                 </span>
                             </th>
                             <th @onclick='() => SortBy("UpdateDate")' style="cursor:pointer">
-                                @Loc["UpdatedDate"]
+                                @Loc["UpdateDate"]
                                 <span class="ms-1">
                                     @(currentSortColumn == "UpdateDate" ? (sortAscending ? "↑" : "↓") : "↕")
                                 </span>
@@ -70,7 +70,7 @@
                                 <td>@item.UpdatedByName</td>
                                 <td class="text-center">
                                     <div class="form-check form-switch d-flex justify-content-center">
-                                        <InputCheckbox @bind-Value="item.Source.IsActive" class="form-check-input" id="inactiveSwitch" />
+                                        <InputCheckbox @bind-Value="item.Source.IsActive" class="form-check-input" disabled />
                                     </div>
                                 </td>
                                 <td class="text-center">
@@ -110,7 +110,7 @@
             </div>
     
     }
-    <ConfirmationPopup ButtonText="@Loc["Delete"]"
+    <ConfirmationPopup ButtonText="@Loc["Confirm"]"
                    IsVisible="@showConfirm"
                    OnConfirm="OnDeleteConfirmed"
                    Message="@confirmMessage" />
@@ -176,7 +176,6 @@
             }
         }
         selectedSource = null;
-        await LoadSources();
     }
     private async Task SortBy(string columnName)
     {

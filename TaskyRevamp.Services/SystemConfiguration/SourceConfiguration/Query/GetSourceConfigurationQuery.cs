@@ -14,15 +14,15 @@ namespace TaskyRevamp.Services.SystemConfiguration.SourceConfiguration.Query
 	public record GetSourceConfigurationQuery(int pageNumber, int pageSize, string sortByColumnName, bool sortAscending) : IRequest<PagedResult<SourceDtoWithName>>;
 	public class GetSourceConfigurationHandler : IRequestHandler<GetSourceConfigurationQuery, PagedResult<SourceDtoWithName>>
 	{
-		private readonly IRepository<Sources> _SourceRepository;
-		public GetSourceConfigurationHandler(IRepository<Sources> _sourceRepository)
+		private readonly IRepository<Sources> _sourceRepository;
+		public GetSourceConfigurationHandler(IRepository<Sources> sourceRepository)
 		{
-			_SourceRepository = _sourceRepository;
+			_sourceRepository = sourceRepository;
 		}
 		public async Task<PagedResult<SourceDtoWithName>> Handle(GetSourceConfigurationQuery request, CancellationToken cancellationToken)
 		{
 			var orderBy = GetOrderBy(request.sortByColumnName, request.sortAscending);
-			var res = await _SourceRepository.GetPagedAsync(
+			var res = await _sourceRepository.GetPagedAsync(
 								request.pageNumber,
 								request.pageSize,
 								null,

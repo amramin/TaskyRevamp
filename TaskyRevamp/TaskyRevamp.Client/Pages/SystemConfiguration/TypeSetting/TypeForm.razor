@@ -4,15 +4,17 @@
 
 <EditForm EditContext="@editContext" OnValidSubmit="@OnSubmitHandler">
     <DataAnnotationsValidator />
-    <ValidationSummary />
+
     <div class="mb-3">
         <label class="form-label">@Loc["Name English"]</label>
         <InputText class="form-control" @bind-Value="type.NameEnglish" placeholder="Enter Task Type Name English" />
+        <ValidationMessage class="small text-danger" For="@(() => type.NameEnglish)"></ValidationMessage>
     </div>
 
     <div class="mb-3">
         <label class="form-label">@Loc["Name Arabic"]</label>
         <InputText class="form-control" @bind-Value="type.NameArabic" placeholder="Enter Task Type Name Arabic" />
+        <ValidationMessage class="small text-danger" For="@(() => type.NameArabic)"></ValidationMessage>
     </div>
 
     <div class="form-check form-switch">
@@ -33,6 +35,7 @@
     [Parameter] public EventCallback<EditContext> OnValidSubmit { get; set; }
     [Parameter] public EventCallback OnCancel { get; set; }
     [Parameter] public string SubmitButtonText { get; set; } = "Save";
+    private ValidationMessageStore messageStore;
     private EditContext editContext;
 
     protected override void OnParametersSet()
@@ -40,15 +43,48 @@
         if (editContext == null || editContext.Model != type)
         {
             editContext = new EditContext(type);
+            messageStore = new ValidationMessageStore(editContext);
         }
     }
 
     private async Task OnSubmitHandler(EditContext context)
     {
+        ClearValidationMessages();
+        if (!editContext.Validate())
+            return; // client-side validation failed → stop
+        
         await OnValidSubmit.InvokeAsync(context);
     }
     private async void OnCancelClick()
     {
         await OnCancel.InvokeAsync();
+    }
+    public void AddErrorsToEditContext(IReadOnlyDictionary<string, List<string>> errors)
+    {
+        messageStore.Clear();
+
+        foreach (var error in errors)
+        {
+            var _type = typeof(TypeDto).GetProperty(error.Key);
+
+            if (_type != null)
+            {
+                var fieldIdentifier = new FieldIdentifier(type, _type.Name);
+
+                foreach (var errorMessage in error.Value)
+                {
+                    messageStore.Add(fieldIdentifier, errorMessage);
+                }
+            }
+        }
+
+        // Tell Blazor to re-render the validation messages
+        editContext.NotifyValidationStateChanged();
+    }
+
+    public void ClearValidationMessages()
+    {
+        messageStore.Clear();
+        editContext.NotifyValidationStateChanged();
     }
 }

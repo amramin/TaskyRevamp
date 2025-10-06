@@ -14,15 +14,15 @@ namespace TaskyRevamp.Services.SystemConfiguration.SourceConfiguration.Query
 	public record GetSourceByIdQuery(Guid id) : IRequest<SourceDto>;
 	public class GetSourceByIdHandler : IRequestHandler<GetSourceByIdQuery, SourceDto>
 	{
-		private readonly IRepository<Sources> _SourceRepository;
-		public GetSourceByIdHandler(IRepository<Sources> _sourceRepository)
+		private readonly IRepository<Sources> _sourceRepository;
+		public GetSourceByIdHandler(IRepository<Sources> sourceRepository)
 		{
-			_SourceRepository = _sourceRepository;
+			_sourceRepository = sourceRepository;
 		}
 		public async Task<SourceDto> Handle(GetSourceByIdQuery request, CancellationToken cancellationToken)
 		{
 			SourceDto sourceDto = new SourceDto();
-			var res = await _SourceRepository.FindByKey(request.id);
+			var res = await _sourceRepository.FindByKey(request.id);
 			if(res.Success && res.Value != null && res != null)
 			{
 				sourceDto = res.Value.CopyToDto();

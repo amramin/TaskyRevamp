@@ -44,6 +44,11 @@
 
             navigationManager.NavigateTo("/SourceSettings");
         }
+        else
+        {
+            if (res.Errors != null && res.Errors.Count > 0)
+                form.AddErrorsToEditContext(res.Errors);
+        }
     }
     private async Task Cancel()
     {

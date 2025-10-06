@@ -13,15 +13,15 @@ namespace TaskyRevamp.Services.SystemConfiguration.TypeConfigurarion.Query
 	public record GetTypeByIdQuery(Guid id) : IRequest<TypeDto>;
 	public class GetTypeByIdHandler : IRequestHandler<GetTypeByIdQuery, TypeDto>
 	{
-		private readonly IRepository<Types> _TypeRepository;
-		public GetTypeByIdHandler(IRepository<Types> _typeRepository)
+		private readonly IRepository<Types> _typeRepository;
+		public GetTypeByIdHandler(IRepository<Types> typeRepository)
 		{
-			_TypeRepository = _typeRepository;
+			_typeRepository = typeRepository;
 		}
 		public async Task<TypeDto> Handle(GetTypeByIdQuery request, CancellationToken cancellationToken)
 		{
 			TypeDto typeDto = new TypeDto();
-			var res = await _TypeRepository.FindByKey(request.id);
+			var res = await _typeRepository.FindByKey(request.id);
 			if (res.Success && res.Value != null && res != null)
 			{
 				typeDto = res.Value.CopyToDto();

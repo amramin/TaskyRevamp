@@ -9,7 +9,7 @@
 @inject TypeSettingConsumer _typeSettingConsumer
 
 <div class="container mt-4">
-    <h3>@Loc["EditTaskSource"]</h3>
+    <h3>@Loc["EditTaskType"]</h3>
     <TypeForm @ref="form"
                 OnCancel="Cancel"
                 OnValidSubmit="@Save"
@@ -43,6 +43,11 @@
             await ToastService.ShowToastAsync(Loc["EditSuccess"], "success");
 
             navigationManager.NavigateTo("/TypeConfiguration");
+        }
+        else
+        {
+            if (res.Errors != null && res.Errors.Count > 0)
+                form.AddErrorsToEditContext(res.Errors);
         }
     }
     private async Task Cancel()
