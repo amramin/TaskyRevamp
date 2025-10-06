@@ -27,14 +27,16 @@ public class GetDepartmentsHandler : IRequestHandler<GetDepartmentsQuery, List<D
         List<DepartmentDto> Departmentss = new List<DepartmentDto>();
        
 
-        var data = await _DepartmentRepository.All();
+        var data = await _DepartmentRepository.FindBy(K=>K.Id!=null, includeProperties:$"{nameof(Department.Parentdepartment) },{nameof(Department.CreatedBy)}");
 
 
 
         foreach (var Department in data.Value)
         {
-        ;
-            Departmentss.Add(Department.CopyToDto());
+            DepartmentDto dep = Department.CopyToDto();
+            dep.CreatedByName = Department.CreatedBy?.NameEnglish;
+            dep.UpdatedByName = Department.UpdateddBy?.NameEnglish;
+            Departmentss.Add(dep);
             
         }
 

@@ -18,7 +18,7 @@
         @ref="form"
         Department="@department"
         OnValidSubmit="@Save"
-        SubmitButtonText="Save"
+        SubmitButtonText="@Loc["Update"]"
         OnCancel="@Cancel"/>
 </div>
 
@@ -43,18 +43,18 @@
     private async Task Save(EditContext editContext)
     {
         var res = await _DepartmentConsumer.UpdateDepartment(department);
-       // if (res.Success)
-        //{
+       if (res.Success)
+        {
             await OnValidSubmit.InvokeAsync(department);
             await ToastService.ShowToastAsync(Loc["EditSuccess"], "success");
 
         navigationManager.NavigateTo("/Departments");
-      //  }
-        // else
-        // {
-        //     if(res.Errors != null && res.Errors.Count > 0)
-        //         form.AddErrorsToEditContext(res.Errors);
-        // }
+       }
+        else
+        {
+            if(res.Errors != null && res.Errors.Count > 0)
+                form.AddErrorsToEditContext(res.Errors);
+        }
 
     }
 

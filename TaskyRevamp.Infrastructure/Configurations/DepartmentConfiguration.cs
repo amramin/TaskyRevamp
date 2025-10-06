@@ -21,7 +21,7 @@ internal class DepartmentConfiguration : IEntityTypeConfiguration<Department>
 .OnDelete(DeleteBehavior.NoAction);
 
         builder
-       .HasOne(r => r.department)
+       .HasOne(r => r.Parentdepartment)
 .WithMany().HasForeignKey(r => r.ParentdepartmentId)
 .OnDelete(DeleteBehavior.NoAction);
         

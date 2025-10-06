@@ -10,32 +10,38 @@
     <DataAnnotationsValidator />
 
     <div class="mb-3">
-        <label class="form-label">@Loc["Name English"]</label>
+        <label class="form-label">@Loc["NameEnglish"]</label>
         <InputText class="form-control" @bind-Value="Department.NameEnglish" placeholder="Enter Department Name English" />
         <ValidationMessage class="small text-danger" For="@(() => Department.NameEnglish)"></ValidationMessage>
     </div>
 
     <div class="mb-3">
-        <label class="form-label">@Loc["Name Arabic"]</label>
+        <label class="form-label">@Loc["NameArabic"]</label>
         <InputText class="form-control" @bind-Value="Department.NameArabic" placeholder="Enter Department Name Arabic" />
         <ValidationMessage class="small text-danger" For="@(() => Department.NameArabic)"></ValidationMessage>
     </div>
-   <SearchableSingleDropdownOffline TInput=DepartmentDto
-                                                             TOutput=Guid
-                                                             TextSelector="(DepartmentDto x)=> x.Name"
-                                                             OutputSelector="x => x.Id"
-                                                             Datasource="AllDepartments"
-                                                             MinCharacterCount="1"
-                                     SelectedOption="@Department.ParentdepartmentId"
-                                     PlaceHolder="@($"--{Loc["SelectParent"]}--")" />
+    @if (AllDepartments != null && AllDepartments.Count() > 0)
+    {
+        <SearchableSingleDropdownOffline TInput=DepartmentDto
+        TOutput=Guid
+        TextSelector="(DepartmentDto x)=> x.Name"
+        OutputSelector="x => x.Id"
+        Datasource="AllDepartments"
+        MinCharacterCount="1"
+        SelectedOption="@Department.ParentdepartmentId"
+        PlaceHolder="@($"--{Loc["SelectParent"]}--")" />
 
 
 
 
-
+    }
+    else
+    {
+        Department.ParentdepartmentId = Guid.Empty;
+    }
     <div class="d-flex justify-content-end gap-2 mt-4">
         <button type="button" class="btn btn-light" @onclick="OnCancelClick">@Loc["Cancel"]</button>
-        <button type="submit" class="btn btn-primary">@Loc[@SubmitButtonText]</button>
+        <button type="submit" class="btn btn-primary">@SubmitButtonText</button>
     </div>
 </EditForm>
 
@@ -45,7 +51,7 @@
     [Parameter] public DepartmentDto Department { get; set; } = new DepartmentDto();
     [Parameter] public EventCallback<EditContext> OnValidSubmit { get; set; }
     [Parameter] public EventCallback OnCancel { get; set; }
-    [Parameter] public string SubmitButtonText { get; set; } = "Save";
+    [Parameter] public string SubmitButtonText { get; set; }
     public List<DepartmentDto> AllDepartments  = new  List<DepartmentDto> ();
     private EditContext editContext;
     private ValidationMessageStore messageStore;
@@ -58,7 +64,11 @@
     }
     protected override async Task OnInitializedAsync()
 {
-         
+        if (editContext == null || editContext.Model != Department)
+        {
+            editContext = new EditContext(Department);
+            messageStore = new ValidationMessageStore(editContext);
+        }
             var Departs = await _DepartmentConsumer.GetDepartments();
             AllDepartments = Departs.Data.ToList();
             StateHasChanged();

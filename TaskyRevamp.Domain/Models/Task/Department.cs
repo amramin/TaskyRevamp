@@ -13,7 +13,7 @@ public class Department : Entity, IHasCreationMetaData, IHasUpdateMetaData
 
     public Guid? ParentdepartmentId { get; set; }
 
-    public Department department { get; set; }
+    public Department Parentdepartment { get; set; }
 
     public DateTime CreateDate { get ; set ; }
     public User CreatedBy { get ; set ; }
@@ -57,6 +57,8 @@ public class Department : Entity, IHasCreationMetaData, IHasUpdateMetaData
            CreateDate= CreateDate,
            UpdateDate= UpdateDate,
            ParentdepartmentId=ParentdepartmentId.Value,
+           ParentdepartmentArabic= Parentdepartment.NameArabic,
+           ParentdepartmentEnglish= Parentdepartment.NameEnglish,
 
         };
     }

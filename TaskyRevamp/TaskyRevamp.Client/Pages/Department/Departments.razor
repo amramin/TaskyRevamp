@@ -12,7 +12,7 @@
 
 <div class="card shadow-sm p-3">
     <div class="d-flex justify-content-between align-items-center mb-3">
-        <h5 class="mb-0">@Loc["Department"]</h5>
+        <h5 class="mb-0">@Loc["Departments"]</h5>
         <button class="btn btn-primary" @onclick="Add">
             <i class="bi bi-plus"></i> @Loc["AddDepartment"]
         </button>
@@ -32,12 +32,13 @@
 
                 <thead>
                     <tr>
-                        <th>@Loc["Name"]</th>
-                            <th>@Loc["Name"]</th>
+                        <th>@Loc["NameEnglish"]</th>
+                            <th>@Loc["NameArabic"]</th>
+                    <th>@Loc["DepartmentParent"]</th>
                         <th>@Loc["CreatedBy"]</th>
-                        <th>@Loc["CreatedDate"]</th>
-                            <th>@Loc["CreatedBy"]</th>
-                            <th>@Loc["CreatedDate"]</th>
+                    <th>@Loc["CreationDate"]</th>
+                            <th>@Loc["UpdatedBy"]</th>
+                            <th>@Loc["UpdateDate"]</th>
              
                         <th></th>
                     </tr>
@@ -51,11 +52,12 @@
                                 <tr>
                                     <td>@p.NameEnglish</td>
                                     <td>@p.NameArabic</td>
-                                    <td>@p.CreatedBy</td>
+                                    <td>@p.ParentdepartmentName</td>
+                                    <td>@p.CreatedByName</td>
                                   
                                    
                                     <td>@p.CreateDate</td>
-                                    <td>@p.UpdatedBy</td>
+                                    <td>@p.UpdatedByName</td>
                                     <td>@p.UpdateDate</td>
                                  
                                     <td>
@@ -67,13 +69,13 @@
                     <span class="rounded-circle p-2" ></span>
                     <span class="rounded-circle p-2"></span>
 
-                    <button class="btn btn-action-40 btn-outline-success" @onclick=" () => Edit(p.Id)">
+                    <button class="btn btn-action-40 btn-outline-success" onclick="@(() =>Edit(p.Id))">
                         <span class="icon">
                             <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Edit"></SVGCrud>
                         </span>
                     </button>
 
-                    <button class="btn btn-action-40 btn-outline-danger" @onclick=" () => ShowDeleteConfirm(p)">
+                    <button class="btn btn-action-40 btn-outline-danger" onclick="@(() => ShowDeleteConfirm(p))">
                         <span class="icon">
                             <SVGCrud SVGType="SVGCrud.SVGTypeEnum.RecycleBin"></SVGCrud>
                         </span>

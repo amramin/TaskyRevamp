@@ -26,8 +26,12 @@ namespace TaskyRevamp.Dto.Department
         public string Name => Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName.Equals("ar") ? NameArabic : NameEnglish;
 
         public Guid CreatedBy { get; set; }
+        public string CreatedByName { get; set; }
+        public string UpdatedByName { get; set; }
         public Guid ParentdepartmentId { get; set; }
-
+        public string ParentdepartmentArabic { get; set; }
+        public string ParentdepartmentEnglish { get; set; }
+        public string ParentdepartmentName => Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName.Equals("ar") ? ParentdepartmentArabic : ParentdepartmentEnglish;
         public DateTime? CreateDate { get; set; }
         public Guid? UpdatedBy { get; set; }
         public DateTime? UpdateDate { get; set; }
