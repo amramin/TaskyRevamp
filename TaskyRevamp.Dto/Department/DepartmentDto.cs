@@ -12,15 +12,9 @@ namespace TaskyRevamp.Dto.Department
     public  class DepartmentDto
     {
         public Guid Id { get; set; }
-        [Required(
-     ErrorMessageResourceType = typeof(SharedResources),
-     ErrorMessageResourceName = ValidationDto.Required
- )]
+        [Required]
         public string NameEnglish { get; set; }
-        [Required(
-     ErrorMessageResourceType = typeof(SharedResources),
-     ErrorMessageResourceName = ValidationDto.Required
- )]
+        [Required]
         public string NameArabic { get; set; }
 
         public string Name => Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName.Equals("ar") ? NameArabic : NameEnglish;

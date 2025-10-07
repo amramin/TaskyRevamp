@@ -6,7 +6,7 @@
 
 @inject IStringLocalizer<SharedResources> Loc
 
-<EditForm Model="@Department"  OnSubmit="@OnSubmitHandler">
+<EditForm EditContext="@editContext" OnSubmit="@OnSubmitHandler">
     <DataAnnotationsValidator />
 
     <div class="mb-3">
@@ -14,7 +14,7 @@
             <span class="text-danger"> *</span>
 
         </label>
-        <InputText class="form-control" @bind-Value="Department.NameEnglish" placeholder="Enter Department Name English" />
+        <InputText class="form-control" @bind-Value="Department.NameEnglish" placeholder="@Loc["NameEnglish"]" />
         <ValidationMessage class="small text-danger" For="@(() => Department.NameEnglish)"></ValidationMessage>
     </div>
 
@@ -23,7 +23,7 @@
             <span class="text-danger"> *</span>
 
         </label>
-        <InputText class="form-control" @bind-Value="Department.NameArabic" placeholder="Enter Department Name Arabic" />
+        <InputText class="form-control" @bind-Value="Department.NameArabic" placeholder="@Loc["NameArabic"]" />
         <ValidationMessage class="small text-danger" For="@(() => Department.NameArabic)"></ValidationMessage>
     </div>
     <label class="form-label">@Loc["SelectParent"]
