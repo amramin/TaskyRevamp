@@ -42,11 +42,11 @@
                                 <span class="confirm-icon">
                                     @if (confirmParams.Type == ConfirmationType.Danger)
                                     {
-                                        <SVGCrud SVGType="SVGCrud.SVGTypeEnum.RecycleVectore"></SVGCrud>
+                                        <SVGCrud SVGType="SVGCrud.SVGTypeEnum.InfoCircleDanger"></SVGCrud>
                                     }
                                     else
                                     {
-                                        <SVGCrud SVGType="SVGCrud.SVGTypeEnum.AddColumn"></SVGCrud>
+                                        <SVGCrud SVGType="SVGCrud.SVGTypeEnum.RecycleVectore"></SVGCrud>
                                     }
                                 </span>
                                 @if (confirmParams.Type == ConfirmationType.Danger)
@@ -55,7 +55,7 @@
                                 }
                                 else
                                 {
-                                    <h6 class="modal-title headline-6">Move to trash ?</h6>
+                                    <h6 class="modal-title headline-6"> Move to trash ?</h6>
                                 }
                                 <p class="small-medium-text">@confirmParams.Message</p>
                                 <div class="action d-grid w-100">

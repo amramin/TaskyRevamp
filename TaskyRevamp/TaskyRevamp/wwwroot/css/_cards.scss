@@ -27,4 +27,36 @@
       }
     }
   }
+  &.card-order-control {
+    display: flex;
+    flex-direction: row;
+    &:not(:last-child) {
+      margin-bottom: 0.5rem;
+    }
+    .cl-preview {
+      width: 1.5rem;
+      height: 1.5rem;
+      border: 1px solid var(--light-300);
+    }
+
+    .actions {
+      padding-inline-start: 0.75rem;
+      margin-inline-start: 0.75rem;
+      border-inline-start: 1px solid var(--light-200);
+      display: flex;
+      align-items:center;
+      gap:0.5rem;
+    }
+    .btn-group-vertical {
+      .btn {
+        border-inline-start: 1px solid var(--light-300);
+        border-start-start-radius: 0;
+        border-end-start-radius: 0;
+        color: var(--dark-700);
+        &:first-child {
+          border-bottom: 1px solid var(--light-300);
+        }
+      }
+    }
+  }
 }
