@@ -17,24 +17,32 @@
         <div class="card-body">
             <div class="row justify-content-center">
                 <div class="col-xxl-6 col-xl-7 col-lg-8 col-md-10">
-    <div class="text-content">
-                    <h6 class="headline-6">@Loc["RetentionPeriodOptions"]</h6>
-                    <p class="small-medium-text">@Loc["recycleHint"]</p>
-</div>
+                    <div class="text-content">
+                        <h6 class="headline-6">@Loc["RetentionPeriodOptions"]</h6>
+                        <p class="small-medium-text">@Loc["recycleHint"]</p>
+                    </div>
                     <InputRadioGroup TValue="PeriodType" Value="RecycleBinSetting.PeriodType"
-                        ValueChanged="OnSettingChange" ValueExpression="() => RecycleBinSetting.PeriodType">
+                                     ValueChanged="OnSettingChange" ValueExpression="() => RecycleBinSetting.PeriodType">
                         @foreach (var value in PeriodTypes)
                         {
-                            <div>
-                                <InputRadio Value="@value" /> @value.GetDescription()
+                            var radioId = $"periodType_{value}";
+                            <div class="form-check-card">
+                            
+                                <InputRadio id="@radioId" Value="@value" />
+                                <label for="@radioId" >
+                                    @value.GetDescription()
 
-                                @if (RecycleBinSetting.PeriodType == PeriodType.Custom && value == PeriodType.Custom)
-                                {
-                                    <input type="number" min="0" class="form-control mt-1" @bind="RecycleBinSetting.CustomDays"
-                                        @oninput="OnCustomDaysChange" />
-                                }
+                                    @if (RecycleBinSetting.PeriodType == PeriodType.Custom && value == PeriodType.Custom)
+                                    {
+                                        <input type="number"
+                                               min="0"
+                                               class="form-control mt-1"
+                                               @bind="RecycleBinSetting.CustomDays"
+                                               @oninput="OnCustomDaysChange" />
+                                    }
+                                </label>
                             </div>
-                            <br />
+
                         }
                     </InputRadioGroup>
                 </div>

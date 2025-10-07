@@ -38,8 +38,8 @@
   &:focus,
   &:first-child:active,
   &:active {
-    background-color: var(--primary-color);
-    border-color: var(--primary-color);
+    background-color: var(--active-primary);
+    border-color: var(--active-primary);
   }
 }
 .primary-link-btn {
