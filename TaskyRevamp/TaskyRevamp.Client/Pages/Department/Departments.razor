@@ -18,7 +18,7 @@
         </button>
     </div>
 
-    <h6 class="mb-3">@Loc["Departments"]</h6>
+    
     </div>
     @if (departmentDtos == null || departmentDtos.Count() == 0)
     {
@@ -93,12 +93,12 @@
     </tbody>
     </table>
 
-    }
+    
 
   
                  
                
-
+    
     <ConfirmationPopup ButtonText="@Loc["Delete"]"
                        IsVisible="@showConfirm"
                        OnConfirm="OnDeleteConfirmed"
@@ -140,7 +140,7 @@
     }
     private void ShowDeleteConfirm(DepartmentDto p)
     {
-        confirmMessage = @Loc["Sure"];
+        confirmMessage = @Loc["SureDeleteDepartment"];
         selectedDepartment = p;
         showConfirm = true;
     }

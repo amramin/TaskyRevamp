@@ -481,4 +481,10 @@
   <data name="AddTaskHint" xml:space="preserve">
     <value>استخدم هذا الخيار لتفعيل الحقول التي ستظهر في صفحة إنشاء/تعديل المهمة، ويمكنك أيضًا تحديد الحقول التي يجب أن تكون إلزامية.</value>
   </data>
+  <data name="Addedsuccessfully" xml:space="preserve">
+    <value>تمت الإضافة بنجاح</value>
+  </data>
+  <data name="SureDeleteDepartment" xml:space="preserve">
+    <value>هل أنت متأكد أنك تريد حذف هذه الإدارة؟</value>
+  </data>
 </root>

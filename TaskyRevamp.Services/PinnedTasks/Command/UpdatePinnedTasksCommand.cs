@@ -6,7 +6,6 @@ using TaskyRevamp.Dto.PinnedTasks;
 namespace TaskyRevamp.Services.PinnedTasks.Command;
 
 
-namespace PinnedTasksyRevamp.Services.PinnedTaskss.Commands;
 
 public record UpdatePinnedTasksCommand(PinnedTasksDto PinnedTasks) : IRequest<bool>;
 

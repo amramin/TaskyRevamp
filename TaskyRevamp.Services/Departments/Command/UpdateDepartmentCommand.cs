@@ -23,9 +23,17 @@ public class UpdateDepartmentCommandHandler : IRequestHandler<UpdateDepartmentCo
         {
             return false;
         }
-        var updated = DepartmentResponse.Value;
+       
+
+        if (departmentResponse.Value is null)
+        {
+            throw new Exception("Department not found");
+        }
+
+
+        var updated = departmentResponse.Value;
         updated.SetData(request.Department);
-        await _DepartmentRepository.Update(updated);
+        await _departmentRepository.Update(updated);
 
         return true;
     }

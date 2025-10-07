@@ -47,7 +47,7 @@ namespace TaskyRevamp.Client.Consumer
 	
 		public async Task<CommonApiResponse<bool>> DeleteDepartment(Guid id)
 		{
-			var url = $"api/Department/DeleteDepartment/{id}";
+			var url = $"api/Department/{id}";
 			var res = await _taskyService.DeleteFromJsonAsync<CommonApiResponse<bool>>(url);
 
 			return res;

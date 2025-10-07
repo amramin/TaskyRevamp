@@ -6,7 +6,6 @@ using TaskyRevamp.Dto.ChangeEndDateRequest;
 namespace TaskyRevamp.Services.ChangeEndDateRequests.Commands;
 
 
-namespace ChangeEndDateRequestyRevamp.Services.ChangeEndDateRequests.Commands;
 
 public record UpdateChangeEndDateRequestCommand(ChangeEndDateRequestDto ChangeEndDateRequest) : IRequest<bool>;
 

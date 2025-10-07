@@ -38,10 +38,10 @@ public class Department : Entity, IHasCreationMetaData, IHasUpdateMetaData
         Id = departmentDto.Id;
         NameEnglish = departmentDto.NameEnglish;
         NameArabic= departmentDto.NameArabic;
-        CreatedById = departmentDto.CreatedBy;
+        //CreatedById = departmentDto.CreatedBy.Value;
         UpdatedById = departmentDto.UpdatedBy;
         ParentdepartmentId= departmentDto.ParentdepartmentId;
-        CreateDate=departmentDto.CreateDate??DateTime.Now;
+        CreateDate=departmentDto.CreateDate??DateTime.UtcNow;
         return true;
 
     }

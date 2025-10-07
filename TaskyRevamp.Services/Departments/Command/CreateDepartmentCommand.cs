@@ -24,9 +24,9 @@ public class CreateDepartmentHandler : IRequestHandler<CreateDepartmentCommand, 
     public async Task<Guid> Handle(CreateDepartmentCommand request, CancellationToken cancellationToken)
     {
 
-        await ValidateDepartment(request.departmentDto);
+        await ValidateDepartment(request.DepartmentDto);
         Department department = new Department();
-        department.SetData(request.departmentDto);
+        department.SetData(request.DepartmentDto);
        
        
         await _DepartmentRepository.Insert(department);

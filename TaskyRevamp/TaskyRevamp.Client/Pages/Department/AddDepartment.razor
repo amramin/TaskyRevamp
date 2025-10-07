@@ -43,7 +43,7 @@
         if (res.Success)
         {
             await OnValidSubmit.InvokeAsync(_newDepartment);
-            await ToastService.ShowToastAsync(Loc["Added successfully"], "success");
+            await ToastService.ShowToastAsync(Loc["Addedsuccessfully"], "success");
 
             navigationManager.NavigateTo("/Departments");
         }

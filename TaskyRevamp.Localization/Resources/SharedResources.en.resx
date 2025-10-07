@@ -481,4 +481,10 @@ Add a new department to get started</value>
   <data name="AddTaskHint" xml:space="preserve">
     <value>Use this option to activate the fields that will appear on the task creation/editing page. You can also specify which fields should be marked as mandatory.</value>
   </data>
+  <data name="Addedsuccessfully" xml:space="preserve">
+    <value>Added successfully</value>
+  </data>
+  <data name="SureDeleteDepartment" xml:space="preserve">
+    <value>Are you sure you want to delete this department?</value>
+  </data>
 </root>

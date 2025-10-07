@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using DepartmentyRevamp.Services.Departments.Commands;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using TaskyRevamp.Dto.Department;
 using TaskyRevamp.Dto.GeneralDto;

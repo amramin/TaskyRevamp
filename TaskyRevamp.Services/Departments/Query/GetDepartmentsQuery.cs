@@ -23,7 +23,7 @@ public class GetDepartmentsHandler : IRequestHandler<GetDepartmentsQuery, List<D
         List<DepartmentDto> Departmentss = new List<DepartmentDto>();
        
 
-        var data = await _DepartmentRepository.FindBy(K=>K.Id!=null, includeProperties:$"{nameof(Department.Parentdepartment) },{nameof(Department.CreatedBy)}");
+        var data = await _departmentRepository.FindBy(K=>K.Id!=null, includeProperties:$"{nameof(Department.Parentdepartment) },{nameof(Department.CreatedBy)}");
 
 
 
@@ -36,6 +36,6 @@ public class GetDepartmentsHandler : IRequestHandler<GetDepartmentsQuery, List<D
             
         }
         
-        return departmentsDto;
+        return Departmentss;
     }
 }
