@@ -722,6 +722,9 @@ html[dir="rtl"] {
       }
     }
   }
+  input[type="number"]{
+    direction: rtl;
+  }
 }
 /* end rtl*/
 * {
