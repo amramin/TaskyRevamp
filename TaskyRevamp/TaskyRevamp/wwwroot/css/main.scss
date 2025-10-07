@@ -144,6 +144,12 @@
 
     .lang-text {
       font-family: "Almarai", sans-serif;
+      .ar-text {
+        display: block;
+      }
+      .en-text {
+        display: none;
+      }
     }
 
     &:hover,
@@ -732,8 +738,8 @@ html[dir="rtl"] {
     display: flex;
     align-items: center;
     gap: 1rem;
-    label{
-      color:var(--dark-800)
+    label {
+      color: var(--dark-800);
     }
     @media (max-width: 992px) {
       width: 100%;
@@ -753,28 +759,28 @@ html[dir="rtl"] {
     }
   }
   .end {
-      justify-content: flex-end;
+    justify-content: flex-end;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    .entries {
+      border: 1px solid var(--light-300);
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--dark-500);
+      padding-inline: 0.5rem;
+      border-radius: var(--bs-border-radius);
+      align-self: stretch;
       display: flex;
-      align-items:center;
-      gap:1rem;
-      .entries{
-        border:1px solid var(--light-300);
-        font-size:0.75rem;
-        font-weight:500;
-        color:var(--dark-500);
-        padding-inline: 0.5rem;
-        border-radius:var(--bs-border-radius);
-         align-self:stretch;
-         display:flex;
-         align-items:center;
-      }
+      align-items: center;
+    }
   }
   .pagination {
     padding-inline-start: 0;
     padding-left: 0;
     padding-right: 0;
     list-style: none;
-   
+
     display: flex;
     flex-wrap: wrap;
     justify-content: flex-end;
