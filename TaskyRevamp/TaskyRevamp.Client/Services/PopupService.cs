@@ -19,19 +19,27 @@ public class PopupService
         OnHide?.Invoke();
     }
 
-    public void ShowConfirmation(string message, string buttonText = "OK", Func<bool, Task>? onConfirm = null)
+    public void ShowConfirmation(
+        string message,
+        string buttonText = "",
+        Func<bool, Task>? onConfirm = null,
+        ConfirmationType type = ConfirmationType.Primary)
     {
         Show(PopupType.Confirmation, new ConfirmationPopupParams
         {
             Message = message,
             ButtonText = buttonText,
+            Type = type,
             OnConfirm = EventCallback.Factory.Create<bool>(this, async (value) =>
             {
-                if (onConfirm != null) await onConfirm(value);
+                if (onConfirm != null)
+                    await onConfirm(value);
                 Hide();
             })
         });
     }
+
+
 
     public void ShowInvalid(string message)
     {
@@ -67,6 +75,12 @@ public class ConfirmationPopupParams
     public string Message { get; set; } = "";
     public string ButtonText { get; set; } = "OK";
     public EventCallback<bool> OnConfirm { get; set; }
+    public ConfirmationType Type { get; set; } = ConfirmationType.Primary;
+}
+public enum ConfirmationType
+{
+    Primary,
+    Danger
 }
 
 public class InvalidPopupParams

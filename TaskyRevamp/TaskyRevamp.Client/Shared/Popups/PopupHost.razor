@@ -35,16 +35,31 @@
 
                 @if (_popupType == PopupType.Confirmation && _parameters is ConfirmationPopupParams confirmParams)
                 {
+                    var buttonClass = confirmParams.Type == ConfirmationType.Danger ? "btn-danger" : "btn-primary";
                     <div class="modal-content confirmation-popup">
                         <div class="">
                             <div class="modal-body">
                                 <span class="confirm-icon">
-                                    <SVGCrud SVGType="SVGCrud.SVGTypeEnum.RecycleVectore"></SVGCrud>
+                                    @if (confirmParams.Type == ConfirmationType.Danger)
+                                    {
+                                        <SVGCrud SVGType="SVGCrud.SVGTypeEnum.RecycleVectore"></SVGCrud>
+                                    }
+                                    else
+                                    {
+                                        <SVGCrud SVGType="SVGCrud.SVGTypeEnum.AddColumn"></SVGCrud>
+                                    }
                                 </span>
-                                <h6 class="modal-title headline-6">Move to trash ?</h6>
+                                @if (confirmParams.Type == ConfirmationType.Danger)
+                                {
+                                    <h6 class="modal-title headline-6">Sure to Delete ?</h6>
+                                }
+                                else
+                                {
+                                    <h6 class="modal-title headline-6">Move to trash ?</h6>
+                                }
                                 <p class="small-medium-text">@confirmParams.Message</p>
                                 <div class="action d-grid w-100">
-                                    <button class="btn btn-lg btn-primary" @onclick="() => Confirm(true, confirmParams.OnConfirm)">
+                                    <button class="btn btn-lg @(buttonClass)" @onclick="() => Confirm(true, confirmParams.OnConfirm)">
                                         @confirmParams.ButtonText
                                     </button>
                                     <button class="btn btn-lg" @onclick="() => Confirm(false, confirmParams.OnConfirm)">Cancel</button>
