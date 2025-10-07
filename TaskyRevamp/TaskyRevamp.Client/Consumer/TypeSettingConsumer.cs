@@ -1,0 +1,53 @@
+﻿using TaskyRevamp.Dto.GeneralDto;
+using TaskyRevamp.Dto.SystemConfiguration;
+
+namespace TaskyRevamp.Client.Consumer
+{
+	public class TypeSettingConsumer
+	{
+		private readonly TaskyService _taskyService;
+
+		public TypeSettingConsumer(TaskyService taskyService)
+		{
+			_taskyService = taskyService;
+		}
+
+		public async Task<CommonApiResponse<PagedResult<TypeDtoWithName>>> GetTypes(int pageNumber, int pageSize, string sortByColumnName, bool sortAscending)
+		{
+			var url = $"api/TypeSetting/GetTypeSettings?pageNumber={pageNumber}&pageSize={pageSize}&sortByColumnName={sortByColumnName}&sortAscending={sortAscending}";
+			var res = await _taskyService.GetFromJsonAsync<CommonApiResponse<PagedResult<TypeDtoWithName>>>(url);
+
+			return res;
+		}
+
+		public async Task<CommonApiResponse<TypeDto>> GetTypeById(Guid id)
+		{
+			var url = $"api/TypeSetting/GetTypeSettingById/{id}";
+			var res = await _taskyService.GetFromJsonAsync<CommonApiResponse<TypeDto>>(url);
+			return res;
+		}
+
+		public async Task<CommonApiResponse<bool>> CreateType(TypeDto typeDto)
+		{
+			var url = $"api/TypeSetting/CreateType";
+			var res = await _taskyService.PostJsonAsync<bool>(url, typeDto);
+
+			return res;
+		}
+
+		public async Task<CommonApiResponse<bool>> UpdateType(TypeDto typeDto)
+		{
+			var url = $"api/TypeSetting/UpdateType";
+			var res = await _taskyService.PostJsonAsync<bool>(url, typeDto);
+
+			return res;
+		}
+		public async Task<CommonApiResponse<bool>> DeleteType(Guid id)
+		{
+			var url = $"api/TypeSetting/DeleteType/{id}";
+			var res = await _taskyService.DeleteFromJsonAsync<CommonApiResponse<bool>>(url);
+
+			return res;
+		}
+	}
+}

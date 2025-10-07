@@ -18,7 +18,7 @@ public class TaskComment : Entity, IHasCreationMetaData, IHasUpdateMetaData
     public User CreatedBy { get; set; }
     public Guid? UpdatedById { get; set; }
     public DateTime? UpdateDate { get; set; }
-    public User? UpdateddBy { get; set; }
+    public User? UpdatedBy { get; set; }
 
     //private readonly List<Comment> _comments = new();
     //public IReadOnlyCollection<Comment> Items => _comments.AsReadOnly();

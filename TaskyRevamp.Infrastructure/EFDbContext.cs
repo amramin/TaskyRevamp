@@ -6,6 +6,7 @@ using TaskyRevamp.Domain.Models.SystemConfiguration;
 using TaskyRevamp.Domain.Models.Task;
 using TaskyRevamp.Domain.Models.Users;
 using TaskyRevamp.Domain.Models.Users.UserDelegations;
+using Type = TaskyRevamp.Domain.Models.SystemConfiguration.Type;
 
 namespace SurveyRevamp.Infrastructure;
 
@@ -23,6 +24,8 @@ public class EfDbContext : DbContext
     public DbSet<DefaultViewSettings> DefaultViewSettings { get; set; }
     public DbSet<WorkingDaysSettings> WorkingDaysSettings { get; set; }
     public DbSet<WeeklyReportSettings> WeeklyReportSettings { get; set; }
+    public DbSet<Source> Source { get; set; }
+    public DbSet<Type> Type { get; set; }
     public DbSet<DefaultColumnsSettings> DefaultColumnsSettings { get; set; }
     public DbSet<FilterFieldsSettings> FilterFieldsSettings { get; set; }
     public DbSet<AddTaskSettings> AddTaskSettings { get; set; }
