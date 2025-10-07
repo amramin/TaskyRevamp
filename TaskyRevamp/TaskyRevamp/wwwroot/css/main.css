@@ -197,6 +197,7 @@
 /* strat button*/
 .btn {
   text-align: center;
+  cursor: pointer;
 }
 .btn .icon {
   display: -webkit-box;
@@ -220,7 +221,7 @@
 .btn.btn-lg {
   font-size: 0.875rem;
   font-weight: 500;
-  padding-block: 0.65rem;
+  padding-block: 0.719rem;
 }
 
 .btn-primary {
@@ -245,6 +246,11 @@
 .btn-light {
   background-color: var(--light-btn);
   color: var(--dark-900);
+}
+.btn-light:hover {
+  background-color: var(--light-200);
+  border: 1px solid var(--primary-color);
+  color: var(--primary-color);
 }
 
 .btn-outline-light-pimary {
@@ -288,9 +294,6 @@
 .btn-change-lang svg {
   width: 1rem;
   height: 1rem;
-}
-.btn-change-lang .ar-text {
-  display: none;
 }
 
 .action-btn-list {
@@ -563,6 +566,50 @@
 }
 
 /* end confirmation-popup*/
+/* start .card */
+.card {
+  border-color: var(--light-300);
+}
+.card.setting-card {
+  -webkit-box-flex: 1;
+      -ms-flex-positive: 1;
+          flex-grow: 1;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+.card.setting-card .text-content {
+  margin-bottom: 1.5rem;
+}
+.card.setting-card .card-body {
+  -webkit-box-flex: 1;
+      -ms-flex-positive: 1;
+          flex-grow: 1;
+}
+.card.setting-card .card-footer {
+  padding-block: 0;
+  background-color: transparent;
+  border-top: 0;
+}
+.card.setting-card .card-footer .action-buttons {
+  border-top: 1px solid var(--light-300);
+  padding-block: 1rem;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
+  gap: 0.5rem;
+}
+.card.setting-card .card-footer .action-buttons .btn {
+  padding-inline: 1.5rem;
+}
+
 @font-face {
   font-family: "Almarai";
   src: url(../fonts/Almarai/Almarai-Regular.ttf);
@@ -711,12 +758,6 @@
 .auth .btn-change-lang .lang-text {
   font-family: "Almarai", sans-serif;
 }
-.auth .btn-change-lang .lang-text .ar-text {
-  display: block;
-}
-.auth .btn-change-lang .lang-text .en-text {
-  display: none;
-}
 .auth .btn-change-lang:hover, .auth .btn-change-lang:focus, .auth .btn-change-lang:active:focus {
   color: var(--primary-color);
   text-decoration: underline;
@@ -730,6 +771,7 @@
   display: none;
 }
 .auth .btn-change-lang .icon-text {
+  margin-top: 1.5rem;
   padding: 0;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -737,6 +779,18 @@
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: reverse;
+      -ms-flex-direction: row-reverse;
+          flex-direction: row-reverse;
+  font-weight: 500;
+  color: var(--dark-800);
+}
+.auth .btn-change-lang .icon-text .ar-text {
+  display: block;
+}
+.auth .btn-change-lang .icon-text .en-text {
+  display: none;
 }
 .auth .btn-change-lang .icon-text * {
   font-family: "Almarai", sans-serif !important;
@@ -1222,6 +1276,13 @@
           flex-grow: 1;
   overflow-y: auto;
   padding: 0 0.75rem 0.75rem 0.75rem;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
 }
 .main-wrapper .main-content .main-page .page-footer {
   border-top: 1px solid var(--light-300);
@@ -1303,6 +1364,12 @@ html[dir=rtl] .btn-change-lang span.ar {
   opacity: 1;
   background: var(--primary-color);
   color: var(--bs-white);
+}
+html[dir=rtl] .btn-change-lang .icon-text .ar-text {
+  display: none;
+}
+html[dir=rtl] .btn-change-lang .icon-text .en-text {
+  display: block;
 }
 
 /* end rtl*/

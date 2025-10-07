@@ -1,6 +1,7 @@
 /* strat button*/
 .btn {
   text-align: center;
+  cursor: pointer;
   .icon {
     display: flex;
     justify-content: center;
@@ -18,7 +19,7 @@
   &.btn-lg {
     font-size: 0.875rem;
     font-weight: 500;
-    padding-block: 0.65rem;
+    padding-block: 0.719rem;
   }
 }
 .btn-primary {
@@ -47,6 +48,11 @@
 .btn-light {
   background-color: var(--light-btn);
   color: var(--dark-900);
+  &:hover {
+    background-color: var(--light-200);
+    border: 1px solid var(--primary-color);
+    color: var(--primary-color);
+  }
 }
 .btn-outline-light-pimary {
   border: 1px solid var(--light-400);
@@ -86,9 +92,6 @@
   svg {
     width: 1rem;
     height: 1rem;
-  }
-  .ar-text{
-    display: none;
   }
 }
 .action-btn-list {
@@ -133,10 +136,10 @@
     height: 1.25rem;
   }
 }
-.btn-show-password{
-  svg{
-    width:1rem;
-    height:1rem;
+.btn-show-password {
+  svg {
+    width: 1rem;
+    height: 1rem;
   }
 }
 /* end button*/
