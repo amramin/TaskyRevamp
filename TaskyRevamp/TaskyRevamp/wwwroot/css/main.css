@@ -120,36 +120,73 @@
 }
 .form-switch.custom input + label {
   cursor: pointer;
-  width: 2.5rem;
-  height: 1.5rem;
-  background-color: var(--light-600);
-  border-radius: 0.25rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  gap: 0.5rem;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
+  max-width: 100%;
+  color: var(--dark-600);
+}
+.form-switch.custom input + label .toggler-icon {
+  width: 2.25rem;
+  height: 1.25rem;
+  background-color: var(--light-300);
+  border-radius: 999rem;
   position: relative;
   -webkit-transition: var(--transtion-3ms-e-out);
   transition: var(--transtion-3ms-e-out);
 }
-.form-switch.custom input + label::after {
+.form-switch.custom input + label .toggler-icon::after {
   content: "";
   position: absolute;
   top: 50%;
   -webkit-transform: translateY(-50%);
           transform: translateY(-50%);
-  inset-inline-start: 0.25rem;
+  inset-inline-start: 0.125rem;
   width: 1rem;
   height: 1rem;
   background-color: var(--bs-white);
-  border-radius: 0.125rem;
+  border-radius: 50%;
   -webkit-transition: var(--transtion-3ms-e-out);
   transition: var(--transtion-3ms-e-out);
+  -webkit-box-shadow: 0 1px 3px rgba(16, 24, 40, 0.01), 0 1px 2px rgba(16, 24, 40, 0.06);
+          box-shadow: 0 1px 3px rgba(16, 24, 40, 0.01), 0 1px 2px rgba(16, 24, 40, 0.06);
 }
 .form-switch.custom input:checked + label {
+  color: var(--dark-800);
+  font-weight: 600;
+}
+.form-switch.custom input:checked + label .toggler-icon {
   background-color: var(--primary-color);
 }
-.form-switch.custom input:checked + label::after {
+.form-switch.custom input:checked + label .toggler-icon::after {
   inset-inline-start: auto;
-  inset-inline-end: 0.25rem;
+  inset-inline-end: 0.125rem;
   -webkit-transition: var(--transtion-3ms-e-out);
   transition: var(--transtion-3ms-e-out);
+  -webkit-box-shadow: none;
+          box-shadow: none;
+}
+.form-switch.custom.filter input + label {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--dark-800);
+}
+.form-switch.custom.filter input + label svg {
+  width: 1rem;
+  height: 1rem;
+}
+.form-switch.custom.filter input:checked + label svg {
+  fill: var(--primary-color);
+  stroke: var(--primary-color);
 }
 
 .file-uploader input {
@@ -685,6 +722,22 @@
 .card.setting-card .card-footer .action-buttons .btn {
   padding-inline: 1.5rem;
 }
+.card.setting-card .card-order-header {
+  padding-bottom: 0.5rem;
+}
+.card.setting-card .card-order-header .order {
+  width: 2.5rem;
+}
+.card.setting-card .card-order-header .title {
+  -webkit-box-flex: 1;
+      -ms-flex-positive: 1;
+          flex-grow: 1;
+  -webkit-padding-start: 0.75rem;
+          padding-inline-start: 0.75rem;
+}
+.card.setting-card .card-order-header .toggle {
+  width: 4rem;
+}
 .card.card-order-control {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -693,9 +746,11 @@
   -webkit-box-direction: normal;
       -ms-flex-direction: row;
           flex-direction: row;
-}
-.card.card-order-control:not(:last-child) {
   margin-bottom: 0.5rem;
+}
+.card.card-order-control .card-body {
+  padding: 0.5rem 0.75rem;
+  font-size: 0.875rem;
 }
 .card.card-order-control .cl-preview {
   width: 1.5rem;
@@ -717,12 +772,17 @@
           align-items: center;
   gap: 0.5rem;
 }
+.card.card-order-control .toggle {
+  padding: 0 1rem;
+}
 .card.card-order-control .btn-group-vertical .btn {
   -webkit-border-start: 1px solid var(--light-300);
           border-inline-start: 1px solid var(--light-300);
   border-start-start-radius: 0;
   border-end-start-radius: 0;
   color: var(--dark-700);
+  width: 2.5rem;
+  padding-block: 0.125rem;
 }
 .card.card-order-control .btn-group-vertical .btn:first-child {
   border-bottom: 1px solid var(--light-300);
@@ -1668,4 +1728,5 @@ html[dir=rtl] input[type=number] {
   border-color: var(--primary-color);
 }
 
-/* end pagination-container*//*# sourceMappingURL=main.css.map */
+/* end pagination-container*/
+/* strat tables *//*# sourceMappingURL=main.css.map */
