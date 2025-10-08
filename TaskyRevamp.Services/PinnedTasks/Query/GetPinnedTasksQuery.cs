@@ -1,4 +1,6 @@
-﻿using MediatR;
+﻿
+using MediatR;
+using TaskyRevamp.Domain.Models.Task;
 using TaskyRevamp.Domain.Repositeries;
 using TaskyRevamp.Dto.GeneralDto;
 using TaskyRevamp.Dto.PinnedTasks;

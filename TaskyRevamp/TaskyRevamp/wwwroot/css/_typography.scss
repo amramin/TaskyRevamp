@@ -27,13 +27,24 @@
     color: var(--dark-700);
   }
 }
+.headline-5 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color:var(--dark-800);
+}
 .headline-6 {
   font-size: 1rem;
   font-weight: 600;
+    color:var(--dark-800);
 }
 .small-medium-text {
   font-size: 0.875rem;
   color: var(--dark-600);
+  font-weight: 500;
+}
+.badge {
+  font-size: 0.875rem;
+  padding: 0.65rem 0.5rem;
   font-weight: 500;
 }
 /* End typography*/

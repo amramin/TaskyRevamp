@@ -1,13 +1,13 @@
 :root {
   --primary-color: #1740a5;
-  --active-primary: #2E53AE;
+  --active-primary: #2e53ae;
   --primary-linear: linear-gradient(200.29deg, #f4f5fa -22.81%, #f5f8fd 86.51%);
   --white-opacity-10: rgba(255, 255, 255, 0.1);
   --dark-900: #15171c;
   --dark-800: #444549;
-  --dark-700: #5B5D60;
+  --dark-700: #5b5d60;
   --dark-600: #56617d;
-  --dark-500: #6C758A;
+  --dark-500: #6c758a;
   --dark-400: #979eab;
   --light-600: #b8bec3;
   --light-500: #eff4fe;
@@ -18,5 +18,5 @@
   --transtion-3ms-e-out: all 0.3s ease-in-out;
   --backdrop-bg: #dfe5ef;
   --bs-danger-rgb: 232, 44, 44;
- 
+  --bs-success-rgb: 84, 192, 127;
 }

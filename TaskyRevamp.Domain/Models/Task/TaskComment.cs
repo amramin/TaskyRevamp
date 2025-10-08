@@ -35,7 +35,7 @@ public class TaskComment : Entity, IHasCreationMetaData, IHasUpdateMetaData
     {
         TaskItemId= taskid;
         Content = content;
-        CreateDate= DateTime.Now;
+        CreateDate= DateTime.UtcNow;
         CreatedById= createdid;
     }
     public void Add(Guid taskid, string content, User by)

@@ -492,6 +492,40 @@
   <data name="AddTaskFieldsConfiguration" xml:space="preserve">
     <value>Add Task Fields Configuration</value>
   </data>
+  <data name="NodepartmentavailableAdd" xml:space="preserve">
+    <value> No department available
+Add a new department to get started</value>
+  </data>
+  <data name="DepartmentDuplicateValidation" xml:space="preserve">
+    <value>Department name must be unique. Please type a different name</value>
+  </data>
+  <data name="NameEnglish" xml:space="preserve">
+    <value>Name English</value>
+  </data>
+  <data name="NameArabic" xml:space="preserve">
+    <value>Name Arabic</value>
+  </data>
+  <data name="SelectParent" xml:space="preserve">
+    <value>Parent Department </value>
+  </data>
+  <data name="Update" xml:space="preserve">
+    <value>Update</value>
+  </data>
+  <data name="Departments" xml:space="preserve">
+    <value>Departments</value>
+  </data>
+  <data name="AddDepartment" xml:space="preserve">
+    <value>Add Department</value>
+  </data>
+  <data name="DepartmentParent" xml:space="preserve">
+    <value>Parent Department</value>
+  </data>
+  <data name="UpdatedBy" xml:space="preserve">
+    <value>Updated By</value>
+  </data>
+  <data name="UpdateDate" xml:space="preserve">
+    <value>Updated Date</value>
+  </data>
   <data name="DefaultColumnsHint" xml:space="preserve">
     <value>Customize the columns you want to display and set the default column view that will appear when the user logs into the system.</value>
   </data>
@@ -501,10 +535,19 @@
   <data name="AddTaskHint" xml:space="preserve">
     <value>Use this option to activate the fields that will appear on the task creation/editing page. You can also specify which fields should be marked as mandatory.</value>
   </data>
+  <data name="Addedsuccessfully" xml:space="preserve">
+    <value>Added successfully</value>
+  </data>
+  <data name="SureDeleteDepartment" xml:space="preserve">
+    <value>Are you sure you want to delete this department?</value>
+  </data>
   <data name="Confirm" xml:space="preserve">
     <value>Confirm</value>
   </data>
   <data name="Search" xml:space="preserve">
     <value>Search</value>
+  </data>
+  <data name="EnterDaysNumber" xml:space="preserve">
+    <value>Enter days number</value>
   </data>
 </root>

@@ -472,11 +472,36 @@ namespace TaskyRevamp.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Name")
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("CreatedById")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("NameArabic")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("NameEnglish")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("ParentdepartmentId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("UpdateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("UpdatedById")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("CreatedById");
+
+                    b.HasIndex("ParentdepartmentId");
+
+                    b.HasIndex("UpdatedById");
 
                     b.ToTable("Department");
                 });
@@ -1044,6 +1069,31 @@ namespace TaskyRevamp.Infrastructure.Migrations
                     b.Navigation("CreatedBy");
 
                     b.Navigation("TaskChecklist");
+                });
+
+            modelBuilder.Entity("TaskyRevamp.Domain.Models.Task.Department", b =>
+                {
+                    b.HasOne("TaskyRevamp.Domain.Models.Users.User", "CreatedBy")
+                        .WithMany()
+                        .HasForeignKey("CreatedById")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("TaskyRevamp.Domain.Models.Task.Department", "Parentdepartment")
+                        .WithMany()
+                        .HasForeignKey("ParentdepartmentId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.HasOne("TaskyRevamp.Domain.Models.Users.User", "UpdatedBy")
+                        .WithMany()
+                        .HasForeignKey("UpdatedById")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("CreatedBy");
+
+                    b.Navigation("Parentdepartment");
+
+                    b.Navigation("UpdatedBy");
                 });
 
             modelBuilder.Entity("TaskyRevamp.Domain.Models.Task.PinnedTasks", b =>

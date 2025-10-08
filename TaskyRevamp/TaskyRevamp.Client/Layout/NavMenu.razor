@@ -50,7 +50,7 @@
                 <a class="nav-link" href="#" @onclick="CloseSettingsNav">
                     <div class="icon-text">
                         <span class="nav-icon">
-                            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Delegation" ></SVGCrud>
+                            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Delegation"></SVGCrud>
                         </span>
                         <span class="text">Delegation </span>
                     </div>
@@ -175,47 +175,64 @@
     private void SetMenu()
     {
         MenuItems = new List<MenuItem> {
-            new MenuItem {
-                Title = "General",
-                IsOpen = false,
-                Children = new List<ChildItem> {
-                    new ChildItem { Text = "RecycleBinConfiguration", Url = "/RecycleBinConfiguration", Icon = SVGCrud.SVGTypeEnum.RecycleBinConfig , DataId = "recycle-config" },
-                    new ChildItem { Text = "RejectionConfiguration", Url = "/RejectionConfiguration", Icon = SVGCrud.SVGTypeEnum.Reject, DataId = "rejection-config" },
-                    new ChildItem { Text = "Priority", Url = "/PrioritySettings", Icon = SVGCrud.SVGTypeEnum.ArrowsUp, DataId = "priorty-config" },
-                    new ChildItem { Text = "StatusConfig", Url = "/StatusSetting", Icon = SVGCrud.SVGTypeEnum.Repeat, DataId = "status-config" },
-                    new ChildItem { Text = "DefaultColumnsConfiguration", Url = "/DefaultColumnsConfiguration", Icon = SVGCrud.SVGTypeEnum.Columns, DataId = "defaultColumns-config" },
-                    new ChildItem { Text = "FilterFields", Url = "/FilterFieldsConfiguration", Icon = SVGCrud.SVGTypeEnum.Filter, DataId = "filterFields-config" },
-                    new ChildItem { Text = "AddTaskFieldsConfiguration", Url = "/AddTaskConfiguration", Icon = SVGCrud.SVGTypeEnum.Filter, DataId = "addTask-config" },
-                    new ChildItem { Text = "WorkingDaysConfiguration", Url = "/WorkingDaysSetting", Icon = SVGCrud.SVGTypeEnum.CalnderPluse, DataId = "calnderPluse-config" },
-                    new ChildItem { Text = "SourceConfiguration", Url = "/SourceSettings", Icon = SVGCrud.SVGTypeEnum.DataFlow,DataId = "taskSource-config" },
-                    new ChildItem { Text = "TaskTypeConfiguration", Url = "/TypeConfiguration", Icon = SVGCrud.SVGTypeEnum.TaskType, DataId = "taskType-config" },
-                    new ChildItem { Text = "Tasksviews", Url = "/Views", Icon = SVGCrud.SVGTypeEnum.List, DataId = "taskViews-config" },
-                    new ChildItem { Text = "WeeklyReport", Url = "/WeeklyReportSetting", Icon = SVGCrud.SVGTypeEnum.BarChartSquarPluse, DataId = "weeklyReport-config" }
-                }
-            },
-            new MenuItem {
-                Title = "Appearance", IsOpen = false,
-                Children = new List<ChildItem> {
-                    new ChildItem { Text = "SystemIdentity", Url = "/SystemIdentity", Icon = SVGCrud.SVGTypeEnum.RollerBrush, DataId = "systemIdentity-config" }
-                }
-            },
-            new MenuItem {
-                Title = "Management", IsOpen = false,
-                Children = new List<ChildItem> {
-                    new ChildItem { Text = "Users", Url = "/Users", Icon = SVGCrud.SVGTypeEnum.UsersEdit, DataId = "users-config"  },
-                    new ChildItem { Text = "Departments", Url = "/Departments", Icon = SVGCrud.SVGTypeEnum.DataFlow, DataId = "departments-config"  },
-                    new ChildItem { Text = "Privilege", Url = "/Privilege", Icon = SVGCrud.SVGTypeEnum.PrivilegeConfig, DataId = "Privilege-config"  }
-                }
-            },
-            new MenuItem {
-                Title = "Notification", IsOpen = false,
-                Children = new List<ChildItem> {
-                    new ChildItem { Text = "EmailNotification", Url = "/EmailNotification", Icon = SVGCrud.SVGTypeEnum.NotificationMessage, DataId = "notification-message-config"  },
-                    new ChildItem { Text = "SystemNotification", Url = "/SystemNotification", Icon = SVGCrud.SVGTypeEnum.BellPluse, DataId = "systemNotifcation-config"  },
-                    new ChildItem { Text = "TaskHistory", Url = "/TaskHistory", Icon = SVGCrud.SVGTypeEnum.ClockRewind, DataId = "taskHistory-config"  }
-                }
-            },
-        };
+new MenuItem {
+Title = "General",
+IsOpen = false,
+Children = new List<ChildItem> {
+new ChildItem { Text = "RecycleBinConfiguration", Url = "/RecycleBinConfiguration", Icon =
+SVGCrud.SVGTypeEnum.RecycleBinConfig , DataId = "recycle-config" },
+new ChildItem { Text = "RejectionConfiguration", Url = "/RejectionConfiguration", Icon = SVGCrud.SVGTypeEnum.Reject,
+DataId = "rejection-config" },
+new ChildItem { Text = "Priority", Url = "/PrioritySettings", Icon = SVGCrud.SVGTypeEnum.ArrowsUp, DataId =
+"priorty-config" },
+new ChildItem { Text = "StatusConfig", Url = "/StatusSetting", Icon = SVGCrud.SVGTypeEnum.Repeat, DataId =
+"status-config" },
+new ChildItem { Text = "DefaultColumnsConfiguration", Url = "/DefaultColumnsConfiguration", Icon =
+SVGCrud.SVGTypeEnum.Columns, DataId = "defaultColumns-config" },
+new ChildItem { Text = "FilterFields", Url = "/FilterFieldsConfiguration", Icon = SVGCrud.SVGTypeEnum.Filter, DataId =
+"filterFields-config" },
+new ChildItem { Text = "AddTaskFieldsConfiguration", Url = "/AddTaskConfiguration", Icon =
+SVGCrud.SVGTypeEnum.PluseCircle, DataId = "addTask-config" },
+new ChildItem { Text = "WorkingDaysConfiguration", Url = "/WorkingDaysSetting", Icon = SVGCrud.SVGTypeEnum.CalnderPluse,
+DataId = "calnderPluse-config" },
+new ChildItem { Text = "SourceConfiguration", Url = "/SourceSettings", Icon = SVGCrud.SVGTypeEnum.DataFlow,DataId =
+"taskSource-config" },
+new ChildItem { Text = "TaskTypeConfiguration", Url = "/TypeConfiguration", Icon = SVGCrud.SVGTypeEnum.TaskType, DataId
+= "taskType-config" },
+new ChildItem { Text = "Tasksviews", Url = "/Views", Icon = SVGCrud.SVGTypeEnum.List, DataId = "taskViews-config" },
+new ChildItem { Text = "WeeklyReport", Url = "/WeeklyReportSetting", Icon = SVGCrud.SVGTypeEnum.BarChartSquarPluse,
+DataId = "weeklyReport-config" }
+}
+},
+new MenuItem {
+Title = "Appearance", IsOpen = false,
+Children = new List<ChildItem> {
+new ChildItem { Text = "SystemIdentity", Url = "/SystemIdentity", Icon = SVGCrud.SVGTypeEnum.RollerBrush, DataId =
+"systemIdentity-config" }
+}
+},
+new MenuItem {
+Title = "Management", IsOpen = false,
+Children = new List<ChildItem> {
+new ChildItem { Text = "Users", Url = "/Users", Icon = SVGCrud.SVGTypeEnum.UsersEdit, DataId = "users-config" },
+new ChildItem { Text = "Departments", Url = "/Departments", Icon = SVGCrud.SVGTypeEnum.DataFlow, DataId =
+"departments-config" },
+new ChildItem { Text = "Privilege", Url = "/Privilege", Icon = SVGCrud.SVGTypeEnum.PrivilegeConfig, DataId =
+"Privilege-config" }
+}
+},
+new MenuItem {
+Title = "Notification", IsOpen = false,
+Children = new List<ChildItem> {
+new ChildItem { Text = "EmailNotification", Url = "/EmailNotification", Icon = SVGCrud.SVGTypeEnum.NotificationMessage,
+DataId = "notification-message-config" },
+new ChildItem { Text = "SystemNotification", Url = "/SystemNotification", Icon = SVGCrud.SVGTypeEnum.BellPluse, DataId =
+"systemNotifcation-config" },
+new ChildItem { Text = "TaskHistory", Url = "/TaskHistory", Icon = SVGCrud.SVGTypeEnum.ClockRewind, DataId =
+"taskHistory-config" }
+}
+},
+};
     }
 
     protected override void OnInitialized()
@@ -231,4 +248,3 @@
         clicked.IsOpen = true;
     }
 }
-

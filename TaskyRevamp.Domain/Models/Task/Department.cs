@@ -1,23 +1,70 @@
+using TaskyRevamp.Domain.Interfaces;
 using TaskyRevamp.Domain.Models.Users;
+using TaskyRevamp.Dto.Department;
+using TaskyRevamp.Dto.TaskComment;
 
 namespace TaskyRevamp.Domain.Models.Task;
 
-public class Department : Entity
+public class Department : Entity, IHasCreationMetaData, IHasUpdateMetaData
 {
-    public string Name { get;  set; }
-    public Department(Guid id, string name, User by)
+    public string NameEnglish { get;  set; }
+    public string NameArabic { get; set; }
+    public Guid CreatedById { get ; set ; }
+
+    public Guid? ParentdepartmentId { get; set; }
+
+    public Department Parentdepartment { get; set; }
+
+    public DateTime CreateDate { get ; set ; }
+    public User CreatedBy { get ; set ; }
+    public Guid? UpdatedById { get ; set ; }
+    public DateTime? UpdateDate { get ; set ; }
+    public User? UpdatedBy { get; set; }
+
+    public Department(Guid id, string nameEn,string nameAr,Guid createrid)
     {
         Id = id;
-        Name = name;
+        NameEnglish = nameEn;
+        NameArabic = nameAr;  
+        CreatedById = createrid;
     }
 
     public Department()
     {
     }
-
-    public void Update(string name, User by)
+    public bool SetData(DepartmentDto departmentDto)
     {
-        Name = name;
+        Id = departmentDto.Id;
+        NameEnglish = departmentDto.NameEnglish;
+        NameArabic= departmentDto.NameArabic;
+        //CreatedById = departmentDto.CreatedBy.Value;
+        UpdatedById = departmentDto.UpdatedBy;
+        ParentdepartmentId= departmentDto.ParentdepartmentId==Guid.Empty?null: departmentDto.ParentdepartmentId;
+        CreateDate=departmentDto.CreateDate??DateTime.UtcNow;
+        return true;
+
+    }
+    public DepartmentDto CopyToDto()
+    {
+        return new DepartmentDto
+        {
+            Id = Id,
+           NameArabic= NameArabic,
+           NameEnglish = NameEnglish,
+           CreatedBy= CreatedById,
+           UpdatedBy= UpdatedById,
+           CreateDate= CreateDate,
+           UpdateDate= UpdateDate,
+           ParentdepartmentId=ParentdepartmentId==null?Guid.Empty: ParentdepartmentId.Value,
+           ParentdepartmentArabic= Parentdepartment?.NameArabic,
+           ParentdepartmentEnglish= Parentdepartment?.NameEnglish,
+
+        };
+    }
+    public void Update(string nameEn,string nameAr)
+    {
+        NameEnglish = nameEn;
+        NameArabic = nameAr;
         
     }
 }
