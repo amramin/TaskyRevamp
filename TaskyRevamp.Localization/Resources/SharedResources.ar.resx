@@ -504,4 +504,7 @@
   <data name="Confirm" xml:space="preserve">
     <value>تأكيد</value>
   </data>
+  <data name="Search" xml:space="preserve">
+    <value>بحث</value>
+  </data>
 </root>

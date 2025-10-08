@@ -2,16 +2,20 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using TaskyRevamp.Domain.Repositeries;
+using TaskyRevamp.Dto.Enums.SearchFields;
 using TaskyRevamp.Dto.GeneralDto;
 using TaskyRevamp.Dto.SystemConfiguration;
+using TaskyRevamp.Services.Helpers;
+using TaskyRevamp.Services.SearchMappings;
 using Sources = TaskyRevamp.Domain.Models.SystemConfiguration.Source;
 
 namespace TaskyRevamp.Services.SystemConfiguration.SourceConfiguration.Query
 {
-	public record GetSourceConfigurationQuery(int pageNumber, int pageSize, string sortByColumnName, bool sortAscending) : IRequest<PagedResult<SourceDtoWithName>>;
+	public record GetSourceConfigurationQuery(int pageNumber, int pageSize, string sortByColumnName, bool sortAscending, List<SearchField> SearchFields, string SearchText) : IRequest<PagedResult<SourceDtoWithName>>;
 	public class GetSourceConfigurationHandler : IRequestHandler<GetSourceConfigurationQuery, PagedResult<SourceDtoWithName>>
 	{
 		private readonly IRepository<Sources> _sourceRepository;
@@ -22,10 +26,19 @@ namespace TaskyRevamp.Services.SystemConfiguration.SourceConfiguration.Query
 		public async Task<PagedResult<SourceDtoWithName>> Handle(GetSourceConfigurationQuery request, CancellationToken cancellationToken)
 		{
 			var orderBy = GetOrderBy(request.sortByColumnName, request.sortAscending);
-			var res = await _sourceRepository.GetPagedAsync(
+
+            Expression<Func<Sources, bool>> searchExpression = null;
+            if (request.SearchFields != null && request.SearchFields.Any())
+            {
+                var predicates = request.SearchFields.Select(x => TaskSourceSearchFieldMap.Map[x]).ToList();
+                searchExpression = ExpressionBuilder.BuildLikeExpression(predicates, request.SearchText);
+            }
+
+            var res = await _sourceRepository.GetPagedAsync(
 								request.pageNumber,
 								request.pageSize,
 								null,
+								searchExpression,
 								orderBy: orderBy,
 								includeProperties: $"{nameof(Sources.CreatedBy)},{nameof(Sources.UpdatedBy)}");
 

@@ -1,4 +1,5 @@
-﻿using TaskyRevamp.Dto.GeneralDto;
+﻿using TaskyRevamp.Dto.Enums.SearchFields;
+using TaskyRevamp.Dto.GeneralDto;
 using TaskyRevamp.Dto.SystemConfiguration;
 
 namespace TaskyRevamp.Client.Consumer
@@ -12,9 +13,11 @@ namespace TaskyRevamp.Client.Consumer
 			_taskyService = taskyService;
 		}
 
-		public async Task<CommonApiResponse<PagedResult<TypeDtoWithName>>> GetTypes(int pageNumber, int pageSize, string sortByColumnName, bool sortAscending)
+		public async Task<CommonApiResponse<PagedResult<TypeDtoWithName>>> GetTypes(int pageNumber, int pageSize, string sortByColumnName, bool sortAscending, List<SearchField> searchFields = null, string searchText = null)
 		{
-			var url = $"api/TypeSetting/GetTypeSettings?pageNumber={pageNumber}&pageSize={pageSize}&sortByColumnName={sortByColumnName}&sortAscending={sortAscending}";
+            var queryString = _taskyService.PreparePaginatedSearchQueryString(pageNumber, pageSize, sortByColumnName, sortAscending, searchFields, searchText);
+
+            var url = $"api/TypeSetting/GetTypeSettings{queryString}";
 			var res = await _taskyService.GetFromJsonAsync<CommonApiResponse<PagedResult<TypeDtoWithName>>>(url);
 
 			return res;
