@@ -84,4 +84,32 @@
       }
     }
   }
+  &.empty-page {
+    flex-grow: 1;
+    .card-body {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      justify-content: center;
+      align-items: center;
+      .vector {
+        svg,
+        img {
+          width: auto;
+          height: 240px;
+          max-width: 100%;
+        }
+      }
+      .content {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+      h5,
+      p {
+        margin-bottom: 0;
+        text-align: center;
+      }
+    }
+  }
 }
