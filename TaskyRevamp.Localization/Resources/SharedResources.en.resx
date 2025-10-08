@@ -504,4 +504,7 @@
   <data name="Confirm" xml:space="preserve">
     <value>Confirm</value>
   </data>
+  <data name="EnterDaysNumber" xml:space="preserve">
+    <value>Enter days number</value>
+  </data>
 </root>

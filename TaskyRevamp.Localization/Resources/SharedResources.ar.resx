@@ -504,4 +504,7 @@
   <data name="Confirm" xml:space="preserve">
     <value>تأكيد</value>
   </data>
+   <data name="EnterDaysNumber" xml:space="preserve">
+    <value>ادخل عدد الايام</value>
+  </data>
 </root>
