@@ -9,7 +9,7 @@
 @inject TaskyService taskyService
 @inject IJSRuntime JS
 @inject LoaderService LoaderService
-
+@inject IStringLocalizer<SharedResources> Loc
 
 <main class="main-wrapper">
     <NavMenu />
@@ -103,7 +103,9 @@
         <section class="main-page">
             <CascadingValue Value="ToggleDialog">
                 <CascadingValue Value="SetRenderFragment">
+                    <CascadingValue Value="Loc">
                     @Body
+                    </CascadingValue>
                     <PopupHost />
                 </CascadingValue>
             </CascadingValue>

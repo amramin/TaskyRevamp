@@ -1,0 +1,222 @@
+﻿@page "/Departments"
+
+@using TaskyRevamp.Client.Consumer
+@using TaskyRevamp.Client.Services
+@using TaskyRevamp.Client.Shared.Popups
+@using TaskyRevamp.Dto.Department
+@inject DepartmentConsumer  _DepartmentConsumer
+@inject NavigationManager navigationManager
+@inject IStringLocalizer<SharedResources> Loc
+@inject ToastService ToastService
+
+
+<div class="card shadow-sm p-3">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h5 class="mb-0">@Loc["Departments"]</h5>
+        <button class="btn btn-primary" @onclick="Add">
+            <i class="bi bi-plus"></i> @Loc["AddDepartment"]
+        </button>
+    </div>
+
+    
+    </div>
+    @if (departmentDtos == null || departmentDtos.Count() == 0)
+    {
+        <h6 class="mb-3">@Loc["NodepartmentavailableAdd"]</h6>
+
+    }
+    else{
+
+        <div class="table-responsive sticky-header-custom">
+            <table class="table custom-table">
+
+                <thead>
+                    <tr>
+                        <th>@Loc["NameEnglish"]</th>
+                            <th>@Loc["NameArabic"]</th>
+                    <th>@Loc["DepartmentParent"]</th>
+                        <th>@Loc["CreatedBy"]</th>
+                    <th>@Loc["CreationDate"]</th>
+                            <th>@Loc["UpdatedBy"]</th>
+                            <th>@Loc["UpdateDate"]</th>
+             
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                        @if (departmentDtos != null && departmentDtos.Any())
+                    {
+    @foreach (var p in departmentDtos)
+    {
+
+                                <tr>
+                                    <td>@p.NameEnglish</td>
+                                    <td>@p.NameArabic</td>
+                                    <td>@p.ParentdepartmentName</td>
+                                    <td>@p.CreatedByName</td>
+                                  
+                                   
+                                    <td>@p.CreateDate</td>
+                                    <td>@p.UpdatedByName</td>
+                                    <td>@p.UpdateDate</td>
+                                 
+                                    <td>
+        <div class="card mb-2">
+            <div class="card-body d-flex justify-content-between align-items-center">
+
+                  
+                <div class="d-flex align-items-center gap-2">
+                    <span class="rounded-circle p-2" ></span>
+                    <span class="rounded-circle p-2"></span>
+
+                    <button class="btn btn-action-40 btn-outline-success" @onclick="@(() =>Edit(p.Id))">
+                        <span class="icon">
+                            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Edit"></SVGCrud>
+                        </span>
+                    </button>
+
+                    <button class="btn btn-action-40 btn-outline-danger" @onclick="@(() => ShowDeleteConfirm(p))">
+                        <span class="icon">
+                            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.RecycleBin"></SVGCrud>
+                        </span>
+                    </button>
+
+                  
+                </div>
+            </div>
+        </div>
+        </td>
+        </tr>
+    }
+
+    }
+    </tbody>
+    </table>
+
+    
+
+  
+                 
+               
+    
+    <ConfirmationPopup ButtonText="@Loc["Delete"]"
+                       IsVisible="@showConfirm"
+                       OnConfirm="OnDeleteConfirmed"
+                       Message="@confirmMessage" />
+
+    <div class="d-flex justify-content-end gap-2 mt-3">
+        <button class="btn btn-light" @onclick="Cancel">@Loc["Cancel"]</button>
+        <button class="btn btn-primary" @onclick="Save">@Loc["Save"]</button>
+    </div>
+
+</div>
+}
+@code {
+    public List<DepartmentDto> departmentDtos = new List<DepartmentDto>();
+
+    private Guid SelectedDepartmentId { get; set; }
+    private string confirmMessage = "";
+    private DepartmentDto? selectedDepartment;
+    private bool showConfirm;
+    private bool isOrdered = false;
+    List<DepartmentDto>? OriginalDeptes;
+
+    protected async override Task OnInitializedAsync()
+    {
+        var res = await _DepartmentConsumer.GetDepartments();
+        // if (res.Success  && res.Data != null)
+        //{
+        departmentDtos = res.Data.ToList().OrderBy(k=>k.CreateDate).ToList();
+        // OriginalDeptes = CopyPriorites();
+        //}
+        StateHasChanged();
+    }
+    private void Add() => navigationManager.NavigateTo("/Add-Department");
+    private void Edit(Guid id)
+    {
+        //IsShowEditDialog = true;
+        //SelectedDepartmentId = id;
+        navigationManager.NavigateTo($"/Update-Department/{id}");
+    }
+    private void ShowDeleteConfirm(DepartmentDto p)
+    {
+        confirmMessage = @Loc["SureDeleteDepartment"];
+        selectedDepartment = p;
+        showConfirm = true;
+    }
+    private async Task OnDeleteConfirmed(bool confirmed)
+    {
+        if (confirmed && selectedDepartment != null)
+        {
+            var result = await _DepartmentConsumer.DeleteDepartment(selectedDepartment.Id);
+            if (result.Success)
+            {
+                departmentDtos.Remove(selectedDepartment);
+                showConfirm = false;
+                StateHasChanged();
+                await ToastService.ShowToastAsync(Loc["Deleted successfully"], "success");
+            }
+        } 
+        selectedDepartment = null;
+        StateHasChanged();
+    }
+  
+    private async Task Save(MouseEventArgs args)
+    {
+        // if (isOrdered)
+        // {
+        //     var res = await _departmentConsumer.UpdateDeptesOrder(Deptes);
+        //     if (res.Success)
+        //     {
+        //         isOrdered = false;
+        //         await ToastService.ShowToastAsync(Loc["EditSuccess"], "success");
+        //         OriginalDeptes = CopyPriorites();
+        //     }
+        // }
+    }
+    private void Cancel(MouseEventArgs args)
+    {
+        departmentDtos = OriginalDeptes!.Select(p => new DepartmentDto
+        {
+            Id = p.Id,
+            NameEnglish = p.NameEnglish,
+            NameArabic = p.NameArabic,
+            
+        }).ToList();
+        isOrdered = false;
+        StateHasChanged();
+    }
+    private List<DepartmentDto> CopyPriorites()
+    {
+        return departmentDtos.Select(p => new DepartmentDto
+        {
+            Id = p.Id,
+            NameEnglish = p.NameEnglish,
+            NameArabic = p.NameArabic,
+           
+        }).ToList();
+    }
+    // private async void ResetPage(DepartmentDto args)
+    // {
+    //     var res = await _DepartmentSettingConsumer.GetDeptes();
+    //     if (res.Success && res.Data != null)
+    //     {
+    //         Deptes = res.Data;
+    //     }
+    //     IsShowCreateDialog = false;
+    //     IsShowEditDialog = false;
+    //     StateHasChanged();
+    //     await ToastService.ShowToastAsync(Loc["EditSuccess"], "success");
+    // }
+
+    // private void CloseAddPage()
+    // {
+    //     IsShowCreateDialog = false;
+    //     StateHasChanged();
+    // }
+    // private void CloseEditPage()
+    // {
+    //     IsShowEditDialog = false;
+    //     StateHasChanged();
+    // }
+}

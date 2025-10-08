@@ -67,15 +67,15 @@ function OpenModel(modalRef) {
 }
 
 window.DotNetHelper = {
-    helpers: {},
+    dotNetHelper: {},
 
     setDotNetHelper: function (dotNetHelper, id) {
-        this.helpers[id] = dotNetHelper;
+        this.dotNetHelper[id] = dotNetHelper;
     },
 
     invoke: function (id, methodName, ...args) {
-        if (this.helpers[id]) {
-            this.helpers[id].invokeMethodAsync(methodName, ...args);
+        if (this.dotNetHelper[id]) {
+            this.dotNetHelper[id].invokeMethodAsync(methodName, ...args);
         } else {
             console.warn(`DotNetHelper with ID ${id} not found`);
         }

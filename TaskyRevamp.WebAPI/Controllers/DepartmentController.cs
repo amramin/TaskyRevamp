@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using DepartmentyRevamp.Services.Departments.Commands;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using TaskyRevamp.Dto.Department;
 using TaskyRevamp.Dto.GeneralDto;
@@ -29,7 +30,7 @@ public class DepartmentController : ControllerBase
     }
 
 
-    [HttpPut]
+    [HttpPost("UpdateDepartment")]
     public async Task<IActionResult> UpdateDepartment([FromBody] DepartmentDto Department)
     {
         return Ok(await _mediator.Send(new UpdateDepartmentCommand(Department)));
@@ -39,7 +40,7 @@ public class DepartmentController : ControllerBase
     {
         return Ok(await _mediator.Send(new DeleteDepartmentCommand(Guid.Parse(id))));
     }
-    [HttpPost("GetAllDepartments")]
+    [HttpGet("GetAllDepartments")]
     public async Task<IActionResult> AllTask([FromBody] QueryModel? query = null)
     {
 
@@ -52,7 +53,7 @@ public class DepartmentController : ControllerBase
 
 
 
-    [HttpGet("{id}")]
+    [HttpGet("GetDepartmentById/{id}")]
     public async Task<IActionResult> GetOne(string id)
     {
 

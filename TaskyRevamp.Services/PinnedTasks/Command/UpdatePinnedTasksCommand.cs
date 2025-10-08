@@ -1,8 +1,11 @@
 ﻿using MediatR;
+using TaskyRevamp.Domain.Models.Task;
 using TaskyRevamp.Domain.Repositeries;
 using TaskyRevamp.Dto.PinnedTasks;
 
 namespace TaskyRevamp.Services.PinnedTasks.Command;
+
+
 
 public record UpdatePinnedTasksCommand(PinnedTasksDto PinnedTasks) : IRequest<bool>;
 

@@ -1,0 +1,145 @@
+﻿@using Stingray.Components.MultiSelectComponent
+@using TaskyRevamp.Client.Consumer
+@using TaskyRevamp.Dto.Department
+@using TaskyRevamp.Dto.SystemConfiguration
+@inject DepartmentConsumer _DepartmentConsumer
+
+@inject IStringLocalizer<SharedResources> Loc
+
+<EditForm EditContext="@editContext" OnSubmit="@OnSubmitHandler">
+    <DataAnnotationsValidator />
+
+    <div class="mb-3">
+        <label class="form-label">@Loc["NameEnglish"]
+            <span class="text-danger"> *</span>
+
+        </label>
+        <InputText class="form-control" @bind-Value="Department.NameEnglish" placeholder="@Loc["NameEnglish"]" />
+        <ValidationMessage class="small text-danger" For="@(() => Department.NameEnglish)"></ValidationMessage>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">@Loc["NameArabic"]
+            <span class="text-danger"> *</span>
+
+        </label>
+        <InputText class="form-control" @bind-Value="Department.NameArabic" placeholder="@Loc["NameArabic"]" />
+        <ValidationMessage class="small text-danger" For="@(() => Department.NameArabic)"></ValidationMessage>
+    </div>
+
+@if(AllDepartments !=null && AllDepartments.Count()>0){
+    <label class="form-label">@Loc["SelectParent"]
+        <span class="text-danger"> *</span>
+    </label>
+<div class="filter-single">
+        <SearchableSingleDropdownOffline TInput=DepartmentDto
+        TOutput=Guid
+        TextSelector="(DepartmentDto x)=> x.Name"
+        OutputSelector="x => x.Id"
+        Datasource="AllDepartments"
+        MinCharacterCount="1"
+        @bind-SelectedOption ="@Department.ParentdepartmentId"
+        PlaceHolder="@($"--{Loc["SelectParent"]}--")" />
+
+        @if (ParentdepartmentRequired)
+        {
+            <div md="3">
+                <label class="small text-danger"> @Loc["Required"]</label>
+            </div>
+        }
+        </div>
+
+    }
+   
+    <div class="d-flex justify-content-end gap-2 mt-4">
+        <button type="button" class="btn btn-light" @onclick="OnCancelClick">@Loc["Cancel"]</button>
+        <button type="submit" class="btn btn-primary">@SubmitButtonText</button>
+    </div>
+</EditForm>
+
+
+@code {
+
+    [Parameter] public DepartmentDto Department { get; set; } = new DepartmentDto();
+    [Parameter] public EventCallback<EditContext> OnValidSubmit { get; set; }
+    [Parameter] public EventCallback OnCancel { get; set; }
+    [Parameter] public string SubmitButtonText { get; set; }
+    public List<DepartmentDto> AllDepartments  = new  List<DepartmentDto> ();
+    private EditContext editContext;
+    private ValidationMessageStore messageStore;
+    public async Task savedep(Guid id, Guid parnt)
+    {
+        Department.ParentdepartmentId = id;
+
+        await InvokeAsync(StateHasChanged);
+        // StateHasChanged();
+    }
+    protected override async Task OnParametersSetAsync()
+
+    {
+        if (editContext == null || editContext.Model != Department)
+        {
+            editContext = new EditContext(Department);
+            messageStore = new ValidationMessageStore(editContext);
+        }
+        var Departs = await _DepartmentConsumer.GetDepartments();
+        AllDepartments = Departs.Data.ToList();
+        StateHasChanged();
+    }
+
+
+
+    bool ParentdepartmentRequired;
+    private async Task OnSubmitHandler(EditContext context)
+    {
+        ParentdepartmentRequired = false;
+        ClearValidationMessages();
+        if (!editContext.Validate())
+            return; // client-side validation failed → stop
+
+        if(AllDepartments.Count()>0 && Department.ParentdepartmentId == Guid.Empty)
+        {
+            ParentdepartmentRequired = true;
+            return;
+        }
+        if (AllDepartments.Count() == 0)
+        {
+            Department.ParentdepartmentId = Guid.Empty;
+        }
+        await OnValidSubmit.InvokeAsync(context);
+    }
+
+    private async Task OnCancelClick()
+    {
+        await OnCancel.InvokeAsync();
+    }
+
+    public void AddErrorsToEditContext(IReadOnlyDictionary<string, List<string>> errors)
+    {
+        messageStore.Clear();
+
+        foreach (var error in errors)
+        {
+            var property = typeof(DepartmentDto).GetProperty(error.Key);
+
+            if (property != null)
+            {
+                var fieldIdentifier = new FieldIdentifier(Department, property.Name);
+
+                foreach (var errorMessage in error.Value)
+                {
+                    messageStore.Add(fieldIdentifier, errorMessage);
+                }
+            }
+        }
+
+        // Tell Blazor to re-render the validation messages
+        editContext.NotifyValidationStateChanged();
+    }
+
+    public void ClearValidationMessages()
+    {
+        messageStore.Clear();
+        editContext.NotifyValidationStateChanged();
+    }
+}

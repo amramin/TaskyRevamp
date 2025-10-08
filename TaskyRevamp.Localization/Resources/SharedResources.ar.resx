@@ -492,6 +492,40 @@
   <data name="AddTaskFieldsConfiguration" xml:space="preserve">
     <value>إعدادات حقول إضافة المهمة</value>
   </data>
+  <data name="NodepartmentavailableAdd" xml:space="preserve">
+    <value> لا توجد إدارة متاحة
+أضف إدارة جديدة للبدء</value>
+  </data>
+  <data name="DepartmentDuplicateValidation" xml:space="preserve">
+    <value>يجب أن يكون اسم الإدارة فريدًا. يرجى كتابة اسم آخر</value>
+  </data>
+  <data name="NameEnglish" xml:space="preserve">
+    <value>الاسم بالانجليزية</value>
+  </data>
+  <data name="NameArabic" xml:space="preserve">
+    <value>الاسم بالعربية</value>
+  </data>
+  <data name="SelectParent" xml:space="preserve">
+    <value>الإدارة الرئيسية</value>
+  </data>
+  <data name="Update" xml:space="preserve">
+    <value>تعديل</value>
+  </data>
+  <data name="Departments" xml:space="preserve">
+    <value>الإدارات</value>
+  </data>
+  <data name="AddDepartment" xml:space="preserve">
+    <value>أضف إدارة</value>
+  </data>
+  <data name="DepartmentParent" xml:space="preserve">
+    <value>الإدارة الرئيسية </value>
+  </data>
+  <data name="UpdatedBy" xml:space="preserve">
+    <value>تم تعديله بواسطة</value>
+  </data>
+  <data name="UpdateDate" xml:space="preserve">
+    <value>تاريخ التعديل</value>
+  </data>
   <data name="DefaultColumnsHint" xml:space="preserve">
     <value>قم بتخصيص الأعمدة التي ترغب في عرضها، وحدد العرض الافتراضي للأعمدة الذي سيظهر عند تسجيل دخول المستخدم إلى النظام</value>
   </data>
@@ -500,6 +534,12 @@
   </data>
   <data name="AddTaskHint" xml:space="preserve">
     <value>استخدم هذا الخيار لتفعيل الحقول التي ستظهر في صفحة إنشاء/تعديل المهمة، ويمكنك أيضًا تحديد الحقول التي يجب أن تكون إلزامية.</value>
+  </data>
+  <data name="Addedsuccessfully" xml:space="preserve">
+    <value>تمت الإضافة بنجاح</value>
+  </data>
+  <data name="SureDeleteDepartment" xml:space="preserve">
+    <value>هل أنت متأكد أنك تريد حذف هذه الإدارة؟</value>
   </data>
   <data name="Confirm" xml:space="preserve">
     <value>تأكيد</value>

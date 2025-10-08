@@ -63,7 +63,7 @@ public class ChangeEndDateRequest : Entity, IHasCreationMetaData
         RequesterId = requester;
         RequestedAt = DateTime.UtcNow;
         CreatedById = requester;
-        CreateDate = DateTime.Now;
+        CreateDate = DateTime.UtcNow;
         Status = ChangeRequestStatus.Pending;
     }
     public void Approve(User by)
