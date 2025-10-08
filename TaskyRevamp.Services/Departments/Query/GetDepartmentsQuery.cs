@@ -31,7 +31,7 @@ public class GetDepartmentsHandler : IRequestHandler<GetDepartmentsQuery, List<D
         {
             DepartmentDto dep = Department.CopyToDto();
             dep.CreatedByName = Department.CreatedBy?.NameEnglish;
-            dep.UpdatedByName = Department.UpdateddBy?.NameEnglish;
+            dep.UpdatedByName = Department.UpdatedBy?.NameEnglish;
             Departmentss.Add(dep);
             
         }

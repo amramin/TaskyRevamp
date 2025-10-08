@@ -26,6 +26,8 @@
         <InputText class="form-control" @bind-Value="Department.NameArabic" placeholder="@Loc["NameArabic"]" />
         <ValidationMessage class="small text-danger" For="@(() => Department.NameArabic)"></ValidationMessage>
     </div>
+
+@if(AllDepartments !=null && AllDepartments.Count()>0){
     <label class="form-label">@Loc["SelectParent"]
         <span class="text-danger"> *</span>
     </label>
@@ -45,8 +47,10 @@
                 <label class="small text-danger"> @Loc["Required"]</label>
             </div>
         }
-    </div>
+        </div>
 
+    }
+   
     <div class="d-flex justify-content-end gap-2 mt-4">
         <button type="button" class="btn btn-light" @onclick="OnCancelClick">@Loc["Cancel"]</button>
         <button type="submit" class="btn btn-primary">@SubmitButtonText</button>

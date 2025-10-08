@@ -27,7 +27,7 @@ internal class DepartmentConfiguration : IEntityTypeConfiguration<Department>
         
         builder
 
-.HasOne(r => r.UpdateddBy)
+.HasOne(r => r.UpdatedBy)
 .WithMany().HasForeignKey(r => r.UpdatedById)
 .OnDelete(DeleteBehavior.NoAction);
 
