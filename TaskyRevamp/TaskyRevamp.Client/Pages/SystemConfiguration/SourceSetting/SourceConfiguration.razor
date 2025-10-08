@@ -122,8 +122,8 @@ else
                     <SVGCrud SVGType="SVGCrud.SVGTypeEnum.EmptyPageVector"></SVGCrud>
                 </span>
                 <div class="content">
-                <h5 class="headline-5">@Loc["No Task Sources Available"]</h5>
-                <p class="small-medium-text">@Loc["Add a new task source to get started."]</p>
+                    <h5 class="headline-5">@Loc["No Task Sources Available"]</h5>
+                    <p class="small-medium-text">@Loc["Add a new task source to get started."]</p>
                 </div>
                 <div class="action-btn-list">
                     <button class="btn btn-lg btn-primary" @onclick="AddSource">
@@ -138,7 +138,7 @@ else
     </div>
 }
 <ConfirmationPopup ButtonText="Confirm" IsVisible="@showConfirm" OnConfirm="OnDeleteConfirmed"
-    Message="@confirmMessage" />
+                   Message="@confirmMessage" />
 
 @code {
     List<SourceDtoWithName> sources = new();

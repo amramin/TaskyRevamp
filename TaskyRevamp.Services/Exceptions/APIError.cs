@@ -9,4 +9,7 @@ namespace TaskyRevamp.Services.Exceptions;
 public static class ApiError
 {
     public static string PrentNotFound = "PrentNotFound";
+    public static string AddTaskSettingNotFound = "AddTaskSettingNotFound";
+    public static string FilterFieldNotFound = "FilterFieldNotFound";
+    public static string DefaultColumnNotFound = "DefaultColumnNotFound";
 }

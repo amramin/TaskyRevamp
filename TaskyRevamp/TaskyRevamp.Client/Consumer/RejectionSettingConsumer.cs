@@ -19,10 +19,10 @@ namespace TaskyRevamp.Client.Consumer
 
 			return res;
 		}
-		public async Task<CommonApiResponse<bool>> UpdateRejectionSetting(RejectionSettingsDto _rejectionSettingDto)
+		public async Task<CommonApiResponse<bool>> UpdateRejectionSetting(RejectionSettingsDto rejectionSettingDto)
 		{
 			var url = $"api/RejectionSetting/UpdateRejectionSetting";
-			var ret = await _taskyService.PostJsonAsync<bool>(url, _rejectionSettingDto);
+			var ret = await _taskyService.PostJsonAsync<bool>(url, rejectionSettingDto);
 
 			return ret;
 		}
