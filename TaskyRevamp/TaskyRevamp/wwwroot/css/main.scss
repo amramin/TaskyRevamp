@@ -28,8 +28,8 @@
 *:not(i):not(.fa):not(mat-icon):not(.ar-text) {
   font-family: "Indivisible";
 }
-.ar-text{
-   font-family: "Almarai", sans-serif;
+.ar-text {
+  font-family: "Almarai", sans-serif;
 }
 
 /* start Global */
@@ -385,6 +385,7 @@
             width: calc(100% - 3.5rem);
             padding-top: 1.5rem;
             display: block;
+            overflow: auto;
             .nav-link {
               width: 100%;
               border-radius: 0;
@@ -419,6 +420,21 @@
                 .dropdown-toggler {
                   opacity: 1;
                 }
+              }
+            }
+            * {
+              /* Track */
+              ::-webkit-scrollbar-track {
+                background: var(--primary-color) !important;
+              }
+              /* Handle */
+              ::-webkit-scrollbar-thumb {
+                background: var(--light-600);
+                border-radius: 1rem;
+              }
+              /* Handle on hover */
+              ::-webkit-scrollbar-thumb:hover {
+                background: #555;
               }
             }
           }
@@ -690,6 +706,12 @@
       }
     }
   }
+  @media (max-width: 920px) {
+    padding-inline-start: 0;
+    .side-nav {
+      display: none;
+    }
+  }
 }
 
 /* start rtl*/
@@ -725,7 +747,7 @@ html[dir="rtl"] {
       }
     }
   }
-  input[type="number"]{
+  input[type="number"] {
     direction: rtl;
   }
 }
@@ -856,4 +878,3 @@ html[dir="rtl"] {
 }
 /* end pagination-container*/
 /* strat tables */
-

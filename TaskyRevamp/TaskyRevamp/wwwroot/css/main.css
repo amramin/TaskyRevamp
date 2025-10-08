@@ -698,10 +698,11 @@
 .card.setting-card .text-content {
   margin-bottom: 1.5rem;
 }
-.card.setting-card .card-body {
+.card.setting-card > .card-body {
   -webkit-box-flex: 1;
-      -ms-flex-positive: 1;
-          flex-grow: 1;
+      -ms-flex: 1;
+          flex: 1;
+  overflow-y: auto;
 }
 .card.setting-card .card-footer {
   padding-block: 0;
@@ -1198,6 +1199,7 @@
   width: calc(100% - 3.5rem);
   padding-top: 1.5rem;
   display: block;
+  overflow: auto;
 }
 .main-wrapper .side-nav.setting-nav-open .sid-nav-body > .nav .setting-menu .nav-link {
   width: 100%;
@@ -1236,6 +1238,21 @@
 }
 .main-wrapper .side-nav.setting-nav-open .sid-nav-body > .nav .setting-menu .dropdown.open .dropdown-toggler {
   opacity: 1;
+}
+.main-wrapper .side-nav.setting-nav-open .sid-nav-body > .nav .setting-menu * {
+  /* Track */
+  /* Handle */
+  /* Handle on hover */
+}
+.main-wrapper .side-nav.setting-nav-open .sid-nav-body > .nav .setting-menu * ::-webkit-scrollbar-track {
+  background: var(--primary-color) !important;
+}
+.main-wrapper .side-nav.setting-nav-open .sid-nav-body > .nav .setting-menu * ::-webkit-scrollbar-thumb {
+  background: var(--light-600);
+  border-radius: 1rem;
+}
+.main-wrapper .side-nav.setting-nav-open .sid-nav-body > .nav .setting-menu * ::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }
 .main-wrapper .main-header {
   background-color: var(--bs-white);
@@ -1527,6 +1544,15 @@
 }
 .main-wrapper.side-menu-collapse .side-nav .sid-nav-body .arrow {
   display: none;
+}
+@media (max-width: 920px) {
+  .main-wrapper {
+    -webkit-padding-start: 0;
+            padding-inline-start: 0;
+  }
+  .main-wrapper .side-nav {
+    display: none;
+  }
 }
 
 /* start rtl*/
