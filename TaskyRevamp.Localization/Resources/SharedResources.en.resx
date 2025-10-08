@@ -172,7 +172,7 @@
     <value>3 days</value>
   </data>
   <data name="RejectionConfiguration" xml:space="preserve">
-    <value>Task Rejection </value>
+    <value>Task Rejection Configuration</value>
   </data>
   <data name="RejectionPeriodOptions" xml:space="preserve">
     <value>Rejection Period Options</value>
@@ -424,7 +424,7 @@
     <value>Creation Date</value>
   </data>
   <data name="UpdateDate" xml:space="preserve">
-    <value>Update Date</value>
+    <value>Updated Date</value>
   </data>
   <data name="UpdatedBy" xml:space="preserve">
     <value>Updated By</value>
@@ -520,12 +520,6 @@ Add a new department to get started</value>
   <data name="DepartmentParent" xml:space="preserve">
     <value>Parent Department</value>
   </data>
-  <data name="UpdatedBy" xml:space="preserve">
-    <value>Updated By</value>
-  </data>
-  <data name="UpdateDate" xml:space="preserve">
-    <value>Updated Date</value>
-  </data>
   <data name="DefaultColumnsHint" xml:space="preserve">
     <value>Customize the columns you want to display and set the default column view that will appear when the user logs into the system.</value>
   </data>
@@ -545,6 +539,18 @@ Add a new department to get started</value>
     <value>Confirm</value>
   </data>
   <data name="EnterDaysNumber" xml:space="preserve">
-    <value>Enter days number</value>
+    <value>Enter number of days</value>
+  </data>
+  <data name="FieldNames" xml:space="preserve">
+    <value>Field Names</value>
+  </data>
+  <data name="AddTaskSettingNotFound" xml:space="preserve">
+    <value>Add Task Setting with Id {id} not found.</value>
+  </data>
+  <data name="FilterFieldNotFound" xml:space="preserve">
+    <value>Filter Field with Id {id} not found.</value>
+  </data>
+  <data name="DefaultColumnNotFound" xml:space="preserve">
+    <value>Default Column with Id {id} not found.</value>
   </data>
 </root>

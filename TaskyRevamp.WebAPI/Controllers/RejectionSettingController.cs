@@ -27,9 +27,9 @@ namespace TaskyRevamp.WebAPI.Controllers
 		}
 
 		[HttpPost("UpdateRejectionSetting")]
-		public async Task<ActionResult> UpdateRejectionSetting([FromBody] RejectionSettingsDto _RejectionSettingsDto)
+		public async Task<ActionResult> UpdateRejectionSetting([FromBody] RejectionSettingsDto rejectionSettingsDto)
 		{
-			return Ok(await _mediator.Send(new UpdateRejectionSettingCommand(_RejectionSettingsDto)));
+			return Ok(await _mediator.Send(new UpdateRejectionSettingCommand(rejectionSettingsDto)));
 		}
 	}
 }

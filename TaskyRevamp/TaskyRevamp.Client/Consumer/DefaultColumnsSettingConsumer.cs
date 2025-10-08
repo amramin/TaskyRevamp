@@ -19,10 +19,10 @@ namespace TaskyRevamp.Client.Consumer
 
             return res;
         }
-        public async Task<CommonApiResponse<bool>> UpdateDefaultColumnsSettings(List<DefaultColumnsSettingDto> _defaultColumnsSettingsDto)
+        public async Task<CommonApiResponse<bool>> UpdateDefaultColumnsSettings(List<DefaultColumnsSettingDto> defaultColumnsSettingsDto)
         {
             var url = $"api/DefaultColumnsSetting/UpdateDefaultColumnsSettings";
-            var ret = await _taskyService.PostJsonAsync<bool>(url, _defaultColumnsSettingsDto);
+            var ret = await _taskyService.PostJsonAsync<bool>(url, defaultColumnsSettingsDto);
 
             return ret;
         }

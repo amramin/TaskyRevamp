@@ -19,10 +19,10 @@ namespace TaskyRevamp.Client.Consumer
 
             return res;
         }
-		public async Task<CommonApiResponse<bool>> UpdateRecycleBinSetting(RecycleBinSettingDto _recycleBinSettingDto)
+		public async Task<CommonApiResponse<bool>> UpdateRecycleBinSetting(RecycleBinSettingDto recycleBinSettingDto)
 		{
 			var url = $"api/RecycleBinSetting/UpdateRecycleBinSetting";
-			var ret = await _taskyService.PostJsonAsync<bool>(url, _recycleBinSettingDto);
+			var ret = await _taskyService.PostJsonAsync<bool>(url, recycleBinSettingDto);
 
 			return ret;
 		}

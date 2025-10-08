@@ -25,10 +25,10 @@ namespace TaskyRevamp.WebAPI.Controllers
         }
 
 		[HttpPost("UpdateRecycleBinSetting")]
-		public async Task<ActionResult> UpdateRecycleBinSetting([FromBody]RecycleBinSettingDto _recycleBinSettingDto)
+		public async Task<ActionResult> UpdateRecycleBinSetting([FromBody]RecycleBinSettingDto recycleBinSettingDto)
 		{
 
-			return Ok(await _mediator.Send(new UpdateRecycleBinSettingCommand(_recycleBinSettingDto)));
+			return Ok(await _mediator.Send(new UpdateRecycleBinSettingCommand(recycleBinSettingDto)));
 		}
 
 	}

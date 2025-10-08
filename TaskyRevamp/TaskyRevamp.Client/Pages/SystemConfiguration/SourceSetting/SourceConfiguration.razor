@@ -18,9 +18,11 @@
             <h5 class="mb-0 fw-bold">@Loc["SourceConfiguration"]</h5>
             <div class="d-flex">
                 <input type="text" class="form-control form-control-sm me-2" placeholder="Search..." oninput="SearchOption"
-                    style="max-width: 400px;" />
-                <button class="btn btn-sm btn-primary" style="width:300px" @onclick="AddSource"> +
-                    @Loc["AddTaskSource"]</button>
+                       style="max-width: 400px;" />
+                <button class="btn btn-sm btn-primary" style="width:300px" @onclick="AddSource">
+                    +
+                    @Loc["AddTaskSource"]
+                </button>
             </div>
         </div>
         <div class="table-responsive flex-grow-1">
@@ -68,8 +70,10 @@
                             <td>@item.Source.DisplayedName</td>
                             <td>@item.Source.CreateDate.ToLocalTime().ToString("dd/MM/yyyy")</td>
                             <td>@item.CreatedByName</td>
-                            <td>@(item.Source.UpdateDate.HasValue?
-                                                    item.Source.UpdateDate.Value.ToLocalTime().ToString("dd/MM/yyyy"): "")</td>
+                            <td>
+                                @(item.Source.UpdateDate.HasValue?
+                                                    item.Source.UpdateDate.Value.ToLocalTime().ToString("dd/MM/yyyy"): "")
+                            </td>
                             <td>@item.UpdatedByName</td>
                             <td class="text-center">
                                 <div class="form-check form-switch d-flex justify-content-center">
@@ -95,7 +99,7 @@
         </div>
         <div class="card-footer bg-white">
             <Pagination CurrentPage="@currentPage" TotalPages="@totalPages" TotalCount="@totalCount" PageSize="@pageSize"
-                PageChanged="ChangePage" PageSizeChangedCallback="ChangePageSize" />
+                        PageChanged="ChangePage" PageSizeChangedCallback="ChangePageSize" />
         </div>
     </div>
 }
@@ -114,8 +118,8 @@ else
                     <SVGCrud SVGType="SVGCrud.SVGTypeEnum.EmptyPageVector"></SVGCrud>
                 </span>
                 <div class="content">
-                <h5 class="headline-5">@Loc["No Task Sources Available"]</h5>
-                <p class="small-medium-text">@Loc["Add a new task source to get started."]</p>
+                    <h5 class="headline-5">@Loc["No Task Sources Available"]</h5>
+                    <p class="small-medium-text">@Loc["Add a new task source to get started."]</p>
                 </div>
                 <div class="action-btn-list">
                     <button class="btn btn-lg btn-primary" @onclick="AddSource">
@@ -130,7 +134,7 @@ else
     </div>
 }
 <ConfirmationPopup ButtonText="Confirm" IsVisible="@showConfirm" OnConfirm="OnDeleteConfirmed"
-    Message="@confirmMessage" />
+                   Message="@confirmMessage" />
 
 @code {
     List<SourceDtoWithName> sources = new();

@@ -44,29 +44,6 @@
 
                         }
                     </InputRadioGroup>
-                     @* <InputRadioGroup TValue="PeriodType" Value="RecycleBinSetting.PeriodType"
-                        ValueChanged="OnSettingChange" ValueExpression="() => RecycleBinSetting.PeriodType">
-                        @foreach (var value in PeriodTypes)
-                        {
-                            var radioId = $"periodType_{value}";
-                            <div class="form-check-card">
-
-                                <InputRadio id="@radioId" Value="@value" />
-                                <label for="@radioId">
-                                    @value.GetDescription()
-
-                                    @if (RecycleBinSetting.PeriodType == PeriodType.Custom && value == PeriodType.Custom)
-                                    {
-                                        <input placeholder="@Loc["EnterDaysNumber"]" type="number" min="0" class="form-control" @bind="RecycleBinSetting.CustomDays"
-                                            @oninput="OnCustomDaysChange" />
-                                    }
-                                </label>
-                            </div>
-
-                        }
-                    </InputRadioGroup> *@
-
-
                 </div>
             </div>
         </div>

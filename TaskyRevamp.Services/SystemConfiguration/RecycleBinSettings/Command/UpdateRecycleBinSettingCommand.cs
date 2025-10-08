@@ -15,9 +15,9 @@ namespace TaskyRevamp.Services.SystemConfiguration.RecycleBinSettings.Command
 
 	public class UpdateRecycleBinSettingHandler : IRequestHandler<UpdateRecycleBinSettingCommand, bool>
 	{
-		private readonly IRepository<TaskyRevamp.Domain.Models.SystemConfiguration.RecycleBinSettings> _recycleBinSettingsRepository;
+		private readonly IRepository<RecycleBinSetting> _recycleBinSettingsRepository;
 
-		public UpdateRecycleBinSettingHandler(IRepository<Domain.Models.SystemConfiguration.RecycleBinSettings> recycleBinSettingsRepository)
+		public UpdateRecycleBinSettingHandler(IRepository<RecycleBinSetting> recycleBinSettingsRepository)
 		{
 			_recycleBinSettingsRepository = recycleBinSettingsRepository;
 		}

@@ -400,7 +400,7 @@
     <value>إدارة المسند إليه</value>
   </data>
   <data name="Mandatory" xml:space="preserve">
-    <value>الزامي</value>
+    <value>إلزامي</value>
   </data>
   <data name="Status" xml:space="preserve">
     <value>الحالة</value>
@@ -520,12 +520,6 @@
   <data name="DepartmentParent" xml:space="preserve">
     <value>الإدارة الرئيسية </value>
   </data>
-  <data name="UpdatedBy" xml:space="preserve">
-    <value>تم تعديله بواسطة</value>
-  </data>
-  <data name="UpdateDate" xml:space="preserve">
-    <value>تاريخ التعديل</value>
-  </data>
   <data name="DefaultColumnsHint" xml:space="preserve">
     <value>قم بتخصيص الأعمدة التي ترغب في عرضها، وحدد العرض الافتراضي للأعمدة الذي سيظهر عند تسجيل دخول المستخدم إلى النظام</value>
   </data>
@@ -544,7 +538,22 @@
   <data name="Confirm" xml:space="preserve">
     <value>تأكيد</value>
   </data>
-   <data name="EnterDaysNumber" xml:space="preserve">
-    <value>ادخل عدد الايام</value>
+  <data name="Search" xml:space="preserve">
+    <value>بحث</value>
+  </data>
+  <data name="EnterDaysNumber" xml:space="preserve">
+    <value>أدخل عدد الأيام</value>
+  </data>
+  <data name="FieldNames" xml:space="preserve">
+    <value>أسماء الحقول</value>
+  </data>
+  <data name="AddTaskSettingNotFound" xml:space="preserve">
+    <value>لم يتم العثور على اعداد اضافة المهمة {id}</value>
+  </data>
+  <data name="FilterFieldNotFound" xml:space="preserve">
+    <value>لم يتم العثور على حقل المرشح {id}</value>
+  </data>
+  <data name="DefaultColumnNotFound" xml:space="preserve">
+    <value>لم يتم العثور على العمود الافتراضي {id}</value>
   </data>
 </root>

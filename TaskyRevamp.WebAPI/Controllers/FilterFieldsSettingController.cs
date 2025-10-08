@@ -24,10 +24,10 @@ namespace TaskyRevamp.WebAPI.Controllers
         }
 
         [HttpPost("UpdateFilterFieldsSettings")]
-        public async Task<ActionResult> UpdateFilterFieldsSettings([FromBody] List<FilterFieldsSettingDto> FilterFieldsSettings)
+        public async Task<ActionResult> UpdateFilterFieldsSettings([FromBody] List<FilterFieldsSettingDto> filterFieldsSettings)
         {
 
-            return Ok(await _mediator.Send(new UpdateFilterFieldsSettingsCommand(FilterFieldsSettings)));
+            return Ok(await _mediator.Send(new UpdateFilterFieldsSettingsCommand(filterFieldsSettings)));
         }
     }
 }

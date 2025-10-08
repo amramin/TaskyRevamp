@@ -19,10 +19,10 @@ namespace TaskyRevamp.Client.Consumer
 
             return res;
         }
-        public async Task<CommonApiResponse<bool>> UpdateAddTaskSettings(List<AddTaskSettingDto> _addTaskSettingsDto)
+        public async Task<CommonApiResponse<bool>> UpdateAddTaskSettings(List<AddTaskSettingDto> addTaskSettingsDto)
         {
             var url = $"api/AddTaskSetting/UpdateAddTaskSettings";
-            var ret = await _taskyService.PostJsonAsync<bool>(url, _addTaskSettingsDto);
+            var ret = await _taskyService.PostJsonAsync<bool>(url, addTaskSettingsDto);
 
             return ret;
         }
