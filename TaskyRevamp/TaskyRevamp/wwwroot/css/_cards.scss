@@ -1,0 +1,85 @@
+/* start .card */
+.card {
+  border-color: var(--light-300);
+  &.setting-card {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    .text-content {
+      margin-bottom: 1.5rem;
+    }
+    &>.card-body {
+      flex: 1;
+  overflow-y: auto;
+    }
+    .card-footer {
+      padding-block: 0;
+      background-color: transparent;
+      border-top: 0;
+      .action-buttons {
+        border-top: 1px solid var(--light-300);
+        padding-block: 1rem;
+        display: flex;
+        justify-content: flex-end;
+        gap: 0.5rem;
+        .btn {
+          padding-inline: 1.5rem;
+        }
+      }
+    }
+    .card-order-header {
+      padding-bottom: 0.5rem;
+
+      .order {
+        width: 2.5rem;
+      }
+      .title {
+        flex-grow: 1;
+        padding-inline-start: 0.75rem;
+      }
+      .toggle{
+        width:4rem;
+      }
+    }
+  }
+  &.card-order-control {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 0.5rem;
+    .card-body {
+      padding: 0.5rem 0.75rem;
+      font-size: 0.875rem;
+    }
+
+    .cl-preview {
+      width: 1.5rem;
+      height: 1.5rem;
+      border: 1px solid var(--light-300);
+    }
+
+    .actions {
+      padding-inline-start: 0.75rem;
+      margin-inline-start: 0.75rem;
+      border-inline-start: 1px solid var(--light-200);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .toggle{
+        padding:0 1rem;
+      }
+    .btn-group-vertical {
+      .btn {
+        border-inline-start: 1px solid var(--light-300);
+        border-start-start-radius: 0;
+        border-end-start-radius: 0;
+        color: var(--dark-700);
+        width: 2.5rem;
+        padding-block: 0.125rem;
+        &:first-child {
+          border-bottom: 1px solid var(--light-300);
+        }
+      }
+    }
+  }
+}

@@ -1,6 +1,6 @@
 /* start app-splash-screen*/
 .app-splash-screen {
-  background-color: var(--primary-color);
+  background-color: rgba(0,0,0,.5);
   position: fixed;
   flex-direction: column;
   align-items: center;
@@ -17,6 +17,10 @@
     gap: 1rem;
     text-align: center;
     color:var(--bs-white);
+    border: 1px solid var(--primary-color);
+    padding:2rem; 
+    border-radius: 0.5rem;
+    background-color: var(--primary-color);
     .headline-6{
       font-size:1.5rem;
     }
