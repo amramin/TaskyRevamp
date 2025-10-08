@@ -703,6 +703,7 @@
       -ms-flex: 1;
           flex: 1;
   overflow-y: auto;
+  max-height: calc(100svh - 16.5rem);
 }
 .card.setting-card .card-footer {
   padding-block: 0;
@@ -737,7 +738,7 @@
           padding-inline-start: 0.75rem;
 }
 .card.setting-card .card-order-header .toggle {
-  width: 4rem;
+  width: 4.5rem;
 }
 .card.card-order-control {
   display: -webkit-box;
@@ -775,6 +776,7 @@
 }
 .card.card-order-control .toggle {
   padding: 0 1rem;
+  width: 4.5rem;
 }
 .card.card-order-control .btn-group-vertical .btn {
   -webkit-border-start: 1px solid var(--light-300);
