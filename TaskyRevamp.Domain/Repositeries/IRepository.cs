@@ -123,6 +123,7 @@ public interface IRepository<TEntity> where TEntity : Entity
        int pageNumber,
        int pageSize,
        Expression<Func<TEntity, bool>>? filter = null,
+       Expression<Func<TEntity, bool>>? searchFilter = null,
        Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
        string includeProperties = "");
 }
