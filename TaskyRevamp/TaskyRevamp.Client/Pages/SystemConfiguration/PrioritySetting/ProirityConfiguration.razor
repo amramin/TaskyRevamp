@@ -32,7 +32,7 @@
                 <div class="col-xxl-7 col-xl-8 col-lg-9 col-md-11">
                     <div class="text-content">
                         <h6 class="headline-6">@Loc["PriorityOptions"]</h6>
-                        <p class="small-medium-text">@Loc["priorityHint"]</p>
+                        <p class="small-medium-text hint">@Loc["priorityHint"]</p>
                     </div>
                     @foreach (var p in Priorities.OrderBy(p => p.Order))
                     {
@@ -55,7 +55,7 @@
                                         <button class="btn btn-action-24 btn-delete"
                                                 @onclick=" () => ShowDeleteConfirm(p)">
                                             <span class="icon">
-                                                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.RecycleBinOutline"></SVGCrud>
+                                                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Delete"></SVGCrud>
                                             </span>
                                         </button>
                                     </div>

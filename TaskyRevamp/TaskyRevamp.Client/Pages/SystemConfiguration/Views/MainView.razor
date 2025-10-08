@@ -1,4 +1,10 @@
 ﻿@page "/Views"
+@inject IStringLocalizer<SharedResources> Loc
+    <div class="page-header">
+        <div class="title-block">
+            <h1 class="page-headline">@Loc["Tasksviews"]</h1>
+        </div>
+    </div>
 
 <div class="d-flex">
     <div class="bg-light border-end d-flex flex-column align-items-center py-3" style="width: 60px;">

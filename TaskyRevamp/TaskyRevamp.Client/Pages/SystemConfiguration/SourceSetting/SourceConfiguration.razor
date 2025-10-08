@@ -10,111 +10,128 @@
 @inject SourceSettingConsumer _sourceSettingConsumer
 
 
-<div class="card p-4 m-2">
-    @if(sources != null && sources.Any())
-    {
-        <div class="card shadow-sm border-1 ms-2">
-            <div class="card-header d-flex justify-content-between align-items-center bg-white">
-                <h5 class="mb-0 fw-bold">@Loc["SourceConfiguration"]</h5>
-                <div class="d-flex">
-                    <input type="text" class="form-control form-control-sm me-2" placeholder="Search..." oninput ="SearchOption" style="max-width: 400px;" />
-                    <button class="btn btn-sm btn-primary" style="width:300px" @onclick="AddSource"> + @Loc["AddTaskSource"]</button>
+
+@if (sources != null && sources.Any())
+{
+    <div class="card shadow-sm border-1 ms-2">
+        <div class="card-header d-flex justify-content-between align-items-center bg-white">
+            <h5 class="mb-0 fw-bold">@Loc["SourceConfiguration"]</h5>
+            <div class="d-flex">
+                <input type="text" class="form-control form-control-sm me-2" placeholder="Search..." oninput="SearchOption"
+                    style="max-width: 400px;" />
+                <button class="btn btn-sm btn-primary" style="width:300px" @onclick="AddSource"> +
+                    @Loc["AddTaskSource"]</button>
+            </div>
+        </div>
+        <div class="table-responsive flex-grow-1">
+            <table class="table table-sm table-hover align-middle m-2">
+                <thead class="table-light small">
+                    <tr>
+                        <th @onclick='() => SortBy("DisplayedName")' style="cursor:pointer">
+                            @Loc["name"]
+                            <span class="ms-1">
+                                @(currentSortColumn == "DisplayedName" ? (sortAscending ? "↑" : "↓") : "↕")
+                            </span>
+                        </th>
+                        <th @onclick='() => SortBy("CreateDate")' style="cursor:pointer">
+                            @Loc["CreationDate"]
+                            <span class="ms-1">
+                                @(currentSortColumn == "CreateDate" ? (sortAscending ? "↑" : "↓") : "↕")
+                            </span>
+                        </th>
+                        <th @onclick='() => SortBy("CreatedBy")' style="cursor:pointer">
+                            @Loc["CreatedBy"]
+                            <span class="ms-1">
+                                @(currentSortColumn == "CreatedBy" ? (sortAscending ? "↑" : "↓") : "↕")
+                            </span>
+                        </th>
+                        <th @onclick='() => SortBy("UpdateDate")' style="cursor:pointer">
+                            @Loc["UpdateDate"]
+                            <span class="ms-1">
+                                @(currentSortColumn == "UpdateDate" ? (sortAscending ? "↑" : "↓") : "↕")
+                            </span>
+                        </th>
+                        <th @onclick='() => SortBy("UpdatedBy")' style="cursor:pointer">
+                            @Loc["UpdatedBy"]
+                            <span class="ms-1">
+                                @(currentSortColumn == "UpdatedBy" ? (sortAscending ? "↑" : "↓") : "↕")
+                            </span>
+                        </th>
+                        <th class="text-center">@Loc["active"]</th>
+                        <th class="text-center">@Loc["Action"]</th>
+                    </tr>
+                </thead>
+                <tbody class="small">
+                    @foreach (var item in sources)
+                    {
+                        <tr>
+                            <td>@item.Source.DisplayedName</td>
+                            <td>@item.Source.CreateDate.ToLocalTime().ToString("dd/MM/yyyy")</td>
+                            <td>@item.CreatedByName</td>
+                            <td>@(item.Source.UpdateDate.HasValue?
+                                                    item.Source.UpdateDate.Value.ToLocalTime().ToString("dd/MM/yyyy"): "")</td>
+                            <td>@item.UpdatedByName</td>
+                            <td class="text-center">
+                                <div class="form-check form-switch d-flex justify-content-center">
+                                    <InputCheckbox @bind-Value="item.Source.IsActive" class="form-check-input" disabled />
+                                </div>
+                            </td>
+                            <td class="text-center">
+                                <button class="btn btn-sm btn-success me-2" @onclick="@(() => EditSource(item.Source.Id))">
+                                    <span class="icon">
+                                        <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Edit"></SVGCrud>
+                                    </span>
+                                </button>
+                                <button class="btn btn-sm btn-danger" @onclick="@(() => DeleteSource(item))">
+                                    <span class="icon">
+                                        <SVGCrud SVGType="SVGCrud.SVGTypeEnum.RecycleBin"></SVGCrud>
+                                    </span>
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="card-footer bg-white">
+            <Pagination CurrentPage="@currentPage" TotalPages="@totalPages" TotalCount="@totalCount" PageSize="@pageSize"
+                PageChanged="ChangePage" PageSizeChangedCallback="ChangePageSize" />
+        </div>
+    </div>
+}
+else
+{
+
+    <div class="page-header">
+        <div class="title-block">
+            <h1 class="page-headline">@Loc["SourceConfiguration"]</h1>
+        </div>
+    </div>
+    <div class="page-body">
+        <div class="card empty-page">
+            <div class="card-body">
+                <span class="vector">
+                    <SVGCrud SVGType="SVGCrud.SVGTypeEnum.EmptyPageVector"></SVGCrud>
+                </span>
+                <div class="content">
+                <h5 class="headline-5">@Loc["No Task Sources Available"]</h5>
+                <p class="small-medium-text">@Loc["Add a new task source to get started."]</p>
+                </div>
+                <div class="action-btn-list">
+                    <button class="btn btn-lg btn-primary" @onclick="AddSource">
+                        <span class="icon">
+                            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Pluse"></SVGCrud>
+                        </span>
+                        @Loc["AddTaskSource"]
+                    </button>
                 </div>
             </div>
-            <div class="table-responsive flex-grow-1">
-                <table class="table table-sm table-hover align-middle m-2">
-                    <thead class="table-light small">
-                        <tr>
-                            <th @onclick='() => SortBy("DisplayedName")' style="cursor:pointer">
-                                @Loc["name"]
-                                <span class="ms-1">
-                                    @(currentSortColumn == "DisplayedName" ? (sortAscending ? "↑" : "↓"): "↕")
-                                </span>
-                            </th>
-                            <th @onclick='() => SortBy("CreateDate")' style="cursor:pointer">
-                                @Loc["CreationDate"]
-                                <span class="ms-1">
-                                    @(currentSortColumn == "CreateDate" ? (sortAscending ? "↑" : "↓") : "↕")
-                                </span>
-                            </th>
-                            <th @onclick='() => SortBy("CreatedBy")' style="cursor:pointer">
-                                @Loc["CreatedBy"]
-                                <span class="ms-1">
-                                    @(currentSortColumn == "CreatedBy" ? (sortAscending ? "↑" : "↓") : "↕")
-                                </span>
-                            </th>
-                            <th @onclick='() => SortBy("UpdateDate")' style="cursor:pointer">
-                                @Loc["UpdateDate"]
-                                <span class="ms-1">
-                                    @(currentSortColumn == "UpdateDate" ? (sortAscending ? "↑" : "↓") : "↕")
-                                </span>
-                            </th>
-                            <th @onclick='() => SortBy("UpdatedBy")' style="cursor:pointer">
-                                @Loc["UpdatedBy"]
-                                <span class="ms-1">
-                                    @(currentSortColumn == "UpdatedBy" ? (sortAscending ? "↑" : "↓") : "↕")
-                                </span>
-                            </th>
-                            <th class="text-center">@Loc["active"]</th>
-                            <th class="text-center">@Loc["Action"]</th>
-                        </tr>
-                    </thead>
-                    <tbody class="small">
-                        @foreach (var item in sources)
-                        {
-                            <tr>
-                                <td>@item.Source.DisplayedName</td>
-                                <td>@item.Source.CreateDate.ToLocalTime().ToString("dd/MM/yyyy")</td>
-                                <td>@item.CreatedByName</td>
-                                <td>@(item.Source.UpdateDate.HasValue? item.Source.UpdateDate.Value.ToLocalTime().ToString("dd/MM/yyyy"): "")</td>
-                                <td>@item.UpdatedByName</td>
-                                <td class="text-center">
-                                    <div class="form-check form-switch d-flex justify-content-center">
-                                        <InputCheckbox @bind-Value="item.Source.IsActive" class="form-check-input" disabled />
-                                    </div>
-                                </td>
-                                <td class="text-center">
-                                    <button class="btn btn-sm btn-success me-2" @onclick="@(() => EditSource(item.Source.Id))">
-                                        <span class="icon">
-                                            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Edit"></SVGCrud>
-                                        </span>
-                                    </button>
-                                    <button class="btn btn-sm btn-danger" @onclick="@(() => DeleteSource(item))">
-                                        <span class="icon">
-                                            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.RecycleBin"></SVGCrud>
-                                        </span>
-                                    </button>
-                                </td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
-            <div class="card-footer bg-white">
-                <Pagination CurrentPage="@currentPage"
-                            TotalPages="@totalPages"
-                            TotalCount="@totalCount"
-                            PageSize="@pageSize"
-                            PageChanged="ChangePage"
-                            PageSizeChangedCallback="ChangePageSize" />
-            </div>
-       </div>
-    }
-    else
-    {
-    
-            <div class="d-flex flex-column align-sources-center justify-content-center p-5">
-                <h6 class="mt-4 fw-semibold text-muted">@Loc["No Task Sources Available"]</h6>
-                <p class="text-muted">@Loc["Add a new task source to get started."]</p>
-                <button class="btn btn-primary mt-3" @onclick="AddSource"> + @Loc["AddTaskSource"] </button>
-            </div>
-    
-    }
-    <ConfirmationPopup ButtonText="Confirm"
-                   IsVisible="@showConfirm"
-                   OnConfirm="OnDeleteConfirmed"
-                   Message="@confirmMessage" />
-</div>
+        </div>
+    </div>
+}
+<ConfirmationPopup ButtonText="Confirm" IsVisible="@showConfirm" OnConfirm="OnDeleteConfirmed"
+    Message="@confirmMessage" />
+
 @code {
     List<SourceDtoWithName> sources = new();
     private bool showConfirm;
@@ -153,7 +170,7 @@
         sources = data.Items.ToList();
         totalPages = data.TotalPages;
         totalCount = data.TotalCount;
-    } 
+    }
     private void AddSource() => navigationManager.NavigateTo("/AddSource");
     private void EditSource(Guid id) => navigationManager.NavigateTo($"EditSource/{id}");
     private void DeleteSource(SourceDtoWithName s)

@@ -14,90 +14,88 @@
         <h1 class="page-headline">@Loc["AddTaskFieldsConfiguration"]</h1>
     </div>
 </div>
-<p>@Loc["AddTaskHint"]</p>
+<div class="page-body">
+    <div class="card setting-card">
+        <div class="card-body">
+            <div class="row justify-content-center">
+                <div class="col-xxl-7 col-xl-8 col-lg-9 col-md-11">
+                    <div class="text-content">
+                        <p class="small-medium-text hint">@Loc["AddTaskHint"]</p>
+                    </div>
+                    <div class="card-order-header d-flex justify-content-between align-items-center">
+                        <div class="title  small-medium-text"> Field Names</div>
+                        <div class="toggle small-medium-text"> Active</div>
+                        <div class="toggle small-medium-text">  Mandatory</div>
+                        <div class="order small-medium-text"></div>
+                    </div>
+                    <SortableList Id="defaultColsList"
+                                Items="AddTaskSettings.OrderBy(x => x.Order).ToList()"
+                                KeySelector="@(item => item.Id)"
+                                OnUpdate="(i) => SortSettingsList(i)"
+                                Context="setting">
+                        <SortableItemTemplate>
+                            <div class="card card-order-control">
+                                <div class="card-body d-flex justify-content-between align-items-center">
 
-<div class="card shadow-sm p-3">
-    <div class="mb-2 fw-bold">
-        <div class="d-flex align-items-center">
+                                    <div class="flex-fill">
+                                        @setting.NameEnglish -
+                                        <span class="ar-text">@setting.NameArabic</span>
+                                    </div>
+                                    <div class="toggle">
+                                        <div class="form-switch custom">
+                                            <input checked="@setting.IsActive"
+                                                id="IsActive@(setting.Id)"
+                                                type="checkbox"
+                                                @onchange="@(() => setting.IsActive = !setting.IsActive)" />
+                                            <label for="IsActive@(setting.Id)">
+                                                <span class="toggler-icon"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="toggle">
+                                        <div class="form-switch custom ">
+                                            <input checked="@setting.IsMandatory"
+                                                id="IsMandatory@(setting.Id)"
+                                                type="checkbox"
+                                                @onchange="@(() => setting.IsMandatory = !setting.IsMandatory)" />
+                                            <label for="IsMandatory@(setting.Id)">
+                                                <span class="toggler-icon"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="btn-group-vertical">
+                                    <button class="btn " @onclick=" () => MoveUp(setting)">
+                                        <span class="icon">
+                                            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.ArrowUp"></SVGCrud>
+                                        </span>
+                                    </button>
 
-            <div class="col-md-6">
-                Field Names
+                                    <button class="btn " @onclick="() => MoveDown(setting)">
+                                        <span class="icon">
+                                            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.ArrowDown"></SVGCrud>
+                                        </span>
+                                    </button>
+                                </div>
+                            </div>
+                        </SortableItemTemplate>
+                    </SortableList>
+                </div>
             </div>
-
-            <div class="col-md-2">
-                Active
-            </div>
-
-            <div class="col-md-2">
-                Mandatory
+        </div>
+        <div class="card-footer">
+            <div class="row justify-content-center">
+                <div class="col-xxl-7 col-xl-8 col-lg-9 col-md-11">
+                    <div class="action-buttons">
+                        <button class="btn btn-lg btn-light" @onclick="CancelSettings">@Loc["Cancel"]</button>
+                        <button class="btn btn-lg  btn-primary" @onclick="SaveSettings">@Loc["Save"]</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
-    <SortableList Id="defaultColsList"
-                  Items="AddTaskSettings.OrderBy(x => x.Order).ToList()"
-                  KeySelector="@(item => item.Id)"
-                  OnUpdate="(i) => SortSettingsList(i)"
-                  Context="setting">
-        <SortableItemTemplate>
-            <div class="card mb-2">
-                <div class="card-body d-flex justify-content-between align-items-center">
-
-                    <div class="col-md-6">
-                        @setting.NameEnglish - @setting.NameArabic
-                    </div>
-
-                    <div class="form-switch custom col-md-2">
-                        <input checked="@setting.IsActive"
-                               id="IsActive@(setting.Id)"
-                               type="checkbox"
-                               @onchange="@(() => setting.IsActive = !setting.IsActive)" />
-
-                        <label for="IsActive@(setting.Id)">
-                            <span class="toggler-icon"></span>
-                        </label>
-                    </div>
-
-                    <div class="form-switch custom col-md-2">
-                        <input checked="@setting.IsMandatory"
-                               id="IsMandatory@(setting.Id)"
-                               type="checkbox"
-                               @onchange="@(() => setting.IsMandatory = !setting.IsMandatory)" />
-
-                        <label for="IsMandatory@(setting.Id)">
-                            <span class="toggler-icon"></span>
-                        </label>
-                    </div>
-
-
-                    <div class="d-flex align-items-center gap-2">
-
-                        <div class="btn-group-vertical">
-                            <button class="btn btn-action-40 btn-outline-secondary" @onclick=" () => MoveUp(setting)">
-                                <span class="icon">
-                                    <SVGCrud SVGType="SVGCrud.SVGTypeEnum.ChevronUp"></SVGCrud>
-                                </span>
-                            </button>
-
-                            <button class="btn btn-action-40 btn-outline-secondary" @onclick="() => MoveDown(setting)">
-                                <span class="icon">
-                                    <SVGCrud SVGType="SVGCrud.SVGTypeEnum.ChevronDown"></SVGCrud>
-                                </span>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </SortableItemTemplate>
-    </SortableList>
-
-    <div class="d-flex justify-content-end gap-2 mt-3">
-        <button class="btn btn-light" @onclick="CancelSettings">@Loc["Cancel"]</button>
-        <button class="btn btn-primary" @onclick="SaveSettings">@Loc["Save"]</button>
-    </div>
-
 </div>
-
 @code {
 
     public List<AddTaskSettingDto> AddTaskSettings { get; set; } = new List<AddTaskSettingDto>();
