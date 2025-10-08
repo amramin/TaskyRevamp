@@ -1,0 +1,30 @@
+﻿@using TaskyRevamp.Dto.SystemConfiguration;
+@inject IStringLocalizer<SharedResources> Loc
+
+
+<div class="group-input search-group">
+    <span class="start-icon">
+        <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Search"></SVGCrud>
+    </span>
+    <input type="text"
+           placeholder="@Loc["Search"]..."
+           value="@SearchTerm"
+           class="@CssClass"
+           style="@CssStyle"
+           @oninput="@(e => SearchOnInput(e))" />
+</div>
+
+@code {
+
+    [Parameter] public EventCallback<string> SearchSubmit { get; set; }
+    [Parameter] public string CssClass { get; set; } = "";
+    [Parameter] public string CssStyle { get; set; } = "";
+
+    public string SearchTerm { get; set; } = "";
+
+    private async Task SearchOnInput(ChangeEventArgs e)
+    {
+        SearchTerm = e.Value?.ToString() ?? "";
+        await SearchSubmit.InvokeAsync(SearchTerm);
+    }
+}

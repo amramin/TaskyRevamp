@@ -1,6 +1,6 @@
 ﻿using System.Linq.Expressions;
 
-namespace TaskyRevamp.Services;
+namespace TaskyRevamp.Services.Helpers;
 
 public static class PredicateBuilder
 {

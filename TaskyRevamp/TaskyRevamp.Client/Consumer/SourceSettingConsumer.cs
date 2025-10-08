@@ -1,4 +1,5 @@
-﻿using TaskyRevamp.Dto.GeneralDto;
+﻿using TaskyRevamp.Dto.Enums.SearchFields;
+using TaskyRevamp.Dto.GeneralDto;
 using TaskyRevamp.Dto.SystemConfiguration;
 
 namespace TaskyRevamp.Client.Consumer
@@ -12,13 +13,16 @@ namespace TaskyRevamp.Client.Consumer
 			_taskyService = taskyService;
 		}
 
-		public async Task<CommonApiResponse<PagedResult<SourceDtoWithName>>> GetSources(int pageNumber, int pageSize, string sortByColumnName, bool sortAscending)
+		public async Task<CommonApiResponse<PagedResult<SourceDtoWithName>>> GetSources(int pageNumber, int pageSize, string sortByColumnName, bool sortAscending, List<SearchField> searchFields = null, string searchText = null)
 		{
-			var url = $"api/SourceSetting/GetSourceSettings?pageNumber={pageNumber}&pageSize={pageSize}&sortByColumnName={sortByColumnName}&sortAscending={sortAscending}";
-			var res = await _taskyService.GetFromJsonAsync<CommonApiResponse<PagedResult<SourceDtoWithName>>>(url);
+            var queryString = _taskyService.PreparePaginatedSearchQueryString(pageNumber, pageSize, sortByColumnName, sortAscending, searchFields, searchText);
 
-			return res;
-		}
+            var url = $"api/SourceSetting/GetSourceSettings{queryString}";
+
+            var res = await _taskyService.GetFromJsonAsync<CommonApiResponse<PagedResult<SourceDtoWithName>>>(url);
+
+            return res;
+        }
 
 		public async Task<CommonApiResponse<SourceDto>> GetSourceById(Guid id)
 		{

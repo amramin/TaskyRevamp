@@ -538,6 +538,9 @@ Add a new department to get started</value>
   <data name="Confirm" xml:space="preserve">
     <value>Confirm</value>
   </data>
+  <data name="Search" xml:space="preserve">
+    <value>Search</value>
+  </data>
   <data name="EnterDaysNumber" xml:space="preserve">
     <value>Enter number of days</value>
   </data>

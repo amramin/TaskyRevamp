@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using TaskyRevamp.Dto.Enums.SearchFields;
 using TaskyRevamp.Dto.GeneralDto;
 using TaskyRevamp.Dto.SystemConfiguration;
 using TaskyRevamp.Services.Account.Query;
@@ -26,10 +27,13 @@ namespace TaskyRevamp.WebAPI.Controllers
 			[FromQuery] int pageNumber = 1,
 			[FromQuery] int? pageSize = null,
 			[FromQuery] string sortByColumnName = "CreateDate",
-			[FromQuery] bool sortAscending = true)
+			[FromQuery] bool sortAscending = true,
+			[FromQuery] List<SearchField> searchFields = null,
+			[FromQuery] string searchText = null)
 		{
-			var size = pageSize ?? paginationSettings.Value.DefaultPageSize;
-			var result = await _mediator.Send(new GetSourceConfigurationQuery(pageNumber, size, sortByColumnName, sortAscending));
+
+            var size = pageSize ?? paginationSettings.Value.DefaultPageSize;
+			var result = await _mediator.Send(new GetSourceConfigurationQuery(pageNumber, size, sortByColumnName, sortAscending, searchFields, searchText));
 			return Ok(result);
 		}
 

@@ -7,6 +7,7 @@ using System.Net.Http.Headers;
 using TaskyRevamp.Client.Extensions;
 using TaskyRevamp.Client.Services;
 using TaskyRevamp.Dto.GeneralDto;
+using TaskyRevamp.Dto.SystemConfiguration;
 
 namespace TaskyRevamp.Client;
 
@@ -55,6 +56,32 @@ public class TaskyService
         _localStorage.RemoveItemAsync("Email");
         _localStorage.RemoveItemAsync("Id");
         _localStorage.RemoveItemAsync("DelegatedUsersId");
+    }
+
+    public string PreparePaginatedSearchQueryString<T>(int pageNumber, int pageSize, string sortByColumnName, bool sortAscending, List<T> searchFields = null, string searchText = null)
+    {
+        var query = new List<string>
+            {
+                $"pageNumber={pageNumber}",
+                $"pageSize={pageSize}",
+                $"sortByColumnName={Uri.EscapeDataString(sortByColumnName)}",
+                $"sortAscending={sortAscending}"
+            };
+
+        if (searchFields != null && searchFields.Count > 0)
+        {
+            foreach (var field in searchFields)
+            {
+                query.Add($"searchFields={field.ToString()}");
+            }
+        }
+
+        if (!string.IsNullOrWhiteSpace(searchText))
+            query.Add($"searchText={searchText}");
+
+        var queryString = "?" + string.Join("&", query);
+
+        return queryString;
     }
 
     private async Task<bool> CheckForToken()
