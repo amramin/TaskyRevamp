@@ -12,14 +12,13 @@ namespace TaskyRevamp.Dto.SystemConfiguration
 	public class PriorityDto
 	{
 		public Guid Id { get; set; }
-		//[Required(ErrorMessageResourceName = "Required", ErrorMessageResourceType = typeof(TaskyRevamp.Localization.Resources.SharedResources))]
-		[Required]
+		[Required(ErrorMessageResourceType = typeof(SharedResources), ErrorMessageResourceName = "Required")]
 		public string NameEnglish { get; set; }
-		[Required]
+		[Required(ErrorMessageResourceType = typeof(SharedResources), ErrorMessageResourceName = "Required")]
 		public string NameArabic { get; set; }
-		[Required]
+		[Required(ErrorMessageResourceType = typeof(SharedResources), ErrorMessageResourceName = "Required")]
 		public string NameColor { get; set; }
-		[Required]
+		[Required(ErrorMessageResourceType = typeof(SharedResources), ErrorMessageResourceName = "Required")]
 		public string BackgroundColor { get; set; }
 		public int Order { get; set; }
 
