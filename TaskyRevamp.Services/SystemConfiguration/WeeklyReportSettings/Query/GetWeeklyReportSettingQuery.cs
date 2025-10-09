@@ -14,16 +14,16 @@ namespace TaskyRevamp.Services.SystemConfiguration.WeeklyReportSettings.Query
 
 	public class GetWeeklyReportSettingQueryHandler : IRequestHandler<GetWeeklyReportSettingQuery, WeeklyReportSettingsDto>
 	{
-		private readonly IRepository<WeeklyReportSetting> _WeeklyReortSettingRepository;
+		private readonly IRepository<WeeklyReportSetting> _weeklyReortSettingRepository;
 
-		public GetWeeklyReportSettingQueryHandler(IRepository<WeeklyReportSetting> _weeklyReortSettingRepository)
+		public GetWeeklyReportSettingQueryHandler(IRepository<WeeklyReportSetting> weeklyReortSettingRepository)
 		{
-			_WeeklyReortSettingRepository = _weeklyReortSettingRepository;
+			_weeklyReortSettingRepository = weeklyReortSettingRepository;
 		}
 		public async Task<WeeklyReportSettingsDto> Handle(GetWeeklyReportSettingQuery request, CancellationToken cancellationToken)
 		{
 			WeeklyReportSettingsDto settingsDto = new WeeklyReportSettingsDto();
-			var res = await _WeeklyReortSettingRepository.AllAsNoTracking();
+			var res = await _weeklyReortSettingRepository.AllAsNoTracking();
 			if (res.Success && res != null && res.Value != null)
 			{
 				var weeklySetting = res.Value.FirstOrDefault();

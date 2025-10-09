@@ -7,9 +7,9 @@
 @inject IStringLocalizer<SharedResources> Loc
 @inject ToastService ToastService
 @inject TypeSettingConsumer _typeSettingConsumer
+@inject PopupService PopupService
 
 <div class="container mt-4">
-    <h3>@Loc["AddTaskType"]</h3>
        <TypeForm @ref="form"
                    OnCancel="Cancel" 
                    OnValidSubmit="@Save"
@@ -37,17 +37,11 @@
             await OnValidSubmit.InvokeAsync(_newType);
             await ToastService.ShowToastAsync(Loc["Added successfully"], "success");
 
-            navigationManager.NavigateTo("/TypeConfiguration");
-        }
-        else
-        {
-            if (res.Errors != null && res.Errors.Count > 0)
-                form.AddErrorsToEditContext(res.Errors);
+            PopupService.Hide();
         }
     }
-    private async Task Cancel()
+    private void Cancel()
     {
-        //await OnCancel.InvokeAsync();
-        navigationManager.NavigateTo("/TypeConfiguration");
+        PopupService.Hide();
     }
 }

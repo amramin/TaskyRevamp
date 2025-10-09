@@ -4,8 +4,10 @@
 @using TaskyRevamp.Dto.SystemConfiguration
 @inject NavigationManager navigationManager
 @inject IStringLocalizer<SharedResources> Loc
+@inject PopupService PopupService
 @inject PrioritySettingConsumer _prioritySettingConsumer
 @inject ToastService ToastService
+
 
 <div class="container mt-4">
        <PriorityForm
@@ -51,7 +53,9 @@
             await OnValidSubmit.InvokeAsync(_newPriority);
             await ToastService.ShowToastAsync(Loc["Added successfully"], "success");
 
-            navigationManager.NavigateTo("/PrioritySettings");
+            StateHasChanged();
+            PopupService.Hide(); // close popup after save
+              
         }
         else
         {
@@ -59,9 +63,8 @@
                 form.AddErrorsToEditContext(res.Errors);
         }
     }
-    private async Task Cancel()
+    private void Cancel()
     {
-        //await OnCancel.InvokeAsync();
-        navigationManager.NavigateTo("/PrioritySettings");
+        PopupService.Hide();
     }
 }

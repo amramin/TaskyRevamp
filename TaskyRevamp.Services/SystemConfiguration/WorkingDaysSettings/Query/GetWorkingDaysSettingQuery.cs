@@ -13,15 +13,15 @@ namespace TaskyRevamp.Services.SystemConfiguration.WorkingDaysSettings.Query
 	public record GetWorkingDaysSettingQuery() : IRequest<List<WorkingDaysSettingsDto>>;
 	public class GetWorkingDaysSettingQueryHandler : IRequestHandler<GetWorkingDaysSettingQuery, List<WorkingDaysSettingsDto>>
 	{
-		private readonly IRepository<WorkingDaySetting> _WorkingDaySettingRepository;
-		public GetWorkingDaysSettingQueryHandler(IRepository<WorkingDaySetting> _workingDaySettingRepository)
+		private readonly IRepository<WorkingDaySetting> _workingDaySettingRepository;
+		public GetWorkingDaysSettingQueryHandler(IRepository<WorkingDaySetting> workingDaySettingRepository)
 		{
-			_WorkingDaySettingRepository = _workingDaySettingRepository;
+			_workingDaySettingRepository = workingDaySettingRepository;
 		}
 		public async Task<List<WorkingDaysSettingsDto>> Handle(GetWorkingDaysSettingQuery request, CancellationToken cancellationToken)
 		{
 			List<WorkingDaysSettingsDto> workingDaysSettingsDtos = new List<WorkingDaysSettingsDto>();
-			var res = await _WorkingDaySettingRepository.AllAsNoTracking();
+			var res = await _workingDaySettingRepository.AllAsNoTracking();
 			if(res.Success && res != null && res.Value!= null)
 			{
 				workingDaysSettingsDtos = res.Value.Select(d => d.CopyToDto()).ToList();

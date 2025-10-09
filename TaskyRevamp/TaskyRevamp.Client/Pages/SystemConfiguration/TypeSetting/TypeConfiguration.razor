@@ -7,7 +7,7 @@
 @inject IStringLocalizer<SharedResources> Loc
 @inject ToastService ToastService
 @inject TypeSettingConsumer _typeSettingConsumer
-
+@inject PopupService PopupService
 
 <div class="card p-4 m-2">
     @if (types != null && types.Any())
@@ -109,15 +109,10 @@
         </div>
 
     }
-    <ConfirmationPopup ButtonText="Confirm"
-                       IsVisible="@showConfirm"
-                       OnConfirm="OnDeleteConfirmed"
-                       Message="@confirmMessage" />
 </div>
 @code {
     List<TypeDtoWithName> types = new();
     private bool showConfirm;
-    private string confirmMessage = "";
     private TypeDtoWithName? selectedType;
     private int currentPage = 1;
     private int totalPages = 1;
@@ -153,11 +148,17 @@
         totalPages = data.TotalPages;
         totalCount = data.TotalCount;
     }
-    private void AddType() => navigationManager.NavigateTo("/AddType");
-    private void EditType(Guid id) => navigationManager.NavigateTo($"EditType/{id}");
+    private void AddType()
+    {
+        PopupService.ShowNew(@<AddType OnValidSubmit="OnInitializedAsync"></AddType>, headerText: @Loc["AddTaskType"]);
+    }
+    private void EditType(Guid id)
+    {
+        PopupService.ShowNew(@<UpdateType Id="id" OnValidSubmit="OnInitializedAsync"></UpdateType>, headerText: @Loc["EditTaskType"]);
+    }
     private void DeleteType(TypeDtoWithName t)
     {
-        confirmMessage = @Loc["TypeSure"];
+        PopupService.ShowConfirmation(@Loc["TypeSure"], @Loc["Confirm"], OnDeleteConfirmed, ConfirmationType.Danger);
         selectedType = t;
         showConfirm = true;
     }

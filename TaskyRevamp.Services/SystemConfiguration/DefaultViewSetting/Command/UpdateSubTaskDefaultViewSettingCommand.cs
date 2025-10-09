@@ -13,16 +13,16 @@ namespace TaskyRevamp.Services.SystemConfiguration.DefaultViewSetting.Command
 	public record UpdateSubTaskDefaultViewSettingCommand(DefaultViewSettingsDto ViewSettingDto): IRequest<bool>;
 	public class UpdateSubTaskDefaultViewSettingHandler : IRequestHandler<UpdateSubTaskDefaultViewSettingCommand, bool>
 	{
-		private readonly IRepository<ViewSettings> _ViewSettingsRepository;
+		private readonly IRepository<ViewSettings> _viewSettingsRepository;
 
-		public UpdateSubTaskDefaultViewSettingHandler(IRepository<ViewSettings> _viewSettingsRepository)
+		public UpdateSubTaskDefaultViewSettingHandler(IRepository<ViewSettings> viewSettingsRepository)
 		{
-			_ViewSettingsRepository = _viewSettingsRepository;
+			_viewSettingsRepository = viewSettingsRepository;
 		}
 		public async Task<bool> Handle(UpdateSubTaskDefaultViewSettingCommand request, CancellationToken cancellationToken)
 		{
 
-			var originalSetting = await _ViewSettingsRepository.AllAsNoTracking();
+			var originalSetting = await _viewSettingsRepository.AllAsNoTracking();
 			if(originalSetting.Success && originalSetting != null && originalSetting.Value != null)
 			{
 				var originalSettingData = originalSetting.Value.FirstOrDefault();
@@ -32,7 +32,7 @@ namespace TaskyRevamp.Services.SystemConfiguration.DefaultViewSetting.Command
 					if(newViewSetting.SubTaskLevels != originalSettingData!.SubTaskLevels)
 					{
 						originalSettingData.SubTaskLevels = newViewSetting.SubTaskLevels;
-						await _ViewSettingsRepository.Update(originalSettingData);
+						await _viewSettingsRepository.Update(originalSettingData);
 					}
 				}
 			}

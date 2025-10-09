@@ -6,7 +6,7 @@
 @using Newtonsoft.Json.Linq;
 @using Newtonsoft.Json;
 
-
+@inject PopupService PopupService
 @inject IStringLocalizer<SharedResources> Loc
 @inject PrioritySettingConsumer _prioritySettingConsumer
 @inject ToastService ToastService
@@ -46,8 +46,10 @@
         {
             await OnValidSubmit.InvokeAsync(_priority);
             await ToastService.ShowToastAsync(Loc["EditSuccess"], "success");
+            PopupService.Hide(); // close popup after save
 
-            navigationManager.NavigateTo("/PrioritySettings");
+            // if (OnValidSubmit.HasDelegate)
+            //     await OnValidSubmit.InvokeAsync(_priority);
         }
         else
         {
@@ -60,7 +62,6 @@
 
     private async Task Cancel()
     {
-        //await OnCancel.InvokeAsync();
-        navigationManager.NavigateTo("/PrioritySettings");
+        PopupService.Hide();
     }
 }

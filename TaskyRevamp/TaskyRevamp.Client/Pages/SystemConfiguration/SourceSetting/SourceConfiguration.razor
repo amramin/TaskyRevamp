@@ -8,7 +8,7 @@
 @inject IStringLocalizer<SharedResources> Loc
 @inject ToastService ToastService
 @inject SourceSettingConsumer _sourceSettingConsumer
-
+@inject PopupService PopupService
 
 <div class="card p-4 m-2">
     @if(sources != null && sources.Any())
@@ -110,15 +110,10 @@
             </div>
     
     }
-    <ConfirmationPopup ButtonText="Confirm"
-                   IsVisible="@showConfirm"
-                   OnConfirm="OnDeleteConfirmed"
-                   Message="@confirmMessage" />
 </div>
 @code {
     List<SourceDtoWithName> sources = new();
     private bool showConfirm;
-    private string confirmMessage = "";
     private SourceDtoWithName? selectedSource;
     private int currentPage = 1;
     private int totalPages = 1;
@@ -153,12 +148,18 @@
         sources = data.Items.ToList();
         totalPages = data.TotalPages;
         totalCount = data.TotalCount;
-    } 
-    private void AddSource() => navigationManager.NavigateTo("/AddSource");
-    private void EditSource(Guid id) => navigationManager.NavigateTo($"EditSource/{id}");
+    }
+    private void AddSource()
+    {
+        PopupService.ShowNew(@<AddSource OnValidSubmit="OnInitializedAsync"></AddSource>, headerText: @Loc["AddTaskSource"]);
+    }
+    private void EditSource(Guid id)
+    {
+        PopupService.ShowNew(@<UpdateSource Id="id" OnValidSubmit="OnInitializedAsync"></UpdateSource>, headerText: @Loc["EditTaskSource"]);
+    }
     private void DeleteSource(SourceDtoWithName s)
     {
-        confirmMessage = @Loc["SourceSure"];
+        PopupService.ShowConfirmation(@Loc["SourceSure"], @Loc["Confirm"], OnDeleteConfirmed, type: ConfirmationType.Danger);
         selectedSource = s;
         showConfirm = true;
     }

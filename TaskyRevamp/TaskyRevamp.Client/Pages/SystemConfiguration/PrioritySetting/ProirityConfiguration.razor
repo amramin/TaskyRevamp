@@ -8,6 +8,7 @@
 @inject NavigationManager navigationManager
 @inject IStringLocalizer<SharedResources> Loc
 @inject ToastService ToastService
+@inject PopupService PopupService
 
 <div class="page-header">
     <div class="title-block">
@@ -18,7 +19,7 @@
             <span class="icon">
                 <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Pluse"></SVGCrud>
             </span>
-            @Loc["AddPriority"]
+            @Loc["AddNewPriority"]
         </button>
 
 
@@ -92,39 +93,16 @@
             </div>
         </div>
     </div>
-
-
-
-
-    @* <NewPopUpComponent @bind-Visible="IsShowCreateDialog" HeaderText=@Loc["AddPriority"]>
-        <AddPriority 
-            OnValidSubmit="ResetPage" 
-            OnCancel="CloseAddPage"/>
-    </NewPopUpComponent> *@
-
-    @* <NewPopUpComponent @bind-Visible="IsShowEditDialog" HeaderText="@Loc["EditPriority"]">
-        <UpdatePriority 
-            Id="SelectedPriorityId" 
-            OnValidSubmit="ResetPage" 
-            OnCancel="CloseEditPage"/>
-    </NewPopUpComponent> *@
-
-    <ConfirmationPopup ButtonText="Delete" IsVisible="@showConfirm" OnConfirm="OnDeleteConfirmed"
-                       Message="@confirmMessage" />
-
-
 </div>
 
 @code {
     public List<PriorityDto> Priorities = new List<PriorityDto>();
-    //private bool IsShowCreateDialog { get; set; } = false;
-    //private bool IsShowEditDialog { get; set; } = false;
     private Guid SelectedPriorityId { get; set; }
-    private string confirmMessage = "";
     private PriorityDto? selectedPriority;
     private bool showConfirm;
     private bool isOrdered = false;
     List<PriorityDto>? OriginalPriorities;
+    private PriorityDto? draggedItem;
 
     protected async override Task OnInitializedAsync()
     {
@@ -135,16 +113,19 @@
             OriginalPriorities = CopyPriorites();
         }
     }
-    private void Add() => navigationManager.NavigateTo("/Add-Priority");
+    private void Add()
+    {
+        PopupService.ShowNew(
+            @<AddPriority OnValidSubmit="OnInitializedAsync" ></AddPriority> , headerText: @Loc["AddPriority"]
+        );
+    }
     private void Edit(Guid id)
     {
-        //IsShowEditDialog = true;
-        //SelectedPriorityId = id;
-        navigationManager.NavigateTo($"/Update-Priority/{id}");
+        PopupService.ShowNew( @<UpdatePriority Id="id"  OnValidSubmit="OnInitializedAsync"/>, headerText: @Loc["EditPriority"]);
     }
     private void ShowDeleteConfirm(PriorityDto p)
     {
-        confirmMessage = @Loc["Sure"];
+        PopupService.ShowConfirmation(message: @Loc["Sure"], @Loc["Delete"], OnDeleteConfirmed, type: ConfirmationType.Danger);
         selectedPriority = p;
         showConfirm = true;
     }
@@ -229,27 +210,4 @@
             Order = p.Order
         }).ToList();
     }
-    // private async void ResetPage(PriorityDto args)
-    // {
-    // var res = await _prioritySettingConsumer.GetPriorities();
-    // if (res.Success && res.Data != null)
-    // {
-    // Priorities = res.Data;
-    // }
-    // IsShowCreateDialog = false;
-    // IsShowEditDialog = false;
-    // StateHasChanged();
-    // await ToastService.ShowToastAsync(Loc["EditSuccess"], "success");
-    // }
-
-    // private void CloseAddPage()
-    // {
-    // IsShowCreateDialog = false;
-    // StateHasChanged();
-    // }
-    // private void CloseEditPage()
-    // {
-    // IsShowEditDialog = false;
-    // StateHasChanged();
-    // }
 }

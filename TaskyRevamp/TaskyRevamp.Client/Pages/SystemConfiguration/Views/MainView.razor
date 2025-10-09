@@ -1,6 +1,10 @@
 ﻿@page "/Views"
 
+@inject IStringLocalizer<SharedResources> Loc
+
+
 <div class="d-flex">
+
     <div class="bg-light border-end d-flex flex-column align-items-center py-3" style="width: 60px;">
         <button class="btn btn-light mb-3 @(activeTab == 'v' ? "active" : "")"
                 @onclick="() => SetTab('v')">
@@ -23,6 +27,7 @@
     </div>
     <!-- Main Content -->
     <div class="flex-grow-1 p-4">
+        <h4> @Loc["Tasksviews"] / @_viewName </h4>
         @if (activeTab == 'v')
         {
             <TaskyRevamp.Client.Pages.SystemConfiguration.Views.ViewTaskSetting.ViewTaskSettings/>
@@ -40,6 +45,23 @@
  </div>
 
 @code {
+    private string _viewName = string.Empty;
     private char activeTab = 'v';
-    private void SetTab(char tab) => activeTab = tab;
+
+    protected override void OnInitialized()
+    {
+        SetTab('v');
+    }
+
+    private void SetTab(char tab)
+    {
+        activeTab = tab;
+        _viewName = tab switch
+        {
+            'v' => Loc["ViewOptions"],
+            'd' => Loc["Default view"],
+            's' => Loc["Subtask_Level"],
+            _ => ""
+        };
+    }
 }

@@ -13,17 +13,26 @@
     <ValidationSummary />
     <div class="offcanvas-body">
         <div class="mb-3">
-            <label class="form-label">@Loc["Name English"]</label>
+            <label class="form-label">
+                @Loc["Name English"]
+                @* <span class="text-danger">*</span> *@
+            </label>
             <InputText class="form-control" @bind-Value="_statusDto.NameEnglish" />
         </div>
 
         <div class="mb-3">
-            <label class="form-label">@Loc["Name Arabic"]</label>
+            <label class="form-label">
+                @Loc["Name Arabic"]
+                @* <span class="text-danger">*</span> *@
+            </label>
             <InputText class="form-control" @bind-Value="_statusDto.NameArabic" />
         </div>
 
         <div class="mb-3">
-            <label class="form-label">@Loc["Name Color Indicator"]</label>
+            <label class="form-label">
+                @Loc["Name Color Indicator"]
+                @* <span class="text-danger">*</span> *@
+            </label>
             <div class="input-group">
                 <InputText class="form-control" @bind-Value="_statusDto.NameColor" />
                 <span class="input-group-text">
@@ -34,7 +43,10 @@
         </div>
 
         <div class="mb-3">
-            <label class="form-label">@Loc["Background Color Indicator"]</label>
+            <label class="form-label">
+                @Loc["Background Color Indicator"]
+                @* <span class="text-danger">*</span> *@
+            </label>
             <div class="input-group">
                 <InputText class="form-control" @bind-Value="_statusDto.BackgroundColor" />
                 <span class="input-group-text">
@@ -72,7 +84,7 @@
         if (res.Success)
         {
             await ToastService.ShowToastAsync(Loc["EditSuccess"], "success");
-            PopupService.Hide(); // close popup after save
+            PopupService.Hide();
 
             if (OnValidSubmit.HasDelegate)
                 await OnValidSubmit.InvokeAsync(_statusDto);
@@ -81,6 +93,6 @@
 
     private void Cancel()
     {
-        PopupService.Hide(); // close popup without saving
+        PopupService.Hide();
     }
 }

@@ -13,15 +13,15 @@ namespace TaskyRevamp.Services.SystemConfiguration.DefaultViewSetting.Query
 	public record GetDefaultViewSettingQuery() :IRequest<DefaultViewSettingsDto>;
 	public class GetDefaultViewSettingHandler : IRequestHandler<GetDefaultViewSettingQuery, DefaultViewSettingsDto>
 	{
-		private readonly IRepository<DefaultSettings> _DefaultSettingsRepository;
-		public GetDefaultViewSettingHandler(IRepository<DefaultSettings> _defaultSettingsRepository)
+		private readonly IRepository<DefaultSettings> _defaultSettingsRepository;
+		public GetDefaultViewSettingHandler(IRepository<DefaultSettings> defaultSettingsRepository)
 		{
-			_DefaultSettingsRepository = _defaultSettingsRepository;
+			_defaultSettingsRepository = defaultSettingsRepository;
 		}
 		public async Task<DefaultViewSettingsDto> Handle(GetDefaultViewSettingQuery request, CancellationToken cancellationToken)
 		{
 			DefaultViewSettingsDto defaultViewSettingsDto = new DefaultViewSettingsDto();
-			var res = await _DefaultSettingsRepository.AllAsNoTracking();
+			var res = await _defaultSettingsRepository.AllAsNoTracking();
 			if (res.Success && res.Value != null && res.Value.Any())
 			{
 				var viewsetting = res.Value.FirstOrDefault();
