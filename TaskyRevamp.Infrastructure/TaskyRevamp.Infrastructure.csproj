@@ -7,6 +7,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="Seeders\Resources\stingray-logo.svg">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="EFCore.BulkExtensions" Version="9.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.3.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.8" />

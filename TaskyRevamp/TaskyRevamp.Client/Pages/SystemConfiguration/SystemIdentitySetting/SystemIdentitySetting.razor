@@ -17,8 +17,12 @@
         <!-- Logo Section -->
         <div class="text-center mb-4">
             <div class="position-relative d-inline-block">
-                <img src="@LogoUrl" alt="Logo" class="rounded-circle border" style="width:500px; height:500px;" />
-                <label for="logoUpload" class="position-absolute bottom-0 end-0 bg-light border rounded-circle p-2" style="cursor:pointer;">
+                @if (_systemIdentity.LogoBase64 != null)
+                {
+                    <img src="@_systemIdentity.LogoBase64" alt="Logo" class="rounded-circle border" style="width:200px; height:200px;"/>
+                }
+
+                <label for="logoUpload" class="position-absolute bottom-0 end-0 bg-light border rounded-circle p-2" style="cursor:pointer; width: 50px;">
                     <span class="icon">
                         <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Pluse"></SVGCrud>
                     </span>
@@ -126,9 +130,6 @@
 
 @code {
     SystemIdentityDto _systemIdentity = new SystemIdentityDto();
-    private string LogoUrl => _systemIdentity.Logo != null && _systemIdentity.Logo.Length > 0
-            ? $"data:image/png;base64,{Convert.ToBase64String(_systemIdentity.Logo)}"
-            : "C:\\Users\\LENOVO\\Source\\Repos\\TaskyRevamp\\TaskyRevamp\\TaskyRevamp\\wwwroot\\images\\stingray-logo.svg";
 
     protected override async Task OnInitializedAsync()
     {

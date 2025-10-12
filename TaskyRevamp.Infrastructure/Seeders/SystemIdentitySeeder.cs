@@ -19,15 +19,16 @@ namespace TaskyRevamp.Infrastructure.Seeders
 			if (context.SystemIdentity.Any())
 				return;
 
+            var assembly = typeof(SystemIdentitySeeder).Assembly;
+            using var stream = assembly.GetManifestResourceStream("TaskyRevamp.Infrastructure.Seeders.Resources.stingray-logo.svg");
+            if (stream == null)
+                throw new FileNotFoundException("Embedded resource stingray-logo.svg not found.");
 
-			//var logoPath = "images/stingray-logo.svg";
+            using var ms = new MemoryStream();
+            stream.CopyTo(ms);
+            byte[] logoBytes = ms.ToArray();
 
-			//if (!File.Exists(logoPath))
-			//	throw new FileNotFoundException($"Default logo not found at {logoPath}");
-
-			//var logoBytes = File.ReadAllBytes(logoPath);
-
-			var systemIdentityToSeed = new SystemIdentity
+            var systemIdentityToSeed = new SystemIdentity
 			{
 				PrimaryColor = "#1740A5",
 				PrimaryActiveColor = "#2F53AE",
@@ -35,8 +36,10 @@ namespace TaskyRevamp.Infrastructure.Seeders
 				SubTitle = "#000",
 				NavigationBackground = "#DEE6F6",
 				BorderColor = "#E0E0E0",
-				//Logo = logoBytes
-			};
+				Logo = logoBytes,
+				NameArabic = "",
+				NameEnglish = "",
+            };
 			context.SystemIdentity.Add(systemIdentityToSeed);
 			context.SaveChanges();
 			

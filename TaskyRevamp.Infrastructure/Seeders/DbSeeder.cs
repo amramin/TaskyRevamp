@@ -22,7 +22,7 @@ namespace TaskyRevamp.Infrastructure.Seeders
                 new DefaultColumnsSettingSeeder(),
                 new FilterFieldsSettingSeeder(),
                 new AddTaskSettingSeeder(),
-                //new SystemIdentitySeeder()
+                new SystemIdentitySeeder()
             };
 
             foreach (var seeder in seeders)
