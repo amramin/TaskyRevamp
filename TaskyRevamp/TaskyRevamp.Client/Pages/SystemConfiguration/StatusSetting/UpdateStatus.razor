@@ -10,7 +10,6 @@
 
 <EditForm Model="_statusDto" OnValidSubmit="Save">
     <DataAnnotationsValidator />
-    <ValidationSummary />
     <div class="offcanvas-body">
         <div class="mb-3">
             <label class="form-label">
@@ -18,6 +17,7 @@
                 <span class="text-danger">*</span>
             </label>
             <InputText class="form-control" @bind-Value="_statusDto.NameEnglish" />
+            <ValidationMessage class="small text-danger" For="@(() => _statusDto.NameEnglish)"></ValidationMessage>
         </div>
 
         <div class="mb-3">
@@ -26,6 +26,7 @@
                 <span class="text-danger">*</span>
             </label>
             <InputText class="form-control" @bind-Value="_statusDto.NameArabic" />
+            <ValidationMessage class="small text-danger" For="@(() => _statusDto.NameArabic)"></ValidationMessage>
         </div>
 
         <div class="mb-3">
@@ -40,6 +41,7 @@
                         @bind="_statusDto.NameColor" />
                 </span>
             </div>
+            <ValidationMessage class="small text-danger" For="@(() => _statusDto.NameColor)"></ValidationMessage>
         </div>
 
         <div class="mb-3">
@@ -54,6 +56,7 @@
                         @bind="_statusDto.BackgroundColor" />
                 </span>
             </div>
+            <ValidationMessage class="small text-danger" For="@(() => _statusDto.BackgroundColor)"></ValidationMessage>
         </div>
     </div>
 
