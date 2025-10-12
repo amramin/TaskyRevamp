@@ -19,6 +19,8 @@
   --backdrop-bg: #dfe5ef;
   --bs-danger-rgb: 232, 44, 44;
   --bs-success-rgb: 84, 192, 127;
+  --warning:#FFA000;
+  --warning-light:#FCF6ED;
 }
 
 /* start inputs */
@@ -553,6 +555,22 @@
   font-weight: 500;
 }
 
+/* strat alert*/
+/* strat alert*/
+.alert {
+  border: 0;
+}
+.alert.alert-sm {
+  font-size: 0.75rem;
+  padding: 0.5rem 1rem;
+  font-weight: 500;
+}
+.alert.alert-warning {
+  background-color: var(--warning-light);
+  color: var(--warning);
+}
+
+/* end alert*/
 /* End typography*/
 /* start app-splash-screen*/
 .app-splash-screen {
