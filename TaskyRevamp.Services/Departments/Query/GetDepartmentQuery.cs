@@ -19,8 +19,8 @@ public class GetDepartmentByIdHandler : IRequestHandler<GetDepartmentQuery, Depa
     public async Task<DepartmentDto> Handle(GetDepartmentQuery request, CancellationToken cancellationToken)
     {
         var res = await _departmentRepository.FindBy(k=>k.Id==request.Id, includeProperties: $"{nameof(Department.Parentdepartment)},{nameof(Department.CreatedBy)}");
-        DepartmentDto DepartmentModel = res.Value.FirstOrDefault().CopyToDto();
-        return DepartmentModel;
+        DepartmentDto departmentModel = res.Value.FirstOrDefault().CopyToDto();
+        return departmentModel;
     }
 
  

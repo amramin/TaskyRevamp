@@ -12,7 +12,7 @@ using TaskyRevamp.Localization.Resources;
 using TaskyRevamp.Services.Exceptions;
 namespace DepartmentyRevamp.Services.Departments.Commands;
 
-public record CreateDepartmentCommand(DepartmentDto DepartmentDto) : IRequest<Guid>;
+public record CreateDepartmentCommand(DepartmentDto departmentDto) : IRequest<Guid>;
 
 public class CreateDepartmentHandler : IRequestHandler<CreateDepartmentCommand, Guid>
 {
@@ -24,9 +24,9 @@ public class CreateDepartmentHandler : IRequestHandler<CreateDepartmentCommand, 
     public async Task<Guid> Handle(CreateDepartmentCommand request, CancellationToken cancellationToken)
     {
 
-        await ValidateDepartment(request.DepartmentDto);
+        await ValidateDepartment(request.departmentDto);
         Department department = new Department();
-        department.SetData(request.DepartmentDto);
+        department.SetData(request.departmentDto);
        
        
         await _DepartmentRepository.Insert(department);
