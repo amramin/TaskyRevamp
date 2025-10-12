@@ -2,17 +2,21 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using TaskyRevamp.Domain.Models.SystemConfiguration;
 using TaskyRevamp.Domain.Repositeries;
+using TaskyRevamp.Dto.Enums.SearchFields;
 using TaskyRevamp.Dto.GeneralDto;
 using TaskyRevamp.Dto.SystemConfiguration;
+using TaskyRevamp.Services.Helpers;
+using TaskyRevamp.Services.SearchMappings;
 using Types = TaskyRevamp.Domain.Models.SystemConfiguration.Type;
 
 namespace TaskyRevamp.Services.SystemConfiguration.TypeConfigurarion.Query
 {
-	public record GetTypeConfigurationQuery(int PageNumber, int pageSize, string sortByColumn, bool sortAscending) : IRequest<PagedResult<TypeDtoWithName>>;
+	public record GetTypeConfigurationQuery(int PageNumber, int pageSize, string sortByColumn, bool sortAscending, List<SearchField> SearchFields, string SearchText) : IRequest<PagedResult<TypeDtoWithName>>;
 	public class GetTypeConfigurationHandler : IRequestHandler<GetTypeConfigurationQuery, PagedResult<TypeDtoWithName>>
 	{
 		private readonly IRepository<Types> _typeRepository;
@@ -23,10 +27,19 @@ namespace TaskyRevamp.Services.SystemConfiguration.TypeConfigurarion.Query
 		public async Task<PagedResult<TypeDtoWithName>> Handle(GetTypeConfigurationQuery request, CancellationToken cancellationToken)
 		{
 			var orderBy = GetOrderBy(request.sortByColumn, request.sortAscending);
-			var res = await _typeRepository.GetPagedAsync(
+
+            Expression<Func<Types, bool>> searchExpression = null;
+            if (request.SearchFields != null && request.SearchFields.Any())
+            {
+                var predicates = request.SearchFields.Select(x => TaskTypeSearchFieldMap.Map[x]).ToList();
+                searchExpression = ExpressionBuilder.BuildLikeExpression(predicates, request.SearchText);
+            }
+
+            var res = await _typeRepository.GetPagedAsync(
 								request.PageNumber,
 								request.pageSize,
 								null,
+								searchExpression,
 								orderBy: orderBy,
 								includeProperties: $"{nameof(Types.CreatedBy)},{nameof(Types.UpdatedBy)}");
 

@@ -5,6 +5,8 @@
 @use "appSplashScreen";
 @use "popup";
 @use "cards";
+@use "dropDowns";
+@use "tabs";
 
 @font-face {
   font-family: "Almarai";
@@ -44,35 +46,6 @@
 .fill-primary {
   fill: var(--primary-color);
 }
-
-/* strat tab-pills*/
-.tab-pills {
-  .nav {
-    padding: 0.5rem 0.75rem;
-    border-bottom: 1px solid var(--light-300);
-    display: flex;
-    gap: 1rem;
-
-    .nav-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.25rem;
-      padding: 0.5rem;
-      color: var(--dark-700);
-
-      svg {
-        width: 1rem;
-        height: 1rem;
-      }
-
-      &.active {
-        color: var(--primary-color);
-        background-color: var(--light-200);
-      }
-    }
-  }
-}
-/* end tab-pills*/
 
 /* end Global */
 /* start .auth */

@@ -1,6 +1,6 @@
 /* start app-splash-screen*/
 .app-splash-screen {
-  background-color: rgba(0,0,0,.5);
+  background-color: rgba(0, 0, 0, 0.5);
   position: fixed;
   flex-direction: column;
   align-items: center;
@@ -16,26 +16,27 @@
     flex-direction: column;
     gap: 1rem;
     text-align: center;
-    color:var(--bs-white);
+    color: var(--bs-white);
     border: 1px solid var(--primary-color);
-    padding:2rem; 
+    padding: 2rem;
     border-radius: 0.5rem;
     background-color: var(--primary-color);
-    .headline-6{
-      font-size:1.5rem;
+    .headline-6 {
+      font-size: 1.5rem;
+      color: var(--bs-white);
     }
     .icon svg {
-          width:3.5rem;
-          height:3.5rem;
-          transform: perspective(500px) rotateY(-42deg);
-          -webkit-transform: perspective(500px) rotateY(-42deg);
-          -moz-transform: perspective(500px) rotateY(-42deg);
-          -ms-transform: perspective(500px) rotateY(-42deg);
-          -o-transform: perspective(500px) rotateY(-42deg);
-          animation-name: rotate-windows;
-          animation-iteration-count: infinite;
-          animation-duration: 3s;
-          animation-fill-mode: forwards;
+      width: 3.5rem;
+      height: 3.5rem;
+      transform: perspective(500px) rotateY(-42deg);
+      -webkit-transform: perspective(500px) rotateY(-42deg);
+      -moz-transform: perspective(500px) rotateY(-42deg);
+      -ms-transform: perspective(500px) rotateY(-42deg);
+      -o-transform: perspective(500px) rotateY(-42deg);
+      animation-name: rotate-windows;
+      animation-iteration-count: infinite;
+      animation-duration: 3s;
+      animation-fill-mode: forwards;
     }
   }
 }

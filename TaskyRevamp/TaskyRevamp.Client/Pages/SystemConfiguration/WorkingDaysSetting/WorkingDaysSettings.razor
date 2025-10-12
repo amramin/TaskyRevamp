@@ -8,28 +8,51 @@
 @inject IStringLocalizer<SharedResources> Loc
 @inject ToastService ToastService
 
-
-<h4>@Loc["WorkingDaysConfiguration"]</h4>
-<div class ="card p-3">
-    <p>@Loc["workingDaysHint"]</p>
-    @if(workingDaysSettingsDtos != null)
-    {
-        foreach (var daySetting in workingDaysSettingsDtos)
-        {
-            <div class="d-flex align-items-center justify-content-between border border-primary rounded p-2 mb-2 ms-2">
-                <span class="text-primary">@Loc[daySetting.Day.ToString()]</span>
-                <div class="form-check form-switch m-0">
-                    <InputCheckbox @bind-Value="daySetting.IsActive" class="form-check-input" />
-                </div>
-            </div>
-        }
-    }
-
-    <div class="d-flex justify-content-end gap-2 mt-4">
-        <button class="btn btn-light px-4" @onclick="Cancel">@Loc["Cancel"]</button>
-        <button class="btn btn-primary px-4" @onclick="Save">@Loc["Save"]</button>
+<div class="page-header">
+    <div class="title-block">
+        <h1 class="page-headline">@Loc["WorkingDaysConfiguration"]</h1>
     </div>
 </div>
+<div class="page-body">
+    <div class="card setting-card">
+        <div class="card-body">
+            <div class="row justify-content-center">
+                <div class="col-xxl-7 col-xl-8 col-lg-9 col-md-11">
+                    <div class="text-content">
+                        <p class="small-medium-text hint">@Loc["workingDaysHint"]</p>
+                    </div>
+                    @if (workingDaysSettingsDtos != null)
+        {
+            foreach (var daySetting in workingDaysSettingsDtos)
+            {
+                 var inputId = $"day-{daySetting.Day}";
+                            <div class="form-check-card switch">
+                        <InputCheckbox id="@inputId" @bind-Value="daySetting.IsActive" 
+                        class="form-check-input" />
+                        <label for="@inputId">@Loc[daySetting.Day.ToString()]
+                        <span class="toggler-icon"></span>
+                        </label>
+                    </div>
+                
+            }
+        }
+                </div>
+            </div>
+        </div>
+<div class="card-footer">
+            <div class="row justify-content-center">
+                <div class="col-xxl-7 col-xl-8 col-lg-9 col-md-11">
+                    <div class="action-buttons">
+                        <button class="btn btn-lg btn-light"  @onclick="Cancel">@Loc["Cancel"]</button>
+                        <button class="btn btn-lg  btn-primary"  @onclick="Save">@Loc["Save"]</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</div>
+
 @code {
     public List<WeekDays> weekDays = EnumExtensions.GetOrderedValues<WeekDays>();
     List<WorkingDaysSettingsDto> workingDaysSettingsDtos = new List<WorkingDaysSettingsDto>();
@@ -38,7 +61,7 @@
     protected override async Task OnInitializedAsync()
     {
         var res = await _workingDaysSettingConsumer.GetWorkingDaysSetting();
-        if(res.Success && res != null && res.Data != null)
+        if (res.Success && res != null && res.Data != null)
         {
             workingDaysSettingsDtos = res.Data.ToList();
             orginalWorkingdays = workingDaysSettingsDtos.Select(d => new WorkingDaysSettingsDto
@@ -58,7 +81,7 @@
     }
     private async Task Save(MouseEventArgs args)
     {
-        if(!workingDaysSettingsDtos.Any(w => w.IsActive))
+        if (!workingDaysSettingsDtos.Any(w => w.IsActive))
         {
             return;
         }

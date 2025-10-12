@@ -27,9 +27,15 @@
     color: var(--dark-700);
   }
 }
+.headline-5 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--dark-800);
+}
 .headline-6 {
   font-size: 1rem;
   font-weight: 600;
+  color: var(--dark-800);
 }
 .small-medium-text {
   font-size: 0.875rem;
@@ -41,4 +47,19 @@
   padding: 0.65rem 0.5rem;
   font-weight: 500;
 }
+/* strat alert*/
+/* strat alert*/
+.alert {
+  border: 0;
+  &.alert-sm {
+    font-size: 0.75rem;
+    padding: 0.5rem 1rem;
+    font-weight: 500;
+  }
+  &.alert-warning {
+    background-color:var(--warning-light);
+    color:var(--warning)
+  }
+}
+/* end alert*/
 /* End typography*/

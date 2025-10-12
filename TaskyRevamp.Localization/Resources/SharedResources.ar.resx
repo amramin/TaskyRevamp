@@ -400,7 +400,7 @@
     <value>إدارة المسند إليه</value>
   </data>
   <data name="Mandatory" xml:space="preserve">
-    <value>الزامي</value>
+    <value>إلزامي</value>
   </data>
   <data name="Status" xml:space="preserve">
     <value>الحالة</value>
@@ -538,8 +538,23 @@
   <data name="Confirm" xml:space="preserve">
     <value>تأكيد</value>
   </data>
+  <data name="Search" xml:space="preserve">
+    <value>بحث</value>
+  </data>
   <data name="EnterDaysNumber" xml:space="preserve">
-    <value>ادخل عدد الايام</value>
+    <value>أدخل عدد الأيام</value>
+  </data>
+  <data name="FieldNames" xml:space="preserve">
+    <value>أسماء الحقول</value>
+  </data>
+  <data name="AddTaskSettingNotFound" xml:space="preserve">
+    <value>لم يتم العثور على اعداد اضافة المهمة {id}</value>
+  </data>
+  <data name="FilterFieldNotFound" xml:space="preserve">
+    <value>لم يتم العثور على حقل المرشح {id}</value>
+  </data>
+  <data name="DefaultColumnNotFound" xml:space="preserve">
+    <value>لم يتم العثور على العمود الافتراضي {id}</value>
   </data>
   <data name="AddNewPriority" xml:space="preserve">
     <value>إضافة أولوية جديدة</value>

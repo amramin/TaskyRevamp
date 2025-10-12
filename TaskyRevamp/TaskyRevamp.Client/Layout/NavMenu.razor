@@ -69,41 +69,45 @@
                     </div>
                 </a>
 
-                <ul class="nav setting-menu">
-                    @foreach (var item in MenuItems)
+               <ul class="nav setting-menu">
+    @foreach (var item in MenuItems)
+    {
+        <li class="nav-item dropdown @(item.IsOpen ? "open" : "") @(item.IsActive ? "active" : "")">
+            <button class="nav-link dropdown-toggler" @onclick="() => ToggleMenu(item)">
+                <span class="nav-icon">
+                    @if (item.IsOpen)
                     {
-                        <li class="nav-item dropdown @(item.IsOpen ? "open" : "")">
-                            <button class="nav-link dropdown-toggler" @onclick="() => ToggleMenu(item)">
-                                <span class="nav-icon">
-                                    @if (item.IsOpen)
-                                    {
-                                        <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Minus"></SVGCrud>
-                                    }
-                                    else
-                                    {
-                                        <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Pluse"></SVGCrud>
-                                    }
-                                </span>
-                                @Loc[item.Title]
-                            </button>
-                            <ul class="dropdown-menu @(item.IsOpen ? "show" : "")">
-                                @foreach (var child in item.Children)
-                                {
-                                    <li class="nav-item">
-                                        <a class="nav-link" data-id="@child.DataId" href="@child.Url">
-                                            <div class="icon-text">
-                                                <span class="nav-icon">
-                                                    <SVGCrud SVGType="@child.Icon"></SVGCrud>
-                                                </span>
-                                                <span class="text">@Loc[child.Text]</span>
-                                            </div>
-                                        </a>
-                                    </li>
-                                }
-                            </ul>
-                        </li>
+                        <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Minus"></SVGCrud>
                     }
-                </ul>
+                    else
+                    {
+                        <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Pluse"></SVGCrud>
+                    }
+                </span>
+                @Loc[item.Title]
+            </button>
+
+            <ul class="dropdown-menu @(item.IsOpen ? "show" : "")">
+                @foreach (var child in item.Children)
+                {
+                    <li class="nav-item">
+                        <a class="nav-link @(child.IsActive ? "active" : "")"
+                           data-id="@child.DataId"
+                           href="@child.Url"
+                           @onclick="() => SetActiveItem(item, child)">
+                            <div class="icon-text">
+                                <span class="nav-icon">
+                                    <SVGCrud SVGType="@child.Icon"></SVGCrud>
+                                </span>
+                                <span class="text">@Loc[child.Text]</span>
+                            </div>
+                        </a>
+                    </li>
+                }
+            </ul>
+        </li>
+    }
+</ul>
             </li>
         </ul>
     </div>
@@ -139,16 +143,13 @@
             var firstChild = firstMenu.Children.FirstOrDefault();
             if (firstChild != null)
             {
+                SetActiveItem(firstMenu, firstChild);
                 NavigationManager.NavigateTo(firstChild.Url);
             }
         }
 
-        // Step 1: Open settings panel
-        IsSettingOpen = true;
-        StateHasChanged(); // Force UI update immediately
-        StateHasChanged(); // Force UI update immediately
+        StateHasChanged(); // Final UI update
     }
-
 
     private void CloseSettingsNav()
     {
@@ -159,6 +160,7 @@
     {
         public string Title { get; set; }
         public bool IsOpen { get; set; }
+        public bool IsActive { get; set; } // added for active state
         public List<ChildItem> Children { get; set; } = new();
     }
 
@@ -168,6 +170,7 @@
         public string Url { get; set; }
         public SVGCrud.SVGTypeEnum Icon { get; set; }
         public string DataId { get; set; }
+        public bool IsActive { get; set; } // added for active state
     }
 
     List<MenuItem> MenuItems = new();
@@ -195,7 +198,7 @@ new ChildItem { Text = "AddTaskFieldsConfiguration", Url = "/AddTaskConfiguratio
 SVGCrud.SVGTypeEnum.PluseCircle, DataId = "addTask-config" },
 new ChildItem { Text = "WorkingDaysConfiguration", Url = "/WorkingDaysSetting", Icon = SVGCrud.SVGTypeEnum.CalnderPluse,
 DataId = "calnderPluse-config" },
-new ChildItem { Text = "SourceConfiguration", Url = "/SourceSettings", Icon = SVGCrud.SVGTypeEnum.DataFlow,DataId =
+new ChildItem { Text = "SourceConfiguration", Url = "/SourceSettings", Icon = SVGCrud.SVGTypeEnum.DataFlow, DataId =
 "taskSource-config" },
 new ChildItem { Text = "TaskTypeConfiguration", Url = "/TypeConfiguration", Icon = SVGCrud.SVGTypeEnum.TaskType, DataId
 = "taskType-config" },
@@ -238,6 +241,18 @@ new ChildItem { Text = "TaskHistory", Url = "/TaskHistory", Icon = SVGCrud.SVGTy
     protected override void OnInitialized()
     {
         SetMenu();
+
+        var firstMenu = MenuItems.FirstOrDefault();
+        if (firstMenu != null)
+        {
+            firstMenu.IsOpen = true;
+            var firstChild = firstMenu.Children.FirstOrDefault();
+            if (firstChild != null)
+            {
+                SetActiveItem(firstMenu, firstChild);
+                NavigationManager.NavigateTo(firstChild.Url);
+            }
+        }
     }
 
     void ToggleMenu(MenuItem clicked)
@@ -246,5 +261,23 @@ new ChildItem { Text = "TaskHistory", Url = "/TaskHistory", Icon = SVGCrud.SVGTy
             item.IsOpen = false;
 
         clicked.IsOpen = true;
+        StateHasChanged(); // ensure re-render
+    }
+
+    private void SetActiveItem(MenuItem parent, ChildItem child)
+    {
+        // Reset all active states
+        foreach (var item in MenuItems)
+        {
+            item.IsActive = false;
+            foreach (var c in item.Children)
+                c.IsActive = false;
+        }
+
+        // Activate selected parent and child
+        parent.IsActive = true;
+        child.IsActive = true;
+
+        StateHasChanged(); // refresh immediately
     }
 }

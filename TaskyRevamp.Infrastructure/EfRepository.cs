@@ -604,6 +604,7 @@ public class EfRepository<TEntity> : IRepository<TEntity> where TEntity : Entity
        int pageNumber,
        int pageSize,
        Expression<Func<TEntity, bool>>? filter = null,
+       Expression<Func<TEntity, bool>>? searchFilter = null,
        Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
        string includeProperties = "")
     {
@@ -611,6 +612,9 @@ public class EfRepository<TEntity> : IRepository<TEntity> where TEntity : Entity
 
         if (filter != null)
             query = query.Where(filter);
+
+        if (searchFilter != null)
+            query = query.Where(searchFilter);
 
         foreach (var includeProperty in includeProperties.Split(
             new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))

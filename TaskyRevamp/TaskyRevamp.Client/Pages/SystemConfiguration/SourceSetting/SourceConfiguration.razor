@@ -4,23 +4,38 @@
 @using TaskyRevamp.Client.Services
 @using TaskyRevamp.Client.Shared.Popups
 @using TaskyRevamp.Dto.SystemConfiguration
+@using TaskyRevamp.Dto.Enums.SearchFields
 @inject NavigationManager navigationManager
 @inject IStringLocalizer<SharedResources> Loc
 @inject ToastService ToastService
 @inject SourceSettingConsumer _sourceSettingConsumer
 @inject PopupService PopupService
 
-<div class="card p-4 m-2">
-    @if(sources != null && sources.Any())
-    {
-        <div class="card shadow-sm border-1 ms-2">
-            <div class="card-header d-flex justify-content-between align-items-center bg-white">
-                <h5 class="mb-0 fw-bold">@Loc["SourceConfiguration"]</h5>
-                <div class="d-flex">
-                    <input type="text" class="form-control form-control-sm me-2" placeholder="Search..." oninput ="SearchOption" style="max-width: 400px;" />
-                    <button class="btn btn-sm btn-primary" style="width:300px" @onclick="AddSource"> + @Loc["AddTaskSource"]</button>
-                </div>
+
+@if (initialSources != null && initialSources.Any())
+{
+    <div class="page-header">
+        <div class="title-block">
+            <h1 class="page-headline">@Loc["SourceConfiguration"]</h1>
+            
+        </div>
+        <div class="action-btn-list">
+                <Search SearchSubmit="Search" CssClass="form-control"></Search>
+                <button class="btn  btn-primary" @onclick="AddSource">
+                    <span class="icon">
+                        <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Pluse"></SVGCrud>
+                    </span>
+                    @Loc["AddTaskSource"]
+                </button>
             </div>
+    </div>
+    <div class="page-body">
+    
+    
+  
+        
+        @if (sources != null && sources.Any())
+        {
             <div class="table-responsive flex-grow-1">
                 <table class="table table-sm table-hover align-middle m-2">
                     <thead class="table-light small">
@@ -28,7 +43,7 @@
                             <th @onclick='() => SortBy("DisplayedName")' style="cursor:pointer">
                                 @Loc["name"]
                                 <span class="ms-1">
-                                    @(currentSortColumn == "DisplayedName" ? (sortAscending ? "↑" : "↓"): "↕")
+                                    @(currentSortColumn == "DisplayedName" ? (sortAscending ? "↑" : "↓") : "↕")
                                 </span>
                             </th>
                             <th @onclick='() => SortBy("CreateDate")' style="cursor:pointer">
@@ -66,7 +81,10 @@
                                 <td>@item.Source.DisplayedName</td>
                                 <td>@item.Source.CreateDate.ToLocalTime().ToString("dd/MM/yyyy")</td>
                                 <td>@item.CreatedByName</td>
-                                <td>@(item.Source.UpdateDate.HasValue? item.Source.UpdateDate.Value.ToLocalTime().ToString("dd/MM/yyyy"): "")</td>
+                                <td>
+                                    @(item.Source.UpdateDate.HasValue ?
+                                                            item.Source.UpdateDate.Value.ToLocalTime().ToString("dd/MM/yyyy") : "")
+                                </td>
                                 <td>@item.UpdatedByName</td>
                                 <td class="text-center">
                                     <div class="form-check form-switch d-flex justify-content-center">
@@ -90,29 +108,50 @@
                     </tbody>
                 </table>
             </div>
-            <div class="card-footer bg-white">
-                <Pagination CurrentPage="@currentPage"
-                            TotalPages="@totalPages"
-                            TotalCount="@totalCount"
-                            PageSize="@pageSize"
-                            PageChanged="ChangePage"
-                            PageSizeChangedCallback="ChangePageSize" />
-            </div>
+        }
+
+       
+            <Pagination CurrentPage="@currentPage" TotalPages="@totalPages" TotalCount="@totalCount" PageSize="@pageSize"
+                PageChanged="ChangePage" PageSizeChangedCallback="ChangePageSize" />
        </div>
-    }
-    else
-    {
-    
-            <div class="d-flex flex-column align-sources-center justify-content-center p-5">
-                <h6 class="mt-4 fw-semibold text-muted">@Loc["No Task Sources Available"]</h6>
-                <p class="text-muted">@Loc["Add a new task source to get started."]</p>
-                <button class="btn btn-primary mt-3" @onclick="AddSource"> + @Loc["AddTaskSource"] </button>
+   
+}
+else
+{
+
+    <div class="page-header">
+        <div class="title-block">
+            <h1 class="page-headline">@Loc["SourceConfiguration"]</h1>
+        </div>
+    </div>
+    <div class="page-body">
+        <div class="card empty-page">
+            <div class="card-body">
+                <span class="vector">
+                    <SVGCrud SVGType="SVGCrud.SVGTypeEnum.EmptyPageVector"></SVGCrud>
+                </span>
+                <div class="content">
+                    <h5 class="headline-5">@Loc["No Task Sources Available"]</h5>
+                    <p class="small-medium-text">@Loc["Add a new task source to get started."]</p>
+                </div>
+                <div class="action-btn-list">
+                    <button class="btn btn-lg btn-primary" @onclick="AddSource">
+                        <span class="icon">
+                            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Pluse"></SVGCrud>
+                        </span>
+                        @Loc["AddTaskSource"]
+                    </button>
+                </div>
             </div>
-    
-    }
-</div>
+        </div>
+    </div>
+}
+<ConfirmationPopup ButtonText="Confirm" IsVisible="@showConfirm" OnConfirm="OnDeleteConfirmed"
+    Message="@confirmMessage" />
+
 @code {
     List<SourceDtoWithName> sources = new();
+    List<SourceDtoWithName> initialSources = new();
     private bool showConfirm;
     private SourceDtoWithName? selectedSource;
     private int currentPage = 1;
@@ -137,10 +176,13 @@
     protected override async Task OnInitializedAsync()
     {
         await LoadSources();
+        initialSources = sources;
     }
-    private async Task LoadSources()
+    private async Task LoadSources(bool isSearch = false, string searchTerm = null)
     {
-        var resp = await _sourceSettingConsumer.GetSources(currentPage, pageSize, currentSortColumn, sortAscending);
+        var resp = await _sourceSettingConsumer.GetSources(currentPage, pageSize, currentSortColumn, sortAscending, isSearch ?
+        searchFields : null, isSearch ? searchTerm : null);
+
         if (!(resp?.Success ?? false) || resp.Data is null)
             return;
 
@@ -191,8 +233,19 @@
         }
         await LoadSources();
     }
-    private void OnSearchChanged(ChangeEventArgs args)
+
+    public List<SearchField> searchFields = new List<SearchField>() {
+SearchField.NameEnglish,
+SearchField.NameArabic,
+SearchField.CreatedBy,
+SearchField.UpdatedBy,
+SearchField.CreateDate,
+SearchField.UpdateDate,
+SearchField.ActiveStatus
+};
+
+    public async Task Search(string searchTerm)
     {
-        throw new NotImplementedException();
+        await LoadSources(true, searchTerm);
     }
 }

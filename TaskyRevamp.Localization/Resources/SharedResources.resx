@@ -172,7 +172,7 @@
     <value>3 days</value>
   </data>
   <data name="RejectionConfiguration" xml:space="preserve">
-    <value>Task Rejection </value>
+    <value>Task Rejection Configuration</value>
   </data>
   <data name="RejectionPeriodOptions" xml:space="preserve">
     <value>Rejection Period Options</value>
@@ -538,8 +538,23 @@ Add a new department to get started</value>
   <data name="Confirm" xml:space="preserve">
     <value>Confirm</value>
   </data>
+  <data name="Search" xml:space="preserve">
+    <value>Search</value>
+  </data>
   <data name="EnterDaysNumber" xml:space="preserve">
-    <value>Enter days number</value>
+    <value>Enter number of days</value>
+  </data>
+  <data name="FieldNames" xml:space="preserve">
+    <value>Field Names</value>
+  </data>
+  <data name="AddTaskSettingNotFound" xml:space="preserve">
+    <value>Add Task Setting with Id {id} not found.</value>
+  </data>
+  <data name="FilterFieldNotFound" xml:space="preserve">
+    <value>Filter Field with Id {id} not found.</value>
+  </data>
+  <data name="DefaultColumnNotFound" xml:space="preserve">
+    <value>Default Column with Id {id} not found.</value>
   </data>
   <data name="AddNewPriority" xml:space="preserve">
     <value>Add New Priority</value>

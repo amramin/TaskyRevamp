@@ -1,4 +1,28 @@
 /* start inputs */
+/* global */
+.toggler-icon {
+  width: 2.25rem;
+  height: 1.25rem;
+  background-color: var(--light-300);
+  border-radius: 999rem;
+  position: relative;
+  transition: var(--transtion-3ms-e-out);
+  &::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    inset-inline-start: 0.125rem;
+    width: 1rem;
+    height: 1rem;
+    background-color: var(--bs-white);
+    border-radius: 50%;
+    transition: var(--transtion-3ms-e-out);
+    box-shadow: 0 1px 3px rgba(16, 24, 40, 0.01),
+      0 1px 2px rgba(16, 24, 40, 0.06);
+  }
+}
+/*
 /*start view-scope-toggle*/
 .view-scope-toggle {
   background-color: var(--light-200);
@@ -66,7 +90,7 @@
   }
 }
 .form-switch {
-   &.custom {
+  &.custom {
     padding-left: 0;
     padding-right: 0;
     display: flex;
@@ -85,30 +109,6 @@
         width: fit-content;
         max-width: 100%;
         color: var(--dark-600);
-
-        .toggler-icon {
-          width: 2.25rem;
-          height: 1.25rem;
-          background-color: var(--light-300);
-          border-radius: 999rem;
-          position: relative;
-          transition: var(--transtion-3ms-e-out);
-
-          &::after {
-            content: "";
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            inset-inline-start: 0.125rem;
-            width: 1rem;
-            height: 1rem;
-            background-color: var(--bs-white);
-            border-radius: 50%;
-            transition: var(--transtion-3ms-e-out);
-            box-shadow: 0 1px 3px rgba(16, 24, 40, 0.01),
-              0 1px 2px rgba(16, 24, 40, 0.06);
-          }
-        }
       }
 
       &:checked {
@@ -184,18 +184,22 @@
   color: var(--dark-900);
   font-size: 0.75rem;
   font-weight: 600;
+  .text-danger {
+    margin-inline-start: 0.25rem;
+  }
 }
 .form-check-card {
   &:not(:last-child) {
     margin-bottom: 0.5rem;
   }
-  input[type="radio"] {
+
+  & > input {
     display: none;
     & + label {
       border: 1px solid var(--light-300);
       border-radius: var(--bs-border-radius);
       padding: 1rem 0.75rem;
-      padding-inline-start: 2.5rem;
+
       max-height: 3.5rem;
       cursor: pointer;
       width: 100%;
@@ -206,6 +210,20 @@
       justify-content: space-between;
       align-items: center;
       position: relative;
+
+      .form-control {
+        max-width: 50%;
+      }
+    }
+    &:checked + label {
+      border-color: var(--primary-color);
+      background-color: var(--light-200);
+      color: var(--dark-900);
+    }
+  }
+  input[type="radio"] {
+    & + label {
+      padding-inline-start: 2.5rem;
       &::after {
         content: "";
         position: absolute;
@@ -217,16 +235,30 @@
         inset-inline-start: 0.75rem;
         transform: translateY(-50%);
       }
-      .form-control {
-        max-width: 50%;
-      }
     }
     &:checked + label {
-      border-color: var(--primary-color);
-      background-color: var(--light-200);
-      color: var(--dark-900);
       &::after {
         border: 6px solid var(--primary-color);
+      }
+    }
+  }
+  &.switch {
+    input {
+      & + label {
+        padding-block: 0.5rem;
+      }
+      &:checked {
+        + label {
+          .toggler-icon {
+            background-color: var(--primary-color);
+            &::after {
+              inset-inline-start: auto;
+              inset-inline-end: 0.125rem;
+              transition: var(--transtion-3ms-e-out);
+              box-shadow: none;
+            }
+          }
+        }
       }
     }
   }
