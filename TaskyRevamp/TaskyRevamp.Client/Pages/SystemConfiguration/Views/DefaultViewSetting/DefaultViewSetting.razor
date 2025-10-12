@@ -36,9 +36,21 @@
     protected override async Task OnInitializedAsync()
     {
         var res = await _defaultViewSettingConsumer.GetDefaultViewSetting();
-        if (res.Success && res != null && res.Data != null)
+        if (res?.Success == true && res.Data != null)
         {
             defaultViewSettingsDto = res.Data;
+            if (Enum.IsDefined(typeof(ViewType), defaultViewSettingsDto.DefaultSelected))
+            {
+                ViewTaskSetting.ViewType = (ViewType)defaultViewSettingsDto.DefaultSelected;
+            }
+        }
+        else
+        {
+            defaultViewSettingsDto = new DefaultViewSettingsDto
+            {
+                DefaultSelected = (int)ViewType.List_Timeline
+            };
+            ViewTaskSetting.ViewType = ViewType.List_Timeline;
         }
     }
     private void OnSettingChange(ViewType viewType)
