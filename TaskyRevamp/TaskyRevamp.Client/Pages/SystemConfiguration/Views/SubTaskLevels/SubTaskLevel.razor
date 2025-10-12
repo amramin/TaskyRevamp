@@ -7,12 +7,16 @@
 @inject ToastService ToastService
 @inject DefaultViewSettingConsumer _defaultViewSettingConsumer
 
-<div class="card p-3">
 
-    <h5>@Loc["Subtask_Level"]</h5>
-    <p>@Loc["subtask_hint"]</p>
-
-    <div class="form-group mt-3">
+<div class="card setting-card">
+    <div class="card-body">
+        <div class="row justify-content-center">
+            <div class="col-xxl-7 col-xl-8 col-lg-9 col-md-11">
+                <div class="text-content">
+                    <h6 class="headline-6">@Loc["Subtask_Level"]</h6>
+                    <p class="small-medium-text hint">@Loc["subtask_hint"]</p>
+                </div>
+                <div class="mb-3">
         <label for="maxSubtaskLevel" class="form-label">
            @Loc["Maximum_Subtask_Level"]<span class="text-danger">*</span>
         </label>
@@ -22,17 +26,29 @@
 
     @if (ViewSetting.SubTaskLevels > 3)
     {
-        <div class="alert alert-warning mt-3 p-2">
+        <div class="alert alert-sm alert-warning mb-3">
             @Loc["sub_task_warning"]
         </div>
     }
-    
-
-    <!-- Buttons -->
-    <div class="d-flex justify-content-end gap-2 mt-4">
-        <button class="btn btn-light px-4" @onclick="Cancel">@Loc["Cancel"]</button>
-        <button class="btn btn-primary px-4" @onclick="Save" disabled="@(ViewSetting.SubTaskLevels < 0)">@Loc["Save"]</button>
+              
+            </div>
+        </div>
     </div>
+
+
+
+
+    <div class="card-footer">
+        <div class="row justify-content-center">
+            <div class="col-xxl-7 col-xl-8 col-lg-9 col-md-11">
+                <div class="action-buttons">
+                    <button class="btn btn-lg btn-light" @onclick="Cancel">@Loc["Cancel"]</button>
+                    <button class="btn btn-lg  btn-primary" @onclick="Save"  disabled="@(ViewSetting.SubTaskLevels < 0)">@Loc["Save"]</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
 
 @code {

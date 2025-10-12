@@ -9,28 +9,51 @@
 @inject DefaultViewSettingConsumer _defaultViewSettingConsumer
 @inject ViewTaskSettingConsumer _viewTaskSettingConsumer
 
-<div class="card p-3">
-    <h4> @Loc["Default view"]</h4>
-    <p>@Loc["DefaultViewHint"]</p>
-    <InputRadioGroup TValue="ViewType" Value="ViewTaskSetting.ViewType" ValueChanged="OnSettingChange" ValueExpression="() => ViewTaskSetting.ViewType">
-        @foreach (var value in ViewTypes)
-        {
-            <div class="d-flex align-items-center border border-primary rounded p-2 mb-2">
-                <InputRadio Value="@value" /> @value.GetDescription()
+<div class="card setting-card">
+    <div class="card-body">
+        <div class="row justify-content-center">
+            <div class="col-xxl-7 col-xl-8 col-lg-9 col-md-11">
+                <div class="text-content">
+                    <h6 class="headline-6">@Loc["Default view"]</h6>
+                    <p class="small-medium-text hint">@Loc["DefaultViewHint"]</p>
+                </div>
+                <InputRadioGroup TValue="ViewType" Value="ViewTaskSetting.ViewType" ValueChanged="OnSettingChange"
+                    ValueExpression="() => ViewTaskSetting.ViewType">
+                    @foreach (var value in ViewTypes)
+                    {
+                        var radioId = $"ViewType_{value}";
+                        <div class="form-check-card">
+                            <InputRadio id="@radioId" Value="@value" />
+                            <label for="@radioId">  @value.GetDescription()</label>
+                        </div>
+                    }
+                </InputRadioGroup>
             </div>
-            <br />
-        }
-    </InputRadioGroup>
-
-    <div class="d-flex justify-content-end gap-2 mt-4">
-        <button class="btn btn-light px-4" @onclick="Cancel">@Loc["Cancel"]</button>
-        <button class="btn btn-primary px-4" @onclick="Save">@Loc["Save"]</button>
+        </div>
     </div>
+
+
+
+
+    <div class="card-footer">
+        <div class="row justify-content-center">
+            <div class="col-xxl-7 col-xl-8 col-lg-9 col-md-11">
+                <div class="action-buttons">
+                    <button class="btn btn-lg btn-light" @onclick="Cancel">@Loc["Cancel"]</button>
+                    <button class="btn btn-lg  btn-primary" @onclick="Save">@Loc["Save"]</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
 
 @code {
     public List<ViewType> ViewTypes = EnumExtensions.GetOrderedValues<ViewType>();
-    public ViewTaskSettingsDto ViewTaskSetting { get; set; } = new ViewTaskSettingsDto { ViewType = ViewType.List_Timeline };
+    public ViewTaskSettingsDto ViewTaskSetting { get; set; } = new ViewTaskSettingsDto
+    {
+        ViewType = ViewType.List_Timeline
+    };
     public DefaultViewSettingsDto defaultViewSettingsDto = new DefaultViewSettingsDto();
 
     protected override async Task OnInitializedAsync()
