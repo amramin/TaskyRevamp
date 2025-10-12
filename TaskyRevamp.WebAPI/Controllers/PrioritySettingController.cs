@@ -36,35 +36,13 @@ namespace TaskyRevamp.WebAPI.Controllers
 		[HttpPost("AddPriority")]
 		public async Task<IActionResult> AddPriority([FromBody] PriorityDto priorityDto)
 		{
-			try
-			{
-				return Ok(await _mediator.Send(new CreatePriorityCommand(priorityDto)));
-			}
-			catch (ValidationException ex)
-			{
-				return UnprocessableEntity(new
-				{
-					Success = false,
-					Errors = ex.ErrorsDictionary
-				});
-			}
+			return Ok(await _mediator.Send(new CreatePriorityCommand(priorityDto)));
 		}
 
 		[HttpPost("UpdatePriority")]
 		public async Task<IActionResult> UpdatePriority([FromBody] PriorityDto priorityDto)
 		{
-			try
-			{
-				return Ok(await _mediator.Send(new UpdateProrityCommand(priorityDto)));
-			}
-			catch (ValidationException ex)
-			{
-				return UnprocessableEntity(new
-				{
-					Success = false,
-					Errors = ex.ErrorsDictionary
-				});
-			}
+			return Ok(await _mediator.Send(new UpdateProrityCommand(priorityDto)));
 		}
 
 		[HttpPost("UpdatePrioritiesOrder")]
