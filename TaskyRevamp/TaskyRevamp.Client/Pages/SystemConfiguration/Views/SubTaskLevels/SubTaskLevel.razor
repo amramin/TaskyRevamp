@@ -18,10 +18,10 @@
                 </div>
                 <div class="mb-3">
         <label for="maxSubtaskLevel" class="form-label">
-           @Loc["Maximum_Subtask_Level"]<span class="text-danger">*</span>
+           @Loc["Maximum_Subtask_Level"]
+           <span class="text-danger">*</span>
         </label>
-        <input type="number" min="0" class="form-control mt-1" @bind="ViewSetting.SubTaskLevels"
-               @oninput="OnCustomDaysChange"/>
+        <input type="number" min="0" class="form-control" @bind="ViewSetting.SubTaskLevels" @oninput="OnCustomDaysChange" />
     </div>
 
     @if (ViewSetting.SubTaskLevels > 3)
@@ -81,10 +81,12 @@
     {
         var input = e.Value?.ToString();
 
-        if (string.IsNullOrWhiteSpace(input) || int.Parse(input) < 0)
+        if (string.IsNullOrWhiteSpace(input))
         {
+            // ViewSetting.SubTaskLevels = null;
             return;
         }
+
         if (int.TryParse(input, out var number))
         {
             ViewSetting.SubTaskLevels = number < 0 ? 0 : number;
@@ -96,6 +98,6 @@
     }
     private void Cancel(MouseEventArgs args)
     {
-        throw new NotImplementedException();
+        
     }
 }

@@ -8,6 +8,7 @@
 @inject NavigationManager navigationManager
 @inject IStringLocalizer<SharedResources> Loc
 @inject ToastService ToastService
+@inject PopupService PopupService
 
 <div class="page-header">
     <div class="title-block">
@@ -18,7 +19,7 @@
             <span class="icon">
                 <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Pluse"></SVGCrud>
             </span>
-            @Loc["AddPriority"]
+            @Loc["AddNewPriority"]
         </button>
 
 
@@ -34,7 +35,53 @@
                         <h6 class="headline-6">@Loc["PriorityOptions"]</h6>
                         <p class="small-medium-text hint">@Loc["priorityHint"]</p>
                     </div>
-                    @foreach (var p in Priorities.OrderBy(p => p.Order))
+
+                    <SortableList Id="defaultColsList" Items="Priorities.OrderBy(p => p.Order).ToList()"
+                         KeySelector="@(item => item.Id)" OnUpdate="(i) => SortSettingsList(i)" Context="p">
+                         <SortableItemTemplate>
+                            <div class="card card-order-control">
+                                <div class="card-body d-flex justify-content-between align-items-center">
+
+                                    <span class="badge" style="background-color:@p.BackgroundColor; color:@p.NameColor">
+                                        @p.NameEnglish - <span class="ar-text">@p.NameArabic</span>
+                                    </span>
+
+                                    <div class="d-flex align-items-center gap-2">
+                                        <span class="rounded-circle cl-preview" style="background-color:@p.BackgroundColor"></span>
+                                        <span class="rounded-circle cl-preview" style="background-color:@p.NameColor"></span>
+                                        <div class="actions">
+                                            <button class="btn btn-action-24 btn-edit" @onclick=" () => Edit(p.Id)">
+                                                <span class="icon">
+                                                    <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Edit"></SVGCrud>
+                                                </span>
+                                            </button>
+                                            <button class="btn btn-action-24 btn-delete"
+                                                    @onclick=" () => ShowDeleteConfirm(p)">
+                                                <span class="icon">
+                                                    <SVGCrud SVGType="SVGCrud.SVGTypeEnum.RecycleBinOutline"></SVGCrud>
+                                                </span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="btn-group-vertical">
+                                    <button class="btn" @onclick=" () => MoveUp(p)">
+                                        <span class="icon">
+                                            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.ArrowUp"></SVGCrud>
+                                        </span>
+                                    </button>
+
+                                    <button class="btn " @onclick="() => MoveDown(p)">
+                                        <span class="icon">
+                                            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.ArrowDown"></SVGCrud>
+                                        </span>
+                                    </button>
+                                </div>
+                            </div>
+                         </SortableItemTemplate>
+                    </SortableList>
+
+                    @* @foreach (var p in Priorities.OrderBy(p => p.Order))
                     {
                         <div class="card card-order-control">
                             <div class="card-body d-flex justify-content-between align-items-center">
@@ -75,7 +122,7 @@
                                 </button>
                             </div>
                         </div>
-                    }
+                    }*@
                 </div>
             </div>
 
@@ -92,39 +139,16 @@
             </div>
         </div>
     </div>
-
-
-
-
-    @* <NewPopUpComponent @bind-Visible="IsShowCreateDialog" HeaderText=@Loc["AddPriority"]>
-        <AddPriority 
-            OnValidSubmit="ResetPage" 
-            OnCancel="CloseAddPage"/>
-    </NewPopUpComponent> *@
-
-    @* <NewPopUpComponent @bind-Visible="IsShowEditDialog" HeaderText="@Loc["EditPriority"]">
-        <UpdatePriority 
-            Id="SelectedPriorityId" 
-            OnValidSubmit="ResetPage" 
-            OnCancel="CloseEditPage"/>
-    </NewPopUpComponent> *@
-
-    <ConfirmationPopup ButtonText="Delete" IsVisible="@showConfirm" OnConfirm="OnDeleteConfirmed"
-                       Message="@confirmMessage" />
-
-
 </div>
 
 @code {
     public List<PriorityDto> Priorities = new List<PriorityDto>();
-    //private bool IsShowCreateDialog { get; set; } = false;
-    //private bool IsShowEditDialog { get; set; } = false;
     private Guid SelectedPriorityId { get; set; }
-    private string confirmMessage = "";
     private PriorityDto? selectedPriority;
     private bool showConfirm;
     private bool isOrdered = false;
     List<PriorityDto>? OriginalPriorities;
+    private PriorityDto? draggedItem;
 
     protected async override Task OnInitializedAsync()
     {
@@ -135,16 +159,19 @@
             OriginalPriorities = CopyPriorites();
         }
     }
-    private void Add() => navigationManager.NavigateTo("/Add-Priority");
+    private void Add()
+    {
+        PopupService.ShowNew(
+            @<AddPriority OnValidSubmit="OnInitializedAsync" ></AddPriority> , headerText: @Loc["AddPriority"]
+        );
+    }
     private void Edit(Guid id)
     {
-        //IsShowEditDialog = true;
-        //SelectedPriorityId = id;
-        navigationManager.NavigateTo($"/Update-Priority/{id}");
+        PopupService.ShowNew( @<UpdatePriority Id="id"  OnValidSubmit="OnInitializedAsync"/>, headerText: @Loc["EditPriority"]);
     }
     private void ShowDeleteConfirm(PriorityDto p)
     {
-        confirmMessage = @Loc["Sure"];
+        PopupService.ShowConfirmation(message: @Loc["Sure"], @Loc["Delete"], OnDeleteConfirmed, type: ConfirmationType.Danger);
         selectedPriority = p;
         showConfirm = true;
     }
@@ -190,6 +217,26 @@
         }
         isOrdered = true;
     }
+    private void SortSettingsList((int oldIndex, int newIndex) indices)
+    {
+        var (oldIndex, newIndex) = indices;
+
+        var items = Priorities.OrderBy(q => q.Order).ToList();
+        var itemToMove = items[oldIndex];
+        items.RemoveAt(oldIndex);
+        if (newIndex < items.Count)
+            items.Insert(newIndex, itemToMove);
+        else
+            items.Add(itemToMove);
+        // Reassign new order values
+        for (int i = 0; i < items.Count; i++)
+        {
+            items[i].Order = i + 1;
+
+        }
+        isOrdered = true;
+        StateHasChanged();
+    }
     private async Task Save(MouseEventArgs args)
     {
         if (isOrdered)
@@ -229,27 +276,4 @@
             Order = p.Order
         }).ToList();
     }
-    // private async void ResetPage(PriorityDto args)
-    // {
-    // var res = await _prioritySettingConsumer.GetPriorities();
-    // if (res.Success && res.Data != null)
-    // {
-    // Priorities = res.Data;
-    // }
-    // IsShowCreateDialog = false;
-    // IsShowEditDialog = false;
-    // StateHasChanged();
-    // await ToastService.ShowToastAsync(Loc["EditSuccess"], "success");
-    // }
-
-    // private void CloseAddPage()
-    // {
-    // IsShowCreateDialog = false;
-    // StateHasChanged();
-    // }
-    // private void CloseEditPage()
-    // {
-    // IsShowEditDialog = false;
-    // StateHasChanged();
-    // }
 }

@@ -14,15 +14,15 @@ namespace TaskyRevamp.Services.SystemConfiguration.WeeklyReportSettings.Command
 
 	public class UpdateWeeklyReportSettingCommandHandler : IRequestHandler<UpdateWeeklyReportSettingCommand, bool>
 	{
-		private readonly IRepository<WeeklyReportSetting> _WeeklyReortSettingRepository;
+		private readonly IRepository<WeeklyReportSetting> _weeklyReortSettingRepository;
 
-		public UpdateWeeklyReportSettingCommandHandler(IRepository<WeeklyReportSetting> _weeklyReortSettingRepository)
+		public UpdateWeeklyReportSettingCommandHandler(IRepository<WeeklyReportSetting> weeklyReortSettingRepository)
 		{
-			_WeeklyReortSettingRepository = _weeklyReortSettingRepository;
+			_weeklyReortSettingRepository = weeklyReortSettingRepository;
 		}
 		public async Task<bool> Handle(UpdateWeeklyReportSettingCommand request, CancellationToken cancellationToken)
 		{
-			var weeklySetting = await _WeeklyReortSettingRepository.AllAsNoTracking();
+			var weeklySetting = await _weeklyReortSettingRepository.AllAsNoTracking();
 			if(weeklySetting.Success && weeklySetting != null)
 			{
 				if (weeklySetting.Value == null || (weeklySetting.Value != null && weeklySetting.Value.Count() == 0))
@@ -33,7 +33,7 @@ namespace TaskyRevamp.Services.SystemConfiguration.WeeklyReportSettings.Command
 						Time = request.weeklyReportSettingsDto.Time,
 						Language = request.weeklyReportSettingsDto.Language,
 					};
-					await _WeeklyReortSettingRepository.Insert(newWeeklyReportSetting);
+					await _weeklyReortSettingRepository.Insert(newWeeklyReportSetting);
 				}
 				else
 				{
@@ -43,7 +43,7 @@ namespace TaskyRevamp.Services.SystemConfiguration.WeeklyReportSettings.Command
 						WeeklyReportQuery.Day = request.weeklyReportSettingsDto.Day;
 						WeeklyReportQuery.Time = request.weeklyReportSettingsDto.Time;
 						WeeklyReportQuery.Language = request.weeklyReportSettingsDto.Language;
-						await _WeeklyReortSettingRepository.Update(WeeklyReportQuery);
+						await _weeklyReortSettingRepository.Update(WeeklyReportQuery);
 					}
 				}
 			}

@@ -10,20 +10,30 @@
 
 <EditForm Model="_statusDto" OnValidSubmit="Save">
     <DataAnnotationsValidator />
-    <ValidationSummary />
     <div class="offcanvas-body">
         <div class="mb-3">
-            <label class="form-label">@Loc["Name English"]</label>
+            <label class="form-label">
+                @Loc["Name English"]
+                <span class="text-danger">*</span>
+            </label>
             <InputText class="form-control" @bind-Value="_statusDto.NameEnglish" />
+            <ValidationMessage class="small text-danger" For="@(() => _statusDto.NameEnglish)"></ValidationMessage>
         </div>
 
         <div class="mb-3">
-            <label class="form-label">@Loc["Name Arabic"]</label>
+            <label class="form-label">
+                @Loc["Name Arabic"]
+                <span class="text-danger">*</span>
+            </label>
             <InputText class="form-control" @bind-Value="_statusDto.NameArabic" />
+            <ValidationMessage class="small text-danger" For="@(() => _statusDto.NameArabic)"></ValidationMessage>
         </div>
 
         <div class="mb-3">
-            <label class="form-label">@Loc["Name Color Indicator"]</label>
+            <label class="form-label">
+                @Loc["Name Color Indicator"]
+                <span class="text-danger">*</span>
+            </label>
             <div class="input-group">
                 <InputText class="form-control" @bind-Value="_statusDto.NameColor" />
                 <span class="input-group-text">
@@ -31,10 +41,14 @@
                         @bind="_statusDto.NameColor" />
                 </span>
             </div>
+            <ValidationMessage class="small text-danger" For="@(() => _statusDto.NameColor)"></ValidationMessage>
         </div>
 
         <div class="mb-3">
-            <label class="form-label">@Loc["Background Color Indicator"]</label>
+            <label class="form-label">
+                @Loc["Background Color Indicator"]
+                <span class="text-danger">*</span>
+            </label>
             <div class="input-group">
                 <InputText class="form-control" @bind-Value="_statusDto.BackgroundColor" />
                 <span class="input-group-text">
@@ -42,6 +56,7 @@
                         @bind="_statusDto.BackgroundColor" />
                 </span>
             </div>
+            <ValidationMessage class="small text-danger" For="@(() => _statusDto.BackgroundColor)"></ValidationMessage>
         </div>
     </div>
 
@@ -72,7 +87,7 @@
         if (res.Success)
         {
             await ToastService.ShowToastAsync(Loc["EditSuccess"], "success");
-            PopupService.Hide(); // close popup after save
+            PopupService.Hide();
 
             if (OnValidSubmit.HasDelegate)
                 await OnValidSubmit.InvokeAsync(_statusDto);
@@ -81,6 +96,6 @@
 
     private void Cancel()
     {
-        PopupService.Hide(); // close popup without saving
+        PopupService.Hide();
     }
 }
