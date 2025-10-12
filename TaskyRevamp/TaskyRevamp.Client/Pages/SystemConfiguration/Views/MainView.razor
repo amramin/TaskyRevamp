@@ -1,51 +1,70 @@
 ﻿@page "/Views"
 @inject IStringLocalizer<SharedResources> Loc
-    <div class="page-header">
-        <div class="title-block">
-            <h1 class="page-headline">@Loc["Tasksviews"]</h1>
-        </div>
+<div class="page-header">
+    <div class="title-block">
+        <h1 class="page-headline">@Loc["Tasksviews"]</h1>
+        <span class="active-page">/ @activeTitle</span>
     </div>
-
-<div class="d-flex">
-    <div class="bg-light border-end d-flex flex-column align-items-center py-3" style="width: 60px;">
-        <button class="btn btn-light mb-3 @(activeTab == 'v' ? "active" : "")"
-                @onclick="() => SetTab('v')">
+</div>
+<div class="horizintal-tab">
+    <div class="tab-nav">
+        <button class="btn tab-btn  @(activeTab == 'v' ? "active" : "")" @onclick="() => SetTab('v')">
             <span class="icon">
                 <SVGCrud SVGType="SVGCrud.SVGTypeEnum.OpenEye"></SVGCrud>
             </span>
+            <span class="text"> @Loc["ViewOptions"]</span>
         </button>
-        <button class="btn btn-light mb-3 @(activeTab == 'd' ? "active" : "")"
-                @onclick="() => SetTab('d')">
+        <button class="btn tab-btn  @(activeTab == 'd' ? "active" : "")" @onclick="() => SetTab('d')">
             <span class="icon">
-                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Columns"></SVGCrud>
+                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Home"></SVGCrud>
             </span>
+            <span class="text"> @Loc["Default view"]</span>
         </button>
-        <button class="btn btn-light @(activeTab == 's' ? "active" : "")"
-                @onclick="() => SetTab('s')">
+        <button class="btn tab-btn  @(activeTab == 's' ? "active" : "")" @onclick="() => SetTab('s')">
             <span class="icon">
-                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Menu"></SVGCrud>
+                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.SubTasks"></SVGCrud>
             </span>
+            <span class="text"> @Loc["Subtask_Level"]</span>
         </button>
     </div>
-    <!-- Main Content -->
-    <div class="flex-grow-1 p-4">
+    <div class="page-body">
+
+        <!-- Main Content -->
+
         @if (activeTab == 'v')
         {
-            <TaskyRevamp.Client.Pages.SystemConfiguration.Views.ViewTaskSetting.ViewTaskSettings/>
+            <TaskyRevamp.Client.Pages.SystemConfiguration.Views.ViewTaskSetting.ViewTaskSettings />
         }
         else if (activeTab == 'd')
         {
-           <TaskyRevamp.Client.Pages.SystemConfiguration.Views.DefaultViewSetting.DefaultViewSetting/>
+            <TaskyRevamp.Client.Pages.SystemConfiguration.Views.DefaultViewSetting.DefaultViewSetting />
         }
         else if (activeTab == 's')
         {
-            <TaskyRevamp.Client.Pages.SystemConfiguration.Views.SubTaskLevels.SubTaskLevel/>
+            <TaskyRevamp.Client.Pages.SystemConfiguration.Views.SubTaskLevels.SubTaskLevel />
         }
+
     </div>
-
- </div>
-
+</div>
 @code {
     private char activeTab = 'v';
-    private void SetTab(char tab) => activeTab = tab;
+    private string activeTitle = "";
+
+    protected override void OnInitialized()
+    {
+        SetTab('v'); // Default
+    }
+
+    private void SetTab(char tab)
+    {
+        activeTab = tab;
+
+        activeTitle = tab switch
+        {
+            'v' => @Loc["ViewOptions"],
+            'd' => @Loc["Default view"],
+            's' => @Loc["Subtask_Level"],
+            _ => ""
+        };
+    }
 }
