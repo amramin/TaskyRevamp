@@ -29,6 +29,7 @@ public class EfDbContext : DbContext
     public DbSet<DefaultColumnsSettings> DefaultColumnsSettings { get; set; }
     public DbSet<FilterFieldsSettings> FilterFieldsSettings { get; set; }
     public DbSet<AddTaskSettings> AddTaskSettings { get; set; }
+    public DbSet<SystemIdentity>  SystemIdentity { get; set; }
     public EfDbContext(DbContextOptions<EfDbContext> options, IHttpContextAccessor httpContextAccessor)
         : base(options)
     {

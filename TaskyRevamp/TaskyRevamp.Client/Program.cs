@@ -54,6 +54,7 @@ builder.Services.AddTransient<WeeklyReportSettingConsumer>();
 builder.Services.AddTransient<DefaultColumnsSettingConsumer>();
 builder.Services.AddTransient<FilterFieldsSettingConsumer>();
 builder.Services.AddTransient<AddTaskSettingConsumer>();
+builder.Services.AddTransient<SystemIdentityConsumer>();
 
 var configuration = builder.Configuration;
 
