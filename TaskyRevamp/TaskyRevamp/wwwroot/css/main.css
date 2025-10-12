@@ -235,6 +235,10 @@
   font-size: 0.75rem;
   font-weight: 600;
 }
+.form-label .text-danger {
+  -webkit-margin-start: 0.25rem;
+          margin-inline-start: 0.25rem;
+}
 
 .form-check-card:not(:last-child) {
   margin-bottom: 0.5rem;
