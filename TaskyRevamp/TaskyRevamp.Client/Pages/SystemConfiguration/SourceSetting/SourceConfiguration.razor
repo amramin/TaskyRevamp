@@ -4,7 +4,7 @@
 @using TaskyRevamp.Client.Services
 @using TaskyRevamp.Client.Shared.Popups
 @using TaskyRevamp.Dto.SystemConfiguration
-@using TaskyRevamp.Dto.Enums.SearchFields 
+@using TaskyRevamp.Dto.Enums.SearchFields
 @inject NavigationManager navigationManager
 @inject IStringLocalizer<SharedResources> Loc
 @inject ToastService ToastService
@@ -14,17 +14,26 @@
 
 @if (initialSources != null && initialSources.Any())
 {
-    <div class="card shadow-sm border-1 ms-2">
-        <div class="card-header d-flex justify-content-between align-items-center bg-white">
-            <h5 class="mb-0 fw-bold">@Loc["SourceConfiguration"]</h5>
-            <div class="d-flex">
-                <Search SearchSubmit="Search" CssClass="form-control form-control-sm me-2" CssStyle="max-width: 400px;"></Search>
-                <button class="btn btn-sm btn-primary" style="width:300px" @onclick="AddSource">
-                    +
+    <div class="page-header">
+        <div class="title-block">
+            <h1 class="page-headline">@Loc["SourceConfiguration"]</h1>
+            
+        </div>
+        <div class="action-btn-list">
+                <Search SearchSubmit="Search" CssClass="form-control"></Search>
+                <button class="btn  btn-primary" @onclick="AddSource">
+                    <span class="icon">
+                        <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Pluse"></SVGCrud>
+                    </span>
                     @Loc["AddTaskSource"]
                 </button>
             </div>
-        </div>
+    </div>
+    <div class="page-body">
+    
+    
+  
+        
         @if (sources != null && sources.Any())
         {
             <div class="table-responsive flex-grow-1">
@@ -73,8 +82,8 @@
                                 <td>@item.Source.CreateDate.ToLocalTime().ToString("dd/MM/yyyy")</td>
                                 <td>@item.CreatedByName</td>
                                 <td>
-                                    @(item.Source.UpdateDate.HasValue?
-                                             item.Source.UpdateDate.Value.ToLocalTime().ToString("dd/MM/yyyy"): "")
+                                    @(item.Source.UpdateDate.HasValue ?
+                                                            item.Source.UpdateDate.Value.ToLocalTime().ToString("dd/MM/yyyy") : "")
                                 </td>
                                 <td>@item.UpdatedByName</td>
                                 <td class="text-center">
@@ -101,11 +110,11 @@
             </div>
         }
 
-        <div class="card-footer bg-white">
+       
             <Pagination CurrentPage="@currentPage" TotalPages="@totalPages" TotalCount="@totalCount" PageSize="@pageSize"
-                        PageChanged="ChangePage" PageSizeChangedCallback="ChangePageSize" />
-        </div>
-    </div>
+                PageChanged="ChangePage" PageSizeChangedCallback="ChangePageSize" />
+       </div>
+   
 }
 else
 {
@@ -138,7 +147,7 @@ else
     </div>
 }
 <ConfirmationPopup ButtonText="Confirm" IsVisible="@showConfirm" OnConfirm="OnDeleteConfirmed"
-                   Message="@confirmMessage" />
+    Message="@confirmMessage" />
 
 @code {
     List<SourceDtoWithName> sources = new();
@@ -172,7 +181,8 @@ else
     }
     private async Task LoadSources(bool isSearch = false, string searchTerm = null)
     {
-        var resp = await _sourceSettingConsumer.GetSources(currentPage, pageSize, currentSortColumn, sortAscending, isSearch? searchFields : null , isSearch? searchTerm : null);
+        var resp = await _sourceSettingConsumer.GetSources(currentPage, pageSize, currentSortColumn, sortAscending, isSearch ?
+        searchFields : null, isSearch ? searchTerm : null);
 
         if (!(resp?.Success ?? false) || resp.Data is null)
             return;
@@ -220,14 +230,14 @@ else
     }
 
     public List<SearchField> searchFields = new List<SearchField>() {
-        SearchField.NameEnglish,
-        SearchField.NameArabic,
-        SearchField.CreatedBy,
-        SearchField.UpdatedBy,
-        SearchField.CreateDate,
-        SearchField.UpdateDate,
-        SearchField.ActiveStatus
-    };
+SearchField.NameEnglish,
+SearchField.NameArabic,
+SearchField.CreatedBy,
+SearchField.UpdatedBy,
+SearchField.CreateDate,
+SearchField.UpdateDate,
+SearchField.ActiveStatus
+};
 
     public async Task Search(string searchTerm)
     {
