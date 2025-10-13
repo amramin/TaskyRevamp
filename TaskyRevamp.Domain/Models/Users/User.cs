@@ -14,6 +14,7 @@ public class User : Entity
     public string? Mobile { get; set; }
     public bool IsActive { get; set; }
     public bool IsManager { get; set; }
+    public Guid DepartmentId { get; set; }
     public Department? Department { get; private set; }
     public User()
     {

@@ -1,0 +1,192 @@
+﻿@page "/UsersDepartment/{Id:guid}"
+
+@using TaskyRevamp.Client.Consumer
+@using TaskyRevamp.Client.Services
+@using TaskyRevamp.Client.Shared.Popups
+@using TaskyRevamp.Dto.Account
+@using TaskyRevamp.Dto.Department
+@inject UserConsumer  _userConsumer
+@inject NavigationManager navigationManager
+@inject IStringLocalizer<SharedResources> Loc
+@inject ToastService ToastService
+
+
+
+
+<div class="page-header">
+    <h1 class="page-headline">@Loc["Departments"]</h1>
+    <div class="action-btn-list">
+       
+        <button class="btn btn-primary" @onclick="Add">
+            <span class="icon">
+                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Pluse"></SVGCrud>
+            </span>
+            @Loc["AddUser"]
+        </button>
+    </div>
+</div>
+
+
+
+@if (selectedDepartment == null )
+    {
+    <h6 class="mb-3">@selectedDepartment.Name</h6>
+
+    }
+
+<div class="page-body">
+
+
+    <div class="table-responsive  sticky-header-custom">
+        <table class="table custom-table">
+                <thead>
+                    <tr>
+                        <th>@Loc["UserName"]</th>
+                            <th>@Loc["Email"]</th>
+                    <th>@Loc["Privilage"]</th>
+                        <th></th>
+                
+                    </tr>
+                </thead>
+                <tbody>
+                        @if (selectedDepartment != null )
+                    {
+                    @foreach (var usr in selectedDepartment.AssignedUsers)
+    {
+
+                                <tr>
+                            <td>@usr.UserName</td>
+                            <td>@usr.Email</td>
+                            <td></td>
+                         
+                                
+
+
+               <td class="sticky-end-action">
+                            <div class="dropdown actions">
+                                <button class="btn btn-action-24" type="button" data-bs-toggle="dropdown"
+                                    aria-expanded="false">
+                                    <SVGCrud SVGType="SVGCrud.SVGTypeEnum.EllipseVertical"></SVGCrud>
+                                </button>
+                                <ul class="dropdown-menu">
+                                   
+
+
+                                    
+                                    <li>
+                                            <button class="dropdown-item" @onclick="@(() => Edit(usr.Id))">
+                                            <span class="icon">
+                                                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Edit"></SVGCrud>
+                                            </span>
+                                            @Loc["Edit"]
+                                        </button>
+                                    </li>
+                                    <li>
+                                            <button class="dropdown-item" @onclick="@(() => ShowDeleteConfirm(usr))">
+                                            <span class="icon">
+                                                    <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Delete"></SVGCrud>
+                                            </span>
+                                            @Loc["Delete"]
+                                        </button>
+                                    </li>
+                                </ul>
+                            </div>
+
+
+                        </td>
+
+        </tr>
+    }
+
+    }
+    </tbody>
+    </table>
+
+    
+
+  
+                 
+               
+    
+    <ConfirmationPopup ButtonText="@Loc["Delete"]"
+                       IsVisible="@showConfirm"
+                       OnConfirm="OnDeleteConfirmed"
+                       Message="@confirmMessage" />
+
+
+
+</div>
+</div>
+
+@code {
+    [Parameter] public Guid Id { get; set; }
+    public List<DepartmentDto> departmentDtos = new List<DepartmentDto>();
+
+    private Guid selectedDepartmentId { get; set; }
+    private string confirmMessage = "";
+    private DepartmentDto? selectedDepartment;
+    private bool showConfirm;
+    private bool isOrdered = false;
+    List<DepartmentDto>? originalDeptes;
+
+    protected async override Task OnInitializedAsync()
+    {
+        var res = await _userConsumer.GetAllUsersByDepartment(Id);
+
+        selectedDepartment = res.Data;
+        StateHasChanged();
+    }
+    private void Add() => navigationManager.NavigateTo("/LinkDepartmentUser");
+    private void Edit(Guid id)
+    {
+
+        navigationManager.NavigateTo($"/Update-Department/{id}");
+    }
+    private void ShowDeleteConfirm(UserDto p)
+    {
+        confirmMessage = @Loc["SureDeleteDepartment"];
+      //  selectedDepartment = p;
+        showConfirm = true;
+    }
+    private async Task OnDeleteConfirmed(bool confirmed)
+    {
+        if (confirmed && selectedDepartment != null)
+        {
+            // var result = await _departmentConsumer.DeleteDepartment(selectedDepartment.Id);
+            // if (result.Success)
+            // {
+            //     departmentDtos.Remove(selectedDepartment);
+            //     showConfirm = false;
+            //     StateHasChanged();
+            //     await ToastService.ShowToastAsync(Loc["Deleted successfully"], "success");
+            // }
+        } 
+        selectedDepartment = null;
+        StateHasChanged();
+    }
+  
+
+    private void Cancel(MouseEventArgs args)
+    {
+        departmentDtos = originalDeptes!.Select(p => new DepartmentDto
+        {
+            Id = p.Id,
+            NameEnglish = p.NameEnglish,
+            NameArabic = p.NameArabic,
+            
+        }).ToList();
+        isOrdered = false;
+        StateHasChanged();
+    }
+    private List<DepartmentDto> CopyPriorites()
+    {
+        return departmentDtos.Select(p => new DepartmentDto
+        {
+            Id = p.Id,
+            NameEnglish = p.NameEnglish,
+            NameArabic = p.NameArabic,
+           
+        }).ToList();
+    }
+   
+}
