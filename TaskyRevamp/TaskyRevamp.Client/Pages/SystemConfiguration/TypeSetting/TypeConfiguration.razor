@@ -10,20 +10,27 @@
 @inject TypeSettingConsumer _typeSettingConsumer
 @inject PopupService PopupService
 
-<div class="card p-4 m-2">
-    @if (initialTypes != null && initialTypes.Any())
-    {
-        <div class="card shadow-sm border-1 ms-2">
-            <div class="card-header d-flex justify-content-between align-items-center bg-white">
-                <h5 class="mb-0 fw-bold">@Loc["TaskTypeConfiguration"]</h5>
-                <div class="d-flex">
-                    <Search SearchSubmit="Search" CssClass="form-control form-control-sm me-2" CssStyle="max-width: 400px;"></Search>
-                    <button class="btn btn-sm btn-primary" style="width:300px" @onclick="AddType"> + @Loc["AddTaskType"]</button>
-                </div>
-            </div>
+
+@if (initialTypes != null && initialTypes.Any())
+{
+    <div class="page-header">
+        <div class="title-block">
+            <h1 class="page-headline">@Loc["TaskTypeConfiguration"]</h1>
+        </div>
+        <div class="action-btn-list">
+            <Search SearchSubmit="Search" CssClass="form-control ">
+            </Search>
+            <button class="btn btn-sm btn-primary" @onclick="AddType"> <span class="icon">
+                    <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Pluse"></SVGCrud>
+                </span>
+                @Loc["AddTaskType"]</button>
+        </div>
+    </div>
+    <div class="page-body">
+       
             @if (types != null && types.Any())
             {
-                <div class="table-responsive flex-grow-1">
+                <div class="table-responsive ">
                     <table class="table table-sm table-hover align-middle m-2">
                         <thead class="table-light small">
                             <tr>
@@ -68,7 +75,8 @@
                                     <td>@item.Type.DisplayedName</td>
                                     <td>@item.Type.CreateDate.ToLocalTime().ToString("dd/MM/yyyy")</td>
                                     <td>@item.CreatedByName</td>
-                                    <td>@(item.Type.UpdateDate.HasValue? item.Type.UpdateDate.Value.ToLocalTime().ToString("dd/MM/yyyy"): "")</td>
+                                    <td>@(item.Type.UpdateDate.HasValue?
+                                                                item.Type.UpdateDate.Value.ToLocalTime().ToString("dd/MM/yyyy"): "")</td>
                                     <td>@item.UpdatedByName</td>
                                     <td class="text-center">
                                         <div class="form-check form-switch d-flex justify-content-center">
@@ -94,27 +102,44 @@
                 </div>
             }
 
-            <div class="card-footer bg-white">
-                <Pagination CurrentPage="@currentPage"
-                            TotalPages="@totalPages"
-                            TotalCount="@totalCount"
-                            PageSize="@pageSize"
-                            PageChanged="ChangePage"
-                            PageSizeChangedCallback="ChangePageSize" />
+           
+                <Pagination CurrentPage="@currentPage" TotalPages="@totalPages" TotalCount="@totalCount"
+                    PageSize="@pageSize" PageChanged="ChangePage" PageSizeChangedCallback="ChangePageSize" />
+           
+        
+    </div>
+}
+else
+{
+    <div class="page-header">
+        <div class="title-block">
+            <h1 class="page-headline">@Loc["TaskTypeConfiguration"]</h1>
+        </div>
+    </div>
+    <div class="page-body">
+        <div class="card empty-page">
+            <div class="card-body">
+                <span class="vector">
+                    <SVGCrud SVGType="SVGCrud.SVGTypeEnum.EmptyPageVector"></SVGCrud>
+                </span>
+                <div class="content">
+                    <h5 class="headline-5">@Loc["NoTaskTypeAvailable"]</h5>
+                    <p class="small-medium-text">@Loc["Add a new task type to get started."]</p>
+                </div>
+                <div class="action-btn-list">
+                    <button class="btn btn-lg btn-primary" @onclick="AddType">
+                        <span class="icon">
+                            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Pluse"></SVGCrud>
+                        </span>
+                        @Loc["AddTaskType"]
+                    </button>
+                </div>
             </div>
         </div>
-    }
-    else
-    {
+    </div>
 
-        <div class="d-flex flex-column align-sources-center justify-content-center p-5">
-            <h6 class="mt-4 fw-semibold text-muted">@Loc["NoTaskTypeAvailable"]</h6>
-            <p class="text-muted">@Loc["Add a new task type to get started."]</p>
-            <button class="btn btn-primary mt-3" @onclick="AddType"> + @Loc["AddTaskType"] </button>
-        </div>
+}
 
-    }
-</div>
 @code {
     List<TypeDtoWithName> types = new();
     private List<TypeDtoWithName> initialTypes = new();
@@ -147,7 +172,8 @@
     }
     private async Task LoadTypes(bool isSearch = false, string searchTerm = null)
     {
-        var resp = await _typeSettingConsumer.GetTypes(currentPage, pageSize, currentSortColumn, sortAscending, isSearch ? searchFields : null, isSearch ? searchTerm : null);
+        var resp = await _typeSettingConsumer.GetTypes(currentPage, pageSize, currentSortColumn, sortAscending, isSearch ?
+        searchFields : null, isSearch ? searchTerm : null);
         if (!(resp?.Success ?? false) || resp.Data is null)
             return;
 
@@ -162,7 +188,8 @@
     }
     private void EditType(Guid id)
     {
-        PopupService.ShowNew(@<UpdateType Id="id" OnValidSubmit="OnInitializedAsync"></UpdateType>, headerText: @Loc["EditTaskType"]);
+        PopupService.ShowNew(@<UpdateType Id="id" OnValidSubmit="OnInitializedAsync"></UpdateType>, headerText:
+        @Loc["EditTaskType"]);
     }
     private void DeleteType(TypeDtoWithName t)
     {
@@ -200,14 +227,14 @@
     }
 
     public List<SearchField> searchFields = new List<SearchField>() {
-    SearchField.NameEnglish,
-    SearchField.NameArabic,
-    SearchField.CreatedBy,
-    SearchField.UpdatedBy,
-    SearchField.CreateDate,
-    SearchField.UpdateDate,
-    SearchField.ActiveStatus
-    };
+SearchField.NameEnglish,
+SearchField.NameArabic,
+SearchField.CreatedBy,
+SearchField.UpdatedBy,
+SearchField.CreateDate,
+SearchField.UpdateDate,
+SearchField.ActiveStatus
+};
 
     public async Task Search(string searchTerm)
     {

@@ -10,13 +10,13 @@
 @inject SourceSettingConsumer _sourceSettingConsumer
 
 
-<div class="container mt-4">
+
        <SourceForm @ref="form"
                    OnCancel="Cancel" 
                    OnValidSubmit="@Save"
                    source="_newSource" 
                    SubmitButtonText="Save" />
-</div>
+
 
 @code {
     private SourceDto _newSource = new SourceDto { IsActive = true};

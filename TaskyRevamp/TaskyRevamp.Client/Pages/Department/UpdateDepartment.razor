@@ -13,14 +13,14 @@
 @inject ToastService ToastService
 @inject NavigationManager navigationManager
 
-<div class="container mt-4">    
+
     <DepartmentForm 
         @ref="form"
         Department="@department"
         OnValidSubmit="@Save"
         SubmitButtonText="@Loc["Update"]"
         OnCancel="@Cancel"/>
-</div>
+
 
 @code {
     [Parameter] public Guid Id { get; set; }

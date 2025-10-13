@@ -10,13 +10,12 @@
 @inject SourceSettingConsumer _sourceSettingConsumer
 
 
-<div class="container mt-4">
     <SourceForm @ref="form"
                 OnCancel="Cancel"
                 OnValidSubmit="@Save"
                 source="@source"
                 SubmitButtonText="Save" />
-</div>
+
 
 @code {
     [Parameter] public Guid Id { get; set; }

@@ -309,6 +309,41 @@
           box-shadow: none;
 }
 
+.color-group {
+  position: relative;
+}
+.color-group .form-control {
+  -webkit-padding-start: 2.75rem;
+          padding-inline-start: 2.75rem;
+}
+.color-group .cl-preview {
+  position: absolute;
+  display: block;
+  width: 1.25rem;
+  height: 1.25rem;
+  top: 50%;
+  inset-inline-start: 1rem;
+  -webkit-transform: translateY(-50%);
+          transform: translateY(-50%);
+  border: 1px solid var(--light-300);
+}
+.color-group .color-indicator {
+  position: absolute;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+          transform: translateY(-50%);
+  inset-inline-end: 1rem;
+  cursor: pointer;
+}
+.color-group .color-indicator input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+.color-group .color-indicator input + label {
+  cursor: pointer;
+}
+
 /* end inputs */
 /* strat button*/
 .btn {
@@ -684,9 +719,134 @@
 }
 /* End app-splash-screen*/
 /* start offcabvas popup */
-.offcanvas .offcanvas-header .close svg {
-  width: 1.12rem;
-  height: 1.12rem;
+.offcanvas {
+  margin-top: 0;
+}
+@media (min-width: 1024px) {
+  .offcanvas {
+    --bs-offcanvas-width: 30vw;
+  }
+}
+@media (max-width: 1023px) {
+  .offcanvas {
+    --bs-offcanvas-width: 50vw;
+  }
+}
+@media (max-width: 768px) {
+  .offcanvas {
+    --bs-offcanvas-width: 80vw;
+  }
+}
+@media (max-width: 576px) {
+  .offcanvas {
+    --bs-offcanvas-width: 90vw;
+  }
+}
+.offcanvas.offcanvas-end {
+  border-left: 0;
+  right: auto;
+  inset-inline-end: 0;
+}
+.offcanvas .offcanvas-header {
+  color: var(--dark-900);
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+.offcanvas .offcanvas-header .btn.close {
+  width: 1.5rem;
+  height: 1.5rem;
+  padding: 0;
+  -webkit-margin-end: 0.5rem;
+          margin-inline-end: 0.5rem;
+}
+.offcanvas .offcanvas-header .btn.close svg {
+  width: 1.125rem;
+  height: 1.125rem;
+}
+.offcanvas .offcanvas-header .btn.close:hover {
+  background-color: var(--light-200);
+}
+.offcanvas form {
+  -webkit-box-flex: 1;
+      -ms-flex-positive: 1;
+          flex-grow: 1;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  overflow: auto;
+}
+.offcanvas .offcanvas-body {
+  padding-top: 0;
+}
+.offcanvas .offcanvas-footer {
+  padding: 0.75rem 1rem;
+}
+
+.card-tabs {
+  -webkit-box-flex: 1;
+      -ms-flex-positive: 1;
+          flex-grow: 1;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+.card-tabs .tab-content {
+  -webkit-box-flex: 1;
+      -ms-flex-positive: 1;
+          flex-grow: 1;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+.card-tabs .tab-content > .active {
+  -webkit-box-flex: 1;
+      -ms-flex-positive: 1;
+          flex-grow: 1;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+.card-tabs .tab-pane {
+  padding-top: 0.5rem;
+}
+.card-tabs .tab-pane form > .offcanvas-body {
+  max-height: calc(100vh - 175px);
+}
+.card-tabs .nav {
+  -webkit-padding-start: 1rem;
+          padding-inline-start: 1rem;
+}
+
+@media (min-width: 1023px) {
+  .offcanvas-50-lg {
+    --bs-offcanvas-width: 50vw;
+  }
+}
+@media (max-width: 768px) {
+  .offcanvas-50-lg {
+    --bs-offcanvas-width: 80vw;
+  }
+}
+@media (max-width: 576px) {
+  .offcanvas-50-lg {
+    --bs-offcanvas-width: 90vw;
+  }
 }
 
 /* end offcabvas popup */
@@ -753,6 +913,7 @@
           flex: 1;
   overflow-y: auto;
   max-height: calc(100svh - 16.5rem);
+  border-radius: var(--bs-border-radius);
 }
 .card.setting-card .card-footer {
   padding-block: 0;
@@ -1764,14 +1925,15 @@ html[dir=rtl] input[type=number] {
   width: 0.5rem;
 }
 * ::-webkit-scrollbar-track {
-  background: var(--bs-white);
+  background: transparent;
+  border-radius: 1.5rem;
 }
 * ::-webkit-scrollbar-thumb {
   background: var(--light-600);
   border-radius: 1rem;
 }
 * ::-webkit-scrollbar-thumb:hover {
-  background: #555;
+  background: var(--dark-700);
 }
 
 /* start pagination-container*/
@@ -1925,5 +2087,4 @@ html[dir=rtl] input[type=number] {
   border-color: var(--primary-color);
 }
 
-/* end pagination-container*/
-/* strat tables *//*# sourceMappingURL=main.css.map */
+/* end pagination-container*//*# sourceMappingURL=main.css.map */

@@ -9,13 +9,13 @@
 @inject TypeSettingConsumer _typeSettingConsumer
 @inject PopupService PopupService
 
-<div class="container mt-4">
+
        <TypeForm @ref="form"
                    OnCancel="Cancel" 
                    OnValidSubmit="@Save"
                    type="_newType"
                    SubmitButtonText="Save" />
-</div>
+
 
 @code {
     private TypeDto _newType = new TypeDto { IsActive = true};
