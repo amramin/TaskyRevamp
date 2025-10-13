@@ -178,6 +178,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add Task Setting with Id {id} not found..
+        /// </summary>
+        public static string AddTaskSettingNotFound {
+            get {
+                return ResourceManager.GetString("AddTaskSettingNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add Task Source.
         /// </summary>
         public static string AddTaskSource {
@@ -403,6 +412,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Default Column with Id {id} not found..
+        /// </summary>
+        public static string DefaultColumnNotFound {
+            get {
+                return ResourceManager.GetString("DefaultColumnNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Default Columns Configuration.
         /// </summary>
         public static string DefaultColumnsConfiguration {
@@ -601,11 +619,29 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Enter days number.
+        ///   Looks up a localized string similar to Enter number of days.
         /// </summary>
         public static string EnterDaysNumber {
             get {
                 return ResourceManager.GetString("EnterDaysNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Field Names.
+        /// </summary>
+        public static string FieldNames {
+            get {
+                return ResourceManager.GetString("FieldNames", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Filter Field with Id {id} not found..
+        /// </summary>
+        public static string FilterFieldNotFound {
+            get {
+                return ResourceManager.GetString("FilterFieldNotFound", resourceCulture);
             }
         }
         
@@ -980,7 +1016,7 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Task Rejection .
+        ///   Looks up a localized string similar to Task Rejection Configuration.
         /// </summary>
         public static string RejectionConfiguration {
             get {
@@ -1048,6 +1084,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string Save {
             get {
                 return ResourceManager.GetString("Save", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Search.
+        /// </summary>
+        public static string Search {
+            get {
+                return ResourceManager.GetString("Search", resourceCulture);
             }
         }
         
