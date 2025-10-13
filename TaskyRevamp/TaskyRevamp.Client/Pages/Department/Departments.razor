@@ -78,9 +78,18 @@
                                     <SVGCrud SVGType="SVGCrud.SVGTypeEnum.EllipseVertical"></SVGCrud>
                                 </button>
                                 <ul class="dropdown-menu">
-                                   
 
 
+
+
+                                            <li>
+                                                <button class="dropdown-item" @onclick="@(() => ShowUser(p.Id))">
+                                                    <span class="icon">
+                                                        <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Users"></SVGCrud>
+                                                    </span>
+                                                    @Loc["ShowUser"]
+                                                </button>
+                                            </li>
                                     
                                     <li>
                                             <button class="dropdown-item" @onclick="@(() => Edit(p.Id))">
@@ -151,6 +160,12 @@
        
         navigationManager.NavigateTo($"/Update-Department/{id}");
     }
+    private void ShowUser(Guid id)
+    {
+
+        navigationManager.NavigateTo($"/UsersDepartment/{id}");
+    }
+    
     private void ShowDeleteConfirm(DepartmentDto p)
     {
         confirmMessage = @Loc["SureDeleteDepartment"];
