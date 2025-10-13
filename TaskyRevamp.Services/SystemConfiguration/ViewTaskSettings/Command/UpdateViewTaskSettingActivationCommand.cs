@@ -13,26 +13,26 @@ namespace TaskyRevamp.Services.SystemConfiguration.ViewTaskSettings.Command
 	public record UpdateViewTaskSettingActivationCommand(List<ViewTaskSettingsDto> TaskViews):IRequest<bool>;
 	public class UpdateViewTaskSettingActivationHandler : IRequestHandler<UpdateViewTaskSettingActivationCommand, bool>
 	{
-		private readonly IRepository<ViewTaskSetting> _ViewTaskRepository;
+		private readonly IRepository<ViewTaskSetting> _viewTaskRepository;
 
-		public UpdateViewTaskSettingActivationHandler(IRepository<ViewTaskSetting> _viewTaskRepository)
+		public UpdateViewTaskSettingActivationHandler(IRepository<ViewTaskSetting> viewTaskRepository)
 		{
-			_ViewTaskRepository = _viewTaskRepository;
+			_viewTaskRepository = viewTaskRepository;
 		}
 		public async Task<bool> Handle(UpdateViewTaskSettingActivationCommand request, CancellationToken cancellationToken)
 		{
 			var ViewTaskResponse =  request.TaskViews.ToList();
 			foreach (var viewTask in ViewTaskResponse)
 			{
-				var originTaskViewRow = await _ViewTaskRepository.FindByKey(viewTask.Id);
+				var originTaskViewRow = await _viewTaskRepository.FindByKey(viewTask.Id);
 				if (originTaskViewRow.Success && originTaskViewRow != null && originTaskViewRow.Value != null) {
 					if (originTaskViewRow.Value.IsActive != viewTask.IsActive) {
 						originTaskViewRow.Value.IsActive = viewTask.IsActive;
-						await _ViewTaskRepository.Update(originTaskViewRow.Value);
+						await _viewTaskRepository.Update(originTaskViewRow.Value);
 					}
 				}	
 			}
-			await _ViewTaskRepository.SaveChangesAsync();
+			await _viewTaskRepository.SaveChangesAsync();
 			return true;
 		}
 	}

@@ -32,7 +32,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 var configuration = builder.Configuration;
 
-builder.Services.AddControllers();
+builder.Services.AddControllers(config => { config.Filters.Add(new ExtractCustomHeaderAttribute()); });
 builder.Services.AddRazorPages();
 //builder.Services.AddOpenApi();
 builder.Services.AddEndpointsApiExplorer();
@@ -168,6 +168,7 @@ app.UseCors(x =>
 
 app.UseRequestLocalization();
 app.UseMiddleware<LocalizedExceptionMiddleware>();
+app.UseMiddleware<ExtractCustomHeaderMiddleware>();
 
 
 // Configure the HTTP request pipeline.

@@ -6,7 +6,6 @@ using System.Linq;
 using System.Resources;
 using System.Text;
 using System.Threading.Tasks;
-//using TaskyRevamp.Domain.Exceptions;
 using TaskyRevamp.Domain.Repositeries;
 using TaskyRevamp.Dto.SystemConfiguration;
 using TaskyRevamp.Localization.Resources;
@@ -48,7 +47,9 @@ namespace TaskyRevamp.Services.SystemConfiguration.PriorityConfiguration.Command
 
         private async Task ValidatePriority(PriorityDto priorityDto)
         {
-            var exists = await _priorityRepository.FindBy(p => p.Id != priorityDto.Id && (p.NameEnglish.ToLower() == priorityDto.NameEnglish.ToLower() || p.NameArabic.ToLower() == priorityDto.NameArabic.ToLower()));
+            var exists = await _priorityRepository.FindBy(p => p.Id != priorityDto.Id 
+                && (p.NameEnglish.ToLower() == priorityDto.NameEnglish.ToLower() 
+                || p.NameArabic.ToLower() == priorityDto.NameArabic.ToLower()));
             if (exists?.Value?.Count > 0)
             {
                 var priorities = exists.Value;

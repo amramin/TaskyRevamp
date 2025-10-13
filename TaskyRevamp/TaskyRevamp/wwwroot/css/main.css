@@ -19,6 +19,8 @@
   --backdrop-bg: #dfe5ef;
   --bs-danger-rgb: 232, 44, 44;
   --bs-success-rgb: 84, 192, 127;
+  --warning:#FFA000;
+  --warning-light:#FCF6ED;
 }
 
 /* start inputs */
@@ -232,6 +234,10 @@
   color: var(--dark-900);
   font-size: 0.75rem;
   font-weight: 600;
+}
+.form-label .text-danger {
+  -webkit-margin-start: 0.25rem;
+          margin-inline-start: 0.25rem;
 }
 
 .form-check-card:not(:last-child) {
@@ -553,6 +559,22 @@
   font-weight: 500;
 }
 
+/* strat alert*/
+/* strat alert*/
+.alert {
+  border: 0;
+}
+.alert.alert-sm {
+  font-size: 0.75rem;
+  padding: 0.5rem 1rem;
+  font-weight: 500;
+}
+.alert.alert-warning {
+  background-color: var(--warning-light);
+  color: var(--warning);
+}
+
+/* end alert*/
 /* End typography*/
 /* start app-splash-screen*/
 .app-splash-screen {
@@ -864,6 +886,110 @@
   width: 1rem;
 }
 
+/* strat tab-pills*/
+.tab-pills .nav {
+  padding: 0.5rem 0.75rem;
+  border-bottom: 1px solid var(--light-300);
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  gap: 1rem;
+}
+.tab-pills .nav .nav-link {
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  gap: 0.25rem;
+  padding: 0.5rem;
+  color: var(--dark-700);
+}
+.tab-pills .nav .nav-link svg {
+  width: 1rem;
+  height: 1rem;
+}
+.tab-pills .nav .nav-link.active {
+  color: var(--primary-color);
+  background-color: var(--light-200);
+}
+
+/* end tab-pills*/
+/* start  horizintal-tab*/
+.horizintal-tab {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-flex: 1;
+      -ms-flex-positive: 1;
+          flex-grow: 1;
+  position: relative;
+  -webkit-padding-start: 4rem;
+          padding-inline-start: 4rem;
+}
+.horizintal-tab .tab-nav {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  position: absolute;
+  inset-inline-start: 0.75rem;
+  top: 0;
+  background-color: var(--light-200);
+  border: 1px solid var(--light-300);
+  border-radius: var(--bs-border-radius);
+  z-index: 10;
+}
+.horizintal-tab .tab-nav .tab-btn {
+  width: 3.5rem;
+  height: 3.5rem;
+  position: relative;
+  padding: 0;
+  color: var(--dark-500);
+  border: none;
+}
+.horizintal-tab .tab-nav .tab-btn svg {
+  width: 1.5rem;
+  height: 1.5rem;
+  stroke-width: 2;
+}
+.horizintal-tab .tab-nav .tab-btn.active,
+.horizintal-tab .tab-nav .tab-btn :active {
+  color: var(--primary-color);
+  background-color: transparent;
+}
+.horizintal-tab .tab-nav .tab-btn .text {
+  position: absolute;
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
+  white-space: nowrap;
+  font-size: 0.75rem;
+  top: 50%;
+  -webkit-transform: translateY(-50%) translateX(-200%);
+          transform: translateY(-50%) translateX(-200%);
+  background-color: var(--dark-900);
+  padding: 0.25rem 0.5rem;
+  color: var(--bs-white);
+  border-radius: calc(var(--bs-border-radius) / 2);
+  -webkit-transition: var(--transtion-3ms-e-out);
+  transition: var(--transtion-3ms-e-out);
+}
+.horizintal-tab .tab-nav .tab-btn:hover .text {
+  inset-inline-start: 100%;
+  -webkit-transform: translateY(-50%) translateX(0);
+          transform: translateY(-50%) translateX(0);
+}
+
+/* end  horizintal-tab*/
 @font-face {
   font-family: "Almarai";
   src: url(../fonts/Almarai/Almarai-Regular.ttf);
@@ -896,36 +1022,6 @@
   fill: var(--primary-color);
 }
 
-/* strat tab-pills*/
-.tab-pills .nav {
-  padding: 0.5rem 0.75rem;
-  border-bottom: 1px solid var(--light-300);
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  gap: 1rem;
-}
-.tab-pills .nav .nav-link {
-  display: -webkit-inline-box;
-  display: -ms-inline-flexbox;
-  display: inline-flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  gap: 0.25rem;
-  padding: 0.5rem;
-  color: var(--dark-700);
-}
-.tab-pills .nav .nav-link svg {
-  width: 1rem;
-  height: 1rem;
-}
-.tab-pills .nav .nav-link.active {
-  color: var(--primary-color);
-  background-color: var(--light-200);
-}
-
-/* end tab-pills*/
 /* end Global */
 /* start .auth */
 .auth {

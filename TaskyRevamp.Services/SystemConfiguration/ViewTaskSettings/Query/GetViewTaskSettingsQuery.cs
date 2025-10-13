@@ -13,16 +13,16 @@ namespace TaskyRevamp.Services.SystemConfiguration.ViewTaskSettings.Query
 	public record GetViewTaskSettingsQuery(): IRequest<List<ViewTaskSettingsDto>>;
 	public class GetViewTaskSettingsHandler : IRequestHandler<GetViewTaskSettingsQuery, List<ViewTaskSettingsDto>>
 	{
-		private readonly IRepository<ViewTaskSetting> _ViewTaskRepository;
+		private readonly IRepository<ViewTaskSetting> _viewTaskRepository;
 
-		public GetViewTaskSettingsHandler(IRepository<ViewTaskSetting> _viewTaskRepository)
+		public GetViewTaskSettingsHandler(IRepository<ViewTaskSetting> viewTaskRepository)
 		{
-			_ViewTaskRepository = _viewTaskRepository; 	
+			_viewTaskRepository = viewTaskRepository; 	
 		}
 		public async Task<List<ViewTaskSettingsDto>> Handle(GetViewTaskSettingsQuery request, CancellationToken cancellationToken)
 		{
 			List<ViewTaskSettingsDto> ViewTasks = new List<ViewTaskSettingsDto>();
-			var ViewTasksResponce = await _ViewTaskRepository.AllAsNoTracking();
+			var ViewTasksResponce = await _viewTaskRepository.AllAsNoTracking();
 			if(ViewTasksResponce.Success && ViewTasksResponce.Value != null && ViewTasksResponce.Value.Any())
 			{
 				ViewTasks = ViewTasksResponce.Value.Select(v => v.CopyToDto()).ToList();
