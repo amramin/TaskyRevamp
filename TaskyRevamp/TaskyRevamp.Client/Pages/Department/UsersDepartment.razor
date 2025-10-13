@@ -1,10 +1,11 @@
-﻿@page "/Departments"
+﻿@page "/UsersDepartment/{Id:guid}"
 
 @using TaskyRevamp.Client.Consumer
 @using TaskyRevamp.Client.Services
 @using TaskyRevamp.Client.Shared.Popups
+@using TaskyRevamp.Dto.Account
 @using TaskyRevamp.Dto.Department
-@inject DepartmentConsumer  _departmentConsumer
+@inject UserConsumer  _userConsumer
 @inject NavigationManager navigationManager
 @inject IStringLocalizer<SharedResources> Loc
 @inject ToastService ToastService
@@ -20,19 +21,19 @@
             <span class="icon">
                 <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Pluse"></SVGCrud>
             </span>
-            @Loc["AddDepartment"]
+            @Loc["AddUser"]
         </button>
     </div>
 </div>
 
 
 
-    @if (departmentDtos == null || departmentDtos.Count() == 0)
+@if (selectedDepartment == null )
     {
-        <h6 class="mb-3">@Loc["NodepartmentavailableAdd"]</h6>
+    <h6 class="mb-3">@selectedDepartment.Name</h6>
 
     }
-    else{
+
 <div class="page-body">
 
 
@@ -40,34 +41,24 @@
         <table class="table custom-table">
                 <thead>
                     <tr>
-                        <th>@Loc["NameEnglish"]</th>
-                            <th>@Loc["NameArabic"]</th>
-                    <th>@Loc["DepartmentParent"]</th>
-                        <th>@Loc["CreatedBy"]</th>
-                    <th>@Loc["CreationDate"]</th>
-                            <th>@Loc["UpdatedBy"]</th>
-                            <th>@Loc["UpdateDate"]</th>
-             
+                        <th>@Loc["UserName"]</th>
+                            <th>@Loc["Email"]</th>
+                    <th>@Loc["Privilage"]</th>
                         <th></th>
+                
                     </tr>
                 </thead>
                 <tbody>
-                        @if (departmentDtos != null && departmentDtos.Any())
+                        @if (selectedDepartment != null )
                     {
-    @foreach (var p in departmentDtos)
+                    @foreach (var usr in selectedDepartment.AssignedUsers)
     {
 
                                 <tr>
-                                    <td>@p.NameEnglish</td>
-                                    <td>@p.NameArabic</td>
-                                    <td>@p.ParentdepartmentName</td>
-                                    <td>@p.CreatedByName</td>
-                                  
-                                   
-                                    <td>@p.CreateDate</td>
-                                    <td>@p.UpdatedByName</td>
-                                    <td>@p.UpdateDate</td>
-                                 
+                            <td>@usr.UserName</td>
+                            <td>@usr.Email</td>
+                            <td></td>
+                         
                                 
 
 
@@ -78,21 +69,12 @@
                                     <SVGCrud SVGType="SVGCrud.SVGTypeEnum.EllipseVertical"></SVGCrud>
                                 </button>
                                 <ul class="dropdown-menu">
+                                   
 
 
-
-
-                                            <li>
-                                                <button class="dropdown-item" @onclick="@(() => ShowUser(p.Id))">
-                                                    <span class="icon">
-                                                        <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Users"></SVGCrud>
-                                                    </span>
-                                                    @Loc["ShowUser"]
-                                                </button>
-                                            </li>
                                     
                                     <li>
-                                            <button class="dropdown-item" @onclick="@(() => Edit(p.Id))">
+                                            <button class="dropdown-item" @onclick="@(() => Edit(usr.Id))">
                                             <span class="icon">
                                                 <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Edit"></SVGCrud>
                                             </span>
@@ -100,7 +82,7 @@
                                         </button>
                                     </li>
                                     <li>
-                                            <button class="dropdown-item" @onclick="@(() => ShowDeleteConfirm(p))">
+                                            <button class="dropdown-item" @onclick="@(() => ShowDeleteConfirm(usr))">
                                             <span class="icon">
                                                     <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Delete"></SVGCrud>
                                             </span>
@@ -135,8 +117,9 @@
 
 </div>
 </div>
-}
+
 @code {
+    [Parameter] public Guid Id { get; set; }
     public List<DepartmentDto> departmentDtos = new List<DepartmentDto>();
 
     private Guid selectedDepartmentId { get; set; }
@@ -148,42 +131,35 @@
 
     protected async override Task OnInitializedAsync()
     {
-        var res = await _departmentConsumer.GetDepartments();
-     
-        departmentDtos = res.Data.ToList().OrderBy(k=>k.CreateDate).ToList();
-       
+        var res = await _userConsumer.GetAllUsersByDepartment(Id);
+
+        selectedDepartment = res.Data;
         StateHasChanged();
     }
-    private void Add() => navigationManager.NavigateTo("/Add-Department");
+    private void Add() => navigationManager.NavigateTo("/LinkDepartmentUser");
     private void Edit(Guid id)
     {
-       
+
         navigationManager.NavigateTo($"/Update-Department/{id}");
     }
-    private void ShowUser(Guid id)
-    {
-
-        navigationManager.NavigateTo($"/UsersDepartment/{id}");
-    }
-    
-    private void ShowDeleteConfirm(DepartmentDto p)
+    private void ShowDeleteConfirm(UserDto p)
     {
         confirmMessage = @Loc["SureDeleteDepartment"];
-        selectedDepartment = p;
+      //  selectedDepartment = p;
         showConfirm = true;
     }
     private async Task OnDeleteConfirmed(bool confirmed)
     {
         if (confirmed && selectedDepartment != null)
         {
-            var result = await _departmentConsumer.DeleteDepartment(selectedDepartment.Id);
-            if (result.Success)
-            {
-                departmentDtos.Remove(selectedDepartment);
-                showConfirm = false;
-                StateHasChanged();
-                await ToastService.ShowToastAsync(Loc["Deleted successfully"], "success");
-            }
+            // var result = await _departmentConsumer.DeleteDepartment(selectedDepartment.Id);
+            // if (result.Success)
+            // {
+            //     departmentDtos.Remove(selectedDepartment);
+            //     showConfirm = false;
+            //     StateHasChanged();
+            //     await ToastService.ShowToastAsync(Loc["Deleted successfully"], "success");
+            // }
         } 
         selectedDepartment = null;
         StateHasChanged();

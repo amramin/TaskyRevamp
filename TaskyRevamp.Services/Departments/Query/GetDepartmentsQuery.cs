@@ -20,7 +20,7 @@ public class GetDepartmentsHandler : IRequestHandler<GetDepartmentsQuery, List<D
 
     public async Task<List<DepartmentDto>> Handle(GetDepartmentsQuery request, CancellationToken cancellationToken)
     {
-        List<DepartmentDto> Departmentss = new List<DepartmentDto>();
+        List<DepartmentDto> allDepartments = new List<DepartmentDto>();
        
 
         var data = await _departmentRepository.FindBy(K=>K.Id!=null, includeProperties:$"{nameof(Department.Parentdepartment) },{nameof(Department.CreatedBy)}");
@@ -32,10 +32,10 @@ public class GetDepartmentsHandler : IRequestHandler<GetDepartmentsQuery, List<D
             DepartmentDto dep = Department.CopyToDto();
             dep.CreatedByName = Department.CreatedBy?.NameEnglish;
             dep.UpdatedByName = Department.UpdatedBy?.NameEnglish;
-            Departmentss.Add(dep);
+            allDepartments.Add(dep);
             
         }
         
-        return Departmentss;
+        return allDepartments;
     }
 }

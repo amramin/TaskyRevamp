@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TaskyRevamp.Dto.Account;
 using TaskyRevamp.Dto.GeneralDto;
 using TaskyRevamp.Localization.Resources;
 
@@ -29,6 +30,7 @@ namespace TaskyRevamp.Dto.Department
         public DateTime? CreateDate { get; set; }
         public Guid? UpdatedBy { get; set; }
         public DateTime? UpdateDate { get; set; }
+       public List<UserDto>? AssignedUsers { get; set; } 
 
     }
 }

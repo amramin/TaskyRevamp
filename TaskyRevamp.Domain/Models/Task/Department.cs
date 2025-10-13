@@ -21,6 +21,7 @@ public class Department : Entity, IHasCreationMetaData, IHasUpdateMetaData
     public DateTime? UpdateDate { get ; set ; }
     public User? UpdatedBy { get; set; }
 
+    public ICollection<User>? AssignedUser { set; get; }
     public Department(Guid id, string nameEn,string nameAr,Guid createrid)
     {
         Id = id;
