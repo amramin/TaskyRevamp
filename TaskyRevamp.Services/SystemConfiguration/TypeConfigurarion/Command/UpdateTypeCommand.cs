@@ -33,7 +33,7 @@ namespace TaskyRevamp.Services.SystemConfiguration.TypeConfigurarion.Command
 				typeData.IsActive = newData.IsActive;
 
 				await _typeRepository.Update(typeData);
-				await _typeRepository.SaveChangesAsync();
+				//await _typeRepository.SaveChangesAsync();
 			}
 			return true;
 		}
