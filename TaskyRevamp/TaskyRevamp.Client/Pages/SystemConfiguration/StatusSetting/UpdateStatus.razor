@@ -34,11 +34,15 @@
                 @Loc["Name Color Indicator"]
                 <span class="text-danger">*</span>
             </label>
-            <div class="input-group">
+
+            <div class="color-group">
                 <InputText class="form-control" @bind-Value="_statusDto.NameColor" />
-                <span class="input-group-text">
-                    <input type="color" class="form-control form-control-color border-0 p-0" style="width: 2rem;"
-                        @bind="_statusDto.NameColor" />
+                <span class="rounded-circle cl-preview" style="background-color:@_statusDto.NameColor"></span>
+                <span class="color-indicator">
+                    <input type="color" id="color-name" @bind="_statusDto.NameColor" />
+                    <label for="color-name">
+                        <SVGCrud SVGType="SVGCrud.SVGTypeEnum.ColorPalette"></SVGCrud>
+                    </label>
                 </span>
             </div>
             <ValidationMessage class="small text-danger" For="@(() => _statusDto.NameColor)"></ValidationMessage>
@@ -49,11 +53,14 @@
                 @Loc["Background Color Indicator"]
                 <span class="text-danger">*</span>
             </label>
-            <div class="input-group">
+            <div class="color-group">
                 <InputText class="form-control" @bind-Value="_statusDto.BackgroundColor" />
-                <span class="input-group-text">
-                    <input type="color" class="form-control form-control-color border-0 p-0" style="width: 2rem;"
-                        @bind="_statusDto.BackgroundColor" />
+                <span class="rounded-circle cl-preview" style="background-color:@_statusDto.BackgroundColor"></span>
+                <span class="color-indicator">
+                    <input type="color" id="bg-name" @bind="_statusDto.BackgroundColor" />
+                    <label for="bg-name">
+                        <SVGCrud SVGType="SVGCrud.SVGTypeEnum.ColorPalette"></SVGCrud>
+                    </label>
                 </span>
             </div>
             <ValidationMessage class="small text-danger" For="@(() => _statusDto.BackgroundColor)"></ValidationMessage>
@@ -61,9 +68,21 @@
     </div>
 
     <div class="offcanvas-footer">
-        <button type="button" class="btn btn-light" @onclick="Cancel">@Loc["Cancel"]</button>
-        <button type="submit" class="btn btn-primary">@Loc["Save"]</button>
+        <div class="row g-2">
+            <div class="col-6">
+                <div class="d-grid">
+                    <button type="button" class="btn btn-lg btn-light" @onclick="Cancel">@Loc["Cancel"]</button>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-lg btn-primary">@Loc["Save"]</button>
+                </div>
+            </div>
+        </div>
+
     </div>
+
 </EditForm>
 
 
