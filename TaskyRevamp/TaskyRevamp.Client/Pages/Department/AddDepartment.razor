@@ -8,14 +8,14 @@
 @inject DepartmentConsumer _DepartmentConsumer
 @inject ToastService ToastService
 
-<div class="container mt-4">
+
        <DepartmentForm
            @ref="form"
            OnCancel="Cancel" 
            OnValidSubmit="@Save"
            Department="_newDepartment" 
            SubmitButtonText= "@Loc["Save"]" />
-</div>
+
 
 @code {
 
