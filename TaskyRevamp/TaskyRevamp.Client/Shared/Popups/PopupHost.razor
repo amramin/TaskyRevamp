@@ -15,13 +15,17 @@
     <div class="offcanvas offcanvas-end show d-block h-100"
          tabindex="-1" style="visibility: visible;" @onclick:stopPropagation>
         <div class="offcanvas-header">
-            <h5 class="offcanvas-title">@newParams.HeaderText</h5>
-            <button type="button" class="btn-close" @onclick="PopupService.Hide"></button>
-        </div>
+                <button type="button" class="btn close" @onclick="PopupService.Hide">
+                    <span class="icon">
+                        <SVGCrud SVGType="SVGCrud.SVGTypeEnum.CloseArrow"></SVGCrud>
+                    </span>
+                </button>
+                <h5 class="offcanvas-title">@newParams.HeaderText</h5>
+            </div>
 
-        <div class="offcanvas-body" @onclick:stopPropagation>
+       
             @newParams.ChildContent
-        </div>
+       
     </div>
     }
     else
