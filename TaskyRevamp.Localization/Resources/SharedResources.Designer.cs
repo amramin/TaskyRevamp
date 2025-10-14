@@ -901,9 +901,9 @@ namespace TaskyRevamp.Localization.Resources {
         ///   Looks up a localized string similar to  No department available
         ///Add a new department to get started.
         /// </summary>
-        public static string NodepartmentavailableAdd {
+        public static string Nodepartmentavailable {
             get {
-                return ResourceManager.GetString("NodepartmentavailableAdd", resourceCulture);
+                return ResourceManager.GetString("Nodepartmentavailable", resourceCulture);
             }
         }
         

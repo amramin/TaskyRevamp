@@ -29,7 +29,7 @@
 
     @if (departmentDtos == null || departmentDtos.Count() == 0)
     {
-        <h6 class="mb-3">@Loc["NodepartmentavailableAdd"]</h6>
+        <h6 class="mb-3">@Loc["Nodepartmentavailable"]</h6>
 
     }
     else{
@@ -54,19 +54,19 @@
                 <tbody>
                         @if (departmentDtos != null && departmentDtos.Any())
                     {
-    @foreach (var p in departmentDtos)
+    @foreach (var depart in departmentDtos)
     {
 
                                 <tr>
-                                    <td>@p.NameEnglish</td>
-                                    <td>@p.NameArabic</td>
-                                    <td>@p.ParentdepartmentName</td>
-                                    <td>@p.CreatedByName</td>
-                                  
-                                   
-                                    <td>@p.CreateDate</td>
-                                    <td>@p.UpdatedByName</td>
-                                    <td>@p.UpdateDate</td>
+                                <td>@depart.NameEnglish</td>
+                                <td>@depart.NameArabic</td>
+                                <td>@depart.ParentdepartmentName</td>
+                                <td>@depart.CreatedByName</td>
+
+
+                                <td>@depart.CreateDate</td>
+                                <td>@depart.UpdatedByName</td>
+                                <td>@depart.UpdateDate</td>
                                  
                                 
 
@@ -83,7 +83,7 @@
 
 
                                             <li>
-                                                <button class="dropdown-item" @onclick="@(() => ShowUser(p.Id))">
+                                                <button class="dropdown-item" @onclick="@(() => ShowUser(depart.Id))">
                                                     <span class="icon">
                                                         <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Users"></SVGCrud>
                                                     </span>
@@ -92,7 +92,7 @@
                                             </li>
                                     
                                     <li>
-                                            <button class="dropdown-item" @onclick="@(() => Edit(p.Id))">
+                                                <button class="dropdown-item" @onclick="@(() => Edit(depart.Id))">
                                             <span class="icon">
                                                 <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Edit"></SVGCrud>
                                             </span>
@@ -100,7 +100,7 @@
                                         </button>
                                     </li>
                                     <li>
-                                            <button class="dropdown-item" @onclick="@(() => ShowDeleteConfirm(p))">
+                                                <button class="dropdown-item" @onclick="@(() => ShowDeleteConfirm(depart))">
                                             <span class="icon">
                                                     <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Delete"></SVGCrud>
                                             </span>
@@ -163,7 +163,7 @@
     private void ShowUser(Guid id)
     {
 
-        navigationManager.NavigateTo($"/UsersDepartment/{id}");
+        navigationManager.NavigateTo($"/UsersDepartment/{id}",true);
     }
     
     private void ShowDeleteConfirm(DepartmentDto p)
