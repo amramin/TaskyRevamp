@@ -18,6 +18,9 @@ namespace TaskyRevamp.Dto.Department
         [Required]
         public string NameArabic { get; set; }
 
+        public List<DepartmentDto> Children { get; set; } = new(); 
+        public bool IsExpanded { get; set; } = false;
+
         public string Name => Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName.Equals("ar") ? NameArabic : NameEnglish;
 
         public Guid? CreatedBy { get; set; }
