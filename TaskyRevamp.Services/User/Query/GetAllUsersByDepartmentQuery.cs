@@ -23,11 +23,11 @@ public class GetAllUsersByDepartmentHandler : IRequestHandler<GetAllUsersByDepar
     {
 
        DepartmentDto returned = new DepartmentDto();
-        List<UserDto> users = new List<UserDto>();
         var data = await _departmentRepository.FindBy(k => k.Id == request.departmentId,includeProperties:$"{nameof(Department.AssignedUser)}");
-
+        returned.AssignedUsers = new List<UserDto>();
        var  department = data.Value.FirstOrDefault();
         returned = department.CopyToDto();
+        
         foreach (var usr in department.AssignedUser)
         {
             var userDto = new UserDto()

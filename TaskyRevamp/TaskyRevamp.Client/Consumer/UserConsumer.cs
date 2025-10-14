@@ -16,11 +16,11 @@ namespace TaskyRevamp.Client.Consumer
 
         public async Task<CommonApiResponse<DepartmentDto>> GetAllUsersByDepartment(Guid DepartmentId)
         {
-            var ret = await _taskyService.GetFromJsonAsync<CommonApiResponse<DepartmentDto>>($"api/Survey/GetAllUsersByDepartment/{DepartmentId.ToString()}");
+            var ret = await _taskyService.GetFromJsonAsync<CommonApiResponse<DepartmentDto>>($"api/User/GetAllUsersByDepartment/{DepartmentId.ToString()}");
 
             return ret;
         }
-        public async Task<CommonApiResponse<List<UserDto>>> GetUsers()
+        public async Task<CommonApiResponse<List<UserDto>>> GetAllUNassignedUsers()
 		{
 			var url = $"api/User/GetAllUsers";
 			var res = await _taskyService.GetFromJsonAsync<CommonApiResponse<List<UserDto>>>(url);
@@ -35,9 +35,9 @@ namespace TaskyRevamp.Client.Consumer
 			return res;
 		}
 
-		public async Task<CommonApiResponse<bool>>AddUser(UserDto UserDto)
+		public async Task<CommonApiResponse<bool>> CreateAssignedUser(AssignedUserDto UserDto)
 		{
-			var url = $"api/User/CreateUser";
+			var url = $"api/User/CreateAssignedUser";
 			var res = await _taskyService.PostJsonAsync<CommonApiResponse<bool>>(url, UserDto);
 
 			return res.Data;

@@ -33,7 +33,7 @@ namespace TaskyRevamp.Dto.Department
         public DateTime? CreateDate { get; set; }
         public Guid? UpdatedBy { get; set; }
         public DateTime? UpdateDate { get; set; }
-       public List<UserDto>? AssignedUsers { get; set; } 
+        public List<UserDto>? AssignedUsers { get; set; } = new List<UserDto>();
 
     }
 }

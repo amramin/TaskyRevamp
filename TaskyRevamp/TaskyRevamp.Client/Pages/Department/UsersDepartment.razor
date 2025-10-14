@@ -14,7 +14,7 @@
 
 
 <div class="page-header">
-    <h1 class="page-headline">@Loc["Departments"]</h1>
+    <h1 class="page-headline">@selectedDepartment?.Name</h1>
     <div class="action-btn-list">
        
         <button class="btn btn-primary" @onclick="Add">
@@ -28,11 +28,6 @@
 
 
 
-@if (selectedDepartment == null )
-    {
-    <h6 class="mb-3">@selectedDepartment.Name</h6>
-
-    }
 
 <div class="page-body">
 
@@ -99,7 +94,8 @@
     }
 
     }
-    </tbody>
+  
+</tbody>
     </table>
 
     
@@ -127,6 +123,7 @@
     private DepartmentDto? selectedDepartment;
     private bool showConfirm;
     private bool isOrdered = false;
+  
     List<DepartmentDto>? originalDeptes;
 
     protected async override Task OnInitializedAsync()
@@ -134,9 +131,10 @@
         var res = await _userConsumer.GetAllUsersByDepartment(Id);
 
         selectedDepartment = res.Data;
-        StateHasChanged();
+        await InvokeAsync(StateHasChanged);
     }
-    private void Add() => navigationManager.NavigateTo("/LinkDepartmentUser");
+
+    private void Add() => navigationManager.NavigateTo($"/LinkDepartmentUser/{Id}");
     private void Edit(Guid id)
     {
 
