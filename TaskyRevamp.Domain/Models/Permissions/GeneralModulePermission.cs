@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TaskyRevamp.Dto.Enums;
+using TaskyRevamp.Dto.Permissions;
 
 namespace TaskyRevamp.Domain.Models.Permissions
 {
@@ -16,8 +18,40 @@ namespace TaskyRevamp.Domain.Models.Permissions
 		public bool IsEdit { get; set; }
 		public bool IsAdd { get; set; }
 		public bool IsDelete { get; set; }
-		public int? DelegationFromUser { get; set; }
-		public int? DelegationToUser { get; set; }
+		public DelegationFromUser? DelegationFromUser { get; set; }
+		public DelegationToUser? DelegationToUser { get; set; }
 		public string? DelegationDepartments { get; set; }
+
+		public GeneralModulePermission()
+		{
+
+		}
+		public GeneralModulePermission(bool isView, bool isEdit,bool isAdd, bool isDelete, DelegationFromUser delegationFromUser, DelegationToUser delegationToUser, string? delegationDepartments)
+		{
+			IsView = isView;
+			IsAdd = isAdd;
+			IsEdit = isEdit;
+			IsDelete = isDelete;
+			DelegationFromUser = delegationFromUser;
+			DelegationToUser = delegationToUser;
+			DelegationDepartments = delegationDepartments;
+		}
+		
+		public GeneralModulePermissionDto CopyToDto()
+		{
+			return new GeneralModulePermissionDto
+			{
+				Id = Id,
+				PrivilegeId = PrivilegeId,
+				GeneralModuleId = GeneralModuleId,
+				IsView = IsView,
+				IsEdit = IsEdit,
+				IsAdd = IsAdd,
+				IsDelete = IsDelete,
+				DelegationFromUser = DelegationFromUser,
+				DelegationToUser = DelegationToUser,
+				DelegationDepartments = DelegationDepartments
+			};
+		}
 	}
 }
