@@ -9,13 +9,13 @@
 @inject TypeSettingConsumer _typeSettingConsumer
 @inject PopupService PopupService
 
-<div class="container mt-4">
+
     <TypeForm @ref="form"
                 OnCancel="Cancel"
                 OnValidSubmit="@Save"
                 type="@type"
                 SubmitButtonText="Save" />
-</div>
+
 
 @code {
     [Parameter] public Guid Id { get; set; }

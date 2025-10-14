@@ -4,7 +4,7 @@
 
 <EditForm EditContext="@editContext" OnValidSubmit="@OnSubmitHandler">
     <DataAnnotationsValidator />
-
+<div class="offcanvas-body">
     <div class="mb-3">
         <label class="form-label">
             @Loc["Name English"]
@@ -23,17 +23,30 @@
         <ValidationMessage class="small text-danger" For="@(() => source.NameArabic)"></ValidationMessage>
     </div>
 
-    <div class="form-check form-switch">
+    <div class="form-check form-switch custom">
         <InputCheckbox @bind-Value="source.IsActive" class="form-check-input" id="inactiveSwitch" />
         <label class="form-check-label" for="inactiveSwitch">
+                <span class="toggler-icon"></span>
             @Loc[source.IsActive ? "inactive" : "active"]
         </label>
     </div>
+</div>
+ <div class="offcanvas-footer">
+        <div class="row g-2">
+            <div class="col-6">
+             <div class="d-grid">
+                <button type="button" class="btn btn-lg btn-light" @onclick="OnCancelClick">@Loc["Cancel"]</button>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-lg btn-primary">@Loc[@SubmitButtonText]</button>
+                </div>
+            </div>
+        </div>
 
-    <div class="d-flex justify-content-end gap-2 mt-4">
-        <button type="button" class="btn btn-light" @onclick="OnCancelClick">@Loc["Cancel"]</button>
-        <button type="submit" class="btn btn-primary">@Loc[@SubmitButtonText]</button>
     </div>
+    
 </EditForm>
 
 @code {

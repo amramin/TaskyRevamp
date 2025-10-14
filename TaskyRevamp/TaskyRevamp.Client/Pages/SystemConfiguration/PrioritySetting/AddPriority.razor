@@ -9,14 +9,14 @@
 @inject ToastService ToastService
 
 
-<div class="container mt-4">
+
        <PriorityForm
            @ref="form"
            OnCancel="Cancel" 
            OnValidSubmit="@Save"
            Priority="_newPriority" 
            SubmitButtonText="Save" />
-</div>
+
 
 @code {
 

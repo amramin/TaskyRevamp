@@ -1,21 +1,35 @@
 ﻿@page "/Departments"
 
 @using TaskyRevamp.Client.Consumer
+@using TaskyRevamp.Client.Pages.Department.Components
 @using TaskyRevamp.Client.Services
-@using TaskyRevamp.Client.Shared.Popups
 @using TaskyRevamp.Dto.Department
-@inject DepartmentConsumer  _departmentConsumer
+@using TaskyRevamp.Client.Shared.Popups
+@inject DepartmentConsumer _departmentConsumer
 @inject NavigationManager navigationManager
 @inject IStringLocalizer<SharedResources> Loc
 @inject ToastService ToastService
-
-
-
+@inject PopupService PopupService
 
 <div class="page-header">
     <h1 class="page-headline">@Loc["Departments"]</h1>
-    <div class="action-btn-list">
-       
+
+    <div class="action-btn-list d-flex align-items-center gap-2">
+        <div class="btn-group me-2">
+            <button class="btn @(currentView == DepartmentViewType.Grid ? "btn-primary" : "btn-outline-primary")"
+                    @onclick="@(() => ChangeView(DepartmentViewType.Grid))">
+                <i class="bi bi-table"></i> @Loc["Grid"]
+            </button>
+            <button class="btn @(currentView == DepartmentViewType.Tree ? "btn-primary" : "btn-outline-primary")"
+                    @onclick="@(() => ChangeView(DepartmentViewType.Tree))">
+                <i class="bi bi-diagram-3"></i> @Loc["Tree"]
+            </button>
+            <button class="btn @(currentView == DepartmentViewType.Hierarchy ? "btn-primary" : "btn-outline-primary")"
+                    @onclick="@(() => ChangeView(DepartmentViewType.Hierarchy))">
+                <i class="bi bi-list-nested"></i> @Loc["Hierarchy"]
+            </button>
+        </div>
+
         <button class="btn btn-primary" @onclick="Add">
             <span class="icon">
                 <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Pluse"></SVGCrud>
@@ -25,48 +39,32 @@
     </div>
 </div>
 
-
-
-    @if (departmentDtos == null || departmentDtos.Count() == 0)
-    {
-        <h6 class="mb-3">@Loc["Nodepartmentavailable"]</h6>
-
-    }
-    else{
-<div class="page-body">
-
-
-    <div class="table-responsive  sticky-header-custom">
-        <table class="table custom-table">
-                <thead>
-                    <tr>
-                        <th>@Loc["NameEnglish"]</th>
-                            <th>@Loc["NameArabic"]</th>
-                    <th>@Loc["DepartmentParent"]</th>
-                        <th>@Loc["CreatedBy"]</th>
-                    <th>@Loc["CreationDate"]</th>
-                            <th>@Loc["UpdatedBy"]</th>
-                            <th>@Loc["UpdateDate"]</th>
-             
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                        @if (departmentDtos != null && departmentDtos.Any())
-                    {
-    @foreach (var depart in departmentDtos)
-    {
+@if (departmentDtos == null || departmentDtos.Count == 0)
+{
+    <h6 class="mb-3">@Loc["NodepartmentavailableAdd"]</h6>
+}
+else
+{
+    <div class="page-body">
+        @switch (currentView)
+        {
+            case DepartmentViewType.Grid:
+                <DepartmentGrid Departments="departmentDtos"
+                                OnEdit="Edit"
+                                OnDelete="OnDeleteDepartment"
+                                OnShowUsers="ShowUser" />
+                break;
 
                                 <tr>
-                                <td>@depart.NameEnglish</td>
-                                <td>@depart.NameArabic</td>
-                                <td>@depart.ParentdepartmentName</td>
-                                <td>@depart.CreatedByName</td>
-
-
-                                <td>@depart.CreateDate</td>
-                                <td>@depart.UpdatedByName</td>
-                                <td>@depart.UpdateDate</td>
+                                    <td>@p.NameEnglish</td>
+                                    <td>@p.NameArabic</td>
+                                    <td>@p.ParentdepartmentName</td>
+                                    <td>@p.CreatedByName</td>
+                                  
+                                   
+                                    <td>@p.CreateDate</td>
+                                    <td>@p.UpdatedByName</td>
+                                    <td>@p.UpdateDate</td>
                                  
                                 
 
@@ -83,7 +81,7 @@
 
 
                                             <li>
-                                                <button class="dropdown-item" @onclick="@(() => ShowUser(depart.Id))">
+                                                <button class="dropdown-item" @onclick="@(() => ShowUser(p.Id))">
                                                     <span class="icon">
                                                         <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Users"></SVGCrud>
                                                     </span>
@@ -92,7 +90,7 @@
                                             </li>
                                     
                                     <li>
-                                                <button class="dropdown-item" @onclick="@(() => Edit(depart.Id))">
+                                            <button class="dropdown-item" @onclick="@(() => Edit(p.Id))">
                                             <span class="icon">
                                                 <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Edit"></SVGCrud>
                                             </span>
@@ -100,7 +98,7 @@
                                         </button>
                                     </li>
                                     <li>
-                                                <button class="dropdown-item" @onclick="@(() => ShowDeleteConfirm(depart))">
+                                            <button class="dropdown-item" @onclick="@(() => ShowDeleteConfirm(p))">
                                             <span class="icon">
                                                     <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Delete"></SVGCrud>
                                             </span>
@@ -133,84 +131,96 @@
 
 
 
-</div>
-</div>
-}
 @code {
-    public List<DepartmentDto> departmentDtos = new List<DepartmentDto>();
-
-    private Guid selectedDepartmentId { get; set; }
-    private string confirmMessage = "";
+    private List<DepartmentDto> departmentDtos = new();
+    private List<DepartmentDto> rootDepartments = new();
     private DepartmentDto? selectedDepartment;
-    private bool showConfirm;
-    private bool isOrdered = false;
-    List<DepartmentDto>? originalDeptes;
 
-    protected async override Task OnInitializedAsync()
+    private DepartmentViewType currentView = DepartmentViewType.Grid;
+
+    private List<DepartmentDto> RootDepartments => departmentDtos
+     .Where(d => d.ParentdepartmentId == Guid.Empty)
+     .ToList();
+
+    protected override async Task OnInitializedAsync()
     {
         var res = await _departmentConsumer.GetDepartments();
-     
-        departmentDtos = res.Data.ToList().OrderBy(k=>k.CreateDate).ToList();
-       
-        StateHasChanged();
+        departmentDtos = res.Data.OrderBy(k => k.CreateDate).ToList();
+
+
+        BuildHierarchy();
     }
+
     private void Add() => navigationManager.NavigateTo("/Add-Department");
-    private void Edit(Guid id)
-    {
-       
-        navigationManager.NavigateTo($"/Update-Department/{id}");
-    }
-    private void ShowUser(Guid id)
-    {
+    private void Edit(Guid id) => navigationManager.NavigateTo($"/Update-Department/{id}");
+    private void ShowUser(Guid id) => navigationManager.NavigateTo($"/UsersDepartment/{id}");
 
-        navigationManager.NavigateTo($"/UsersDepartment/{id}",true);
-    }
-    
-    private void ShowDeleteConfirm(DepartmentDto p)
+    private void ChangeView(DepartmentViewType view) => currentView = view;
+
+    private void OnDeleteDepartment(Guid departmentId)
     {
-        confirmMessage = @Loc["SureDeleteDepartment"];
-        selectedDepartment = p;
-        showConfirm = true;
-    }
-    private async Task OnDeleteConfirmed(bool confirmed)
-    {
-        if (confirmed && selectedDepartment != null)
-        {
-            var result = await _departmentConsumer.DeleteDepartment(selectedDepartment.Id);
-            if (result.Success)
+        PopupService.ShowConfirmation(
+            @Loc["SureDeleteDepartment"],
+            "Yes, Delete",
+            async (confirmed) =>
             {
-                departmentDtos.Remove(selectedDepartment);
-                showConfirm = false;
-                StateHasChanged();
-                await ToastService.ShowToastAsync(Loc["Deleted successfully"], "success");
-            }
-        } 
-        selectedDepartment = null;
-        StateHasChanged();
+                if (confirmed)
+                    await DeleteConfirmed(departmentId);
+            },
+            ConfirmationType.Danger
+        );
     }
-  
 
-    private void Cancel(MouseEventArgs args)
+    private async Task DeleteConfirmed(Guid departmentId)
     {
-        departmentDtos = originalDeptes!.Select(p => new DepartmentDto
+        var result = await _departmentConsumer.DeleteDepartment(departmentId);
+        if (result.Success)
         {
-            Id = p.Id,
-            NameEnglish = p.NameEnglish,
-            NameArabic = p.NameArabic,
-            
-        }).ToList();
-        isOrdered = false;
+            var toRemove = departmentDtos.FirstOrDefault(d => d.Id == departmentId);
+            if (toRemove != null)
+            {
+                departmentDtos.Remove(toRemove);
+            }
+
+            await ToastService.ShowToastAsync(Loc["Deleted successfully"], "success");
+            BuildHierarchy();
+        }
+        else
+        {
+            await ToastService.ShowToastAsync(Loc["DeleteFailed"], "danger");
+        }
+
         StateHasChanged();
     }
-    private List<DepartmentDto> CopyPriorites()
+
+
+    private void BuildHierarchy()
     {
-        return departmentDtos.Select(p => new DepartmentDto
+        var dict = departmentDtos.ToDictionary(x => x.Id);
+        foreach (var dept in departmentDtos)
+            dept.Children = new List<DepartmentDto>();
+
+        foreach (var dept in departmentDtos)
         {
-            Id = p.Id,
-            NameEnglish = p.NameEnglish,
-            NameArabic = p.NameArabic,
-           
-        }).ToList();
+            if (dept.ParentdepartmentId != Guid.Empty && dict.ContainsKey(dept.ParentdepartmentId))
+                dict[dept.ParentdepartmentId].Children.Add(dept);
+        }
+
+        rootDepartments = departmentDtos
+            .Where(d => d.ParentdepartmentId == Guid.Empty ||
+                        !departmentDtos.Any(x => x.Id == d.ParentdepartmentId))
+            .ToList();
     }
-   
+
+    private void HandleAddDepartment(string parentId)
+    {
+        navigationManager.NavigateTo($"/Add-Department?parentId={parentId}");
+    }
+
+    private enum DepartmentViewType
+    {
+        Grid,
+        Tree,
+        Hierarchy
+    }
 }

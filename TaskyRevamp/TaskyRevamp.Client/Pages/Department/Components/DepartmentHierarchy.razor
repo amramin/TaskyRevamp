@@ -1,0 +1,117 @@
+﻿@using TaskyRevamp.Dto.Department
+
+<div class="hierarchy-container">
+    @foreach (var dept in Departments)
+    {
+        <div class="hierarchy-node">
+            <div class="node-box">
+                <div class="d-flex justify-content-between align-items-center">
+                    <span>@dept.Name</span>
+                    <DepartmentActions DepartmentId="@dept.Id"
+                                       ShowUsers="OnShowUsers"
+                                       Edit="OnEdit"
+                                       Delete="OnDelete" />
+                </div>
+            </div>
+
+            @if (dept.Children?.Any() == true)
+            {
+                <div class="children">
+                    <DepartmentHierarchy Departments="dept.Children"
+                                         OnShowUsers="OnShowUsers"
+                                         OnEdit="OnEdit"
+                                         OnDelete="OnDelete" />
+
+                </div>
+            }
+        </div>
+    }
+</div>
+
+<style>
+    /* Root container — displays all root departments horizontally */
+    .hierarchy-container {
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        gap: 2rem;
+        flex-wrap: wrap;
+        position: relative;
+    }
+
+    /* Each node (department) */
+    .hierarchy-node {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        position: relative;
+    }
+
+    /* Rectangle box style */
+    .node-box {
+        background: #ffffff;
+        border: 2px solid #007bff;
+        border-radius: 8px;
+        padding: 12px 20px;
+        text-align: center;
+        min-width: 160px;
+        font-weight: 600;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        position: relative;
+        z-index: 2;
+    }
+
+    /* Container for child nodes */
+    .children {
+        margin-top: 40px;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        gap: 2rem;
+        position: relative;
+    }
+
+        /* Vertical line from parent to children */
+        .children::before {
+            content: "";
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            width: 2px;
+            height: 20px;
+            background: #007bff;
+            transform: translateX(-50%);
+        }
+
+        /* Horizontal line connecting all children */
+        .children::after {
+            content: "";
+            position: absolute;
+            top: -20px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: #007bff;
+        }
+
+    /* Connecting each child up to the horizontal line */
+    .hierarchy-node:not(:only-child)::before {
+        content: "";
+        position: absolute;
+        top: -20px;
+        left: 50%;
+        width: 2px;
+        height: 20px;
+        background: #007bff;
+        transform: translateX(-50%);
+    }
+</style>
+
+
+@code {
+    [Parameter] public List<DepartmentDto> Departments { get; set; } = new();
+    [Parameter] public EventCallback<Guid> OnShowUsers { get; set; }
+    [Parameter] public EventCallback<Guid> OnEdit { get; set; }
+    [Parameter] public EventCallback<Guid> OnDelete { get; set; }
+
+}

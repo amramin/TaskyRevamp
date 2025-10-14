@@ -3,58 +3,76 @@
 
 <EditForm EditContext="@editContext" OnSubmit="@OnSubmitHandler">
     <DataAnnotationsValidator />
-
-    <div class="mb-3">
-        <label class="form-label">
-            @Loc["Name English"]
-            <span class="text-danger" >*</span>
-        </label>
-        <InputText class="form-control" @bind-Value="Priority.NameEnglish" placeholder=@Loc["Enter Priority Name English"] />
-        <ValidationMessage class="small text-danger" For="@(() => Priority.NameEnglish)"></ValidationMessage>
-    </div>
-
-    <div class="mb-3">
-        <label class="form-label">
-            @Loc["Name Arabic"]
-            <span class="text-danger">*</span>
-        </label>
-        <InputText class="form-control" @bind-Value="Priority.NameArabic" placeholder=@Loc["Enter Priority Name Arabic"] />
-        <ValidationMessage class="small text-danger" For="@(() => Priority.NameArabic)"></ValidationMessage>
-    </div>
-
-    <div class="mb-3">
-        <label class="form-label">
-            @Loc["Name Color Indicator"]
-            <span class="text-danger">*</span>
-        </label>
-        <div class="input-group">
-            <InputText class="form-control" @bind-Value="Priority.NameColor" />
-            <span class="input-group-text">
-                <input type="color" class="form-control form-control-color border-0 p-0"
-                       style="width: 2rem;" @bind="Priority.NameColor" />
-            </span>
+    <div class="offcanvas-body">
+        <div class="mb-3">
+            <label class="form-label">
+                @Loc["Name English"]
+                <span class="text-danger">*</span>
+            </label>
+            <InputText class="form-control" @bind-Value="Priority.NameEnglish" placeholder=@Loc["Enter Priority Name English"] />
+            <ValidationMessage class="small text-danger" For="@(() => Priority.NameEnglish)"></ValidationMessage>
         </div>
-        <ValidationMessage class="small text-danger" For="@(() => Priority.NameColor)"></ValidationMessage>
-    </div>
 
-    <div class="mb-3">
-        <label class="form-label">
-            @Loc["Background Color Indicator"]
-            <span class="text-danger">*</span>
-        </label>
-        <div class="input-group">
-            <InputText class="form-control" @bind-Value="Priority.BackgroundColor" />
-            <span class="input-group-text">
-                <input type="color" class="form-control form-control-color border-0 p-0"
-                       style="width: 2rem;" @bind="Priority.BackgroundColor" />
-            </span>
+        <div class="mb-3">
+            <label class="form-label">
+                @Loc["Name Arabic"]
+                <span class="text-danger">*</span>
+            </label>
+            <InputText class="form-control" @bind-Value="Priority.NameArabic" placeholder=@Loc["Enter Priority Name Arabic"] />
+            <ValidationMessage class="small text-danger" For="@(() => Priority.NameArabic)"></ValidationMessage>
         </div>
-        <ValidationMessage class="small text-danger" For="@(() => Priority.BackgroundColor)"></ValidationMessage>
-    </div>
 
-    <div class="d-flex justify-content-end gap-2 mt-4">
-        <button type="button" class="btn btn-light" @onclick="OnCancelClick">@Loc["Cancel"]</button>
-        <button type="submit" class="btn btn-primary">@Loc[@SubmitButtonText]</button>
+        <div class="mb-3">
+            <label class="form-label">
+                @Loc["Name Color Indicator"]
+                <span class="text-danger">*</span>
+            </label>
+
+            <div class="color-group">
+                <InputText class="form-control" @bind-Value="Priority.NameColor" />
+
+                <span class="rounded-circle cl-preview" style="background-color:@Priority.NameColor"></span>
+
+                <span class="color-indicator">
+                    <input type="color" id="color-name" @bind="Priority.NameColor" />
+                    <label for="color-name">
+                        <SVGCrud SVGType="SVGCrud.SVGTypeEnum.ColorPalette"></SVGCrud>
+                    </label>
+                </span>
+            </div>
+            <ValidationMessage class="small text-danger" For="@(() => Priority.NameColor)"></ValidationMessage>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">
+                @Loc["Background Color Indicator"]
+                <span class="text-danger">*</span>
+            </label>
+
+            <div class="color-group">
+                <InputText class="form-control" @bind-Value="Priority.BackgroundColor" />
+
+                <span class="rounded-circle cl-preview" style="background-color:@Priority.BackgroundColor"></span>
+
+                <span class="color-indicator">
+                    <input type="color" id="bg-name" @bind="Priority.BackgroundColor" />
+                    <label for="bg-name">
+                        <SVGCrud SVGType="SVGCrud.SVGTypeEnum.ColorPalette"></SVGCrud>
+                    </label>
+                </span>
+            </div>
+            <ValidationMessage class="small text-danger" For="@(() => Priority.BackgroundColor)"></ValidationMessage>
+        </div>
+    </div>
+    <div class="offcanvas-footer">
+        <div class="row g-2">
+            <div class="col-6">
+                <div class="d-grid">  <button type="button" class="btn btn-lg btn-light" @onclick="OnCancelClick">@Loc["Cancel"]</button></div>
+            </div>
+            <div class="col-6">
+                <div class="d-grid">    <button type="submit" class="btn btn-lg btn-primary">@Loc[@SubmitButtonText]</button></div>
+            </div>
+        </div>
     </div>
 </EditForm>
 

@@ -1,12 +1,103 @@
 /* start offcabvas popup */
+
 .offcanvas {
+  margin-top: 0;
+
+  @media (min-width: 1024px) {
+    --bs-offcanvas-width: 30vw;
+  }
+
+  @media (max-width: 1023px) {
+    --bs-offcanvas-width: 50vw;
+  }
+
+  @media (max-width: 768px) {
+    --bs-offcanvas-width: 80vw;
+  }
+
+  @media (max-width: 576px) {
+    --bs-offcanvas-width: 90vw;
+  }
+
+  &.offcanvas-end {
+    border-left: 0;
+    right: auto;
+    inset-inline-end: 0;
+  }
+
   .offcanvas-header {
-    .close {
+    .btn.close {
+      width: 1.5rem;
+      height: 1.5rem;
+      padding: 0;
+
+      margin-inline-end: 0.5rem;
       svg {
-        width: 1.12rem;
-        height: 1.12rem;
+        width: 1.125rem;
+        height: 1.125rem;
+      }
+      &:hover {
+        background-color: var(--light-200);
       }
     }
+
+    color: var(--dark-900);
+    font-size: 1.25rem;
+    font-weight: 600;
+  }
+
+  form {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
+  }
+
+  .offcanvas-body {
+    padding-top: 0;
+  }
+
+  .offcanvas-footer {
+    padding: 0.75rem 1rem;
+  }
+}
+.card-tabs {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  .tab-content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    & > .active {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+    }
+  }
+  .tab-pane {
+    padding-top: 0.5rem;
+    form {
+      & > .offcanvas-body {
+        max-height: calc(100vh - 175px);
+      }
+    }
+  }
+  .nav {
+    padding-inline-start: 1rem;
+  }
+}
+.offcanvas-50-lg {
+  @media (min-width: 1023px) {
+    --bs-offcanvas-width: 50vw;
+  }
+
+  @media (max-width: 768px) {
+    --bs-offcanvas-width: 80vw;
+  }
+
+  @media (max-width: 576px) {
+    --bs-offcanvas-width: 90vw;
   }
 }
 /* end offcabvas popup */

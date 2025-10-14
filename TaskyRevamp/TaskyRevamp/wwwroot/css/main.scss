@@ -731,7 +731,8 @@ html[dir="rtl"] {
   }
   /* Track */
   ::-webkit-scrollbar-track {
-    background: var(--bs-white);
+    background: transparent;
+     border-radius: 1.5rem;
   }
   /* Handle */
   ::-webkit-scrollbar-thumb {
@@ -740,7 +741,7 @@ html[dir="rtl"] {
   }
   /* Handle on hover */
   ::-webkit-scrollbar-thumb:hover {
-    background: #555;
+    background: var(--dark-700);
   }
 }
 /* start pagination-container*/
@@ -850,4 +851,4 @@ html[dir="rtl"] {
   }
 }
 /* end pagination-container*/
-/* strat tables */
+
