@@ -17,5 +17,7 @@ namespace TaskyRevamp.Dto.Permissions
 
 		[Required(ErrorMessageResourceType = typeof(SharedResources), ErrorMessageResourceName = "Required")]
 		public string NameArabic { get; set; }
-	}
+        public string Name => Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName == "ar" ? NameArabic : NameEnglish;
+		public List<GeneralModulePermissionDto> GeneralModulePermissions { get; set; } = new List<GeneralModulePermissionDto>();
+    }
 }

@@ -25,10 +25,7 @@ namespace TaskyRevamp.Services.Permission.GeneralModulePrivillege.Query
 			var res = await _generalModuleRepository.AllAsNoTracking();
 			if (res.Success && res != null && res.Value != null)
 			{
-				_generalModuleDtos = res.Value.Select(g => 
-					{ g.NameEnglish = currentLanguage == "ar" ? g.NameArabic : g.NameEnglish;
-						return g.CopyToDto();
-					}).ToList();
+				_generalModuleDtos = res.Value.Select(g => g.CopyToDto()).ToList();
 			}
 
 			return _generalModuleDtos;

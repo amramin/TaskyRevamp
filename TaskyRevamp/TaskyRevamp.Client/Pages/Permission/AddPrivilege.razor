@@ -1,4 +1,6 @@
 ﻿@page "/add-privilege"
+
+@using TaskyRevamp.Dto.Permissions
 @inject IStringLocalizer<SharedResources> Loc
 
 <h4 class="mb-1 mt-2 ms-2 fw-bold"> ← @Loc["AddNewPrivilege"]</h4>
@@ -27,7 +29,7 @@
     <div class="card-body">
         @if (SelectedTab == "General")
         {
-            <GeneralModule></GeneralModule>
+            <GeneralModule PrivilegeDto="PrivilegeDto"></GeneralModule>
         }
         else if (SelectedTab == "Task")
         {
@@ -41,6 +43,8 @@
 </div>
 
 @code {
+    public PrivilegeDto PrivilegeDto { get; set; } = new PrivilegeDto();
+
     private string SelectedTab { get; set; } = "General";
     void SelectTab(string tab) => SelectedTab = tab;
 }

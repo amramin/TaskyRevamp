@@ -11,7 +11,8 @@ namespace TaskyRevamp.Domain.Models.Permissions
 	{
 		public string NameEnglish { get; set; }
 		public string NameArabic { get; set; }
-		public Privilege()
+		public List<GeneralModulePermission> GeneralModulePermissions { get; set; }
+        public Privilege()
 		{
 			
 		}
