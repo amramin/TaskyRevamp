@@ -21,7 +21,8 @@ namespace TaskyRevamp.Infrastructure.Seeders
                 new WorkingDaysSeeder(),
                 new DefaultColumnsSettingSeeder(),
                 new FilterFieldsSettingSeeder(),
-                new AddTaskSettingSeeder()
+                new AddTaskSettingSeeder(),
+                new GeneralModuleSeeder()
             };
 
             foreach (var seeder in seeders)

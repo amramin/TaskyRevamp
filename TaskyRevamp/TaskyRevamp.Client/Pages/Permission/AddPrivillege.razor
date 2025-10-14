@@ -1,0 +1,47 @@
+﻿@page "/add-privilege"
+@inject IStringLocalizer<SharedResources> Loc
+
+<h4 class="mb-1 mt-2 ms-2 fw-bold"> ← @Loc["AddNewPrivilege"]</h4>
+<!-- Tabs -->
+<div class="d-flex border-bottom mb-1">
+    <div class="px-3 py-2 me-3 d-flex align-items-center @(SelectedTab == "General" ? "border-bottom border-2 border-primary text-primary fw-bold" : "text-secondary")"
+         style="cursor:pointer"
+         @onclick='() => SelectTab("General")'>
+        @Loc["GeneralModules"]
+    </div>
+
+    <div class="px-3 py-2 me-3 d-flex align-items-center @(SelectedTab == "Task" ? "border-bottom border-2 border-primary text-primary fw-bold" : "text-secondary")"
+         style="cursor:pointer"
+         @onclick='() => SelectTab("Task")'>
+        @Loc["TaskModule"]
+    </div>
+
+    <div class="px-3 py-2 me-3 d-flex align-items-center @(SelectedTab == "Report" ? "border-bottom border-2 border-primary text-primary fw-bold" : "text-secondary")"
+         style="cursor:pointer"
+         @onclick='() => SelectTab("Report")'>
+        @Loc["ReportModule"]
+    </div>
+</div>
+
+<div class="card p-2 shadow-sm rounded">
+    <div class="card-body">
+        @if (SelectedTab == "General")
+        {
+            <GeneralModule></GeneralModule>
+        }
+        else if (SelectedTab == "Task")
+        {
+            <TaskModule></TaskModule>
+        }
+        else if (SelectedTab == "Report")
+        {
+            <ReportModule></ReportModule>
+        }
+    </div>
+</div>
+
+@code {
+    private string SelectedTab { get; set; } = "General";
+    void SelectTab(string tab) => SelectedTab = tab;
+}
+

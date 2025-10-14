@@ -1,0 +1,101 @@
+﻿@page "/GeneralModulePrivileges"
+
+@using TaskyRevamp.Client.Consumer
+@using TaskyRevamp.Dto.Permissions
+
+@inject NavigationManager navigationManager
+@inject IStringLocalizer<SharedResources> Loc
+@inject GeneralModuleConsumer _generalModuleConsumer
+
+<div class="card shadow-sm p-3">
+    <div>
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <label class="form-label fw-bold">
+                    Arabic Name
+                    <span class="text-danger">*</span>
+                </label>
+                <input type="text" class="form-control" placeholder="Enter Privilege Arabic Name" />
+            </div>
+            <div class="col-md-6">
+                <label class="form-label fw-bold">
+                    English Name
+                    <span class="text-danger">*</span>
+                </label>
+                <input type="text" class="form-control" placeholder="Enter Privilege English Name" />
+            </div>
+        </div>
+        <table class="table table-bordered align-middle">
+            <thead class="table-light">
+                <tr>
+                    <th>Module</th>
+                    <th class="text-center">All</th>
+                    <th class="text-center">View</th>
+                    <th class="text-center">Edit</th>
+                    <th class="text-center">Add</th>
+                    <th class="text-center">Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var module in generalModules)
+                {
+                    <tr>
+                        <td>@module.NameEnglish</td>
+
+                        <td class="text-center">
+                            @* @if (module.IsAll)
+                            { *@
+                                <input type="checkbox" />
+                            @* } *@
+                        </td>
+
+                        <td class="text-center">
+                            @if (module.HasView)
+                            {
+                                <input type="checkbox" @bind="module.HasView" />
+                            }
+                        </td>
+
+                        <td class="text-center">
+                            @if (module.HasEdit)
+                            {
+                                <input type="checkbox" @bind="module.HasEdit" />
+                            }
+                        </td>
+
+                        <td class="text-center">
+                            @if (module.HasAdd)
+                            {
+                                <input type="checkbox" @bind="module.HasAdd" />
+                            }
+                        </td>
+
+                        <td class="text-center">
+                            @if (module.HasDelete)
+                            {
+                                <input type="checkbox" @bind="module.HasDelete" />
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    </div>
+</div>
+
+@code {
+    List<GeneralModuleDto> generalModules = new();
+    protected override async Task OnInitializedAsync()
+    {
+        var res = await _generalModuleConsumer.GetGeneralModules();
+        if (res.Success && res != null && res.Data != null)
+        {
+            generalModules = res.Data.ToList();
+        }
+    }
+    private void Add(MouseEventArgs args)
+    {
+        navigationManager.NavigateTo("/add-privilege");
+    }
+}

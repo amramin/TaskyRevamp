@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TaskyRevamp.Domain.Interfaces;
+using TaskyRevamp.Domain.Models.Permissions;
 using TaskyRevamp.Domain.Models.SystemConfiguration;
 using TaskyRevamp.Domain.Models.Task;
 using TaskyRevamp.Domain.Models.Users;
@@ -29,7 +30,10 @@ public class EfDbContext : DbContext
     public DbSet<DefaultColumnsSettings> DefaultColumnsSettings { get; set; }
     public DbSet<FilterFieldsSettings> FilterFieldsSettings { get; set; }
     public DbSet<AddTaskSettings> AddTaskSettings { get; set; }
-    public EfDbContext(DbContextOptions<EfDbContext> options, IHttpContextAccessor httpContextAccessor)
+    public DbSet<Privilege> Privilege { get; set; }
+    public DbSet<GeneralModule> GeneralModule { get; set; }
+	public DbSet<GeneralModulePermission> GeneralModulePermission { get; set; }
+	public EfDbContext(DbContextOptions<EfDbContext> options, IHttpContextAccessor httpContextAccessor)
         : base(options)
     {
         _httpContextAccessor = httpContextAccessor;

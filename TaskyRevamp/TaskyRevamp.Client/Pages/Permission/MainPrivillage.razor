@@ -1,0 +1,24 @@
+﻿@page "/Privileges"
+
+@inject NavigationManager navigationManager
+@inject IStringLocalizer<SharedResources> Loc
+
+<div class="card shadow-sm p-3">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h5 class="mb-0">@Loc["Privilege"]</h5>
+        <button class="btn btn-primary" @onclick="Add">
+            + @Loc["AddNewPrivilege"]
+        </button>
+    </div>
+</div>
+
+@code {
+    protected override Task OnInitializedAsync()
+    {
+        return base.OnInitializedAsync();
+    }
+    private void Add(MouseEventArgs args)
+    {
+        navigationManager.NavigateTo("/add-privilege");
+    }
+}

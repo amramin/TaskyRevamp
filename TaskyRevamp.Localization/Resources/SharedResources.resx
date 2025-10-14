@@ -583,4 +583,19 @@ Add a new department to get started</value>
   <data name="Enter Priority Name Arabic" xml:space="preserve">
     <value>Enter Priority Name Arabic</value>
   </data>
+  <data name="GeneralModules" xml:space="preserve">
+    <value>General Modules </value>
+  </data>
+  <data name="Privilege" xml:space="preserve">
+    <value>Privilege </value>
+  </data>
+  <data name="TaskModule" xml:space="preserve">
+    <value>Task Module</value>
+  </data>
+  <data name="ReportModule" xml:space="preserve">
+    <value>Report Module</value>
+  </data>
+  <data name="AddNewPrivilege" xml:space="preserve">
+    <value>Add New Privilege</value>
+  </data>
 </root>

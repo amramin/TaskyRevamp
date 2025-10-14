@@ -151,6 +151,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add New Privilege.
+        /// </summary>
+        public static string AddNewPrivilege {
+            get {
+                return ResourceManager.GetString("AddNewPrivilege", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add Priority.
         /// </summary>
         public static string AddPriority {
@@ -700,6 +709,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to General Modules .
+        /// </summary>
+        public static string GeneralModules {
+            get {
+                return ResourceManager.GetString("GeneralModules", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 24 hours.
         /// </summary>
         public static string Hours24 {
@@ -998,6 +1016,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Privilege .
+        /// </summary>
+        public static string Privilege {
+            get {
+                return ResourceManager.GetString("Privilege", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Recycle Bin Configuration.
         /// </summary>
         public static string RecycleBinConfiguration {
@@ -1048,6 +1075,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string ReportLanguage {
             get {
                 return ResourceManager.GetString("ReportLanguage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Report Module.
+        /// </summary>
+        public static string ReportModule {
+            get {
+                return ResourceManager.GetString("ReportModule", resourceCulture);
             }
         }
         
@@ -1228,6 +1264,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string TaskFilterHint {
             get {
                 return ResourceManager.GetString("TaskFilterHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Task Module.
+        /// </summary>
+        public static string TaskModule {
+            get {
+                return ResourceManager.GetString("TaskModule", resourceCulture);
             }
         }
         
