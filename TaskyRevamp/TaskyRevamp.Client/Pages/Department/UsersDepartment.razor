@@ -134,7 +134,7 @@
         await InvokeAsync(StateHasChanged);
     }
 
-    private void Add() => navigationManager.NavigateTo("/LinkDepartmentUser");
+    private void Add() => navigationManager.NavigateTo($"/LinkDepartmentUser/{Id}");
     private void Edit(Guid id)
     {
 
