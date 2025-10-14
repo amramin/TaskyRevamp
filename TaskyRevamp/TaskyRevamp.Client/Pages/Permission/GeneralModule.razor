@@ -85,6 +85,8 @@
 </div>
 
 @code {
+    [Parameter] public PrivilegeDto PrivilegeDto { get; set; } = new PrivilegeDto();
+
     List<GeneralModuleDto> generalModules = new();
     protected override async Task OnInitializedAsync()
     {

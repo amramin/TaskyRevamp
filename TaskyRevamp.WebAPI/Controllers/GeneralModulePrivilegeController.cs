@@ -7,10 +7,10 @@ namespace TaskyRevamp.WebAPI.Controllers
 {
 	[Route("api/[controller]")]
 	[ApiController]
-	public class GeneralModulePrivillegeController : ControllerBase
+	public class GeneralModulePrivilegeController : ControllerBase
 	{
 		private readonly IMediator _mediator;
-		public GeneralModulePrivillegeController(IMediator mediator)
+		public GeneralModulePrivilegeController(IMediator mediator)
 		{
 			_mediator = mediator;
 		}

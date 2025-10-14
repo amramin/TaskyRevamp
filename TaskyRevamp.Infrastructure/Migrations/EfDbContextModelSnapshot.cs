@@ -1063,7 +1063,7 @@ namespace TaskyRevamp.Infrastructure.Migrations
                         .IsRequired();
 
                     b.HasOne("TaskyRevamp.Domain.Models.Permissions.Privilege", "Privilege")
-                        .WithMany()
+                        .WithMany("GeneralModulePermissions")
                         .HasForeignKey("PrivilegeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1499,6 +1499,11 @@ namespace TaskyRevamp.Infrastructure.Migrations
                     b.Navigation("CreatedBy");
 
                     b.Navigation("UpdatedBy");
+                });
+
+            modelBuilder.Entity("TaskyRevamp.Domain.Models.Permissions.Privilege", b =>
+                {
+                    b.Navigation("GeneralModulePermissions");
                 });
 
             modelBuilder.Entity("TaskyRevamp.Domain.Models.Task.TaskAttachments", b =>
