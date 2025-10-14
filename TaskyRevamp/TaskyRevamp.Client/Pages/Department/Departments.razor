@@ -55,81 +55,24 @@ else
                                 OnShowUsers="ShowUser" />
                 break;
 
-                                <tr>
-                                    <td>@p.NameEnglish</td>
-                                    <td>@p.NameArabic</td>
-                                    <td>@p.ParentdepartmentName</td>
-                                    <td>@p.CreatedByName</td>
-                                  
-                                   
-                                    <td>@p.CreateDate</td>
-                                    <td>@p.UpdatedByName</td>
-                                    <td>@p.UpdateDate</td>
-                                 
-                                
+            case DepartmentViewType.Tree:
+                <DepartmentTree Departments="rootDepartments"
+                                OnEdit="Edit"
+                                OnDelete="OnDeleteDepartment"
+                                OnShowUsers="ShowUser"
+                                OnAddDepartment="HandleAddDepartment" />
+                break;
 
+            case DepartmentViewType.Hierarchy:
+                <DepartmentHierarchy Departments="RootDepartments"
+                                     OnEdit="Edit"
+                                     OnDelete="OnDeleteDepartment"
+                                     OnShowUsers="ShowUser" />
+                break;
+        }
 
-               <td class="sticky-end-action">
-                            <div class="dropdown actions">
-                                <button class="btn btn-action-24" type="button" data-bs-toggle="dropdown"
-                                    aria-expanded="false">
-                                    <SVGCrud SVGType="SVGCrud.SVGTypeEnum.EllipseVertical"></SVGCrud>
-                                </button>
-                                <ul class="dropdown-menu">
-
-
-
-
-                                            <li>
-                                                <button class="dropdown-item" @onclick="@(() => ShowUser(p.Id))">
-                                                    <span class="icon">
-                                                        <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Users"></SVGCrud>
-                                                    </span>
-                                                    @Loc["ShowUser"]
-                                                </button>
-                                            </li>
-                                    
-                                    <li>
-                                            <button class="dropdown-item" @onclick="@(() => Edit(p.Id))">
-                                            <span class="icon">
-                                                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Edit"></SVGCrud>
-                                            </span>
-                                            @Loc["Edit"]
-                                        </button>
-                                    </li>
-                                    <li>
-                                            <button class="dropdown-item" @onclick="@(() => ShowDeleteConfirm(p))">
-                                            <span class="icon">
-                                                    <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Delete"></SVGCrud>
-                                            </span>
-                                            @Loc["Delete"]
-                                        </button>
-                                    </li>
-                                </ul>
-                            </div>
-
-
-                        </td>
-
-        </tr>
-    }
-
-    }
-    </tbody>
-    </table>
-
-    
-
-  
-                 
-               
-    
-    <ConfirmationPopup ButtonText="@Loc["Delete"]"
-                       IsVisible="@showConfirm"
-                       OnConfirm="OnDeleteConfirmed"
-                       Message="@confirmMessage" />
-
-
+    </div>
+}
 
 @code {
     private List<DepartmentDto> departmentDtos = new();
