@@ -17,74 +17,41 @@
     <div class="page-header">
         <div class="title-block">
             <h1 class="page-headline">@Loc["SourceConfiguration"]</h1>
-            
+
         </div>
         <div class="action-btn-list">
-                <Search SearchSubmit="Search" CssClass="form-control"></Search>
-                <button class="btn  btn-primary" @onclick="AddSource">
-                    <span class="icon">
-                        <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Pluse"></SVGCrud>
-                    </span>
-                    @Loc["AddTaskSource"]
-                </button>
-            </div>
+            <Search SearchSubmit="Search" CssClass="form-control"></Search>
+            <button class="btn  btn-primary" @onclick="AddSource">
+                <span class="icon">
+                    <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Pluse"></SVGCrud>
+                </span>
+                @Loc["AddTaskSource"]
+            </button>
+        </div>
     </div>
     <div class="page-body">
-    
-    
-  
-        
+
+
+
+
         @if (sources != null && sources.Any())
         {
             <div class="table-responsive flex-grow-1">
-                <table class="table table-sm table-hover align-middle m-2">
-                    <thead class="table-light small">
-                        <tr>
-                            <th @onclick='() => SortBy("DisplayedName")' style="cursor:pointer">
-                                @Loc["name"]
-                                <span class="ms-1">
-                                    @(currentSortColumn == "DisplayedName" ? (sortAscending ? "↑" : "↓") : "↕")
-                                </span>
-                            </th>
-                            <th @onclick='() => SortBy("CreateDate")' style="cursor:pointer">
-                                @Loc["CreationDate"]
-                                <span class="ms-1">
-                                    @(currentSortColumn == "CreateDate" ? (sortAscending ? "↑" : "↓") : "↕")
-                                </span>
-                            </th>
-                            <th @onclick='() => SortBy("CreatedBy")' style="cursor:pointer">
-                                @Loc["CreatedBy"]
-                                <span class="ms-1">
-                                    @(currentSortColumn == "CreatedBy" ? (sortAscending ? "↑" : "↓") : "↕")
-                                </span>
-                            </th>
-                            <th @onclick='() => SortBy("UpdateDate")' style="cursor:pointer">
-                                @Loc["UpdateDate"]
-                                <span class="ms-1">
-                                    @(currentSortColumn == "UpdateDate" ? (sortAscending ? "↑" : "↓") : "↕")
-                                </span>
-                            </th>
-                            <th @onclick='() => SortBy("UpdatedBy")' style="cursor:pointer">
-                                @Loc["UpdatedBy"]
-                                <span class="ms-1">
-                                    @(currentSortColumn == "UpdatedBy" ? (sortAscending ? "↑" : "↓") : "↕")
-                                </span>
-                            </th>
-                            <th class="text-center">@Loc["active"]</th>
-                            <th class="text-center">@Loc["Action"]</th>
-                        </tr>
-                    </thead>
-                    <tbody class="small">
+                <SortableTable TItem="SourceDtoWithName"
+                               Columns="@tableColumns"
+                               Items="@sources"
+                               SortColumn="@currentSortColumn"
+                               SortAscending="@sortAscending"
+                               OnSortRequested="HandleSort">
+
+                    <RowTemplate>
                         @foreach (var item in sources)
                         {
                             <tr>
                                 <td>@item.Source.DisplayedName</td>
                                 <td>@item.Source.CreateDate.ToLocalTime().ToString("dd/MM/yyyy")</td>
                                 <td>@item.CreatedByName</td>
-                                <td>
-                                    @(item.Source.UpdateDate.HasValue ?
-                                                            item.Source.UpdateDate.Value.ToLocalTime().ToString("dd/MM/yyyy") : "")
-                                </td>
+                                <td>@(item.Source.UpdateDate?.ToLocalTime().ToString("dd/MM/yyyy"))</td>
                                 <td>@item.UpdatedByName</td>
                                 <td class="text-center">
                                     <div class="form-check form-switch d-flex justify-content-center">
@@ -105,16 +72,17 @@
                                 </td>
                             </tr>
                         }
-                    </tbody>
-                </table>
+                    </RowTemplate>
+                </SortableTable>
+
             </div>
         }
 
-       
-            <Pagination CurrentPage="@currentPage" TotalPages="@totalPages" TotalCount="@totalCount" PageSize="@pageSize"
-                PageChanged="ChangePage" PageSizeChangedCallback="ChangePageSize" />
-       </div>
-   
+
+        <Pagination CurrentPage="@currentPage" TotalPages="@totalPages" TotalCount="@totalCount" PageSize="@pageSize"
+                    PageChanged="ChangePage" PageSizeChangedCallback="ChangePageSize" />
+    </div>
+
 }
 else
 {
@@ -159,7 +127,8 @@ else
     private int totalCount = 0;
     private int pageSize = 10;
     private string currentSortColumn = "CreateDate";
-    private bool sortAscending = true;
+    private bool? sortAscending = true;
+    private List<SortableColumn> tableColumns = new();
 
     private async Task ChangePage(int page)
     {
@@ -175,12 +144,23 @@ else
     }
     protected override async Task OnInitializedAsync()
     {
+        tableColumns = new()
+        {
+            new() { Field = "DisplayedName", DisplayName = Loc["name"] },
+            new() { Field = "CreateDate", DisplayName = Loc["CreationDate"] },
+            new() { Field = "CreatedBy", DisplayName = Loc["CreatedBy"] },
+            new() { Field = "UpdateDate", DisplayName = Loc["UpdateDate"] },
+            new() { Field = "UpdatedBy", DisplayName = Loc["UpdatedBy"] },
+            new() { Field = "IsActive", DisplayName = Loc["active"] },
+            new() { Field = "Action", DisplayName = Loc["Action"] ,IsSortable = false},
+        };
+
         await LoadSources();
         initialSources = sources;
     }
     private async Task LoadSources(bool isSearch = false, string searchTerm = null)
     {
-        var resp = await _sourceSettingConsumer.GetSources(currentPage, pageSize, currentSortColumn, sortAscending, isSearch ?
+        var resp = await _sourceSettingConsumer.GetSources(currentPage, pageSize, currentSortColumn, sortAscending.Value, isSearch ?
         searchFields : null, isSearch ? searchTerm : null);
 
         if (!(resp?.Success ?? false) || resp.Data is null)
@@ -247,5 +227,21 @@ SearchField.ActiveStatus
     public async Task Search(string searchTerm)
     {
         await LoadSources(true, searchTerm);
+    }
+
+    private async Task HandleSort((string Column, bool? Ascending) sortInfo)
+    {
+        currentSortColumn = sortInfo.Column;
+        sortAscending = sortInfo.Ascending;
+
+
+        if (sortAscending == null)
+        {
+            // third click → reset to default sorting
+            currentSortColumn = "DisplayedName"; // or whatever your default column is
+            sortAscending = true;
+        }
+
+        await LoadSources();
     }
 }
