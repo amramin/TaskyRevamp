@@ -11,7 +11,7 @@
 @inject PopupService PopupService
 
 
-@if (initialTypes != null && initialTypes.Any())
+@if (types != null && types.Any())
 {
     <div class="page-header">
         <div class="title-block">
@@ -20,10 +20,12 @@
         <div class="action-btn-list">
             <Search SearchSubmit="Search" CssClass="form-control ">
             </Search>
-            <button class="btn btn-sm btn-primary" @onclick="AddType"> <span class="icon">
+            <button class="btn btn-sm btn-primary" @onclick="AddType">
+                <span class="icon">
                     <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Pluse"></SVGCrud>
                 </span>
-                @Loc["AddTaskType"]</button>
+                @Loc["AddTaskType"]
+            </button>
         </div>
     </div>
     <div class="page-body">
@@ -76,35 +78,37 @@
                                 <td>@item.Type.DisplayedName</td>
                                 <td>@item.Type.CreateDate.ToLocalTime().ToString("dd/MM/yyyy")</td>
                                 <td>@item.CreatedByName</td>
-                                <td>@(item.Type.UpdateDate.HasValue?
-                                                        item.Type.UpdateDate.Value.ToLocalTime().ToString("dd/MM/yyyy"): "")</td>
-                                <td>@item.UpdatedByName</td>
                                 <td>
-                                    <div class="form-check form-switch custom">
-                                        <InputCheckbox id="@checkboxId" @bind-Value="item.Type.IsActive" class="form-check-input"
-                                            disabled />
-                                        <label for="@checkboxId" class="form-check-label">
-                                            <span class="toggler-icon"></span>
-                                        </label>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="action-btn-list">
-                                        <button class="btn btn-action-24 btn-edit" @onclick="@(() => EditType(item.Type.Id))">
-                                            <span class="icon">
-                                                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Edit"></SVGCrud>
-                                            </span>
-                                        </button>
-                                        <button class="btn btn-action-24 btn-delete" @onclick="@(() => DeleteType(item))">
-                                            <span class="icon">
-                                                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Delete"></SVGCrud>
-                                            </span>
-                                        </button>
-                                    </div>
-                                </td>
+                                    @(item.Type.UpdateDate.HasValue ?
+                                                            item.Type.UpdateDate.Value.ToLocalTime().ToString("dd/MM/yyyy") : "")
+                    </td>
+                    <td>@item.UpdatedByName</td>
+                    <td>
+                        <div class="form-check form-switch custom">
+                            <InputCheckbox id="@checkboxId" @bind-Value="item.Type.IsActive" class="form-check-input"
+                                           disabled />
+                            <label for="@checkboxId" class="form-check-label">
+                                <span class="toggler-icon"></span>
+                            </label>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="action-btn-list">
+                            <button class="btn btn-action-24 btn-edit" @onclick="@(() => EditType(item.Type.Id))">
+                                <span class="icon">
+                                    <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Edit"></SVGCrud>
+                                </span>
+                            </button>
+                            <button class="btn btn-action-24 btn-delete" @onclick="@(() => DeleteType(item))">
+                                <span class="icon">
+                                    <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Delete"></SVGCrud>
+                                </span>
+                            </button>
+                        </div>
+                    </td>
 
                             </tr>
-                        }
+                                }
                     </tbody>
                 </table>
             </div>
@@ -112,40 +116,22 @@
 
 
         <Pagination CurrentPage="@currentPage" TotalPages="@totalPages" TotalCount="@totalCount" PageSize="@pageSize"
-            PageChanged="ChangePage" PageSizeChangedCallback="ChangePageSize" />
+                    PageChanged="ChangePage" PageSizeChangedCallback="ChangePageSize" />
 
 
     </div>
 }
+else if (initialTypes != null && initialTypes.Any())
+{
+    <NoSearchResults OnResetClick="ClearSearch" />
+}
 else
 {
-    <div class="page-header">
-        <div class="title-block">
-            <h1 class="page-headline">@Loc["TaskTypeConfiguration"]</h1>
-        </div>
-    </div>
-    <div class="page-body">
-        <div class="card empty-page">
-            <div class="card-body">
-                <span class="vector">
-                    <SVGCrud SVGType="SVGCrud.SVGTypeEnum.EmptyPageVector"></SVGCrud>
-                </span>
-                <div class="content">
-                    <h5 class="headline-5">@Loc["NoTaskTypeAvailable"]</h5>
-                    <p class="small-medium-text">@Loc["Add a new task type to get started."]</p>
-                </div>
-                <div class="action-btn-list">
-                    <button class="btn btn-lg btn-primary" @onclick="AddType">
-                        <span class="icon">
-                            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Pluse"></SVGCrud>
-                        </span>
-                        @Loc["AddTaskType"]
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
+    <NoDataAvailable Title="@Loc["TaskTypeConfiguration"]"
+                     MessageTitle="@Loc["NoTaskTypeAvailable"]"
+                     MessageSubtitle="@Loc["Add a new task type to get started."]"
+                     ButtonText="@Loc["AddTaskType"]"
+                     OnButtonClick="AddType" />
 }
 
 @code {
@@ -248,4 +234,10 @@ SearchField.ActiveStatus
     {
         await LoadTypes(true, searchTerm);
     }
+    private async Task ClearSearch()
+    {
+        currentPage = 1;
+        await LoadTypes(isSearch: false);
+    }
+
 }
