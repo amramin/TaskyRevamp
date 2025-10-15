@@ -598,4 +598,13 @@ Add a new department to get started</value>
   <data name="AddNewPrivilege" xml:space="preserve">
     <value>Add New Privilege</value>
   </data>
+  <data name="SelectReportOptions" xml:space="preserve">
+    <value>Select Report Options</value>
+  </data>
+  <data name="ReportModuleHint" xml:space="preserve">
+    <value>All the options below are optional. If no option is selected, then no report will be sent from the system to the users.</value>
+  </data>
+  <data name="Loading" xml:space="preserve">
+    <value>Loading</value>
+  </data>
 </root>

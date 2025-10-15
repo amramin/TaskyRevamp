@@ -13,7 +13,7 @@ namespace TaskyRevamp.Client.Consumer
 		}
 		public async Task<CommonApiResponse<List<GeneralModuleDto>>> GetGeneralModules()
 		{
-			var url = $"api/GeneralModulePrivillege/GetGeneralModules";
+			var url = $"api/GeneralModule/GetGeneralModules";
 			var res = await _taskyService.GetFromJsonAsync<CommonApiResponse<List<GeneralModuleDto>>>(url);
 
 			return res;

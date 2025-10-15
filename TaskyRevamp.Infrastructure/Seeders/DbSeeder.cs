@@ -22,7 +22,8 @@ namespace TaskyRevamp.Infrastructure.Seeders
                 new DefaultColumnsSettingSeeder(),
                 new FilterFieldsSettingSeeder(),
                 new AddTaskSettingSeeder(),
-                new GeneralModuleSeeder()
+                new GeneralModuleSeeder(),
+                new ReportModuleSeeder()
             };
 
             foreach (var seeder in seeders)

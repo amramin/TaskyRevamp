@@ -808,6 +808,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Loading.
+        /// </summary>
+        public static string Loading {
+            get {
+                return ResourceManager.GetString("Loading", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Login.
         /// </summary>
         public static string Login {
@@ -1088,6 +1097,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to All the options below are optional. If no option is selected, then no report will be sent from the system to the users..
+        /// </summary>
+        public static string ReportModuleHint {
+            get {
+                return ResourceManager.GetString("ReportModuleHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to This Field Required.
         /// </summary>
         public static string Required {
@@ -1138,6 +1156,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string SelectParent {
             get {
                 return ResourceManager.GetString("SelectParent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select Report Options.
+        /// </summary>
+        public static string SelectReportOptions {
+            get {
+                return ResourceManager.GetString("SelectReportOptions", resourceCulture);
             }
         }
         

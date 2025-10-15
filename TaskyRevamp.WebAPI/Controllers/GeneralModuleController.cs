@@ -1,16 +1,16 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using TaskyRevamp.Services.Permission.GeneralModulePrivillege.Query;
+using TaskyRevamp.Services.Permission.GeneralModule.Query;
 
 namespace TaskyRevamp.WebAPI.Controllers
 {
 	[Route("api/[controller]")]
 	[ApiController]
-	public class GeneralModulePrivilegeController : ControllerBase
+	public class GeneralModuleController : ControllerBase
 	{
 		private readonly IMediator _mediator;
-		public GeneralModulePrivilegeController(IMediator mediator)
+		public GeneralModuleController(IMediator mediator)
 		{
 			_mediator = mediator;
 		}

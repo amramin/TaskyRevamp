@@ -33,7 +33,9 @@ public class EfDbContext : DbContext
     public DbSet<Privilege> Privilege { get; set; }
     public DbSet<GeneralModule> GeneralModule { get; set; }
 	public DbSet<GeneralModulePermission> GeneralModulePermission { get; set; }
-	public EfDbContext(DbContextOptions<EfDbContext> options, IHttpContextAccessor httpContextAccessor)
+    public DbSet<ReportModule> ReportModule { get; set; }
+    public DbSet<ReportModulePermission> ReportModulePermission { get; set; }
+    public EfDbContext(DbContextOptions<EfDbContext> options, IHttpContextAccessor httpContextAccessor)
         : base(options)
     {
         _httpContextAccessor = httpContextAccessor;

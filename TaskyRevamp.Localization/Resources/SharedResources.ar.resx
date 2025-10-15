@@ -598,4 +598,13 @@
   <data name="AddNewPrivilege" xml:space="preserve">
     <value>إضافة صلاحية جديدة</value>
   </data>
+  <data name="SelectReportOptions" xml:space="preserve">
+    <value>اختر خيارات التقرير</value>
+  </data>
+  <data name="ReportModuleHint" xml:space="preserve">
+    <value>جميع الخيارات أدناه اختيارية. إذا لم يتم تحديد أي خيار، فلن يتم إرسال أي تقرير من النظام إلى المستخدمين.</value>
+  </data>
+  <data name="Loading" xml:space="preserve">
+    <value>جاري التحميل</value>
+  </data>
 </root>

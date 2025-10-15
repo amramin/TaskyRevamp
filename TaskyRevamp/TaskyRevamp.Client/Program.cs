@@ -59,6 +59,7 @@ builder.Services.AddTransient<DefaultColumnsSettingConsumer>();
 builder.Services.AddTransient<FilterFieldsSettingConsumer>();
 builder.Services.AddTransient<AddTaskSettingConsumer>();
 builder.Services.AddTransient<GeneralModuleConsumer>();
+builder.Services.AddTransient<ReportModuleConsumer>();
 
 var configuration = builder.Configuration;
 

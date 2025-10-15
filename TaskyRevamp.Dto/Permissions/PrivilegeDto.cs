@@ -13,5 +13,6 @@ namespace TaskyRevamp.Dto.Permissions
 		public string NameArabic { get; set; }
         public string Name => Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName == "ar" ? NameArabic : NameEnglish;
 		public List<GeneralModulePermissionDto> GeneralModulePermissions { get; set; } = new List<GeneralModulePermissionDto>();
+        public List<ReportModulePermissionDto> ReportModulePermissionDtos { get; set; } = new List<ReportModulePermissionDto>();
     }
 }

@@ -8,7 +8,7 @@ using TaskyRevamp.Domain.Repositeries;
 using TaskyRevamp.Dto.Permissions;
 using GeneralModules = TaskyRevamp.Domain.Models.Permissions.GeneralModule;
 
-namespace TaskyRevamp.Services.Permission.GeneralModulePrivillege.Query
+namespace TaskyRevamp.Services.Permission.GeneralModule.Query
 {
 	public record GetGeneralModulesQuery() : IRequest<List<GeneralModuleDto>>;
 	public class GetGeneralModulesHandler : IRequestHandler<GetGeneralModulesQuery, List<GeneralModuleDto>>
@@ -20,7 +20,6 @@ namespace TaskyRevamp.Services.Permission.GeneralModulePrivillege.Query
 		}
 		public async Task<List<GeneralModuleDto>> Handle(GetGeneralModulesQuery request, CancellationToken cancellationToken)
 		{
-			string currentLanguage = Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName;
 			List<GeneralModuleDto> _generalModuleDtos = new List<GeneralModuleDto>();
 			var res = await _generalModuleRepository.AllAsNoTracking();
 			if (res.Success && res != null && res.Value != null)

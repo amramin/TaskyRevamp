@@ -1,5 +1,48 @@
-﻿<h3>ReportModule</h3>
+﻿@using System.ComponentModel.DataAnnotations
+@using TaskyRevamp.Client.Consumer
+@using TaskyRevamp.Dto.Permissions
 
-@code {
+@inject ReportModuleConsumer _reportModuleConsumer
+@inject IStringLocalizer<SharedResources> Loc
 
+<div class="container mt-4" style="max-width: 600px;">
+    <h6 class="mb-3 fw-semibold">@Loc["SelectReportOptions"]</h6>
+    <p class="text-muted small">
+        @Loc["ReportModuleHint"]
+    </p>
+
+    @foreach (var module in ReportModules)
+    {
+        var permission = ReportPermissions.First(x => x.ReportModuleId == module.Id);
+        <div class="form-check p-3 border rounded-3 mb-2 shadow-sm @(permission.IsActive ? "bg-light border-primary" : "")">
+            <InputCheckbox @bind-Value="permission.IsActive" class="form-check-input" id="@module.Id" />
+            <label class="form-check-label w-100" for="@module.Id">
+                <div class="fw-semibold">@module.Name</div>
+                <small class="text-muted">@module.Hint</small>
+            </label>
+        </div>
+    }
+</div>
+@code{
+
+    [Parameter] public PrivilegeDto PrivilegeDto { get; set; } = new PrivilegeDto();
+
+    public List<ReportModuleDto> ReportModules { get; set; } = new List<ReportModuleDto>();
+    public List<ReportModulePermissionDto> ReportPermissions { get; set; } = new List<ReportModulePermissionDto>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var res = await _reportModuleConsumer.GetReportModules();
+        if (res.Success && res != null && res.Data != null)
+        {
+            ReportModules = res.Data;
+            ReportPermissions = PrivilegeDto.ReportModulePermissionDtos;
+            foreach (var module in ReportModules)
+            {
+                if (!ReportPermissions.Any(x => x.ReportModuleId == module.Id))
+                    ReportPermissions.Add(new ReportModulePermissionDto { ReportModuleId = module.Id });
+            }
+
+        }
+    }
 }
