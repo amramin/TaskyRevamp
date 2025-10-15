@@ -1,4 +1,5 @@
 ﻿using TaskyRevamp.Dto.Department;
+using TaskyRevamp.Dto.Enums.SearchFields;
 using TaskyRevamp.Dto.GeneralDto;
 using TaskyRevamp.Dto.SystemConfiguration;
 
@@ -12,11 +13,29 @@ namespace TaskyRevamp.Client.Consumer
 		{
 			_taskyService = taskyService;
 		}
+        
 
-		public async Task<CommonApiResponse<List<DepartmentDto>>> GetDepartments()
-		{
-			var url = $"api/Department/GetAllDepartments";
-			var res = await _taskyService.GetFromJsonAsync<CommonApiResponse<List<DepartmentDto>>>(url);
+      public async Task<CommonApiResponse<List<DepartmentDto>>> GetDepartmentsForDDL()
+        {
+
+
+            var url = $"api/Department/GetDepartmentsForDDL";
+
+
+            var res = await _taskyService.GetFromJsonAsync<CommonApiResponse<List<DepartmentDto>>>(url);
+
+            return res;
+        }
+
+        public async Task<CommonApiResponse<PagedResult<DepartmentDto>>> GetDepartments(int pageNumber, int pageSize, string sortByColumnName, bool sortAscending, List<SearchFieldDepartment> searchFields = null, string searchText = null)
+        {
+
+            var queryString = _taskyService.PreparePaginatedSearchQueryString(pageNumber, pageSize, sortByColumnName, sortAscending, searchFields, searchText);
+
+            var url = $"api/Department/GetAllDepartments{queryString}";
+
+            
+			var res = await _taskyService.GetFromJsonAsync<CommonApiResponse<PagedResult<DepartmentDto>>>(url);
 
 			return res;
 		}

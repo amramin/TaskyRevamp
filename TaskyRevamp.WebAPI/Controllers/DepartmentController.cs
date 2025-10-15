@@ -1,10 +1,14 @@
 ﻿using DepartmentyRevamp.Services.Departments.Commands;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using TaskyRevamp.Dto.Department;
+using TaskyRevamp.Dto.Enums.SearchFields;
 using TaskyRevamp.Dto.GeneralDto;
 using TaskyRevamp.Services.Departments.Command;
 using TaskyRevamp.Services.Departments.Query;
+using TaskyRevamp.Services.SystemConfiguration.SourceConfiguration.Query;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace DepartmentRevamp.WebAPI.Controllers;
 
@@ -40,17 +44,32 @@ public class DepartmentController : ControllerBase
     {
         return Ok(await _mediator.Send(new DeleteDepartmentCommand(Guid.Parse(id))));
     }
-    [HttpGet("GetAllDepartments")]
-    public async Task<IActionResult> AllTask([FromBody] QueryModel? query = null)
+    
+        [HttpGet("GetDepartmentsForDDL")]
+    public async Task<IActionResult> GetDepartmentsForDDL()
     {
 
-
-        var all = await _mediator.Send(new GetDepartmentsQuery(query));
+        var all = await _mediator.Send(new GetDepartmentsForDDLQuery());
 
         return Ok(all);
     }
 
+    [HttpGet("GetAllDepartments")]
+    public async Task<IActionResult> GetAllDepartments(
+            [FromServices] IOptions<PaginationSettings> paginationSettings,
+            [FromQuery] int pageNumber = 1,
+            [FromQuery] int? pageSize = null,
+            [FromQuery] string sortByColumnName = "CreateDate",
+            [FromQuery] bool sortAscending = true,
+            [FromQuery] List<SearchFieldDepartment> searchFields = null,
+            [FromQuery] string searchText = null)
+    {
 
+        var size = pageSize ?? paginationSettings.Value.DefaultPageSize;
+        var all = await _mediator.Send(new GetDepartmentsQuery(pageNumber, size, sortByColumnName, sortAscending, searchFields, searchText));
+
+        return Ok(all);
+    }
 
 
     [HttpGet("GetDepartmentById/{id}")]
