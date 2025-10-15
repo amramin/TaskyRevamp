@@ -52,28 +52,28 @@
                         <td class="text-center">
                             @if (module.HasView)
                             {
-                                <input type="checkbox" @bind="module.HasView" />
+                                <input type="checkbox" @*@bind="module.HasView" *@ />
                             }
                         </td>
 
                         <td class="text-center">
                             @if (module.HasEdit)
                             {
-                                <input type="checkbox" @bind="module.HasEdit" />
+                                <input type="checkbox" @*@bind="module.HasEdit" *@/>
                             }
                         </td>
 
                         <td class="text-center">
                             @if (module.HasAdd)
                             {
-                                <input type="checkbox" @bind="module.HasAdd" />
+                                <input type="checkbox" @* @bind="module.HasAdd" *@/>
                             }
                         </td>
 
                         <td class="text-center">
                             @if (module.HasDelete)
                             {
-                                <input type="checkbox" @bind="module.HasDelete" />
+                                <input type="checkbox" @* @bind="module.HasDelete"*@ />
                             }
                         </td>
                     </tr>

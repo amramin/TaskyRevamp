@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TaskyRevamp.Dto.Enums;
 
 namespace TaskyRevamp.Dto.Permissions
 {
@@ -15,8 +16,8 @@ namespace TaskyRevamp.Dto.Permissions
 		public bool IsEdit { get; set; }
 		public bool IsAdd { get; set; }
 		public bool IsDelete { get; set; }
-		public int? DelegationFromUser { get; set; }
-		public int? DelegationToUser { get; set; }
+		public DelegationFromUser? DelegationFromUser { get; set; }
+		public DelegationToUser? DelegationToUser { get; set; }
 		public string? DelegationDepartments { get; set; }
 	}
 }
