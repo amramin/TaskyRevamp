@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TaskyRevamp.Dto.Account;
 using TaskyRevamp.Dto.GeneralDto;
+using TaskyRevamp.Dto.SystemConfiguration;
 using TaskyRevamp.Localization.Resources;
 
 namespace TaskyRevamp.Dto.Department
@@ -36,4 +37,12 @@ namespace TaskyRevamp.Dto.Department
         public List<UserDto>? AssignedUsers { get; set; } = new List<UserDto>();
 
     }
+    public class DepartmentDtoWithName
+    {
+        public DepartmentDto Source { get; set; }
+        public string CreatedByName { get; set; }
+        public string UpdatedByName { get; set; }
+
+    }
+
 }

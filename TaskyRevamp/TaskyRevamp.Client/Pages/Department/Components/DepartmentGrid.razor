@@ -1,21 +1,36 @@
 ﻿@using TaskyRevamp.Dto.Department
 @inject IStringLocalizer<SharedResources> Loc
-
+@using TaskyRevamp.Client.Consumer
+@using TaskyRevamp.Client.Pages.Department.Components
+@using TaskyRevamp.Client.Services
+@using TaskyRevamp.Dto.Department
+@using TaskyRevamp.Client.Shared.Popups
+@using TaskyRevamp.Dto.Enums.SearchFields
+@using TaskyRevamp.Dto.SystemConfiguration
+@inject DepartmentConsumer _departmentConsumer
+@inject NavigationManager navigationManager
+@inject IStringLocalizer<SharedResources> Loc
+@inject ToastService ToastService
+@inject PopupService PopupService
 <div class="table-responsive sticky-header-custom">
-    <table class="table custom-table">
-        <thead>
-            <tr>
-                <th>@Loc["NameEnglish"]</th>
+       <div class="table-responsive flex-grow-1">
+        <SortableTable TItem="DepartmentDto"
+                               Columns="@tableColumns"
+                       Items="@Departments"
+                               SortColumn="@currentSortColumn"
+                               SortAscending="@sortAscending"
+                               OnSortRequested="HandleSort">
+
+                    <RowTemplate>
+           @*      <th>@Loc["NameEnglish"]</th>
                 <th>@Loc["NameArabic"]</th>
                 <th>@Loc["DepartmentParent"]</th>
                 <th>@Loc["CreatedBy"]</th>
                 <th>@Loc["CreationDate"]</th>
                 <th>@Loc["UpdatedBy"]</th>
                 <th>@Loc["UpdateDate"]</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
+                <th></th> *@
+           
             @foreach (var p in Departments)
             {
                 <tr>
@@ -62,13 +77,134 @@
                     </td>
                 </tr>
             }
-        </tbody>
-    </table>
-</div>
 
+                <Pagination CurrentPage="@currentPage" TotalPages="@totalPages" TotalCount="@totalCount" PageSize="@pageSize"
+                            PageChanged="ChangePage" PageSizeChangedCallback="ChangePageSize" />
+    
+            </RowTemplate>
+        </SortableTable>
+
+    </div>
+</div>
 @code {
     [Parameter] public List<DepartmentDto> Departments { get; set; } = new();
     [Parameter] public EventCallback<Guid> OnEdit { get; set; }
     [Parameter] public EventCallback<Guid> OnDelete { get; set; }
     [Parameter] public EventCallback<Guid> OnShowUsers { get; set; }
+    private int currentPage = 1;
+    private int totalPages = 1;
+    private int totalCount = 0;
+    private int pageSize = 10;
+    private string currentSortColumn = "CreateDate";
+    private bool? sortAscending = true;
+    private List<SortableColumn> tableColumns = new();
+    private async Task DeleteConfirmed(Guid departmentId)
+    {
+        var result = await _departmentConsumer.DeleteDepartment(departmentId);
+        if (result.Success)
+        {
+            var toRemove = Departments.FirstOrDefault(d => d.Id == departmentId);
+            if (toRemove != null)
+            {
+                Departments.Remove(toRemove);
+            }
+
+            await ToastService.ShowToastAsync(Loc["Deletedsuccessfully"], "success");
+         
+        }
+        else
+        {
+            await ToastService.ShowToastAsync(Loc["DeleteFailed"], "danger");
+        }
+
+        StateHasChanged();
+    }
+
+    private void OnDeleteDepartment(Guid departmentId)
+    {
+        PopupService.ShowConfirmation(
+            @Loc["SureDeleteDepartment"],
+            "Yes, Delete",
+            async (confirmed) =>
+            {
+                if (confirmed)
+                    await DeleteConfirmed(departmentId);
+            },
+            ConfirmationType.Danger
+        );
+    }
+
+    private void EditDepartment(Guid id)
+    {
+        PopupService.ShowNew(@<DepartmentForm Id="id" OnValidSubmit="OnInitializedAsync"></DepartmentForm>, headerText: @Loc["EditDepartment"]);
+    }
+    private void ShowUser(Guid id) => navigationManager.NavigateTo($"/UsersDepartment/{id}");
+
+    protected override async Task OnInitializedAsync()
+    {
+        tableColumns = new()
+        {
+            new() { Field = "NameEnglish", DisplayName = Loc["NameEnglish"] },
+                        new() { Field = "NameArabic", DisplayName = Loc["NameArabic"] },
+               new() { Field = "DepartmentParent", DisplayName = Loc["ParentdepartmentName"] },
+
+            new() { Field = "CreateDate", DisplayName = Loc["CreationDate"] },
+            new() { Field = "CreatedBy", DisplayName = Loc["CreatedBy"] },
+            new() { Field = "UpdateDate", DisplayName = Loc["UpdateDate"] },
+            new() { Field = "UpdatedBy", DisplayName = Loc["UpdatedBy"] },
+            new() { Field = "Action", DisplayName = Loc["Action"] ,IsSortable = false},
+        };
+
+        await LoadSources();
+        StateHasChanged();
+    }
+    private async Task ChangePage(int page)
+    {
+        currentPage = page;
+        await LoadSources();
+    }
+    private async Task ChangePageSize(int newSize)
+    {
+        pageSize = newSize;
+        currentPage = 1;
+        await LoadSources();
+    }
+    public List<SearchFieldDepartment> searchFields = new List<SearchFieldDepartment>() {
+    SearchFieldDepartment.NameEnglish,
+    SearchFieldDepartment.NameArabic,
+    SearchFieldDepartment.CreatedBy,
+    SearchFieldDepartment.UpdatedBy,
+    SearchFieldDepartment.CreateDate,
+    SearchFieldDepartment.UpdateDate,
+    SearchFieldDepartment.ParentNameAR,
+    SearchFieldDepartment.ParentNameEN
+    };
+    private async Task LoadSources(bool isSearch = false, string searchTerm = null)
+    {
+        var resp = await _departmentConsumer.GetDepartments(currentPage, pageSize, currentSortColumn, sortAscending.Value, isSearch ?
+        searchFields : null, isSearch ? searchTerm : null);
+        Departments = resp.Data.Items.OrderBy(k => k.CreateDate).ToList();
+
+        if (!(resp?.Success ?? false) || resp.Data is null)
+            return;
+
+        var data = resp.Data;
+        totalPages = data.TotalPages;
+        totalCount = data.TotalCount;
+    }
+    private async Task HandleSort((string Column, bool? Ascending) sortInfo)
+    {
+        currentSortColumn = sortInfo.Column;
+        sortAscending = sortInfo.Ascending;
+
+
+        if (sortAscending == null)
+        {
+            // third click → reset to default sorting
+            currentSortColumn = "CreateDate"; // or whatever your default column is
+            sortAscending = true;
+        }
+
+        await LoadSources();
+    }
 }

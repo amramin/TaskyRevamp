@@ -59,7 +59,7 @@ public class Department : Entity, IHasCreationMetaData, IHasUpdateMetaData
            ParentdepartmentId=ParentdepartmentId==null?Guid.Empty: ParentdepartmentId.Value,
            ParentdepartmentArabic= Parentdepartment?.NameArabic,
            ParentdepartmentEnglish= Parentdepartment?.NameEnglish,
-
+         
         };
     }
     public void Update(string nameEn,string nameAr)

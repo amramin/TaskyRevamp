@@ -27,8 +27,8 @@
         <ValidationMessage class="small text-danger" For="@(() => department.NameArabic)"></ValidationMessage>
     </div>
 
-@if(allDepartments !=null && allDepartments.Count()>0){
-    <label class="form-label">@Loc["SelectParent"]
+    @if (allDepartments != null && allDepartments.Count() > 0 && !isFrist)
+{    <label class="form-label">@Loc["SelectParent"]
         <span class="text-danger"> *</span>
     </label>
 <div class="filter-single">
@@ -73,6 +73,7 @@
 
         await InvokeAsync(StateHasChanged);
     }
+    bool isFrist;
     protected override async Task OnParametersSetAsync()
 
     {
@@ -81,8 +82,12 @@
             editContext = new EditContext(department);
             messageStore = new ValidationMessageStore(editContext);
         }
-        var departs = await _departmentConsumer.GetDepartments();
+        var departs = await _departmentConsumer.GetDepartmentsForDDL();
         allDepartments = departs.Data.ToList();
+        if (department.Id !=Guid.Empty && department.ParentdepartmentId==Guid.Empty )
+        {
+            isFrist = true;
+        }
         StateHasChanged();
     }
 
@@ -96,7 +101,7 @@
         if (!editContext.Validate())
             return; // client-side validation failed → stop
 
-        if(allDepartments.Count()>0 && department.ParentdepartmentId == Guid.Empty)
+        if (allDepartments.Count() > 0 && department.ParentdepartmentId == Guid.Empty && !isFrist)
         {
             ParentdepartmentRequired = true;
             return;
