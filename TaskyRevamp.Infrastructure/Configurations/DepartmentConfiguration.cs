@@ -31,5 +31,7 @@ internal class DepartmentConfiguration : IEntityTypeConfiguration<Department>
 .WithMany().HasForeignKey(r => r.UpdatedById)
 .OnDelete(DeleteBehavior.NoAction);
 
+        //builder.HasMany(k=>k.AssignedUser).WithOne(l=>l.Department).HasForeignKey(p=>p.DepartmentId).OnDelete(DeleteBehavior.NoAction);
+
     }
 }

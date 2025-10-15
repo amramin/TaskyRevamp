@@ -7,15 +7,15 @@
 @inject IStringLocalizer<SharedResources> Loc
 @inject ToastService ToastService
 @inject TypeSettingConsumer _typeSettingConsumer
+@inject PopupService PopupService
 
-<div class="container mt-4">
-    <h3>@Loc["EditTaskType"]</h3>
+
     <TypeForm @ref="form"
                 OnCancel="Cancel"
                 OnValidSubmit="@Save"
                 type="@type"
                 SubmitButtonText="Save" />
-</div>
+
 
 @code {
     [Parameter] public Guid Id { get; set; }
@@ -41,18 +41,11 @@
         {
             await OnValidSubmit.InvokeAsync(type);
             await ToastService.ShowToastAsync(Loc["EditSuccess"], "success");
-
-            navigationManager.NavigateTo("/TypeConfiguration");
-        }
-        else
-        {
-            if (res.Errors != null && res.Errors.Count > 0)
-                form.AddErrorsToEditContext(res.Errors);
+            PopupService.Hide();
         }
     }
-    private async Task Cancel()
+    private void Cancel()
     {
-        //await OnCancel.InvokeAsync();
-        navigationManager.NavigateTo("/TypeConfiguration");
+        PopupService.Hide();
     }
 }

@@ -8,45 +8,67 @@
 @inject IStringLocalizer<SharedResources> Loc
 @inject ToastService ToastService
 
-<div class ="card p-3">
-    <h4 class="mb-4">@Loc["ViewOptions"]</h4>
-    <p>@Loc["ViewTaskSettingHint"]</p>
-    @if (TaskViews != null)
-    {
-        bool isListView = false;
-        @foreach (var view in TaskViews)
-        {
-            if ((int)view.ViewType >= 11 && (int)view.ViewType <= 14)
-            {
-                if (!isListView)
-                {
-                    <div class="fw-bold text-dark mb-2 ms-2">@Loc["List"]</div>
-                    isListView = true;
-                }
-                <div class="d-flex align-items-center justify-content-between border border-primary rounded p-2 mb-2 ms-4 me-4">
-                    <span class="text-primary">@Loc[view.ViewType.ToString()]</span>
-                    <div class="form-check form-switch m-0">
-                        <InputCheckbox @bind-Value="view.IsActive" class="form-check-input" />
-                    </div>
-                </div>
-            }
-            else
-            {
-                <div class="d-flex align-items-center justify-content-between border border-primary rounded p-2 mb-2 ms-2">
-                    <span class="text-primary">@Loc[view.ViewType.ToString()]</span>
-                    <div class="form-check form-switch m-0">
-                        <InputCheckbox @bind-Value="view.IsActive" class="form-check-input" />
-                    </div>
-                </div>
-            }
-            
-        }
-    }
+<div class="card setting-card">
 
-    <div class="d-flex justify-content-end gap-2 mt-4">
-        <button class="btn btn-light px-4" @onclick="Cancel">@Loc["Cancel"]</button>
-        <button class="btn btn-primary px-4" @onclick="Save">@Loc["Save"]</button>
+    <div class="card-body">
+        <div class="row justify-content-center">
+            <div class="col-xxl-7 col-xl-8 col-lg-9 col-md-11">
+                <div class="text-content">
+                    <h6 class="headline-6">@Loc["ViewOptions"]</h6>
+                    <p class="small-medium-text hint">@Loc["ViewTaskSettingHint"]</p>
+                </div>
+                @if (TaskViews != null)
+                {
+                    bool isListView = false;
+                    int index = 0;
+                    @foreach (var view in TaskViews)
+                    {
+                        var inputId = $"view_{view.ViewType}_{index}";
+                        index++;
+
+                        if ((int)view.ViewType >= 11 && (int)view.ViewType <= 14)
+                        {
+                            if (!isListView)
+                            {
+                                <div class="fw-bold text-dark mb-2">@Loc["List"]</div>
+                                isListView = true;
+                            }
+                            <div class="d-flex align-items-center gap-2 mb-2 ">
+                                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.CiArrow"></SVGCrud>
+                                <div class="form-check-card switch flex-grow-1">
+                                    <InputCheckbox id="@inputId" @bind-Value="view.IsActive" class="form-check-input" />
+                                    <label for="@inputId">@Loc[view.ViewType.ToString()]
+                                        <span class="toggler-icon"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="form-check-card switch flex-grow-1">
+                                <InputCheckbox id="@inputId" @bind-Value="view.IsActive" class="form-check-input" />
+                                <label for="@inputId">@Loc[view.ViewType.ToString()]
+                                    <span class="toggler-icon"></span>
+                                </label>
+                            </div>
+                        }
+                    }
+                }
+
+            </div>
+        </div>
     </div>
+    <div class="card-footer">
+        <div class="row justify-content-center">
+            <div class="col-xxl-7 col-xl-8 col-lg-9 col-md-11">
+                <div class="action-buttons">
+                    <button class="btn btn-lg btn-light" @onclick="Cancel">@Loc["Cancel"]</button>
+                    <button class="btn btn-lg  btn-primary" @onclick="Save">@Loc["Save"]</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
 @code {
     private List<ViewTaskSettingsDto> TaskViews = new List<ViewTaskSettingsDto>();
@@ -60,9 +82,9 @@
         {
             var orderedEnums = EnumExtensions.GetOrderedValues<ViewType>();
             TaskViews = orderedEnums
-                .Select(enumVal => res.Data.FirstOrDefault(d => d.ViewType == enumVal))
-                .Where(d => d != null)
-                .ToList()!;
+            .Select(enumVal => res.Data.FirstOrDefault(d => d.ViewType == enumVal))
+            .Where(d => d != null)
+            .ToList()!;
             originalViews = TaskViews.Select(t => new ViewTaskSettingsDto
             {
                 ViewType = t.ViewType,
@@ -92,6 +114,6 @@
             await ToastService.ShowToastAsync(Loc["EditSuccess"], "success");
         }
     }
-  
-    
+
+
 }

@@ -1413,8 +1413,9 @@ namespace TaskyRevamp.Infrastructure.Migrations
             modelBuilder.Entity("TaskyRevamp.Domain.Models.Users.User", b =>
                 {
                     b.HasOne("TaskyRevamp.Domain.Models.Task.Department", "Department")
-                        .WithMany()
-                        .HasForeignKey("DepartmentId");
+                        .WithMany("AssignedUser")
+                        .HasForeignKey("DepartmentId")
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.Navigation("Department");
                 });
@@ -1435,6 +1436,11 @@ namespace TaskyRevamp.Infrastructure.Migrations
                     b.Navigation("CreatedBy");
 
                     b.Navigation("UpdatedBy");
+                });
+
+            modelBuilder.Entity("TaskyRevamp.Domain.Models.Task.Department", b =>
+                {
+                    b.Navigation("AssignedUser");
                 });
 
             modelBuilder.Entity("TaskyRevamp.Domain.Models.Task.TaskAttachments", b =>

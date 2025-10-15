@@ -6,6 +6,8 @@
 @use "popup";
 @use "cards";
 @use "dropDowns";
+@use "tabs";
+@use "tables";
 
 @font-face {
   font-family: "Almarai";
@@ -45,35 +47,6 @@
 .fill-primary {
   fill: var(--primary-color);
 }
-
-/* strat tab-pills*/
-.tab-pills {
-  .nav {
-    padding: 0.5rem 0.75rem;
-    border-bottom: 1px solid var(--light-300);
-    display: flex;
-    gap: 1rem;
-
-    .nav-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.25rem;
-      padding: 0.5rem;
-      color: var(--dark-700);
-
-      svg {
-        width: 1rem;
-        height: 1rem;
-      }
-
-      &.active {
-        color: var(--primary-color);
-        background-color: var(--light-200);
-      }
-    }
-  }
-}
-/* end tab-pills*/
 
 /* end Global */
 /* start .auth */
@@ -628,6 +601,13 @@
           align-items: center;
           gap: 0.5rem;
         }
+        .action-btn-list {
+          flex: 1;
+          justify-content: flex-end;
+          .search-group {
+            max-width: 240px;
+          }
+        }
       }
 
       .page-body {
@@ -759,7 +739,8 @@ html[dir="rtl"] {
   }
   /* Track */
   ::-webkit-scrollbar-track {
-    background: var(--bs-white);
+    background: transparent;
+    border-radius: 1.5rem;
   }
   /* Handle */
   ::-webkit-scrollbar-thumb {
@@ -768,114 +749,6 @@ html[dir="rtl"] {
   }
   /* Handle on hover */
   ::-webkit-scrollbar-thumb:hover {
-    background: #555;
+    background: var(--dark-700);
   }
 }
-/* start pagination-container*/
-.pagination-container {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.5rem;
-  flex-wrap: wrap;
-  .start {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    label {
-      color: var(--dark-800);
-    }
-    @media (max-width: 992px) {
-      width: 100%;
-      justify-content: center;
-      padding-top: 0.5rem;
-    }
-    .table-dropdown {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      label {
-        white-space: nowraP;
-      }
-      .form-control {
-        padding-block: 0.35rem;
-      }
-    }
-  }
-  .end {
-    justify-content: flex-end;
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    .entries {
-      border: 1px solid var(--light-300);
-      font-size: 0.75rem;
-      font-weight: 500;
-      color: var(--dark-500);
-      padding-inline: 0.5rem;
-      border-radius: var(--bs-border-radius);
-      align-self: stretch;
-      display: flex;
-      align-items: center;
-    }
-  }
-  .pagination {
-    padding-inline-start: 0;
-    padding-left: 0;
-    padding-right: 0;
-    list-style: none;
-
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: flex-end;
-    width: 100%;
-    gap: 0.25rem;
-    @media (max-width: 992px) {
-      justify-content: center;
-    }
-    .page-item {
-      .page-link {
-        border-radius: var(--bs-border-radius);
-        padding: 0.25rem;
-        min-width: 2rem;
-        height: 2rem;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        border: 1px solid var(--light-300);
-        text-decoration: none;
-        color: var(--dark-800);
-        font-size: 0.875rem;
-        font-weight: 500;
-
-        .icon {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-        }
-        .arrow {
-          width: 1.5rem;
-          height: 1.5rem;
-        }
-        &.action-btn {
-          background-color: var(--light-btn);
-          color: var(--primary-color);
-        }
-      }
-      &.disabled {
-        .page-link {
-          opacity: 0.5;
-        }
-      }
-      &.active {
-        .page-link {
-          background-color: var(--primary-color);
-          color: var(--bs-white);
-          border-color: var(--primary-color);
-        }
-      }
-    }
-  }
-}
-/* end pagination-container*/
-/* strat tables */

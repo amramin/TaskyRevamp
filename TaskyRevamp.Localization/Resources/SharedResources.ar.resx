@@ -178,7 +178,7 @@
     <value>خيارات فترة الرفض</value>
   </data>
   <data name="Priority" xml:space="preserve">
-    <value>الأولوية</value>
+    <value>إعدادات أولوية المهام</value>
   </data>
   <data name="Added successfully" xml:space="preserve">
     <value>تمت الإضافة بنجاح</value>
@@ -217,16 +217,16 @@
     <value>لا يمكنك تكرار اسم الأولوية</value>
   </data>
   <data name="PriorityConfiguration" xml:space="preserve">
-    <value>Priority Configuration</value>
+    <value>إعدادات أولوية المهام</value>
   </data>
   <data name="PriorityOptions" xml:space="preserve">
-    <value>Priority Options</value>
+    <value>خيارات الأولوية</value>
   </data>
   <data name="StatusConfig" xml:space="preserve">
     <value>إعدادات حالة المهام</value>
   </data>
   <data name="StatusOptions" xml:space="preserve">
-    <value>Status Options</value>
+    <value>خيارات المهام</value>
   </data>
   <data name="List" xml:space="preserve">
     <value>عرض قائمة</value>
@@ -331,7 +331,7 @@
     <value>لغة التقرير</value>
   </data>
   <data name="Day" xml:space="preserve">
-    <value>اليوم</value>
+    <value>يوم</value>
   </data>
   <data name="Time" xml:space="preserve">
     <value>الوقت</value>
@@ -492,7 +492,7 @@
   <data name="AddTaskFieldsConfiguration" xml:space="preserve">
     <value>إعدادات حقول إضافة المهمة</value>
   </data>
-  <data name="NodepartmentavailableAdd" xml:space="preserve">
+  <data name="Nodepartmentavailable" xml:space="preserve">
     <value> لا توجد إدارة متاحة
 أضف إدارة جديدة للبدء</value>
   </data>
@@ -579,5 +579,32 @@
   </data>
   <data name="System Identity" xml:space="preserve">
     <value>هوية النظام</value>
+  </data>
+  <data name="AddNewPriority" xml:space="preserve">
+    <value>إضافة أولوية جديدة</value>
+  </data>
+  <data name="EditStatus" xml:space="preserve">
+    <value>تعديل الحالة</value>
+  </data>
+  <data name="Type Source Name English" xml:space="preserve">
+    <value>اسم مصدر المهمة بالإنجليزية </value>
+  </data>
+  <data name="Type Source Name Arabic" xml:space="preserve">
+    <value>اسم مصدر المهمة بالعربي</value>
+  </data>
+  <data name="Enter Task Type Name English" xml:space="preserve">
+    <value>اسم نوع المهمة بالإنجليزية</value>
+  </data>
+  <data name="Enter Task Type Name Arabic" xml:space="preserve">
+    <value>اسم نوع المهمة بالعربي</value>
+  </data>
+  <data name="EditTaskType" xml:space="preserve">
+    <value>تعديل نوع المهمة</value>
+  </data>
+  <data name="Enter Priority Name English" xml:space="preserve">
+    <value>اسم الأولوية بالإنجليزية</value>
+  </data>
+  <data name="Enter Priority Name Arabic" xml:space="preserve">
+    <value>اسم الأولوية بالعربي</value>
   </data>
 </root>

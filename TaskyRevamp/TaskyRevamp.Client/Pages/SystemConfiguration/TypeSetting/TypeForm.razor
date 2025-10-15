@@ -4,30 +4,49 @@
 
 <EditForm EditContext="@editContext" OnValidSubmit="@OnSubmitHandler">
     <DataAnnotationsValidator />
-
+   <div class="offcanvas-body">
     <div class="mb-3">
-        <label class="form-label">@Loc["Name English"]</label>
-        <InputText class="form-control" @bind-Value="type.NameEnglish" placeholder="Enter Task Type Name English" />
+        <label class="form-label">
+            @Loc["Name English"]
+            <span class="text-danger">*</span>
+        </label>
+        <InputText class="form-control" @bind-Value="type.NameEnglish" placeholder=@Loc["Enter Task Type Name English"] />
         <ValidationMessage class="small text-danger" For="@(() => type.NameEnglish)"></ValidationMessage>
     </div>
 
     <div class="mb-3">
-        <label class="form-label">@Loc["Name Arabic"]</label>
-        <InputText class="form-control" @bind-Value="type.NameArabic" placeholder="Enter Task Type Name Arabic" />
+        <label class="form-label">
+            @Loc["Name Arabic"]
+            <span class="text-danger">*</span>
+        </label>
+        <InputText class="form-control" @bind-Value="type.NameArabic" placeholder=@Loc["Enter Task Type Name Arabic"] />
         <ValidationMessage class="small text-danger" For="@(() => type.NameArabic)"></ValidationMessage>
     </div>
 
-    <div class="form-check form-switch">
+    <div class="form-check form-switch custom">
         <InputCheckbox @bind-Value="type.IsActive" class="form-check-input" id="inactiveSwitch" />
         <label class="form-check-label" for="inactiveSwitch">
+                <span class="toggler-icon"></span>
             @Loc[type.IsActive ? "inactive" : "active"]
         </label>
     </div>
-
-    <div class="d-flex justify-content-end gap-2 mt-4">
-        <button type="button" class="btn btn-light" @onclick="OnCancelClick">@Loc["Cancel"]</button>
-        <button type="submit" class="btn btn-primary">@Loc[@SubmitButtonText]</button>
     </div>
+ <div class="offcanvas-footer">
+        <div class="row g-2">
+            <div class="col-6">
+                <div class="d-grid">
+                    <button type="button" class="btn btn-lg btn-light" @onclick="OnCancelClick">@Loc["Cancel"]</button>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-lg btn-primary">@Loc[@SubmitButtonText]</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    
 </EditForm>
 
 @code {
@@ -35,7 +54,6 @@
     [Parameter] public EventCallback<EditContext> OnValidSubmit { get; set; }
     [Parameter] public EventCallback OnCancel { get; set; }
     [Parameter] public string SubmitButtonText { get; set; } = "Save";
-    private ValidationMessageStore messageStore;
     private EditContext editContext;
 
     protected override void OnParametersSet()
@@ -43,48 +61,15 @@
         if (editContext == null || editContext.Model != type)
         {
             editContext = new EditContext(type);
-            messageStore = new ValidationMessageStore(editContext);
         }
     }
 
     private async Task OnSubmitHandler(EditContext context)
     {
-        ClearValidationMessages();
-        if (!editContext.Validate())
-            return; // client-side validation failed → stop
-        
         await OnValidSubmit.InvokeAsync(context);
     }
     private async void OnCancelClick()
     {
         await OnCancel.InvokeAsync();
-    }
-    public void AddErrorsToEditContext(IReadOnlyDictionary<string, List<string>> errors)
-    {
-        messageStore.Clear();
-
-        foreach (var error in errors)
-        {
-            var _type = typeof(TypeDto).GetProperty(error.Key);
-
-            if (_type != null)
-            {
-                var fieldIdentifier = new FieldIdentifier(type, _type.Name);
-
-                foreach (var errorMessage in error.Value)
-                {
-                    messageStore.Add(fieldIdentifier, errorMessage);
-                }
-            }
-        }
-
-        // Tell Blazor to re-render the validation messages
-        editContext.NotifyValidationStateChanged();
-    }
-
-    public void ClearValidationMessages()
-    {
-        messageStore.Clear();
-        editContext.NotifyValidationStateChanged();
     }
 }

@@ -15,6 +15,10 @@ using Microsoft.Extensions.Options;
 using TaskyRevamp.Client.Consumer;
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 
+using var http = new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) };
+using var response = await http.GetAsync("appsettings.json");
+using var stream = await response.Content.ReadAsStreamAsync();
+builder.Configuration.AddJsonStream(stream);
 
 builder.Services.AddBlazoredLocalStorage();
 builder.Services.AddLocalization();
@@ -43,6 +47,7 @@ builder.Services.AddTransient<RecycleBinSettingConsumer>();
 builder.Services.AddTransient<RejectionSettingConsumer>();
 builder.Services.AddTransient<PrioritySettingConsumer>();
 builder.Services.AddTransient<DepartmentConsumer>();
+builder.Services.AddTransient<UserConsumer>();
 
 builder.Services.AddTransient<StatusSettingConsumer>();
 builder.Services.AddTransient<ViewTaskSettingConsumer>();

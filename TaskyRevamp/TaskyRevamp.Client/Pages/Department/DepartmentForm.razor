@@ -2,7 +2,7 @@
 @using TaskyRevamp.Client.Consumer
 @using TaskyRevamp.Dto.Department
 @using TaskyRevamp.Dto.SystemConfiguration
-@inject DepartmentConsumer _DepartmentConsumer
+@inject DepartmentConsumer _departmentConsumer
 
 @inject IStringLocalizer<SharedResources> Loc
 
@@ -14,8 +14,8 @@
             <span class="text-danger"> *</span>
 
         </label>
-        <InputText class="form-control" @bind-Value="Department.NameEnglish" placeholder="@Loc["NameEnglish"]" />
-        <ValidationMessage class="small text-danger" For="@(() => Department.NameEnglish)"></ValidationMessage>
+        <InputText class="form-control" @bind-Value="department.NameEnglish" placeholder="@Loc["NameEnglish"]" />
+        <ValidationMessage class="small text-danger" For="@(() => department.NameEnglish)"></ValidationMessage>
     </div>
 
     <div class="mb-3">
@@ -23,12 +23,12 @@
             <span class="text-danger"> *</span>
 
         </label>
-        <InputText class="form-control" @bind-Value="Department.NameArabic" placeholder="@Loc["NameArabic"]" />
-        <ValidationMessage class="small text-danger" For="@(() => Department.NameArabic)"></ValidationMessage>
+        <InputText class="form-control" @bind-Value="department.NameArabic" placeholder="@Loc["NameArabic"]" />
+        <ValidationMessage class="small text-danger" For="@(() => department.NameArabic)"></ValidationMessage>
     </div>
 
-@if(AllDepartments !=null && AllDepartments.Count()>0){
-    <label class="form-label">@Loc["SelectParent"]
+    @if (allDepartments != null && allDepartments.Count() > 0 && !isFrist)
+{    <label class="form-label">@Loc["SelectParent"]
         <span class="text-danger"> *</span>
     </label>
 <div class="filter-single">
@@ -36,9 +36,9 @@
         TOutput=Guid
         TextSelector="(DepartmentDto x)=> x.Name"
         OutputSelector="x => x.Id"
-        Datasource="AllDepartments"
+        Datasource="allDepartments"
         MinCharacterCount="1"
-        @bind-SelectedOption ="@Department.ParentdepartmentId"
+        @bind-SelectedOption ="@department.ParentdepartmentId"
         PlaceHolder="@($"--{Loc["SelectParent"]}--")" />
 
         @if (ParentdepartmentRequired)
@@ -60,30 +60,34 @@
 
 @code {
 
-    [Parameter] public DepartmentDto Department { get; set; } = new DepartmentDto();
+    [Parameter] public DepartmentDto department { get; set; } = new DepartmentDto();
     [Parameter] public EventCallback<EditContext> OnValidSubmit { get; set; }
     [Parameter] public EventCallback OnCancel { get; set; }
     [Parameter] public string SubmitButtonText { get; set; }
-    public List<DepartmentDto> AllDepartments  = new  List<DepartmentDto> ();
+    public List<DepartmentDto> allDepartments  = new  List<DepartmentDto> ();
     private EditContext editContext;
     private ValidationMessageStore messageStore;
     public async Task savedep(Guid id, Guid parnt)
     {
-        Department.ParentdepartmentId = id;
+        department.ParentdepartmentId = id;
 
         await InvokeAsync(StateHasChanged);
-        // StateHasChanged();
     }
+    bool isFrist;
     protected override async Task OnParametersSetAsync()
 
     {
-        if (editContext == null || editContext.Model != Department)
+        if (editContext == null || editContext.Model != department)
         {
-            editContext = new EditContext(Department);
+            editContext = new EditContext(department);
             messageStore = new ValidationMessageStore(editContext);
         }
-        var Departs = await _DepartmentConsumer.GetDepartments();
-        AllDepartments = Departs.Data.ToList();
+        var departs = await _departmentConsumer.GetDepartmentsForDDL();
+        allDepartments = departs.Data.ToList();
+        if (department.Id !=Guid.Empty && department.ParentdepartmentId==Guid.Empty )
+        {
+            isFrist = true;
+        }
         StateHasChanged();
     }
 
@@ -97,14 +101,14 @@
         if (!editContext.Validate())
             return; // client-side validation failed → stop
 
-        if(AllDepartments.Count()>0 && Department.ParentdepartmentId == Guid.Empty)
+        if (allDepartments.Count() > 0 && department.ParentdepartmentId == Guid.Empty && !isFrist)
         {
             ParentdepartmentRequired = true;
             return;
         }
-        if (AllDepartments.Count() == 0)
+        if (allDepartments.Count() == 0)
         {
-            Department.ParentdepartmentId = Guid.Empty;
+            department.ParentdepartmentId = Guid.Empty;
         }
         await OnValidSubmit.InvokeAsync(context);
     }
@@ -124,7 +128,7 @@
 
             if (property != null)
             {
-                var fieldIdentifier = new FieldIdentifier(Department, property.Name);
+                var fieldIdentifier = new FieldIdentifier(department, property.Name);
 
                 foreach (var errorMessage in error.Value)
                 {
@@ -133,7 +137,6 @@
             }
         }
 
-        // Tell Blazor to re-render the validation messages
         editContext.NotifyValidationStateChanged();
     }
 

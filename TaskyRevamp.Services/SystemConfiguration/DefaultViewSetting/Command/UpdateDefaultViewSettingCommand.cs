@@ -15,16 +15,16 @@ namespace TaskyRevamp.Services.SystemConfiguration.DefaultViewSetting.Command
 	public record UpdateDefaultViewSettingCommand (DefaultViewSettingsDto ViewSettingsDto): IRequest<bool>;
 	public class UpdateDefaultViewSettingHandler : IRequestHandler<UpdateDefaultViewSettingCommand, bool>
 	{
-		private readonly IRepository<DefaultSettings> _DefaultSettingsRepository;
+		private readonly IRepository<DefaultSettings> _defaultSettingsRepository;
 		private readonly IRepository<ViewSettings> _ViewSettingsRepository;
-		public UpdateDefaultViewSettingHandler(IRepository<DefaultSettings> _defaultSettingsRepository, IRepository<ViewSettings> _viewSettingsRepository)
+		public UpdateDefaultViewSettingHandler(IRepository<DefaultSettings> defaultSettingsRepository, IRepository<ViewSettings> _viewSettingsRepository)
 		{
-			_DefaultSettingsRepository = _defaultSettingsRepository;	
+			_defaultSettingsRepository = defaultSettingsRepository;	
 			_ViewSettingsRepository = _viewSettingsRepository;
 		}
 		public async Task<bool> Handle(UpdateDefaultViewSettingCommand request, CancellationToken cancellationToken)
 		{
-			var res = await _DefaultSettingsRepository.AllAsNoTracking();
+			var res = await _defaultSettingsRepository.AllAsNoTracking();
 			if (res.Success && res != null)
 			{
 				var viewsetting = await _ViewSettingsRepository.AllAsNoTracking();
@@ -39,7 +39,7 @@ namespace TaskyRevamp.Services.SystemConfiguration.DefaultViewSetting.Command
 							{
 								DefaultViewSettings newView = new DefaultViewSettings();
 								newView.DefaultSelected = request.ViewSettingsDto.DefaultSelected;
-								await _DefaultSettingsRepository.Insert(newView);
+								await _defaultSettingsRepository.Insert(newView);
 							}
 							else
 							{
@@ -47,7 +47,7 @@ namespace TaskyRevamp.Services.SystemConfiguration.DefaultViewSetting.Command
 								if (defaultview != null)
 								{
 									defaultview.DefaultSelected = request.ViewSettingsDto.DefaultSelected;
-									await _DefaultSettingsRepository.Update(defaultview);
+									await _defaultSettingsRepository.Update(defaultview);
 								}
 							}
 						}

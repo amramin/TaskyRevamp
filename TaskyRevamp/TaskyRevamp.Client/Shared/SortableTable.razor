@@ -1,0 +1,97 @@
+﻿@using TaskyRevamp.Client.Pages
+@typeparam TItem
+
+<table class="table">
+    <thead>
+        <tr>
+            @foreach (var col in Columns)
+            {
+                <th style="@(col.IsSortable ? "cursor:pointer;" : "cursor:default;")"
+                    @onclick="@(col.IsSortable ? (() => OnSort(col.Field)) : null)">
+                    @col.DisplayName
+
+                    @if (col.IsSortable)
+                    {
+                        <span class="ms-1">
+                            @if (SortColumn == col.Field)
+                            {
+                                if (SortAscending == true)
+                                {
+                                    <span class="icon">
+                                        <SVGCrud SVGType="SVGCrud.SVGTypeEnum.SortChevronTop"></SVGCrud>
+                                    </span>
+                                }
+                                else if (SortAscending == false)
+                                {
+                                    <span class="icon">
+                                        <SVGCrud SVGType="SVGCrud.SVGTypeEnum.SortChevronDown"></SVGCrud>
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="icon">
+                                        <SVGCrud SVGType="SVGCrud.SVGTypeEnum.SortChevronUpDown"></SVGCrud>
+                                    </span>
+                                }
+                            }
+                            else
+                            {
+                                <span class="icon">
+                                    <SVGCrud SVGType="SVGCrud.SVGTypeEnum.SortChevronUpDown"></SVGCrud>
+                                </span>
+                            }
+                        </span>
+                    }
+                </th>
+
+            }
+        </tr>
+    </thead>
+
+    <tbody>
+        @if (Items != null && Items.Any())
+        {
+            @RowTemplate
+        }
+        else
+        {
+            <tr>
+                <td colspan="@Columns.Count" class="text-center text-muted">
+                    No data available
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@code {
+    [Parameter] public List<SortableColumn> Columns { get; set; } = new();
+    [Parameter] public IEnumerable<TItem> Items { get; set; } = Enumerable.Empty<TItem>();
+    [Parameter] public string SortColumn { get; set; } = string.Empty;
+    [Parameter] public bool? SortAscending { get; set; } // ✅ nullable to support "no sort"
+    [Parameter] public EventCallback<(string Column, bool? Ascending)> OnSortRequested { get; set; }
+    [Parameter] public RenderFragment RowTemplate { get; set; } = default!;
+
+    private async Task OnSort(string columnName)
+    {
+        // cycle through states
+        if (SortColumn != columnName)
+        {
+            SortColumn = columnName;
+            SortAscending = true; // first click = ascending
+        }
+        else
+        {
+            if (SortAscending == true)
+                SortAscending = false; // second click = descending
+            else if (SortAscending == false)
+                SortAscending = null; // third click = reset
+            else
+            {
+                SortAscending = true; // if null → start again
+            }
+        }
+
+        await OnSortRequested.InvokeAsync((SortColumn, SortAscending));
+    }
+}

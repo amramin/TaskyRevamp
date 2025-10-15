@@ -21,6 +21,7 @@ public class Department : Entity, IHasCreationMetaData, IHasUpdateMetaData
     public DateTime? UpdateDate { get ; set ; }
     public User? UpdatedBy { get; set; }
 
+    public ICollection<User>? AssignedUser { set; get; }
     public Department(Guid id, string nameEn,string nameAr,Guid createrid)
     {
         Id = id;
@@ -58,7 +59,7 @@ public class Department : Entity, IHasCreationMetaData, IHasUpdateMetaData
            ParentdepartmentId=ParentdepartmentId==null?Guid.Empty: ParentdepartmentId.Value,
            ParentdepartmentArabic= Parentdepartment?.NameArabic,
            ParentdepartmentEnglish= Parentdepartment?.NameEnglish,
-
+         
         };
     }
     public void Update(string nameEn,string nameAr)

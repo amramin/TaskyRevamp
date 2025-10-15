@@ -1,0 +1,63 @@
+﻿@page "/LinkDepartmentUser/{Id:guid}"
+
+@using Stingray.Components.MultiSelectComponent
+@using TaskyRevamp.Client.Consumer
+@using TaskyRevamp.Client.Services
+@using TaskyRevamp.Client.Shared.Popups
+@using TaskyRevamp.Dto.Account
+@using TaskyRevamp.Dto.Department
+@inject UserConsumer  _userConsumer
+@inject NavigationManager navigationManager
+@inject IStringLocalizer<SharedResources> Loc
+@inject ToastService ToastService
+
+
+
+
+<div class="page-header">
+    <h1 class="page-headline">@Loc["Departments"]</h1>
+    <div class="action-btn-list">
+       
+      
+    </div>
+</div>
+
+
+
+          <div class="mb-3">
+            <SearchableMultiDropdownOffline TInput=UserDto
+                                            TOutput="Guid"
+                                    Datasource=availableUsers
+                                            TextSelector=@(x=>x.UserName)
+                                            OutputSelector="x=> x.Id"
+                                    @bind-SelectedOptions=assignedUserDto.UsrIds />
+        </div>
+<div class="d-flex justify-content-end gap-2 mt-4">
+    <button type="button" class="btn btn-light" @onclick="OnCancelClick">@Loc["Cancel"]</button>
+    <button type="button" @onclick="SaveClick" class="btn btn-primary">@Loc["Save"]</button>
+</div>
+@code {
+    [Parameter] public Guid Id { get; set; }
+    public List<UserDto> availableUsers { get; set; } = new();
+    public AssignedUserDto assignedUserDto = new AssignedUserDto();
+    protected async override Task OnInitializedAsync()
+    {
+        assignedUserDto.DepartmentId = Id;
+        var res = await _userConsumer.GetAllUNassignedUsers();
+        availableUsers = res.Data.ToList();
+
+        StateHasChanged();
+    }
+    private async Task SaveClick()
+    {
+        await _userConsumer.CreateAssignedUser(assignedUserDto);
+
+        StateHasChanged();
+    }
+
+    private async Task OnCancelClick()
+    {
+        StateHasChanged();
+    }
+
+}

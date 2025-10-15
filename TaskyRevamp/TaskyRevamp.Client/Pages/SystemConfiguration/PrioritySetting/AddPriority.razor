@@ -4,17 +4,19 @@
 @using TaskyRevamp.Dto.SystemConfiguration
 @inject NavigationManager navigationManager
 @inject IStringLocalizer<SharedResources> Loc
+@inject PopupService PopupService
 @inject PrioritySettingConsumer _prioritySettingConsumer
 @inject ToastService ToastService
 
-<div class="container mt-4">
+
+
        <PriorityForm
            @ref="form"
            OnCancel="Cancel" 
            OnValidSubmit="@Save"
            Priority="_newPriority" 
            SubmitButtonText="Save" />
-</div>
+
 
 @code {
 
@@ -44,24 +46,25 @@
 
     private async Task Save(EditContext editContext)
     {
-
         var res = await _prioritySettingConsumer.AddPriority(_newPriority);
-        if (res.Success)
+        if (res.Errors != null && res.Errors.Count > 0)
         {
-            await OnValidSubmit.InvokeAsync(_newPriority);
-            await ToastService.ShowToastAsync(Loc["Added successfully"], "success");
-
-            navigationManager.NavigateTo("/PrioritySettings");
+            form.AddErrorsToEditContext(res.Errors);
         }
         else
         {
-            if (res.Errors != null && res.Errors.Count > 0)
-                form.AddErrorsToEditContext(res.Errors);
+            if (res.Success)
+            {
+                await OnValidSubmit.InvokeAsync(_newPriority);
+                await ToastService.ShowToastAsync(Loc["Added successfully"], "success");
+
+                StateHasChanged();
+                PopupService.Hide();
+            }
         }
     }
-    private async Task Cancel()
+    private void Cancel()
     {
-        //await OnCancel.InvokeAsync();
-        navigationManager.NavigateTo("/PrioritySettings");
+        PopupService.Hide();
     }
 }

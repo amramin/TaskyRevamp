@@ -5,17 +5,17 @@
 @using TaskyRevamp.Dto.SystemConfiguration
 @inject NavigationManager navigationManager
 @inject IStringLocalizer<SharedResources> Loc
-@inject DepartmentConsumer _DepartmentConsumer
+@inject DepartmentConsumer _departmentConsumer
 @inject ToastService ToastService
 
-<div class="container mt-4">
+
        <DepartmentForm
            @ref="form"
            OnCancel="Cancel" 
            OnValidSubmit="@Save"
            Department="_newDepartment" 
            SubmitButtonText= "@Loc["Save"]" />
-</div>
+
 
 @code {
 
@@ -28,18 +28,14 @@
 
     protected async override Task OnInitializedAsync()
     {
-        var res = await _DepartmentConsumer.GetDepartments();
-        // if (res.Success && res.Data != null)
-        // {
-        //    // DepartmentDtoses = res.Data;
-           
-        // }
+        var res = await _departmentConsumer.GetDepartmentsForDDL();
+     
     }
 
     private async Task Save(EditContext editContext)
     {
 
-        var res = await _DepartmentConsumer.AddDepartment(_newDepartment);
+        var res = await _departmentConsumer.AddDepartment(_newDepartment);
         if (res.Success)
         {
             await OnValidSubmit.InvokeAsync(_newDepartment);
@@ -55,7 +51,6 @@
     }
     private async Task Cancel()
     {
-        //await OnCancel.InvokeAsync();
         navigationManager.NavigateTo("/Departments");
     }
 }

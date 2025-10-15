@@ -10,45 +10,79 @@
 
 <EditForm Model="_statusDto" OnValidSubmit="Save">
     <DataAnnotationsValidator />
-    <ValidationSummary />
     <div class="offcanvas-body">
         <div class="mb-3">
-            <label class="form-label">@Loc["Name English"]</label>
+            <label class="form-label">
+                @Loc["Name English"]
+                <span class="text-danger">*</span> 
+            </label>
             <InputText class="form-control" @bind-Value="_statusDto.NameEnglish" />
+            <ValidationMessage class="small text-danger" For="@(() => _statusDto.NameEnglish)"></ValidationMessage>
         </div>
 
         <div class="mb-3">
-            <label class="form-label">@Loc["Name Arabic"]</label>
+            <label class="form-label">
+                @Loc["Name Arabic"]
+                <span class="text-danger">*</span>
+            </label>
             <InputText class="form-control" @bind-Value="_statusDto.NameArabic" />
+            <ValidationMessage class="small text-danger" For="@(() => _statusDto.NameArabic)"></ValidationMessage>
         </div>
 
         <div class="mb-3">
-            <label class="form-label">@Loc["Name Color Indicator"]</label>
-            <div class="input-group">
+            <label class="form-label">
+                @Loc["Name Color Indicator"]
+                <span class="text-danger">*</span>
+            </label>
+
+            <div class="color-group">
                 <InputText class="form-control" @bind-Value="_statusDto.NameColor" />
-                <span class="input-group-text">
-                    <input type="color" class="form-control form-control-color border-0 p-0" style="width: 2rem;"
-                        @bind="_statusDto.NameColor" />
+                <span class="rounded-circle cl-preview" style="background-color:@_statusDto.NameColor"></span>
+                <span class="color-indicator">
+                    <input type="color" id="color-name" @bind="_statusDto.NameColor" />
+                    <label for="color-name">
+                        <SVGCrud SVGType="SVGCrud.SVGTypeEnum.ColorPalette"></SVGCrud>
+                    </label>
                 </span>
             </div>
+            <ValidationMessage class="small text-danger" For="@(() => _statusDto.NameColor)"></ValidationMessage>
         </div>
 
         <div class="mb-3">
-            <label class="form-label">@Loc["Background Color Indicator"]</label>
-            <div class="input-group">
+            <label class="form-label">
+                @Loc["Background Color Indicator"]
+                <span class="text-danger">*</span>
+            </label>
+            <div class="color-group">
                 <InputText class="form-control" @bind-Value="_statusDto.BackgroundColor" />
-                <span class="input-group-text">
-                    <input type="color" class="form-control form-control-color border-0 p-0" style="width: 2rem;"
-                        @bind="_statusDto.BackgroundColor" />
+                <span class="rounded-circle cl-preview" style="background-color:@_statusDto.BackgroundColor"></span>
+                <span class="color-indicator">
+                    <input type="color" id="bg-name" @bind="_statusDto.BackgroundColor" />
+                    <label for="bg-name">
+                        <SVGCrud SVGType="SVGCrud.SVGTypeEnum.ColorPalette"></SVGCrud>
+                    </label>
                 </span>
             </div>
+            <ValidationMessage class="small text-danger" For="@(() => _statusDto.BackgroundColor)"></ValidationMessage>
         </div>
     </div>
 
     <div class="offcanvas-footer">
-        <button type="button" class="btn btn-light" @onclick="Cancel">@Loc["Cancel"]</button>
-        <button type="submit" class="btn btn-primary">@Loc["Save"]</button>
+        <div class="row g-2">
+            <div class="col-6">
+                <div class="d-grid">
+                    <button type="button" class="btn btn-lg btn-light" @onclick="Cancel">@Loc["Cancel"]</button>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-lg btn-primary">@Loc["Save"]</button>
+                </div>
+            </div>
+        </div>
+
     </div>
+
 </EditForm>
 
 
@@ -72,7 +106,7 @@
         if (res.Success)
         {
             await ToastService.ShowToastAsync(Loc["EditSuccess"], "success");
-            PopupService.Hide(); // close popup after save
+            PopupService.Hide();
 
             if (OnValidSubmit.HasDelegate)
                 await OnValidSubmit.InvokeAsync(_statusDto);
@@ -81,6 +115,6 @@
 
     private void Cancel()
     {
-        PopupService.Hide(); // close popup without saving
+        PopupService.Hide();
     }
 }
