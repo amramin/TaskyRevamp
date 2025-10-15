@@ -1,0 +1,35 @@
+﻿@using Microsoft.AspNetCore.Components
+@inject IStringLocalizer<SharedResources> Loc
+
+<div class="no-search-results text-center my-5">
+    <div class="card empty-page">
+        <div class="card-body">
+            <span class="vector">
+                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.EmptyPageVector"></SVGCrud>
+            </span>
+            <div class="content mt-3">
+                <h5 class="headline-5">@MessageTitle</h5>
+                <p class="small-medium-text">@MessageSubtitle</p>
+            </div>
+            @if (ShowResetButton)
+            {
+                <div class="action-btn-list mt-3">
+                    <button class="btn btn-outline-primary" @onclick="OnResetClick">
+                        <span class="icon">
+                            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Repeat"></SVGCrud>
+                        </span>
+                        @ButtonText
+                    </button>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter] public string? MessageTitle { get; set; } = "No results found";
+    [Parameter] public string? MessageSubtitle { get; set; } = "Try adjusting your search or filters.";
+    [Parameter] public bool ShowResetButton { get; set; } = true;
+    [Parameter] public string? ButtonText { get; set; } = "Clear Search";
+    [Parameter] public EventCallback OnResetClick { get; set; }
+}
