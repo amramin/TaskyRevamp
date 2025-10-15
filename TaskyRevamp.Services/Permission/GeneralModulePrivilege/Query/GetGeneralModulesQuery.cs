@@ -20,7 +20,6 @@ namespace TaskyRevamp.Services.Permission.GeneralModulePrivillege.Query
 		}
 		public async Task<List<GeneralModuleDto>> Handle(GetGeneralModulesQuery request, CancellationToken cancellationToken)
 		{
-			string currentLanguage = Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName;
 			List<GeneralModuleDto> _generalModuleDtos = new List<GeneralModuleDto>();
 			var res = await _generalModuleRepository.AllAsNoTracking();
 			if (res.Success && res != null && res.Value != null)

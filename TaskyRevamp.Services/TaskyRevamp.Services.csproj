@@ -21,7 +21,6 @@
 
   <ItemGroup>
     <Folder Include="Account\Query\" />
-    <Folder Include="Permission\GeneralModulePrivilege\Command\" />
     <Folder Include="SystemConfiguration\RecycleBinSettings\Command\" />
   </ItemGroup>
 
