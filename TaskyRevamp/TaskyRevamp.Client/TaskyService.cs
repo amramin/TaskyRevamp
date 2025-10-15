@@ -4,6 +4,7 @@ using Microsoft.JSInterop;
 using Newtonsoft.Json;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net.Http.Headers;
+using System.Text;
 using TaskyRevamp.Client.Extensions;
 using TaskyRevamp.Client.Services;
 using TaskyRevamp.Dto.GeneralDto;
@@ -82,6 +83,41 @@ public class TaskyService
         var queryString = "?" + string.Join("&", query);
 
         return queryString;
+    }
+
+    public string GetMimeType(byte[] bytes)
+    {
+        if (bytes.Length < 4) return null;
+
+        // PNG
+        if (bytes[0] == 0x89 && bytes[1] == 0x50 && bytes[2] == 0x4E && bytes[3] == 0x47)
+            return "image/png";
+
+        // JPG
+        if (bytes[0] == 0xFF && bytes[1] == 0xD8)
+            return "image/jpeg";
+
+        // SVG (starts with "<svg")
+        if (Encoding.UTF8.GetString(bytes.Take(4).ToArray()).Contains("<svg"))
+            return "image/svg+xml";
+
+        return null;
+    }
+
+    public async Task<string> GetSystemLogo()
+    {
+        var systemLogoBase64 = "";
+        var url = $"api/SystemIdentity/GetSystemIdentitySetting";
+        var res = await GetFromJsonAsync<CommonApiResponse<SystemIdentityDto>>(url);
+
+        if (res.Success)
+        {
+            var systemIdentity = res.Data;
+            var mimeType = GetMimeType(systemIdentity.Logo);
+            systemLogoBase64 = $"data:{mimeType};base64,{systemIdentity.LogoBase64}";
+        }
+
+        return systemLogoBase64;
     }
 
     private async Task<bool> CheckForToken()

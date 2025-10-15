@@ -7,6 +7,8 @@
 @inject SystemIdentityConsumer _systemIdentitySettingConsumer
 @inject IStringLocalizer<SharedResources> Loc
 @inject ToastService ToastService
+@inject NavigationManager NavigationManager
+@inject TaskyService taskyService
 
 <h4 class="fw-bold mb-4 ms-4">@Loc["System Identity"]</h4>
 <div class="card shadow-sm p-4">
@@ -17,9 +19,9 @@
         <!-- Logo Section -->
         <div class="text-center mb-4">
             <div class="position-relative d-inline-block">
-                @if (_systemIdentity.LogoBase64 != null)
+                @if (_systemIdentity.Logo != null)
                 {
-                    <img src="@_systemIdentity.LogoBase64" alt="Logo" class="rounded-circle border" style="width:200px; height:200px;"/>
+                    <img src="@GetSystemLogo()" alt="Logo" class="rounded-circle border" style="width:200px; height:200px;" />
                 }
 
                 <label for="logoUpload" class="position-absolute bottom-0 end-0 bg-light border rounded-circle p-2" style="cursor:pointer; width: 50px;">
@@ -35,12 +37,12 @@
         <div class="row justify-content-center">
             <div class="col-md-6">
                 @* <div class="mb-3">
-                    <label class="form-label fw-semibold">System Name</label>
-                    <div class="input-group">
-                        <input class="form-control" placeholder="Enter system name" @bind="_systemIdentity.NameEnglish" />
-                        <span class="input-group-text bg-white"><i class="bi bi-pencil"></i></span>
-                    </div>
-                </div> *@
+                        <label class="form-label fw-semibold">System Name</label>
+                        <div class="input-group">
+                            <input class="form-control" placeholder="Enter system name" @bind="_systemIdentity.NameEnglish" />
+                            <span class="input-group-text bg-white"><i class="bi bi-pencil"></i></span>
+                        </div>
+                    </div> *@
 
                 <div class="mb-3">
                     <label class="form-label fw-semibold">System Name English</label>
@@ -164,10 +166,17 @@
         if (res.Success)
         {
             await ToastService.ShowToastAsync(Loc["EditSuccess"], "success");
+            NavigationManager.NavigateTo(NavigationManager.Uri, forceLoad: true);
         }
     }
     private void Cancel(MouseEventArgs args)
     {
         throw new NotImplementedException();
+    }
+
+    private string GetSystemLogo()
+    {
+        var mimeType = taskyService.GetMimeType(_systemIdentity.Logo);
+        return $"data:{mimeType};base64,{_systemIdentity.LogoBase64}";
     }
 }

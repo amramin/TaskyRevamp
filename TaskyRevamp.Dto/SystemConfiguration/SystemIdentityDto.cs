@@ -18,6 +18,6 @@ namespace TaskyRevamp.Dto.SystemConfiguration
 		public string NavigationBackground { get; set; }
 		public string BorderColor { get; set; }
 		public byte[] Logo { get; set; }
-        public string? LogoBase64 => Logo != null? $"data:image/svg+xml;base64,{Convert.ToBase64String(Logo)}" : null;
+        public string? LogoBase64 => Logo != null? Convert.ToBase64String(Logo) : null;
     }
 }

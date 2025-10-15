@@ -4,7 +4,9 @@
 @inject AccountConsumer AccountConsumer;
 @inject ILocalStorageService LocalStorageService
 @inject NavigationManager NavigationManager
-@inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResources> Loc;
+@inject IStringLocalizer<SharedResources> Loc;
+@inject CustomAuthenticationService AuthService
+@inject TaskyService taskyService
 @using System.Security.Claims
 @using Blazored.LocalStorage
 @using TaskyRevamp.Client.Consumer
@@ -13,7 +15,7 @@
 @using TaskyRevamp.Client.Shared
 @using TaskyRevamp.Dto.Account
 @using TaskyRevamp.Localization.Resources
-@inject CustomAuthenticationService AuthService
+@using Microsoft.Extensions.Localization
 @* @rendermode InteractiveServer *@
 
 <section class="auth">
@@ -24,8 +26,8 @@
                 <div class="row w-100 flex-column gap-5 align-items-center justify-content-center">
                     <div class="col-lg-6 text-center">
                         <img class="img-fluid"
-                             src="images/stingray-logo.svg"
-                             alt="stingray logo" />
+                             src="@(string.IsNullOrEmpty(systemLogoBase64)? "" : systemLogoBase64)"
+                             alt="system-logo" />
                     </div>
 
                     <div class="col-lg-10 col-xl-8">
@@ -41,9 +43,11 @@
                     <div class="d-flex justify-content-start align-items-center flex-column">
                         <div class="auth-logo">
                             <span class="logo-icon">
-                                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.TaskyIcon"></SVGCrud>
+                                <img class=""
+                                     src="@(string.IsNullOrEmpty(systemLogoBase64)? "" : systemLogoBase64)"
+                                     alt="system-logo" />
                             </span>
-                            <h6 class="auth-logo-text">Tasky</h6>
+                            @*<h6 class="auth-logo-text">Tasky</h6>*@
                         </div>
                         <div class="content-text">
                             <h1 class="auth-headline">@Loc["Login"]</h1>
@@ -112,7 +116,7 @@
                             <div _ngcontent-uxv-c2="" class="d-grid">
                                 @if (Invald)
                                 {
-                                    <div  class="mb-3">
+                                    <div class="mb-3">
                                         <label class="small text-danger"> @Loc["InvaildUserNameOrPassWord"]</label>
                                     </div>
                                 }
@@ -154,9 +158,15 @@
     private bool isPasswordVisible = false;
     private string passwordInputType = "password";
     public string userIdentifier = string.Empty;
+    private string systemLogoBase64 = "";
     [SupplyParameterFromQuery]
     [Parameter]
     public string returnUrl { get; set; }
+
+    protected async override Task OnInitializedAsync()
+    {
+        systemLogoBase64 = await taskyService.GetSystemLogo();
+    }
 
     private void TogglePasswordVisibility()
     {
