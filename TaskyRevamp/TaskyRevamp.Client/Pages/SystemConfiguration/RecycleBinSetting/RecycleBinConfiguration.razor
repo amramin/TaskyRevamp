@@ -34,7 +34,7 @@
 
                                     @if (RecycleBinSetting.PeriodType == PeriodType.Custom && value == PeriodType.Custom)
                                     {
-                                        <input placeholder="@Loc["EnterDaysNumber"]" type="number" min="0" class="form-control" @bind="RecycleBinSetting.CustomDays"
+                                        <input placeholder="@Loc["EnterDaysNumber"]" type="number" min="1" class="form-control" @bind="RecycleBinSetting.CustomDays"
                                             @oninput="OnCustomDaysChange" />
                                     }
                                 </label>
@@ -50,7 +50,10 @@
                 <div class="col-xxl-6 col-xl-7 col-lg-8 col-md-10">
                     <div class="action-buttons">
                         <button class="btn btn-lg btn-light" @onclick="CancelSettings">@Loc["Cancel"]</button>
-                        <button class="btn btn-lg  btn-primary" @onclick="SaveSettings">@Loc["Save"]</button>
+                        <button class="btn btn-lg  btn-primary" @onclick="SaveSettings"
+                                disabled="@(RecycleBinSetting.PeriodType == PeriodType.Custom && (RecycleBinSetting.CustomDays is null || RecycleBinSetting.CustomDays <= 0))">
+                                @Loc["Save"]
+                        </button>
                     </div>
                 </div>
             </div>
@@ -106,19 +109,11 @@
     {
         var input = e.Value?.ToString();
 
-        if (string.IsNullOrWhiteSpace(input))
+        if (string.IsNullOrEmpty(input) || !int.TryParse(input, out var number) || number <= 0)
         {
             RecycleBinSetting.CustomDays = null;
             return;
         }
-
-        if (int.TryParse(input, out var number))
-        {
-            RecycleBinSetting.CustomDays = number < 0 ? 0 : number;
-        }
-        else
-        {
-            RecycleBinSetting.CustomDays = 0;
-        }
+        RecycleBinSetting.CustomDays = number;
     }
 }

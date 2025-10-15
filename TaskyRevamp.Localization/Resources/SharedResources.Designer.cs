@@ -99,18 +99,18 @@ namespace TaskyRevamp.Localization.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Add a new task source to get started..
         /// </summary>
-        public static string Add_a_new_task_source_to_get_started_ {
+        public static string AddANewTaskSourceToGetStarted {
             get {
-                return ResourceManager.GetString("Add a new task source to get started.", resourceCulture);
+                return ResourceManager.GetString("AddANewTaskSourceToGetStarted", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Add a new task type to get started..
         /// </summary>
-        public static string Add_a_new_task_type_to_get_started_ {
+        public static string AddANewTaskTypeToGetStarted {
             get {
-                return ResourceManager.GetString("Add a new task type to get started.", resourceCulture);
+                return ResourceManager.GetString("AddANewTaskTypeToGetStarted", resourceCulture);
             }
         }
         
@@ -889,21 +889,21 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No Task Sources Available.
-        /// </summary>
-        public static string No_Task_Sources_Available {
-            get {
-                return ResourceManager.GetString("No Task Sources Available", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to  No department available
         ///Add a new department to get started.
         /// </summary>
         public static string Nodepartmentavailable {
             get {
                 return ResourceManager.GetString("Nodepartmentavailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No Task Sources Available.
+        /// </summary>
+        public static string NoTaskSourcesAvailable {
+            get {
+                return ResourceManager.GetString("NoTaskSourcesAvailable", resourceCulture);
             }
         }
         
