@@ -1034,6 +1034,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Privilege with Id {id} not found..
+        /// </summary>
+        public static string PrivilegeNotFound {
+            get {
+                return ResourceManager.GetString("PrivilegeNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Recycle Bin Configuration.
         /// </summary>
         public static string RecycleBinConfiguration {

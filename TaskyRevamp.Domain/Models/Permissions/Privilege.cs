@@ -23,7 +23,28 @@ namespace TaskyRevamp.Domain.Models.Permissions
 			NameArabic = nameArabic;
 		}
 
-		public PrivilegeDto CopyToDto()
+		public void SetData(PrivilegeDto dto)
+		{
+			NameEnglish = dto.NameEnglish;
+			NameArabic = dto.NameArabic;
+			GeneralModulePermissions = dto.GeneralModulePermissions?.Select(x => new GeneralModulePermission
+			{
+				Id = x.Id,
+				IsView = x.IsView,
+				IsEdit = x.IsEdit,
+				IsAdd = x.IsAdd,
+				IsDelete = x.IsDelete,
+				GeneralModuleId = x.GeneralModuleId
+			}).ToList() ?? new List<GeneralModulePermission>();
+			ReportModulePermissions = dto.ReportModulePermissionDtos?.Select(x => new ReportModulePermission
+			{
+				Id = x.Id,
+				IsActive = x.IsActive,
+				ReportModuleId = x.ReportModuleId
+			}).ToList() ?? new List<ReportModulePermission>();
+        }
+
+        public PrivilegeDto CopyToDto()
 		{
 			return new PrivilegeDto
 			{

@@ -35,7 +35,6 @@ namespace TaskyRevamp.Services.SystemConfiguration.PriorityConfiguration.Command
 					}
 				}
 			}
-			await _priorityRepository.SaveChangesAsync();
 			return true;
 		}
 	}

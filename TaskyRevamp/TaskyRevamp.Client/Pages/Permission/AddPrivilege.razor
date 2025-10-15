@@ -1,6 +1,8 @@
 ﻿@page "/add-privilege"
 
 @using TaskyRevamp.Dto.Permissions
+@using TaskyRevamp.Client.Consumer
+@inject PrivilegeConsumer _privilegeConsumer
 @inject IStringLocalizer<SharedResources> Loc
 
 <h4 class="mb-1 mt-2 ms-2 fw-bold"> ← @Loc["AddNewPrivilege"]</h4>
@@ -42,10 +44,31 @@
     </div>
 </div>
 
+<div class="card-footer">
+    <div class="row justify-content-center">
+        <div class="col-xxl-7 col-xl-8 col-lg-9 col-md-11">
+            <div class="action-buttons">
+                <button class="btn btn-lg btn-light" @onclick="CancelSettings">@Loc["Cancel"]</button>
+                <button class="btn btn-lg  btn-primary" @onclick="SaveSettings">@Loc["Save"]</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 @code {
     public PrivilegeDto PrivilegeDto { get; set; } = new PrivilegeDto();
 
     private string SelectedTab { get; set; } = "General";
     void SelectTab(string tab) => SelectedTab = tab;
+
+    private void CancelSettings()
+    {
+
+    }
+
+    private async Task SaveSettings()
+    {
+        await _privilegeConsumer.CreatePrivilege(PrivilegeDto);
+    }
 }
 

@@ -25,7 +25,6 @@ namespace TaskyRevamp.Domain.Models.Permissions
                 NameArabic = NameArabic,
                 HintEnglish = HintEnglish,
                 HintArabic = HintArabic,
-                ReportModulePermissions = ReportModulePermissions?.Select(rmp => rmp.CopyToDto()).ToList()
             };
         }
     }

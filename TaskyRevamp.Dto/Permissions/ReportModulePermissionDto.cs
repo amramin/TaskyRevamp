@@ -10,9 +10,7 @@ namespace TaskyRevamp.Dto.Permissions
     {
         public Guid Id { get; set; }
         public Guid PrivilegeId { get; set; }
-        public PrivilegeDto Privilege { get; set; }
         public Guid ReportModuleId { get; set; }
-        public ReportModuleDto ReportModule { get; set; }
         public bool IsActive { get; set; }
     }
 }

@@ -12,4 +12,5 @@ public static class ApiError
     public static string AddTaskSettingNotFound = "AddTaskSettingNotFound";
     public static string FilterFieldNotFound = "FilterFieldNotFound";
     public static string DefaultColumnNotFound = "DefaultColumnNotFound";
+    public static string PrivilegeNotFound = "PrivilegeNotFound";
 }
