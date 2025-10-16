@@ -29,48 +29,13 @@
         </div>
     </div>
     <div class="page-body">
-
-        @if (types != null && types.Any())
-        {
-            <div class="table-responsive ">
-                <table class="table ">
-                    <thead>
-                        <tr>
-                            <th @onclick='() => SortBy("DisplayedName")' style="cursor:pointer">
-                                @Loc["name"]
-                                <span class="ms-1">
-                                    @(currentSortColumn == "DisplayedName" ? (sortAscending ? "↑" : "↓") : "↕")
-                                </span>
-                            </th>
-                            <th @onclick='() => SortBy("CreateDate")' style="cursor:pointer">
-                                @Loc["CreationDate"]
-                                <span class="ms-1">
-                                    @(currentSortColumn == "CreateDate" ? (sortAscending ? "↑" : "↓") : "↕")
-                                </span>
-                            </th>
-                            <th @onclick='() => SortBy("CreatedBy")' style="cursor:pointer">
-                                @Loc["CreatedBy"]
-                                <span class="ms-1">
-                                    @(currentSortColumn == "CreatedBy" ? (sortAscending ? "↑" : "↓") : "↕")
-                                </span>
-                            </th>
-                            <th @onclick='() => SortBy("UpdateDate")' style="cursor:pointer">
-                                @Loc["UpdateDate"]
-                                <span class="ms-1">
-                                    @(currentSortColumn == "UpdateDate" ? (sortAscending ? "↑" : "↓") : "↕")
-                                </span>
-                            </th>
-                            <th @onclick='() => SortBy("UpdatedBy")' style="cursor:pointer">
-                                @Loc["UpdatedBy"]
-                                <span class="ms-1">
-                                    @(currentSortColumn == "UpdatedBy" ? (sortAscending ? "↑" : "↓") : "↕")
-                                </span>
-                            </th>
-                            <th>@Loc["active"]</th>
-                            <th>@Loc["Action"]</th>
-                        </tr>
-                    </thead>
-                    <tbody>
+        <div class="table-responsive">
+            @if (types != null && types.Any())
+            {
+                <SortableTable TItem="TypeDtoWithName" Columns="@tableColumns" Items="@types"
+                    SortColumn="@currentSortColumn" SortAscending="@sortAscending" OnSortRequested="@HandleSort">
+                    <RowTemplate>
+            
                         @foreach (var item in types)
                         {
                             var checkboxId = $"type-active-{item.Type.Id}";
@@ -79,57 +44,50 @@
                                 <td>@item.Type.CreateDate.ToLocalTime().ToString("dd/MM/yyyy")</td>
                                 <td>@item.CreatedByName</td>
                                 <td>
-                                    @(item.Type.UpdateDate.HasValue ?
-                                                            item.Type.UpdateDate.Value.ToLocalTime().ToString("dd/MM/yyyy") : "")
-                    </td>
-                    <td>@item.UpdatedByName</td>
-                    <td>
-                        <div class="form-check form-switch custom">
-                            <InputCheckbox id="@checkboxId" @bind-Value="item.Type.IsActive" class="form-check-input"
-                                           disabled />
-                            <label for="@checkboxId" class="form-check-label">
-                                <span class="toggler-icon"></span>
-                            </label>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="action-btn-list">
-                            <button class="btn btn-action-24 btn-edit" @onclick="@(() => EditType(item.Type.Id))">
-                                <span class="icon">
-                                    <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Edit"></SVGCrud>
-                                </span>
-                            </button>
-                            <button class="btn btn-action-24 btn-delete" @onclick="@(() => DeleteType(item))">
-                                <span class="icon">
-                                    <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Delete"></SVGCrud>
-                                </span>
-                            </button>
-                        </div>
-                    </td>
-
+                                    @(item.Type.UpdateDate.HasValue? item.Type.UpdateDate.Value.ToLocalTime().ToString("dd/MM/yyyy") : "")
+                                </td>
+                                <td>@item.UpdatedByName</td>
+                                <td>
+                                    <div class="form-check form-switch custom">
+                                        <InputCheckbox id="@checkboxId" @bind-Value="item.Type.IsActive" class="form-check-input" disabled />
+                                        <label for="@checkboxId" class="form-check-label">
+                                            <span class="toggler-icon"></span>
+                                        </label>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="action-btn-list">
+                                        <button class="btn btn-action-24 btn-edit" @onclick="@(() => EditType(item.Type.Id))">
+                                            <span class="icon">
+                                                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Edit"></SVGCrud>
+                                            </span>
+                                        </button>
+                                        <button class="btn btn-action-24 btn-delete" @onclick="@(() => DeleteType(item))">
+                                            <span class="icon">
+                                                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Delete"></SVGCrud>
+                                            </span>
+                                        </button>
+                                    </div>
+                                 </td>
                             </tr>
-                                }
-                    </tbody>
-                </table>
-            </div>
-        }
-
-
+                        }
+                    </RowTemplate>
+                </SortableTable>
+            }   
+        </div>
         <Pagination CurrentPage="@currentPage" TotalPages="@totalPages" TotalCount="@totalCount" PageSize="@pageSize"
                     PageChanged="ChangePage" PageSizeChangedCallback="ChangePageSize" />
-
-
     </div>
 }
-else if (initialTypes != null && initialTypes.Any())
+else if (initialTypes != null && initialTypes.Any() && (types == null || !types.Any()))
 {
-    <NoSearchResults OnResetClick="ClearSearch" />
+    <NoSearchResults OnResetClick="ClearSearch"></NoSearchResults>
 }
 else
 {
     <NoDataAvailable Title="@Loc["TaskTypeConfiguration"]"
                      MessageTitle="@Loc["NoTaskTypeAvailable"]"
-                     MessageSubtitle="@Loc["Add a new task type to get started."]"
+                     MessageSubtitle="@Loc["AddANewTaskTypeToGetStarted"]"
                      ButtonText="@Loc["AddTaskType"]"
                      OnButtonClick="AddType" />
 }
@@ -144,7 +102,8 @@ else
     private int totalCount = 0;
     private int pageSize = 10;
     private string currentSortColumn = "CreateDate";
-    private bool sortAscending = true;
+    private bool? sortAscending = true;
+    private List<SortableColumn> tableColumns = new();
 
     private async Task ChangePage(int page)
     {
@@ -160,14 +119,24 @@ else
     }
     protected override async Task OnInitializedAsync()
     {
+        tableColumns = new()
+        {
+        new() { Field = "DisplayedName", DisplayName = Loc["name"] },
+        new() { Field = "CreateDate", DisplayName = Loc["CreationDate"] },
+        new() { Field = "CreatedBy", DisplayName = Loc["CreatedBy"] },
+        new() { Field = "UpdateDate", DisplayName = Loc["UpdateDate"] },
+        new() { Field = "UpdatedBy", DisplayName = Loc["UpdatedBy"] },
+        new() { Field = "IsActive", DisplayName = Loc["active"] },
+        new() { Field = "Action", DisplayName = Loc["Action"] ,IsSortable = false},
+        };
         await LoadTypes();
-
         initialTypes = types;
     }
     private async Task LoadTypes(bool isSearch = false, string searchTerm = null)
     {
-        var resp = await _typeSettingConsumer.GetTypes(currentPage, pageSize, currentSortColumn, sortAscending, isSearch ?
-        searchFields : null, isSearch ? searchTerm : null);
+        var resp = await _typeSettingConsumer.GetTypes(currentPage, pageSize, currentSortColumn, sortAscending.Value,
+            isSearch ? searchFields : null, isSearch ? searchTerm : null);
+
         if (!(resp?.Success ?? false) || resp.Data is null)
             return;
 
@@ -185,10 +154,10 @@ else
         PopupService.ShowNew(@<UpdateType Id="id" OnValidSubmit="OnInitializedAsync"></UpdateType>, headerText:
         @Loc["EditTaskType"]);
     }
-    private void DeleteType(TypeDtoWithName t)
+    private void DeleteType(TypeDtoWithName type)
     {
         PopupService.ShowConfirmation(@Loc["TypeSure"], @Loc["Confirm"], OnDeleteConfirmed, ConfirmationType.Danger);
-        selectedType = t;
+        selectedType = type;
         showConfirm = true;
     }
     private async Task OnDeleteConfirmed(bool confirmed)
@@ -199,6 +168,7 @@ else
             if (result.Success)
             {
                 types.Remove(selectedType);
+                initialTypes = initialTypes.Where(t => t.Type.Id != selectedType.Type.Id).ToList();
                 showConfirm = false;
                 StateHasChanged();
                 await ToastService.ShowToastAsync(Loc["Deleted successfully"], "success");
@@ -220,16 +190,31 @@ else
         await LoadTypes();
     }
 
-    public List<SearchField> searchFields = new List<SearchField>() {
-SearchField.NameEnglish,
-SearchField.NameArabic,
-SearchField.CreatedBy,
-SearchField.UpdatedBy,
-SearchField.CreateDate,
-SearchField.UpdateDate,
-SearchField.ActiveStatus
-};
+    private async Task HandleSort((string Column, bool? Ascending) sortInfo)
+    {
+        currentSortColumn = sortInfo.Column;
+        sortAscending = sortInfo.Ascending;
 
+
+        if (sortAscending == null)
+        {
+            // third click → reset to default sorting
+            currentSortColumn = "DisplayedName"; // or whatever your default column is
+            sortAscending = true;
+        }
+
+        await LoadTypes();
+    }
+
+    public List<SearchField> searchFields = new List<SearchField>() {
+        SearchField.NameEnglish,
+        SearchField.NameArabic,
+        SearchField.CreatedBy,
+        SearchField.UpdatedBy,
+        SearchField.CreateDate,
+        SearchField.UpdateDate,
+        SearchField.ActiveStatus
+    };
     public async Task Search(string searchTerm)
     {
         await LoadTypes(true, searchTerm);

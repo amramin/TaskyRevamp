@@ -435,10 +435,10 @@
   <data name="Action" xml:space="preserve">
     <value>الإجراء</value>
   </data>
-  <data name="No Task Sources Available" xml:space="preserve">
+  <data name="NoTaskSourcesAvailable" xml:space="preserve">
     <value>لا تتوفر مصادر مهام</value>
   </data>
-  <data name="Add a new task source to get started." xml:space="preserve">
+  <data name="AddANewTaskSourceToGetStarted" xml:space="preserve">
     <value>أضف مصدر مهمة جديدًا للبدء</value>
   </data>
   <data name="TaskTypeConfiguration" xml:space="preserve">
@@ -453,7 +453,7 @@
   <data name="NoTaskTypeAvailable" xml:space="preserve">
     <value>لا تتوفر أنواع مهام</value>
   </data>
-  <data name="Add a new task type to get started." xml:space="preserve">
+  <data name="AddANewTaskTypeToGetStarted" xml:space="preserve">
     <value>أضف نوع مهمة جديدًا للبدء</value>
   </data>
   <data name="Type" xml:space="preserve">
