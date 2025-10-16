@@ -63,7 +63,7 @@
 @code {
 
     public List<PeriodType> PeriodTypes = EnumExtensions.GetOrderedValues<PeriodType>();
-    public RecycleBinSettingDto RecycleBinSetting { get; set; } = new RecycleBinSettingDto
+    public RecycleBinSettingDto RecycleBinSetting { get; set; } = new RecycleBinSettingDto()
     {
         PeriodType = PeriodType.Days30
     };
@@ -72,15 +72,14 @@
     {
 
         var res = await _recycleBinSettingConsumer.GetRecycleBinSetting();
-        if (res.Success)
-        {
-            var setting = res.Data;
-            if (setting != null && setting.Id != Guid.Empty)
-            {
-                RecycleBinSetting = setting;
-            }
 
+        if (res.Success && res.Data != null && res.Data.Id != Guid.Empty)
+        {
+            RecycleBinSetting = new RecycleBinSettingDto();
+            RecycleBinSetting = res.Data;
         }
+
+        StateHasChanged();
     }
 
     private async void SaveSettings()
@@ -92,9 +91,9 @@
         }
     }
 
-    private void CancelSettings()
+    private async Task CancelSettings()
     {
-
+        //await OnInitializedAsync();
     }
 
     private void OnSettingChange(PeriodType newValue)
