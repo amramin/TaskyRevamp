@@ -1,66 +1,53 @@
 ﻿@using TaskyRevamp.Dto.Department
 @using TaskyRevamp.Client.Shared.Popups
-
 <ul class="tree-list">
     @foreach (var dept in Departments)
     {
         <li class="item">
             <div class="header">
                 <button type="button"
-                        class="action-btn @GetButtonClass(dept.IsExpanded, dept.Children.Count > 0)"
+                        class="btn action-btn @GetButtonClass(dept.IsExpanded, dept.Children.Count > 0)"
                         @onclick="() => ToggleChildren(dept)">
                     <span class="icon arrow">
                         <SVGCrud SVGType="SVGCrud.SVGTypeEnum.ChevronEnd"></SVGCrud>
                     </span>
-                    <div class="header">
-                        <button type="button"
-                                class="action-btn @GetButtonClass(dept.IsExpanded, dept.Children.Count > 0)"
-                                @onclick="() => ToggleChildren(dept)">
-                            <span class="icon arrow">
-                                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.ChevronEnd"></SVGCrud>
-                            </span>
-                            <span class="text">@dept.Name</span>
-                        </button>
-
-                        <DepartmentActions DepartmentId="@dept.Id"
-                                           ShowUsers="OnShowUsers"
-                                           Edit="OnEdit"
-                                           Delete="OnDelete" />
-                    </div>
-
+                    <span class="text">@dept.Name</span>
                 </button>
-                <div>
-                    <button class="btn btn-outline-light-primary btn-32" type="button"
-                            @onclick="() => HandleDepartmentSelection(dept.Id.ToString())">
-                        <span class="icon">
-                            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Pluse"></SVGCrud>
-                        </span> 
-                    </button>
-                </div>
+
+                <DepartmentActions DepartmentId="@dept.Id"
+                                   ShowUsers="OnShowUsers"
+                                   Edit="OnEdit"
+                                   Delete="OnDelete" />
+
+                <button class="btn btn-outline-light-primary btn-32"
+                        type="button"
+                        @onclick="() => HandleDepartmentSelection(dept.Id.ToString())">
+                    <span class="icon">
+                        <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Pluse"></SVGCrud>
+                    </span>
+                </button>
             </div>
 
-            @if (dept.Children?.Any() == true)
+            @if (dept.Children?.Any() == true && dept.IsExpanded)
             {
-                @if (dept.IsExpanded)
-                {
-                    <ul>
-                        @foreach (var child in dept.Children)
-                        {
-                            <li>
-                                <DepartmentTree Departments="new List<DepartmentDto> { child }"
-                                                OnAddDepartment="OnAddDepartment"
-                                                OnShowUsers="OnShowUsers"
-                                                OnEdit="OnEdit"
-                                                OnDelete="OnDelete" />
-
-                            </li>
-                        }
-                    </ul>
-                }
+                <ul>
+                    @foreach (var child in dept.Children)
+                    {
+                        <li>
+                            <DepartmentTree Departments="new List<DepartmentDto> { child }"
+                                            OnAddDepartment="OnAddDepartment"
+                                            OnShowUsers="OnShowUsers"
+                                            OnEdit="OnEdit"
+                                            OnDelete="OnDelete" />
+                        </li>
+                    }
+                </ul>
             }
         </li>
     }
 </ul>
+
+
 
 @code {
     [Parameter] public List<DepartmentDto> Departments { get; set; } = new();

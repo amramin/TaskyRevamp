@@ -49,7 +49,9 @@
 .fill-primary {
   fill: var(--primary-color);
 }
-
+ul {
+  list-style: none;
+}
 /* end Global */
 /* start .auth */
 .auth {
@@ -169,9 +171,109 @@
   }
 }
 /* end auth*/
+/* start treelist*/
+.tree-list {
+  padding-inline-start: 0;
 
+  .item {
+    margin-bottom: 1rem;
+    position: relative;
 
+    &:has(.btn-expanded) {
+      &::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        inset-inline-start: 1.75rem;
+        height: calc(100% - 12px);
+        width: 1px;
+        background-color: var(--light-300);
+        z-index: 0;
+      }
+    }
 
+    ul {
+      padding-inline-start: 1.5rem;
+
+      li {
+        position: relative;
+
+        &::after {
+          content: "";
+          position: absolute;
+          height: 1px;
+          width: 1rem;
+          inset-inline-start: 4px;
+          top: 1.25rem;
+          background-color: var(--light-300);
+          z-index: 0;
+        }
+      }
+    }
+  }
+
+  .header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+
+    .action-btn {
+      display: flex;
+      align-items: center;
+
+      flex-grow: 1;
+      justify-content: flex-start;
+      gap: 0.5rem;
+      transition: all 0.3s ease-in-out;
+      background-color: var(--bs-white);
+      z-index: 1;
+      .icon {
+        width: 2rem;
+        background-color: var(--bs-white);
+        height: 2rem;
+        border: 1px solid var(--light-300);
+        display: none;
+        border-radius: 50%;
+        justify-content: center;
+        align-items: center;
+        color: var(--dark-600);
+
+        svg {
+          width: 1.25rem;
+        }
+      }
+
+      &.btn-expanded {
+        transition: all 0.3s ease-in-out;
+
+        .icon {
+          display: flex;
+          transform: rotate(90deg);
+        }
+      }
+
+      &.btn-collapsed {
+        transition: all 0.3s ease-in-out;
+        border: 0;
+
+        .icon {
+          display: flex;
+        }
+      }
+    }
+
+    &:hover {
+      background-color: var(--light-200);
+      border-radius: var(--bs-border-radius);
+      transition: all ease-in-out 0.3s;
+
+      .action-btn {
+        background-color: var(--light-200);
+      }
+    }
+  }
+}
 
 * {
   ::-webkit-scrollbar {

@@ -8,53 +8,62 @@
 
 <EditForm EditContext="@editContext" OnSubmit="@OnSubmitHandler">
     <DataAnnotationsValidator />
+    <div class="offcanvas-body">
+        <div class="mb-3">
+            <label class="form-label">@Loc["NameEnglish"]
+                <span class="text-danger"> *</span>
 
-    <div class="mb-3">
-        <label class="form-label">@Loc["NameEnglish"]
-            <span class="text-danger"> *</span>
-
-        </label>
-        <InputText class="form-control" @bind-Value="department.NameEnglish" placeholder="@Loc["NameEnglish"]" />
-        <ValidationMessage class="small text-danger" For="@(() => department.NameEnglish)"></ValidationMessage>
-    </div>
-
-    <div class="mb-3">
-        <label class="form-label">@Loc["NameArabic"]
-            <span class="text-danger"> *</span>
-
-        </label>
-        <InputText class="form-control" @bind-Value="department.NameArabic" placeholder="@Loc["NameArabic"]" />
-        <ValidationMessage class="small text-danger" For="@(() => department.NameArabic)"></ValidationMessage>
-    </div>
-
-    @if (allDepartments != null && allDepartments.Count() > 0 && !isFrist)
-{    <label class="form-label">@Loc["SelectParent"]
-        <span class="text-danger"> *</span>
-    </label>
-<div class="filter-single">
-        <SearchableSingleDropdownOffline TInput=DepartmentDto
-        TOutput=Guid
-        TextSelector="(DepartmentDto x)=> x.Name"
-        OutputSelector="x => x.Id"
-        Datasource="allDepartments"
-        MinCharacterCount="1"
-        @bind-SelectedOption ="@department.ParentdepartmentId"
-        PlaceHolder="@($"--{Loc["SelectParent"]}--")" />
-
-        @if (ParentdepartmentRequired)
-        {
-            <div md="3">
-                <label class="small text-danger"> @Loc["Required"]</label>
-            </div>
-        }
+            </label>
+            <InputText class="form-control" @bind-Value="department.NameEnglish" placeholder="@Loc["NameEnglish"]" />
+            <ValidationMessage class="small text-danger" For="@(() => department.NameEnglish)"></ValidationMessage>
         </div>
 
-    }
-   
-    <div class="d-flex justify-content-end gap-2 mt-4">
-        <button type="button" class="btn btn-light" @onclick="OnCancelClick">@Loc["Cancel"]</button>
-        <button type="submit" class="btn btn-primary">@SubmitButtonText</button>
+        <div class="mb-3">
+            <label class="form-label">@Loc["NameArabic"]
+                <span class="text-danger"> *</span>
+
+            </label>
+            <InputText class="form-control" @bind-Value="department.NameArabic" placeholder="@Loc["NameArabic"]" />
+            <ValidationMessage class="small text-danger" For="@(() => department.NameArabic)"></ValidationMessage>
+        </div>
+
+        @if (allDepartments != null && allDepartments.Count() > 0 && !isFrist)
+        {
+            <label class="form-label">@Loc["SelectParent"]
+                <span class="text-danger"> *</span>
+            </label>
+            <div class="filter-single">
+                <SearchableSingleDropdownOffline TInput=DepartmentDto TOutput=Guid TextSelector="(DepartmentDto x) => x.Name"
+                    OutputSelector="x => x.Id" Datasource="allDepartments" MinCharacterCount="1"
+                    @bind-SelectedOption="@department.ParentdepartmentId" PlaceHolder="@($"--{Loc["SelectParent"]}--")" />
+
+                @if (ParentdepartmentRequired)
+                {
+                    <div>
+                        <label class="small text-danger"> @Loc["Required"]</label>
+                    </div>
+                }
+            </div>
+
+        }
+
     </div>
+    <div class="offcanvas-footer">
+        <div class="row g-2">
+            <div class="col-6">
+                <div class="d-grid">
+                    <button type="button" class="btn btn-lg btn-light" @onclick="OnCancelClick">@Loc["Cancel"]</button>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-lg btn-primary">@SubmitButtonText</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
 </EditForm>
 
 
@@ -64,7 +73,7 @@
     [Parameter] public EventCallback<EditContext> OnValidSubmit { get; set; }
     [Parameter] public EventCallback OnCancel { get; set; }
     [Parameter] public string SubmitButtonText { get; set; }
-    public List<DepartmentDto> allDepartments  = new  List<DepartmentDto> ();
+    public List<DepartmentDto> allDepartments = new List<DepartmentDto>();
     private EditContext editContext;
     private ValidationMessageStore messageStore;
     public async Task savedep(Guid id, Guid parnt)
@@ -84,7 +93,7 @@
         }
         var departs = await _departmentConsumer.GetDepartmentsForDDL();
         allDepartments = departs.Data.ToList();
-        if (department.Id !=Guid.Empty && department.ParentdepartmentId==Guid.Empty )
+        if (department.Id != Guid.Empty && department.ParentdepartmentId == Guid.Empty)
         {
             isFrist = true;
         }
