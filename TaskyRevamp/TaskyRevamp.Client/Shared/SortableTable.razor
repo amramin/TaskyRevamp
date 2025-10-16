@@ -1,8 +1,8 @@
 ﻿@using TaskyRevamp.Client.Pages
 @typeparam TItem
 
-<table class="table table-sm table-hover align-middle m-2">
-    <thead class="table-light small">
+<table class="table">
+    <thead>
         <tr>
             @foreach (var col in Columns)
             {
@@ -17,20 +17,28 @@
                             {
                                 if (SortAscending == true)
                                 {
-                                    @:↑
+                                    <span class="icon">
+                                        <SVGCrud SVGType="SVGCrud.SVGTypeEnum.SortChevronTop"></SVGCrud>
+                                    </span>
                                 }
                                 else if (SortAscending == false)
                                 {
-                                    @:↓
+                                    <span class="icon">
+                                        <SVGCrud SVGType="SVGCrud.SVGTypeEnum.SortChevronDown"></SVGCrud>
+                                    </span>
                                 }
                                 else
                                 {
-                                    @:↕
+                                    <span class="icon">
+                                        <SVGCrud SVGType="SVGCrud.SVGTypeEnum.SortChevronUpDown"></SVGCrud>
+                                    </span>
                                 }
                             }
                             else
                             {
-                                @:↕
+                                <span class="icon">
+                                    <SVGCrud SVGType="SVGCrud.SVGTypeEnum.SortChevronUpDown"></SVGCrud>
+                                </span>
                             }
                         </span>
                     }
@@ -40,7 +48,7 @@
         </tr>
     </thead>
 
-    <tbody class="small">
+    <tbody>
         @if (Items != null && Items.Any())
         {
             @RowTemplate
@@ -60,7 +68,7 @@
     [Parameter] public List<SortableColumn> Columns { get; set; } = new();
     [Parameter] public IEnumerable<TItem> Items { get; set; } = Enumerable.Empty<TItem>();
     [Parameter] public string SortColumn { get; set; } = string.Empty;
-    [Parameter] public bool? SortAscending { get; set; }   // ✅ nullable to support "no sort"
+    [Parameter] public bool? SortAscending { get; set; } // ✅ nullable to support "no sort"
     [Parameter] public EventCallback<(string Column, bool? Ascending)> OnSortRequested { get; set; }
     [Parameter] public RenderFragment RowTemplate { get; set; } = default!;
 

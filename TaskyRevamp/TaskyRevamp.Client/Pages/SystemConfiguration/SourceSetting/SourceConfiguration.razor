@@ -33,54 +33,58 @@
 
 
 
+        <div class="table-responsive">
+            @if (sources != null && sources.Any())
+            {
 
-        @if (sources != null && sources.Any())
-        {
-            <div class="table-responsive flex-grow-1">
-                <SortableTable TItem="SourceDtoWithName"
-                               Columns="@tableColumns"
-                               Items="@sources"
-                               SortColumn="@currentSortColumn"
-                               SortAscending="@sortAscending"
-                               OnSortRequested="HandleSort">
+                <SortableTable TItem="SourceDtoWithName" Columns="@tableColumns" Items="@sources"
+                    SortColumn="@currentSortColumn" SortAscending="@sortAscending" OnSortRequested="HandleSort">
 
                     <RowTemplate>
                         @foreach (var item in sources)
                         {
+                            var checkboxId = $"source-active-{item.Source.Id}";
                             <tr>
                                 <td>@item.Source.DisplayedName</td>
                                 <td>@item.Source.CreateDate.ToLocalTime().ToString("dd/MM/yyyy")</td>
                                 <td>@item.CreatedByName</td>
                                 <td>@(item.Source.UpdateDate?.ToLocalTime().ToString("dd/MM/yyyy"))</td>
                                 <td>@item.UpdatedByName</td>
-                                <td class="text-center">
-                                    <div class="form-check form-switch d-flex justify-content-center">
-                                        <InputCheckbox @bind-Value="item.Source.IsActive" class="form-check-input" disabled />
+                                <td>
+                                    <div class="form-check form-switch custom">
+                                        <InputCheckbox id="@checkboxId" @bind-Value="item.Source.IsActive" class="form-check-input"
+                                            disabled />
+                                        <label for="@checkboxId" class="form-check-label">
+                                            <span class="toggler-icon"></span>
+                                        </label>
                                     </div>
                                 </td>
-                                <td class="text-center">
-                                    <button class="btn btn-sm btn-success me-2" @onclick="@(() => EditSource(item.Source.Id))">
-                                        <span class="icon">
-                                            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Edit"></SVGCrud>
-                                        </span>
-                                    </button>
-                                    <button class="btn btn-sm btn-danger" @onclick="@(() => DeleteSource(item))">
-                                        <span class="icon">
-                                            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.RecycleBin"></SVGCrud>
-                                        </span>
-                                    </button>
+                                <td>
+                                    <div class="action-btn-list">
+                                        <button class="btn btn-action-24 btn-edit" @onclick="@(() => EditSource(item.Source.Id))">
+                                            <span class="icon">
+                                                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Edit"></SVGCrud>
+                                            </span>
+                                        </button>
+                                        <button class="btn btn-action-24 btn-delete" @onclick="@(() => DeleteSource(item))">
+                                            <span class="icon">
+                                                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Delete"></SVGCrud>
+                                            </span>
+                                        </button>
+                                    </div>
+
                                 </td>
                             </tr>
                         }
                     </RowTemplate>
                 </SortableTable>
 
-            </div>
-        }
 
+            }
+        </div>
 
         <Pagination CurrentPage="@currentPage" TotalPages="@totalPages" TotalCount="@totalCount" PageSize="@pageSize"
-                    PageChanged="ChangePage" PageSizeChangedCallback="ChangePageSize" />
+            PageChanged="ChangePage" PageSizeChangedCallback="ChangePageSize" />
     </div>
 
 }
@@ -145,22 +149,23 @@ else
     protected override async Task OnInitializedAsync()
     {
         tableColumns = new()
-        {
-            new() { Field = "DisplayedName", DisplayName = Loc["name"] },
-            new() { Field = "CreateDate", DisplayName = Loc["CreationDate"] },
-            new() { Field = "CreatedBy", DisplayName = Loc["CreatedBy"] },
-            new() { Field = "UpdateDate", DisplayName = Loc["UpdateDate"] },
-            new() { Field = "UpdatedBy", DisplayName = Loc["UpdatedBy"] },
-            new() { Field = "IsActive", DisplayName = Loc["active"] },
-            new() { Field = "Action", DisplayName = Loc["Action"] ,IsSortable = false},
-        };
+{
+new() { Field = "DisplayedName", DisplayName = Loc["name"] },
+new() { Field = "CreateDate", DisplayName = Loc["CreationDate"] },
+new() { Field = "CreatedBy", DisplayName = Loc["CreatedBy"] },
+new() { Field = "UpdateDate", DisplayName = Loc["UpdateDate"] },
+new() { Field = "UpdatedBy", DisplayName = Loc["UpdatedBy"] },
+new() { Field = "IsActive", DisplayName = Loc["active"] },
+new() { Field = "Action", DisplayName = Loc["Action"] ,IsSortable = false},
+};
 
         await LoadSources();
         initialSources = sources;
     }
     private async Task LoadSources(bool isSearch = false, string searchTerm = null)
     {
-        var resp = await _sourceSettingConsumer.GetSources(currentPage, pageSize, currentSortColumn, sortAscending.Value, isSearch ?
+        var resp = await _sourceSettingConsumer.GetSources(currentPage, pageSize, currentSortColumn, sortAscending.Value,
+        isSearch ?
         searchFields : null, isSearch ? searchTerm : null);
 
         if (!(resp?.Success ?? false) || resp.Data is null)
@@ -177,7 +182,8 @@ else
     }
     private void EditSource(Guid id)
     {
-        PopupService.ShowNew(@<UpdateSource Id="id" OnValidSubmit="OnInitializedAsync"></UpdateSource>, headerText: @Loc["EditTaskSource"]);
+        PopupService.ShowNew(@<UpdateSource Id="id" OnValidSubmit="OnInitializedAsync"></UpdateSource>, headerText:
+        @Loc["EditTaskSource"]);
     }
     private void DeleteSource(SourceDtoWithName s)
     {
