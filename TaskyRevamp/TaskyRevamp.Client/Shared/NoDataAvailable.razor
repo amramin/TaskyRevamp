@@ -1,11 +1,6 @@
 ﻿@using Microsoft.AspNetCore.Components
 @inject IStringLocalizer<SharedResources> Loc
 
-<div class="page-header">
-    <div class="title-block">
-        <h1 class="page-headline">@Title</h1>
-    </div>
-</div>
 <div class="page-body">
     <div class="card empty-page">
         <div class="card-body">
@@ -29,7 +24,6 @@
 </div>
 
 @code {
-    [Parameter] public string? Title { get; set; }
     [Parameter] public string? MessageTitle { get; set; }
     [Parameter] public string? MessageSubtitle { get; set; }
     [Parameter] public string? ButtonText { get; set; }

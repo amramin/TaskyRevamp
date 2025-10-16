@@ -12,33 +12,32 @@
 @inject PopupService PopupService
 
 
-@if (initialSources != null && initialSources.Any())
-{
-    <div class="page-header">
-        <div class="title-block">
-            <h1 class="page-headline">@Loc["SourceConfiguration"]</h1>
 
-        </div>
-        <div class="action-btn-list">
-            <Search SearchSubmit="Search" CssClass="form-control"></Search>
-            <button class="btn  btn-primary" @onclick="AddSource">
-                <span class="icon">
-                    <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Pluse"></SVGCrud>
-                </span>
-                @Loc["AddTaskSource"]
-            </button>
-        </div>
+<div class="page-header">
+    <div class="title-block">
+        <h1 class="page-headline">@Loc["SourceConfiguration"]</h1>
+
     </div>
+    <div class="action-btn-list">
+        <Search @ref="searchComponent" SearchSubmit="Search" CssClass="form-control"></Search>
+        <button class="btn  btn-primary" @onclick="AddSource">
+            <span class="icon">
+                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Pluse"></SVGCrud>
+            </span>
+            @Loc["AddTaskSource"]
+        </button>
+    </div>
+</div>
+
+@if (sources != null && sources.Any())
+{
     <div class="page-body">
-
-
-
         <div class="table-responsive">
             @if (sources != null && sources.Any())
             {
 
                 <SortableTable TItem="SourceDtoWithName" Columns="@tableColumns" Items="@sources"
-                    SortColumn="@currentSortColumn" SortAscending="@sortAscending" OnSortRequested="HandleSort">
+                               SortColumn="@currentSortColumn" SortAscending="@sortAscending" OnSortRequested="HandleSort">
 
                     <RowTemplate>
                         @foreach (var item in sources)
@@ -53,7 +52,7 @@
                                 <td>
                                     <div class="form-check form-switch custom">
                                         <InputCheckbox id="@checkboxId" @bind-Value="item.Source.IsActive" class="form-check-input"
-                                            disabled />
+                                                       disabled />
                                         <label for="@checkboxId" class="form-check-label">
                                             <span class="toggler-icon"></span>
                                         </label>
@@ -84,42 +83,21 @@
         </div>
 
         <Pagination CurrentPage="@currentPage" TotalPages="@totalPages" TotalCount="@totalCount" PageSize="@pageSize"
-            PageChanged="ChangePage" PageSizeChangedCallback="ChangePageSize" />
+                    PageChanged="ChangePage" PageSizeChangedCallback="ChangePageSize" />
     </div>
 
+}
+else if (initialSources != null && initialSources.Any())
+{
+    <NoSearchResults OnResetClick="ClearSearch"></NoSearchResults>
 }
 else
 {
-
-    <div class="page-header">
-        <div class="title-block">
-            <h1 class="page-headline">@Loc["SourceConfiguration"]</h1>
-        </div>
-    </div>
-    <div class="page-body">
-        <div class="card empty-page">
-            <div class="card-body">
-                <span class="vector">
-                    <SVGCrud SVGType="SVGCrud.SVGTypeEnum.EmptyPageVector"></SVGCrud>
-                </span>
-                <div class="content">
-                    <h5 class="headline-5">@Loc["No Task Sources Available"]</h5>
-                    <p class="small-medium-text">@Loc["Add a new task source to get started."]</p>
-                </div>
-                <div class="action-btn-list">
-                    <button class="btn btn-lg btn-primary" @onclick="AddSource">
-                        <span class="icon">
-                            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Pluse"></SVGCrud>
-                        </span>
-                        @Loc["AddTaskSource"]
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
+    <NoDataAvailable MessageTitle="@Loc["NoTaskSourcesAvailable"]"
+                     MessageSubtitle="@Loc["AddANewTaskSourceToGetStarted"]"
+                     ButtonText="@Loc["AddTaskSource"]"
+                     OnButtonClick="AddSource" />
 }
-@*<ConfirmationPopup ButtonText="Confirm" IsVisible="@showConfirm" OnConfirm="OnDeleteConfirmed"
-    Message="@confirmMessage" />*@
 
 @code {
     List<SourceDtoWithName> sources = new();
@@ -133,6 +111,7 @@ else
     private string currentSortColumn = "CreateDate";
     private bool? sortAscending = true;
     private List<SortableColumn> tableColumns = new();
+    private Search? searchComponent;
 
     private async Task ChangePage(int page)
     {
@@ -149,15 +128,15 @@ else
     protected override async Task OnInitializedAsync()
     {
         tableColumns = new()
-{
-new() { Field = "DisplayedName", DisplayName = Loc["name"] },
-new() { Field = "CreateDate", DisplayName = Loc["CreationDate"] },
-new() { Field = "CreatedBy", DisplayName = Loc["CreatedBy"] },
-new() { Field = "UpdateDate", DisplayName = Loc["UpdateDate"] },
-new() { Field = "UpdatedBy", DisplayName = Loc["UpdatedBy"] },
-new() { Field = "IsActive", DisplayName = Loc["active"] },
-new() { Field = "Action", DisplayName = Loc["Action"] ,IsSortable = false},
-};
+        {
+            new() { Field = "DisplayedName", DisplayName = Loc["name"] },
+            new() { Field = "CreateDate", DisplayName = Loc["CreationDate"] },
+            new() { Field = "CreatedBy", DisplayName = Loc["CreatedBy"] },
+            new() { Field = "UpdateDate", DisplayName = Loc["UpdateDate"] },
+            new() { Field = "UpdatedBy", DisplayName = Loc["UpdatedBy"] },
+            new() { Field = "IsActive", DisplayName = Loc["active"] },
+            new() { Field = "Action", DisplayName = Loc["Action"] ,IsSortable = false},
+        };
 
         await LoadSources();
         initialSources = sources;
@@ -165,8 +144,7 @@ new() { Field = "Action", DisplayName = Loc["Action"] ,IsSortable = false},
     private async Task LoadSources(bool isSearch = false, string searchTerm = null)
     {
         var resp = await _sourceSettingConsumer.GetSources(currentPage, pageSize, currentSortColumn, sortAscending.Value,
-        isSearch ?
-        searchFields : null, isSearch ? searchTerm : null);
+        isSearch ? searchFields : null, isSearch ? searchTerm : null);
 
         if (!(resp?.Success ?? false) || resp.Data is null)
             return;
@@ -185,10 +163,10 @@ new() { Field = "Action", DisplayName = Loc["Action"] ,IsSortable = false},
         PopupService.ShowNew(@<UpdateSource Id="id" OnValidSubmit="OnInitializedAsync"></UpdateSource>, headerText:
         @Loc["EditTaskSource"]);
     }
-    private void DeleteSource(SourceDtoWithName s)
+    private void DeleteSource(SourceDtoWithName source)
     {
         PopupService.ShowConfirmation(@Loc["SourceSure"], @Loc["Confirm"], OnDeleteConfirmed, type: ConfirmationType.Danger);
-        selectedSource = s;
+        selectedSource = source;
         showConfirm = true;
     }
     private async Task OnDeleteConfirmed(bool confirmed)
@@ -199,12 +177,14 @@ new() { Field = "Action", DisplayName = Loc["Action"] ,IsSortable = false},
             if (result.Success)
             {
                 sources.Remove(selectedSource);
+                initialSources = initialSources.Where(s => s.Source.Id != selectedSource.Source.Id).ToList(); // update initialsources
                 showConfirm = false;
                 StateHasChanged();
                 await ToastService.ShowToastAsync(Loc["Deleted successfully"], "success");
             }
         }
         selectedSource = null;
+
     }
     private async Task SortBy(string columnName)
     {
@@ -221,20 +201,25 @@ new() { Field = "Action", DisplayName = Loc["Action"] ,IsSortable = false},
     }
 
     public List<SearchField> searchFields = new List<SearchField>() {
-SearchField.NameEnglish,
-SearchField.NameArabic,
-SearchField.CreatedBy,
-SearchField.UpdatedBy,
-SearchField.CreateDate,
-SearchField.UpdateDate,
-SearchField.ActiveStatus
-};
+            SearchField.NameEnglish,
+            SearchField.NameArabic,
+            SearchField.CreatedBy,
+            SearchField.UpdatedBy,
+            SearchField.CreateDate,
+            SearchField.UpdateDate,
+            SearchField.ActiveStatus
+    };
 
     public async Task Search(string searchTerm)
     {
         await LoadSources(true, searchTerm);
     }
-
+    private async Task ClearSearch()
+    {
+        currentPage = 1;
+        searchComponent?.ClearSearchText();
+        await LoadSources(isSearch: false);
+    }
     private async Task HandleSort((string Column, bool? Ascending) sortInfo)
     {
         currentSortColumn = sortInfo.Column;

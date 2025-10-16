@@ -11,13 +11,13 @@
 @inject LoaderService LoaderService
 @inject IStringLocalizer<SharedResources> Loc
 
-<main class="main-wrapper">
+<main class="@SideMenuWrapperClass">
     <NavMenu />
     <section class="main-content">
         <header class="main-header sticky-top">
             <div class="main-header-body">
                 <div class="start">
-                    <button class="btn btn-action-40 btn-outline-light">
+                    <button class="btn btn-action-40 btn-outline-light" @onclick="ToggleSideMenu">
                         <span class="icon">
                             <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Menu"></SVGCrud>
                         </span>
@@ -136,7 +136,14 @@
     string HeaderName;
     RenderFragment Content { get; set; }
     bool IsShowDialog = false;
+ private bool IsSideMenuCollapsed = false;
+    private string SideMenuWrapperClass =>
+    IsSideMenuCollapsed ? "main-wrapper mainlayout-collapsed" : "main-wrapper";
 
+    private void ToggleSideMenu()
+    {
+        IsSideMenuCollapsed = !IsSideMenuCollapsed;
+    }
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         await CheckAuth(firstRender);

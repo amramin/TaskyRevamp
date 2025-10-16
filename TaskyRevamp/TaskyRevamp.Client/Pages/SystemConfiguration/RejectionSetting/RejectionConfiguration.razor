@@ -33,11 +33,14 @@
                                 <InputRadio id="@radioId" Value="@value" /> 
                                 <label for="@radioId">
                                     @value.GetDescription()
-                                    @if (RejectionSetting.PeriodType == RejectionPeriodType.Custom && value ==
-                                                                    RejectionPeriodType.Custom)
+                                    @if (RejectionSetting.PeriodType == RejectionPeriodType.Custom && value == RejectionPeriodType.Custom)
                                     {
-                                        <input placeholder="@Loc["EnterDaysNumber"]" type="number" min="0" class="form-control" @bind="RejectionSetting.CustomDays"
-                                               @oninput="OnCustomDaysChange" />
+                                        <input placeholder="@Loc["EnterDaysNumber"]" 
+                                                type="number" 
+                                                min="1" 
+                                                class="form-control" 
+                                                @bind="RejectionSetting.CustomDays"
+                                                @oninput="OnCustomDaysChange" />
                                     }
                                 </label>
                             </div>
@@ -52,7 +55,10 @@
                 <div class="col-xxl-6 col-xl-7 col-lg-8 col-md-10">
                     <div class="action-buttons">
                         <button class="btn btn-lg btn-light" @onclick="CancelSettings">@Loc["Cancel"]</button>
-                        <button class="btn btn-lg  btn-primary" @onclick="SaveSettings">@Loc["Save"]</button>
+                        <button class="btn btn-lg  btn-primary" @onclick="SaveSettings"
+                                disabled="@(RejectionSetting.PeriodType == RejectionPeriodType.Custom && (RejectionSetting.CustomDays is null || RejectionSetting.CustomDays <= 0))">
+                            @Loc["Save"]
+                        </button>
                     </div>
                 </div>
             </div>
@@ -106,21 +112,14 @@
 
     private void OnCustomDaysChange(ChangeEventArgs e)
     {
-        var input = e.Value?.ToString();
+        var input = e.Value?.ToString()?.Trim();
 
-        if (string.IsNullOrWhiteSpace(input))
+        if (string.IsNullOrEmpty(input) || !int.TryParse(input, out var number) || number <= 0)
         {
             RejectionSetting.CustomDays = null;
             return;
         }
 
-        if (int.TryParse(input, out var number))
-        {
-            RejectionSetting.CustomDays = number < 0 ? 0 : number;
-        }
-        else
-        {
-            RejectionSetting.CustomDays = 0;
-        }
+        RejectionSetting.CustomDays = number;
     }
 }
