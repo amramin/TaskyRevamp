@@ -48,8 +48,20 @@
 
 @if (departmentDtos == null || departmentDtos.Count == 0)
 {
+
+    <NoDataAvailable Title="@Loc["Departments"]"
+                     MessageTitle="@Loc["Nodepartmentavailable"]"
+                     MessageSubtitle="@Loc["Nodepartmentavailable"]"
+                     ButtonText="@Loc["AddDepartment"]"
+                     OnButtonClick="Add" />
     <h6 class="mb-3">@Loc["Nodepartmentavailable"]</h6>
 }
+
+else if (departmentDtos != null && departmentDtos.Any())
+{
+    <NoSearchResults OnResetClick="ClearSearch" />
+}
+
 else
 {
     <div class="page-body">
@@ -139,6 +151,11 @@ else
        // navigationManager.NavigateTo("/Add-Department"); 
         PopupService.ShowNew(@<AddDepartment OnValidSubmit="OnInitializedAsync"></AddDepartment>, headerText: @Loc["AddDepartment"]);
 
+    }
+    private async Task ClearSearch()
+    {
+        currentPage = 1;
+        await LoadSources(isSearch: false);
     }
     private void Edit(Guid id) 
     {
