@@ -12,8 +12,9 @@
 @inject IStringLocalizer<SharedResources> Loc
 @inject ToastService ToastService
 @inject PopupService PopupService
+
 <div class="table-responsive sticky-header-custom">
-       <div class="table-responsive flex-grow-1">
+      
         <SortableTable TItem="DepartmentDto"
                                Columns="@tableColumns"
                        Items="@Departments"
@@ -78,14 +79,16 @@
                 </tr>
             }
 
-                <Pagination CurrentPage="@currentPage" TotalPages="@totalPages" TotalCount="@totalCount" PageSize="@pageSize"
-                            PageChanged="ChangePage" PageSizeChangedCallback="ChangePageSize" />
+               
     
             </RowTemplate>
         </SortableTable>
-
-    </div>
+ 
+   
 </div>
+<Pagination CurrentPage="@currentPage" TotalPages="@totalPages" TotalCount="@totalCount" PageSize="@pageSize"
+                            PageChanged="ChangePage" PageSizeChangedCallback="ChangePageSize" />
+
 @code {
     [Parameter] public List<DepartmentDto> Departments { get; set; } = new();
     [Parameter] public EventCallback<Guid> OnEdit { get; set; }

@@ -1,0 +1,38 @@
+/* start rtl*/
+html[dir="rtl"] {
+  .arrow {
+    transform: rotate(180deg);
+  }
+
+  *:not(i):not(.fa):not(mat-icon) {
+    font-family: "Almarai", sans-serif;
+  }
+
+  .btn-change-lang {
+    span {
+      &.en {
+        background: transparent;
+        color: var(--dark-700);
+        opacity: 0.65;
+      }
+
+      &.ar {
+        opacity: 1;
+        background: var(--primary-color);
+        color: var(--bs-white);
+      }
+    }
+    .icon-text {
+      .ar-text {
+        display: none;
+      }
+      .en-text {
+        display: block;
+      }
+    }
+  }
+  input[type="number"] {
+    direction: rtl;
+  }
+}
+/* end rtl*/
