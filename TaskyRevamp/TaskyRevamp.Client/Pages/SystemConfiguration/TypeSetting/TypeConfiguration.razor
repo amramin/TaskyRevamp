@@ -11,31 +11,33 @@
 @inject PopupService PopupService
 
 
+
+<div class="page-header">
+    <div class="title-block">
+        <h1 class="page-headline">@Loc["TaskTypeConfiguration"]</h1>
+    </div>
+    <div class="action-btn-list">
+        <Search @ref="searchComponent" SearchSubmit="Search" CssClass="form-control ">
+        </Search>
+        <button class="btn btn-sm btn-primary" @onclick="AddType">
+            <span class="icon">
+                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Pluse"></SVGCrud>
+            </span>
+            @Loc["AddTaskType"]
+        </button>
+    </div>
+</div>
+
 @if (types != null && types.Any())
 {
-    <div class="page-header">
-        <div class="title-block">
-            <h1 class="page-headline">@Loc["TaskTypeConfiguration"]</h1>
-        </div>
-        <div class="action-btn-list">
-            <Search SearchSubmit="Search" CssClass="form-control ">
-            </Search>
-            <button class="btn btn-sm btn-primary" @onclick="AddType">
-                <span class="icon">
-                    <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Pluse"></SVGCrud>
-                </span>
-                @Loc["AddTaskType"]
-            </button>
-        </div>
-    </div>
     <div class="page-body">
         <div class="table-responsive">
             @if (types != null && types.Any())
             {
                 <SortableTable TItem="TypeDtoWithName" Columns="@tableColumns" Items="@types"
-                    SortColumn="@currentSortColumn" SortAscending="@sortAscending" OnSortRequested="@HandleSort">
+                               SortColumn="@currentSortColumn" SortAscending="@sortAscending" OnSortRequested="@HandleSort">
                     <RowTemplate>
-            
+
                         @foreach (var item in types)
                         {
                             var checkboxId = $"type-active-{item.Type.Id}";
@@ -68,12 +70,12 @@
                                             </span>
                                         </button>
                                     </div>
-                                 </td>
+                                </td>
                             </tr>
                         }
                     </RowTemplate>
                 </SortableTable>
-            }   
+            }
         </div>
         <Pagination CurrentPage="@currentPage" TotalPages="@totalPages" TotalCount="@totalCount" PageSize="@pageSize"
                     PageChanged="ChangePage" PageSizeChangedCallback="ChangePageSize" />
@@ -85,8 +87,7 @@ else if (initialTypes != null && initialTypes.Any() && (types == null || !types.
 }
 else
 {
-    <NoDataAvailable Title="@Loc["TaskTypeConfiguration"]"
-                     MessageTitle="@Loc["NoTaskTypeAvailable"]"
+    <NoDataAvailable MessageTitle="@Loc["NoTaskTypeAvailable"]"
                      MessageSubtitle="@Loc["AddANewTaskTypeToGetStarted"]"
                      ButtonText="@Loc["AddTaskType"]"
                      OnButtonClick="AddType" />
@@ -104,6 +105,7 @@ else
     private string currentSortColumn = "CreateDate";
     private bool? sortAscending = true;
     private List<SortableColumn> tableColumns = new();
+    private Search? searchComponent;
 
     private async Task ChangePage(int page)
     {
@@ -222,6 +224,7 @@ else
     private async Task ClearSearch()
     {
         currentPage = 1;
+        searchComponent?.ClearSearchText();
         await LoadTypes(isSearch: false);
     }
 

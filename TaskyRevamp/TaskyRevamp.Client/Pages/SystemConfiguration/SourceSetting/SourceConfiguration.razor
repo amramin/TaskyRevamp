@@ -12,33 +12,32 @@
 @inject PopupService PopupService
 
 
+
+<div class="page-header">
+    <div class="title-block">
+        <h1 class="page-headline">@Loc["SourceConfiguration"]</h1>
+
+    </div>
+    <div class="action-btn-list">
+        <Search @ref="searchComponent" SearchSubmit="Search" CssClass="form-control"></Search>
+        <button class="btn  btn-primary" @onclick="AddSource">
+            <span class="icon">
+                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Pluse"></SVGCrud>
+            </span>
+            @Loc["AddTaskSource"]
+        </button>
+    </div>
+</div>
+
 @if (sources != null && sources.Any())
 {
-    <div class="page-header">
-        <div class="title-block">
-            <h1 class="page-headline">@Loc["SourceConfiguration"]</h1>
-
-        </div>
-        <div class="action-btn-list">
-            <Search SearchSubmit="Search" CssClass="form-control"></Search>
-            <button class="btn  btn-primary" @onclick="AddSource">
-                <span class="icon">
-                    <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Pluse"></SVGCrud>
-                </span>
-                @Loc["AddTaskSource"]
-            </button>
-        </div>
-    </div>
     <div class="page-body">
-
-
-
         <div class="table-responsive">
             @if (sources != null && sources.Any())
             {
 
                 <SortableTable TItem="SourceDtoWithName" Columns="@tableColumns" Items="@sources"
-                    SortColumn="@currentSortColumn" SortAscending="@sortAscending" OnSortRequested="HandleSort">
+                               SortColumn="@currentSortColumn" SortAscending="@sortAscending" OnSortRequested="HandleSort">
 
                     <RowTemplate>
                         @foreach (var item in sources)
@@ -53,7 +52,7 @@
                                 <td>
                                     <div class="form-check form-switch custom">
                                         <InputCheckbox id="@checkboxId" @bind-Value="item.Source.IsActive" class="form-check-input"
-                                            disabled />
+                                                       disabled />
                                         <label for="@checkboxId" class="form-check-label">
                                             <span class="toggler-icon"></span>
                                         </label>
@@ -84,7 +83,7 @@
         </div>
 
         <Pagination CurrentPage="@currentPage" TotalPages="@totalPages" TotalCount="@totalCount" PageSize="@pageSize"
-            PageChanged="ChangePage" PageSizeChangedCallback="ChangePageSize" />
+                    PageChanged="ChangePage" PageSizeChangedCallback="ChangePageSize" />
     </div>
 
 }
@@ -94,8 +93,7 @@ else if (initialSources != null && initialSources.Any())
 }
 else
 {
-    <NoDataAvailable Title="@Loc["SourceConfiguration"]"
-                     MessageTitle="@Loc["NoTaskSourcesAvailable"]"
+    <NoDataAvailable MessageTitle="@Loc["NoTaskSourcesAvailable"]"
                      MessageSubtitle="@Loc["AddANewTaskSourceToGetStarted"]"
                      ButtonText="@Loc["AddTaskSource"]"
                      OnButtonClick="AddSource" />
@@ -113,6 +111,7 @@ else
     private string currentSortColumn = "CreateDate";
     private bool? sortAscending = true;
     private List<SortableColumn> tableColumns = new();
+    private Search? searchComponent;
 
     private async Task ChangePage(int page)
     {
@@ -178,14 +177,14 @@ else
             if (result.Success)
             {
                 sources.Remove(selectedSource);
-                initialSources = initialSources.Where(s => s.Source.Id != selectedSource.Source.Id).ToList(); // update initialsources 
+                initialSources = initialSources.Where(s => s.Source.Id != selectedSource.Source.Id).ToList(); // update initialsources
                 showConfirm = false;
                 StateHasChanged();
                 await ToastService.ShowToastAsync(Loc["Deleted successfully"], "success");
             }
         }
         selectedSource = null;
-        
+
     }
     private async Task SortBy(string columnName)
     {
@@ -218,6 +217,7 @@ else
     private async Task ClearSearch()
     {
         currentPage = 1;
+        searchComponent?.ClearSearchText();
         await LoadSources(isSearch: false);
     }
     private async Task HandleSort((string Column, bool? Ascending) sortInfo)
