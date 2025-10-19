@@ -1816,7 +1816,122 @@ html[dir=rtl] input[type=number] {
   margin-bottom: 0;
   text-align: center;
 }
+.card.card-hierarchy {
+  -webkit-box-flex: 1;
+      -ms-flex-positive: 1;
+          flex-grow: 1;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+.card.card-hierarchy > .card-body {
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  border-radius: var(--bs-border-radius);
+}
+.card.card-hierarchy > .card-body .hierarchy-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  position: relative;
+  gap: 1rem;
+}
+.card.card-hierarchy > .card-body .hierarchy-container .hierarchy-node {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  position: relative;
+}
+.card.card-hierarchy > .card-body .hierarchy-container .hierarchy-node .node-box-container .node-box {
+  border: 1px solid var(--light-300);
+  width: 200px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  padding: 1.5rem 0.25rem 1.5rem 0.5rem;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  border-radius: 1rem;
+  background-color: var(--light-300);
+}
+.card.card-hierarchy > .card-body .hierarchy-container .children {
+  border-top: 1px solid var(--light-300);
+  -webkit-margin-end: 1rem;
+          margin-inline-end: 1rem;
+  margin-top: 1.5rem;
+  position: relative;
+}
+.card.card-hierarchy > .card-body .hierarchy-container .children::after {
+  content: "";
+  position: absolute;
+  width: 1px;
+  height: 1.5rem;
+  background-color: var(--light-300);
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+          transform: translateX(-50%);
+  top: -1.5rem;
+}
+.card.card-hierarchy > .card-body .hierarchy-container .children .hierarchy-node {
+  margin-top: 1.5rem;
+}
+.card.card-hierarchy > .card-body .hierarchy-container .children .node-box-container .node-box {
+  background-color: var(--light-200);
+  position: relative;
+}
+.card.card-hierarchy > .card-body .hierarchy-container .children .node-box-container .node-box::after {
+  content: "";
+  position: absolute;
+  width: 1px;
+  height: 1.5rem;
+  background-color: var(--light-300);
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+          transform: translateX(-50%);
+  top: -1.5rem;
+}
+.card.card-hierarchy > .card-body > .hierarchy-container {
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  width: 100%;
+  overflow: auto;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+  -webkit-box-align: start;
+      -ms-flex-align: start;
+          align-items: flex-start;
+}
 
+/* Connecting each child up to the horizontal line */
 .dropdown-menu {
   z-index: 2000;
 }
@@ -2451,7 +2566,7 @@ ul {
   position: absolute;
   top: 0;
   inset-inline-start: 1.75rem;
-  height: calc(100% - 12px);
+  height: calc(100% - 1rem);
   width: 1px;
   background-color: var(--light-300);
   z-index: 0;
