@@ -16,8 +16,10 @@
 
                 <DepartmentActions DepartmentId="@dept.Id"
                                    ShowUsers="OnShowUsers"
+                                   OnAdd="OnAdd"
                                    Edit="OnEdit"
-                                   Delete="OnDelete" />
+                                   Delete="OnDelete"
+                                   />
 
                 <button class="btn btn-outline-light-primary btn-32"
                         type="button"
@@ -35,7 +37,7 @@
                     {
                         <li>
                             <DepartmentTree Departments="new List<DepartmentDto> { child }"
-                                            OnAddDepartment="OnAddDepartment"
+                                            OnAdd="OnAdd"
                                             OnShowUsers="OnShowUsers"
                                             OnEdit="OnEdit"
                                             OnDelete="OnDelete" />
@@ -55,7 +57,13 @@
     [Parameter] public EventCallback<Guid> OnShowUsers { get; set; }
     [Parameter] public EventCallback<Guid> OnEdit { get; set; }
     [Parameter] public EventCallback<Guid> OnDelete { get; set; }
+    [Parameter] public EventCallback<Guid> OnAdd { get; set; }
 
+    protected override async Task OnInitializedAsync()
+    {
+        var x = Departments;
+
+    }
 
     private void ToggleChildren(DepartmentDto dept)
     {

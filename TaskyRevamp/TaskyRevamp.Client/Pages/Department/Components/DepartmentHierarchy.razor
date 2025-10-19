@@ -9,7 +9,9 @@
                     <span>@dept.Name</span>
                     <DepartmentActions DepartmentId="@dept.Id"
                                        ShowUsers="OnShowUsers"
+                                       OnAdd="OnAdd"
                                        Edit="OnEdit"
+                                       
                                        Delete="OnDelete" />
                 </div>
             </div>
@@ -19,7 +21,9 @@
                 <div class="children">
                     <DepartmentHierarchy Departments="dept.Children"
                                          OnShowUsers="OnShowUsers"
+                                         OnAdd="OnAdd"
                                          OnEdit="OnEdit"
+                                         
                                          OnDelete="OnDelete" />
 
                 </div>
@@ -113,5 +117,12 @@
     [Parameter] public EventCallback<Guid> OnShowUsers { get; set; }
     [Parameter] public EventCallback<Guid> OnEdit { get; set; }
     [Parameter] public EventCallback<Guid> OnDelete { get; set; }
+    [Parameter] public EventCallback<Guid> OnAdd { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var x = Departments;
+
+    }
 
 }

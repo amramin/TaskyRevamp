@@ -49,12 +49,21 @@
                                 <SVGCrud SVGType="SVGCrud.SVGTypeEnum.EllipseVertical"></SVGCrud>
                             </button>
                             <ul class="dropdown-menu">
+                             
                                 <li>
                                     <button class="dropdown-item" @onclick="@(() => OnShowUsers.InvokeAsync(p.Id))">
                                         <span class="icon">
                                             <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Users"></SVGCrud>
                                         </span>
                                         @Loc["ShowUser"]
+                                    </button>
+                                </li>
+                                <li>
+                                    <button class="dropdown-item" @onclick="@(() => OnAdd.InvokeAsync(p.Id))">
+                                        <span class="icon">
+                                            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.AddColumn"></SVGCrud>
+                                        </span>
+                                        @Loc["AddDepartment"]
                                     </button>
                                 </li>
                                 <li>
@@ -94,6 +103,8 @@
     [Parameter] public EventCallback<Guid> OnEdit { get; set; }
     [Parameter] public EventCallback<Guid> OnDelete { get; set; }
     [Parameter] public EventCallback<Guid> OnShowUsers { get; set; }
+    [Parameter] public EventCallback<Guid> OnAdd { get; set; }
+
     private int currentPage = 1;
     private int totalPages = 1;
     private int totalCount = 0;
