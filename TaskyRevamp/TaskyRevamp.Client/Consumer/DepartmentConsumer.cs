@@ -40,7 +40,22 @@ namespace TaskyRevamp.Client.Consumer
 			return res;
 		}
 
-		public async Task<CommonApiResponse<DepartmentDto>> GetDepartmentById(Guid id)
+        
+
+              public async Task<CommonApiResponse<List<DepartmentDto>>> GetDepartmentsNoPagnation( List<SearchFieldDepartment> searchFields = null, string searchText = null)
+        {
+
+            var queryString = _taskyService.PrepareNoPaginatedSearchQueryString(searchFields, searchText);
+
+            var url = $"api/Department/GetDepartmentsNoPagnation{queryString}";
+
+
+            var res = await _taskyService.GetFromJsonAsync<CommonApiResponse<List<DepartmentDto>>>(url);
+
+            return res;
+        }
+
+        public async Task<CommonApiResponse<DepartmentDto>> GetDepartmentById(Guid id)
 		{
 			var url = $"api/Department/GetDepartmentById/{id}";
 			var res = await _taskyService.GetFromJsonAsync<CommonApiResponse<DepartmentDto>>(url);

@@ -10,6 +10,7 @@
 @inject IStringLocalizer<SharedResources> Loc
 @inject ToastService ToastService
 
+@inject PopupService PopupService
 
 
 
@@ -123,7 +124,7 @@
     private DepartmentDto? selectedDepartment;
     private bool showConfirm;
     private bool isOrdered = false;
-  
+
     List<DepartmentDto>? originalDeptes;
 
     protected async override Task OnInitializedAsync()
@@ -134,11 +135,15 @@
         await InvokeAsync(StateHasChanged);
     }
 
-    private void Add() => navigationManager.NavigateTo($"/LinkDepartmentUser/{Id}");
+    private void Add() { 
+    
+        PopupService.ShowNew(@<LinkUserDepartment Id="Id"></LinkUserDepartment>);
+
+    }
     private void Edit(Guid id)
     {
 
-        navigationManager.NavigateTo($"/Update-Department/{id}");
+       // navigationManager.NavigateTo($"/Update-Department/{id}");
     }
     private void ShowDeleteConfirm(UserDto p)
     {

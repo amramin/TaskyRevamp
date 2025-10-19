@@ -112,28 +112,26 @@ else
     private int currentPage = 1;
     private int totalPages = 1;
     private int totalCount = 0;
-    private int pageSize = 100;
+    private int pageSize = 10;
     private string currentSortColumn = "CreateDate";
     private bool? sortAscending = true;
     private DepartmentViewType currentView = DepartmentViewType.Grid;
     private List<SortableColumn> tableColumns = new();
-    List<SourceDtoWithName> sources = new();
-    List<SourceDtoWithName> initialSources = new();
-    private List<DepartmentDto> RootDepartments => departmentDtos
-    .Where(d => d.ParentdepartmentId == Guid.Empty)
-    .ToList();
-    List<DepartmentDto> aa = new List<DepartmentDto>();
+
+    private List<DepartmentDto> RootDepartments =new ();
+    List<DepartmentDto> allDepartments = new List<DepartmentDto>();
     private async Task ChangePageSize(int newSize)
     {
         pageSize = newSize;
         currentPage = 1;
         await LoadSources();
+       // await BuildHierarchy();
     }
     protected override async Task OnInitializedAsync()
     {
-        var xx = await _departmentConsumer.GetDepartmentsForDDL();
+        var data = await _departmentConsumer.GetDepartmentsNoPagnation();
 
-        aa = xx.Data.ToList();
+        allDepartments = data.Data.ToList();
 
         tableColumns = new()
 {
@@ -149,7 +147,6 @@ new() { Field = "Action", DisplayName = Loc["Action"] ,IsSortable = false},
 };
 
         await LoadSources();
-        initialSources = sources;
 
 
 
@@ -181,8 +178,8 @@ new() { Field = "Action", DisplayName = Loc["Action"] ,IsSortable = false},
     }
     private void ShowUser(Guid id)
     {
-        // navigationManager.NavigateTo($"/UsersDepartment/{id}");
-        PopupService.ShowNew(@<UsersDepartment Id="id"></UsersDepartment>, headerText: @Loc["UsersDepartment"]);
+         navigationManager.NavigateTo($"/UsersDepartment/{id}");
+      //  PopupService.ShowNew(@<UsersDepartment Id="id"></UsersDepartment>, headerText: @Loc["UsersDepartment"]);
 
     }
     private void AddDept(Guid id)
@@ -239,23 +236,34 @@ SearchFieldDepartment.ParentNameEN
     }
 
 
-    private async Task BuildHierarchy()
-    {
+    private async Task BuildHierarchy(bool isSearch = false, string searchTerm=null)
+  {
+      //
+       
 
-        var dict = departmentDtos.ToDictionary(x => x.Id);
-        foreach (var dept in departmentDtos)
+        var data = await _departmentConsumer.GetDepartmentsNoPagnation(isSearch ?
+         searchFields : null, isSearch ? searchTerm : null);
+
+        allDepartments = data.Data.ToList();
+
+      //
+        var dict = allDepartments.ToDictionary(x => x.Id);
+        foreach (var dept in allDepartments)
             dept.Children = new List<DepartmentDto>();
 
-        foreach (var dept in departmentDtos)
+        foreach (var dept in allDepartments)
         {
             if (dept.ParentdepartmentId != Guid.Empty && dict.ContainsKey(dept.ParentdepartmentId))
                 dict[dept.ParentdepartmentId].Children.Add(dept);
         }
 
-        rootDepartments = departmentDtos
+        rootDepartments = allDepartments
         .Where(d => d.ParentdepartmentId == Guid.Empty ||
-        !departmentDtos.Any(x => x.Id == d.ParentdepartmentId))
+        !allDepartments.Any(x => x.Id == d.ParentdepartmentId))
         .ToList();
+        RootDepartments = allDepartments
+   .Where(d => d.ParentdepartmentId == Guid.Empty)
+   .ToList();
     }
 
     private void HandleAddDepartment(string parentId)
@@ -265,7 +273,7 @@ SearchFieldDepartment.ParentNameEN
     public async Task Search(string searchTerm)
     {
         await LoadSources(true, searchTerm);
-        await BuildHierarchy();
+        await BuildHierarchy(true, searchTerm);
     }
     private async Task LoadSources(bool isSearch = false, string searchTerm = null)
     {
