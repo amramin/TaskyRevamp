@@ -1,6 +1,6 @@
 # =========================================
-# Azure DevOps pipeline for TaskyRevamp API
-# Builds with .NET 9 SDK and deploys to IIS
+# Azure DevOps pipeline for TaskyRevamp
+# Builds with .NET 9 SDK and deploys API + UI to IIS
 # =========================================
 
 trigger:
@@ -11,7 +11,8 @@ pr: none
 variables:
   buildConfiguration: 'Release'
   solution: 'TaskyRevamp.sln'
-  project_api: 'TaskyRevamp.WebAPI\TaskyRevamp.WebAPI.csproj'
+  project_api: 'TaskyRevamp\TaskyRevamp.WebAPI\TaskyRevamp.WebAPI.csproj'
+  project_ui:  'TaskyRevamp\TaskyRevamp.csproj'
 
 stages:
   # ================== CI: Build & Publish ==================
@@ -31,13 +32,6 @@ stages:
               packageType: 'sdk'
               version: '9.x'
 
-          - script: |
-              echo Repo root: $(Build.SourcesDirectory)
-              dir /b $(Build.SourcesDirectory)
-              dir /b /s $(Build.SourcesDirectory)\*.sln
-              dir /b /s $(Build.SourcesDirectory)\*.csproj
-            displayName: List .sln and .csproj files
-
           - script: dotnet restore "$(solution)"
             displayName: dotnet restore
             workingDirectory: $(Build.SourcesDirectory)
@@ -45,9 +39,14 @@ stages:
           - script: dotnet build "$(solution)" -c $(buildConfiguration) --no-restore
             displayName: dotnet build
             workingDirectory: $(Build.SourcesDirectory)
-
+          
+          # Publish API and UI to separate subfolders in the artifact
           - script: dotnet publish "$(project_api)" -c $(buildConfiguration) -o "$(Build.ArtifactStagingDirectory)\publish\api"
             displayName: dotnet publish (API)
+            workingDirectory: $(Build.SourcesDirectory)
+
+          - script: dotnet publish "$(project_ui)" -c $(buildConfiguration) -o "$(Build.ArtifactStagingDirectory)\publish\ui"
+            displayName: dotnet publish (UI)
             workingDirectory: $(Build.SourcesDirectory)
 
           - task: PublishBuildArtifacts@1
@@ -62,13 +61,14 @@ stages:
     displayName: Deploy to IIS
     dependsOn: Build
     jobs:
-      - deployment: IIS
+      # ---------- Deploy API ----------
+      - deployment: Deploy_API
         displayName: Deploy API on IIS Server
-        environment: 'prod'                 # Ensure an Environment named 'prod' exists
+        environment: 'prod'                 # ensure Environment 'prod' exists
         pool:
           name: 'SelfHosted-Windows-IIS'    # your agent POOL
           # demands:
-          # - Agent.Name -equals IIS-01     # (optional) pin to that agent
+          # - Agent.Name -equals IIS-01
         strategy:
           runOnce:
             deploy:
@@ -92,13 +92,12 @@ stages:
                     Set-Content -Path $offline -Value 'Updating...'
                     
                     Write-Host "Mirroring files to $sitePath ..."
-                    # Exclude app_offline.htm so it stays until we explicitly remove it:
                     robocopy $src $sitePath /MIR /XF app_offline.htm /NFL /NDL /NP /R:3 /W:3
                     $rc = $LASTEXITCODE
                     if ($rc -ge 8) { throw "Robocopy failed with code $rc" }
-                    $global:LASTEXITCODE = 0  # prevent non-zero bubbling from robocopy
+                    $global:LASTEXITCODE = 0
                     
-                    # Try to recycle the app pool (WebAdministration -> appcmd fallback)
+                    # Recycle app pool (WebAdministration -> appcmd fallback)
                     $recycled = $false
                     try {
                       Import-Module WebAdministration -ErrorAction Stop
@@ -136,6 +135,82 @@ stages:
                       Write-Warning "App pool recycle could not be verified. The app should still restart due to app_offline removal."
                     }
                     
-                    # Force success exit to avoid residual non-zero codes
                     exit 0
-                  displayName: Copy files to IIS & recycle app pool
+                  displayName: Copy API files & recycle app pool
+      
+      # ---------- Deploy UI ----------
+      - deployment: Deploy_UI
+        displayName: Deploy UI on IIS Server
+        environment: 'prod'
+        pool:
+          name: 'SelfHosted-Windows-IIS'
+          # demands:
+          # - Agent.Name -equals IIS-01
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - download: current
+                  artifact: drop
+
+                - powershell: |
+                    $ErrorActionPreference = 'Stop'
+                    
+                    $src      = "$(Pipeline.Workspace)\drop\ui"
+                    $siteRoot = "C:\inetpub\wwwroot\TaskRevampPipelines\UI"
+                    $sitePath = Join-Path $siteRoot "current"
+                    $appPool  = "TaskyRevampPipelineUI"
+                    
+                    if (-not (Test-Path $src))      { throw "Publish folder not found: $src" }
+                    if (-not (Test-Path $sitePath)) { throw "IIS site path not found: $sitePath" }
+                    
+                    Write-Host "Putting UI offline..."
+                    $offline = Join-Path $sitePath 'app_offline.htm'
+                    Set-Content -Path $offline -Value 'Updating...'
+                    
+                    Write-Host "Mirroring UI files to $sitePath ..."
+                    robocopy $src $sitePath /MIR /XF app_offline.htm /NFL /NDL /NP /R:3 /W:3
+                    $rc = $LASTEXITCODE
+                    if ($rc -ge 8) { throw "Robocopy failed with code $rc" }
+                    $global:LASTEXITCODE = 0
+                    
+                    # Recycle UI app pool
+                    $recycled = $false
+                    try {
+                      Import-Module WebAdministration -ErrorAction Stop
+                      if (Test-Path "IIS:\AppPools\$appPool") {
+                        Write-Host "Recycling UI app pool via WebAdministration: $appPool"
+                        Restart-WebAppPool -Name $appPool
+                        $recycled = $true
+                      } else {
+                        Write-Warning "AppPool not found at IIS:\AppPools\$appPool"
+                      }
+                    } catch {
+                      Write-Warning "WebAdministration recycle failed: $($_.Exception.Message)"
+                    }
+                    
+                    if (-not $recycled) {
+                      try {
+                        $appcmd = Join-Path $env:WINDIR "System32\inetsrv\appcmd.exe"
+                        if (Test-Path $appcmd) {
+                          Write-Host "Recycling UI app pool via appcmd: $appPool"
+                          & $appcmd recycle apppool /apppool.name:$appPool
+                          if ($LASTEXITCODE -eq 0) { $recycled = $true }
+                          $global:LASTEXITCODE = 0
+                        } else {
+                          Write-Warning "appcmd.exe not found."
+                        }
+                      } catch {
+                        Write-Warning "appcmd recycle failed: $($_.Exception.Message)"
+                      }
+                    }
+                    
+                    Write-Host "Bringing UI online..."
+                    Remove-Item $offline -Force -ErrorAction SilentlyContinue
+                    
+                    if (-not $recycled) {
+                      Write-Warning "UI app pool recycle could not be verified. The app should still restart due to app_offline removal."
+                    }
+                    
+                    exit 0
+                  displayName: Copy UI files & recycle app pool
