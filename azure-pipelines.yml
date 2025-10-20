@@ -1,0 +1,89 @@
+trigger:
+  branches:
+    include: [ main ]
+pr: none
+
+variables:
+  buildConfiguration: 'Release'
+  solution: 'TaskyRevamp/TaskyRevamp.sln'
+  project_api: 'TaskyRevamp/TaskyRevamp.WebAPI/TaskyRevamp.WebAPI.csproj'
+
+stages:
+  # ================== CI: Build & Publish ==================
+  - stage: Build
+    displayName: Build & Publish
+    jobs:
+      - job: Build
+        displayName: Build on hosted agent
+        pool:
+          vmImage: 'windows-latest'
+        steps:
+          - task: UseDotNet@2
+            displayName: Use .NET SDK
+            inputs:
+              packageType: 'sdk'
+              version: '8.x'
+
+          - task: NuGetCommand@2
+            displayName: NuGet restore
+            inputs:
+              restoreSolution: '$(solution)'
+
+          - script: dotnet build "$(solution)" -c $(buildConfiguration) --no-restore
+            displayName: dotnet build
+
+          - script: dotnet publish "$(project_api)" -c $(buildConfiguration) -o "$(Build.ArtifactStagingDirectory)\publish\api"
+            displayName: dotnet publish (API)
+
+          - task: PublishBuildArtifacts@1
+            displayName: Publish artifact
+            inputs:
+              PathtoPublish: '$(Build.ArtifactStagingDirectory)\publish'
+              ArtifactName: 'drop'
+              publishLocation: 'Container'
+  
+  # ================== CD: Deploy to IIS (self-hosted) ==================
+  - stage: Deploy
+    displayName: Deploy to IIS
+    dependsOn: Build
+    jobs:
+      - deployment: IIS
+        displayName: Deploy API on IIS Server
+        environment: 'prod'   # optional; you can remove or keep for approvals/history
+        pool:
+          name: 'SelfHosted-Windows-IIS'     # <-- your agent POOL name
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - download: current
+                  artifact: drop
+
+                - powershell: |
+                    $ErrorActionPreference = 'Stop'
+                    $src      = "$(Pipeline.Workspace)\drop\api"
+                    $siteRoot = "C:\inetpub\wwwroot\TaskRevampPipelines\API"
+                    $sitePath = Join-Path $siteRoot "current"
+                    $appPool  = "TaskyRevampPipelineAPI"
+                    
+                    if (-not (Test-Path $sitePath)) { throw "Site path not found: $sitePath" }
+                    
+                    # Place app_offline so files aren't locked
+                    Set-Content -Path (Join-Path $sitePath 'app_offline.htm') -Value 'Updating...'
+                    
+                    # Mirror published files into 'current'
+                    # (We deploy to \current, so logs/uploads are untouched.)
+                    robocopy $src $sitePath /MIR /NFL /NDL /NP /R:3 /W:3
+                    if ($LASTEXITCODE -ge 8) { throw "Robocopy failed with code $LASTEXITCODE" }
+                    
+                    # Recycle the app pool
+                    Import-Module WebAdministration
+                    if (Test-Path IIS:\AppPools\$appPool) {
+                      Restart-WebAppPool -Name $appPool
+                    } else {
+                      Write-Warning "AppPool not found: $appPool"
+                    }
+                    
+                    # Bring app back online
+                    Remove-Item (Join-Path $sitePath 'app_offline.htm') -Force -ErrorAction SilentlyContinue
+                  displayName: Copy files to IIS & recycle app pool
