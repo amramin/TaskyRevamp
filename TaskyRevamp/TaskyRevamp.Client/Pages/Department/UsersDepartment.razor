@@ -5,7 +5,7 @@
 @using TaskyRevamp.Client.Shared.Popups
 @using TaskyRevamp.Dto.Account
 @using TaskyRevamp.Dto.Department
-@inject UserConsumer  _userConsumer
+@inject UserConsumer _userConsumer
 @inject NavigationManager navigationManager
 @inject IStringLocalizer<SharedResources> Loc
 @inject ToastService ToastService
@@ -15,9 +15,16 @@
 
 
 <div class="page-header">
-    <h1 class="page-headline">@selectedDepartment?.Name</h1>
+    <div class="title-block">
+        <button class="btn btn-action-24">
+            <span class="icon">
+                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.BackArrow"></SVGCrud>
+            </span>
+        </button>
+        <h1 class="page-headline">@selectedDepartment?.Name</h1>
+    </div>
     <div class="action-btn-list">
-       
+
         <button class="btn btn-primary" @onclick="Add">
             <span class="icon">
                 <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Pluse"></SVGCrud>
@@ -35,84 +42,59 @@
 
     <div class="table-responsive  sticky-header-custom">
         <table class="table custom-table">
-                <thead>
-                    <tr>
-                        <th>@Loc["UserName"]</th>
-                            <th>@Loc["Email"]</th>
+            <thead>
+                <tr>
+                    <th>@Loc["UserName"]</th>
+                    <th>@Loc["Email"]</th>
                     <th>@Loc["Privilage"]</th>
-                        <th></th>
-                
-                    </tr>
-                </thead>
-                <tbody>
-                        @if (selectedDepartment != null )
-                    {
-                    @foreach (var usr in selectedDepartment.AssignedUsers)
-    {
+                    <th>@Loc["Action"]</th>
 
-                                <tr>
+                </tr>
+            </thead>
+            <tbody>
+                @if (selectedDepartment != null)
+                {
+                    @foreach (var usr in selectedDepartment.AssignedUsers)
+                    {
+
+                        <tr>
                             <td>@usr.UserName</td>
                             <td>@usr.Email</td>
                             <td></td>
-                         
-                                
-
-
-               <td class="sticky-end-action">
-                            <div class="dropdown actions">
-                                <button class="btn btn-action-24" type="button" data-bs-toggle="dropdown"
-                                    aria-expanded="false">
-                                    <SVGCrud SVGType="SVGCrud.SVGTypeEnum.EllipseVertical"></SVGCrud>
-                                </button>
-                                <ul class="dropdown-menu">
-                                   
-
-
-                                    
-                                    <li>
+                            <td class="sticky-end-action">
+                                <div class="dropdown actions">
+                                    <button class="btn btn-action-24" type="button" data-bs-toggle="dropdown"
+                                        aria-expanded="false">
+                                        <SVGCrud SVGType="SVGCrud.SVGTypeEnum.EllipseVertical"></SVGCrud>
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li>
                                             <button class="dropdown-item" @onclick="@(() => Edit(usr.Id))">
-                                            <span class="icon">
-                                                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Edit"></SVGCrud>
-                                            </span>
-                                            @Loc["Edit"]
-                                        </button>
-                                    </li>
-                                    <li>
+                                                <span class="icon">
+                                                    <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Edit"></SVGCrud>
+                                                </span>
+                                                @Loc["Edit"]
+                                            </button>
+                                        </li>
+                                        <li>
                                             <button class="dropdown-item" @onclick="@(() => ShowDeleteConfirm(usr))">
-                                            <span class="icon">
+                                                <span class="icon">
                                                     <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Delete"></SVGCrud>
-                                            </span>
-                                            @Loc["Delete"]
-                                        </button>
-                                    </li>
-                                </ul>
-                            </div>
-
-
-                        </td>
-
-        </tr>
-    }
-
-    }
-  
-</tbody>
-    </table>
-
-    
-
-  
-                 
-               
-    
-    <ConfirmationPopup ButtonText="@Loc["Delete"]"
-                       IsVisible="@showConfirm"
-                       OnConfirm="OnDeleteConfirmed"
-                       Message="@confirmMessage" />
-
-
-
-</div>
+                                                </span>
+                                                @Loc["Delete"]
+                                            </button>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+        <ConfirmationPopup ButtonText="@Loc["Delete"]" IsVisible="@showConfirm" OnConfirm="OnDeleteConfirmed"
+            Message="@confirmMessage" />
+    </div>
 </div>
 
 @code {
@@ -135,20 +117,21 @@
         await InvokeAsync(StateHasChanged);
     }
 
-    private void Add() { 
-    
+    private void Add()
+    {
+
         PopupService.ShowNew(@<LinkUserDepartment Id="Id"></LinkUserDepartment>);
 
     }
     private void Edit(Guid id)
     {
 
-       // navigationManager.NavigateTo($"/Update-Department/{id}");
+        // navigationManager.NavigateTo($"/Update-Department/{id}");
     }
     private void ShowDeleteConfirm(UserDto p)
     {
         confirmMessage = @Loc["SureDeleteDepartment"];
-      //  selectedDepartment = p;
+        // selectedDepartment = p;
         showConfirm = true;
     }
     private async Task OnDeleteConfirmed(bool confirmed)
@@ -158,16 +141,16 @@
             // var result = await _departmentConsumer.DeleteDepartment(selectedDepartment.Id);
             // if (result.Success)
             // {
-            //     departmentDtos.Remove(selectedDepartment);
-            //     showConfirm = false;
-            //     StateHasChanged();
-            //     await ToastService.ShowToastAsync(Loc["Deleted successfully"], "success");
+            // departmentDtos.Remove(selectedDepartment);
+            // showConfirm = false;
+            // StateHasChanged();
+            // await ToastService.ShowToastAsync(Loc["Deleted successfully"], "success");
             // }
-        } 
+        }
         selectedDepartment = null;
         StateHasChanged();
     }
-  
+
 
     private void Cancel(MouseEventArgs args)
     {
@@ -176,7 +159,7 @@
             Id = p.Id,
             NameEnglish = p.NameEnglish,
             NameArabic = p.NameArabic,
-            
+
         }).ToList();
         isOrdered = false;
         StateHasChanged();
@@ -188,8 +171,8 @@
             Id = p.Id,
             NameEnglish = p.NameEnglish,
             NameArabic = p.NameArabic,
-           
+
         }).ToList();
     }
-   
+
 }

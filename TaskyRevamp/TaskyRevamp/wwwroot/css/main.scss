@@ -209,6 +209,12 @@ ul {
           z-index: 0;
         }
       }
+      &.dropdown-menu{
+        padding-inline-start: 0;
+        li{&::after{
+          display: none;
+        }}
+      }
     }
   }
 
