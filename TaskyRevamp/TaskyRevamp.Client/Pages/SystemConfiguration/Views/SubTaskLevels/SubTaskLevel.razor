@@ -21,7 +21,7 @@
            @Loc["Maximum_Subtask_Level"]
            <span class="text-danger">*</span>
         </label>
-        <input type="number" min="0" class="form-control" @bind="ViewSetting.SubTaskLevels" @oninput="OnCustomDaysChange" />
+        <input type="number" min="1" class="form-control" @bind="ViewSetting.SubTaskLevels" @oninput="OnCustomDaysChange" />
     </div>
 
     @if (ViewSetting.SubTaskLevels > 3)
@@ -43,7 +43,7 @@
             <div class="col-xxl-7 col-xl-8 col-lg-9 col-md-11">
                 <div class="action-buttons">
                     <button class="btn btn-lg btn-light" @onclick="Cancel">@Loc["Cancel"]</button>
-                    <button class="btn btn-lg  btn-primary" @onclick="Save"  disabled="@(ViewSetting.SubTaskLevels < 0)">@Loc["Save"]</button>
+                    <button class="btn btn-lg  btn-primary" @onclick="Save"  disabled="@(ViewSetting.SubTaskLevels <= 0)">@Loc["Save"]</button>
                 </div>
             </div>
         </div>
@@ -79,22 +79,15 @@
     }
     private void OnCustomDaysChange(ChangeEventArgs e)
     {
-        var input = e.Value?.ToString();
+        var input = e.Value?.ToString()?.Trim();
 
-        if (string.IsNullOrWhiteSpace(input))
+        if (string.IsNullOrEmpty(input) || !int.TryParse(input, out var number) || number <= 0)
         {
-            // ViewSetting.SubTaskLevels = null;
+            // ViewSetting.SubTaskLevels = 3;
             return;
         }
 
-        if (int.TryParse(input, out var number))
-        {
-            ViewSetting.SubTaskLevels = number < 0 ? 0 : number;
-        }
-        else
-        {
-            ViewSetting.SubTaskLevels = 0;
-        }
+        ViewSetting.SubTaskLevels = number;
     }
     private void Cancel(MouseEventArgs args)
     {
