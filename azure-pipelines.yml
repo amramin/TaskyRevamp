@@ -30,8 +30,7 @@ stages:
             inputs:
               packageType: 'sdk'
               version: '9.x'
-          
-          # (Optional) sanity listing
+
           - script: |
               echo Repo root: $(Build.SourcesDirectory)
               dir /b $(Build.SourcesDirectory)
@@ -65,7 +64,7 @@ stages:
     jobs:
       - deployment: IIS
         displayName: Deploy API on IIS Server
-        environment: 'prod'                 # Make sure an Environment named 'prod' exists
+        environment: 'prod'                 # Ensure an Environment named 'prod' exists
         pool:
           name: 'SelfHosted-Windows-IIS'    # your agent POOL
           # demands:
@@ -89,20 +88,54 @@ stages:
                     if (-not (Test-Path $sitePath)) { throw "IIS site path not found: $sitePath" }
                     
                     Write-Host "Putting app offline..."
-                    Set-Content -Path (Join-Path $sitePath 'app_offline.htm') -Value 'Updating...'
+                    $offline = Join-Path $sitePath 'app_offline.htm'
+                    Set-Content -Path $offline -Value 'Updating...'
                     
                     Write-Host "Mirroring files to $sitePath ..."
-                    robocopy $src $sitePath /MIR /NFL /NDL /NP /R:3 /W:3
-                    if ($LASTEXITCODE -ge 8) { throw "Robocopy failed with code $LASTEXITCODE" }
+                    # Exclude app_offline.htm so it stays until we explicitly remove it:
+                    robocopy $src $sitePath /MIR /XF app_offline.htm /NFL /NDL /NP /R:3 /W:3
+                    $rc = $LASTEXITCODE
+                    if ($rc -ge 8) { throw "Robocopy failed with code $rc" }
+                    $global:LASTEXITCODE = 0  # prevent non-zero bubbling from robocopy
                     
-                    Write-Host "Recycling app pool $appPool ..."
-                    Import-Module WebAdministration
-                    if (Test-Path IIS:\AppPools\$appPool) {
-                      Restart-WebAppPool -Name $appPool
-                    } else {
-                      Write-Warning "AppPool not found: $appPool"
+                    # Try to recycle the app pool (WebAdministration -> appcmd fallback)
+                    $recycled = $false
+                    try {
+                      Import-Module WebAdministration -ErrorAction Stop
+                      if (Test-Path "IIS:\AppPools\$appPool") {
+                        Write-Host "Recycling app pool via WebAdministration: $appPool"
+                        Restart-WebAppPool -Name $appPool
+                        $recycled = $true
+                      } else {
+                        Write-Warning "AppPool not found at IIS:\AppPools\$appPool"
+                      }
+                    } catch {
+                      Write-Warning "WebAdministration recycle failed: $($_.Exception.Message)"
+                    }
+                    
+                    if (-not $recycled) {
+                      try {
+                        $appcmd = Join-Path $env:WINDIR "System32\inetsrv\appcmd.exe"
+                        if (Test-Path $appcmd) {
+                          Write-Host "Recycling app pool via appcmd: $appPool"
+                          & $appcmd recycle apppool /apppool.name:$appPool
+                          if ($LASTEXITCODE -eq 0) { $recycled = $true }
+                          $global:LASTEXITCODE = 0
+                        } else {
+                          Write-Warning "appcmd.exe not found."
+                        }
+                      } catch {
+                        Write-Warning "appcmd recycle failed: $($_.Exception.Message)"
+                      }
                     }
                     
                     Write-Host "Bringing app online..."
-                    Remove-Item (Join-Path $sitePath 'app_offline.htm') -Force -ErrorAction SilentlyContinue
+                    Remove-Item $offline -Force -ErrorAction SilentlyContinue
+                    
+                    if (-not $recycled) {
+                      Write-Warning "App pool recycle could not be verified. The app should still restart due to app_offline removal."
+                    }
+                    
+                    # Force success exit to avoid residual non-zero codes
+                    exit 0
                   displayName: Copy files to IIS & recycle app pool
