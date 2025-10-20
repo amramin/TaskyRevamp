@@ -10,8 +10,8 @@ pr: none
 
 variables:
   buildConfiguration: 'Release'
-  solution: '**/TaskyRevamp.sln'
-  project_api: '**/TaskyRevamp.WebAPI.csproj'
+  solution: 'TaskyRevamp.sln'
+  project_api: 'TaskyRevamp\TaskyRevamp.WebAPI\TaskyRevamp.WebAPI.csproj'
 
 stages:
   # ================== CI: Build & Publish ==================
@@ -30,21 +30,26 @@ stages:
             inputs:
               packageType: 'sdk'
               version: '9.x'
-
+          
+          # (Optional) sanity listing
           - script: |
               echo Repo root: $(Build.SourcesDirectory)
+              dir /b $(Build.SourcesDirectory)
               dir /b /s $(Build.SourcesDirectory)\*.sln
               dir /b /s $(Build.SourcesDirectory)\*.csproj
             displayName: List .sln and .csproj files
 
           - script: dotnet restore "$(solution)"
             displayName: dotnet restore
+            workingDirectory: $(Build.SourcesDirectory)
 
           - script: dotnet build "$(solution)" -c $(buildConfiguration) --no-restore
             displayName: dotnet build
+            workingDirectory: $(Build.SourcesDirectory)
 
           - script: dotnet publish "$(project_api)" -c $(buildConfiguration) -o "$(Build.ArtifactStagingDirectory)\publish\api"
             displayName: dotnet publish (API)
+            workingDirectory: $(Build.SourcesDirectory)
 
           - task: PublishBuildArtifacts@1
             displayName: Publish artifact
@@ -60,7 +65,7 @@ stages:
     jobs:
       - deployment: IIS
         displayName: Deploy API on IIS Server
-        environment: 'prod'                 # <-- REQUIRED: create an Environment named 'prod'
+        environment: 'prod'                 # Make sure an Environment named 'prod' exists
         pool:
           name: 'SelfHosted-Windows-IIS'    # your agent POOL
           # demands:
