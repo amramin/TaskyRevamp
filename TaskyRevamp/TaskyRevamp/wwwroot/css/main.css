@@ -2035,8 +2035,10 @@ html[dir=rtl] input[type=number] {
   border-radius: calc(var(--bs-border-radius) / 2);
   -webkit-transition: var(--transtion-3ms-e-out);
   transition: var(--transtion-3ms-e-out);
+  display: none;
 }
 .horizintal-tab .tab-nav .tab-btn:hover .text {
+  display: block;
   inset-inline-start: 100%;
   -webkit-transform: translateY(-50%) translateX(0);
           transform: translateY(-50%) translateX(0);
@@ -2587,6 +2589,13 @@ ul {
   top: 1.25rem;
   background-color: var(--light-300);
   z-index: 0;
+}
+.tree-list .item ul.dropdown-menu {
+  -webkit-padding-start: 0;
+          padding-inline-start: 0;
+}
+.tree-list .item ul.dropdown-menu li::after {
+  display: none;
 }
 .tree-list .header {
   display: -webkit-box;
