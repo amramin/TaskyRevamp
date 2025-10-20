@@ -10,7 +10,6 @@ pr: none
 
 variables:
   buildConfiguration: 'Release'
-  # Use globs so the pipeline finds your files regardless of repo layout
   solution: '**/TaskyRevamp.sln'
   project_api: '**/TaskyRevamp.WebAPI.csproj'
 
@@ -25,15 +24,13 @@ stages:
           vmImage: 'windows-latest'
         steps:
           - checkout: self
-          
-          # Use .NET 9 SDK (your projects target net9.0)
+
           - task: UseDotNet@2
             displayName: Use .NET 9 SDK
             inputs:
               packageType: 'sdk'
               version: '9.x'
-          
-          # (Optional) List discovered sln/csproj for easy debugging
+
           - script: |
               echo Repo root: $(Build.SourcesDirectory)
               dir /b /s $(Build.SourcesDirectory)\*.sln
@@ -63,13 +60,11 @@ stages:
     jobs:
       - deployment: IIS
         displayName: Deploy API on IIS Server
-        # environment: 'prod'     # ← optional: create "prod" env in DevOps if you want approvals/history
-        
+        environment: 'prod'                 # <-- REQUIRED: create an Environment named 'prod'
         pool:
-          name: 'SelfHosted-Windows-IIS'     # your agent POOL
+          name: 'SelfHosted-Windows-IIS'    # your agent POOL
           # demands:
-          # - Agent.Name -equals IIS-01      # ← uncomment to pin to the IIS-01 agent specifically
-        
+          # - Agent.Name -equals IIS-01     # (optional) pin to that agent
         strategy:
           runOnce:
             deploy:
@@ -85,14 +80,13 @@ stages:
                     $sitePath = Join-Path $siteRoot "current"
                     $appPool  = "TaskyRevampPipelineAPI"
                     
-                    if (-not (Test-Path $src))     { throw "Publish folder not found: $src" }
+                    if (-not (Test-Path $src))      { throw "Publish folder not found: $src" }
                     if (-not (Test-Path $sitePath)) { throw "IIS site path not found: $sitePath" }
                     
                     Write-Host "Putting app offline..."
                     Set-Content -Path (Join-Path $sitePath 'app_offline.htm') -Value 'Updating...'
                     
                     Write-Host "Mirroring files to $sitePath ..."
-                    # /MIR mirrors exactly. Since logs/uploads are siblings of \current, they aren't affected.
                     robocopy $src $sitePath /MIR /NFL /NDL /NP /R:3 /W:3
                     if ($LASTEXITCODE -ge 8) { throw "Robocopy failed with code $LASTEXITCODE" }
                     
