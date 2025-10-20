@@ -11,7 +11,7 @@ pr: none
 variables:
   buildConfiguration: 'Release'
   solution: 'TaskyRevamp.sln'
-  project_api: 'TaskyRevamp\TaskyRevamp.WebAPI\TaskyRevamp.WebAPI.csproj'
+  project_api: 'TaskyRevamp.WebAPI\TaskyRevamp.WebAPI.csproj'
 
 stages:
   # ================== CI: Build & Publish ==================
