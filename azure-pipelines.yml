@@ -18,6 +18,8 @@ stages:
         pool:
           vmImage: 'windows-latest'
         steps:
+          - checkout: self
+
           - task: UseDotNet@2
             displayName: Use .NET SDK
             inputs:
@@ -28,6 +30,12 @@ stages:
             displayName: NuGet restore
             inputs:
               restoreSolution: '$(solution)'
+
+          - script: |
+              echo Repo root: $(Build.SourcesDirectory)
+              dir /b /s $(Build.SourcesDirectory)\*.sln
+              dir /b /s $(Build.SourcesDirectory)\*.csproj
+            displayName: List .sln and .csproj files
 
           - script: dotnet build "$(solution)" -c $(buildConfiguration) --no-restore
             displayName: dotnet build
@@ -41,6 +49,7 @@ stages:
               PathtoPublish: '$(Build.ArtifactStagingDirectory)\publish'
               ArtifactName: 'drop'
               publishLocation: 'Container'
+  
   
   # ================== CD: Deploy to IIS (self-hosted) ==================
   - stage: Deploy
