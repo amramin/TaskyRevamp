@@ -610,4 +610,7 @@ Add a new department to get started</value>
   <data name="PrivilegeNotFound" xml:space="preserve">
     <value>Privilege with Id {id} not found.</value>
   </data>
+  <data name="EnterPrivilegeName" xml:space="preserve">
+    <value>Permissions English Name</value>
+  </data>
 </root>

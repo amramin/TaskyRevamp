@@ -1,11 +1,14 @@
 ﻿@page "/GeneralModulePrivileges"
 
 @using TaskyRevamp.Client.Consumer
+@using TaskyRevamp.Dto.Department
+@using TaskyRevamp.Dto.Enums
 @using TaskyRevamp.Dto.Permissions
 
 @inject NavigationManager navigationManager
 @inject IStringLocalizer<SharedResources> Loc
 @inject GeneralModuleConsumer _generalModuleConsumer
+@inject DepartmentConsumer _departmentConsumer
 
 <div class="card shadow-sm p-3">
     <div>
@@ -15,14 +18,14 @@
                     Arabic Name
                     <span class="text-danger">*</span>
                 </label>
-                <input type="text" class="form-control" placeholder="Enter Privilege Arabic Name" />
+                <input type="text" class="form-control" placeholder="Enter Privilege Arabic Name" @bind-value="PrivilegeDto.NameArabic" />
             </div>
             <div class="col-md-6">
                 <label class="form-label fw-bold">
                     English Name
                     <span class="text-danger">*</span>
                 </label>
-                <input type="text" class="form-control" placeholder="Enter Privilege English Name" />
+                <input type="text" class="form-control" placeholder="Enter Privilege English Name" @bind-value="PrivilegeDto.NameEnglish" />
             </div>
         </div>
         <table class="table table-bordered align-middle">
@@ -39,65 +42,166 @@
             <tbody>
                 @foreach (var module in generalModules)
                 {
-                    <tr>
-                        <td>@module.NameEnglish</td>
+                    var permission = PrivilegeDto.GeneralModulePermissions
+                    .FirstOrDefault(p => p.GeneralModuleId == module.Id);
+                    @if (permission != null)
+                    {
+                        <tr>
+                            <td>@module.Name</td>
 
-                        <td class="text-center">
-                            @* @if (module.IsAll)
-                            { *@
-                                <input type="checkbox" />
-                            @* } *@
-                        </td>
+                            <td class="text-center">
+                                <input type="checkbox" @onchange="e => SetAll(permission, e.Value!)" />
+                            </td>
 
-                        <td class="text-center">
-                            @if (module.HasView)
-                            {
-                                <input type="checkbox" @*@bind="module.HasView" *@ />
-                            }
-                        </td>
+                            <td class="text-center">
+                                @if (module.HasView)
+                                {
+                                    <input type="checkbox" @bind="permission.IsView" />
+                                }
+                            </td>
 
-                        <td class="text-center">
-                            @if (module.HasEdit)
-                            {
-                                <input type="checkbox" @*@bind="module.HasEdit" *@/>
-                            }
-                        </td>
+                            <td class="text-center">
+                                @if (module.HasEdit)
+                                {
+                                    <input type="checkbox" @bind="permission.IsEdit" />
+                                }
+                            </td>
 
-                        <td class="text-center">
-                            @if (module.HasAdd)
-                            {
-                                <input type="checkbox" @* @bind="module.HasAdd" *@/>
-                            }
-                        </td>
+                            <td class="text-center">
+                                @if (module.HasAdd)
+                                {
+                                    <input type="checkbox" checked="@permission.IsAdd" @onchange="e => OnAddChanged(permission, e)" />
+                                }
+                            </td>
 
-                        <td class="text-center">
-                            @if (module.HasDelete)
-                            {
-                                <input type="checkbox" @* @bind="module.HasDelete"*@ />
-                            }
-                        </td>
-                    </tr>
+                            <td class="text-center">
+                                @if (module.HasDelete)
+                                {
+                                    <input type="checkbox" @bind="permission.IsDelete" />
+                                }
+                            </td>
+                        </tr>
+                    }
                 }
             </tbody>
         </table>
+        @if (PrivilegeDto.GeneralModulePermissions
+                .Any(p => generalModules.FirstOrDefault(m => m.Id == p.GeneralModuleId)?.NameEnglish == "Delegation" && p.IsAdd))
+        {
+            var delegationPermission = PrivilegeDto.GeneralModulePermissions
+            .FirstOrDefault(p => generalModules.FirstOrDefault(m => m.Id == p.GeneralModuleId)?.NameEnglish == "Delegation");
 
+            <div class="card mt-4 border-0 shadow-sm">
+                <div class="card-body">
+                    <div class="row gy-4">
+                        <!-- FROM USER TOGGLE GROUP -->
+                        <div class="col-12">
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold">From User</label>
+                                <InputRadioGroup TValue="DelegationFromUser?"
+                                                 Value="delegationPermission.DelegationFromUser"
+                                                 ValueChanged="val => delegationPermission.DelegationFromUser = val"
+                                                 ValueExpression="@(() => delegationPermission.DelegationFromUser)">
+                                    @foreach (var value in Enum.GetValues<DelegationFromUser>())
+                                    {
+                                        var id = $"fromUser_{value}";
+                                        <div class="form-check form-switch d-block mb-2">
+                                            <InputRadio id="@id"
+                                                        class="form-check-input"
+                                                        Value="@value" />
+                                            <label class="form-check-label ms-2" for="@id">
+                                                @value
+                                            </label>
+                                        </div>
+                                    }
+                                </InputRadioGroup>
+                                <!-- Show Departments Section When 'DifferentDepartments' Is Selected -->
+                                @if (delegationPermission.DelegationToUser == DelegationToUser.DifferentDepartment)
+                                {
+                                    <div class="card mt-3 p-3 border-0 shadow-sm">
+                                        <select class="form-select" multiple @onchange="OnDepartmentsChanged">
+                                            @foreach (var dept in departmentDtos)
+                                            {
+                                                <option value="@dept.Id">@dept.Name</option>
+                                            }
+                                        </select>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                        <!-- TO USER SWITCH GROUP -->
+                        <div class="col-12 mt-3">
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold">To User</label>
+                                <InputRadioGroup TValue="DelegationToUser?"
+                                                 Value="delegationPermission.DelegationToUser"
+                                                 ValueChanged="val => delegationPermission.DelegationToUser = val"
+                                                 ValueExpression="@(() => delegationPermission.DelegationToUser)">
+                                    @foreach (var value in Enum.GetValues<DelegationToUser>())
+                                    {
+                                        var id = $"toUser_{value}";
+                                        <div class="form-check form-switch d-block mb-2">
+                                            <InputRadio id="@id"
+                                                        class="form-check-input"
+                                                        Value="@value" />
+                                            <label class="form-check-label ms-2" for="@id">
+                                                @value
+                                            </label>
+                                        </div>
+                                    }
+                                </InputRadioGroup>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
     </div>
 </div>
 
 @code {
     [Parameter] public PrivilegeDto PrivilegeDto { get; set; } = new PrivilegeDto();
-
     List<GeneralModuleDto> generalModules = new();
+    List<DepartmentDto> departmentDtos = new();
+    bool isDifferentDepartments = false;
     protected override async Task OnInitializedAsync()
     {
         var res = await _generalModuleConsumer.GetGeneralModules();
         if (res.Success && res != null && res.Data != null)
         {
             generalModules = res.Data.ToList();
+            PrivilegeDto.GeneralModulePermissions = generalModules
+            .Select(m => new GeneralModulePermissionDto
+            {
+                GeneralModuleId = m.Id,
+                IsView = false,
+                IsEdit = false,
+                IsAdd = false,
+                IsDelete = false
+            })
+            .ToList();
+            var departmentsRes = await _departmentConsumer.GetDepartments();
+            if (departmentsRes.Success && departmentsRes != null && departmentsRes.Data != null)
+            {
+                departmentDtos = departmentsRes.Data.ToList();
+            }
         }
     }
-    private void Add(MouseEventArgs args)
+    void SetAll(GeneralModulePermissionDto permission, object value)
     {
-        navigationManager.NavigateTo("/add-privilege");
+        bool isChecked = (bool)value;
+        permission.IsView = isChecked;
+        permission.IsEdit = isChecked;
+        permission.IsAdd = isChecked;
+        permission.IsDelete = isChecked;
+    }
+    void OnAddChanged(GeneralModulePermissionDto permission, ChangeEventArgs e)
+    {
+        permission.IsAdd = (bool)e.Value;
+        StateHasChanged();
+    }
+    private void OnDepartmentsChanged(ChangeEventArgs args)
+    {
+        throw new NotImplementedException();
     }
 }

@@ -7,6 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Permission\GeneralModule\Command\**" />
+    <EmbeddedResource Remove="Permission\GeneralModule\Command\**" />
+    <None Remove="Permission\GeneralModule\Command\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Hangfire.Core" Version="1.8.20" />
     <PackageReference Include="MediatR" Version="13.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.3.0" />
@@ -22,7 +28,6 @@
   <ItemGroup>
     <Folder Include="Account\Query\" />
     <Folder Include="Permission\GeneralModulePrivilege\Command\" />
-    <Folder Include="Permission\GeneralModule\Command\" />
     <Folder Include="SystemConfiguration\RecycleBinSettings\Command\" />
   </ItemGroup>
 

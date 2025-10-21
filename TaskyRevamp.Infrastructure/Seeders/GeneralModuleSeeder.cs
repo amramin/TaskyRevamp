@@ -226,9 +226,9 @@ namespace TaskyRevamp.Infrastructure.Seeders
 					NameEnglish = "Delegation",
 					NameArabic = "التفويض",
 					HasView = true,
-					HasEdit = true,
+					HasEdit = false,
 					HasDelete = false,
-					HasAdd = false
+					HasAdd = true
 				},
 			};
 

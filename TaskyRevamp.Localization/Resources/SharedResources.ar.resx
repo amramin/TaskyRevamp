@@ -610,4 +610,7 @@
   <data name="PrivilegeNotFound" xml:space="preserve">
     <value>لم يتم العثور على الصلاحية  {id}</value>
   </data>
+  <data name="EnterPrivilegeName" xml:space="preserve">
+    <value>اسم الصلاحية عربي</value>
+  </data>
 </root>

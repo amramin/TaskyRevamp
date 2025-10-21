@@ -637,6 +637,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Permissions English Name.
+        /// </summary>
+        public static string EnterPrivilegeName {
+            get {
+                return ResourceManager.GetString("EnterPrivilegeName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Field Names.
         /// </summary>
         public static string FieldNames {
