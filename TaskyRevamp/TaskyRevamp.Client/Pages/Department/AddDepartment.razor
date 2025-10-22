@@ -1,11 +1,11 @@
-﻿@page "/Add-Department"
+﻿@page "/Add-Department/{ParentId:guid?}"
 @using TaskyRevamp.Client.Consumer
 @using TaskyRevamp.Client.Services
 @using TaskyRevamp.Dto.Department
 @using TaskyRevamp.Dto.SystemConfiguration
 @inject NavigationManager navigationManager
 @inject IStringLocalizer<SharedResources> Loc
-@inject DepartmentConsumer _DepartmentConsumer
+@inject DepartmentConsumer _departmentConsumer
 @inject ToastService ToastService
 
 
@@ -18,7 +18,8 @@
 
 
 @code {
-
+    [Parameter]
+    public Guid? ParentId { set; get; } = new Guid();
     private DepartmentDto _newDepartment = new DepartmentDto();
     public List<DepartmentDto> departmentDtos = new List<DepartmentDto>();
     [Parameter] public EventCallback<DepartmentDto> OnValidSubmit { get; set; }
@@ -28,18 +29,18 @@
 
     protected async override Task OnInitializedAsync()
     {
-        var res = await _DepartmentConsumer.GetDepartments();
-        // if (res.Success && res.Data != null)
-        // {
-        //    // DepartmentDtoses = res.Data;
-           
-        // }
+       
+        var res = await _departmentConsumer.GetDepartmentsForDDL();
+        if (ParentId != null || ParentId != Guid.Empty)
+        {
+            _newDepartment.ParentdepartmentId = ParentId.Value;
+        }
     }
 
     private async Task Save(EditContext editContext)
     {
 
-        var res = await _DepartmentConsumer.AddDepartment(_newDepartment);
+        var res = await _departmentConsumer.AddDepartment(_newDepartment);
         if (res.Success)
         {
             await OnValidSubmit.InvokeAsync(_newDepartment);
@@ -55,7 +56,6 @@
     }
     private async Task Cancel()
     {
-        //await OnCancel.InvokeAsync();
         navigationManager.NavigateTo("/Departments");
     }
 }

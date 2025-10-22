@@ -1,0 +1,76 @@
+﻿@using TaskyRevamp.Dto.Department
+@using TaskyRevamp.Client.Shared.Popups
+<ul class="tree-list">
+    @foreach (var dept in Departments)
+    {
+        <li class="item">
+            <div class="header">
+                <button type="button" class="btn action-btn @GetButtonClass(dept.IsExpanded, dept.Children.Count > 0)"
+                    @onclick="() => ToggleChildren(dept)">
+                    <span class="icon ">
+                        <SVGCrud SVGType="SVGCrud.SVGTypeEnum.ChevronEnd"></SVGCrud>
+                    </span>
+                    <span class="text">@dept.Name</span>
+                </button>
+
+                <DepartmentActions DepartmentId="@dept.Id" ShowUsers="OnShowUsers" OnAdd="OnAdd" Edit="OnEdit"
+                    Delete="OnDelete" />
+
+                <button class="btn btn-outline-light-primary btn-32" type="button"
+                    @onclick="() => HandleDepartmentSelection(dept.Id.ToString())">
+                    <span class="icon">
+                        <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Pluse"></SVGCrud>
+                    </span>
+                </button>
+            </div>
+
+            @if (dept.Children?.Any() == true && dept.IsExpanded)
+            {
+                <ul>
+                    @foreach (var child in dept.Children)
+                    {
+                        <li>
+                            <DepartmentTree Departments="new List<DepartmentDto> { child }" OnAdd="OnAdd" OnShowUsers="OnShowUsers"
+                                OnEdit="OnEdit" OnDelete="OnDelete" />
+                        </li>
+                    }
+                </ul>
+            }
+        </li>
+    }
+</ul>
+
+
+
+@code {
+    [Parameter] public List<DepartmentDto> Departments { get; set; } = new();
+    [Parameter] public EventCallback<string> OnAddDepartment { get; set; }
+    [Parameter] public EventCallback<Guid> OnShowUsers { get; set; }
+    [Parameter] public EventCallback<Guid> OnEdit { get; set; }
+    [Parameter] public EventCallback<Guid> OnDelete { get; set; }
+    [Parameter] public EventCallback<Guid> OnAdd { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var x = Departments;
+
+    }
+
+    private void ToggleChildren(DepartmentDto dept)
+    {
+        dept.IsExpanded = !dept.IsExpanded;
+    }
+
+    private void HandleDepartmentSelection(string departmentId)
+    {
+        OnAddDepartment.InvokeAsync(departmentId);
+    }
+
+    private string GetButtonClass(bool isExpanded, bool hasChildren)
+    {
+        if (!hasChildren) return "";
+        return isExpanded ? "btn-expanded" : "btn-collapsed";
+    }
+
+
+}

@@ -5,7 +5,7 @@ using TaskyRevamp.Dto.Department;
 
 namespace TaskyRevamp.Services.Departments.Command;
 
-public record UpdateDepartmentCommand(DepartmentDto Department) : IRequest<bool>;
+public record UpdateDepartmentCommand(DepartmentDto department) : IRequest<bool>;
 
 public class UpdateDepartmentCommandHandler : IRequestHandler<UpdateDepartmentCommand, bool>
 {
@@ -18,7 +18,7 @@ public class UpdateDepartmentCommandHandler : IRequestHandler<UpdateDepartmentCo
 
     public async Task<bool> Handle(UpdateDepartmentCommand request, CancellationToken cancellationToken)
     {
-        var departmentResponse = await _departmentRepository.FindByKey(request.Department.Id);
+        var departmentResponse = await _departmentRepository.FindByKey(request.department.Id);
         if (!departmentResponse.Success)
         {
             return false;
@@ -32,7 +32,7 @@ public class UpdateDepartmentCommandHandler : IRequestHandler<UpdateDepartmentCo
 
 
         var updated = departmentResponse.Value;
-        updated.SetData(request.Department);
+        updated.SetData(request.department);
         await _departmentRepository.Update(updated);
 
         return true;

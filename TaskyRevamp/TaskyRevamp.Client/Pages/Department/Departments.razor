@@ -1,21 +1,54 @@
 ﻿@page "/Departments"
 
 @using TaskyRevamp.Client.Consumer
+@using TaskyRevamp.Client.Pages.Department.Components
 @using TaskyRevamp.Client.Services
-@using TaskyRevamp.Client.Shared.Popups
 @using TaskyRevamp.Dto.Department
-@inject DepartmentConsumer  _DepartmentConsumer
+@using TaskyRevamp.Client.Shared.Popups
+@using TaskyRevamp.Dto.Enums.SearchFields
+@using TaskyRevamp.Dto.SystemConfiguration
+@inject DepartmentConsumer _departmentConsumer
 @inject NavigationManager navigationManager
 @inject IStringLocalizer<SharedResources> Loc
 @inject ToastService ToastService
-
+@inject PopupService PopupService
 
 
 
 <div class="page-header">
     <h1 class="page-headline">@Loc["Departments"]</h1>
     <div class="action-btn-list">
-       
+        <Search SearchSubmit="Search" CssClass="form-control"></Search>
+        <button
+            class="btn btn-action-40 @(currentView == DepartmentViewType.Hierarchy ? "btn-outline-primary" : "btn-outline-light")"
+            data-bs-toggle="tooltip" data-bs-placement="top" title="@Loc["Hierarchy"]"
+            @onclick="@(() => ChangeView(DepartmentViewType.Hierarchy))">
+
+            <span class="icon">
+                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.DataFlow"></SVGCrud>
+            </span>
+        </button>
+
+        <button
+            class="btn btn-action-40 @(currentView == DepartmentViewType.Tree ? "btn-outline-primary" : "btn-outline-light")"
+            data-bs-toggle="tooltip" data-bs-placement="top" title="@Loc["Tree"]"
+            @onclick="@(() => ChangeView(DepartmentViewType.Tree))">
+
+            <span class="icon">
+                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.SubTasks"></SVGCrud>
+            </span>
+        </button>
+        <button
+            class="btn btn-action-40   @(currentView == DepartmentViewType.Grid ? "btn-outline-primary" : "btn-outline-light")"
+            data-bs-toggle="tooltip" data-bs-placement="top" title="@Loc["Grid"]"
+            @onclick="@(() => ChangeView(DepartmentViewType.Grid))">
+            <span class="icon">
+                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.List"></SVGCrud>
+            </span>
+
+        </button>
+
+
         <button class="btn btn-primary" @onclick="Add">
             <span class="icon">
                 <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Pluse"></SVGCrud>
@@ -25,217 +58,241 @@
     </div>
 </div>
 
+@if (departmentDtos == null || departmentDtos.Count == 0)
+{
+
+    <NoDataAvailable MessageTitle="@Loc["Nodepartmentavailable"]" MessageSubtitle="@Loc["Nodepartmentavailable"]"
+        ButtonText="@Loc["AddDepartment"]" OnButtonClick="Add" />
+    <h6 class="mb-3">@Loc["Nodepartmentavailable"]</h6>
+}
 
 
-    @if (departmentDtos == null || departmentDtos.Count() == 0)
-    {
-        <h6 class="mb-3">@Loc["NodepartmentavailableAdd"]</h6>
 
-    }
-    else{
-<div class="page-body">
+else
+{
+    <div class="page-body">
+        @switch (currentView)
+        {
+            case DepartmentViewType.Grid:
+                <DepartmentGrid Departments="departmentDtos" OnEdit="Edit" OnDelete="OnDeleteDepartment" OnShowUsers="ShowUser"
+                    OnAdd="AddDept" />
+                break;
 
-
-    <div class="table-responsive  sticky-header-custom">
-        <table class="table custom-table">
-                <thead>
-                    <tr>
-                        <th>@Loc["NameEnglish"]</th>
-                            <th>@Loc["NameArabic"]</th>
-                    <th>@Loc["DepartmentParent"]</th>
-                        <th>@Loc["CreatedBy"]</th>
-                    <th>@Loc["CreationDate"]</th>
-                            <th>@Loc["UpdatedBy"]</th>
-                            <th>@Loc["UpdateDate"]</th>
-             
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                        @if (departmentDtos != null && departmentDtos.Any())
-                    {
-    @foreach (var p in departmentDtos)
-    {
-
-                                <tr>
-                                    <td>@p.NameEnglish</td>
-                                    <td>@p.NameArabic</td>
-                                    <td>@p.ParentdepartmentName</td>
-                                    <td>@p.CreatedByName</td>
-                                  
-                                   
-                                    <td>@p.CreateDate</td>
-                                    <td>@p.UpdatedByName</td>
-                                    <td>@p.UpdateDate</td>
-                                 
-                                
-
-
-               <td class="sticky-end-action">
-                            <div class="dropdown actions">
-                                <button class="btn btn-action-24" type="button" data-bs-toggle="dropdown"
-                                    aria-expanded="false">
-                                    <SVGCrud SVGType="SVGCrud.SVGTypeEnum.EllipseVertical"></SVGCrud>
-                                </button>
-                                <ul class="dropdown-menu">
-                                   
-
-
-                                    
-                                    <li>
-                                            <button class="dropdown-item" @onclick="@(() => Edit(p.Id))">
-                                            <span class="icon">
-                                                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Edit"></SVGCrud>
-                                            </span>
-                                            @Loc["Edit"]
-                                        </button>
-                                    </li>
-                                    <li>
-                                            <button class="dropdown-item" @onclick="@(() => ShowDeleteConfirm(p))">
-                                            <span class="icon">
-                                                    <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Delete"></SVGCrud>
-                                            </span>
-                                            @Loc["Delete"]
-                                        </button>
-                                    </li>
-                                </ul>
+            case DepartmentViewType.Tree:
+                <div class="card flex-grow-1">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-lg-10 ">
+                                <DepartmentTree Departments="rootDepartments" OnEdit="Edit" OnDelete="OnDeleteDepartment"
+                                    OnShowUsers="ShowUser" OnAdd="AddDept" />
                             </div>
+                        </div>
+                    </div>
+                </div>
+                break;
 
-
-                        </td>
-
-        </tr>
-    }
-
-    }
-    </tbody>
-    </table>
-
-    
-
-  
-                 
-               
-    
-    <ConfirmationPopup ButtonText="@Loc["Delete"]"
-                       IsVisible="@showConfirm"
-                       OnConfirm="OnDeleteConfirmed"
-                       Message="@confirmMessage" />
-
-    <div class="d-flex justify-content-end gap-2 mt-3">
-        <button class="btn btn-light" @onclick="Cancel">@Loc["Cancel"]</button>
-        <button class="btn btn-primary" @onclick="Save">@Loc["Save"]</button>
+            case DepartmentViewType.Hierarchy:
+                <div class="card card-hierarchy">
+                    <div class="card-body">
+                        <DepartmentHierarchy Departments="RootDepartments" OnEdit="Edit" OnDelete="OnDeleteDepartment"
+                            OnShowUsers="ShowUser" OnAdd="AddDept" />
+                    </div>
+                </div>
+                break;
+        }
     </div>
 
-</div>
-</div>
+
 }
+
 @code {
-    public List<DepartmentDto> departmentDtos = new List<DepartmentDto>();
-
-    private Guid SelectedDepartmentId { get; set; }
-    private string confirmMessage = "";
+    private List<DepartmentDto> departmentDtos = new();
+    private List<DepartmentDto> rootDepartments = new();
     private DepartmentDto? selectedDepartment;
-    private bool showConfirm;
-    private bool isOrdered = false;
-    List<DepartmentDto>? OriginalDeptes;
+    private int currentPage = 1;
+    private int totalPages = 1;
+    private int totalCount = 0;
+    private int pageSize = 10;
+    private string currentSortColumn = "CreateDate";
+    private bool? sortAscending = true;
+    private DepartmentViewType currentView = DepartmentViewType.Grid;
+    private List<SortableColumn> tableColumns = new();
 
-    protected async override Task OnInitializedAsync()
+    private List<DepartmentDto> RootDepartments =new ();
+    List<DepartmentDto> allDepartments = new List<DepartmentDto>();
+    private async Task ChangePageSize(int newSize)
     {
-        var res = await _DepartmentConsumer.GetDepartments();
-        // if (res.Success  && res.Data != null)
-        //{
-        departmentDtos = res.Data.ToList().OrderBy(k=>k.CreateDate).ToList();
-        // OriginalDeptes = CopyPriorites();
-        //}
-        StateHasChanged();
+        pageSize = newSize;
+        currentPage = 1;
+        await LoadSources();
+       // await BuildHierarchy();
     }
-    private void Add() => navigationManager.NavigateTo("/Add-Department");
+    protected override async Task OnInitializedAsync()
+    {
+        var data = await _departmentConsumer.GetDepartmentsNoPagnation();
+
+        allDepartments = data.Data.ToList();
+
+        tableColumns = new()
+{
+new() { Field = "NameEnglish", DisplayName = Loc["NameEnglish"] },
+new() { Field = "NameArabic", DisplayName = Loc["NameArabic"] },
+new() { Field = "DepartmentParent", DisplayName = Loc["ParentdepartmentName"] },
+
+new() { Field = "CreateDate", DisplayName = Loc["CreationDate"] },
+new() { Field = "CreatedBy", DisplayName = Loc["CreatedBy"] },
+new() { Field = "UpdateDate", DisplayName = Loc["UpdateDate"] },
+new() { Field = "UpdatedBy", DisplayName = Loc["UpdatedBy"] },
+new() { Field = "Action", DisplayName = Loc["Action"] ,IsSortable = false},
+};
+
+        await LoadSources();
+
+
+
+        BuildHierarchy();
+    }
+    private async Task ChangePage(int page)
+    {
+        currentPage = page;
+        await LoadSources();
+    }
+    private void Add()
+    {
+
+        // navigationManager.NavigateTo("/Add-Department");
+        PopupService.ShowNew(@<AddDepartment OnValidSubmit="OnInitializedAsync"></AddDepartment>);
+
+    }
+    private async Task ClearSearch()
+    {
+        currentPage = 1;
+        await LoadSources(isSearch: false);
+    }
     private void Edit(Guid id)
     {
-        //IsShowEditDialog = true;
-        //SelectedDepartmentId = id;
-        navigationManager.NavigateTo($"/Update-Department/{id}");
-    }
-    private void ShowDeleteConfirm(DepartmentDto p)
-    {
-        confirmMessage = @Loc["SureDeleteDepartment"];
-        selectedDepartment = p;
-        showConfirm = true;
-    }
-    private async Task OnDeleteConfirmed(bool confirmed)
-    {
-        if (confirmed && selectedDepartment != null)
-        {
-            var result = await _DepartmentConsumer.DeleteDepartment(selectedDepartment.Id);
-            if (result.Success)
-            {
-                departmentDtos.Remove(selectedDepartment);
-                showConfirm = false;
-                StateHasChanged();
-                await ToastService.ShowToastAsync(Loc["Deleted successfully"], "success");
-            }
-        } 
-        selectedDepartment = null;
-        StateHasChanged();
-    }
-  
-    private async Task Save(MouseEventArgs args)
-    {
-        // if (isOrdered)
-        // {
-        //     var res = await _departmentConsumer.UpdateDeptesOrder(Deptes);
-        //     if (res.Success)
-        //     {
-        //         isOrdered = false;
-        //         await ToastService.ShowToastAsync(Loc["EditSuccess"], "success");
-        //         OriginalDeptes = CopyPriorites();
-        //     }
-        // }
-    }
-    private void Cancel(MouseEventArgs args)
-    {
-        departmentDtos = OriginalDeptes!.Select(p => new DepartmentDto
-        {
-            Id = p.Id,
-            NameEnglish = p.NameEnglish,
-            NameArabic = p.NameArabic,
-            
-        }).ToList();
-        isOrdered = false;
-        StateHasChanged();
-    }
-    private List<DepartmentDto> CopyPriorites()
-    {
-        return departmentDtos.Select(p => new DepartmentDto
-        {
-            Id = p.Id,
-            NameEnglish = p.NameEnglish,
-            NameArabic = p.NameArabic,
-           
-        }).ToList();
-    }
-    // private async void ResetPage(DepartmentDto args)
-    // {
-    //     var res = await _DepartmentSettingConsumer.GetDeptes();
-    //     if (res.Success && res.Data != null)
-    //     {
-    //         Deptes = res.Data;
-    //     }
-    //     IsShowCreateDialog = false;
-    //     IsShowEditDialog = false;
-    //     StateHasChanged();
-    //     await ToastService.ShowToastAsync(Loc["EditSuccess"], "success");
-    // }
+        PopupService.ShowNew(@<UpdateDepartment Id="id" OnValidSubmit="OnInitializedAsync"></UpdateDepartment>, headerText:
+        @Loc["EditDepartment"]);
 
-    // private void CloseAddPage()
-    // {
-    //     IsShowCreateDialog = false;
-    //     StateHasChanged();
-    // }
-    // private void CloseEditPage()
-    // {
-    //     IsShowEditDialog = false;
-    //     StateHasChanged();
-    // }
+        // navigationManager.NavigateTo($"/Update-Department/{id}");
+    }
+    private void ShowUser(Guid id)
+    {
+         navigationManager.NavigateTo($"/UsersDepartment/{id}");
+      //  PopupService.ShowNew(@<UsersDepartment Id="id"></UsersDepartment>, headerText: @Loc["UsersDepartment"]);
+
+    }
+    private void AddDept(Guid id)
+    {
+        // navigationManager.NavigateTo($"/UsersDepartment/{id}");
+        PopupService.ShowNew(@<AddDepartment ParentId="id"></AddDepartment>);
+
+    }
+    private void ChangeView(DepartmentViewType view) => currentView = view;
+
+    private void OnDeleteDepartment(Guid departmentId)
+    {
+        PopupService.ShowConfirmation(
+        @Loc["SureDeleteDepartment"],
+        "Yes, Delete",
+        async (confirmed) =>
+        {
+            if (confirmed)
+                await DeleteConfirmed(departmentId);
+        },
+        ConfirmationType.Danger
+        );
+    }
+    public List<SearchFieldDepartment> searchFields = new List<SearchFieldDepartment>() {
+SearchFieldDepartment.NameEnglish,
+SearchFieldDepartment.NameArabic,
+SearchFieldDepartment.CreatedBy,
+SearchFieldDepartment.UpdatedBy,
+SearchFieldDepartment.CreateDate,
+SearchFieldDepartment.UpdateDate,
+SearchFieldDepartment.ParentNameAR,
+SearchFieldDepartment.ParentNameEN
+};
+    private async Task DeleteConfirmed(Guid departmentId)
+    {
+        var result = await _departmentConsumer.DeleteDepartment(departmentId);
+        if (result.Success)
+        {
+            var toRemove = departmentDtos.FirstOrDefault(d => d.Id == departmentId);
+            if (toRemove != null)
+            {
+                departmentDtos.Remove(toRemove);
+            }
+
+            await ToastService.ShowToastAsync(Loc["Deleted successfully"], "success");
+            BuildHierarchy();
+        }
+        else
+        {
+            await ToastService.ShowToastAsync(Loc["DeleteFailed"], "danger");
+        }
+
+        StateHasChanged();
+    }
+
+
+    private async Task BuildHierarchy(bool isSearch = false, string searchTerm=null)
+  {
+      //
+       
+
+        var data = await _departmentConsumer.GetDepartmentsNoPagnation(isSearch ?
+         searchFields : null, isSearch ? searchTerm : null);
+
+        allDepartments = data.Data.ToList();
+
+      //
+        var dict = allDepartments.ToDictionary(x => x.Id);
+        foreach (var dept in allDepartments)
+            dept.Children = new List<DepartmentDto>();
+
+        foreach (var dept in allDepartments)
+        {
+            if (dept.ParentdepartmentId != Guid.Empty && dict.ContainsKey(dept.ParentdepartmentId))
+                dict[dept.ParentdepartmentId].Children.Add(dept);
+        }
+
+        rootDepartments = allDepartments
+        .Where(d => d.ParentdepartmentId == Guid.Empty ||
+        !allDepartments.Any(x => x.Id == d.ParentdepartmentId))
+        .ToList();
+        RootDepartments = allDepartments
+   .Where(d => d.ParentdepartmentId == Guid.Empty)
+   .ToList();
+    }
+
+    private void HandleAddDepartment(string parentId)
+    {
+        navigationManager.NavigateTo($"/Add-Department?parentId={parentId}");
+    }
+    public async Task Search(string searchTerm)
+    {
+        await LoadSources(true, searchTerm);
+        await BuildHierarchy(true, searchTerm);
+    }
+    private async Task LoadSources(bool isSearch = false, string searchTerm = null)
+    {
+        var resp = await _departmentConsumer.GetDepartments(currentPage, pageSize, currentSortColumn, sortAscending.Value,
+        isSearch ?
+        searchFields : null, isSearch ? searchTerm : null);
+        departmentDtos = resp.Data.Items.OrderBy(k => k.CreateDate).ToList();
+
+        if (!(resp?.Success ?? false) || resp.Data is null)
+            return;
+
+        var data = resp.Data;
+        totalPages = data.TotalPages;
+        totalCount = data.TotalCount;
+    }
+    private enum DepartmentViewType
+    {
+        Grid,
+        Tree,
+        Hierarchy
+    }
 }

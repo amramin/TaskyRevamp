@@ -30,7 +30,7 @@ namespace TaskyRevamp.Services.SystemConfiguration.TypeConfigurarion.Command
 				IsActive = request.TypeDto.IsActive,
 			};
 			await _typeRepository.Insert(type);
-			await _typeRepository.SaveChangesAsync();
+			//await _typeRepository.SaveChangesAsync();
 			return true;
 		}
 	}

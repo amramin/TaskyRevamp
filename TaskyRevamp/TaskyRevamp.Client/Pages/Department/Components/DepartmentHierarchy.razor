@@ -1,0 +1,43 @@
+﻿@using TaskyRevamp.Dto.Department
+
+<div class="hierarchy-container">
+    @foreach (var dept in Departments)
+    {
+        <div class="hierarchy-node">
+            <div class="node-box-container">
+                <div class="node-box">
+                    <span>@dept.Name</span>
+                    <DepartmentActions DepartmentId="@dept.Id" ShowUsers="OnShowUsers" OnAdd="OnAdd" Edit="OnEdit"
+                        Delete="OnDelete" />
+                </div>
+
+            </div>
+       
+        @if (dept.Children?.Any() == true)
+        {
+            <div class="children">
+                <DepartmentHierarchy Departments="dept.Children" OnShowUsers="OnShowUsers" OnAdd="OnAdd" OnEdit="OnEdit"
+                    OnDelete="OnDelete" />
+            </div>
+        }
+ </div>
+    }
+</div>
+
+
+
+
+@code {
+    [Parameter] public List<DepartmentDto> Departments { get; set; } = new();
+    [Parameter] public EventCallback<Guid> OnShowUsers { get; set; }
+    [Parameter] public EventCallback<Guid> OnEdit { get; set; }
+    [Parameter] public EventCallback<Guid> OnDelete { get; set; }
+    [Parameter] public EventCallback<Guid> OnAdd { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var x = Departments;
+
+    }
+
+}

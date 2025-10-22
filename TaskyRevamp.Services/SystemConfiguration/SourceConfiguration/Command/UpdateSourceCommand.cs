@@ -34,7 +34,7 @@ namespace TaskyRevamp.Services.SystemConfiguration.SourceConfiguration.Command
 				sourceData.IsActive = newData.IsActive;
 
 				await _sourceRepository.Update(sourceData);
-				await _sourceRepository.SaveChangesAsync();
+				//await _sourceRepository.SaveChangesAsync();
 			}
 			return true;
 		}

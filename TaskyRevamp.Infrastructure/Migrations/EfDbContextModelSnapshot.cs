@@ -1547,8 +1547,9 @@ namespace TaskyRevamp.Infrastructure.Migrations
             modelBuilder.Entity("TaskyRevamp.Domain.Models.Users.User", b =>
                 {
                     b.HasOne("TaskyRevamp.Domain.Models.Task.Department", "Department")
-                        .WithMany()
-                        .HasForeignKey("DepartmentId");
+                        .WithMany("AssignedUser")
+                        .HasForeignKey("DepartmentId")
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.Navigation("Department");
                 });

@@ -1,0 +1,64 @@
+﻿@page "/LinkDepartmentUser/{Id:guid}"
+
+@using Stingray.Components.MultiSelectComponent
+@using TaskyRevamp.Client.Consumer
+@using TaskyRevamp.Client.Services
+@using TaskyRevamp.Client.Shared.Popups
+@using TaskyRevamp.Dto.Account
+@using TaskyRevamp.Dto.Department
+@inject UserConsumer  _userConsumer
+@inject NavigationManager navigationManager
+@inject IStringLocalizer<SharedResources> Loc
+@inject ToastService ToastService
+
+<div class="offcanvas-body">
+    <div class="mb-3">
+        <label class="form-label">
+            @Loc["users list"]
+            <span class="text-danger">*</span>
+        </label>
+        <SearchableMultiDropdownOffline TInput=UserDto TOutput="Guid" Datasource=availableUsers
+            TextSelector=@(x=>x.UserName) OutputSelector="x=> x.Id" @bind-SelectedOptions=assignedUserDto.UsrIds />
+    </div>
+</div>
+<div class="offcanvas-footer">
+    <div class="row g-2">
+        <div class="col-6">
+            <div class="d-grid">
+                <button type="button" class="btn btn-lg btn-light" @onclick="OnCancelClick">@Loc["Cancel"]</button>
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="d-grid">
+                <button type="button" @onclick="SaveClick" class="btn btn-lg btn-primary">@Loc["Save"]</button>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+@code {
+    [Parameter] public Guid Id { get; set; }
+    public List<UserDto> availableUsers { get; set; } = new();
+    public AssignedUserDto assignedUserDto = new AssignedUserDto();
+    protected async override Task OnInitializedAsync()
+    {
+        assignedUserDto.DepartmentId = Id;
+        var res = await _userConsumer.GetAllUNassignedUsers();
+        availableUsers = res.Data.ToList();
+
+        StateHasChanged();
+    }
+    private async Task SaveClick()
+    {
+        await _userConsumer.CreateAssignedUser(assignedUserDto);
+
+        StateHasChanged();
+    }
+
+    private async Task OnCancelClick()
+    {
+        StateHasChanged();
+    }
+
+}

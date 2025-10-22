@@ -29,7 +29,6 @@ namespace TaskyRevamp.Services.SystemConfiguration.SourceConfiguration.Command
 				IsActive = request.SourceDto.IsActive,
 			};
 			await _sourceRepository.Insert(source);
-			await _sourceRepository.SaveChangesAsync();
 			return true;
 		}
 	}

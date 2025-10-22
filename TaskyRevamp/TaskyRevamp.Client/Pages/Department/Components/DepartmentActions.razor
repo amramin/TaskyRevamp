@@ -1,0 +1,53 @@
+﻿@using TaskyRevamp.Dto.Department
+@inject IStringLocalizer<SharedResources> Loc
+
+<div class="dropdown actions">
+    <button class="btn btn-action-24" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <SVGCrud SVGType="SVGCrud.SVGTypeEnum.EllipseVertical"></SVGCrud>
+    </button>
+
+    <ul class="dropdown-menu">
+        <li>
+            <button class="dropdown-item" @onclick="@(() => ShowUsers.InvokeAsync(DepartmentId))">
+                <span class="icon">
+                    <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Users"></SVGCrud>
+                </span>
+                @Loc["ShowUser"]
+            </button>
+        </li>
+        <li>
+            <button class="dropdown-item" @onclick="@(() => OnAdd.InvokeAsync(DepartmentId))">
+                <span class="icon">
+                    <SVGCrud SVGType="SVGCrud.SVGTypeEnum.AddColumn"></SVGCrud>
+                </span>
+                @Loc["AddDepartment"]
+            </button>
+        </li>
+        <li>
+            <button class="dropdown-item" @onclick="@(() => Edit.InvokeAsync(DepartmentId))">
+                <span class="icon">
+                    <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Edit"></SVGCrud>
+                </span>
+                @Loc["Edit"]
+            </button>
+        </li>
+        <li>
+            <button class="dropdown-item" @onclick="@(() => Delete.InvokeAsync(DepartmentId))">
+                <span class="icon">
+                    <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Delete"></SVGCrud>
+                </span>
+                @Loc["Delete"]
+            </button>
+        </li>
+    </ul>
+</div>
+
+@code {
+    [Parameter] public Guid DepartmentId { get; set; }
+    [Parameter] public EventCallback<Guid> ShowUsers { get; set; }
+    [Parameter] public EventCallback<Guid> Edit { get; set; }
+    [Parameter] public EventCallback<Guid> Delete { get; set; }
+
+    [Parameter] public EventCallback<Guid> OnAdd { get; set; }
+
+}

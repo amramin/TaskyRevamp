@@ -27,4 +27,9 @@
         SearchTerm = e.Value?.ToString() ?? "";
         await SearchSubmit.InvokeAsync(SearchTerm);
     }
+    public void ClearSearchText()
+    {
+        SearchTerm = string.Empty;
+        StateHasChanged();
+    }
 }
