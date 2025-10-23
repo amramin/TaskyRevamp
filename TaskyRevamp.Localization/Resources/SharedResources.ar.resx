@@ -583,4 +583,19 @@
   <data name="Enter Priority Name Arabic" xml:space="preserve">
     <value>اسم الأولوية بالعربي</value>
   </data>
+  <data name="Deletedsuccessfully" xml:space="preserve">
+    <value>تم الحذف بنجاح</value>
+  </data>
+  <data name="Addusers" xml:space="preserve">
+    <value>اضافه مستخدمين</value>
+  </data>
+  <data name="Errordatabase" xml:space="preserve">
+    <value>خطا</value>
+  </data>
+  <data name="AddDelegation" xml:space="preserve">
+    <value>اضافه تفويض</value>
+  </data>
+  <data name="EditDelegation" xml:space="preserve">
+    <value>تعديل تفويض</value>
+  </data>
 </root>

@@ -583,4 +583,19 @@ Add a new department to get started</value>
   <data name="Enter Priority Name Arabic" xml:space="preserve">
     <value>Enter Priority Name Arabic</value>
   </data>
+  <data name="Deletedsuccessfully" xml:space="preserve">
+    <value>Deleted successfully</value>
+  </data>
+  <data name="Addusers" xml:space="preserve">
+    <value>Add Users</value>
+  </data>
+  <data name="Errordatabase" xml:space="preserve">
+    <value>Error database</value>
+  </data>
+  <data name="AddDelegation" xml:space="preserve">
+    <value>Add Delegation</value>
+  </data>
+  <data name="EditDelegation" xml:space="preserve">
+    <value>Edit Delegation</value>
+  </data>
 </root>

@@ -1,5 +1,6 @@
 ﻿using TaskyRevamp.Domain.Interfaces;
 using TaskyRevamp.Domain.Models.Task;
+using TaskyRevamp.Dto.UserDelegation;
 
 namespace TaskyRevamp.Domain.Models.Users.UserDelegations;
 
@@ -15,19 +16,29 @@ public class UserDelegation : Entity, IHasCreationMetaData, IHasUpdateMetaData
     public Guid? UpdatedById { get; set; }
     public DateTime? UpdateDate { get; set; }
     public User? UpdatedBy { get; set; }
+    public User? FromUser { get; set; }
+    public User? Touser { get; set; }
+    public virtual UserDelegationDto CopyToDto()
+    {
+        UserDelegationDto dto = new UserDelegationDto()
+        {
+            Id = Id,
+            FromDate = FromDate,
+            ToDate = ToDate,
+            FromUserId = FromUserId,
+            ToUserId = ToUserId,
+            FromUserEn=FromUser.NameEnglish,
+            FromUserAr=FromUser.NameArabic,
+            ToUserAr=Touser.NameArabic,
+            ToUserEn=Touser.NameEnglish,
+            CreatedBy = CreatedById,
+            UpdatedBy = UpdatedById,
+            CreateDate = CreateDate,
+            UpdateDate = UpdateDate,
+        };
 
-    //public virtual UserDelegationDto CopyToDto()
-    //{
-    //    UserDelegationDto dto = new UserDelegationDto()
-    //    {
-    //        Id=Id,
-    //        FromDate= FromDate,
-    //        ToDate= ToDate,
-    //        FromUserId= FromUserId,
-    //        ToUserId= ToUserId
-    //    };
+        return dto;
+    }
 
-    //    return dto;
-    //}
 
 }

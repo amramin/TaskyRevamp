@@ -8,7 +8,7 @@ using TaskyRevamp.Domain.Models.Users;
 using TaskyRevamp.Domain.Models.Users.UserDelegations;
 using Type = TaskyRevamp.Domain.Models.SystemConfiguration.Type;
 
-namespace SurveyRevamp.Infrastructure;
+namespace TaskyRevamp.Infrastructure;
 
 public class EfDbContext : DbContext
 {

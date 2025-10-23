@@ -9,9 +9,9 @@ public record GetUsersQuery(int PageNumber, int PageSize) : IRequest<PagedResult
 
 public class GetUsersHandler : IRequestHandler<GetUsersQuery, PagedResult<UserDto>>
 {
-    private readonly IRepository<User> _userRepository;
+    private readonly IRepository<TaskyRevamp.Domain.Models.Users.User> _userRepository;
 
-    public GetUsersHandler(IRepository<User> userRepository)
+    public GetUsersHandler(IRepository<TaskyRevamp.Domain.Models.Users.User> userRepository)
     {
         _userRepository = userRepository;
     }

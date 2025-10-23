@@ -22,12 +22,12 @@ public record AuthenticateCommand(string Username, string Password) : IRequest<s
 
 public class AuthenticateCommandHandler : IRequestHandler<AuthenticateCommand, string?>
 {
-    private readonly IRepository<User> _userRepository;
+    private readonly IRepository<TaskyRevamp.Domain.Models.Users.User> _userRepository;
     private readonly IRepository<UserDelegation> _delegateRepository;
     private readonly IOptions<AppSettings> _appSettingsOptions;
     IOptions<LdapSettings> _ldapPath;
 
-    public AuthenticateCommandHandler(IRepository<User> userRepository, IRepository<UserDelegation> delegateRepository, IOptions<AppSettings> appSettingsOptions, IOptions<LdapSettings> ldapSettings)
+    public AuthenticateCommandHandler(IRepository<TaskyRevamp.Domain.Models.Users.User> userRepository, IRepository<UserDelegation> delegateRepository, IOptions<AppSettings> appSettingsOptions, IOptions<LdapSettings> ldapSettings)
     {
         _userRepository = userRepository;
         _delegateRepository = delegateRepository;
@@ -49,7 +49,7 @@ public class AuthenticateCommandHandler : IRequestHandler<AuthenticateCommand, s
             }
 
 
-            var user = new User();
+            var user = new TaskyRevamp.Domain.Models.Users.User();
 
             var userResponse = await _userRepository.FindBy(x => x.Username == request.Username);
             if (userResponse.IsFailure || userResponse.Value is null || userResponse.Value.Count == 0)
@@ -137,7 +137,7 @@ public class AuthenticateCommandHandler : IRequestHandler<AuthenticateCommand, s
             return false;
         }
     }
-    private User AddNewUser(string ldapPath, string username)
+    private TaskyRevamp.Domain.Models.Users.User AddNewUser(string ldapPath, string username)
     {
         try
         {
@@ -186,7 +186,7 @@ public class AuthenticateCommandHandler : IRequestHandler<AuthenticateCommand, s
                         }
 
                         // Add the AD user to the list
-                        var newUser = new User
+                        var newUser = new TaskyRevamp.Domain.Models.Users.User
                         {
                             Username = samAccountName,
                             NameArabic = displayName,
@@ -250,18 +250,18 @@ public class AuthenticateCommandHandler : IRequestHandler<AuthenticateCommand, s
     }
 
 
-    private List<User> GetDelegatedUsers(User user)
+    private List<TaskyRevamp.Domain.Models.Users.User> GetDelegatedUsers(TaskyRevamp.Domain.Models.Users.User user)
     {
-        var users = new List<User>();
+        var users = new List<TaskyRevamp.Domain.Models.Users.User>();
         users.Add(user);
 
         var data = _delegateRepository.FindBy(x => x.ToUserId == user.Id && x.FromDate <= DateTime.UtcNow && x.ToDate >= DateTime.UtcNow);
-        if (data == null) { return new List<User>() { user }; }
+        if (data == null) { return new List<TaskyRevamp.Domain.Models.Users.User>() { user }; }
         var toUsers = data.Result.Value?.ToList();
         var guids = toUsers.Select(x => x.FromUserId).ToList();
 
         var data2 = _userRepository.FindBy(x => guids.Contains(x.Id));
-        if (data2 == null) { return new List<User>() { user }; }
+        if (data2 == null) { return new List<TaskyRevamp.Domain.Models.Users.User>() { user }; }
         var delegateUsers = data2.Result.Value?.ToList();
         users.AddRange(delegateUsers);
 

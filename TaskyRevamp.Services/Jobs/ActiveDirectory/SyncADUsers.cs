@@ -14,10 +14,10 @@ namespace TaskyRevamp.Services.Jobs.ActiveDirectory;
 public class SyncAdUsers
 {
 
-    private readonly IRepository<User> _userRepository;
+    private readonly IRepository<TaskyRevamp.Domain.Models.Users.User> _userRepository;
     IOptions<LdapSettings> _ldapPath;
 
-    public SyncAdUsers(IOptions<LdapSettings> ldapSettings, IRepository<User> userRepository)
+    public SyncAdUsers(IOptions<LdapSettings> ldapSettings, IRepository<TaskyRevamp.Domain.Models.Users.User> userRepository)
     {
         _userRepository = userRepository;
         _ldapPath = ldapSettings;
@@ -55,9 +55,9 @@ public class SyncAdUsers
         Console.WriteLine("Active Directory users successfully saved to the database.");
 
     }
-    public async Task<List<User>> CheckNewAddedUser(string ldapPath, string userName, string password)
+    public async Task<List<TaskyRevamp.Domain.Models.Users.User>> CheckNewAddedUser(string ldapPath, string userName, string password)
     {
-        var users = new List<User>();
+        var users = new List<TaskyRevamp.Domain.Models.Users.User>();
 
         using (var entry = new DirectoryEntry(ldapPath, userName, password))
         {
@@ -106,7 +106,7 @@ public class SyncAdUsers
                     }
 
                     // Add the AD user to the list
-                    users.Add(new User
+                    users.Add(new TaskyRevamp.Domain.Models.Users.User
                     {
                         Username = samAccountName,
                         NameEnglish = displayName,
@@ -127,9 +127,9 @@ public class SyncAdUsers
 
         return users;
     }
-    public async Task<List<User>> CheckUsersChanges(string ldapPath, string userName, string password)
+    public async Task<List<TaskyRevamp.Domain.Models.Users.User>> CheckUsersChanges(string ldapPath, string userName, string password)
     {
-        var users = new List<User>();
+        var users = new List<TaskyRevamp.Domain.Models.Users.User>();
 
         using (var entry = new DirectoryEntry(ldapPath, userName, password))
         {
@@ -181,7 +181,7 @@ public class SyncAdUsers
                     }
 
                     // Add the AD user to the list
-                    users.Add(new User
+                    users.Add(new TaskyRevamp.Domain.Models.Users.User
                     {
                         Username = samAccountName,
                         NameArabic = displayName,
@@ -240,7 +240,7 @@ public class SyncAdUsers
         return null; // Return null if the manager's sAMAccountName is not found
     }
 
-    public async Task SaveUsersToDatabase(List<User> users)
+    public async Task SaveUsersToDatabase(List<TaskyRevamp.Domain.Models.Users.User> users)
     {
 
         foreach (var user in users)
@@ -276,7 +276,7 @@ public class SyncAdUsers
         await _userRepository.SaveChangesAsync();
     }
 
-    private async Task SaveUsersToDatabaseBulk(List<User> users)
+    private async Task SaveUsersToDatabaseBulk(List<TaskyRevamp.Domain.Models.Users.User> users)
     {
         // Retrieve all existing users from the database
         var existingUsers = (await _userRepository.All()).Value;
@@ -285,8 +285,8 @@ public class SyncAdUsers
         var existingUserDictionary = existingUsers
             .ToDictionary(u => u.Username.ToLower(), u => u, StringComparer.OrdinalIgnoreCase);
 
-        var newUsers = new List<User>();
-        var usersToUpdate = new List<User>();
+        var newUsers = new List<TaskyRevamp.Domain.Models.Users.User>();
+        var usersToUpdate = new List<TaskyRevamp.Domain.Models.Users.User>();
 
         foreach (var user in users)
         {

@@ -46,9 +46,9 @@ public class SyncAllUsersFtHandler : IRequestHandler<SyncAllUsersFt, bool>
         Console.WriteLine("Active Directory users successfully saved to the database.");
 
     }
-    public async Task<List<User>> GetAllActiveDirectoryUsers(string ldapPath, string userName, string password)
+    public async Task<List<TaskyRevamp.Domain.Models.Users.User>> GetAllActiveDirectoryUsers(string ldapPath, string userName, string password)
     {
-        var users = new List<User>();
+        var users = new List<TaskyRevamp.Domain.Models.Users.User>();
 
         using (var entry = new DirectoryEntry(ldapPath, userName, password))
         {
@@ -94,7 +94,7 @@ public class SyncAllUsersFtHandler : IRequestHandler<SyncAllUsersFt, bool>
 
                     }
                     // Add the AD user to the list
-                    users.Add(new User
+                    users.Add(new TaskyRevamp.Domain.Models.Users.User
                     {
                         Username = username,
                         NameArabic = displayName,
@@ -147,7 +147,7 @@ public class SyncAllUsersFtHandler : IRequestHandler<SyncAllUsersFt, bool>
         return null; // Return null if the manager's sAMAccountName is not found
     }
 
-    public async Task SaveUsersToDatabase(List<User> users)
+    public async Task SaveUsersToDatabase(List<TaskyRevamp.Domain.Models.Users.User> users)
     {
 
         foreach (var user in users)
@@ -180,7 +180,7 @@ public class SyncAllUsersFtHandler : IRequestHandler<SyncAllUsersFt, bool>
         }
         await _userRepository.SaveChangesAsync();
     }
-    public async Task SaveUsersToDatabaseBulk(List<User> users)
+    public async Task SaveUsersToDatabaseBulk(List<TaskyRevamp.Domain.Models.Users.User> users)
     {
         await _userRepository.InsertRange(users);
         await _userRepository.BulkInsertAsync(users);

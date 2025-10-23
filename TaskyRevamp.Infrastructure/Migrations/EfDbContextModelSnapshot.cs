@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using SurveyRevamp.Infrastructure;
+using TaskyRevamp.Infrastructure;
 
 #nullable disable
 
@@ -957,6 +957,10 @@ namespace TaskyRevamp.Infrastructure.Migrations
 
                     b.HasIndex("CreatedById");
 
+                    b.HasIndex("FromUserId");
+
+                    b.HasIndex("ToUserId");
+
                     b.HasIndex("UpdatedById");
 
                     b.ToTable("UserDelegation");
@@ -1381,12 +1385,28 @@ namespace TaskyRevamp.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("TaskyRevamp.Domain.Models.Users.User", "FromUser")
+                        .WithMany()
+                        .HasForeignKey("FromUserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("TaskyRevamp.Domain.Models.Users.User", "Touser")
+                        .WithMany()
+                        .HasForeignKey("ToUserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("TaskyRevamp.Domain.Models.Users.User", "UpdatedBy")
                         .WithMany()
                         .HasForeignKey("UpdatedById")
                         .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("CreatedBy");
+
+                    b.Navigation("FromUser");
+
+                    b.Navigation("Touser");
 
                     b.Navigation("UpdatedBy");
                 });

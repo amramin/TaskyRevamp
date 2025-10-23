@@ -115,6 +115,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add Delegation.
+        /// </summary>
+        public static string AddDelegation {
+            get {
+                return ResourceManager.GetString("AddDelegation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add Department.
         /// </summary>
         public static string AddDepartment {
@@ -201,6 +210,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string AddTaskType {
             get {
                 return ResourceManager.GetString("AddTaskType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add Users.
+        /// </summary>
+        public static string Addusers {
+            get {
+                return ResourceManager.GetString("Addusers", resourceCulture);
             }
         }
         
@@ -466,6 +484,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Deleted successfully.
+        /// </summary>
+        public static string Deletedsuccessfully {
+            get {
+                return ResourceManager.GetString("Deletedsuccessfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Delete Task Source.
         /// </summary>
         public static string DeleteTaskSource {
@@ -516,6 +543,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string Duration {
             get {
                 return ResourceManager.GetString("Duration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit Delegation.
+        /// </summary>
+        public static string EditDelegation {
+            get {
+                return ResourceManager.GetString("EditDelegation", resourceCulture);
             }
         }
         
@@ -624,6 +660,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string EnterDaysNumber {
             get {
                 return ResourceManager.GetString("EnterDaysNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error database.
+        /// </summary>
+        public static string Errordatabase {
+            get {
+                return ResourceManager.GetString("Errordatabase", resourceCulture);
             }
         }
         

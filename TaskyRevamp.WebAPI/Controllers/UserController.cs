@@ -1,9 +1,12 @@
 ﻿using DepartmentyRevamp.Services.Departments.Commands;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using TaskyRevamp.Dto;
 using TaskyRevamp.Dto.Account;
 using TaskyRevamp.Dto.Department;
 using TaskyRevamp.Dto.GeneralDto;
+using TaskyRevamp.Services.Account.Query;
+using TaskyRevamp.Services.User.Query;
 using userRevamp.Services.userCQRS.Query;
 
 namespace UserRevamp.WebAPI.Controllers;
@@ -49,4 +52,29 @@ public class UserController : ControllerBase
 
         return Ok(res);
     }
+
+    [HttpGet("GetUsers")]
+    public async Task<List<UserDto>> GetUsers()
+    {
+        var data = await _mediator.Send(new TaskyRevamp.Services.User.Query.GetUsersQuery());
+        return data;
+    }
+
+    [HttpGet("GetUsers/{culture}/{pageSize:int}/{offset:int}")]
+    public async Task<SearchableBackendDto<DdlDto>> GetUsers(string Culture,
+        int pageSize,
+        int offset,
+        [FromQuery] string searchValue
+       )
+    {
+        var data = await _mediator.Send(new GetUsersBySearchValueQuery(searchValue, Culture, pageSize, offset));
+        return data;
+    }
+    [HttpGet("GetSelectedUserDdlById/{id:Guid}")]
+    public async Task<DdlDto> GetSelectedUserDdlById(Guid id)
+    {
+        var data = await _mediator.Send(new GetSelectedUserDdlByIdQuery(id));
+        return data;
+    }
+
 }

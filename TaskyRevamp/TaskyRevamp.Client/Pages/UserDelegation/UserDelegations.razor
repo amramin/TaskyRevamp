@@ -1,0 +1,348 @@
+﻿@page "/UserDelegations"
+@using Blazored.LocalStorage
+@using System.Runtime
+@using TaskyRevamp.Client.Consumer
+@inject UserConsumer _userConsumer
+@inject UserDelegationConsumer _userDelegationConsumer
+@inject ILocalStorageService LocalStorageService
+@inject NavigationManager uriHelper
+@using TaskyRevamp.Client.Services
+@using TaskyRevamp.Client.Shared.Popups
+@using TaskyRevamp.Dto;
+@using TaskyRevamp.Dto.Enums.SearchFields
+@using TaskyRevamp.Dto.GeneralDto
+@inject PopupService PopupService
+
+@using TaskyRevamp.Dto.UserDelegation
+@inject ToastService ToastService
+
+@inject IStringLocalizer<SharedResources> Loc
+
+<div class="page-header">
+    <h1 class="page-headline">@Loc["Delegations"]</h1>
+    <div class="action-btn-list">
+        <Search SearchSubmit="Search" CssClass="form-control"></Search>
+       
+       
+
+        <button class="btn btn-primary" @onclick="Add">
+            <span class="icon">
+                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Pluse"></SVGCrud>
+            </span>
+            @Loc["AddDelegation"]
+        </button>
+    </div>
+</div>
+
+@if (AlluserDelegation == null || AlluserDelegation.Count == 0)
+{
+
+    <NoDataAvailable MessageTitle="@Loc["NoDelegationavailable"]" MessageSubtitle="@Loc["Nodepartmentavailable"]"
+                     ButtonText="@Loc["AddDelegation"]" OnButtonClick="Add" />
+    <h6 class="mb-3">@Loc["NoDelegationavailable"]</h6>
+}
+
+
+
+else
+{
+
+    <div class="table-responsive sticky-header-custom">
+
+        <SortableTable TItem="UserDelegationDto"
+                       Columns="@tableColumns"
+                       Items="@AlluserDelegation"
+                       SortColumn="@currentSortColumn"
+                       SortAscending="@sortAscending"
+                       OnSortRequested="HandleSort">
+
+            <RowTemplate>
+
+
+                @foreach (var p in AlluserDelegation)
+                {
+                    <tr>
+                        <td>@p.FromUser</td>
+                        <td>@p.ToUserAr</td>
+                        <td>@p.FromDate.ToString("yyyy-MM-dd")</td>
+                        <td>@p.ToDate.ToString("yyyy-MM-dd")</td>
+
+                        <td>@p.CreatedByName</td>
+                        <td>@p.CreateDate?.ToString("yyyy-MM-dd")</td>
+                        <td>@p.UpdatedByName</td>
+                        <td>@p.UpdateDate?.ToString("yyyy-MM-dd")</td>
+
+                        <td class="sticky-end-action">
+                            <div class="dropdown actions">
+                                <button class="btn btn-action-24" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <SVGCrud SVGType="SVGCrud.SVGTypeEnum.EllipseVertical"></SVGCrud>
+                                </button>
+                                <ul class="dropdown-menu">
+
+                                   
+                                   
+                                    <li>
+                                        <button class="dropdown-item" @onclick="@(() => ShowEditPopup(p.Id))">
+                                            <span class="icon">
+                                                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Edit"></SVGCrud>
+                                            </span>
+                                            @Loc["EditDelegation"]
+                                        </button>
+                                    </li>
+                                    <li>
+                                        <button class="dropdown-item text-danger" @onclick="@(() => OnDeleteDelegation(p.Id))">
+                                            <span class="icon">
+                                                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Delete"></SVGCrud>
+                                            </span>
+                                            @Loc["Delete"]
+                                        </button>
+                                    </li>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+                }
+
+
+
+            </RowTemplate>
+        </SortableTable>
+
+
+    </div>
+    <Pagination CurrentPage="@currentPage" TotalPages="@totalPages" TotalCount="@totalCount" PageSize="@pageSize"
+                PageChanged="ChangePage" PageSizeChangedCallback="ChangePageSize" />
+
+
+
+}
+
+@code {
+    public bool IsAdmine;// = roleService.IsAllowed(int)Modules., (int)ModuleActions.EditReportPermission) ;//true;//
+    [Parameter] public EventCallback<Guid> OnEdit { get; set; }
+    [Parameter] public EventCallback<Guid> OnDelete { get; set; }
+    [Parameter] public EventCallback<Guid> OnShowUsers { get; set; }
+    [Parameter] public EventCallback<Guid> OnAdd { get; set; }
+    UserDelegationDto userDelegation = new UserDelegationDto();
+    List<UserDelegationDto> AlluserDelegation = new List<UserDelegationDto>();
+    private bool isPopupVisible = false;
+    public bool IsShowEditDialog { get; set; } = false;
+    public Guid UserDelegationId { set; get; }
+    int total = 0;
+    private Guid itemToDelete;
+    public int CurrentPage { get; set; }
+    public int PageSize { get; set; }
+    public int TotalItemsCount { get; set; }
+    private List<SortableColumn> tableColumns = new();
+    private string currentSortColumn = "CreateDate";
+    private bool? sortAscending = true;
+    public Guid currentUserId { set; get; }
+    public bool IsShowCreateDialog { get; set; } = false;
+    private int currentPage = 1;
+    private int totalPages = 1;
+    private int totalCount = 0;
+    private int pageSize = 10;
+    protected override async Task OnInitializedAsync()
+    {
+        tableColumns = new()
+        {
+            new() { Field = "FromUser", DisplayName = Loc["FromUser"] },
+            new() { Field = "ToUser", DisplayName = Loc["ToUser"] },
+                        new() { Field = "FromDate", DisplayName = Loc["FromDate"] },
+
+                                    new() { Field = "ToDate", DisplayName = Loc["ToDate"] },
+
+                        new() { Field = "CreatedBy", DisplayName = Loc["CreatedBy"] },
+
+            new() { Field = "CreateDate", DisplayName = Loc["CreationDate"] },
+                        new() { Field = "UpdatedBy", DisplayName = Loc["UpdatedBy"] },
+
+            new() { Field = "UpdateDate", DisplayName = Loc["UpdateDate"] },
+            new() { Field = "Action", DisplayName = Loc["Action"] ,IsSortable = false},
+        };
+
+        await GetDelegations();
+        StateHasChanged();
+    }
+    public async Task ResetPage()
+    {
+        await GetDelegations();
+        IsShowCreateDialog = false;
+        IsShowEditDialog = false;
+        isPopupVisible = false;
+        StateHasChanged();
+    }
+    public async Task Search(string searchTerm)
+    {
+        await GetDelegations(true, searchTerm);
+       // await LoadSources(true, searchTerm);
+    }
+    private async Task ChangePage(int page)
+    {
+        currentPage = page;
+        await GetDelegations();
+    }
+    private async Task ChangePageSize(int newSize)
+    {
+        pageSize = newSize;
+        currentPage = 1;
+        await GetDelegations();
+    }
+    private async Task DeleteConfirmed(Guid Id)
+    {
+        var result = await _userDelegationConsumer.Delete(Id.ToString());
+        if (result.Success)
+        {
+            var toRemove = AlluserDelegation.FirstOrDefault(d => d.Id == Id);
+            if (toRemove != null)
+            {
+                AlluserDelegation.Remove(toRemove);
+            }
+
+            await ToastService.ShowToastAsync(Loc["Deletedsuccessfully"], "success");
+        }
+        else
+        {
+            await ToastService.ShowToastAsync(Loc["DeleteFailed"], "danger");
+        }
+
+        StateHasChanged();
+    }
+
+    private void OnDeleteDelegation(Guid delegationId)
+    {
+        PopupService.ShowConfirmation(
+        @Loc["SureDeleteDelegation"],
+        "Yes, Delete",
+        async (confirmed) =>
+        {
+            if (confirmed)
+                await DeleteConfirmed(delegationId);
+        },
+        ConfirmationType.Danger
+        );
+    }
+
+    public async Task Add()
+    {
+             PopupService.ShowNew(@<Create IsAdmine="@IsAdmine"  OnValidSubmit="OnInitializedAsync"></Create>,Loc["AddDelegation"]);
+
+       // StateHasChanged();
+    }
+
+    public void ShowEditPopup(Guid id)
+    {
+        PopupService.ShowNew(@<Edit  UserDelegationId="@id.ToString()" IsAdmine="@IsAdmine" OnValidSubmit="OnInitializedAsync"></Edit>, headerText:
+        @Loc["EditDelegation"]);
+    }
+    private async Task OnConfirmDelete(bool confirmed)
+    {
+        if (confirmed && itemToDelete != null)
+        {
+            var res = await _userDelegationConsumer.Delete(itemToDelete.ToString());
+            if (res.Success)
+            {
+                AlluserDelegation.Remove(AlluserDelegation.FirstOrDefault(x => x.Id == itemToDelete));
+                await GetDelegations();
+            }
+        }
+        isPopupVisible = false;
+        StateHasChanged();
+    }
+    public void ShowConfirmation(Guid Id)
+    {
+        itemToDelete = Id;
+        isPopupVisible = true;
+        StateHasChanged();
+    }
+    public async void OnPageChange(int selectedPage, int pageSize)
+    {
+        IsShowCreateDialog = false;
+        IsShowEditDialog = false;
+        CurrentPage = selectedPage;
+        PageSize = pageSize;
+
+        // await GetUsersList();
+        await GetDelegations();
+        StateHasChanged();
+    }
+    private async Task Cancel()
+    {
+        userDelegation = new UserDelegationDto();
+        StateHasChanged();
+    }
+    public List<SearchFieldDelegation> searchFields = new List<SearchFieldDelegation>() {
+    SearchFieldDelegation.FromUser,
+    SearchFieldDelegation.ToUser,
+    SearchFieldDelegation.CreatedBy,
+        SearchFieldDelegation.CreateDate,
+
+    SearchFieldDelegation.UpdatedBy,
+    SearchFieldDelegation.UpdateDate,
+    SearchFieldDelegation.ToDate
+    };
+
+    private async Task Save()
+    {
+        if (userDelegation.ToUserId == Guid.Empty)
+            return;
+        var current = await LocalStorageService.GetItemAsStringAsync("Id");
+        userDelegation.FromUserId = Guid.Parse(current);
+        await _userDelegationConsumer.CreateUserDelegation(userDelegation);
+
+        await GetDelegations();
+    }
+    private async Task HandleSort((string Column, bool? Ascending) sortInfo)
+    {
+        currentSortColumn = sortInfo.Column;
+        sortAscending = sortInfo.Ascending;
+
+
+        if (sortAscending == null)
+        {
+            // third click → reset to default sorting
+            currentSortColumn = "CreateDate"; // or whatever your default column is
+            sortAscending = true;
+        }
+        await GetDelegations();
+    }
+
+
+
+    private async Task GetDelegations(bool isSearch = false, string searchTerm = null)
+    {
+        var currentuser = await LocalStorageService.GetItemAsStringAsync("Id");
+        currentUserId = Guid.Parse(currentuser);
+        userDelegation.FromUserId = currentUserId;
+        if (IsAdmine)
+        {
+
+            var res = await _userDelegationConsumer.GetAllUserDelegation(currentPage, pageSize, currentSortColumn, sortAscending.Value, isSearch ?
+                 searchFields : null, isSearch ? searchTerm : null);
+            AlluserDelegation = res.Data.Items.OrderBy(k => k.CreateDate).ToList();
+
+            if (!(res?.Success ?? false) || res.Data is null)
+                return;
+
+            var data = res.Data;
+            totalPages = data.TotalPages;
+            totalCount = data.TotalCount;
+        }
+        else
+        {
+            var res = await _userDelegationConsumer.GetAllUserDelegation(currentPage, pageSize, currentSortColumn, sortAscending.Value, isSearch ?
+                 searchFields : null, isSearch ? searchTerm : null);
+            AlluserDelegation = res.Data.Items.OrderBy(k => k.CreateDate).ToList();
+
+            if (!(res?.Success ?? false) || res.Data is null)
+                return;
+
+            var data = res.Data;
+            totalPages = data.TotalPages;
+            totalCount = data.TotalCount;
+        }
+        StateHasChanged();
+    }
+
+  
+}

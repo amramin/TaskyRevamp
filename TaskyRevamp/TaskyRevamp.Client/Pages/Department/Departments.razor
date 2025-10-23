@@ -161,7 +161,7 @@ new() { Field = "Action", DisplayName = Loc["Action"] ,IsSortable = false},
     {
 
         // navigationManager.NavigateTo("/Add-Department");
-        PopupService.ShowNew(@<AddDepartment OnValidSubmit="OnInitializedAsync"></AddDepartment>);
+        PopupService.ShowNew(@<AddDepartment OnValidSubmit="OnInitializedAsync"></AddDepartment>,Loc["AddDepartment"]);
 
     }
     private async Task ClearSearch()
@@ -185,7 +185,7 @@ new() { Field = "Action", DisplayName = Loc["Action"] ,IsSortable = false},
     private void AddDept(Guid id)
     {
         // navigationManager.NavigateTo($"/UsersDepartment/{id}");
-        PopupService.ShowNew(@<AddDepartment ParentId="id"></AddDepartment>);
+        PopupService.ShowNew(@<AddDepartment ParentId="id"></AddDepartment>,Loc["AddDepartment"]);
 
     }
     private void ChangeView(DepartmentViewType view) => currentView = view;
@@ -224,7 +224,7 @@ SearchFieldDepartment.ParentNameEN
                 departmentDtos.Remove(toRemove);
             }
 
-            await ToastService.ShowToastAsync(Loc["Deleted successfully"], "success");
+            await ToastService.ShowToastAsync(Loc["Deletedsuccessfully"], "success");
             BuildHierarchy();
         }
         else
