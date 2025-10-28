@@ -22,8 +22,8 @@
     <h1 class="page-headline">@Loc["Delegations"]</h1>
     <div class="action-btn-list">
         <Search SearchSubmit="Search" CssClass="form-control"></Search>
-       
-       
+
+
 
         <button class="btn btn-primary" @onclick="Add">
             <span class="icon">
@@ -79,8 +79,8 @@ else
                                 </button>
                                 <ul class="dropdown-menu">
 
-                                   
-                                   
+
+
                                     <li>
                                         <button class="dropdown-item" @onclick="@(() => ShowEditPopup(p.Id))">
                                             <span class="icon">
@@ -148,14 +148,14 @@ else
         {
             new() { Field = "FromUser", DisplayName = Loc["FromUser"] },
             new() { Field = "ToUser", DisplayName = Loc["ToUser"] },
-                        new() { Field = "FromDate", DisplayName = Loc["FromDate"] },
+            new() { Field = "FromDate", DisplayName = Loc["FromDate"] },
 
-                                    new() { Field = "ToDate", DisplayName = Loc["ToDate"] },
+            new() { Field = "ToDate", DisplayName = Loc["ToDate"] },
 
-                        new() { Field = "CreatedBy", DisplayName = Loc["CreatedBy"] },
+            new() { Field = "CreatedBy", DisplayName = Loc["CreatedBy"] },
 
             new() { Field = "CreateDate", DisplayName = Loc["CreationDate"] },
-                        new() { Field = "UpdatedBy", DisplayName = Loc["UpdatedBy"] },
+            new() { Field = "UpdatedBy", DisplayName = Loc["UpdatedBy"] },
 
             new() { Field = "UpdateDate", DisplayName = Loc["UpdateDate"] },
             new() { Field = "Action", DisplayName = Loc["Action"] ,IsSortable = false},
@@ -175,7 +175,7 @@ else
     public async Task Search(string searchTerm)
     {
         await GetDelegations(true, searchTerm);
-       // await LoadSources(true, searchTerm);
+        // await LoadSources(true, searchTerm);
     }
     private async Task ChangePage(int page)
     {
@@ -225,14 +225,14 @@ else
 
     public async Task Add()
     {
-             PopupService.ShowNew(@<Create IsAdmine="@IsAdmine"  OnValidSubmit="OnInitializedAsync"></Create>,Loc["AddDelegation"]);
+        PopupService.ShowNew(@<Create IsAdmine="@IsAdmine" OnValidSubmit="OnInitializedAsync"></Create>,Loc["AddDelegation"]);
 
-       // StateHasChanged();
+        // StateHasChanged();
     }
 
     public void ShowEditPopup(Guid id)
     {
-        PopupService.ShowNew(@<Edit  UserDelegationId="@id.ToString()" IsAdmine="@IsAdmine" OnValidSubmit="OnInitializedAsync"></Edit>, headerText:
+        PopupService.ShowNew(@<Edit UserDelegationId="@id.ToString()" IsAdmine="@IsAdmine" OnValidSubmit="OnInitializedAsync"></Edit>, headerText:
         @Loc["EditDelegation"]);
     }
     private async Task OnConfirmDelete(bool confirmed)
@@ -274,12 +274,13 @@ else
     public List<SearchFieldDelegation> searchFields = new List<SearchFieldDelegation>() {
     SearchFieldDelegation.FromUser,
     SearchFieldDelegation.ToUser,
-    SearchFieldDelegation.CreatedBy,
-        SearchFieldDelegation.CreateDate,
-
+    SearchFieldDelegation.FromDate,
+        SearchFieldDelegation.ToDate,
+         SearchFieldDelegation.CreatedBy,
+             SearchFieldDelegation.CreateDate,
     SearchFieldDelegation.UpdatedBy,
-    SearchFieldDelegation.UpdateDate,
-    SearchFieldDelegation.ToDate
+    SearchFieldDelegation.UpdateDate
+
     };
 
     private async Task Save()
@@ -319,7 +320,7 @@ else
 
             var res = await _userDelegationConsumer.GetAllUserDelegation(currentPage, pageSize, currentSortColumn, sortAscending.Value, isSearch ?
                  searchFields : null, isSearch ? searchTerm : null);
-            AlluserDelegation = res.Data.Items.OrderBy(k => k.CreateDate).ToList();
+            AlluserDelegation = res.Data.Items.ToList();
 
             if (!(res?.Success ?? false) || res.Data is null)
                 return;
@@ -332,7 +333,7 @@ else
         {
             var res = await _userDelegationConsumer.GetAllUserDelegation(currentPage, pageSize, currentSortColumn, sortAscending.Value, isSearch ?
                  searchFields : null, isSearch ? searchTerm : null);
-            AlluserDelegation = res.Data.Items.OrderBy(k => k.CreateDate).ToList();
+            AlluserDelegation = res.Data.Items.ToList();
 
             if (!(res?.Success ?? false) || res.Data is null)
                 return;
@@ -344,5 +345,5 @@ else
         StateHasChanged();
     }
 
-  
+
 }

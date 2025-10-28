@@ -67,7 +67,7 @@ public class GetUsersDelegationsHandler : IRequestHandler<GetUsersDelegationsQue
 
     }
 
-   
+
 
     private Func<IQueryable<UserDelegation>, IOrderedQueryable<UserDelegation>> GetOrderBy(string sortByColumn, bool sortAscending)
     {
@@ -101,9 +101,14 @@ public class GetUsersDelegationsHandler : IRequestHandler<GetUsersDelegationsQue
                   ? q => q.OrderBy(u => u.ToDate)
                   : q => q.OrderByDescending(u => u.ToDate);
 
+            case "UpdatedBy":
 
+                return sortAscending
+                  ? q => q.OrderBy(u => u.UpdatedBy!.NameEnglish)
+                  : q => q.OrderByDescending(u => u.UpdatedBy!.NameEnglish);
             case "FromUser":
-                if (currentCulture == "en") {
+                if (currentCulture == "en")
+                {
                     return sortAscending
                         ? q => q.OrderBy(u => u.FromUser!.NameEnglish)
                         : q => q.OrderByDescending(u => u.FromUser!.NameEnglish);
@@ -132,8 +137,8 @@ public class GetUsersDelegationsHandler : IRequestHandler<GetUsersDelegationsQue
 
                 }
             default:
-                        return q => q.OrderBy(u => u.CreateDate);
-                    }
+                return q => q.OrderBy(u => u.CreateDate);
+        }
     }
 
 }

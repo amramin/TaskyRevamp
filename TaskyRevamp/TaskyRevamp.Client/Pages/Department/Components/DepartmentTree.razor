@@ -17,7 +17,7 @@
                     Delete="OnDelete" />
 
                 <button class="btn btn-outline-light-primary btn-32" type="button"
-                    @onclick="() => HandleDepartmentSelection(dept.Id.ToString())">
+                    @onclick="() => HandleDepartmentSelection(dept.Id)">
                     <span class="icon">
                         <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Pluse"></SVGCrud>
                     </span>
@@ -31,7 +31,7 @@
                     {
                         <li>
                             <DepartmentTree Departments="new List<DepartmentDto> { child }" OnAdd="OnAdd" OnShowUsers="OnShowUsers"
-                                OnEdit="OnEdit" OnDelete="OnDelete" />
+                                            OnEdit="OnEdit" OnAddDepartment="OnAdd" OnDelete="OnDelete" />
                         </li>
                     }
                 </ul>
@@ -44,24 +44,20 @@
 
 @code {
     [Parameter] public List<DepartmentDto> Departments { get; set; } = new();
-    [Parameter] public EventCallback<string> OnAddDepartment { get; set; }
+    [Parameter] public EventCallback<Guid> OnAddDepartment { get; set; }
     [Parameter] public EventCallback<Guid> OnShowUsers { get; set; }
     [Parameter] public EventCallback<Guid> OnEdit { get; set; }
     [Parameter] public EventCallback<Guid> OnDelete { get; set; }
     [Parameter] public EventCallback<Guid> OnAdd { get; set; }
 
-    protected override async Task OnInitializedAsync()
-    {
-        var x = Departments;
-
-    }
+   
 
     private void ToggleChildren(DepartmentDto dept)
     {
         dept.IsExpanded = !dept.IsExpanded;
     }
 
-    private void HandleDepartmentSelection(string departmentId)
+    private void HandleDepartmentSelection(Guid departmentId)
     {
         OnAddDepartment.InvokeAsync(departmentId);
     }

@@ -18,30 +18,27 @@
 <div class="page-header">
     <h1 class="page-headline">@Loc["Departments"]</h1>
     <div class="action-btn-list">
-        <Search SearchSubmit="Search" CssClass="form-control"></Search>
-        <button
-            class="btn btn-action-40 @(currentView == DepartmentViewType.Hierarchy ? "btn-outline-primary" : "btn-outline-light")"
-            data-bs-toggle="tooltip" data-bs-placement="top" title="@Loc["Hierarchy"]"
-            @onclick="@(() => ChangeView(DepartmentViewType.Hierarchy))">
+        <Search @ref="searchComponent" SearchSubmit="Search" CssClass="form-control"></Search>
+        <button class="btn btn-action-40 @(currentView == DepartmentViewType.Hierarchy ? "btn-outline-primary" : "btn-outline-light")"
+                data-bs-toggle="tooltip" data-bs-placement="top" title="@Loc["Hierarchy"]"
+                @onclick="@(() => ChangeView(DepartmentViewType.Hierarchy))">
 
             <span class="icon">
                 <SVGCrud SVGType="SVGCrud.SVGTypeEnum.DataFlow"></SVGCrud>
             </span>
         </button>
 
-        <button
-            class="btn btn-action-40 @(currentView == DepartmentViewType.Tree ? "btn-outline-primary" : "btn-outline-light")"
-            data-bs-toggle="tooltip" data-bs-placement="top" title="@Loc["Tree"]"
-            @onclick="@(() => ChangeView(DepartmentViewType.Tree))">
+        <button class="btn btn-action-40 @(currentView == DepartmentViewType.Tree ? "btn-outline-primary" : "btn-outline-light")"
+                data-bs-toggle="tooltip" data-bs-placement="top" title="@Loc["Tree"]"
+                @onclick="@(() => ChangeView(DepartmentViewType.Tree))">
 
             <span class="icon">
                 <SVGCrud SVGType="SVGCrud.SVGTypeEnum.SubTasks"></SVGCrud>
             </span>
         </button>
-        <button
-            class="btn btn-action-40   @(currentView == DepartmentViewType.Grid ? "btn-outline-primary" : "btn-outline-light")"
-            data-bs-toggle="tooltip" data-bs-placement="top" title="@Loc["Grid"]"
-            @onclick="@(() => ChangeView(DepartmentViewType.Grid))">
+        <button class="btn btn-action-40   @(currentView == DepartmentViewType.Grid ? "btn-outline-primary" : "btn-outline-light")"
+                data-bs-toggle="tooltip" data-bs-placement="top" title="@Loc["Grid"]"
+                @onclick="@(() => ChangeView(DepartmentViewType.Grid))">
             <span class="icon">
                 <SVGCrud SVGType="SVGCrud.SVGTypeEnum.List"></SVGCrud>
             </span>
@@ -58,15 +55,19 @@
     </div>
 </div>
 
-@if (departmentDtos == null || departmentDtos.Count == 0)
+@if (departmentDtos == null && !departmentDtos.Any())
+
 {
 
     <NoDataAvailable MessageTitle="@Loc["Nodepartmentavailable"]" MessageSubtitle="@Loc["Nodepartmentavailable"]"
-        ButtonText="@Loc["AddDepartment"]" OnButtonClick="Add" />
+                     ButtonText="@Loc["AddDepartment"]" OnButtonClick="Add" />
     <h6 class="mb-3">@Loc["Nodepartmentavailable"]</h6>
 }
 
-
+else if (departmentDtos != null && departmentDtos.Count()==0 )
+{
+    <NoSearchResults OnResetClick="ClearSearch"></NoSearchResults>
+}
 
 else
 {
@@ -75,7 +76,7 @@ else
         {
             case DepartmentViewType.Grid:
                 <DepartmentGrid Departments="departmentDtos" OnEdit="Edit" OnDelete="OnDeleteDepartment" OnShowUsers="ShowUser"
-                    OnAdd="AddDept" />
+                                OnAdd="AddDept" OnAddDepartment="AddDept" />
                 break;
 
             case DepartmentViewType.Tree:
@@ -84,7 +85,7 @@ else
                         <div class="row">
                             <div class="col-lg-10 ">
                                 <DepartmentTree Departments="rootDepartments" OnEdit="Edit" OnDelete="OnDeleteDepartment"
-                                    OnShowUsers="ShowUser" OnAdd="AddDept" />
+                                                OnAddDepartment="AddDept" OnShowUsers="ShowUser" OnAdd="AddDept" />
                             </div>
                         </div>
                     </div>
@@ -95,7 +96,7 @@ else
                 <div class="card card-hierarchy">
                     <div class="card-body">
                         <DepartmentHierarchy Departments="RootDepartments" OnEdit="Edit" OnDelete="OnDeleteDepartment"
-                            OnShowUsers="ShowUser" OnAdd="AddDept" />
+                                             OnAddDepartment="AddDept" OnShowUsers="ShowUser" OnAdd="AddDept" />
                     </div>
                 </div>
                 break;
@@ -117,21 +118,37 @@ else
     private bool? sortAscending = true;
     private DepartmentViewType currentView = DepartmentViewType.Grid;
     private List<SortableColumn> tableColumns = new();
-
-    private List<DepartmentDto> RootDepartments =new ();
+    string searchdata { set; get; }
+    private List<DepartmentDto> RootDepartments = new();
     List<DepartmentDto> allDepartments = new List<DepartmentDto>();
+    private Search? searchComponent;
+
     private async Task ChangePageSize(int newSize)
     {
         pageSize = newSize;
         currentPage = 1;
         await LoadSources();
-       // await BuildHierarchy();
+        // await BuildHierarchy();
+    }
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!firstRender && !string.IsNullOrEmpty(searchdata))
+        {
+
+            await Search(searchdata);
+
+          //  await InvokeAsync(StateHasChanged);
+        }
+
+
+
     }
     protected override async Task OnInitializedAsync()
     {
-        var data = await _departmentConsumer.GetDepartmentsNoPagnation();
 
-        allDepartments = data.Data.ToList();
+
+        await LoadSources();
+
 
         tableColumns = new()
 {
@@ -146,11 +163,9 @@ new() { Field = "UpdatedBy", DisplayName = Loc["UpdatedBy"] },
 new() { Field = "Action", DisplayName = Loc["Action"] ,IsSortable = false},
 };
 
-        await LoadSources();
-
-
 
         BuildHierarchy();
+        StateHasChanged();
     }
     private async Task ChangePage(int page)
     {
@@ -160,31 +175,31 @@ new() { Field = "Action", DisplayName = Loc["Action"] ,IsSortable = false},
     private void Add()
     {
 
-        // navigationManager.NavigateTo("/Add-Department");
         PopupService.ShowNew(@<AddDepartment OnValidSubmit="OnInitializedAsync"></AddDepartment>,Loc["AddDepartment"]);
 
     }
     private async Task ClearSearch()
     {
         currentPage = 1;
-        await LoadSources(isSearch: false);
+        searchComponent.SearchTerm ="";
+
+        await searchComponent?.SearchSubmit.InvokeAsync("");
+        await LoadSources(isSearch: false, null);
+
     }
     private void Edit(Guid id)
     {
         PopupService.ShowNew(@<UpdateDepartment Id="id" OnValidSubmit="OnInitializedAsync"></UpdateDepartment>, headerText:
         @Loc["EditDepartment"]);
 
-        // navigationManager.NavigateTo($"/Update-Department/{id}");
     }
     private void ShowUser(Guid id)
     {
-         navigationManager.NavigateTo($"/UsersDepartment/{id}");
-      //  PopupService.ShowNew(@<UsersDepartment Id="id"></UsersDepartment>, headerText: @Loc["UsersDepartment"]);
+        navigationManager.NavigateTo($"/UsersDepartment/{id}");
 
     }
     private void AddDept(Guid id)
     {
-        // navigationManager.NavigateTo($"/UsersDepartment/{id}");
         PopupService.ShowNew(@<AddDepartment ParentId="id"></AddDepartment>,Loc["AddDepartment"]);
 
     }
@@ -204,15 +219,15 @@ new() { Field = "Action", DisplayName = Loc["Action"] ,IsSortable = false},
         );
     }
     public List<SearchFieldDepartment> searchFields = new List<SearchFieldDepartment>() {
-SearchFieldDepartment.NameEnglish,
-SearchFieldDepartment.NameArabic,
-SearchFieldDepartment.CreatedBy,
-SearchFieldDepartment.UpdatedBy,
-SearchFieldDepartment.CreateDate,
-SearchFieldDepartment.UpdateDate,
-SearchFieldDepartment.ParentNameAR,
-SearchFieldDepartment.ParentNameEN
-};
+                SearchFieldDepartment.NameEnglish,
+                SearchFieldDepartment.NameArabic,
+                SearchFieldDepartment.CreatedBy,
+                SearchFieldDepartment.UpdatedBy,
+                SearchFieldDepartment.CreateDate,
+                SearchFieldDepartment.UpdateDate,
+                SearchFieldDepartment.ParentNameAR,
+                SearchFieldDepartment.ParentNameEN
+                                                  };
     private async Task DeleteConfirmed(Guid departmentId)
     {
         var result = await _departmentConsumer.DeleteDepartment(departmentId);
@@ -236,17 +251,18 @@ SearchFieldDepartment.ParentNameEN
     }
 
 
-    private async Task BuildHierarchy(bool isSearch = false, string searchTerm=null)
-  {
-      //
-       
+    private async Task BuildHierarchy(bool isSearch = false, string searchTerm = null)
+    {
+        //
 
-        var data = await _departmentConsumer.GetDepartmentsNoPagnation(isSearch ?
-         searchFields : null, isSearch ? searchTerm : null);
 
-        allDepartments = data.Data.ToList();
+        var data = await _departmentConsumer.GetDepartments(currentPage, 10000, currentSortColumn, sortAscending.Value,
+        isSearch ?
+        searchFields : null, isSearch ? searchTerm : null);
 
-      //
+        allDepartments = data.Data.Items.ToList();
+
+        //
         var dict = allDepartments.ToDictionary(x => x.Id);
         foreach (var dept in allDepartments)
             dept.Children = new List<DepartmentDto>();
@@ -262,8 +278,9 @@ SearchFieldDepartment.ParentNameEN
         !allDepartments.Any(x => x.Id == d.ParentdepartmentId))
         .ToList();
         RootDepartments = allDepartments
-   .Where(d => d.ParentdepartmentId == Guid.Empty)
-   .ToList();
+   .Where(d => d.ParentdepartmentId == Guid.Empty ||
+        !allDepartments.Any(x => x.Id == d.ParentdepartmentId))
+        .ToList();
     }
 
     private void HandleAddDepartment(string parentId)
@@ -272,8 +289,10 @@ SearchFieldDepartment.ParentNameEN
     }
     public async Task Search(string searchTerm)
     {
+        searchdata = searchTerm;
         await LoadSources(true, searchTerm);
         await BuildHierarchy(true, searchTerm);
+      //  StateHasChanged();
     }
     private async Task LoadSources(bool isSearch = false, string searchTerm = null)
     {
