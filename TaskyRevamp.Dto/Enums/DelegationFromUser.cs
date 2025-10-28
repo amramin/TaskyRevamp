@@ -16,7 +16,7 @@ namespace TaskyRevamp.Dto.Enums
 		[LocalizedDescription("SameDepartment", typeof(SharedResources))]
 		SameDepartment = 2,
 		[Order(3)]
-		[LocalizedDescription("DifferentDepartments", typeof(SharedResources))]
-		DifferentDepartments = 3
+		[LocalizedDescription("DifferentDepartment", typeof(SharedResources))]
+		DifferentDepartment = 3
 	}
 }

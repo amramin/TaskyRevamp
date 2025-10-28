@@ -613,4 +613,55 @@
   <data name="EnterPrivilegeName" xml:space="preserve">
     <value>اسم الصلاحية عربي</value>
   </data>
+  <data name="ArabicName" xml:space="preserve">
+    <value>الاسم بالعربية</value>
+  </data>
+  <data name="EnglishName" xml:space="preserve">
+    <value>الاسم بالانجليزية</value>
+  </data>
+  <data name="EnterPrivilegeArabicName" xml:space="preserve">
+    <value>اسم الصلاحية بالعربي</value>
+  </data>
+  <data name="EnterPrivilegeEnglishName" xml:space="preserve">
+    <value>اسم الصلاحية بالإنجليزية</value>
+  </data>
+  <data name="SelectAtLeastOneValue" xml:space="preserve">
+    <value>حدد قيمة واحدة على الأقل.</value>
+  </data>
+  <data name="Add" xml:space="preserve">
+    <value>إضافة</value>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>تعديل</value>
+  </data>
+  <data name="View" xml:space="preserve">
+    <value>عرض</value>
+  </data>
+  <data name="All" xml:space="preserve">
+    <value>الجميع</value>
+  </data>
+  <data name="DifferentDepartment" xml:space="preserve">
+    <value>إدارات مختلفة</value>
+  </data>
+  <data name="SameDepartment" xml:space="preserve">
+    <value>نفس الإدارة</value>
+  </data>
+  <data name="SameUser" xml:space="preserve">
+    <value>نفس المستخدم</value>
+  </data>
+  <data name="Module" xml:space="preserve">
+    <value>وحدة</value>
+  </data>
+  <data name="FromUser" xml:space="preserve">
+    <value>من المتسخدم</value>
+  </data>
+  <data name="ToUser" xml:space="preserve">
+    <value>إلي المستخدم</value>
+  </data>
+  <data name="ViewPermission" xml:space="preserve">
+    <value>عرض الأذونات</value>
+  </data>
+  <data name="ViewUsers" xml:space="preserve">
+    <value>المستخدمين</value>
+  </data>
 </root>

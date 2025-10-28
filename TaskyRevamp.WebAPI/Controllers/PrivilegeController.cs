@@ -1,7 +1,12 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
+using TaskyRevamp.Dto.Enums.SearchFields;
+using TaskyRevamp.Dto.GeneralDto;
 using TaskyRevamp.Dto.Permissions;
 using TaskyRevamp.Services.Permission.Privilege.Command;
+using TaskyRevamp.Services.Permission.Privilege.Query;
+using TaskyRevamp.Services.SystemConfiguration.SourceConfiguration.Query;
 
 namespace TaskyRevamp.WebAPI.Controllers
 {
@@ -15,7 +20,29 @@ namespace TaskyRevamp.WebAPI.Controllers
             _mediator = mediator;
         }
 
-        [HttpPost("CreatePrivilege")]
+		[HttpGet("GetPrivilleges")]
+		public async Task<IActionResult> GetPrivilleges(
+			[FromServices] IOptions<PaginationSettings> paginationSettings,
+			[FromQuery] int pageNumber = 1,
+			[FromQuery] int? pageSize = null,
+			[FromQuery] string sortByColumnName = "CreateDate",
+			[FromQuery] bool sortAscending = true,
+			[FromQuery] List<SearchField> searchFields = null,
+			[FromQuery] string searchText = null)
+		{
+
+			var size = pageSize ?? paginationSettings.Value.DefaultPageSize;
+			var result = await _mediator.Send(new GetPrivilegesQuery(pageNumber, size, sortByColumnName, sortAscending, searchFields, searchText));
+			return Ok(result);
+		}
+
+		[HttpGet("GetPrivilegeById/{id}")]
+		public async Task<IActionResult> GetPrivilegeById(Guid id)
+		{
+			return Ok(await _mediator.Send(new GetSourceByIdQuery(id)));
+		}
+
+		[HttpPost("CreatePrivilege")]
         public async Task<IActionResult> CreatePrivilege([FromBody] PrivilegeDto privilegeDto)
         {
             return Ok(await _mediator.Send(new CreatePrivilegeCommand(privilegeDto)));

@@ -18,15 +18,16 @@ namespace TaskyRevamp.Domain.Models.Permissions
 		public bool IsEdit { get; set; }
 		public bool IsAdd { get; set; }
 		public bool IsDelete { get; set; }
-		public DelegationFromUser? DelegationFromUser { get; set; }
+		public List<int>? DelegationFromUser { get; set; }
 		public DelegationToUser? DelegationToUser { get; set; }
-		public string? DelegationDepartments { get; set; }
+		public List<Guid>? DelegationFromUserDepartments { get; set; }
+		public List<Guid>? DelegationToUserDepartments { get; set; }
 
 		public GeneralModulePermission()
 		{
 
 		}
-		public GeneralModulePermission(bool isView, bool isEdit,bool isAdd, bool isDelete, DelegationFromUser delegationFromUser, DelegationToUser delegationToUser, string? delegationDepartments)
+		public GeneralModulePermission(bool isView, bool isEdit,bool isAdd, bool isDelete, List<int> delegationFromUser, DelegationToUser delegationToUser, List<Guid>? delegationFromUserDepartments, List<Guid>? delegationToUserDepartments)
 		{
 			IsView = isView;
 			IsAdd = isAdd;
@@ -34,7 +35,8 @@ namespace TaskyRevamp.Domain.Models.Permissions
 			IsDelete = isDelete;
 			DelegationFromUser = delegationFromUser;
 			DelegationToUser = delegationToUser;
-			DelegationDepartments = delegationDepartments;
+			DelegationFromUserDepartments = delegationFromUserDepartments;
+			DelegationToUserDepartments = delegationToUserDepartments;
 		}
 		
 		public GeneralModulePermissionDto CopyToDto()
@@ -50,7 +52,8 @@ namespace TaskyRevamp.Domain.Models.Permissions
 				IsDelete = IsDelete,
 				DelegationFromUser = DelegationFromUser,
 				DelegationToUser = DelegationToUser,
-				DelegationDepartments = DelegationDepartments
+				DelegationFromUserDepartments = DelegationFromUserDepartments,	
+				DelegationToUserDepartments = DelegationToUserDepartments
 			};
 		}
 	}

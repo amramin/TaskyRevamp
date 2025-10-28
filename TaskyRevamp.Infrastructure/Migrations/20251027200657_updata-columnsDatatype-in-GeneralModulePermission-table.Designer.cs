@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SurveyRevamp.Infrastructure;
 
@@ -11,9 +12,11 @@ using SurveyRevamp.Infrastructure;
 namespace TaskyRevamp.Infrastructure.Migrations
 {
     [DbContext(typeof(EfDbContext))]
-    partial class EfDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251027200657_updata-columnsDatatype-in-GeneralModulePermission-table")]
+    partial class updatacolumnsDatatypeinGeneralModulePermissiontable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -59,17 +62,14 @@ namespace TaskyRevamp.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.PrimitiveCollection<string>("DelegationFromUser")
+                    b.PrimitiveCollection<string>("DelegationDepartments")
                         .HasColumnType("nvarchar(max)");
 
-                    b.PrimitiveCollection<string>("DelegationFromUserDepartments")
+                    b.PrimitiveCollection<string>("DelegationFromUser")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("DelegationToUser")
                         .HasColumnType("int");
-
-                    b.PrimitiveCollection<string>("DelegationToUserDepartments")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("GeneralModuleId")
                         .HasColumnType("uniqueidentifier");
@@ -104,12 +104,6 @@ namespace TaskyRevamp.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime>("CreateDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("CreatedById")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("NameArabic")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -118,17 +112,7 @@ namespace TaskyRevamp.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("UpdateDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("UpdatedById")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("CreatedById");
-
-                    b.HasIndex("UpdatedById");
 
                     b.ToTable("Privilege");
                 });
@@ -1141,24 +1125,6 @@ namespace TaskyRevamp.Infrastructure.Migrations
                     b.Navigation("GeneralModule");
 
                     b.Navigation("Privilege");
-                });
-
-            modelBuilder.Entity("TaskyRevamp.Domain.Models.Permissions.Privilege", b =>
-                {
-                    b.HasOne("TaskyRevamp.Domain.Models.Users.User", "CreatedBy")
-                        .WithMany()
-                        .HasForeignKey("CreatedById")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("TaskyRevamp.Domain.Models.Users.User", "UpdatedBy")
-                        .WithMany()
-                        .HasForeignKey("UpdatedById")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.Navigation("CreatedBy");
-
-                    b.Navigation("UpdatedBy");
                 });
 
             modelBuilder.Entity("TaskyRevamp.Domain.Models.Permissions.ReportModulePermission", b =>

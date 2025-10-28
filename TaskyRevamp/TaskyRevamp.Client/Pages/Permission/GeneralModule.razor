@@ -1,42 +1,27 @@
 ﻿@page "/GeneralModulePrivileges"
 
 @using TaskyRevamp.Client.Consumer
+@using TaskyRevamp.Dto.Account
 @using TaskyRevamp.Dto.Department
 @using TaskyRevamp.Dto.Enums
 @using TaskyRevamp.Dto.Permissions
-
 @inject NavigationManager navigationManager
 @inject IStringLocalizer<SharedResources> Loc
 @inject GeneralModuleConsumer _generalModuleConsumer
 @inject DepartmentConsumer _departmentConsumer
+@inject UserConsumer _userConsumer
 
 <div class="card shadow-sm p-3">
     <div>
-        <div class="row mb-4">
-            <div class="col-md-6">
-                <label class="form-label fw-bold">
-                    Arabic Name
-                    <span class="text-danger">*</span>
-                </label>
-                <input type="text" class="form-control" placeholder="Enter Privilege Arabic Name" @bind-value="PrivilegeDto.NameArabic" />
-            </div>
-            <div class="col-md-6">
-                <label class="form-label fw-bold">
-                    English Name
-                    <span class="text-danger">*</span>
-                </label>
-                <input type="text" class="form-control" placeholder="Enter Privilege English Name" @bind-value="PrivilegeDto.NameEnglish" />
-            </div>
-        </div>
         <table class="table table-bordered align-middle">
             <thead class="table-light">
                 <tr>
-                    <th>Module</th>
-                    <th class="text-center">All</th>
-                    <th class="text-center">View</th>
-                    <th class="text-center">Edit</th>
-                    <th class="text-center">Add</th>
-                    <th class="text-center">Delete</th>
+                    <th>@Loc["Module"]</th>
+                    <th class="text-center">@Loc["All"]</th>
+                    <th class="text-center">@Loc["View"]</th>
+                    <th class="text-center">@Loc["Edit"]</th>
+                    <th class="text-center">@Loc["Add"]</th>
+                    <th class="text-center">@Loc["Delete"]</th>
                 </tr>
             </thead>
             <tbody>
@@ -83,6 +68,7 @@
                         </tr>
                     }
                 }
+
             </tbody>
         </table>
         @if (PrivilegeDto.GeneralModulePermissions
@@ -97,59 +83,62 @@
                         <!-- FROM USER TOGGLE GROUP -->
                         <div class="col-12">
                             <div class="mb-3">
-                                <label class="form-label fw-semibold">From User</label>
-                                <InputRadioGroup TValue="DelegationFromUser?"
-                                                 Value="delegationPermission.DelegationFromUser"
-                                                 ValueChanged="val => delegationPermission.DelegationFromUser = val"
-                                                 ValueExpression="@(() => delegationPermission.DelegationFromUser)">
-                                    @foreach (var value in Enum.GetValues<DelegationFromUser>())
-                                    {
-                                        var id = $"fromUser_{value}";
-                                        <div class="form-check form-switch d-block mb-2">
-                                            <InputRadio id="@id"
-                                                        class="form-check-input"
-                                                        Value="@value" />
-                                            <label class="form-check-label ms-2" for="@id">
-                                                @value
-                                            </label>
-                                        </div>
-                                    }
-                                </InputRadioGroup>
-                                <!-- Show Departments Section When 'DifferentDepartments' Is Selected -->
-                                @if (delegationPermission.DelegationToUser == DelegationToUser.DifferentDepartment)
+                                <label class="form-label fw-semibold">@Loc["FromUser"]</label>
+                                @foreach (var value in Enum.GetValues<DelegationFromUser>())
                                 {
-                                    <div class="card mt-3 p-3 border-0 shadow-sm">
-                                        <select class="form-select" multiple @onchange="OnDepartmentsChanged">
-                                            @foreach (var dept in departmentDtos)
-                                            {
-                                                <option value="@dept.Id">@dept.Name</option>
-                                            }
-                                        </select>
+                                    var id = $"fromUser_{value}";
+                                    <div class="form-check form-switch d-block mb-2">
+                                        <input type="checkbox"
+                                               id="@id"
+                                               class="form-check-input"
+                                               checked="@delegationPermission!.DelegationFromUser!.Contains((int)value)"
+                                               @onchange="e => OnDelegationFromUserChanged((int)value, e.Value!, delegationPermission)" />
+                                        <label class="form-check-label ms-2" for="@id">@Loc[@value.ToString()]</label>
                                     </div>
+                                }
+                                @if (showDelegationFromUserError)
+                                {
+                                    <div class="text-danger small mt-1">
+                                        @Loc["SelectAtLeastOneValue"]
+                                    </div>
+                                }
+                                @if (delegationPermission?.DelegationFromUser != null &&
+                                                            delegationPermission.DelegationFromUser.Contains((int)DelegationFromUser.DifferentDepartment))
+                                {
+                                    <DelegationDepartmentSelector DepartmentList="departmentDtos"
+                                                                  SelectedDepartments="@delegationPermission.DelegationFromUserDepartments"
+                                                                  SelectedDepartmentsChanged="@((List<Guid> ids) => delegationPermission.DelegationFromUserDepartments = ids)"
+                                                                  LoadUsersByDepartment="@LoadUsersForDepartment" />
                                 }
                             </div>
                         </div>
                         <!-- TO USER SWITCH GROUP -->
                         <div class="col-12 mt-3">
                             <div class="mb-3">
-                                <label class="form-label fw-semibold">To User</label>
-                                <InputRadioGroup TValue="DelegationToUser?"
-                                                 Value="delegationPermission.DelegationToUser"
-                                                 ValueChanged="val => delegationPermission.DelegationToUser = val"
-                                                 ValueExpression="@(() => delegationPermission.DelegationToUser)">
-                                    @foreach (var value in Enum.GetValues<DelegationToUser>())
-                                    {
-                                        var id = $"toUser_{value}";
-                                        <div class="form-check form-switch d-block mb-2">
-                                            <InputRadio id="@id"
-                                                        class="form-check-input"
-                                                        Value="@value" />
-                                            <label class="form-check-label ms-2" for="@id">
-                                                @value
-                                            </label>
-                                        </div>
-                                    }
-                                </InputRadioGroup>
+                                <label class="form-label fw-semibold">@Loc["ToUser"]</label>
+                                @foreach (var value in Enum.GetValues<DelegationToUser>())
+                                {
+                                    var id = $"toUser_{value}";
+                                    bool isChecked = delegationPermission!.DelegationToUser == value;
+
+                                    <div class="form-check form-switch d-block mb-2">
+                                        <input type="radio"
+                                               id="@id"
+                                               class="form-check-input"
+                                               name="toUserRadio"
+                                               checked="@isChecked"
+                                               @onclick="@(() => OnDelegationToUserClicked(value, delegationPermission))" />
+                                        <label class="form-check-label ms-2" for="@id">@Loc[@value.ToString()]</label>
+                                    </div>
+                                }
+                                @if (delegationPermission!.DelegationToUser == DelegationToUser.DifferentDepartment)
+                                {
+                                    <DelegationDepartmentSelector DepartmentList="departmentDtos"
+                                                                  SelectedDepartments="@delegationPermission.DelegationToUserDepartments"
+                                                                  SelectedDepartmentsChanged="@((List<Guid> ids) => delegationPermission.DelegationToUserDepartments = ids)"
+                                                                  LoadUsersByDepartment="@LoadUsersForDepartment" />
+
+                                }
                             </div>
                         </div>
                     </div>
@@ -161,9 +150,11 @@
 
 @code {
     [Parameter] public PrivilegeDto PrivilegeDto { get; set; } = new PrivilegeDto();
+    [Parameter] public EventCallback<bool> OnValidationStateChanged { get; set; }
     List<GeneralModuleDto> generalModules = new();
     List<DepartmentDto> departmentDtos = new();
-    bool isDifferentDepartments = false;
+    private bool showDelegationFromUserError = false;
+
     protected override async Task OnInitializedAsync()
     {
         var res = await _generalModuleConsumer.GetGeneralModules();
@@ -177,16 +168,20 @@
                 IsView = false,
                 IsEdit = false,
                 IsAdd = false,
-                IsDelete = false
+                IsDelete = false,
+                DelegationFromUser = new List<int>(),
+                DelegationFromUserDepartments = new List<Guid>(),
+                DelegationToUserDepartments = new List<Guid>()
             })
             .ToList();
-            var departmentsRes = await _departmentConsumer.GetDepartments();
+            var departmentsRes = await _departmentConsumer.GetDepartmentsNoPagnation();
             if (departmentsRes.Success && departmentsRes != null && departmentsRes.Data != null)
             {
                 departmentDtos = departmentsRes.Data.ToList();
             }
         }
     }
+
     void SetAll(GeneralModulePermissionDto permission, object value)
     {
         bool isChecked = (bool)value;
@@ -195,13 +190,43 @@
         permission.IsAdd = isChecked;
         permission.IsDelete = isChecked;
     }
+
     void OnAddChanged(GeneralModulePermissionDto permission, ChangeEventArgs e)
     {
-        permission.IsAdd = (bool)e.Value;
+        permission.IsAdd = (bool)e.Value!;
         StateHasChanged();
     }
-    private void OnDepartmentsChanged(ChangeEventArgs args)
+
+    private void OnDelegationToUserClicked(DelegationToUser value, GeneralModulePermissionDto permission)
     {
-        throw new NotImplementedException();
+        if (permission.DelegationToUser == value)
+            permission.DelegationToUser = null;
+        else
+            permission.DelegationToUser = value;
+    }
+    private async Task OnDelegationFromUserChanged(int value, object checkedValue, GeneralModulePermissionDto permission)
+    {
+        bool isChecked = (bool)checkedValue;
+        permission.DelegationFromUser ??= new List<int>();
+
+        if (isChecked)
+        {
+            if (!permission.DelegationFromUser.Contains(value))
+                permission.DelegationFromUser.Add(value);
+        }
+        else
+        {
+            permission.DelegationFromUser.Remove(value);
+        }
+        showDelegationFromUserError =
+           permission.IsAdd && (permission.DelegationFromUser == null || !permission.DelegationFromUser.Any());
+        await OnValidationStateChanged.InvokeAsync(!showDelegationFromUserError);
+        StateHasChanged();
+    }
+
+    private async Task<List<UserDto>> LoadUsersForDepartment(Guid deptId)
+    {
+        var res = await _userConsumer.GetAllUsersByDepartment(deptId);
+        return res.Success ? res.Data?.AssignedUsers ?? new List<UserDto>() : new List<UserDto>();
     }
 }

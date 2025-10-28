@@ -16,8 +16,10 @@ namespace TaskyRevamp.Dto.Permissions
 		public bool IsEdit { get; set; }
 		public bool IsAdd { get; set; }
 		public bool IsDelete { get; set; }
-		public DelegationFromUser? DelegationFromUser { get; set; }
+		public List<int>? DelegationFromUser { get; set; }
 		public DelegationToUser? DelegationToUser { get; set; }
-		public string? DelegationDepartments { get; set; }
+		public List<Guid>? DelegationToUserDepartments { get; set; }
+		public List<Guid>? DelegationFromUserDepartments { get; set; }
+
 	}
 }

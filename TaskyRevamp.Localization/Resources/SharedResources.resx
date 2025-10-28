@@ -613,4 +613,55 @@ Add a new department to get started</value>
   <data name="EnterPrivilegeName" xml:space="preserve">
     <value>Permissions English Name</value>
   </data>
+  <data name="ArabicName" xml:space="preserve">
+    <value>Arabic Name</value>
+  </data>
+  <data name="EnglishName" xml:space="preserve">
+    <value>English Name</value>
+  </data>
+  <data name="EnterPrivilegeArabicName" xml:space="preserve">
+    <value>Enter Privilege Arabic Name</value>
+  </data>
+  <data name="EnterPrivilegeEnglishName" xml:space="preserve">
+    <value>Enter Privilege English Name</value>
+  </data>
+  <data name="SelectAtLeastOneValue" xml:space="preserve">
+    <value>Select at least one value.</value>
+  </data>
+  <data name="Add" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="View" xml:space="preserve">
+    <value>View</value>
+  </data>
+  <data name="All" xml:space="preserve">
+    <value>All</value>
+  </data>
+  <data name="DifferentDepartment" xml:space="preserve">
+    <value>Different Department</value>
+  </data>
+  <data name="SameDepartment" xml:space="preserve">
+    <value>Same Department</value>
+  </data>
+  <data name="SameUser" xml:space="preserve">
+    <value>Same User</value>
+  </data>
+  <data name="Module" xml:space="preserve">
+    <value>Module</value>
+  </data>
+  <data name="FromUser" xml:space="preserve">
+    <value>From User</value>
+  </data>
+  <data name="ToUser" xml:space="preserve">
+    <value>To User</value>
+  </data>
+  <data name="ViewPermission" xml:space="preserve">
+    <value>View Permissions</value>
+  </data>
+  <data name="ViewUsers" xml:space="preserve">
+    <value>Users</value>
+  </data>
 </root>

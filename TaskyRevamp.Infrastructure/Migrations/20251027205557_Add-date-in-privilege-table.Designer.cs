@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SurveyRevamp.Infrastructure;
 
@@ -11,9 +12,11 @@ using SurveyRevamp.Infrastructure;
 namespace TaskyRevamp.Infrastructure.Migrations
 {
     [DbContext(typeof(EfDbContext))]
-    partial class EfDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251027205557_Add-date-in-privilege-table")]
+    partial class Adddateinprivilegetable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -59,17 +62,14 @@ namespace TaskyRevamp.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.PrimitiveCollection<string>("DelegationFromUser")
+                    b.PrimitiveCollection<string>("DelegationDepartments")
                         .HasColumnType("nvarchar(max)");
 
-                    b.PrimitiveCollection<string>("DelegationFromUserDepartments")
+                    b.PrimitiveCollection<string>("DelegationFromUser")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("DelegationToUser")
                         .HasColumnType("int");
-
-                    b.PrimitiveCollection<string>("DelegationToUserDepartments")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("GeneralModuleId")
                         .HasColumnType("uniqueidentifier");
