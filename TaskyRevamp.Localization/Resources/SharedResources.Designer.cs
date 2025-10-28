@@ -106,6 +106,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add A New Privilege To Get Started.
+        /// </summary>
+        public static string AddANewPrivilegeToGetStarted {
+            get {
+                return ResourceManager.GetString("AddANewPrivilegeToGetStarted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add a new task source to get started..
         /// </summary>
         public static string AddANewTaskSourceToGetStarted {
@@ -1021,6 +1030,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string Nodepartmentavailable {
             get {
                 return ResourceManager.GetString("Nodepartmentavailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No Privilege Available.
+        /// </summary>
+        public static string NoPrivilegeAvailable {
+            get {
+                return ResourceManager.GetString("NoPrivilegeAvailable", resourceCulture);
             }
         }
         

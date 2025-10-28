@@ -664,4 +664,10 @@
   <data name="ViewUsers" xml:space="preserve">
     <value>المستخدمين</value>
   </data>
+  <data name="AddANewPrivilegeToGetStarted" xml:space="preserve">
+    <value>أضف صلاحية جديدة للبدء</value>
+  </data>
+  <data name="NoPrivilegeAvailable" xml:space="preserve">
+    <value>لا تتوفر صلاحيات</value>
+  </data>
 </root>

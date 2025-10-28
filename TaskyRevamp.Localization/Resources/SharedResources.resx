@@ -664,4 +664,10 @@ Add a new department to get started</value>
   <data name="ViewUsers" xml:space="preserve">
     <value>Users</value>
   </data>
+  <data name="AddANewPrivilegeToGetStarted" xml:space="preserve">
+    <value>Add A New Privilege To Get Started</value>
+  </data>
+  <data name="NoPrivilegeAvailable" xml:space="preserve">
+    <value>No Privilege Available</value>
+  </data>
 </root>
