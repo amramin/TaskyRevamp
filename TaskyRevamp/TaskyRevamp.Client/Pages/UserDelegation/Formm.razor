@@ -63,7 +63,9 @@
 
         }
         <div class="mb-3">
-            <label class="form-label" for="fromDate">@Loc["FromDate"]</label>
+            <label class="form-label" for="fromDate">@Loc["FromDate"]
+                <span class="text-danger"> *</span>
+            </label>
 
             <div class="date-group">
                 <InputDate class="form-control" id="fromDate" @bind-Value="userDelegation.FromDate" />
@@ -71,12 +73,13 @@
             <ValidationMessage class="small text-danger" For="@(() => userDelegation.FromDate)" />
         </div>
         <div class="mb-3">
-            <label class="form-label" for="toDate">@Loc["ToDate"]</label>
+            <label class="form-label" for="toDate">@Loc["ToDate"]<span class="text-danger"> *</span></label>
             <div class="date-group">
                 <InputDate class="form-control" id="toDate" @bind-Value="userDelegation.ToDate" />
             </div>
             <ValidationMessage class="small text-danger" For="@(() => userDelegation.ToDate)" />
-        </div>
+       
+            </div>
     </div>
     <div class="offcanvas-footer">
         <div class="row g-3">
@@ -125,6 +128,7 @@
             return;
 
         }
+        if()
         if (!IsAdmine)
         {
             var current = await LocalStorageService.GetItemAsStringAsync("Id");

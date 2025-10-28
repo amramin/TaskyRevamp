@@ -295,6 +295,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Creation Date.
+        /// </summary>
+        public static string CreateDate {
+            get {
+                return ResourceManager.GetString("CreateDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Created By.
         /// </summary>
         public static string CreatedBy {
@@ -718,6 +727,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Start Date .
+        /// </summary>
+        public static string FromDate {
+            get {
+                return ResourceManager.GetString("FromDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to From End Date.
         /// </summary>
         public static string FromEndDate {
@@ -732,6 +750,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string FromStartDate {
             get {
                 return ResourceManager.GetString("FromStartDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to From User .
+        /// </summary>
+        public static string FromUser {
+            get {
+                return ResourceManager.GetString("FromUser", resourceCulture);
             }
         }
         
@@ -930,6 +957,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string Never {
             get {
                 return ResourceManager.GetString("Never", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No Delegations available.
+        /// </summary>
+        public static string NoDelegationvailable {
+            get {
+                return ResourceManager.GetString("NoDelegationvailable", resourceCulture);
             }
         }
         
@@ -1259,6 +1295,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to remove this delegation?.
+        /// </summary>
+        public static string SureDeleteDelegation {
+            get {
+                return ResourceManager.GetString("SureDeleteDelegation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Are you sure you want to delete this department?.
         /// </summary>
         public static string SureDeleteDepartment {
@@ -1331,6 +1376,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to End Date.
+        /// </summary>
+        public static string ToDate {
+            get {
+                return ResourceManager.GetString("ToDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to To End Date.
         /// </summary>
         public static string ToEndDate {
@@ -1345,6 +1399,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string ToStartDate {
             get {
                 return ResourceManager.GetString("ToStartDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to To User.
+        /// </summary>
+        public static string ToUser {
+            get {
+                return ResourceManager.GetString("ToUser", resourceCulture);
             }
         }
         

@@ -598,4 +598,25 @@
   <data name="EditDelegation" xml:space="preserve">
     <value>تعديل تفويض</value>
   </data>
+  <data name="FromUser" xml:space="preserve">
+    <value>من المستخدم</value>
+  </data>
+  <data name="ToUser" xml:space="preserve">
+    <value>إلى المستخدم</value>
+  </data>
+  <data name="FromDate" xml:space="preserve">
+    <value>تاريخ البدء </value>
+  </data>
+  <data name="ToDate" xml:space="preserve">
+    <value>تاريخ الانتهاء</value>
+  </data>
+  <data name="CreateDate" xml:space="preserve">
+    <value>تاريخ الإنشاء</value>
+  </data>
+  <data name="SureDeleteDelegation" xml:space="preserve">
+    <value>هل أنت متأكد أنك تريد إزالة هذا التفويض؟</value>
+  </data>
+  <data name="NoDelegationvailable" xml:space="preserve">
+    <value>لا يوجد تفويضات متاحه</value>
+  </data>
 </root>

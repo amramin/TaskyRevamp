@@ -598,4 +598,25 @@ Add a new department to get started</value>
   <data name="EditDelegation" xml:space="preserve">
     <value>Edit Delegation</value>
   </data>
+  <data name="FromUser" xml:space="preserve">
+    <value>From User </value>
+  </data>
+  <data name="ToUser" xml:space="preserve">
+    <value>To User</value>
+  </data>
+  <data name="FromDate" xml:space="preserve">
+    <value>Start Date </value>
+  </data>
+  <data name="ToDate" xml:space="preserve">
+    <value>End Date</value>
+  </data>
+  <data name="CreateDate" xml:space="preserve">
+    <value>Creation Date</value>
+  </data>
+  <data name="SureDeleteDelegation" xml:space="preserve">
+    <value>Are you sure you want to remove this delegation?</value>
+  </data>
+  <data name="NoDelegationvailable" xml:space="preserve">
+    <value>No Delegations available</value>
+  </data>
 </root>

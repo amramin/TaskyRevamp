@@ -34,14 +34,19 @@
     </div>
 </div>
 
-@if (AlluserDelegation == null || AlluserDelegation.Count == 0)
+@if (AlluserDelegation == null && !AlluserDelegation.Any())
+
 {
 
-    <NoDataAvailable MessageTitle="@Loc["NoDelegationavailable"]" MessageSubtitle="@Loc["Nodepartmentavailable"]"
+    <NoDataAvailable MessageTitle="@Loc["NoDelegationvailable"]" MessageSubtitle="@Loc["Nodepartmentavailable"]"
                      ButtonText="@Loc["AddDelegation"]" OnButtonClick="Add" />
     <h6 class="mb-3">@Loc["NoDelegationavailable"]</h6>
 }
 
+else if (AlluserDelegation != null && AlluserDelegation.Count() == 0)
+{
+    <NoSearchResults OnResetClick="ClearSearch"></NoSearchResults>
+}
 
 
 else
@@ -80,8 +85,10 @@ else
                                 <ul class="dropdown-menu">
 
 
-
+                                 @if (p.FromDate > DateTime.Now)
+                                     {
                                     <li>
+                                        
                                         <button class="dropdown-item" @onclick="@(() => ShowEditPopup(p.Id))">
                                             <span class="icon">
                                                 <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Edit"></SVGCrud>
@@ -89,6 +96,7 @@ else
                                             @Loc["EditDelegation"]
                                         </button>
                                     </li>
+                                    }
                                     <li>
                                         <button class="dropdown-item text-danger" @onclick="@(() => OnDeleteDelegation(p.Id))">
                                             <span class="icon">
@@ -208,7 +216,17 @@ else
 
         StateHasChanged();
     }
+    private Search? searchComponent;
 
+    private async Task ClearSearch()
+    {
+        currentPage = 1;
+        searchComponent.SearchTerm = "";
+
+        await searchComponent?.SearchSubmit.InvokeAsync("");
+        await GetDelegations(isSearch: false, null);
+
+    }
     private void OnDeleteDelegation(Guid delegationId)
     {
         PopupService.ShowConfirmation(
