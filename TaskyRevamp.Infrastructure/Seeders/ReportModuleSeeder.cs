@@ -1,11 +1,4 @@
-﻿using SurveyRevamp.Infrastructure;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TaskyRevamp.Domain.Models.Permissions.ReportModule;
-using TaskyRevamp.Domain.Models.SystemConfiguration;
+﻿using TaskyRevamp.Domain.Models.Permissions.ReportModule;
 
 namespace TaskyRevamp.Infrastructure.Seeders
 {
