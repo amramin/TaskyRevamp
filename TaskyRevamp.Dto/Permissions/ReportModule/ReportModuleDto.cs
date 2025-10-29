@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TaskyRevamp.Dto.Permissions
+namespace TaskyRevamp.Dto.Permissions.ReportModule
 {
     public class ReportModuleDto
     {

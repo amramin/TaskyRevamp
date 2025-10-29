@@ -1,5 +1,5 @@
 ﻿using TaskyRevamp.Dto.GeneralDto;
-using TaskyRevamp.Dto.Permissions;
+using TaskyRevamp.Dto.Permissions.GeneralModule;
 using TaskyRevamp.Dto.SystemConfiguration;
 
 namespace TaskyRevamp.Client.Consumer

@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TaskyRevamp.Dto.Enums;
-using TaskyRevamp.Dto.Permissions;
+using TaskyRevamp.Dto.Permissions.GeneralModule;
 
-namespace TaskyRevamp.Domain.Models.Permissions
+namespace TaskyRevamp.Domain.Models.Permissions.GeneralModule
 {
 	public class GeneralModulePermission : Entity
 	{

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TaskyRevamp.Domain.Models.Permissions;
+using TaskyRevamp.Domain.Models.Permissions.ReportModule;
 using TaskyRevamp.Domain.Models.SystemConfiguration;
 
 namespace TaskyRevamp.Infrastructure.Seeders

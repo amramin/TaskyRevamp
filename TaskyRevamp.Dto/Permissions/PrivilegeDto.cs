@@ -4,6 +4,8 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TaskyRevamp.Dto.Permissions.GeneralModule;
+using TaskyRevamp.Dto.Permissions.ReportModule;
 using TaskyRevamp.Localization.Resources;
 
 namespace TaskyRevamp.Dto.Permissions

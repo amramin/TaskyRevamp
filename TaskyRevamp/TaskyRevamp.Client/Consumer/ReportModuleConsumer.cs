@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using TaskyRevamp.Dto.GeneralDto;
-using TaskyRevamp.Dto.Permissions;
+using TaskyRevamp.Dto.Permissions.ReportModule;
 
 namespace TaskyRevamp.Client.Consumer
 {

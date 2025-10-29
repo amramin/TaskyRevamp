@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TaskyRevamp.Domain.Interfaces;
+using TaskyRevamp.Domain.Models.Permissions.GeneralModule;
+using TaskyRevamp.Domain.Models.Permissions.ReportModule;
 using TaskyRevamp.Domain.Models.Users;
 using TaskyRevamp.Dto.Permissions;
 

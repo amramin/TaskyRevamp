@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TaskyRevamp.Domain.Interfaces;
 using TaskyRevamp.Domain.Models.Permissions;
+using TaskyRevamp.Domain.Models.Permissions.GeneralModule;
+using TaskyRevamp.Domain.Models.Permissions.ReportModule;
 using TaskyRevamp.Domain.Models.SystemConfiguration;
 using TaskyRevamp.Domain.Models.Task;
 using TaskyRevamp.Domain.Models.Users;

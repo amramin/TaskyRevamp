@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TaskyRevamp.Dto.Permissions;
+using TaskyRevamp.Dto.Permissions.ReportModule;
 
-namespace TaskyRevamp.Domain.Models.Permissions
+namespace TaskyRevamp.Domain.Models.Permissions.ReportModule
 {
     public class ReportModulePermission : Entity
     {

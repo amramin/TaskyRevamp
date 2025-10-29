@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TaskyRevamp.Dto.Enums;
 
-namespace TaskyRevamp.Dto.Permissions
+namespace TaskyRevamp.Dto.Permissions.GeneralModule
 {
 	public class GeneralModulePermissionDto
 	{

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TaskyRevamp.Domain.Models.Permissions;
+using TaskyRevamp.Domain.Models.Permissions.GeneralModule;
 
 namespace TaskyRevamp.Infrastructure.Seeders
 {

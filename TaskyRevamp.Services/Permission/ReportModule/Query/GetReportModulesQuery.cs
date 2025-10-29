@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TaskyRevamp.Domain.Models.Permissions;
+using TaskyRevamp.Domain.Models.Permissions.ReportModule;
 using TaskyRevamp.Domain.Repositeries;
-using TaskyRevamp.Dto.Permissions;
+using TaskyRevamp.Dto.Permissions.ReportModule;
 
 namespace TaskyRevamp.Services.Permission.RepotModule.Query
 {

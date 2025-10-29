@@ -5,8 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TaskyRevamp.Domain.Repositeries;
-using TaskyRevamp.Dto.Permissions;
-using GeneralModules = TaskyRevamp.Domain.Models.Permissions.GeneralModule;
+using TaskyRevamp.Dto.Permissions.GeneralModule;
+using GeneralModules = TaskyRevamp.Domain.Models.Permissions.GeneralModule.GeneralModule;
 
 namespace TaskyRevamp.Services.Permission.GeneralModule.Query
 {
