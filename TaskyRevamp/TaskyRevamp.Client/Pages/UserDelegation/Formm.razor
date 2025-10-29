@@ -1,0 +1,192 @@
+﻿@using Blazored.LocalStorage
+@using Stingray.Components.MultiSelectComponent
+@using Stingray.Components.MultiSelectComponent.Dtos
+@using TaskyRevamp.Client.Consumer
+@inject UserConsumer _userConsumer
+@inject UserDelegationConsumer _userDelegationConsumer
+@inject ILocalStorageService LocalStorageService
+@inject Microsoft.Extensions.Configuration.IConfiguration _configuration;
+@inject NavigationManager uriHelper
+
+@using System.Globalization
+@using TaskyRevamp.Client.Consumer
+@using TaskyRevamp.Dto.Account
+@using TaskyRevamp.Dto.GeneralDto
+@using TaskyRevamp.Dto.UserDelegation
+
+@inject IStringLocalizer<SharedResources> Loc
+<EditForm Model="@userDelegation" IsAdmine="@IsAdmine" OnInvalidSubmit="onivald" OnValidSubmit="Callback" FormName="Testmmfff">
+    <DataAnnotationsValidator />
+
+    <div class="offcanvas-body">
+        <div class="mb-3">
+
+            <label class="form-label" for="body">
+                @Loc["FromUser"]
+                <span class="text-danger"> *</span>
+            </label>
+            <SearchableSingleDropdown IsDisabled="!IsAdmine" TInput=DdlDto TOutput=Guid
+                                      TextSelector="x=> x.Name"
+                                      OutputSelector="x => x.Id"
+                                      SearchDataConsumer="DataProvider"
+                                      LoadSelectedDataConsumer="SelectedDataProvider"
+                                      @bind-SelectedOption=@userDelegation.FromUserId
+                                      PlaceHolder="@($"--{Loc["FromUser"]}--")" />
+     
+                                  
+                                  
+                                  </div>
+        <ValidationMessage class="small text-danger" For="@(() => userDelegation.FromUserId)" />
+        @if (IsFromUser)
+        {
+            <label class="small text-danger"> @Loc["Required"]</label>
+
+        }
+        <div class="mb-3">
+
+            <label class="form-label" for="body">
+                @Loc["ToUser"]
+                <span class="text-danger"> *</span>
+            </label>
+
+            <SearchableSingleDropdown TInput=DdlDto TOutput=Guid TextSelector="x=> x.Name"
+                                      OutputSelector="x=> x.Id"
+                                      SearchDataConsumer="DataProvider"
+                                      LoadSelectedDataConsumer="SelectedDataProvider"
+                                      @bind-SelectedOption=@userDelegation.ToUserId
+                                      PlaceHolder="@($"--{Loc["ToUser"]}--")" />
+        </div>
+        <ValidationMessage class="small text-danger" For="@(() => userDelegation.ToUser)" />
+        @if (IsToUser)
+        {
+            <label class="small text-danger"> @Loc["Required"]</label>
+
+        }
+        <div class="mb-3">
+            <label class="form-label" for="fromDate">@Loc["FromDate"]
+                <span class="text-danger"> *</span>
+            </label>
+
+            <div class="date-group">
+                <InputDate class="form-control" id="fromDate" @bind-Value="userDelegation.FromDate" />
+            </div>
+            <ValidationMessage class="small text-danger" For="@(() => userDelegation.FromDate)" />
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="toDate">@Loc["ToDate"]<span class="text-danger"> *</span></label>
+            <div class="date-group">
+                <InputDate class="form-control" id="toDate" @bind-Value="userDelegation.ToDate" />
+            </div>
+            <ValidationMessage class="small text-danger" For="@(() => userDelegation.ToDate)" />
+       
+            </div>
+    </div>
+    <div class="offcanvas-footer">
+        <div class="row g-3">
+            <div class="col-6">
+                <div class="d-grid">
+
+                    <button class="btn btn-lg btn-light" type="button" data-bs-dismiss="offcanvas">@Loc["Cancel"]</button>
+
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="d-grid">
+                    <button class="btn btn-lg btn-primary" type="button" onclick="@Save">@Loc["Save"]</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</EditForm>
+
+@code {
+
+
+
+    [Parameter] public UserDelegationDto userDelegation { get; set; }
+    [Parameter] public EventCallback OnValidSubmit { get; set; }
+    [Parameter] public string ButtonText { get; set; }
+    [Parameter]
+    public bool IsAdmine { set; get; }
+    List<UserDto> Fromusers = new List<UserDto>();
+    List<UserDto> Tousers = new List<UserDto>();
+    
+    bool IsFromUser;
+    bool IsToUser;
+    private string applicationURL;
+    private async Task Save()
+    {
+        IsFromUser = false;
+        IsToUser = false;
+        if (userDelegation.ToUserId == Guid.Empty || userDelegation.FromUserId == Guid.Empty)
+
+        {
+            if (userDelegation.ToUserId == Guid.Empty)
+                IsToUser = true;
+            if (userDelegation.FromUserId == Guid.Empty)
+                IsFromUser = true;
+            return;
+
+        }
+        if (!IsAdmine)
+        {
+            var current = await LocalStorageService.GetItemAsStringAsync("Id");
+            userDelegation.FromUserId = Guid.Parse(current);
+        }
+    
+        await OnValidSubmit.InvokeAsync();
+
+    }
+    private async Task Cancel()
+    {
+        userDelegation = new UserDelegationDto();
+        uriHelper.NavigateTo("UserDelegations/", true);
+
+        StateHasChanged();
+    }
+    protected override async Task OnInitializedAsync()
+    {
+        await GetUsersList();
+        applicationURL = _configuration["ApplicationURL"];
+    }
+    public async Task GetUsersList()
+    {
+        var users = await _userConsumer.GetUsers();
+        Fromusers = users.Data;
+        Tousers = users.Data;
+    }
+
+    private async Task<SearchableDropDownDto<DdlDto>> DataProvider(string searchValue, int pageSize, int offset)
+    {
+        var ret = await _userConsumer.GetUsersBySearchValue(searchValue, pageSize, offset);
+        if (ret.Success)
+        {
+            return ret.Data;
+        }
+        throw new Exception(ret.ErrorMessage);
+    }
+
+    private async Task<DdlDto> SelectedDataProvider(Guid id)
+    {
+        var ret = await _userConsumer.GetSelectedUserDdlById(id);
+        if (ret.Success)
+        {
+            return ret.Data;
+        }
+        throw new Exception(ret.ErrorMessage);
+    }
+
+    private async Task onivald(EditContext obj)
+    {
+        var xx = userDelegation.ToUserId;
+    }
+    private async Task Callback(EditContext obj)
+    {
+        await OnValidSubmit.InvokeAsync();
+
+    }
+
+   
+
+
+}

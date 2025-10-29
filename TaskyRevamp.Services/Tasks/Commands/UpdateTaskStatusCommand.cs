@@ -18,9 +18,9 @@ public class UpdateTaskStatusHandler : IRequestHandler<UpdateTaskStatusCommand, 
 {
     private readonly ITaskRepository _taskRepository;
     private readonly IHttpContextAccessor _httpContextAccessor;
-    private readonly IRepository<User> _usrRepository;
+    private readonly IRepository<TaskyRevamp.Domain.Models.Users.User> _usrRepository;
 
-    public UpdateTaskStatusHandler(ITaskRepository taskRepository, IRepository<User> usrRepository,
+    public UpdateTaskStatusHandler(ITaskRepository taskRepository, IRepository<TaskyRevamp.Domain.Models.Users.User> usrRepository,
         IHttpContextAccessor httpContextAccessor)
     {
         _taskRepository = taskRepository;

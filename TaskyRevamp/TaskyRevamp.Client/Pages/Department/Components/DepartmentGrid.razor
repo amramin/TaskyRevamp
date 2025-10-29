@@ -15,22 +15,15 @@
 
 <div class="table-responsive sticky-header-custom">
       
-        <SortableTable TItem="DepartmentDto"
+        <SortableTable         TItem="DepartmentDto"
                                Columns="@tableColumns"
-                       Items="@Departments"
+                               Items="@Departments"
                                SortColumn="@currentSortColumn"
                                SortAscending="@sortAscending"
                                OnSortRequested="HandleSort">
 
                     <RowTemplate>
-           @*      <th>@Loc["NameEnglish"]</th>
-                <th>@Loc["NameArabic"]</th>
-                <th>@Loc["DepartmentParent"]</th>
-                <th>@Loc["CreatedBy"]</th>
-                <th>@Loc["CreationDate"]</th>
-                <th>@Loc["UpdatedBy"]</th>
-                <th>@Loc["UpdateDate"]</th>
-                <th></th> *@
+          
            
             @foreach (var p in Departments)
             {
@@ -83,6 +76,7 @@
                                     </button>
                                 </li>
                             </ul>
+                           
                         </div>
                     </td>
                 </tr>
@@ -104,7 +98,10 @@
     [Parameter] public EventCallback<Guid> OnDelete { get; set; }
     [Parameter] public EventCallback<Guid> OnShowUsers { get; set; }
     [Parameter] public EventCallback<Guid> OnAdd { get; set; }
+    [Parameter] public EventCallback<Guid> OnAddDepartment { get; set; }
 
+
+   
     private int currentPage = 1;
     private int totalPages = 1;
     private int totalCount = 0;
@@ -112,6 +109,10 @@
     private string currentSortColumn = "CreateDate";
     private bool? sortAscending = true;
     private List<SortableColumn> tableColumns = new();
+    private void HandleDepartmentSelection(Guid departmentId)
+    {
+        OnAddDepartment.InvokeAsync(departmentId);
+    }
     private async Task DeleteConfirmed(Guid departmentId)
     {
         var result = await _departmentConsumer.DeleteDepartment(departmentId);
@@ -159,13 +160,14 @@
         tableColumns = new()
         {
             new() { Field = "NameEnglish", DisplayName = Loc["NameEnglish"] },
-                        new() { Field = "NameArabic", DisplayName = Loc["NameArabic"] },
-               new() { Field = "DepartmentParent", DisplayName = Loc["ParentdepartmentName"] },
+            new() { Field = "NameArabic", DisplayName = Loc["NameArabic"] },
+            new() { Field = "DepartmentParent", DisplayName = Loc["ParentdepartmentName"] },
+            new() { Field = "CreatedBy", DisplayName = Loc["CreatedBy"] },
 
             new() { Field = "CreateDate", DisplayName = Loc["CreationDate"] },
-            new() { Field = "CreatedBy", DisplayName = Loc["CreatedBy"] },
-            new() { Field = "UpdateDate", DisplayName = Loc["UpdateDate"] },
             new() { Field = "UpdatedBy", DisplayName = Loc["UpdatedBy"] },
+
+            new() { Field = "UpdateDate", DisplayName = Loc["UpdateDate"] },
             new() { Field = "Action", DisplayName = Loc["Action"] ,IsSortable = false},
         };
 

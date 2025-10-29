@@ -583,4 +583,40 @@ Add a new department to get started</value>
   <data name="Enter Priority Name Arabic" xml:space="preserve">
     <value>Enter Priority Name Arabic</value>
   </data>
+  <data name="Deletedsuccessfully" xml:space="preserve">
+    <value>Deleted successfully</value>
+  </data>
+  <data name="Addusers" xml:space="preserve">
+    <value>Add Users</value>
+  </data>
+  <data name="Errordatabase" xml:space="preserve">
+    <value>Error database</value>
+  </data>
+  <data name="AddDelegation" xml:space="preserve">
+    <value>Add Delegation</value>
+  </data>
+  <data name="EditDelegation" xml:space="preserve">
+    <value>Edit Delegation</value>
+  </data>
+  <data name="FromUser" xml:space="preserve">
+    <value>From User </value>
+  </data>
+  <data name="ToUser" xml:space="preserve">
+    <value>To User</value>
+  </data>
+  <data name="FromDate" xml:space="preserve">
+    <value>Start Date </value>
+  </data>
+  <data name="ToDate" xml:space="preserve">
+    <value>End Date</value>
+  </data>
+  <data name="CreateDate" xml:space="preserve">
+    <value>Creation Date</value>
+  </data>
+  <data name="SureDeleteDelegation" xml:space="preserve">
+    <value>Are you sure you want to remove this delegation?</value>
+  </data>
+  <data name="NoDelegationvailable" xml:space="preserve">
+    <value>No Delegations available</value>
+  </data>
 </root>
