@@ -64,7 +64,7 @@
     <h6 class="mb-3">@Loc["Nodepartmentavailable"]</h6>
 }
 
-else if (departmentDtos != null && departmentDtos.Count()==0 )
+else if (departmentDtos != null && departmentDtos.Count() == 0)
 {
     <NoSearchResults OnResetClick="ClearSearch"></NoSearchResults>
 }
@@ -76,7 +76,8 @@ else
         {
             case DepartmentViewType.Grid:
                 <DepartmentGrid Departments="departmentDtos" OnEdit="Edit" OnDelete="OnDeleteDepartment" OnShowUsers="ShowUser"
-                                OnAdd="AddDept" OnAddDepartment="AddDept" />
+                                OnAdd="AddDept" OnAddDepartment="AddDept" CurrentPage="currentPage"
+                                PageChanged="ChangePage" PageSizeChanged="ChangePageSize" PageSize="pageSize" TotalPages="totalPages" TotalCount="totalCount" /> 
                 break;
 
             case DepartmentViewType.Tree:
@@ -127,64 +128,45 @@ else
     {
         pageSize = newSize;
         currentPage = 1;
-        await LoadSources();
-        // await BuildHierarchy();
+        await LoadDepartmentsAsync();
     }
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (!firstRender && !string.IsNullOrEmpty(searchdata))
-        {
 
-            await Search(searchdata);
-
-          //  await InvokeAsync(StateHasChanged);
-        }
-
-
-
-    }
     protected override async Task OnInitializedAsync()
     {
 
-
-        await LoadSources();
-
-
         tableColumns = new()
-{
-new() { Field = "NameEnglish", DisplayName = Loc["NameEnglish"] },
-new() { Field = "NameArabic", DisplayName = Loc["NameArabic"] },
-new() { Field = "DepartmentParent", DisplayName = Loc["ParentdepartmentName"] },
+        {
+            new() { Field = "NameEnglish", DisplayName = Loc["NameEnglish"] },
+            new() { Field = "NameArabic", DisplayName = Loc["NameArabic"] },
+            new() { Field = "DepartmentParent", DisplayName = Loc["ParentdepartmentName"] },
 
-new() { Field = "CreateDate", DisplayName = Loc["CreationDate"] },
-new() { Field = "CreatedBy", DisplayName = Loc["CreatedBy"] },
-new() { Field = "UpdateDate", DisplayName = Loc["UpdateDate"] },
-new() { Field = "UpdatedBy", DisplayName = Loc["UpdatedBy"] },
-new() { Field = "Action", DisplayName = Loc["Action"] ,IsSortable = false},
-};
+            new() { Field = "CreateDate", DisplayName = Loc["CreationDate"] },
+            new() { Field = "CreatedBy", DisplayName = Loc["CreatedBy"] },
+            new() { Field = "UpdateDate", DisplayName = Loc["UpdateDate"] },
+            new() { Field = "UpdatedBy", DisplayName = Loc["UpdatedBy"] },
+            new() { Field = "Action", DisplayName = Loc["Action"] ,IsSortable = false},
+        };
 
-
-        BuildHierarchy();
+        await LoadDepartmentsAsync();
         StateHasChanged();
     }
     private async Task ChangePage(int page)
     {
         currentPage = page;
-        await LoadSources();
+        await LoadDepartmentsAsync();
     }
     private void Add()
     {
-
         PopupService.ShowNew(@<AddDepartment OnValidSubmit="OnInitializedAsync"></AddDepartment>,Loc["AddDepartment"]);
 
     }
     private async Task ClearSearch()
     {
         currentPage = 1;
-        searchComponent.SearchTerm ="";
+        searchComponent.SearchTerm = "";
 
         await searchComponent?.SearchSubmit.InvokeAsync("");
-        await LoadSources(isSearch: false, null);
+        await LoadDepartmentsAsync(isSearch: false, null);
 
     }
     private void Edit(Guid id)
@@ -203,7 +185,23 @@ new() { Field = "Action", DisplayName = Loc["Action"] ,IsSortable = false},
         PopupService.ShowNew(@<AddDepartment ParentId="id"></AddDepartment>,Loc["AddDepartment"]);
 
     }
-    private void ChangeView(DepartmentViewType view) => currentView = view;
+    private async Task ChangeView(DepartmentViewType view)
+    {
+        currentView = view;
+
+        // if Tree or Hierarchy → fetch all departments at once
+        if (currentView == DepartmentViewType.Tree || currentView == DepartmentViewType.Hierarchy)
+        {
+            pageSize = 10000;
+        }
+        else
+        {
+            pageSize = 10; // normal pagination for Grid
+        }
+
+        await LoadDepartmentsAsync(isSearch: !string.IsNullOrEmpty(searchdata), searchdata);
+    }
+
 
     private void OnDeleteDepartment(Guid departmentId)
     {
@@ -240,7 +238,7 @@ new() { Field = "Action", DisplayName = Loc["Action"] ,IsSortable = false},
             }
 
             await ToastService.ShowToastAsync(Loc["Deletedsuccessfully"], "success");
-            BuildHierarchy();
+            await LoadDepartmentsAsync();
         }
         else
         {
@@ -251,19 +249,47 @@ new() { Field = "Action", DisplayName = Loc["Action"] ,IsSortable = false},
     }
 
 
-    private async Task BuildHierarchy(bool isSearch = false, string searchTerm = null)
+
+    private void HandleAddDepartment(string parentId)
     {
-        //
+        navigationManager.NavigateTo($"/Add-Department?parentId={parentId}");
+    }
+    public async Task Search(string searchTerm)
+    {
+        searchdata = searchTerm;
+        await LoadDepartmentsAsync(true, searchTerm);
+    }
 
+    private async Task LoadDepartmentsAsync(bool isSearch = false, string searchTerm = null)
+    {
+        // Determine page size dynamically
+        var effectivePageSize = (currentView == DepartmentViewType.Tree || currentView == DepartmentViewType.Hierarchy)
+            ? 10000
+            : pageSize;
 
-        var data = await _departmentConsumer.GetDepartments(currentPage, 10000, currentSortColumn, sortAscending.Value,
-        isSearch ?
-        searchFields : null, isSearch ? searchTerm : null);
+        var resp = await _departmentConsumer.GetDepartments(
+            currentPage,
+            effectivePageSize,
+            currentSortColumn,
+            sortAscending.Value,
+            isSearch ? searchFields : null,
+            isSearch ? searchTerm : null
+        );
 
-        allDepartments = data.Data.Items.ToList();
+        if (!(resp?.Success ?? false) || resp.Data is null)
+            return;
 
-        //
+        var data = resp.Data;
+
+        // Paginated or full list (depends on view)
+        departmentDtos = data.Items.OrderBy(k => k.CreateDate).ToList();
+        totalPages = data.TotalPages;
+        totalCount = data.TotalCount;
+
+        // Build hierarchy tree using same data
+        allDepartments = data.Items.ToList();
         var dict = allDepartments.ToDictionary(x => x.Id);
+
         foreach (var dept in allDepartments)
             dept.Children = new List<DepartmentDto>();
 
@@ -274,40 +300,14 @@ new() { Field = "Action", DisplayName = Loc["Action"] ,IsSortable = false},
         }
 
         rootDepartments = allDepartments
-        .Where(d => d.ParentdepartmentId == Guid.Empty ||
-        !allDepartments.Any(x => x.Id == d.ParentdepartmentId))
-        .ToList();
-        RootDepartments = allDepartments
-   .Where(d => d.ParentdepartmentId == Guid.Empty ||
-        !allDepartments.Any(x => x.Id == d.ParentdepartmentId))
-        .ToList();
+            .Where(d => d.ParentdepartmentId == Guid.Empty ||
+                        !allDepartments.Any(x => x.Id == d.ParentdepartmentId))
+            .ToList();
+
+        RootDepartments = rootDepartments; // alias for hierarchy view
     }
 
-    private void HandleAddDepartment(string parentId)
-    {
-        navigationManager.NavigateTo($"/Add-Department?parentId={parentId}");
-    }
-    public async Task Search(string searchTerm)
-    {
-        searchdata = searchTerm;
-        await LoadSources(true, searchTerm);
-        await BuildHierarchy(true, searchTerm);
-      //  StateHasChanged();
-    }
-    private async Task LoadSources(bool isSearch = false, string searchTerm = null)
-    {
-        var resp = await _departmentConsumer.GetDepartments(currentPage, pageSize, currentSortColumn, sortAscending.Value,
-        isSearch ?
-        searchFields : null, isSearch ? searchTerm : null);
-        departmentDtos = resp.Data.Items.OrderBy(k => k.CreateDate).ToList();
 
-        if (!(resp?.Success ?? false) || resp.Data is null)
-            return;
-
-        var data = resp.Data;
-        totalPages = data.TotalPages;
-        totalCount = data.TotalCount;
-    }
     private enum DepartmentViewType
     {
         Grid,
