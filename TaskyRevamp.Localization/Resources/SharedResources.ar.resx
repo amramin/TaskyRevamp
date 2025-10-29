@@ -583,6 +583,7 @@
   <data name="Enter Priority Name Arabic" xml:space="preserve">
     <value>اسم الأولوية بالعربي</value>
   </data>
+
   <data name="Deletedsuccessfully" xml:space="preserve">
     <value>تم الحذف بنجاح</value>
   </data>
@@ -618,5 +619,92 @@
   </data>
   <data name="NoDelegationvailable" xml:space="preserve">
     <value>لا يوجد تفويضات متاحه</value>
+  </data>
+  <data name="GeneralModules" xml:space="preserve">
+    <value>الوحدات العامة</value>
+  </data>
+  <data name="Privilege" xml:space="preserve">
+    <value>صلاحيات</value>
+  </data>
+  <data name="TaskModule" xml:space="preserve">
+    <value>وحدة المهام</value>
+  </data>
+  <data name="ReportModule" xml:space="preserve">
+    <value>وحدة التقارير</value>
+  </data>
+  <data name="AddNewPrivilege" xml:space="preserve">
+    <value>إضافة صلاحية جديدة</value>
+  </data>
+  <data name="SelectReportOptions" xml:space="preserve">
+    <value>اختر خيارات التقرير</value>
+  </data>
+  <data name="ReportModuleHint" xml:space="preserve">
+    <value>جميع الخيارات أدناه اختيارية. إذا لم يتم تحديد أي خيار، فلن يتم إرسال أي تقرير من النظام إلى المستخدمين.</value>
+  </data>
+  <data name="Loading" xml:space="preserve">
+    <value>جاري التحميل</value>
+  </data>
+  <data name="PrivilegeNotFound" xml:space="preserve">
+    <value>لم يتم العثور على الصلاحية  {id}</value>
+  </data>
+  <data name="EnterPrivilegeName" xml:space="preserve">
+    <value>اسم الصلاحية عربي</value>
+  </data>
+  <data name="ArabicName" xml:space="preserve">
+    <value>الاسم بالعربية</value>
+  </data>
+  <data name="EnglishName" xml:space="preserve">
+    <value>الاسم بالانجليزية</value>
+  </data>
+  <data name="EnterPrivilegeArabicName" xml:space="preserve">
+    <value>اسم الصلاحية بالعربي</value>
+  </data>
+  <data name="EnterPrivilegeEnglishName" xml:space="preserve">
+    <value>اسم الصلاحية بالإنجليزية</value>
+  </data>
+  <data name="SelectAtLeastOneValue" xml:space="preserve">
+    <value>حدد قيمة واحدة على الأقل.</value>
+  </data>
+  <data name="Add" xml:space="preserve">
+    <value>إضافة</value>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>تعديل</value>
+  </data>
+  <data name="View" xml:space="preserve">
+    <value>عرض</value>
+  </data>
+  <data name="All" xml:space="preserve">
+    <value>الجميع</value>
+  </data>
+  <data name="DifferentDepartment" xml:space="preserve">
+    <value>إدارات مختلفة</value>
+  </data>
+  <data name="SameDepartment" xml:space="preserve">
+    <value>نفس الإدارة</value>
+  </data>
+  <data name="SameUser" xml:space="preserve">
+    <value>نفس المستخدم</value>
+  </data>
+  <data name="Module" xml:space="preserve">
+    <value>وحدة</value>
+  </data>
+  <data name="FromUser" xml:space="preserve">
+    <value>من المتسخدم</value>
+  </data>
+  <data name="ToUser" xml:space="preserve">
+    <value>إلي المستخدم</value>
+  </data>
+  <data name="ViewPermission" xml:space="preserve">
+    <value>عرض الأذونات</value>
+  </data>
+  <data name="ViewUsers" xml:space="preserve">
+    <value>المستخدمين</value>
+  </data>
+  <data name="AddANewPrivilegeToGetStarted" xml:space="preserve">
+    <value>أضف صلاحية جديدة للبدء</value>
+  </data>
+  <data name="NoPrivilegeAvailable" xml:space="preserve">
+    <value>لا تتوفر صلاحيات</value>
   </data>
 </root>

@@ -26,7 +26,6 @@ namespace TaskyRevamp.Services.SystemConfiguration.PriorityConfiguration.Command
 			{
 				var priority = res.Value;
 				await _priorityRepository.Delete(priority.Id);
-				await _priorityRepository.SaveChangesAsync();
 			}
 			return true;
 		}

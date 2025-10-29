@@ -2,6 +2,9 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TaskyRevamp.Domain.Interfaces;
+using TaskyRevamp.Domain.Models.Permissions;
+using TaskyRevamp.Domain.Models.Permissions.GeneralModule;
+using TaskyRevamp.Domain.Models.Permissions.ReportModule;
 using TaskyRevamp.Domain.Models.SystemConfiguration;
 using TaskyRevamp.Domain.Models.Task;
 using TaskyRevamp.Domain.Models.Users;
@@ -29,6 +32,11 @@ public class EfDbContext : DbContext
     public DbSet<DefaultColumnsSettings> DefaultColumnsSettings { get; set; }
     public DbSet<FilterFieldsSettings> FilterFieldsSettings { get; set; }
     public DbSet<AddTaskSettings> AddTaskSettings { get; set; }
+    public DbSet<Privilege> Privilege { get; set; }
+    public DbSet<GeneralModule> GeneralModule { get; set; }
+	public DbSet<GeneralModulePermission> GeneralModulePermission { get; set; }
+    public DbSet<ReportModule> ReportModule { get; set; }
+    public DbSet<ReportModulePermission> ReportModulePermission { get; set; }
     public EfDbContext(DbContextOptions<EfDbContext> options, IHttpContextAccessor httpContextAccessor)
         : base(options)
     {

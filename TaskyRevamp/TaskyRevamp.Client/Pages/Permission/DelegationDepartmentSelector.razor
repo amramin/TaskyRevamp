@@ -1,0 +1,108 @@
+﻿@using TaskyRevamp.Dto.Department
+@using TaskyRevamp.Dto.Account
+@using Stingray.Components.MultiSelectComponent
+
+<div>
+    <!-- Department Selector -->
+    <SearchableMultiDropdownOffline TInput="DepartmentDto"
+                                    TOutput="Guid"
+                                    Datasource="DepartmentList"
+                                    TextSelector="(d => d.Name)"
+                                    OutputSelector="(d => d.Id)"
+                                    SelectedOptions="@SelectedDepartments"
+                                    SelectedOptionsChanged="@OnDepartmentsChanged" />
+
+    @if (DepartmentsWithUsers.Any())
+    {
+        @foreach (var dept in DepartmentsWithUsers)
+        {
+            var isExpanded = ExpandedDepartments.Contains(dept.Key.Id);
+
+            <div class="card mt-3 border-0 shadow-sm">
+                <div class="card-header bg-light fw-semibold d-flex justify-content-between align-items-center"
+                     style="cursor:pointer"
+                     @onclick="() => ToggleDepartment(dept.Key.Id)">
+                    <span>@dept.Key.Name</span>
+                    <span class="text-muted small">
+                        @(isExpanded ? "▲" : "▼")
+                    </span>
+                </div>
+
+                @if (isExpanded)
+                {
+                    <div class="card-body p-2">
+                        @if (dept.Value == null)
+                        {
+                            <div class="text-muted small px-2">Loading users...</div>
+                        }
+                        else if (!dept.Value.Any())
+                        {
+                            <div class="text-muted small px-2">No users assigned to this department.</div>
+                        }
+                        else
+                        {
+                            <ul class="list-unstyled mb-0">
+                                @foreach (var user in dept.Value)
+                                {
+                                    <li class="border-bottom py-1 px-2">
+                                        <span class="fw-semibold">@user.UserName</span>
+                                        <span class="text-muted small ms-1">(@user.Email)</span>
+                                    </li>
+                                }
+                            </ul>
+                        }
+                    </div>
+                }
+            </div>
+        }
+    }
+</div>
+
+@code {
+    [Parameter] public List<DepartmentDto> DepartmentList { get; set; } = new();
+    [Parameter] public List<Guid> SelectedDepartments { get; set; } = new();
+    [Parameter] public EventCallback<List<Guid>> SelectedDepartmentsChanged { get; set; }
+    [Parameter] public Func<Guid, Task<List<UserDto>>> LoadUsersByDepartment { get; set; } = default!;
+
+    private Dictionary<DepartmentDto, List<UserDto>?> DepartmentsWithUsers { get; set; } = new();
+    private HashSet<Guid> ExpandedDepartments { get; set; } = new();
+
+    private async Task OnDepartmentsChanged(List<Guid> selectedIds)
+    {
+        SelectedDepartments = selectedIds ?? new();
+        await SelectedDepartmentsChanged.InvokeAsync(SelectedDepartments);
+
+        // Remove unselected
+        var removed = DepartmentsWithUsers.Keys.Where(d => !SelectedDepartments.Contains(d.Id)).ToList();
+        foreach (var r in removed)
+            DepartmentsWithUsers.Remove(r);
+
+        // Add new selected
+        foreach (var id in SelectedDepartments)
+        {
+            var dept = DepartmentList.FirstOrDefault(d => d.Id == id);
+            if (dept != null && !DepartmentsWithUsers.ContainsKey(dept))
+            {
+                DepartmentsWithUsers[dept] = null;
+                _ = LoadUsersAsync(dept);
+            }
+        }
+
+        StateHasChanged();
+    }
+
+    private async Task LoadUsersAsync(DepartmentDto department)
+    {
+        var users = await LoadUsersByDepartment(department.Id);
+        DepartmentsWithUsers[department] = users ?? new List<UserDto>();
+        StateHasChanged();
+    }
+
+    private void ToggleDepartment(Guid deptId)
+    {
+        if (ExpandedDepartments.Contains(deptId))
+            ExpandedDepartments.Remove(deptId);
+        else
+            ExpandedDepartments.Add(deptId);
+    }
+}

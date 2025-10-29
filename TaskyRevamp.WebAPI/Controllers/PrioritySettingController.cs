@@ -24,7 +24,7 @@ namespace TaskyRevamp.WebAPI.Controllers
 		[HttpGet("GetPrioritySettings")]
 		public async Task<IActionResult> GetPriorities()
 		{
-			return Ok(await _mediator.Send(new GetProrityQuery()));
+			return Ok(await _mediator.Send(new GetPriorityQuery()));
 		}
 
 		[HttpGet("GetPriorityById/{id}")]
@@ -42,7 +42,7 @@ namespace TaskyRevamp.WebAPI.Controllers
 		[HttpPost("UpdatePriority")]
 		public async Task<IActionResult> UpdatePriority([FromBody] PriorityDto priorityDto)
 		{
-			return Ok(await _mediator.Send(new UpdateProrityCommand(priorityDto)));
+			return Ok(await _mediator.Send(new UpdatePriorityCommand(priorityDto)));
 		}
 
 		[HttpPost("UpdatePrioritiesOrder")]
