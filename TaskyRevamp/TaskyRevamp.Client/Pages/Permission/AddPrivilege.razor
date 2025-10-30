@@ -97,8 +97,8 @@
         var json = System.Text.Json.JsonSerializer.Serialize(PrivilegeDto, new System.Text.Json.JsonSerializerOptions { WriteIndented = true });
         Console.WriteLine(json);
 
-        await _privilegeConsumer.CreatePrivilege(PrivilegeDto);
-        await ToastService.ShowToastAsync(Loc["Added successfully"], "success");
-        navigationManager.NavigateTo("/Privileges");
+        // await _privilegeConsumer.CreatePrivilege(PrivilegeDto);
+        // await ToastService.ShowToastAsync(Loc["Added successfully"], "success");
+        // navigationManager.NavigateTo("/Privileges");
     }
 }

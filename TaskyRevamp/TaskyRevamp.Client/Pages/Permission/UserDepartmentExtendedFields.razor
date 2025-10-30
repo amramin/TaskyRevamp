@@ -1,0 +1,69 @@
+﻿@using TaskyRevamp.Dto.Enums
+@using TaskyRevamp.Dto.Permissions.TaskModule
+@using Stingray.Components.MultiSelectComponent
+@inject IStringLocalizer<SharedResources> Loc
+
+<div class="ms-1 mt-1 rounded-3">
+    <!-- Permissions -->
+    <div class="mb-3">
+        @if (ShowPermissionFields)
+        {
+            <label class="form-label fw-bold">@Loc["Permissions"] <span class="text-danger">*</span></label>
+            <SearchableMultiDropdownOffline TInput="Permission"
+                                            TOutput="int"
+                                            Datasource="PermissionList"
+                                            TextSelector="(p => Loc[p.ToString()])"
+                                            OutputSelector="(p => (int)p)"
+                                            SelectedOptions="Item.PermissionId"
+                                            SelectedOptionsChanged="OnPermissionsChanged" />
+        }
+    </div>
+
+    <!-- Manager / Employee toggles -->
+    <div class="d-flex flex-column gap-2 mb-2">
+        <div class="form-check form-switch">
+            <input class="form-check-input" type="checkbox" id="manager_@Item.SelectedOption"
+                   @bind="Item.IsManagerTasks" />
+            <label class="form-check-label" for="manager_@Item.SelectedOption">@Loc["Manager's Tasks"]</label>
+        </div>
+
+        <div class="form-check form-switch">
+            <input class="form-check-input" type="checkbox" id="employee_@Item.SelectedOption"
+                   @bind="Item.IsEmployeeTasks" />
+            <label class="form-check-label" for="employee_@Item.SelectedOption">@Loc["Employee's Tasks"]</label>
+        </div>
+    </div>
+
+    <!-- Conditional Direction fields -->
+    @if (ShowDirectionFields)
+    {
+        <div class="mb-3">
+            <label class="form-label fw-bold">@Loc["Direction Type"] <span class="text-danger">*</span></label>
+            <select class="form-select" @bind="Item.DirectionType">
+                <option value="">@Loc["Select Direction Type"]</option>
+                @foreach (var type in Enum.GetValues(typeof(DirectionType)).Cast<DirectionType>())
+                {
+                    <option value="@type">@Loc[type.ToString()]</option>
+                }
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label fw-bold">@Loc["Direction Level"] <span class="text-danger">*</span></label>
+            <input type="number" class="form-control" min="1" max="10" @bind="Item.DirectionLevel" />
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter] public TaskModuleUserDepartmentPermissionDto Item { get; set; } = new();
+    [Parameter] public bool ShowDirectionFields { get; set; } = true;
+    [Parameter] public bool ShowPermissionFields { get; set; } = true;
+
+    private List<Permission> PermissionList = Enum.GetValues(typeof(Permission)).Cast<Permission>().ToList();
+
+    private void OnPermissionsChanged(List<int> selectedPermissions)
+    {
+        Item.PermissionId = selectedPermissions;
+    }
+}
