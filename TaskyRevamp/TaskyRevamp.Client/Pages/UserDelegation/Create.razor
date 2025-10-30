@@ -11,7 +11,7 @@
 
 @if (IsLoaded)
 {
-    <Formm ButtonText="@Loc["Add"]" userDelegation="@userDelegation" IsAdmine="@IsAdmine" OnValidSubmit="@Creat" />
+    <Form IsStarted="@IsStarted" ButtonText="@Loc["Add"]" userDelegation="@userDelegation" IsAdmine="@IsAdmine" OnValidSubmit="@Creat" />
 }
 
 
@@ -20,7 +20,8 @@
     [Parameter]
     public bool IsAdmine { set; get; }
     [Parameter] public EventCallback<UserDelegationDto> OnValidSubmit { get; set; }
-
+    [Parameter]
+    public bool IsStarted { set; get; }
     bool IsLoaded = false;
     protected override async Task OnInitializedAsync()
     {

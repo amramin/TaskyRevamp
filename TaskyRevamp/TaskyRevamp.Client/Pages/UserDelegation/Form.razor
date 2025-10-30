@@ -15,7 +15,7 @@
 @using TaskyRevamp.Dto.UserDelegation
 
 @inject IStringLocalizer<SharedResources> Loc
-<EditForm Model="@userDelegation" IsAdmine="@IsAdmine" OnInvalidSubmit="onivald" OnValidSubmit="Callback" FormName="Testmmfff">
+<EditForm Model="@userDelegation" IsStarted="@IsStarted" IsAdmine="@IsAdmine" OnInvalidSubmit="onivald" OnValidSubmit="Callback" FormName="Testmmfff">
     <DataAnnotationsValidator />
 
     <div class="offcanvas-body">
@@ -25,9 +25,10 @@
                 @Loc["FromUser"]
                 <span class="text-danger"> *</span>
             </label>
-            <SearchableSingleDropdown IsDisabled="!IsAdmine" TInput=DdlDto TOutput=Guid
+            <SearchableSingleDropdown IsDisabled="!IsAdmine||IsStarted" TInput=DdlDto TOutput=Guid
                                       TextSelector="x=> x.Name"
                                       OutputSelector="x => x.Id"
+                                      
                                       SearchDataConsumer="DataProvider"
                                       LoadSelectedDataConsumer="SelectedDataProvider"
                                       @bind-SelectedOption=@userDelegation.FromUserId
@@ -49,7 +50,7 @@
                 <span class="text-danger"> *</span>
             </label>
 
-            <SearchableSingleDropdown TInput=DdlDto TOutput=Guid TextSelector="x=> x.Name"
+            <SearchableSingleDropdown TInput=DdlDto IsDisabled="IsStarted" TOutput=Guid TextSelector="x=> x.Name"
                                       OutputSelector="x=> x.Id"
                                       SearchDataConsumer="DataProvider"
                                       LoadSelectedDataConsumer="SelectedDataProvider"
@@ -68,7 +69,7 @@
             </label>
 
             <div class="date-group">
-                <InputDate class="form-control" id="fromDate" @bind-Value="userDelegation.FromDate" />
+                <InputDate class="form-control" disabled="@IsStarted" id="fromDate" @bind-Value="userDelegation.FromDate" />
             </div>
             <ValidationMessage class="small text-danger" For="@(() => userDelegation.FromDate)" />
         </div>
@@ -108,6 +109,8 @@
     [Parameter] public string ButtonText { get; set; }
     [Parameter]
     public bool IsAdmine { set; get; }
+    [Parameter]
+    public bool IsStarted { set; get; }
     List<UserDto> Fromusers = new List<UserDto>();
     List<UserDto> Tousers = new List<UserDto>();
     
