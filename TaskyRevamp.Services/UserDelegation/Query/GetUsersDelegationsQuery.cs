@@ -2,7 +2,7 @@
 using System.Linq.Expressions;
 using TaskyRevamp.Domain.Models.Task;
 using TaskyRevamp.Domain.Models.Users;
-using TaskyRevamp.Domain.Models.Users.UserDelegations;
+using UserDelegations;
 using TaskyRevamp.Domain.Repositeries;
 using TaskyRevamp.Dto.UserDelegation;
 using TaskyRevamp.Dto.Enums.SearchFields;

@@ -85,8 +85,7 @@ else
                                 <ul class="dropdown-menu">
 
 
-                                 @if (p.FromDate > DateTime.Now)
-                                     {
+                              
                                     <li>
                                         
                                         <button class="dropdown-item" @onclick="@(() => ShowEditPopup(p.Id))">
@@ -96,7 +95,7 @@ else
                                             @Loc["EditDelegation"]
                                         </button>
                                     </li>
-                                    }
+                                  
                                     <li>
                                         <button class="dropdown-item text-danger" @onclick="@(() => OnDeleteDelegation(p.Id))">
                                             <span class="icon">
@@ -150,8 +149,11 @@ else
     private int totalPages = 1;
     private int totalCount = 0;
     private int pageSize = 10;
+    Guid currentuser { set; get; }
     protected override async Task OnInitializedAsync()
     {
+        var current = await LocalStorageService.GetItemAsStringAsync("Id");
+        currentuser = Guid.Parse(current);
         tableColumns = new()
         {
             new() { Field = "FromUser", DisplayName = Loc["FromUser"] },
@@ -305,8 +307,8 @@ else
     {
         if (userDelegation.ToUserId == Guid.Empty)
             return;
-        var current = await LocalStorageService.GetItemAsStringAsync("Id");
-        userDelegation.FromUserId = Guid.Parse(current);
+     
+        userDelegation.FromUserId = currentuser; 
         await _userDelegationConsumer.CreateUserDelegation(userDelegation);
 
         await GetDelegations();
@@ -330,15 +332,13 @@ else
 
     private async Task GetDelegations(bool isSearch = false, string searchTerm = null)
     {
-        var currentuser = await LocalStorageService.GetItemAsStringAsync("Id");
-        currentUserId = Guid.Parse(currentuser);
-        userDelegation.FromUserId = currentUserId;
-        if (IsAdmine)
-        {
+       
+        userDelegation.FromUserId = currentuser;
+      
 
             var res = await _userDelegationConsumer.GetAllUserDelegation(currentPage, pageSize, currentSortColumn, sortAscending.Value, isSearch ?
                  searchFields : null, isSearch ? searchTerm : null);
-            AlluserDelegation = res.Data.Items.ToList();
+        AlluserDelegation = res.Data.Items.Where(K => K.CreatedBy == currentuser).ToList();
 
             if (!(res?.Success ?? false) || res.Data is null)
                 return;
@@ -346,20 +346,7 @@ else
             var data = res.Data;
             totalPages = data.TotalPages;
             totalCount = data.TotalCount;
-        }
-        else
-        {
-            var res = await _userDelegationConsumer.GetAllUserDelegation(currentPage, pageSize, currentSortColumn, sortAscending.Value, isSearch ?
-                 searchFields : null, isSearch ? searchTerm : null);
-            AlluserDelegation = res.Data.Items.ToList();
-
-            if (!(res?.Success ?? false) || res.Data is null)
-                return;
-
-            var data = res.Data;
-            totalPages = data.TotalPages;
-            totalCount = data.TotalCount;
-        }
+       
         StateHasChanged();
     }
 

@@ -7,7 +7,7 @@ using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
 using TaskyRevamp.Domain.Models.Task;
-using TaskyRevamp.Domain.Models.Users.UserDelegations;
+using UserDelegations;
 
 namespace TaskyRevamp.Infrastructure.Configurations;
 

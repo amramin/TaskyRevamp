@@ -6,10 +6,10 @@ using TaskyRevamp.Dto.Account;
 using TaskyRevamp.Dto.Department;
 using TaskyRevamp.Dto.GeneralDto;
 using TaskyRevamp.Localization.Resources;
-namespace userRevamp.Services.userCQRS.Query
+namespace userRevamp.Services.Users.Query
 
 {
-    public record GetUsersBySearchValueByRoleQuery(string SearchValue, string Culture,string rol) : IRequest<List<UserDto>>;
+    public record GetUsersBySearchValueByRoleQuery(string SearchValue, string Culture, string rol) : IRequest<List<UserDto>>;
 
     public class GetUsersBySearchValueByRoleHandler : IRequestHandler<GetUsersBySearchValueByRoleQuery, List<UserDto>>
     {
@@ -23,8 +23,8 @@ namespace userRevamp.Services.userCQRS.Query
         {
             var usersDto = new List<UserDto>();
 
-            var users = await _userRepository.FindBy(x =>x.NameEnglish.Contains(request.SearchValue)|| x.NameArabic.Contains(request.SearchValue) || (x.Email == null ? false : x.Email.Contains(request.SearchValue)));
-            if (users.IsFailure) throw new Exception(SharedResources.Errordatabase );
+            var users = await _userRepository.FindBy(x => x.NameEnglish.Contains(request.SearchValue) || x.NameArabic.Contains(request.SearchValue) || (x.Email == null ? false : x.Email.Contains(request.SearchValue)));
+            if (users.IsFailure) throw new Exception(SharedResources.Errordatabase);
             if (users.Value == null) return usersDto;
 
             foreach (var user in users.Value)

@@ -2,7 +2,7 @@
 using TaskyRevamp.Domain;
 using TaskyRevamp.Domain.Interfaces;
 using TaskyRevamp.Domain.Interfaces.Repositeries;
-using TaskyRevamp.Domain.Models.Users.UserDelegations;
+using UserDelegations;
 using TaskyRevamp.Domain.Repositeries;
 using TaskyRevamp.Dto.UserDelegation;
 
@@ -27,7 +27,7 @@ public class CreateUserDelegationCommandHandler : IRequestHandler<CreateUserDele
         {
             return false;
         }
-        var newUserDelegation = new Domain.Models.Users.UserDelegations.UserDelegation()
+        var newUserDelegation = new UserDelegation()
         {
             ToDate = request.UserDelegation.ToDate,
             FromDate = request.UserDelegation.FromDate,

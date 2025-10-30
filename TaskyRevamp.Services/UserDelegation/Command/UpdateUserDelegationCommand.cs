@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using TaskyRevamp.Domain.Models.Users.UserDelegations;
+using UserDelegations;
 using TaskyRevamp.Domain.Repositeries;
 using TaskyRevamp.Dto.UserDelegation;
 
@@ -26,7 +26,7 @@ public class UpdateUserDelegationHandler : IRequestHandler<UpdateUserDelegationC
         newUserDelegation.ToDate = request.UserDelegation.ToDate;
         newUserDelegation.FromUserId = request.UserDelegation.FromUserId;
         newUserDelegation.ToUserId = request.UserDelegation.ToUserId;
-         await _UserDelegationRepository.Update(newUserDelegation);
+        await _UserDelegationRepository.Update(newUserDelegation);
         return true;
     }
 }

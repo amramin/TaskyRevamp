@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TaskyRevamp.Domain.Models.SystemConfiguration;
 using TaskyRevamp.Domain.Models.Task;
-using TaskyRevamp.Domain.Models.Users.UserDelegations;
+using UserDelegations;
 using TaskyRevamp.Dto.Enums.SearchFields;
 using TaskyRevamp.Dto.SystemConfiguration;
 
