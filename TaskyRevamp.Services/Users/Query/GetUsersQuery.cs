@@ -1,16 +1,17 @@
 ﻿using MediatR;
+using TaskyRevamp.Domain.Models.Users;
 using TaskyRevamp.Domain.Repositeries;
 using TaskyRevamp.Dto.Account;
 using TaskyRevamp.Localization.Resources;
 
-namespace TaskyRevamp.Services.User.Query
+namespace TaskyRevamp.Services.Users.Query
 {
     public record GetUsersQuery : IRequest<List<UserDto>>;
 
     public class GetUsersHandler : IRequestHandler<GetUsersQuery, List<UserDto>>
     {
-        private readonly IRepository<TaskyRevamp.Domain.Models.Users.User> _userRepository;
-        public GetUsersHandler(IRepository<TaskyRevamp.Domain.Models.Users.User> userRepository)
+        private readonly IRepository<User> _userRepository;
+        public GetUsersHandler(IRepository<User> userRepository)
         {
             _userRepository = userRepository;
         }
@@ -19,7 +20,7 @@ namespace TaskyRevamp.Services.User.Query
         {
             var usersDto = new List<UserDto>();
             var users = await _userRepository.All();
-            if (users.IsFailure) throw new Exception(SharedResources.Errordatabase );
+            if (users.IsFailure) throw new Exception(SharedResources.Errordatabase);
             if (users.Value == null) return usersDto;
 
             foreach (var user in users.Value)

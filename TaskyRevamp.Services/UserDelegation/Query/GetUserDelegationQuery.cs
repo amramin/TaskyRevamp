@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using TaskyRevamp.Domain.Models.Users.UserDelegations;
+using UserDelegations;
 using TaskyRevamp.Domain.Repositeries;
 using TaskyRevamp.Dto.UserDelegation;
 using TaskyRevamp.Localization.Resources;

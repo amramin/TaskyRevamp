@@ -1,18 +1,19 @@
 ﻿using MediatR;
+using TaskyRevamp.Domain.Models.Users;
 using TaskyRevamp.Domain.Repositeries;
 using TaskyRevamp.Dto.GeneralDto;
 using TaskyRevamp.Localization.Resources;
 
 
-namespace TaskyRevamp.Services.User.Query;
+namespace TaskyRevamp.Services.Users.Query;
 
 public record GetSelectedUserDdlByIdQuery(Guid id) : IRequest<DdlDto>;
 
 public class GetSelectedUserDdlByIdQueryHandler : IRequestHandler<GetSelectedUserDdlByIdQuery, DdlDto>
 {
-    private readonly IRepository<Domain.Models.Users.User> _userRepository;
+    private readonly IRepository<User> _userRepository;
 
-    public GetSelectedUserDdlByIdQueryHandler(IRepository<Domain.Models.Users.User> userRepository)
+    public GetSelectedUserDdlByIdQueryHandler(IRepository<User> userRepository)
     {
         _userRepository = userRepository;
     }

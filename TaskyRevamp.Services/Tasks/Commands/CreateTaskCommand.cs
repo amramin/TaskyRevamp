@@ -17,10 +17,10 @@ public class CreateTaskHandler : IRequestHandler<CreateTaskCommand, Guid>
 {
     private readonly IRepository<TaskItem> _taskRepository;
 
-    private readonly IRepository<TaskyRevamp.Domain.Models.Users.User> _userRepository;
+    private readonly IRepository<User> _userRepository;
     private readonly IRepository<Department> _depRepository;
 
-    public CreateTaskHandler(IRepository<TaskItem> taskRepository, IRepository<TaskyRevamp.Domain.Models.Users.User> userRepository,
+    public CreateTaskHandler(IRepository<TaskItem> taskRepository, IRepository<User> userRepository,
         IRepository<Department> depRepository)
     {
         _taskRepository = taskRepository;

@@ -46,14 +46,7 @@ public class GetDepartmentsHandler : IRequestHandler<GetDepartmentsQuery, PagedR
                             orderBy: orderBy,
                             includeProperties: $"{nameof(Department.CreatedBy)},{nameof(Department.UpdatedBy)},{nameof(Department.Parentdepartment)}");
 
-        //var items = res.Items.Select(u => new DepartmentDto
-        //{
-        //    Source = u.CopyToDto(),
-        ////    CreatedByName = u.CreatedBy != null ? u.CreatedBy.NameEnglish : string.Empty,
-        ////    UpdatedByName = u.UpdatedBy != null ? u.UpdatedBy.NameEnglish : string.Empty
-        //}).ToList();
 
-      //  res.Items.ForEach(k => allDepartments.Add(k.CopyToDto()));
         foreach (var Department in res.Items)
         {
             DepartmentDto dep = Department.CopyToDto();
@@ -69,7 +62,7 @@ public class GetDepartmentsHandler : IRequestHandler<GetDepartmentsQuery, PagedR
             PageNumber = request.pageNumber,
             PageSize = request.pageSize
         };
-    
+
     }
     private Func<IQueryable<Department>, IOrderedQueryable<Department>> GetOrderBy(string sortByColumn, bool sortAscending)
     {
