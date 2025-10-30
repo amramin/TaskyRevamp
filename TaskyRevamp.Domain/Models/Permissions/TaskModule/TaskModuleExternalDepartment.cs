@@ -18,7 +18,6 @@ namespace TaskyRevamp.Domain.Models.Permissions.TaskModule
 		public bool IsIncludeSubDepartment { get; set; }
 		public bool IsManagerTasks { get; set; }
 		public bool IsEmployeeTasks { get; set; }
-		public bool IsDeleteSubDepartment { get; set; }
 		public List<int>? PermissionId { get; set; }
 		public List<Guid> Status { get; set; }
 		public List<Guid> Source { get; set; }
@@ -34,7 +33,6 @@ namespace TaskyRevamp.Domain.Models.Permissions.TaskModule
 				IsIncludeSubDepartment = IsIncludeSubDepartment,
 				IsManagerTasks = IsManagerTasks,
 				IsEmployeeTasks = IsEmployeeTasks,
-				IsDeleteSubDepartment = IsDeleteSubDepartment,
 				PermissionId = PermissionId,
 				Status = Status,
 				Source = Source,

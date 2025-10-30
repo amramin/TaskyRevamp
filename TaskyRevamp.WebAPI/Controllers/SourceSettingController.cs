@@ -37,6 +37,12 @@ namespace TaskyRevamp.WebAPI.Controllers
 			return Ok(result);
 		}
 
+		[HttpGet("GetSourceWithoutPagination")]
+		public async Task<IActionResult> GetSourceWithoutPagination()
+		{
+			return Ok(await _mediator.Send(new GetSourcesWithoutPaginationQuery()));
+		}
+
 		[HttpGet("GetSourceSettingById/{id}")]
 		public async Task<IActionResult> GetSourceSettingById(Guid id)
 		{

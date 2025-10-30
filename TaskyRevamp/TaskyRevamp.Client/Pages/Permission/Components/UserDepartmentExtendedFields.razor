@@ -24,13 +24,13 @@
         <div class="form-check form-switch">
             <input class="form-check-input" type="checkbox" id="manager_@Item.SelectedOption"
                    @bind="Item.IsManagerTasks" />
-            <label class="form-check-label" for="manager_@Item.SelectedOption">@Loc["Manager's Tasks"]</label>
+            <label class="form-check-label" for="manager_@Item.SelectedOption">@Loc["ManagersTasks"]</label>
         </div>
 
         <div class="form-check form-switch">
             <input class="form-check-input" type="checkbox" id="employee_@Item.SelectedOption"
                    @bind="Item.IsEmployeeTasks" />
-            <label class="form-check-label" for="employee_@Item.SelectedOption">@Loc["Employee's Tasks"]</label>
+            <label class="form-check-label" for="employee_@Item.SelectedOption">@Loc["EmployeesTasks"]</label>
         </div>
     </div>
 
@@ -38,9 +38,9 @@
     @if (ShowDirectionFields)
     {
         <div class="mb-3">
-            <label class="form-label fw-bold">@Loc["Direction Type"] <span class="text-danger">*</span></label>
+            <label class="form-label fw-bold">@Loc["DirectionType"] <span class="text-danger">*</span></label>
             <select class="form-select" @bind="Item.DirectionType">
-                <option value="">@Loc["Select Direction Type"]</option>
+                <option value=""></option>
                 @foreach (var type in Enum.GetValues(typeof(DirectionType)).Cast<DirectionType>())
                 {
                     <option value="@type">@Loc[type.ToString()]</option>
@@ -49,8 +49,8 @@
         </div>
 
         <div class="mb-3">
-            <label class="form-label fw-bold">@Loc["Direction Level"] <span class="text-danger">*</span></label>
-            <input type="number" class="form-control" min="1" max="10" @bind="Item.DirectionLevel" />
+            <label class="form-label fw-bold">@Loc["DirectionLevel"] <span class="text-danger">*</span></label>
+            <input type="number" class="form-control @(Item.DirectionLevel < 1 ? "border-danger" : "")" min="1" @oninput="ValidateDirectionLevel" @bind="Item.DirectionLevel" />
         </div>
     }
 </div>
@@ -65,5 +65,16 @@
     private void OnPermissionsChanged(List<int> selectedPermissions)
     {
         Item.PermissionId = selectedPermissions;
+    }
+    private void ValidateDirectionLevel(ChangeEventArgs e)
+    {
+        if (int.TryParse(e.Value?.ToString(), out int value))
+        {
+            Item.DirectionLevel = value < 1 ? 1 : value;
+        }
+        else
+        {
+            Item.DirectionLevel = 1; 
+        }
     }
 }

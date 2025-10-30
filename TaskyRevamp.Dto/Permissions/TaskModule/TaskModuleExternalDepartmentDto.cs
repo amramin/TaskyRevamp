@@ -15,7 +15,6 @@ namespace TaskyRevamp.Dto.Permissions.TaskModule
 		public bool IsIncludeSubDepartment { get; set; }
 		public bool IsManagerTasks { get; set; }
 		public bool IsEmployeeTasks { get; set; }
-		public bool IsDeleteSubDepartment { get; set; }
 		public List<int>? PermissionId { get; set; }
 		public List<Guid> Status { get; set; }
 		public List<Guid> Source { get; set; }

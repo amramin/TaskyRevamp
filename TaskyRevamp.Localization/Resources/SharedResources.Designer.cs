@@ -574,6 +574,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Department.
+        /// </summary>
+        public static string Department {
+            get {
+                return ResourceManager.GetString("Department", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Department name must be unique. Please type a different name.
         /// </summary>
         public static string DepartmentDuplicateValidation {
@@ -615,6 +624,24 @@ namespace TaskyRevamp.Localization.Resources {
         public static string DifferentDepartment {
             get {
                 return ResourceManager.GetString("DifferentDepartment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Direction Level.
+        /// </summary>
+        public static string DirectionLevel {
+            get {
+                return ResourceManager.GetString("DirectionLevel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Direction Type.
+        /// </summary>
+        public static string DirectionType {
+            get {
+                return ResourceManager.GetString("DirectionType", resourceCulture);
             }
         }
         
@@ -678,6 +705,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string EditTaskType {
             get {
                 return ResourceManager.GetString("EditTaskType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Employee&apos;s Tasks.
+        /// </summary>
+        public static string EmployeesTasks {
+            get {
+                return ResourceManager.GetString("EmployeesTasks", resourceCulture);
             }
         }
         
@@ -777,6 +813,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string EnterPrivilegeName {
             get {
                 return ResourceManager.GetString("EnterPrivilegeName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to External Department.
+        /// </summary>
+        public static string ExternalDepartment {
+            get {
+                return ResourceManager.GetString("ExternalDepartment", resourceCulture);
             }
         }
         
@@ -898,6 +943,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Including Sub-Department.
+        /// </summary>
+        public static string IncludingSubDepartment {
+            get {
+                return ResourceManager.GetString("IncludingSubDepartment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Kanban view.
         /// </summary>
         public static string Kanban {
@@ -984,6 +1038,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string Login {
             get {
                 return ResourceManager.GetString("Login", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Manager&apos;s Tasks.
+        /// </summary>
+        public static string ManagersTasks {
+            get {
+                return ResourceManager.GetString("ManagersTasks", resourceCulture);
             }
         }
         
@@ -1156,6 +1219,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string PeersLevelHint {
             get {
                 return ResourceManager.GetString("PeersLevelHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Permissions.
+        /// </summary>
+        public static string Permissions {
+            get {
+                return ResourceManager.GetString("Permissions", resourceCulture);
             }
         }
         
@@ -1696,6 +1768,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string UpdatedBy {
             get {
                 return ResourceManager.GetString("UpdatedBy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User Department.
+        /// </summary>
+        public static string UserDepartment {
+            get {
+                return ResourceManager.GetString("UserDepartment", resourceCulture);
             }
         }
         

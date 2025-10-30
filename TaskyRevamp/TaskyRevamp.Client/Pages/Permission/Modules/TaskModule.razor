@@ -5,8 +5,12 @@
 @using TaskyRevamp.Dto.Permissions
 @using TaskyRevamp.Dto.Permissions.TaskModule
 @using Stingray.Components.MultiSelectComponent
+@using TaskyRevamp.Client.Pages.Permission.Components
+@using TaskyRevamp.Dto.SystemConfiguration
 @inject IStringLocalizer<SharedResources> Loc
 @inject DepartmentConsumer _departmentConsumer
+@inject StatusSettingConsumer _statusSettingConsumer
+@inject SourceSettingConsumer _sourceSettingConsumer
 
 <div class="card shadow-sm p-3 mt-2">
     <h6 class="fw-bold">@Loc["UserDepartment"]</h6>
@@ -25,15 +29,15 @@
         </div>
 
         <!-- Hint Message -->
-        <div class="form-text text-muted small mb-2">
+        <div class="form-text text-muted small">
             @Loc[$"{item.SelectedOption.ToString()}Hint"]
         </div>
 
         @if (item.IsActive)
         {
-            <UserDepartmentExtendedFields Item="item" 
-                                      ShowDirectionFields="@ShouldShowDirection(item.SelectedOption)"
-                                      ShowPermissionFields="@ShouldShowPermission(item.SelectedOption)">
+            <UserDepartmentExtendedFields Item="item"
+                                          ShowDirectionFields="@ShouldShowDirection(item.SelectedOption)"
+                                          ShowPermissionFields="@ShouldShowPermission(item.SelectedOption)">
             </UserDepartmentExtendedFields>
         }
     }
@@ -49,12 +53,12 @@
         <div class="col-md-6">
             <label class="form-label">@Loc["Department"]</label>
             <SearchableMultiDropdownOffline TInput="DepartmentDto"
-                                    TOutput="Guid"
-                                    Datasource="Departments"
-                                    TextSelector="(d => d.Name)"
-                                    OutputSelector="(d => d.Id)"
-                                    SelectedOptions="@SelectedDepartments"
-                                    SelectedOptionsChanged="@OnDepartmentsChanged" />
+                                            TOutput="Guid"
+                                            Datasource="Departments"
+                                            TextSelector="(d => d.Name)"
+                                            OutputSelector="(d => d.Id)"
+                                            SelectedOptions="@SelectedDepartments"
+                                            SelectedOptionsChanged="@OnDepartmentsChanged" />
         </div>
         <div class="col-md-3">
             <button class="btn btn-primary mt-3" @onclick="AddDepartments" disabled="@(!SelectedDepartments.Any())">
@@ -62,25 +66,39 @@
             </button>
         </div>
     </div>
-    @foreach (var dept in AddedDepartments)
+    @foreach (var dept in PrivilegeDto.TaskModuleExternalDepartmentDto ?? new List<TaskModuleExternalDepartmentDto>())
     {
         <ExternalDepartmentExtendedFields Item="dept"
                                           DepartmentName="@GetDepartmentName(dept.DepartmentId)"
-                                          OnRemove="RemoveDepartment" />
+                                          OnRemove="RemoveDepartment"
+                                          StatusList="@StatusList"
+                                          SourceList="@SourceList" />
     }
 </div>
 @code {
     [Parameter] public PrivilegeDto PrivilegeDto { get; set; } = new PrivilegeDto();
     private List<DepartmentDto> Departments { get; set; } = new List<DepartmentDto>();
     private List<Guid> SelectedDepartments { get; set; } = new();
-    private List<TaskModuleExternalDepartmentDto> AddedDepartments { get; set; } = new();
-
+    private List<StatusSettingsDto> StatusList { get; set; } = new();
+    private List<SourceDto> SourceList { get; set; } = new();
     protected override async Task OnInitializedAsync()
     {
         var res = await _departmentConsumer.GetDepartmentsNoPagnation();
         if (res.Success && res != null && res.Data != null)
         {
             Departments = res.Data;
+        }
+
+        var statusRes = await _statusSettingConsumer.GetStatusConfiguration();
+        if (statusRes.Success && statusRes != null && statusRes.Data != null)
+        {
+            StatusList = statusRes.Data;
+        }
+
+        var sourceRes = await _sourceSettingConsumer.GetSourcesWithoutPagination();
+        if (sourceRes.Success && sourceRes != null && sourceRes.Data != null)
+        {
+            SourceList = sourceRes.Data;
         }
 
         if (PrivilegeDto.TaskModuleUserDepartmentDto == null)
@@ -121,21 +139,20 @@
             || option == UserDepartmentOptions.PeersLevel
             || option == UserDepartmentOptions.SameDepartment;
     }
-    // Handles department multi-select changes
     private void OnDepartmentsChanged(List<Guid> selected)
     {
         SelectedDepartments = selected;
     }
-
     private void AddDepartments(MouseEventArgs args)
     {
+
+        PrivilegeDto.TaskModuleExternalDepartmentDto ??= new();
         foreach (var deptId in SelectedDepartments)
         {
-            // Prevent duplicates
-            if (AddedDepartments.Any(d => d.DepartmentId == deptId))
+            if (PrivilegeDto.TaskModuleExternalDepartmentDto.Any(d => d.DepartmentId == deptId))
                 continue;
 
-            AddedDepartments.Add(new TaskModuleExternalDepartmentDto
+            PrivilegeDto.TaskModuleExternalDepartmentDto.Add(new TaskModuleExternalDepartmentDto
             {
                 Id = Guid.NewGuid(),
                 PrivilegeId = PrivilegeDto.Id,
@@ -151,9 +168,10 @@
         SelectedDepartments.Clear();
     }
 
+
     private void RemoveDepartment(TaskModuleExternalDepartmentDto dept)
     {
-        AddedDepartments.Remove(dept);
+        PrivilegeDto.TaskModuleExternalDepartmentDto?.Remove(dept);
     }
     private string GetDepartmentName(Guid id)
     {

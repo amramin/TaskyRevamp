@@ -80,7 +80,6 @@ namespace TaskyRevamp.Domain.Models.Permissions
 				IsIncludeSubDepartment = x.IsIncludeSubDepartment,
 				IsManagerTasks = x.IsManagerTasks,
 				IsEmployeeTasks = x.IsEmployeeTasks,
-				IsDeleteSubDepartment = x.IsDeleteSubDepartment,
 				PermissionId = x.PermissionId,
 				Status = x.Status,
 				Source = x.Source,

@@ -700,4 +700,31 @@ Add a new department to get started</value>
   <data name="ExternalDepartmentHint" xml:space="preserve">
     <value>You can use an external department not related to the user department to apply the permission to it</value>
   </data>
+  <data name="UserDepartment" xml:space="preserve">
+    <value>User Department</value>
+  </data>
+  <data name="ExternalDepartment" xml:space="preserve">
+    <value>External Department</value>
+  </data>
+  <data name="Department" xml:space="preserve">
+    <value>Department</value>
+  </data>
+  <data name="Permissions" xml:space="preserve">
+    <value>Permissions</value>
+  </data>
+  <data name="EmployeesTasks" xml:space="preserve">
+    <value>Employee's Tasks</value>
+  </data>
+  <data name="ManagersTasks" xml:space="preserve">
+    <value>Manager's Tasks</value>
+  </data>
+  <data name="DirectionLevel" xml:space="preserve">
+    <value>Direction Level</value>
+  </data>
+  <data name="DirectionType" xml:space="preserve">
+    <value>Direction Type</value>
+  </data>
+  <data name="IncludingSubDepartment" xml:space="preserve">
+    <value>Including Sub-Department</value>
+  </data>
 </root>
