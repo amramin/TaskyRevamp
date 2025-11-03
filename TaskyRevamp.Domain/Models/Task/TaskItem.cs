@@ -12,8 +12,8 @@ public class TaskItem : Entity, IHasCreationMetaData, IHasUpdateMetaData
     public string TitleEnglish { get; set; }
     public string TitleArabic { get; set; }
 
-    public string DescriptionEnglish { get; set; }
-    public string DescriptionArabic { get; set; }
+    public string? DescriptionEnglish { get; set; }
+    public string? DescriptionArabic { get; set; }
     public Guid TaskTypeId { set; get; }
     public TaskType Type { get; set; }
     public Guid TaskSourceId { set; get; }

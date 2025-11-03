@@ -48,7 +48,8 @@ builder.Services.AddTransient<RejectionSettingConsumer>();
 builder.Services.AddTransient<PrioritySettingConsumer>();
 builder.Services.AddTransient<DepartmentConsumer>();
 builder.Services.AddTransient<TaskConsumer>();
-
+builder.Services.AddTransient<TaskTypeConsumer>();
+builder.Services.AddTransient<TaskSourceConsumer>();
 builder.Services.AddTransient<UserConsumer>();
 builder.Services.AddTransient<UserDelegationConsumer>();
 

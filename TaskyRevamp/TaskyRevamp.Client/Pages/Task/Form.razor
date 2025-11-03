@@ -1,0 +1,193 @@
+﻿
+@using System.Globalization
+@using System.Linq.Expressions
+@using Stingray.Components.MultiSelectComponent
+@using TaskyRevamp.Dto.Account
+@using TaskyRevamp.Dto.Department
+@using TaskyRevamp.Dto.SystemConfiguration
+
+@using TaskyRevamp.Client.Consumer
+@using TaskyRevamp.Client.Services
+@using TaskyRevamp.Dto.Enums;
+@using TaskyRevamp.Dto.SystemConfiguration;
+@using TaskyRevamp.Dto.TaskDto
+@using TaskyRevamp.Dto.TaskSourceDto
+@using TaskyRevamp.Dto.TaskTypeDto
+@inject DefaultColumnsSettingConsumer _defaultColumnsSettingConsumer
+@inject IStringLocalizer<SharedResources> Loc
+@inject ToastService ToastService
+@inject TaskTypeConsumer _taskTypeConsumer
+@inject TaskSourceConsumer _taskSourceConsumer
+@inject DepartmentConsumer _departmentConsumer
+@inject UserConsumer _userConsumer
+    <EditForm Model="@taskdto" OnInvalidSubmit="HandleValidSubmit" OnValidSubmit="HandleValidSubmit" FormName="Testmmfmmmff">
+
+    <div class="row">
+        @foreach (var column in ColumnsList.Where(c => c.IsActive).OrderBy(c => c.Order))
+        {
+    switch (column.NameEnglish)
+    {
+        case "Title":
+                   
+                        <div class="mb-3">
+                        <label class="form-label">
+                            @Loc["NameEnglish"]
+                            <span class="text-danger"> *</span>
+
+                        </label>
+                        <InputText class="form-control" @bind-Value="taskdto.TitleEnglish" placeholder="@Loc["NameEnglish"]" />
+                        <ValidationMessage class="small text-danger" For="@(() => taskdto.TitleEnglish)"></ValidationMessage>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">
+                        @Loc["TitleArabic"]
+                            <span class="text-danger"> *</span>
+
+                        </label>
+                        <InputText class="form-control" @bind-Value="taskdto.TitleArabic" placeholder="@Loc["NameEnglish"]" />
+                        <ValidationMessage class="small text-danger" For="@(() => taskdto.TitleArabic)"></ValidationMessage>
+                    </div>
+
+                    break;
+        case "Type":
+        <div class="mb-3">
+          <SearchableSingleDropdownOffline TInput=TaskTypeDto
+                                                             TOutput=Guid
+                                                             TextSelector="(TaskTypeDto x)=> x.Name"
+                                                             OutputSelector="x => x.Id"
+                                                             Datasource="taskTypeDtos"
+                                                             MinCharacterCount="1"
+                                                         @bind-SelectedOption="@taskdto.TypeId"
+                                                             PlaceHolder="@($"--{Loc["SelectType"]}--")" />
+
+        </div>
+                    break;
+        case "Source":
+
+                <div class="mb-3">
+                    <SearchableSingleDropdownOffline TInput=TaskSourceDto
+                                                     TOutput=Guid
+                                                         TextSelector="(TaskSourceDto x)=> x.Name"
+                                                     OutputSelector="x => x.Id"
+                                                     Datasource="taskSourceDtos"
+                                                     MinCharacterCount="1"
+                                                         @bind-SelectedOption="@taskdto.SourceId"
+                                                     PlaceHolder="@($"--{Loc["Select"]}--")" />
+
+                </div>
+                    break;
+        
+        case "Start Date":
+                <div class="mb-3">
+                    <label class="form-label" for="fromDate">
+                        @Loc["FromDate"]
+                        <span class="text-danger"> *</span>
+                    </label>
+
+                    <div class="date-group">
+                        <InputDate class="form-control" id="fromDate" @bind-Value="taskdto.StartDate" />
+                    </div>
+                    <ValidationMessage class="small text-danger" For="@(() => taskdto.StartDate)" />
+                </div>
+                    break;
+        case "End Date":
+                <div class="mb-3">
+                    <label class="form-label" for="toDate">@Loc["ToDate"]<span class="text-danger"> *</span></label>
+                    <div class="date-group">
+                        <InputDate class="form-control" id="toDate" @bind-Value="taskdto.EndDate" />
+                    </div>
+                    <ValidationMessage class="small text-danger" For="@(() => taskdto.EndDate)" />
+
+                </div>
+                    break;
+        case "Assigned To Department":
+                <div class="mb-3">
+                    <label class="form-label">
+                        @Loc["AssignedToDepartment"]
+                        <span class="text-danger">*</span>
+                    </label>
+                    <SearchableMultiDropdownOffline TInput=DepartmentDto TOutput="Guid" Datasource=departmentDtos
+                                                    TextSelector=@(x=>x.NameEnglish) OutputSelector="x=> x.Id" @bind-SelectedOptions=taskdto.AssignedDepartmentIds />
+                </div>
+                    break;
+        case "Assigned To":
+                <div class="mb-3">
+                    <label class="form-label">
+                        @Loc["AssignedTo"]
+                        <span class="text-danger">*</span>
+                    </label>
+                    <SearchableMultiDropdownOffline TInput=UserDto TOutput="Guid" Datasource=userDtos
+                                                    TextSelector=@(x=>x.UserName) OutputSelector="x=> x.Id" @bind-SelectedOptions=taskdto.AssignedIds />
+                </div>
+      @*   case "Status":
+        case "Priority":
+        case "Type":
+        case "Type":
+        case "Type": *@
+                    break;
+
+     
+
+        }
+        }
+    </div>
+
+    <button class="btn btn-primary mt-3" type="submit">Submit</button>
+</EditForm>
+
+@code {
+    [Parameter] public CreateTaskDto taskdto{ set; get; }
+
+    [Parameter] public EventCallback<EditContext> OnValidSubmit { get; set; }
+    [Parameter] public EventCallback OnCancel { get; set; }
+
+    [Parameter] public string ButtonText { get; set; }
+    private List<DefaultColumnsSettingDto> ColumnsList = new();
+    private Dictionary<string, object?> formData = new();
+
+        List<TaskTypeDto> taskTypeDtos = new List<TaskTypeDto>();
+    List<TaskSourceDto> taskSourceDtos = new List<TaskSourceDto>();
+    List<DepartmentDto> departmentDtos = new List<DepartmentDto>();
+
+    List<UserDto> userDtos = new List<UserDto>();
+
+    protected async override Task OnInitializedAsync()
+    {
+            var res = await _defaultColumnsSettingConsumer.GetDefaultColumnsSettings();
+            if (res.Success)
+            {
+                var settings = res.Data;
+                if (settings != null)
+                {
+                    ColumnsList = settings;
+                }
+
+            }
+            var typs = await _taskTypeConsumer.GetTaskTypesForDDL();
+            taskTypeDtos = typs.Data;
+            var sorce = await _taskSourceConsumer.GetTaskSourcesForDDL();
+            taskSourceDtos = sorce.Data;
+            var users = await _userConsumer.GetUsers();
+            userDtos=users.Data;
+            var departs = await _departmentConsumer.GetDepartmentsForDDL();
+            departmentDtos = departs.Data.ToList();
+            StateHasChanged();
+            // Initialize data dictionary
+        // foreach (var col in ColumnsList)
+        // {
+        //     formData[col.NameEnglish] = col.FieldType == "checkbox" ? false : null;
+        // }
+    }
+
+    
+    private async Task HandleValidSubmit(EditContext context)
+    {
+      
+        await OnValidSubmit.InvokeAsync(context);
+    }
+
+  
+
+   
+
+}

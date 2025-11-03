@@ -25,8 +25,8 @@ public class CreateTaskDto
     )]
     public string TitleArabic { get; set; }
 
-    public string DescriptionEnglish { get; set; }
-    public string DescriptionArabic { get; set; }
+    public string? DescriptionEnglish { get; set; }
+    public string? DescriptionArabic { get; set; }
     public DateTime StartDate { get; set; }
     public DateTime EndDate { get; set; }
     public Guid TypeId { get; set; }
@@ -40,6 +40,6 @@ public class CreateTaskDto
     public Guid CreatedBy { get; set; }
     public string? CreatedByName { get; set; }
     public DateTime? CreateDate { get; set; }
-    public string UpdatedBy { get; set; }
+    public string? UpdatedBy { get; set; }
     public DateTime? UpdateDate { get; set; }
 }

@@ -1,12 +1,14 @@
 using TaskyRevamp.Domain.Models.Users;
+using TaskyRevamp.Dto.TaskSourceDto;
+using TaskyRevamp.Dto.TaskTypeDto;
 
 namespace TaskyRevamp.Domain.Models.Task;
 
 public class TaskSource : Entity
 {
-    public string Name { get; private set; }
-    public string? Description { get; private set; }
-    public bool IsActive { get; private set; }
+    public string Name { get; set; }
+    public string? Description { get; set; }
+    public bool IsActive { get; set; }
     public TaskSource(Guid id, string name, string? desc, bool isActive, User by)
     {
         Id = id;
@@ -18,12 +20,25 @@ public class TaskSource : Entity
     public TaskSource()
     {
     }
+    public TaskSourceDto CopyToDto()
+    {
+        return new TaskSourceDto
+        {
+            Id = Id,
+            Description = Description,
+            IsActive = IsActive,
+            Name = Name
 
+
+
+
+        };
+    }
     public void Update(string name, string? desc, bool isActive, User by)
     {
         Name = name;
         Description = desc;
         IsActive = isActive;
-        
+
     }
 }
