@@ -118,3 +118,35 @@ function OpenSideBar(modalRef, id) {
     DotNetHelper.popups[id] = bsOffcanvas;
     bsOffcanvas.show();
 }
+
+window.setFavicon = (dataUrl) => {
+    // Remove all existing favicons
+    document.querySelectorAll("link[rel~='icon']").forEach(link => link.parentNode.removeChild(link));
+
+    // Create new favicon link
+    const link = document.createElement("link");
+    link.rel = "icon";
+
+    // Detect image type from the data URL
+    if (dataUrl.startsWith("data:image/svg+xml")) {
+        link.type = "image/svg+xml";
+    } else if (dataUrl.startsWith("data:image/png")) {
+        link.type = "image/png";
+    } else if (dataUrl.startsWith("data:image/jpeg")) {
+        link.type = "image/jpeg";
+    } else if (dataUrl.startsWith("data:image/x-icon")) {
+        link.type = "image/x-icon";
+    } else {
+        console.warn("Unknown favicon format. Defaulting to image/png.");
+        link.type = "image/png";
+    }
+
+    // Bust cache
+    link.href = dataUrl + "?v=" + new Date().getTime();
+
+    document.head.appendChild(link);
+};
+
+window.setThemeColor = (variable, value) => {
+    document.documentElement.style.setProperty(variable, value);
+};

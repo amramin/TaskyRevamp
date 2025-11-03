@@ -104,20 +104,33 @@ public class TaskyService
         return null;
     }
 
-    public async Task<string> GetSystemLogo()
+    public async Task<SystemIdentityDto> GetSystemIdentity()
     {
-        var systemLogoBase64 = "";
+        var systemIdentity = new SystemIdentityDto();
         var url = $"api/SystemIdentity/GetSystemIdentitySetting";
         var res = await GetFromJsonAsync<CommonApiResponse<SystemIdentityDto>>(url);
 
         if (res.Success)
         {
-            var systemIdentity = res.Data;
-            var mimeType = GetMimeType(systemIdentity.Logo);
-            systemLogoBase64 = $"data:{mimeType};base64,{systemIdentity.LogoBase64}";
+            systemIdentity = res.Data;
         }
 
+        return systemIdentity;
+    }
+
+    public string GetSystemLogoAsImgSrc(byte[] logo)
+    {
+        var systemLogoBase64 = "";
+        var mimeType = GetMimeType(logo);
+        systemLogoBase64 = $"data:{mimeType};base64,{Convert.ToBase64String(logo)}";
+
         return systemLogoBase64;
+    }
+
+    public async Task ChangeTheme(SystemIdentityDto systemIdentity)
+    {
+        await JS.InvokeVoidAsync("setThemeColor", "--primary-color", systemIdentity.PrimaryColor);
+        await JS.InvokeVoidAsync("setThemeColor", "--secondary-color", systemIdentity.PrimaryColor);
     }
 
     private async Task<bool> CheckForToken()

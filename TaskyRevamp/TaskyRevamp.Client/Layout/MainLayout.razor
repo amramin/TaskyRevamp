@@ -3,6 +3,7 @@
 @using TaskyRevamp.Client.Services
 @using TaskyRevamp.Client.Shared.Popups
 @using TaskyRevamp.Client.Consumer
+@using TaskyRevamp.Dto.SystemConfiguration
 @inherits LayoutComponentBase
 @inject SystemIdentityConsumer _systemIdentityConsumer
 @inject ILocalStorageService localStorageService
@@ -61,7 +62,7 @@
                         </ul>
                     </div>
                     <img class="logo"
-                         src="@(string.IsNullOrEmpty(systemLogoBase64)? "" : systemLogoBase64)"
+                         src="@(string.IsNullOrEmpty(systemLogoAsImgSrc)? "" : systemLogoAsImgSrc)"
                          alt="system-logo" />
                     <div class="dropdown dropdown-user">
                         <button class="btn btn-user"
@@ -138,7 +139,7 @@
     RenderFragment Content { get; set; }
     bool IsShowDialog = false;
 
-    private string systemLogoBase64 = "";
+    private string systemLogoAsImgSrc = "";
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -159,7 +160,10 @@
             InvokeAsync(StateHasChanged); // force UI refresh
         };
 
-        systemLogoBase64 = await taskyService.GetSystemLogo();
+        var identity = await taskyService.GetSystemIdentity();
+        systemLogoAsImgSrc = taskyService.GetSystemLogoAsImgSrc(identity.Logo);
+
+        await taskyService.ChangeTheme(identity);
     }
 
     void SetRenderFragment(RenderFragment content, string headerName)
@@ -202,5 +206,5 @@
         }
     }
 
-
+   
 }

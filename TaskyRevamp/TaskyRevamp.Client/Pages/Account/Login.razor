@@ -26,7 +26,7 @@
                 <div class="row w-100 flex-column gap-5 align-items-center justify-content-center">
                     <div class="col-lg-6 text-center">
                         <img class="img-fluid"
-                             src="@(string.IsNullOrEmpty(systemLogoBase64)? "" : systemLogoBase64)"
+                             src="@(string.IsNullOrEmpty(systemLogoAsImgSrc)? "" : systemLogoAsImgSrc)"
                              alt="system-logo" />
                     </div>
 
@@ -44,7 +44,7 @@
                         <div class="auth-logo">
                             <span class="logo-icon">
                                 <img class=""
-                                     src="@(string.IsNullOrEmpty(systemLogoBase64)? "" : systemLogoBase64)"
+                                     src="@(string.IsNullOrEmpty(systemLogoAsImgSrc)? "" : systemLogoAsImgSrc)"
                                      alt="system-logo" />
                             </span>
                             @*<h6 class="auth-logo-text">Tasky</h6>*@
@@ -158,14 +158,15 @@
     private bool isPasswordVisible = false;
     private string passwordInputType = "password";
     public string userIdentifier = string.Empty;
-    private string systemLogoBase64 = "";
+    private string systemLogoAsImgSrc = "";
     [SupplyParameterFromQuery]
     [Parameter]
     public string returnUrl { get; set; }
 
     protected async override Task OnInitializedAsync()
     {
-        systemLogoBase64 = await taskyService.GetSystemLogo();
+        var identity = await taskyService.GetSystemIdentity();
+        systemLogoAsImgSrc = taskyService.GetSystemLogoAsImgSrc(identity.Logo);
     }
 
     private void TogglePasswordVisibility()

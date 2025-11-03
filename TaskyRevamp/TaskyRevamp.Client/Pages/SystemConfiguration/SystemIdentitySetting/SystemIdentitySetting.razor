@@ -166,7 +166,7 @@
         if (res.Success)
         {
             await ToastService.ShowToastAsync(Loc["EditSuccess"], "success");
-            NavigationManager.NavigateTo(NavigationManager.Uri, forceLoad: true);
+            await taskyService.ChangeTheme(_systemIdentity);
         }
     }
     private void Cancel(MouseEventArgs args)
