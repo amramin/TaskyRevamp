@@ -9,7 +9,7 @@ using MediatR;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using TaskyRevamp.Domain.Models.Users;
-using TaskyRevamp.Domain.Models.Users.UserDelegations;
+using UserDelegations;
 using TaskyRevamp.Domain.Repositeries;
 using TaskyRevamp.Dto.GeneralDto;
 using TaskyRevamp.Services;
@@ -22,260 +22,260 @@ public record AuthenticateCommand(string Username, string Password) : IRequest<s
 
 public class AuthenticateCommandHandler : IRequestHandler<AuthenticateCommand, string?>
 {
-    private readonly IRepository<TaskyRevamp.Domain.Models.Users.User> _userRepository;
-    private readonly IRepository<UserDelegation> _delegateRepository;
-    private readonly IOptions<AppSettings> _appSettingsOptions;
-    IOptions<LdapSettings> _ldapPath;
+	private readonly IRepository<User> _userRepository;
+	private readonly IRepository<UserDelegation> _delegateRepository;
+	private readonly IOptions<AppSettings> _appSettingsOptions;
+	IOptions<LdapSettings> _ldapPath;
 
-    public AuthenticateCommandHandler(IRepository<TaskyRevamp.Domain.Models.Users.User> userRepository, IRepository<UserDelegation> delegateRepository, IOptions<AppSettings> appSettingsOptions, IOptions<LdapSettings> ldapSettings)
-    {
-        _userRepository = userRepository;
-        _delegateRepository = delegateRepository;
-        _appSettingsOptions = appSettingsOptions;
-        _ldapPath = ldapSettings;
-    }
+	public AuthenticateCommandHandler(IRepository<User> userRepository, IRepository<UserDelegation> delegateRepository, IOptions<AppSettings> appSettingsOptions, IOptions<LdapSettings> ldapSettings)
+	{
+		_userRepository = userRepository;
+		_delegateRepository = delegateRepository;
+		_appSettingsOptions = appSettingsOptions;
+		_ldapPath = ldapSettings;
+	}
 
-    private const int DefaultTokenExpiry = 24;
+	private const int DefaultTokenExpiry = 24;
 
-    public async Task<string?> Handle(AuthenticateCommand request, CancellationToken cancellationToken)
-    {
-        try
-        {
+	public async Task<string?> Handle(AuthenticateCommand request, CancellationToken cancellationToken)
+	{
+		try
+		{
 
-            var isAuthenticated = AuthenticateUser(_ldapPath.Value.Path, request.Username, request.Password);
-            if (!isAuthenticated)
-            {
-                return null;
-            }
-
-
-            var user = new TaskyRevamp.Domain.Models.Users.User();
-
-            var userResponse = await _userRepository.FindBy(x => x.Username == request.Username);
-            if (userResponse.IsFailure || userResponse.Value is null || userResponse.Value.Count == 0)
-            {
-                var newUser = AddNewUser(_ldapPath.Value.Path, request.Username);
-
-                if (newUser == null)
-                {
-                    throw new NoDataException("User Not Found!");
-                }
-                else
-                {
-                    user = newUser;
-                }
-
-            }
-            else
-            {
-                user = userResponse.Value.FirstOrDefault();
-                if (user is null)
-                {
-                    throw new NoDataException("User Not Found!");
-                }
-            }
-
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(_appSettingsOptions.Value.Secret);
-            var tokenExpiry = GetTokenExpirySettingsQuery();
-            var delegateUsersNames = new List<string>();
-            var delegateUsersIds = new List<Guid>();
-            var delegateUsers = GetDelegatedUsers(user);
-
-            delegateUsersNames.AddRange(delegateUsers.Select(x => x.Username));
-            delegateUsersIds.AddRange(delegateUsers.Select(x => x.Id));
-
-            var tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Subject = new ClaimsIdentity(new Claim[]
-                {
-                new(ClaimTypes.Name, user.Id.ToString()),
-                new(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                new("Username", user.Username),
-                new("Email", user.Email),
-                new("NameEnglish", user.NameEnglish),
-                new("NameArabic", user.NameArabic),
-                new("Id", user.Id.ToString()),
-                new("DelegatedUsersId", string.Join(",", delegateUsersIds)),
-                }),
-                Expires = DateTime.UtcNow.AddHours(tokenExpiry),
-                SigningCredentials =
-                    new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-            };
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-
-            return tokenHandler.WriteToken(token);
-        }
-        catch (Exception ex)
-        {
-            throw new InvalidOperationException(ex.Message);
-        }
-    }
-
-    private bool AuthenticateUser(string ldapPath, string username, string password)
-    {
-        try
-        {
-            using (var entry = new DirectoryEntry(ldapPath, username, password))
-            {
-                // Bind to the directory and authenticate
-                object nativeObject = entry.NativeObject;
-                return true; // Successful login
-            }
-
-        }
-        //catch (DirectoryServicesCOMException)
-        //{
-        //    // Invalid credentials
-        //    return false;
-        //}
-        catch (Exception ex)
-        {
-            // Handle other exceptions
-            Console.WriteLine($"An error occurred: {ex.Message}");
-            throw new InvalidOperationException(ex.Message);
-            return false;
-        }
-    }
-    private TaskyRevamp.Domain.Models.Users.User AddNewUser(string ldapPath, string username)
-    {
-        try
-        {
-            using (var entry = new DirectoryEntry(ldapPath, _ldapPath.Value.Username, _ldapPath.Value.Password))
-            {
-                using (var searcher = new DirectorySearcher(entry))
-                {
-                    // Search for users created within the last 7 days
-                    var fromDate = DateTime.UtcNow.AddDays(-1);
-                    string filter = searcher.Filter = $"(sAMAccountName={username})";
-
-                    searcher.Filter = filter;
-                    searcher.PropertiesToLoad.Add("samaccountname"); // Account name
-                    searcher.PropertiesToLoad.Add("whenCreated");    // Creation time
-                    searcher.PropertiesToLoad.Add("displayName");       // Display name
-                    searcher.PropertiesToLoad.Add("mail");              // Email
-                    searcher.PropertiesToLoad.Add("distinguishedName"); // Full DN
-                    searcher.PropertiesToLoad.Add("givenName");         // Given name
-                    searcher.PropertiesToLoad.Add("sn");                // Surname
-                    searcher.PropertiesToLoad.Add("title");             // Title
-                    searcher.PropertiesToLoad.Add("telephoneNumber");    // Phone number
-                    searcher.PropertiesToLoad.Add("userAccountControl");
-                    searcher.PropertiesToLoad.Add("manager"); // Manager DN
-
-                    foreach (SearchResult result in searcher.FindAll())
-                    {
-                        string samAccountName = result.Properties.Contains("samAccountName") ? result.Properties["samAccountName"][0].ToString() : string.Empty;
-                        string displayName = result.Properties.Contains("displayName") ? result.Properties["displayName"][0].ToString() : string.Empty;
-                        string email = result.Properties.Contains("mail") ? result.Properties["mail"][0].ToString() : string.Empty;
-                        string distinguishedName = result.Properties.Contains("distinguishedName") ? result.Properties["distinguishedName"][0].ToString() : string.Empty;
-                        string givenName = result.Properties.Contains("givenName") ? result.Properties["givenName"][0].ToString() : string.Empty;
-                        string surname = result.Properties.Contains("sn") ? result.Properties["sn"][0].ToString() : string.Empty;
-                        string title = result.Properties.Contains("title") ? result.Properties["title"][0].ToString() : string.Empty;
-                        string phone = result.Properties.Contains("telephoneNumber") ? result.Properties["telephoneNumber"][0].ToString() : string.Empty;
-                        // Check if the user account is active by inspecting the userAccountControl flag
-                        int userAccountControl = result.Properties.Contains("userAccountControl") ? Convert.ToInt32(result.Properties["userAccountControl"][0]) : 0;
-                        bool isActive = (userAccountControl & 0x0002) == 0; // If the 2nd bit is not set, the account is active
-                        string managerUsername = "";
-                        // Check if the user has a manager
-                        if (result.Properties.Contains("manager"))
-                        {
-                            // Get the manager's DN
-                            string managerDn = result.Properties["manager"][0].ToString();
-                            managerUsername = GetUserManager(ldapPath, managerDn);
-
-                        }
-
-                        // Add the AD user to the list
-                        var newUser = new TaskyRevamp.Domain.Models.Users.User
-                        {
-                            Username = samAccountName,
-                            NameArabic = displayName,
-                            NameEnglish = displayName,
-                            Email = email,
-                            DistinguishedName = distinguishedName,
-                            GivenName = givenName,
-                            //Surname = surname,
-                            //Title = title,
-                            Mobile = phone,
-                            IsActive = isActive,
-                            //Manager = managerUsername,
-                            // Add other attributes as needed
-                        };
-
-                        _userRepository.Insert(newUser);
-                        _userRepository.SaveChangesAsync();
-
-                        return newUser;
-                    }
-                }
-            }
-            return null;
-        }
-        catch (Exception ex)
-        {
-            throw new InvalidOperationException(ex.Message);
-            return null;
-        }
-    }
-    private string GetUserManager(string ldapPath, string managerDn)
-    {
-        try
-        {
-            // Create a DirectoryEntry for the LDAP path
-            using (var entry = new DirectoryEntry(ldapPath, _ldapPath.Value.Username, _ldapPath.Value.Password))
-            {
-                // Create a DirectorySearcher to search for the manager by distinguished name (DN)
-                using (var searcher = new DirectorySearcher(entry))
-                {
-                    searcher.Filter = $"(distinguishedName={managerDn})";
-                    searcher.PropertiesToLoad.Add("sAMAccountName"); // Manager's username
-
-                    // Perform the search for the manager
-                    var result = searcher.FindOne();
-
-                    if (result != null && result.Properties.Contains("sAMAccountName"))
-                    {
-                        return result.Properties["sAMAccountName"][0].ToString();
-                    }
-                }
-            }
-        }
-        catch (Exception ex)
-        {
-            // Handle exceptions related to retrieving the manager
-            throw new InvalidOperationException(ex.Message);
-        }
-
-        return null; // Return null if the manager's sAMAccountName is not found
-    }
+			var isAuthenticated = AuthenticateUser(_ldapPath.Value.Path, request.Username, request.Password);
+			if (!isAuthenticated)
+			{
+				return null;
+			}
 
 
-    private List<TaskyRevamp.Domain.Models.Users.User> GetDelegatedUsers(TaskyRevamp.Domain.Models.Users.User user)
-    {
-        var users = new List<TaskyRevamp.Domain.Models.Users.User>();
-        users.Add(user);
+			var user = new User();
 
-        var data = _delegateRepository.FindBy(x => x.ToUserId == user.Id && x.FromDate <= DateTime.UtcNow && x.ToDate >= DateTime.UtcNow);
-        if (data == null) { return new List<TaskyRevamp.Domain.Models.Users.User>() { user }; }
-        var toUsers = data.Result.Value?.ToList();
-        var guids = toUsers.Select(x => x.FromUserId).ToList();
+			var userResponse = await _userRepository.FindBy(x => x.Username == request.Username);
+			if (userResponse.IsFailure || userResponse.Value is null || userResponse.Value.Count == 0)
+			{
+				var newUser = AddNewUser(_ldapPath.Value.Path, request.Username);
 
-        var data2 = _userRepository.FindBy(x => guids.Contains(x.Id));
-        if (data2 == null) { return new List<TaskyRevamp.Domain.Models.Users.User>() { user }; }
-        var delegateUsers = data2.Result.Value?.ToList();
-        users.AddRange(delegateUsers);
+				if (newUser == null)
+				{
+					throw new NoDataException("User Not Found!");
+				}
+				else
+				{
+					user = newUser;
+				}
 
-        return users;
+			}
+			else
+			{
+				user = userResponse.Value.FirstOrDefault();
+				if (user is null)
+				{
+					throw new NoDataException("User Not Found!");
+				}
+			}
 
-    }
-    private int GetTokenExpirySettingsQuery()
-    {
-        var data = _appSettingsOptions.Value.ExpiryHours;
-        if (data is null)
-        {
-            return DefaultTokenExpiry;
-        }
+			var tokenHandler = new JwtSecurityTokenHandler();
+			var key = Encoding.ASCII.GetBytes(_appSettingsOptions.Value.Secret);
+			var tokenExpiry = GetTokenExpirySettingsQuery();
+			var delegateUsersNames = new List<string>();
+			var delegateUsersIds = new List<Guid>();
+			var delegateUsers = GetDelegatedUsers(user);
 
-        return int.Parse(data.ToString());
-    }
+			delegateUsersNames.AddRange(delegateUsers.Select(x => x.Username));
+			delegateUsersIds.AddRange(delegateUsers.Select(x => x.Id));
+
+			var tokenDescriptor = new SecurityTokenDescriptor
+			{
+				Subject = new ClaimsIdentity(new Claim[]
+				{
+				new(ClaimTypes.Name, user.Id.ToString()),
+				new(ClaimTypes.NameIdentifier, user.Id.ToString()),
+				new("Username", user.Username),
+				new("Email", user.Email),
+				new("NameEnglish", user.NameEnglish),
+				new("NameArabic", user.NameArabic),
+				new("Id", user.Id.ToString()),
+				new("DelegatedUsersId", string.Join(",", delegateUsersIds)),
+				}),
+				Expires = DateTime.UtcNow.AddHours(tokenExpiry),
+				SigningCredentials =
+					new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+			};
+			var token = tokenHandler.CreateToken(tokenDescriptor);
+
+			return tokenHandler.WriteToken(token);
+		}
+		catch (Exception ex)
+		{
+			throw new InvalidOperationException(ex.Message);
+		}
+	}
+
+	private bool AuthenticateUser(string ldapPath, string username, string password)
+	{
+		try
+		{
+			using (var entry = new DirectoryEntry(ldapPath, username, password))
+			{
+				// Bind to the directory and authenticate
+				object nativeObject = entry.NativeObject;
+				return true; // Successful login
+			}
+
+		}
+		//catch (DirectoryServicesCOMException)
+		//{
+		//    // Invalid credentials
+		//    return false;
+		//}
+		catch (Exception ex)
+		{
+			// Handle other exceptions
+			Console.WriteLine($"An error occurred: {ex.Message}");
+			throw new InvalidOperationException(ex.Message);
+			return false;
+		}
+	}
+	private User AddNewUser(string ldapPath, string username)
+	{
+		try
+		{
+			using (var entry = new DirectoryEntry(ldapPath, _ldapPath.Value.Username, _ldapPath.Value.Password))
+			{
+				using (var searcher = new DirectorySearcher(entry))
+				{
+					// Search for users created within the last 7 days
+					var fromDate = DateTime.UtcNow.AddDays(-1);
+					string filter = searcher.Filter = $"(sAMAccountName={username})";
+
+					searcher.Filter = filter;
+					searcher.PropertiesToLoad.Add("samaccountname"); // Account name
+					searcher.PropertiesToLoad.Add("whenCreated");    // Creation time
+					searcher.PropertiesToLoad.Add("displayName");       // Display name
+					searcher.PropertiesToLoad.Add("mail");              // Email
+					searcher.PropertiesToLoad.Add("distinguishedName"); // Full DN
+					searcher.PropertiesToLoad.Add("givenName");         // Given name
+					searcher.PropertiesToLoad.Add("sn");                // Surname
+					searcher.PropertiesToLoad.Add("title");             // Title
+					searcher.PropertiesToLoad.Add("telephoneNumber");    // Phone number
+					searcher.PropertiesToLoad.Add("userAccountControl");
+					searcher.PropertiesToLoad.Add("manager"); // Manager DN
+
+					foreach (SearchResult result in searcher.FindAll())
+					{
+						string samAccountName = result.Properties.Contains("samAccountName") ? result.Properties["samAccountName"][0].ToString() : string.Empty;
+						string displayName = result.Properties.Contains("displayName") ? result.Properties["displayName"][0].ToString() : string.Empty;
+						string email = result.Properties.Contains("mail") ? result.Properties["mail"][0].ToString() : string.Empty;
+						string distinguishedName = result.Properties.Contains("distinguishedName") ? result.Properties["distinguishedName"][0].ToString() : string.Empty;
+						string givenName = result.Properties.Contains("givenName") ? result.Properties["givenName"][0].ToString() : string.Empty;
+						string surname = result.Properties.Contains("sn") ? result.Properties["sn"][0].ToString() : string.Empty;
+						string title = result.Properties.Contains("title") ? result.Properties["title"][0].ToString() : string.Empty;
+						string phone = result.Properties.Contains("telephoneNumber") ? result.Properties["telephoneNumber"][0].ToString() : string.Empty;
+						// Check if the user account is active by inspecting the userAccountControl flag
+						int userAccountControl = result.Properties.Contains("userAccountControl") ? Convert.ToInt32(result.Properties["userAccountControl"][0]) : 0;
+						bool isActive = (userAccountControl & 0x0002) == 0; // If the 2nd bit is not set, the account is active
+						string managerUsername = "";
+						// Check if the user has a manager
+						if (result.Properties.Contains("manager"))
+						{
+							// Get the manager's DN
+							string managerDn = result.Properties["manager"][0].ToString();
+							managerUsername = GetUserManager(ldapPath, managerDn);
+
+						}
+
+						// Add the AD user to the list
+						var newUser = new User
+						{
+							Username = samAccountName,
+							NameArabic = displayName,
+							NameEnglish = displayName,
+							Email = email,
+							DistinguishedName = distinguishedName,
+							GivenName = givenName,
+							//Surname = surname,
+							//Title = title,
+							Mobile = phone,
+							IsActive = isActive,
+							//Manager = managerUsername,
+							// Add other attributes as needed
+						};
+
+						_userRepository.Insert(newUser);
+						_userRepository.SaveChangesAsync();
+
+						return newUser;
+					}
+				}
+			}
+			return null;
+		}
+		catch (Exception ex)
+		{
+			throw new InvalidOperationException(ex.Message);
+			return null;
+		}
+	}
+	private string GetUserManager(string ldapPath, string managerDn)
+	{
+		try
+		{
+			// Create a DirectoryEntry for the LDAP path
+			using (var entry = new DirectoryEntry(ldapPath, _ldapPath.Value.Username, _ldapPath.Value.Password))
+			{
+				// Create a DirectorySearcher to search for the manager by distinguished name (DN)
+				using (var searcher = new DirectorySearcher(entry))
+				{
+					searcher.Filter = $"(distinguishedName={managerDn})";
+					searcher.PropertiesToLoad.Add("sAMAccountName"); // Manager's username
+
+					// Perform the search for the manager
+					var result = searcher.FindOne();
+
+					if (result != null && result.Properties.Contains("sAMAccountName"))
+					{
+						return result.Properties["sAMAccountName"][0].ToString();
+					}
+				}
+			}
+		}
+		catch (Exception ex)
+		{
+			// Handle exceptions related to retrieving the manager
+			throw new InvalidOperationException(ex.Message);
+		}
+
+		return null; // Return null if the manager's sAMAccountName is not found
+	}
+
+
+	private List<User> GetDelegatedUsers(User user)
+	{
+		var users = new List<User>();
+		users.Add(user);
+
+		var data = _delegateRepository.FindBy(x => x.ToUserId == user.Id && x.FromDate <= DateTime.UtcNow && x.ToDate >= DateTime.UtcNow);
+		if (data == null) { return new List<User>() { user }; }
+		var toUsers = data.Result.Value?.ToList();
+		var guids = toUsers.Select(x => x.FromUserId).ToList();
+
+		var data2 = _userRepository.FindBy(x => guids.Contains(x.Id));
+		if (data2 == null) { return new List<User>() { user }; }
+		var delegateUsers = data2.Result.Value?.ToList();
+		users.AddRange(delegateUsers);
+
+		return users;
+
+	}
+	private int GetTokenExpirySettingsQuery()
+	{
+		var data = _appSettingsOptions.Value.ExpiryHours;
+		if (data is null)
+		{
+			return DefaultTokenExpiry;
+		}
+
+		return int.Parse(data.ToString());
+	}
 }

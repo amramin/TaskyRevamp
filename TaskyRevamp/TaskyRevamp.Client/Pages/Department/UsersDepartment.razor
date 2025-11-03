@@ -111,7 +111,7 @@
 
     protected async override Task OnInitializedAsync()
     {
-        var res = await _userConsumer.GetAllUsersByDepartment(Id);
+        var res = await _userConsumer.GetUsersByDepartment(Id);
 
         selectedDepartment = res.Data;
         await InvokeAsync(StateHasChanged);

@@ -22,7 +22,7 @@ namespace TaskyRevamp.Infrastructure.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("TaskyRevamp.Domain.Models.Permissions.GeneralModule", b =>
+            modelBuilder.Entity("TaskyRevamp.Domain.Models.Permissions.GeneralModule.GeneralModule", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -53,7 +53,7 @@ namespace TaskyRevamp.Infrastructure.Migrations
                     b.ToTable("GeneralModule");
                 });
 
-            modelBuilder.Entity("TaskyRevamp.Domain.Models.Permissions.GeneralModulePermission", b =>
+            modelBuilder.Entity("TaskyRevamp.Domain.Models.Permissions.GeneralModule.GeneralModulePermission", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -133,7 +133,7 @@ namespace TaskyRevamp.Infrastructure.Migrations
                     b.ToTable("Privilege");
                 });
 
-            modelBuilder.Entity("TaskyRevamp.Domain.Models.Permissions.ReportModule", b =>
+            modelBuilder.Entity("TaskyRevamp.Domain.Models.Permissions.ReportModule.ReportModule", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -160,7 +160,7 @@ namespace TaskyRevamp.Infrastructure.Migrations
                     b.ToTable("ReportModule");
                 });
 
-            modelBuilder.Entity("TaskyRevamp.Domain.Models.Permissions.ReportModulePermission", b =>
+            modelBuilder.Entity("TaskyRevamp.Domain.Models.Permissions.ReportModule.ReportModulePermission", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -182,6 +182,90 @@ namespace TaskyRevamp.Infrastructure.Migrations
                     b.HasIndex("ReportModuleId");
 
                     b.ToTable("ReportModulePermission");
+                });
+
+            modelBuilder.Entity("TaskyRevamp.Domain.Models.Permissions.TaskModule.TaskModuleExternalDepartment", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("DepartmentId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int?>("DirectionLevel")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("DirectionType")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsEmployeeTasks")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsIncludeSubDepartment")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsManagerTasks")
+                        .HasColumnType("bit");
+
+                    b.PrimitiveCollection<string>("PermissionId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("PrivilegeId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.PrimitiveCollection<string>("Source")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.PrimitiveCollection<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DepartmentId");
+
+                    b.HasIndex("PrivilegeId");
+
+                    b.ToTable("TaskModuleExternalDepartment");
+                });
+
+            modelBuilder.Entity("TaskyRevamp.Domain.Models.Permissions.TaskModule.TaskModuleUserDepartment", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int?>("DirectionLevel")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("DirectionType")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool?>("IsEmployeeTasks")
+                        .HasColumnType("bit");
+
+                    b.Property<bool?>("IsManagerTasks")
+                        .HasColumnType("bit");
+
+                    b.PrimitiveCollection<string>("PermissionId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("PrivilegeId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("SelectedOption")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PrivilegeId");
+
+                    b.ToTable("TaskModuleUserDepartment");
                 });
 
             modelBuilder.Entity("TaskyRevamp.Domain.Models.SystemConfiguration.AddTaskSettings", b =>
@@ -1042,7 +1126,7 @@ namespace TaskyRevamp.Infrastructure.Migrations
                     b.ToTable("TaskType");
                 });
 
-            modelBuilder.Entity("TaskyRevamp.Domain.Models.Users.User", b =>
+            modelBuilder.Entity("User", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -1085,7 +1169,7 @@ namespace TaskyRevamp.Infrastructure.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("TaskyRevamp.Domain.Models.Users.UserDelegations.UserDelegation", b =>
+            modelBuilder.Entity("UserDelegations.UserDelegation", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -1128,9 +1212,9 @@ namespace TaskyRevamp.Infrastructure.Migrations
                     b.ToTable("UserDelegation");
                 });
 
-            modelBuilder.Entity("TaskyRevamp.Domain.Models.Permissions.GeneralModulePermission", b =>
+            modelBuilder.Entity("TaskyRevamp.Domain.Models.Permissions.GeneralModule.GeneralModulePermission", b =>
                 {
-                    b.HasOne("TaskyRevamp.Domain.Models.Permissions.GeneralModule", "GeneralModule")
+                    b.HasOne("TaskyRevamp.Domain.Models.Permissions.GeneralModule.GeneralModule", "GeneralModule")
                         .WithMany()
                         .HasForeignKey("GeneralModuleId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1149,13 +1233,13 @@ namespace TaskyRevamp.Infrastructure.Migrations
 
             modelBuilder.Entity("TaskyRevamp.Domain.Models.Permissions.Privilege", b =>
                 {
-                    b.HasOne("TaskyRevamp.Domain.Models.Users.User", "CreatedBy")
+                    b.HasOne("User", "CreatedBy")
                         .WithMany()
                         .HasForeignKey("CreatedById")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("TaskyRevamp.Domain.Models.Users.User", "UpdatedBy")
+                    b.HasOne("User", "UpdatedBy")
                         .WithMany()
                         .HasForeignKey("UpdatedById")
                         .OnDelete(DeleteBehavior.Restrict);
@@ -1165,7 +1249,7 @@ namespace TaskyRevamp.Infrastructure.Migrations
                     b.Navigation("UpdatedBy");
                 });
 
-            modelBuilder.Entity("TaskyRevamp.Domain.Models.Permissions.ReportModulePermission", b =>
+            modelBuilder.Entity("TaskyRevamp.Domain.Models.Permissions.ReportModule.ReportModulePermission", b =>
                 {
                     b.HasOne("TaskyRevamp.Domain.Models.Permissions.Privilege", "Privilege")
                         .WithMany("ReportModulePermissions")
@@ -1173,7 +1257,7 @@ namespace TaskyRevamp.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("TaskyRevamp.Domain.Models.Permissions.ReportModule", "ReportModule")
+                    b.HasOne("TaskyRevamp.Domain.Models.Permissions.ReportModule.ReportModule", "ReportModule")
                         .WithMany("ReportModulePermissions")
                         .HasForeignKey("ReportModuleId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1184,15 +1268,45 @@ namespace TaskyRevamp.Infrastructure.Migrations
                     b.Navigation("ReportModule");
                 });
 
+            modelBuilder.Entity("TaskyRevamp.Domain.Models.Permissions.TaskModule.TaskModuleExternalDepartment", b =>
+                {
+                    b.HasOne("TaskyRevamp.Domain.Models.Task.Department", "Department")
+                        .WithMany()
+                        .HasForeignKey("DepartmentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TaskyRevamp.Domain.Models.Permissions.Privilege", "Privilege")
+                        .WithMany("TaskModuleExternalDepartmentPermissions")
+                        .HasForeignKey("PrivilegeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Department");
+
+                    b.Navigation("Privilege");
+                });
+
+            modelBuilder.Entity("TaskyRevamp.Domain.Models.Permissions.TaskModule.TaskModuleUserDepartment", b =>
+                {
+                    b.HasOne("TaskyRevamp.Domain.Models.Permissions.Privilege", "Privilege")
+                        .WithMany("TaskModuleUserDepartmentPermissions")
+                        .HasForeignKey("PrivilegeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Privilege");
+                });
+
             modelBuilder.Entity("TaskyRevamp.Domain.Models.SystemConfiguration.Source", b =>
                 {
-                    b.HasOne("TaskyRevamp.Domain.Models.Users.User", "CreatedBy")
+                    b.HasOne("User", "CreatedBy")
                         .WithMany()
                         .HasForeignKey("CreatedById")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("TaskyRevamp.Domain.Models.Users.User", "UpdatedBy")
+                    b.HasOne("User", "UpdatedBy")
                         .WithMany()
                         .HasForeignKey("UpdatedById")
                         .OnDelete(DeleteBehavior.Restrict);
@@ -1204,13 +1318,13 @@ namespace TaskyRevamp.Infrastructure.Migrations
 
             modelBuilder.Entity("TaskyRevamp.Domain.Models.SystemConfiguration.Type", b =>
                 {
-                    b.HasOne("TaskyRevamp.Domain.Models.Users.User", "CreatedBy")
+                    b.HasOne("User", "CreatedBy")
                         .WithMany()
                         .HasForeignKey("CreatedById")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("TaskyRevamp.Domain.Models.Users.User", "UpdatedBy")
+                    b.HasOne("User", "UpdatedBy")
                         .WithMany()
                         .HasForeignKey("UpdatedById")
                         .OnDelete(DeleteBehavior.Restrict);
@@ -1226,7 +1340,7 @@ namespace TaskyRevamp.Infrastructure.Migrations
                         .WithMany("Items")
                         .HasForeignKey("TaskAttachmentsId");
 
-                    b.HasOne("TaskyRevamp.Domain.Models.Users.User", "UploadedBy")
+                    b.HasOne("User", "UploadedBy")
                         .WithMany()
                         .HasForeignKey("UploadedById")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -1237,13 +1351,13 @@ namespace TaskyRevamp.Infrastructure.Migrations
 
             modelBuilder.Entity("TaskyRevamp.Domain.Models.Task.ChangeEndDateRequest", b =>
                 {
-                    b.HasOne("TaskyRevamp.Domain.Models.Users.User", "CreatedBy")
+                    b.HasOne("User", "CreatedBy")
                         .WithMany()
                         .HasForeignKey("CreatedById")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("TaskyRevamp.Domain.Models.Users.User", "Requester")
+                    b.HasOne("User", "Requester")
                         .WithMany()
                         .HasForeignKey("RequesterId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -1268,13 +1382,13 @@ namespace TaskyRevamp.Infrastructure.Migrations
 
             modelBuilder.Entity("TaskyRevamp.Domain.Models.Task.ChecklistItem", b =>
                 {
-                    b.HasOne("TaskyRevamp.Domain.Models.Users.User", "AssignedUser")
+                    b.HasOne("User", "AssignedUser")
                         .WithMany()
                         .HasForeignKey("AssignedUserId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("TaskyRevamp.Domain.Models.Users.User", "CreatedBy")
+                    b.HasOne("User", "CreatedBy")
                         .WithMany()
                         .HasForeignKey("CreatedById")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -1295,7 +1409,7 @@ namespace TaskyRevamp.Infrastructure.Migrations
 
             modelBuilder.Entity("TaskyRevamp.Domain.Models.Task.Department", b =>
                 {
-                    b.HasOne("TaskyRevamp.Domain.Models.Users.User", "CreatedBy")
+                    b.HasOne("User", "CreatedBy")
                         .WithMany()
                         .HasForeignKey("CreatedById")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -1306,7 +1420,7 @@ namespace TaskyRevamp.Infrastructure.Migrations
                         .HasForeignKey("ParentdepartmentId")
                         .OnDelete(DeleteBehavior.NoAction);
 
-                    b.HasOne("TaskyRevamp.Domain.Models.Users.User", "UpdatedBy")
+                    b.HasOne("User", "UpdatedBy")
                         .WithMany()
                         .HasForeignKey("UpdatedById")
                         .OnDelete(DeleteBehavior.Restrict);
@@ -1320,7 +1434,7 @@ namespace TaskyRevamp.Infrastructure.Migrations
 
             modelBuilder.Entity("TaskyRevamp.Domain.Models.Task.PinnedTasks", b =>
                 {
-                    b.HasOne("TaskyRevamp.Domain.Models.Users.User", "CreatedBy")
+                    b.HasOne("User", "CreatedBy")
                         .WithMany()
                         .HasForeignKey("CreatedById")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -1339,7 +1453,7 @@ namespace TaskyRevamp.Infrastructure.Migrations
 
             modelBuilder.Entity("TaskyRevamp.Domain.Models.Task.TaskAssignees", b =>
                 {
-                    b.HasOne("TaskyRevamp.Domain.Models.Users.User", "CreatedBy")
+                    b.HasOne("User", "CreatedBy")
                         .WithMany()
                         .HasForeignKey("CreatedById")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -1349,7 +1463,7 @@ namespace TaskyRevamp.Infrastructure.Migrations
                         .WithMany("Assignees")
                         .HasForeignKey("TaskItemId");
 
-                    b.HasOne("TaskyRevamp.Domain.Models.Users.User", "User")
+                    b.HasOne("User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -1385,7 +1499,7 @@ namespace TaskyRevamp.Infrastructure.Migrations
 
             modelBuilder.Entity("TaskyRevamp.Domain.Models.Task.TaskComment", b =>
                 {
-                    b.HasOne("TaskyRevamp.Domain.Models.Users.User", "CreatedBy")
+                    b.HasOne("User", "CreatedBy")
                         .WithMany()
                         .HasForeignKey("CreatedById")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -1397,7 +1511,7 @@ namespace TaskyRevamp.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("TaskyRevamp.Domain.Models.Users.User", "UpdatedBy")
+                    b.HasOne("User", "UpdatedBy")
                         .WithMany()
                         .HasForeignKey("UpdatedById")
                         .OnDelete(DeleteBehavior.Restrict);
@@ -1411,13 +1525,13 @@ namespace TaskyRevamp.Infrastructure.Migrations
 
             modelBuilder.Entity("TaskyRevamp.Domain.Models.Task.TaskEscalation", b =>
                 {
-                    b.HasOne("TaskyRevamp.Domain.Models.Users.User", "CreatedBy")
+                    b.HasOne("User", "CreatedBy")
                         .WithMany()
                         .HasForeignKey("CreatedById")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("TaskyRevamp.Domain.Models.Users.User", "EscalatedTo")
+                    b.HasOne("User", "EscalatedTo")
                         .WithMany()
                         .HasForeignKey("EscalatedToId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -1442,7 +1556,7 @@ namespace TaskyRevamp.Infrastructure.Migrations
 
             modelBuilder.Entity("TaskyRevamp.Domain.Models.Task.TaskHistoryEntry", b =>
                 {
-                    b.HasOne("TaskyRevamp.Domain.Models.Users.User", "By")
+                    b.HasOne("User", "By")
                         .WithMany()
                         .HasForeignKey("ById")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -1474,7 +1588,7 @@ namespace TaskyRevamp.Infrastructure.Migrations
                         .HasForeignKey("CommentsId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("TaskyRevamp.Domain.Models.Users.User", "CreatedBy")
+                    b.HasOne("User", "CreatedBy")
                         .WithMany()
                         .HasForeignKey("CreatedById")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -1500,7 +1614,7 @@ namespace TaskyRevamp.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("TaskyRevamp.Domain.Models.Users.User", "UpdatedBy")
+                    b.HasOne("User", "UpdatedBy")
                         .WithMany()
                         .HasForeignKey("UpdatedById")
                         .OnDelete(DeleteBehavior.Restrict);
@@ -1585,7 +1699,7 @@ namespace TaskyRevamp.Infrastructure.Migrations
                     b.Navigation("UpdatedBy");
                 });
 
-            modelBuilder.Entity("TaskyRevamp.Domain.Models.Users.User", b =>
+            modelBuilder.Entity("User", b =>
                 {
                     b.HasOne("TaskyRevamp.Domain.Models.Task.Department", "Department")
                         .WithMany("AssignedUser")
@@ -1595,27 +1709,27 @@ namespace TaskyRevamp.Infrastructure.Migrations
                     b.Navigation("Department");
                 });
 
-            modelBuilder.Entity("TaskyRevamp.Domain.Models.Users.UserDelegations.UserDelegation", b =>
+            modelBuilder.Entity("UserDelegations.UserDelegation", b =>
                 {
-                    b.HasOne("TaskyRevamp.Domain.Models.Users.User", "CreatedBy")
+                    b.HasOne("User", "CreatedBy")
                         .WithMany()
                         .HasForeignKey("CreatedById")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("TaskyRevamp.Domain.Models.Users.User", "FromUser")
+                    b.HasOne("User", "FromUser")
                         .WithMany()
                         .HasForeignKey("FromUserId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("TaskyRevamp.Domain.Models.Users.User", "Touser")
+                    b.HasOne("User", "Touser")
                         .WithMany()
                         .HasForeignKey("ToUserId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("TaskyRevamp.Domain.Models.Users.User", "UpdatedBy")
+                    b.HasOne("User", "UpdatedBy")
                         .WithMany()
                         .HasForeignKey("UpdatedById")
                         .OnDelete(DeleteBehavior.Restrict);
@@ -1634,9 +1748,13 @@ namespace TaskyRevamp.Infrastructure.Migrations
                     b.Navigation("GeneralModulePermissions");
 
                     b.Navigation("ReportModulePermissions");
+
+                    b.Navigation("TaskModuleExternalDepartmentPermissions");
+
+                    b.Navigation("TaskModuleUserDepartmentPermissions");
                 });
 
-            modelBuilder.Entity("TaskyRevamp.Domain.Models.Permissions.ReportModule", b =>
+            modelBuilder.Entity("TaskyRevamp.Domain.Models.Permissions.ReportModule.ReportModule", b =>
                 {
                     b.Navigation("ReportModulePermissions");
                 });

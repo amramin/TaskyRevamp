@@ -38,6 +38,7 @@ public class CreateTaskDto
     public List<Guid> AssignedDepartmentIds { set; get; }
     public List<Guid> AssignedIds { set; get; }
     public Guid CreatedBy { get; set; }
+    public string? CreatedByName { get; set; }
     public DateTime? CreateDate { get; set; }
     public string UpdatedBy { get; set; }
     public DateTime? UpdateDate { get; set; }

@@ -1,7 +1,10 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
+using TaskyRevamp.Dto.Enums.SearchFields;
 using TaskyRevamp.Dto.GeneralDto;
 using TaskyRevamp.Dto.TaskDto;
+using TaskyRevamp.Services.Departments.Query;
 using TaskyRevamp.Services.Tasks.Commands;
 using TaskyRevamp.Services.Tasks.Query;
 
@@ -9,11 +12,11 @@ namespace TaskyRevamp.WebAPI.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class TaskyController : ControllerBase
+public class TaskController : ControllerBase
 {
     private readonly IMediator _mediator;
 
-    public TaskyController(IMediator mediator)
+    public TaskController(IMediator mediator)
     {
         _mediator = mediator;
     }
@@ -23,7 +26,7 @@ public class TaskyController : ControllerBase
     {
         var res = await _mediator.Send(new CreateTaskCommand(taskDto));
 
-      
+
 
         return Ok(res);
     }
@@ -39,17 +42,24 @@ public class TaskyController : ControllerBase
     {
         return Ok(await _mediator.Send(new DeleteTaskCommand(Guid.Parse(id))));
     }
-    [HttpPost("GetAllAllTask")]
-    public async Task<IActionResult> AllTask([FromBody] QueryModel? query = null)
+
+    [HttpGet("GetAllAllTask")]
+    public async Task<IActionResult> GetAllAllTask(
+         [FromServices] IOptions<PaginationSettings> paginationSettings,
+         [FromQuery] int pageNumber = 1,
+         [FromQuery] int? pageSize = null,
+         [FromQuery] string sortByColumnName = "CreateDate",
+         [FromQuery] bool sortAscending = true,
+         [FromQuery] List<SearchFieldTask> searchFields = null,
+         [FromQuery] string searchText = null)
     {
 
-
-        var all = await _mediator.Send(new GetTasksQuery(query));
+        var size = pageSize ?? paginationSettings.Value.DefaultPageSize;
+        var all = await _mediator.Send(new GetTasksQuery(pageNumber, size, sortByColumnName, sortAscending, searchFields, searchText));
 
         return Ok(all);
     }
 
- 
 
 
     [HttpGet("{id}")]
@@ -62,5 +72,5 @@ public class TaskyController : ControllerBase
         return Ok(Task);
     }
 
- 
+
 }

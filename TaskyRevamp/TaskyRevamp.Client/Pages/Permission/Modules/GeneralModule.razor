@@ -239,7 +239,7 @@
 
     private async Task<List<UserDto>> LoadUsersForDepartment(Guid deptId)
     {
-        var res = await _userConsumer.GetAllUsersByDepartment(deptId);
+        var res = await _userConsumer.GetUsersByDepartment(deptId);
         return res.Success ? res.Data?.AssignedUsers ?? new List<UserDto>() : new List<UserDto>();
     }
 }

@@ -1,6 +1,6 @@
 ﻿using MediatR;
 using TaskyRevamp.Domain.Models.Users;
-using TaskyRevamp.Domain.Models.Users.UserDelegations;
+using UserDelegations;
 using TaskyRevamp.Domain.Repositeries;
 using TaskyRevamp.Dto.GeneralDto;
 using TaskyRevamp.Dto.UserDelegation;
@@ -13,10 +13,10 @@ public record GetUserDelegationsQuery(Guid fromuserid, PagingParameterModel Pagi
 public class GetUserDelegationsHandler : IRequestHandler<GetUserDelegationsQuery, PaginatedList<UserDelegationDto>>
 {
     private readonly IRepository<UserDelegation> _UserDelegationRepository;
-    private readonly IRepository<TaskyRevamp.Domain.Models.Users.User> _userRepository;
+    private readonly IRepository<User> _userRepository;
 
 
-    public GetUserDelegationsHandler(IRepository<UserDelegation> UserDelegationRepository, IRepository<TaskyRevamp.Domain.Models.Users.User> userRepository)
+    public GetUserDelegationsHandler(IRepository<UserDelegation> UserDelegationRepository, IRepository<User> userRepository)
     {
         _UserDelegationRepository = UserDelegationRepository;
         _userRepository = userRepository;

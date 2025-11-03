@@ -61,6 +61,24 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Above user department level.
+        /// </summary>
+        public static string AboveUserDepartmentLevel {
+            get {
+                return ResourceManager.GetString("AboveUserDepartmentLevel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This option allows you to apply the permission to departments located above the user&apos;s department level. The system will automatically follow the vertical hierarchy linked to the parent of the user&apos;s department.
+        /// </summary>
+        public static string AboveUserDepartmentLevelHint {
+            get {
+                return ResourceManager.GetString("AboveUserDepartmentLevelHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Action .
         /// </summary>
         public static string Action {
@@ -313,6 +331,24 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Below user department leve.
+        /// </summary>
+        public static string BelowUserDepartmentLevel {
+            get {
+                return ResourceManager.GetString("BelowUserDepartmentLevel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This option allows you to apply the permission to departments located below the user&apos;s department level. The system will automatically follow the vertical hierarchy linked to user&apos;s department.
+        /// </summary>
+        public static string BelowUserDepartmentLevelHint {
+            get {
+                return ResourceManager.GetString("BelowUserDepartmentLevelHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cancel.
         /// </summary>
         public static string Cancel {
@@ -363,6 +399,24 @@ namespace TaskyRevamp.Localization.Resources {
         public static string CreatedByDepartment {
             get {
                 return ResourceManager.GetString("CreatedByDepartment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create task on him.
+        /// </summary>
+        public static string CreateTaskOnHim {
+            get {
+                return ResourceManager.GetString("CreateTaskOnHim", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This allows the user to create tasks for himself and see his tasks only as creator or assignee.
+        /// </summary>
+        public static string CreateTaskOnHimHint {
+            get {
+                return ResourceManager.GetString("CreateTaskOnHimHint", resourceCulture);
             }
         }
         
@@ -556,6 +610,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Department.
+        /// </summary>
+        public static string Department {
+            get {
+                return ResourceManager.GetString("Department", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Department name must be unique. Please type a different name.
         /// </summary>
         public static string DepartmentDuplicateValidation {
@@ -597,6 +660,24 @@ namespace TaskyRevamp.Localization.Resources {
         public static string DifferentDepartment {
             get {
                 return ResourceManager.GetString("DifferentDepartment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Direction Level.
+        /// </summary>
+        public static string DirectionLevel {
+            get {
+                return ResourceManager.GetString("DirectionLevel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Direction Type.
+        /// </summary>
+        public static string DirectionType {
+            get {
+                return ResourceManager.GetString("DirectionType", resourceCulture);
             }
         }
         
@@ -669,6 +750,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string EditTaskType {
             get {
                 return ResourceManager.GetString("EditTaskType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Employee&apos;s Tasks.
+        /// </summary>
+        public static string EmployeesTasks {
+            get {
+                return ResourceManager.GetString("EmployeesTasks", resourceCulture);
             }
         }
         
@@ -777,6 +867,24 @@ namespace TaskyRevamp.Localization.Resources {
         public static string EnterPrivilegeName {
             get {
                 return ResourceManager.GetString("EnterPrivilegeName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to External Department.
+        /// </summary>
+        public static string ExternalDepartment {
+            get {
+                return ResourceManager.GetString("ExternalDepartment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You can use an external department not related to the user department to apply the permission to it.
+        /// </summary>
+        public static string ExternalDepartmentHint {
+            get {
+                return ResourceManager.GetString("ExternalDepartmentHint", resourceCulture);
             }
         }
         
@@ -898,6 +1006,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Including Sub-Department.
+        /// </summary>
+        public static string IncludingSubDepartment {
+            get {
+                return ResourceManager.GetString("IncludingSubDepartment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Kanban view.
         /// </summary>
         public static string Kanban {
@@ -984,6 +1101,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string Login {
             get {
                 return ResourceManager.GetString("Login", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Manager&apos;s Tasks.
+        /// </summary>
+        public static string ManagersTasks {
+            get {
+                return ResourceManager.GetString("ManagersTasks", resourceCulture);
             }
         }
         
@@ -1147,6 +1273,33 @@ namespace TaskyRevamp.Localization.Resources {
         public static string ParentNotFound {
             get {
                 return ResourceManager.GetString("ParentNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Peer&apos;s level.
+        /// </summary>
+        public static string PeersLevel {
+            get {
+                return ResourceManager.GetString("PeersLevel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to  Same level departments: This option will automatically select the peer departments that are at the same level as the user&apos;s department. Only departments that share the same parent as the user&apos;s department will be selected to apply the permission to them..
+        /// </summary>
+        public static string PeersLevelHint {
+            get {
+                return ResourceManager.GetString("PeersLevelHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Permissions.
+        /// </summary>
+        public static string Permissions {
+            get {
+                return ResourceManager.GetString("Permissions", resourceCulture);
             }
         }
         
@@ -1327,6 +1480,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string SameDepartment {
             get {
                 return ResourceManager.GetString("SameDepartment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This option will automatically select your department to apply the permission to it.
+        /// </summary>
+        public static string SameDepartmentHint {
+            get {
+                return ResourceManager.GetString("SameDepartmentHint", resourceCulture);
             }
         }
         
@@ -1696,6 +1858,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string UpdatedBy {
             get {
                 return ResourceManager.GetString("UpdatedBy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User Department.
+        /// </summary>
+        public static string UserDepartment {
+            get {
+                return ResourceManager.GetString("UserDepartment", resourceCulture);
             }
         }
         

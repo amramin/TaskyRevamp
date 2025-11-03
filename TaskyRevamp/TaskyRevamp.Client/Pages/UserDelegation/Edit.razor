@@ -9,7 +9,7 @@
 
 @inject IStringLocalizer<SharedResources> Loc
 
-<Formm ButtonText="@Loc["Edit"]"  IsAdmine="@IsAdmine" userDelegation="@userDelegation"
+<Form ButtonText="@Loc["Edit"]" IsStarted="@IsStarted" IsAdmine="@IsAdmine" userDelegation="@userDelegation"
                                               OnValidSubmit="@update" />
 
 @code {
@@ -17,6 +17,8 @@
     UserDelegationDto userDelegation = new UserDelegationDto();
     [Parameter]
     public bool IsAdmine { set; get; }
+    [Parameter]
+    public bool IsStarted { set; get; }
     [Parameter] public EventCallback<UserDelegationDto> OnValidSubmit { get; set; }
 
 
@@ -28,6 +30,10 @@
             return;
         }
         userDelegation = res.Data;
+        if (userDelegation.FromDate < DateTime.Now)
+        {
+            IsStarted = true;
+        }
         StateHasChanged();
     }
 

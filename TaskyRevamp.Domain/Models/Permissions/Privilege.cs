@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using TaskyRevamp.Domain.Interfaces;
 using TaskyRevamp.Domain.Models.Permissions.GeneralModule;
 using TaskyRevamp.Domain.Models.Permissions.ReportModule;
+using TaskyRevamp.Domain.Models.Permissions.TaskModule;
 using TaskyRevamp.Domain.Models.Users;
 using TaskyRevamp.Dto.Permissions;
 
@@ -17,6 +18,8 @@ namespace TaskyRevamp.Domain.Models.Permissions
 		public string NameArabic { get; set; }
 		public List<GeneralModulePermission> GeneralModulePermissions { get; set; }
         public List<ReportModulePermission> ReportModulePermissions { get; set; }
+        public List<TaskModuleUserDepartment> TaskModuleUserDepartmentPermissions { get; set; }
+		public List<TaskModuleExternalDepartment>? TaskModuleExternalDepartmentPermissions { get; private set; }
 		public Guid? UpdatedById { get; set; }
 		public DateTime? UpdateDate { get; set; }
 		public User? UpdatedBy { get; set; }
@@ -57,7 +60,33 @@ namespace TaskyRevamp.Domain.Models.Permissions
 				IsActive = x.IsActive,
 				ReportModuleId = x.ReportModuleId
 			}).ToList() ?? new List<ReportModulePermission>();
-        }
+			TaskModuleUserDepartmentPermissions = dto.TaskModuleUserDepartmentDto?.Select(x => new TaskModuleUserDepartment
+			{
+				Id = x.Id,
+				SelectedOption = x.SelectedOption,
+				IsActive = x.IsActive,
+				PermissionId = x.PermissionId,
+				IsManagerTasks = x.IsManagerTasks,
+				IsEmployeeTasks = x.IsEmployeeTasks,
+				//Status = x.Status,
+				//Source = x.Source,
+				DirectionType = x.DirectionType,
+				DirectionLevel = x.DirectionLevel
+			}).ToList() ?? new List<TaskModuleUserDepartment>();
+			TaskModuleExternalDepartmentPermissions = dto.TaskModuleExternalDepartmentDto?.Select(x => new TaskModuleExternalDepartment
+			{
+				Id = x.Id,
+				DepartmentId = x.DepartmentId,
+				IsIncludeSubDepartment = x.IsIncludeSubDepartment,
+				IsManagerTasks = x.IsManagerTasks,
+				IsEmployeeTasks = x.IsEmployeeTasks,
+				PermissionId = x.PermissionId,
+				Status = x.Status,
+				Source = x.Source,
+				DirectionType = x.DirectionType,
+				DirectionLevel = x.DirectionLevel
+			}).ToList() ?? new List<TaskModuleExternalDepartment>();
+		}
 
         public PrivilegeDto CopyToDto()
 		{

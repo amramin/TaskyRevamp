@@ -1,5 +1,6 @@
 ﻿@page "/add-privilege"
 @using TaskyRevamp.Client.Services
+@using TaskyRevamp.Dto.Enums
 @using TaskyRevamp.Dto.Permissions
 @using TaskyRevamp.Client.Consumer
 @inject PrivilegeConsumer _privilegeConsumer
@@ -112,7 +113,13 @@
     private string SelectedTab { get; set; } = "General";
     private EditContext? editContext;
     private bool isGeneralModuleValid = true;
-
+    private bool HasInvalidDirectionLevel =>
+                    PrivilegeDto.TaskModuleExternalDepartmentDto?.Any(d => 
+                        d.IsIncludeSubDepartment && d.DirectionLevel < 1) == true ||
+                    PrivilegeDto.TaskModuleUserDepartmentDto?.Any(d =>
+                        (d.SelectedOption == UserDepartmentOptions.BelowUserDepartmentLevel ||
+                         d.SelectedOption == UserDepartmentOptions.AboveUserDepartmentLevel) &&
+                         d.DirectionLevel < 1) == true;
 
     protected override void OnInitialized()
     {
