@@ -1,5 +1,6 @@
 ﻿@page "/add-privilege"
 @using TaskyRevamp.Client.Services
+@using TaskyRevamp.Dto.Enums
 @using TaskyRevamp.Dto.Permissions
 @using TaskyRevamp.Client.Consumer
 @inject PrivilegeConsumer _privilegeConsumer
@@ -43,10 +44,10 @@
                 <GeneralModule PrivilegeDto="PrivilegeDto" OnValidationStateChanged="@OnGeneralModuleValidationChanged" />
             </div>
             <div style="display:@(SelectedTab == "Task" ? "block" : "none")">
-                <TaskModule PrivilegeDto="PrivilegeDto"/>
+                <TaskModule PrivilegeDto="PrivilegeDto" />
             </div>
             <div style="display:@(SelectedTab == "Report" ? "block" : "none")">
-                <ReportModule PrivilegeDto="PrivilegeDto"/>
+                <ReportModule PrivilegeDto="PrivilegeDto" />
             </div>
         </div>
     </div>
@@ -56,7 +57,7 @@
         <div class="row justify-content-center">
             <div class="col-xxl-7 col-xl-8 col-lg-9 col-md-11 d-flex justify-content-end gap-2">
                 <button type="button" class="btn btn-lg btn-light" @onclick="CancelSettings">@Loc["Cancel"]</button>
-                <button type="submit" class="btn btn-lg btn-primary">@Loc["Save"]</button>
+                <button type="submit" class="btn btn-lg btn-primary" disabled="@HasInvalidDirectionLevel">@Loc["Save"]</button>
             </div>
         </div>
     </div>
@@ -67,8 +68,14 @@
     private string SelectedTab { get; set; } = "General";
     private EditContext? editContext;
     private bool isGeneralModuleValid = true;
+    private bool HasInvalidDirectionLevel =>
+                    PrivilegeDto.TaskModuleExternalDepartmentDto?.Any(d => 
+                        d.IsIncludeSubDepartment && d.DirectionLevel < 1) == true ||
+                    PrivilegeDto.TaskModuleUserDepartmentDto?.Any(d =>
+                        (d.SelectedOption == UserDepartmentOptions.BelowUserDepartmentLevel ||
+                         d.SelectedOption == UserDepartmentOptions.AboveUserDepartmentLevel) &&
+                         d.DirectionLevel < 1) == true;
 
-    
     protected override void OnInitialized()
     {
         editContext = new EditContext(PrivilegeDto);

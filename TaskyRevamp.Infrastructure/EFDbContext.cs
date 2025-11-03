@@ -5,6 +5,7 @@ using TaskyRevamp.Domain.Interfaces;
 using TaskyRevamp.Domain.Models.Permissions;
 using TaskyRevamp.Domain.Models.Permissions.GeneralModule;
 using TaskyRevamp.Domain.Models.Permissions.ReportModule;
+using TaskyRevamp.Domain.Models.Permissions.TaskModule;
 using TaskyRevamp.Domain.Models.SystemConfiguration;
 using TaskyRevamp.Domain.Models.Task;
 using TaskyRevamp.Domain.Models.Users;
@@ -37,7 +38,9 @@ public class EfDbContext : DbContext
     public DbSet<GeneralModulePermission> GeneralModulePermission { get; set; }
     public DbSet<ReportModule> ReportModule { get; set; }
     public DbSet<ReportModulePermission> ReportModulePermission { get; set; }
-    public EfDbContext(DbContextOptions<EfDbContext> options, IHttpContextAccessor httpContextAccessor)
+    public DbSet<TaskModuleUserDepartment>  TaskModuleUserDepartment { get; set; }
+    public DbSet<TaskModuleExternalDepartment>  TaskModuleExternalDepartment { get; set; }
+	public EfDbContext(DbContextOptions<EfDbContext> options, IHttpContextAccessor httpContextAccessor)
         : base(options)
     {
         _httpContextAccessor = httpContextAccessor;

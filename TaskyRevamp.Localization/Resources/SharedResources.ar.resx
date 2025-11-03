@@ -707,4 +707,61 @@
   <data name="NoPrivilegeAvailable" xml:space="preserve">
     <value>لا تتوفر صلاحيات</value>
   </data>
+  <data name="AboveUserDepartmentLevel" xml:space="preserve">
+    <value>مستوى أعلى من إدارة المستخدم</value>
+  </data>
+  <data name="BelowUserDepartmentLevel" xml:space="preserve">
+    <value>مستوى أسفل من إدارة المستخدم</value>
+  </data>
+  <data name="PeersLevel" xml:space="preserve">
+    <value>النظائر</value>
+  </data>
+  <data name="CreateTaskOnHim" xml:space="preserve">
+    <value>مهام المستخدم</value>
+  </data>
+  <data name="CreateTaskOnHimHint" xml:space="preserve">
+    <value>يتيح هذا للمستخدم إنشاء مهام لنفسه ورؤية مهامه فقط كمنشئ أو مسند إليه</value>
+  </data>
+  <data name="SameDepartmentHint" xml:space="preserve">
+    <value>سيقوم هذا الخيار بتحديد إدارة المستخدم تلقائيًا لتطبيق الإذن عليه</value>
+  </data>
+  <data name="PeersLevelHint" xml:space="preserve">
+    <value>إدارات على نفس المستوى: سيقوم هذا الخيار تلقائيًا باختيار الإدارات النظيرة التي تقع على نفس مستوى إدارة المستخدم. سيتم اختيار فقط الإدارات التي تشترك مع إدارة المستخدم في نفس الإدارة الرئيسية لتطبيق الصلاحية عليها</value>
+  </data>
+  <data name="BelowUserDepartmentLevelHint" xml:space="preserve">
+    <value>يتيح لك هذا الخيار تطبيق الصلاحية على الإدارات التي تقع في مستوى أدنى من إدارة المستخدم. سيستخدم النظام تلقائيًا التسلسل الهرمي العمودي المرتبط بإدارة المستخدم</value>
+  </data>
+  <data name="AboveUserDepartmentLevelHint" xml:space="preserve">
+    <value>يتيح لك هذا الخيار تطبيق الصلاحية على الإدارات التي تقع في مستوى أعلى من إدارة المستخدم. سيستخدم النظام تلقائيًا التسلسل الهرمي العمودي المرتبط بإدارة المستخدم الرئيسية</value>
+  </data>
+  <data name="ExternalDepartmentHint" xml:space="preserve">
+    <value>يمكنك استخدام إدارة خارجية غير مرتبطة بإدارة المستخدم لتطبيق الأذونات عليها</value>
+  </data>
+  <data name="UserDepartment" xml:space="preserve">
+    <value>إدارة المستخدم</value>
+  </data>
+  <data name="ExternalDepartment" xml:space="preserve">
+    <value>إدارة خارجية</value>
+  </data>
+  <data name="Department" xml:space="preserve">
+    <value>الإدارة </value>
+  </data>
+  <data name="Permissions" xml:space="preserve">
+    <value>الصلاحيات</value>
+  </data>
+  <data name="EmployeesTasks" xml:space="preserve">
+    <value>مهام الموظف</value>
+  </data>
+  <data name="ManagersTasks" xml:space="preserve">
+    <value>مهمة المدير</value>
+  </data>
+  <data name="DirectionLevel" xml:space="preserve">
+    <value>مستوي الاتجاه</value>
+  </data>
+  <data name="DirectionType" xml:space="preserve">
+    <value>نوع الاتجاه</value>
+  </data>
+  <data name="IncludingSubDepartment" xml:space="preserve">
+    <value>لها إدارات فرعية</value>
+  </data>
 </root>
