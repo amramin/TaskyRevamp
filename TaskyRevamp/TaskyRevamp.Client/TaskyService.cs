@@ -127,11 +127,25 @@ public class TaskyService
         return systemLogoBase64;
     }
 
-    public async Task ChangeTheme(SystemIdentityDto systemIdentity)
+	public event Action<SystemIdentityDto> OnSystemIdentityChanged;
+	public void NotifySystemIdentityChanged(SystemIdentityDto identity)
+	{
+		OnSystemIdentityChanged?.Invoke(identity);
+	}
+	public async Task ChangeTheme(SystemIdentityDto systemIdentity)
     {
         await JS.InvokeVoidAsync("setThemeColor", "--primary-color", systemIdentity.PrimaryColor);
         await JS.InvokeVoidAsync("setThemeColor", "--secondary-color", systemIdentity.PrimaryColor);
-    }
+
+        await JS.InvokeVoidAsync("setThemeColor", "--active-primary", systemIdentity.PrimaryActiveColor);
+    
+        await JS.InvokeVoidAsync("setThemeColor", "--light-200", systemIdentity.NavigationBackground);
+        await JS.InvokeVoidAsync("setThemeColor", "--light-300", systemIdentity.BorderColor);
+
+        await JS.InvokeVoidAsync("setThemeColor", "--dark-900", systemIdentity.MainTitle);
+        await JS.InvokeVoidAsync("setThemeColor", "--dark-800", systemIdentity.SubTitle);
+
+	}
 
     private async Task<bool> CheckForToken()
     {

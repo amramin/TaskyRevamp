@@ -14,7 +14,6 @@
 <div class="card shadow-sm p-4">
     <EditForm Model="@_systemIdentity" OnValidSubmit="@SaveSystemIdentity">
         <DataAnnotationsValidator />
-        <ValidationSummary />
 
         <!-- Logo Section -->
         <div class="text-center mb-4">
@@ -46,80 +45,107 @@
 
                 <div class="mb-3">
                     <label class="form-label fw-semibold">System Name English</label>
-                    <div class="input-group">
-                        <input class="form-control" placeholder="Enter system name English" @bind="_systemIdentity.NameEnglish" />
-                        <div class="input-group-text bg-white">
-                            <div class="icon">
-                                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Edit"></SVGCrud>
-                            </div>
-                        </div>
+                    <div class="d-flex align-items-center gap-2">
+                        <InputText class="form-control" placeholder="Enter system name English" @bind-Value="_systemIdentity.NameEnglish" />
                     </div>
                 </div>
                 <div class="mb-3">
                     <label class="form-label fw-semibold">System Name Arabic</label>
-                    <div class="input-group">
-                        <input class="form-control" placeholder="Enter system name Arabic" @bind="_systemIdentity.NameArabic" />
-                        <span class="input-group-text bg-white">
-                            <div class="icon">
-                                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Edit"></SVGCrud>
-                            </div>
-                        </span>
+                    <div class="d-flex align-items-center gap-2">
+                        <InputText id ="arabic-text" class="form-control" placeholder="Enter system name Arabic" @bind-Value="_systemIdentity.NameArabic" />
                     </div>
                 </div>
 
                 <div class="mb-3">
                     <label class="form-label fw-semibold">@Loc["Primary Color"]</label>
-                    <div class="input-group">
-                        <span class="rounded-circle border me-2" style="display:inline-block; width:25px; height:25px; background-color:@_systemIdentity.PrimaryColor"></span>
-                        <input type="text" class="form-control" @bind="_systemIdentity.PrimaryColor" />
-                        <input type="color" class="form-control form-control-color" style="max-width:50px;" @bind="_systemIdentity.PrimaryColor" />
+                    <div class="color-group d-flex align-items-center gap-2">
+                        <InputText class="form-control" @bind-Value="_systemIdentity.PrimaryColor" />
+                        <span class="rounded-circle cl-preview border"
+                              style="width:25px; height:25px; background-color:@_systemIdentity.PrimaryColor"></span>
+                        <span class="color-indicator">
+                            <input type="color" id="primary-color" class="d-none" @bind="_systemIdentity.PrimaryColor" />
+                            <label for="primary-color">
+                                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.ColorPalette"></SVGCrud>
+                            </label>
+                        </span>
                     </div>
                 </div>
 
                 <div class="mb-3">
                     <label class="form-label fw-semibold">@Loc["Primary Active Color"]</label>
-                    <div class="input-group">
-                        <span class="rounded-circle cl-preview" style="display:inline-block; width:25px; height:25px; background-color:@_systemIdentity.PrimaryActiveColor"></span>
-                        <input type="text" class="form-control" @bind="_systemIdentity.PrimaryActiveColor" />
-                        <input type="color" class="form-control form-control-color" style="max-width:50px;" @bind="_systemIdentity.PrimaryActiveColor" />
+                    <div class="color-group d-flex align-items-center gap-2">
+                        <InputText class="form-control" @bind-Value="_systemIdentity.PrimaryActiveColor" />
+                        <span class="rounded-circle cl-preview border"
+                              style="width:25px; height:25px; background-color:@_systemIdentity.PrimaryActiveColor"></span>
+                        <span class="color-indicator">
+                            <input type="color" id="primary-active" class="d-none" @bind="_systemIdentity.PrimaryActiveColor" />
+                            <label for="primary-active">
+                                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.ColorPalette"></SVGCrud>
+                            </label>
+                        </span>
                     </div>
                 </div>
 
                 <div class="mb-3">
                     <label class="form-label fw-semibold">@Loc["Main Title"]</label>
-                    <div class="input-group">
-                        <span class="rounded-circle cl-preview" style="display:inline-block; width:25px; height:25px; background-color:@_systemIdentity.MainTitle"></span>
-                        <input type="text" class="form-control" @bind="_systemIdentity.MainTitle" />
-                        <input type="color" class="form-control form-control-color" style="max-width:50px;" @bind="_systemIdentity.MainTitle" />
+                    <div class="color-group d-flex align-items-center gap-2">
+                        <InputText class="form-control" @bind-Value="_systemIdentity.MainTitle" />
+                        <span class="rounded-circle cl-preview border"
+                              style="width:25px; height:25px; background-color:@_systemIdentity.MainTitle"></span>
+                        <span class="color-indicator">
+                            <input type="color" id="main-title" class="d-none" @bind="_systemIdentity.MainTitle" />
+                            <label for="main-title">
+                                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.ColorPalette"></SVGCrud>
+                            </label>
+                        </span>
                     </div>
                 </div>
 
                 <div class="mb-3">
                     <label class="form-label fw-semibold">@Loc["Sub Title"]</label>
-                    <div class="input-group">
-                        <span class="rounded-circle cl-preview" style="display:inline-block; width:25px; height:25px; background-color:@_systemIdentity.SubTitle"></span>
-                        <input type="text" class="form-control" @bind="_systemIdentity.SubTitle" />
-                        <input type="color" class="form-control form-control-color" style="max-width:50px;" @bind="_systemIdentity.SubTitle" />
+                    <div class="color-group d-flex align-items-center gap-2">
+                        <InputText class="form-control" @bind-Value="_systemIdentity.SubTitle" />
+                        <span class="rounded-circle cl-preview border"
+                              style="width:25px; height:25px; background-color:@_systemIdentity.SubTitle"></span>
+                        <span class="color-indicator">
+                            <input type="color" id="sub-title" class="d-none" @bind="_systemIdentity.SubTitle" />
+                            <label for="sub-title">
+                                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.ColorPalette"></SVGCrud>
+                            </label>
+                        </span>
                     </div>
                 </div>
 
                 <div class="mb-3">
                     <label class="form-label fw-semibold">@Loc["Navigation Background"]</label>
-                    <div class="input-group">
-                        <span class="rounded-circle cl-preview" style="display:inline-block; width:25px; height:25px; background-color:@_systemIdentity.NavigationBackground"></span>
-                        <input type="text" class="form-control" @bind="_systemIdentity.NavigationBackground" />
-                        <input type="color" class="form-control form-control-color" style="max-width:50px;" @bind="_systemIdentity.NavigationBackground" />
+                    <div class="color-group d-flex align-items-center gap-2">
+                        <InputText class="form-control" @bind-Value="_systemIdentity.NavigationBackground" />
+                        <span class="rounded-circle cl-preview border"
+                              style="width:25px; height:25px; background-color:@_systemIdentity.NavigationBackground"></span>
+                        <span class="color-indicator">
+                            <input type="color" id="nav-bg" class="d-none" @bind="_systemIdentity.NavigationBackground" />
+                            <label for="nav-bg">
+                                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.ColorPalette"></SVGCrud>
+                            </label>
+                        </span>
                     </div>
                 </div>
 
                 <div class="mb-3">
                     <label class="form-label fw-semibold">@Loc["Border Color"]</label>
-                    <div class="input-group">
-                        <span class="rounded-circle cl-preview" style="display:inline-block; width:25px; height:25px; background-color:@_systemIdentity.BorderColor"></span>
-                        <input type="text" class="form-control" @bind="_systemIdentity.BorderColor" />
-                        <input type="color" class="form-control form-control-color" style="max-width:50px;" @bind="_systemIdentity.BorderColor" />
+                    <div class="color-group d-flex align-items-center gap-2">
+                        <InputText class="form-control" @bind-Value="_systemIdentity.BorderColor" />
+                        <span class="rounded-circle cl-preview border"
+                              style="width:25px; height:25px; background-color:@_systemIdentity.BorderColor"></span>
+                        <span class="color-indicator">
+                            <input type="color" id="border-color" class="d-none" @bind="_systemIdentity.BorderColor" />
+                            <label for="border-color">
+                                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.ColorPalette"></SVGCrud>
+                            </label>
+                        </span>
                     </div>
                 </div>
+
 
                 <div class="d-flex justify-content-end gap-2 mt-4">
                     <button type="button" class="btn btn-light px-4" @onclick="Cancel">@Loc["Cancel"]</button>
@@ -152,7 +178,6 @@
                 Console.WriteLine("Invalid file type.");
                 return;
             }
-
             using var ms = new MemoryStream();
             await file.OpenReadStream(maxAllowedSize: 5_000_000).CopyToAsync(ms);
             _systemIdentity.Logo = ms.ToArray();
@@ -167,6 +192,7 @@
         {
             await ToastService.ShowToastAsync(Loc["EditSuccess"], "success");
             await taskyService.ChangeTheme(_systemIdentity);
+            taskyService.NotifySystemIdentityChanged(_systemIdentity);
         }
     }
     private void Cancel(MouseEventArgs args)

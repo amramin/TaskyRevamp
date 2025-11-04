@@ -164,6 +164,12 @@
         systemLogoAsImgSrc = taskyService.GetSystemLogoAsImgSrc(identity.Logo);
 
         await taskyService.ChangeTheme(identity);
+        // Listen for logo
+        taskyService.OnSystemIdentityChanged += (updatedIdentity) =>
+        {
+            systemLogoAsImgSrc = taskyService.GetSystemLogoAsImgSrc(updatedIdentity.Logo);
+            InvokeAsync(StateHasChanged);
+        };
     }
 
     void SetRenderFragment(RenderFragment content, string headerName)
