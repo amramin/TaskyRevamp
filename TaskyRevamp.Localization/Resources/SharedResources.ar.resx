@@ -583,7 +583,6 @@
   <data name="Enter Priority Name Arabic" xml:space="preserve">
     <value>اسم الأولوية بالعربي</value>
   </data>
-
   <data name="Deletedsuccessfully" xml:space="preserve">
     <value>تم الحذف بنجاح</value>
   </data>
@@ -600,10 +599,10 @@
     <value>تعديل تفويض</value>
   </data>
   <data name="FromUser" xml:space="preserve">
-    <value>من المستخدم</value>
+    <value>من المتسخدم</value>
   </data>
   <data name="ToUser" xml:space="preserve">
-    <value>إلى المستخدم</value>
+    <value>إلي المستخدم</value>
   </data>
   <data name="FromDate" xml:space="preserve">
     <value>تاريخ البدء </value>
@@ -689,12 +688,6 @@
   <data name="Module" xml:space="preserve">
     <value>وحدة</value>
   </data>
-  <data name="FromUser" xml:space="preserve">
-    <value>من المتسخدم</value>
-  </data>
-  <data name="ToUser" xml:space="preserve">
-    <value>إلي المستخدم</value>
-  </data>
   <data name="ViewPermission" xml:space="preserve">
     <value>عرض الأذونات</value>
   </data>
@@ -763,5 +756,8 @@
   </data>
   <data name="IncludingSubDepartment" xml:space="preserve">
     <value>لها إدارات فرعية</value>
+  </data>
+  <data name="PrivilegeDuplicateValidation" xml:space="preserve">
+    <value>لا يمكنك تكرار اسم الصلاحية</value>
   </data>
 </root>

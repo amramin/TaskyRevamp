@@ -691,20 +691,20 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Edit Delegation.
-        /// </summary>
-        public static string EditDelegation {
-            get {
-                return ResourceManager.GetString("EditDelegation", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Edit.
         /// </summary>
         public static string Edit {
             get {
                 return ResourceManager.GetString("Edit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit Delegation.
+        /// </summary>
+        public static string EditDelegation {
+            get {
+                return ResourceManager.GetString("EditDelegation", resourceCulture);
             }
         }
         
@@ -835,15 +835,6 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Error database.
-        /// </summary>
-        public static string Errordatabase {
-            get {
-                return ResourceManager.GetString("Errordatabase", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Enter Privilege Arabic Name.
         /// </summary>
         public static string EnterPrivilegeArabicName {
@@ -867,6 +858,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string EnterPrivilegeName {
             get {
                 return ResourceManager.GetString("EnterPrivilegeName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error database.
+        /// </summary>
+        public static string Errordatabase {
+            get {
+                return ResourceManager.GetString("Errordatabase", resourceCulture);
             }
         }
         
@@ -1372,6 +1372,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string Privilege {
             get {
                 return ResourceManager.GetString("Privilege", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You can&apos;t duplicate the privilege name.
+        /// </summary>
+        public static string PrivilegeDuplicateValidation {
+            get {
+                return ResourceManager.GetString("PrivilegeDuplicateValidation", resourceCulture);
             }
         }
         

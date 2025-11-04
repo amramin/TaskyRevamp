@@ -117,6 +117,7 @@
     public PrivilegeDto PrivilegeDto { get; set; } = new PrivilegeDto();
     private string SelectedTab { get; set; } = "General";
     private EditContext? editContext;
+    private ValidationMessageStore messageStore;
     private bool isGeneralModuleValid = true;
     private bool HasInvalidDirectionLevel =>
                     PrivilegeDto.TaskModuleExternalDepartmentDto?.Any(d =>
@@ -129,6 +130,13 @@
     protected override void OnInitialized()
     {
         editContext = new EditContext(PrivilegeDto);
+        messageStore = new ValidationMessageStore(editContext);
+        editContext.OnFieldChanged += (_, e) =>
+        {
+            // Clear server-side messages for this field
+            messageStore.Clear(e.FieldIdentifier);
+            editContext.NotifyValidationStateChanged();
+        };
     }
 
     void SelectTab(string tab) => SelectedTab = tab;
@@ -145,6 +153,24 @@
         SelectedTab = "General";
     }
 
+    private void ClearValidationMessages()
+    {
+        messageStore.Clear();
+        editContext!.NotifyValidationStateChanged();
+    }
+    private void AddErrorsToEditContext(IReadOnlyDictionary<string, List<string>> errors)
+    {
+        messageStore.Clear();
+        foreach (var error in errors)
+        {
+            var fieldIdentifier = new FieldIdentifier(PrivilegeDto, error.Key);
+            foreach (var msg in error.Value)
+            {
+                messageStore.Add(fieldIdentifier, msg);
+            }
+        }
+        editContext!.NotifyValidationStateChanged();
+    }
     private async Task SaveSettings()
     {
         if (!isGeneralModuleValid)
@@ -157,8 +183,15 @@
         });
         Console.WriteLine(json);
 
-        await _privilegeConsumer.CreatePrivilege(PrivilegeDto);
+        ClearValidationMessages();
+        var res = await _privilegeConsumer.CreatePrivilege(PrivilegeDto);
+        if (res.Errors != null && res.Errors.Count > 0)
+        {
+            AddErrorsToEditContext(res.Errors); 
+            return;
+        }
         await ToastService.ShowToastAsync(Loc["Added successfully"], "success");
         navigationManager.NavigateTo("/Privileges");
     }
+
 }

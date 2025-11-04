@@ -599,7 +599,7 @@ Add a new department to get started</value>
     <value>Edit Delegation</value>
   </data>
   <data name="FromUser" xml:space="preserve">
-    <value>From User </value>
+    <value>From User</value>
   </data>
   <data name="ToUser" xml:space="preserve">
     <value>To User</value>
@@ -688,12 +688,6 @@ Add a new department to get started</value>
   <data name="Module" xml:space="preserve">
     <value>Module</value>
   </data>
-  <data name="FromUser" xml:space="preserve">
-    <value>From User</value>
-  </data>
-  <data name="ToUser" xml:space="preserve">
-    <value>To User</value>
-  </data>
   <data name="ViewPermission" xml:space="preserve">
     <value>View Permissions</value>
   </data>
@@ -762,5 +756,8 @@ Add a new department to get started</value>
   </data>
   <data name="IncludingSubDepartment" xml:space="preserve">
     <value>Including Sub-Department</value>
+  </data>
+  <data name="PrivilegeDuplicateValidation" xml:space="preserve">
+    <value>You can't duplicate the privilege name</value>
   </data>
 </root>
