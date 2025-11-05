@@ -43,7 +43,6 @@
     border: 1px solid var(--light-300);
     border-radius: var(--bs-border-radius);
     z-index: 10;
-
     .tab-btn {
       width: 3.5rem;
       height: 3.5rem;
@@ -57,8 +56,7 @@
         stroke-width: 2;
       }
       &.active,
-      :active
-      {
+      :active {
         color: var(--primary-color);
         background-color: transparent;
       }
@@ -75,9 +73,11 @@
         color: var(--bs-white);
         border-radius: calc(var(--bs-border-radius) / 2);
         transition: var(--transtion-3ms-e-out);
+        display: none;
       }
       &:hover {
         .text {
+          display: block;
           inset-inline-start: 100%;
           transform: translateY(-50%) translateX(0);
         }
@@ -86,3 +86,36 @@
   }
 }
 /* end  horizintal-tab*/
+/* start line-tabs-nav */
+.line-tabs-nav {
+  margin-bottom: 0.75rem;
+  border-bottom: 1px solid var(--light-300);
+  display: flex;
+  gap: 1rem;
+  .btn-tab {
+    font-size: 0.875rem;
+    color: var(--dark-700);
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding-inline: 0;
+    padding-block: 0.5rem;
+    border: 0;
+    border-bottom: 1px solid transparent;
+    border-radius: 0;
+    font-weight: 500;
+    background: transparent;
+    .icon {
+      svg {
+        width: 1rem;
+        height: 1rem;
+      }
+    }
+    &.active {
+      border-color: var(--primary-color);
+      color: var(--primary-color);
+      font-weight: 600;
+    }
+  }
+}
+/* end line-tabs-nav */

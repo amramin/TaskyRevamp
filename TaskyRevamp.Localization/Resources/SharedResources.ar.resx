@@ -435,10 +435,10 @@
   <data name="Action" xml:space="preserve">
     <value>الإجراء</value>
   </data>
-  <data name="No Task Sources Available" xml:space="preserve">
+  <data name="NoTaskSourcesAvailable" xml:space="preserve">
     <value>لا تتوفر مصادر مهام</value>
   </data>
-  <data name="Add a new task source to get started." xml:space="preserve">
+  <data name="AddANewTaskSourceToGetStarted" xml:space="preserve">
     <value>أضف مصدر مهمة جديدًا للبدء</value>
   </data>
   <data name="TaskTypeConfiguration" xml:space="preserve">
@@ -453,7 +453,7 @@
   <data name="NoTaskTypeAvailable" xml:space="preserve">
     <value>لا تتوفر أنواع مهام</value>
   </data>
-  <data name="Add a new task type to get started." xml:space="preserve">
+  <data name="AddANewTaskTypeToGetStarted" xml:space="preserve">
     <value>أضف نوع مهمة جديدًا للبدء</value>
   </data>
   <data name="Type" xml:space="preserve">
@@ -606,5 +606,186 @@
   </data>
   <data name="Enter Priority Name Arabic" xml:space="preserve">
     <value>اسم الأولوية بالعربي</value>
+  </data>
+
+  <data name="Deletedsuccessfully" xml:space="preserve">
+    <value>تم الحذف بنجاح</value>
+  </data>
+  <data name="Addusers" xml:space="preserve">
+    <value>اضافه مستخدمين</value>
+  </data>
+  <data name="Errordatabase" xml:space="preserve">
+    <value>خطا</value>
+  </data>
+  <data name="AddDelegation" xml:space="preserve">
+    <value>اضافه تفويض</value>
+  </data>
+  <data name="EditDelegation" xml:space="preserve">
+    <value>تعديل تفويض</value>
+  </data>
+  <data name="FromUser" xml:space="preserve">
+    <value>من المستخدم</value>
+  </data>
+  <data name="ToUser" xml:space="preserve">
+    <value>إلى المستخدم</value>
+  </data>
+  <data name="FromDate" xml:space="preserve">
+    <value>تاريخ البدء </value>
+  </data>
+  <data name="ToDate" xml:space="preserve">
+    <value>تاريخ الانتهاء</value>
+  </data>
+  <data name="CreateDate" xml:space="preserve">
+    <value>تاريخ الإنشاء</value>
+  </data>
+  <data name="SureDeleteDelegation" xml:space="preserve">
+    <value>هل أنت متأكد أنك تريد إزالة هذا التفويض؟</value>
+  </data>
+  <data name="NoDelegationvailable" xml:space="preserve">
+    <value>لا يوجد تفويضات متاحه</value>
+  </data>
+  <data name="GeneralModules" xml:space="preserve">
+    <value>الوحدات العامة</value>
+  </data>
+  <data name="Privilege" xml:space="preserve">
+    <value>صلاحيات</value>
+  </data>
+  <data name="TaskModule" xml:space="preserve">
+    <value>وحدة المهام</value>
+  </data>
+  <data name="ReportModule" xml:space="preserve">
+    <value>وحدة التقارير</value>
+  </data>
+  <data name="AddNewPrivilege" xml:space="preserve">
+    <value>إضافة صلاحية جديدة</value>
+  </data>
+  <data name="SelectReportOptions" xml:space="preserve">
+    <value>اختر خيارات التقرير</value>
+  </data>
+  <data name="ReportModuleHint" xml:space="preserve">
+    <value>جميع الخيارات أدناه اختيارية. إذا لم يتم تحديد أي خيار، فلن يتم إرسال أي تقرير من النظام إلى المستخدمين.</value>
+  </data>
+  <data name="Loading" xml:space="preserve">
+    <value>جاري التحميل</value>
+  </data>
+  <data name="PrivilegeNotFound" xml:space="preserve">
+    <value>لم يتم العثور على الصلاحية  {id}</value>
+  </data>
+  <data name="EnterPrivilegeName" xml:space="preserve">
+    <value>اسم الصلاحية عربي</value>
+  </data>
+  <data name="ArabicName" xml:space="preserve">
+    <value>الاسم بالعربية</value>
+  </data>
+  <data name="EnglishName" xml:space="preserve">
+    <value>الاسم بالانجليزية</value>
+  </data>
+  <data name="EnterPrivilegeArabicName" xml:space="preserve">
+    <value>اسم الصلاحية بالعربي</value>
+  </data>
+  <data name="EnterPrivilegeEnglishName" xml:space="preserve">
+    <value>اسم الصلاحية بالإنجليزية</value>
+  </data>
+  <data name="SelectAtLeastOneValue" xml:space="preserve">
+    <value>حدد قيمة واحدة على الأقل.</value>
+  </data>
+  <data name="Add" xml:space="preserve">
+    <value>إضافة</value>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>تعديل</value>
+  </data>
+  <data name="View" xml:space="preserve">
+    <value>عرض</value>
+  </data>
+  <data name="All" xml:space="preserve">
+    <value>الجميع</value>
+  </data>
+  <data name="DifferentDepartment" xml:space="preserve">
+    <value>إدارات مختلفة</value>
+  </data>
+  <data name="SameDepartment" xml:space="preserve">
+    <value>نفس الإدارة</value>
+  </data>
+  <data name="SameUser" xml:space="preserve">
+    <value>نفس المستخدم</value>
+  </data>
+  <data name="Module" xml:space="preserve">
+    <value>وحدة</value>
+  </data>
+  <data name="FromUser" xml:space="preserve">
+    <value>من المتسخدم</value>
+  </data>
+  <data name="ToUser" xml:space="preserve">
+    <value>إلي المستخدم</value>
+  </data>
+  <data name="ViewPermission" xml:space="preserve">
+    <value>عرض الأذونات</value>
+  </data>
+  <data name="ViewUsers" xml:space="preserve">
+    <value>المستخدمين</value>
+  </data>
+  <data name="AddANewPrivilegeToGetStarted" xml:space="preserve">
+    <value>أضف صلاحية جديدة للبدء</value>
+  </data>
+  <data name="NoPrivilegeAvailable" xml:space="preserve">
+    <value>لا تتوفر صلاحيات</value>
+  </data>
+  <data name="AboveUserDepartmentLevel" xml:space="preserve">
+    <value>مستوى أعلى من إدارة المستخدم</value>
+  </data>
+  <data name="BelowUserDepartmentLevel" xml:space="preserve">
+    <value>مستوى أسفل من إدارة المستخدم</value>
+  </data>
+  <data name="PeersLevel" xml:space="preserve">
+    <value>النظائر</value>
+  </data>
+  <data name="CreateTaskOnHim" xml:space="preserve">
+    <value>مهام المستخدم</value>
+  </data>
+  <data name="CreateTaskOnHimHint" xml:space="preserve">
+    <value>يتيح هذا للمستخدم إنشاء مهام لنفسه ورؤية مهامه فقط كمنشئ أو مسند إليه</value>
+  </data>
+  <data name="SameDepartmentHint" xml:space="preserve">
+    <value>سيقوم هذا الخيار بتحديد إدارة المستخدم تلقائيًا لتطبيق الإذن عليه</value>
+  </data>
+  <data name="PeersLevelHint" xml:space="preserve">
+    <value>إدارات على نفس المستوى: سيقوم هذا الخيار تلقائيًا باختيار الإدارات النظيرة التي تقع على نفس مستوى إدارة المستخدم. سيتم اختيار فقط الإدارات التي تشترك مع إدارة المستخدم في نفس الإدارة الرئيسية لتطبيق الصلاحية عليها</value>
+  </data>
+  <data name="BelowUserDepartmentLevelHint" xml:space="preserve">
+    <value>يتيح لك هذا الخيار تطبيق الصلاحية على الإدارات التي تقع في مستوى أدنى من إدارة المستخدم. سيستخدم النظام تلقائيًا التسلسل الهرمي العمودي المرتبط بإدارة المستخدم</value>
+  </data>
+  <data name="AboveUserDepartmentLevelHint" xml:space="preserve">
+    <value>يتيح لك هذا الخيار تطبيق الصلاحية على الإدارات التي تقع في مستوى أعلى من إدارة المستخدم. سيستخدم النظام تلقائيًا التسلسل الهرمي العمودي المرتبط بإدارة المستخدم الرئيسية</value>
+  </data>
+  <data name="ExternalDepartmentHint" xml:space="preserve">
+    <value>يمكنك استخدام إدارة خارجية غير مرتبطة بإدارة المستخدم لتطبيق الأذونات عليها</value>
+  </data>
+  <data name="UserDepartment" xml:space="preserve">
+    <value>إدارة المستخدم</value>
+  </data>
+  <data name="ExternalDepartment" xml:space="preserve">
+    <value>إدارة خارجية</value>
+  </data>
+  <data name="Department" xml:space="preserve">
+    <value>الإدارة </value>
+  </data>
+  <data name="Permissions" xml:space="preserve">
+    <value>الصلاحيات</value>
+  </data>
+  <data name="EmployeesTasks" xml:space="preserve">
+    <value>مهام الموظف</value>
+  </data>
+  <data name="ManagersTasks" xml:space="preserve">
+    <value>مهمة المدير</value>
+  </data>
+  <data name="DirectionLevel" xml:space="preserve">
+    <value>مستوي الاتجاه</value>
+  </data>
+  <data name="DirectionType" xml:space="preserve">
+    <value>نوع الاتجاه</value>
+  </data>
+  <data name="IncludingSubDepartment" xml:space="preserve">
+    <value>لها إدارات فرعية</value>
   </data>
 </root>

@@ -17,10 +17,10 @@ public record SyncAllUsersFt : IRequest<bool>;
 
 public class SyncAllUsersFtHandler : IRequestHandler<SyncAllUsersFt, bool>
 {
-    private readonly IRepository<Domain.Models.Users.User> _userRepository;
+    private readonly IRepository<User> _userRepository;
     private readonly IOptions<LdapSettings> _ldapPath;
 
-    public SyncAllUsersFtHandler(IOptions<LdapSettings> ldapSettings, IRepository<Domain.Models.Users.User> userRepository)
+    public SyncAllUsersFtHandler(IOptions<LdapSettings> ldapSettings, IRepository<User> userRepository)
     {
         _userRepository = userRepository;
         _ldapPath = ldapSettings;

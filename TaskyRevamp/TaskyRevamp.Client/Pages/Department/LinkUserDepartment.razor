@@ -11,31 +11,32 @@
 @inject IStringLocalizer<SharedResources> Loc
 @inject ToastService ToastService
 
-
-
-
-<div class="page-header">
-    <h1 class="page-headline">@Loc["Departments"]</h1>
-    <div class="action-btn-list">
-       
-      
+<div class="offcanvas-body">
+    <div class="mb-3">
+        <label class="form-label">
+            @Loc["usersList"]
+            <span class="text-danger">*</span>
+        </label>
+        <SearchableMultiDropdownOffline TInput=UserDto TOutput="Guid" Datasource=availableUsers
+            TextSelector=@(x=>x.UserName) OutputSelector="x=> x.Id" @bind-SelectedOptions=assignedUserDto.UsrIds />
     </div>
 </div>
-
-
-
-          <div class="mb-3">
-            <SearchableMultiDropdownOffline TInput=UserDto
-                                            TOutput="Guid"
-                                    Datasource=availableUsers
-                                            TextSelector=@(x=>x.UserName)
-                                            OutputSelector="x=> x.Id"
-                                    @bind-SelectedOptions=assignedUserDto.UsrIds />
+<div class="offcanvas-footer">
+    <div class="row g-2">
+        <div class="col-6">
+            <div class="d-grid">
+                <button type="button" class="btn btn-lg btn-light" @onclick="OnCancelClick">@Loc["Cancel"]</button>
+            </div>
         </div>
-<div class="d-flex justify-content-end gap-2 mt-4">
-    <button type="button" class="btn btn-light" @onclick="OnCancelClick">@Loc["Cancel"]</button>
-    <button type="button" @onclick="SaveClick" class="btn btn-primary">@Loc["Save"]</button>
+        <div class="col-6">
+            <div class="d-grid">
+                <button type="button" @onclick="SaveClick" class="btn btn-lg btn-primary">@Loc["Save"]</button>
+            </div>
+        </div>
+    </div>
+
 </div>
+
 @code {
     [Parameter] public Guid Id { get; set; }
     public List<UserDto> availableUsers { get; set; } = new();

@@ -72,6 +72,20 @@ public class DepartmentController : ControllerBase
     }
 
 
+    //
+    
+         [HttpGet("GetDepartmentsNoPagnation")]
+    public async Task<IActionResult> GetDepartmentsNoPagnation(
+           
+            [FromQuery] List<SearchFieldDepartment> searchFields = null,
+            [FromQuery] string searchText = null)
+    {
+
+        var all = await _mediator.Send(new GetDepartmentsNoPagnationQuery(searchFields, searchText));
+
+        return Ok(all);
+    }
+    //
     [HttpGet("GetDepartmentById/{id}")]
     public async Task<IActionResult> GetOne(string id)
     {

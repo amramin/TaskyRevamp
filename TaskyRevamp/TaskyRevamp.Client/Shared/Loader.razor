@@ -1,14 +1,16 @@
-﻿<div class="app-splash-screen" style="@(IsVisible ? "display:flex;" : "display:none;")">
+﻿@inject IStringLocalizer<SharedResources> Loc
+
+<div class="app-splash-screen" style="@(IsVisible ? "display:flex;" : "display:none;")">
     <div class="content">
         <span class="icon">
-        <SVGCrud SVGType="SVGCrud.SVGTypeEnum.TaskyIcon"></SVGCrud>
+            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.TaskyIcon"></SVGCrud>
         </span>
-        <h6 class="headline-6">Loading</h6>
+        <h6 class="headline-6"> @Loc["Loading"] </h6>
     </div>
 </div>
 @* <div class="loader-overlay" style="@(IsVisible ? "display:flex;" : "display:none;")">
-    <div class="spinner"></div>
-</div> *@
+        <div class="spinner"></div>
+    </div> *@
 @code {
     [Parameter] public bool IsVisible { get; set; }
 }

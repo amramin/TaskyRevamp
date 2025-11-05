@@ -14,18 +14,18 @@ using PrioritySetting = TaskyRevamp.Domain.Models.SystemConfiguration.PrioritySe
 
 namespace TaskyRevamp.Services.SystemConfiguration.PriorityConfiguration.Command
 {
-	public record UpdateProrityCommand(PriorityDto PriorityDto): IRequest<bool>;
-	public class UpdateProrityHandler : IRequestHandler<UpdateProrityCommand, bool>
+	public record UpdatePriorityCommand(PriorityDto PriorityDto): IRequest<bool>;
+	public class UpdatePriorityHandler : IRequestHandler<UpdatePriorityCommand, bool>
 	{
 		private readonly IRepository<PrioritySetting> _priorityRepository;
         private readonly IStringLocalizer<SharedResources> _localizer;
 
-        public UpdateProrityHandler(IRepository<PrioritySetting> priorityRepository, IStringLocalizer<SharedResources> localizer)
+        public UpdatePriorityHandler(IRepository<PrioritySetting> priorityRepository, IStringLocalizer<SharedResources> localizer)
         {
             this._priorityRepository = priorityRepository;
             _localizer = localizer;
         }
-        public async Task<bool> Handle(UpdateProrityCommand request, CancellationToken cancellationToken)
+        public async Task<bool> Handle(UpdatePriorityCommand request, CancellationToken cancellationToken)
 		{
 			await ValidatePriority(request.PriorityDto);
 
@@ -41,7 +41,6 @@ namespace TaskyRevamp.Services.SystemConfiguration.PriorityConfiguration.Command
 				priority.Order = priorityDto.Order;
 
 				await _priorityRepository.Update(priority);
-				await _priorityRepository.SaveChangesAsync();
 			}
 			return true;
 		}

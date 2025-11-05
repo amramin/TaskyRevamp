@@ -18,24 +18,33 @@
 <div class="page-header">
     <h1 class="page-headline">@Loc["Departments"]</h1>
     <div class="action-btn-list">
-        <Search SearchSubmit="Search" CssClass="form-control"></Search>
-     
-    </div>
-    <div class="action-btn-list d-flex align-items-center gap-2">
-        <div class="btn-group me-2">
-            <button class="btn @(currentView == DepartmentViewType.Grid ? "btn-primary" : "btn-outline-primary")"
-                    @onclick="@(() => ChangeView(DepartmentViewType.Grid))">
-                <i class="bi bi-table"></i> @Loc["Grid"]
-            </button>
-            <button class="btn @(currentView == DepartmentViewType.Tree ? "btn-primary" : "btn-outline-primary")"
-                    @onclick="@(() => ChangeView(DepartmentViewType.Tree))">
-                <i class="bi bi-diagram-3"></i> @Loc["Tree"]
-            </button>
-            <button class="btn @(currentView == DepartmentViewType.Hierarchy ? "btn-primary" : "btn-outline-primary")"
-                    @onclick="@(() => ChangeView(DepartmentViewType.Hierarchy))">
-                <i class="bi bi-list-nested"></i> @Loc["Hierarchy"]
-            </button>
-        </div>
+        <Search @ref="searchComponent" SearchSubmit="Search" CssClass="form-control"></Search>
+        <button class="btn btn-action-40 @(currentView == DepartmentViewType.Hierarchy ? "btn-outline-primary" : "btn-outline-light")"
+                data-bs-toggle="tooltip" data-bs-placement="top" title="@Loc["Hierarchy"]"
+                @onclick="@(() => ChangeView(DepartmentViewType.Hierarchy))">
+
+            <span class="icon">
+                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.DataFlow"></SVGCrud>
+            </span>
+        </button>
+
+        <button class="btn btn-action-40 @(currentView == DepartmentViewType.Tree ? "btn-outline-primary" : "btn-outline-light")"
+                data-bs-toggle="tooltip" data-bs-placement="top" title="@Loc["Tree"]"
+                @onclick="@(() => ChangeView(DepartmentViewType.Tree))">
+
+            <span class="icon">
+                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.SubTasks"></SVGCrud>
+            </span>
+        </button>
+        <button class="btn btn-action-40   @(currentView == DepartmentViewType.Grid ? "btn-outline-primary" : "btn-outline-light")"
+                data-bs-toggle="tooltip" data-bs-placement="top" title="@Loc["Grid"]"
+                @onclick="@(() => ChangeView(DepartmentViewType.Grid))">
+            <span class="icon">
+                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.List"></SVGCrud>
+            </span>
+
+        </button>
+
 
         <button class="btn btn-primary" @onclick="Add">
             <span class="icon">
@@ -46,41 +55,55 @@
     </div>
 </div>
 
-@if (departmentDtos == null || departmentDtos.Count == 0)
+@if (departmentDtos == null && !departmentDtos.Any())
+
 {
+
+    <NoDataAvailable MessageTitle="@Loc["Nodepartmentavailable"]" MessageSubtitle="@Loc["Nodepartmentavailable"]"
+                     ButtonText="@Loc["AddDepartment"]" OnButtonClick="Add" />
     <h6 class="mb-3">@Loc["Nodepartmentavailable"]</h6>
 }
+
+else if (departmentDtos != null && departmentDtos.Count() == 0)
+{
+    <NoSearchResults OnResetClick="ClearSearch"></NoSearchResults>
+}
+
 else
 {
     <div class="page-body">
         @switch (currentView)
         {
             case DepartmentViewType.Grid:
-                <DepartmentGrid Departments="departmentDtos"
-                                OnEdit="Edit"
-                                OnDelete="OnDeleteDepartment"
-                                OnShowUsers="ShowUser" />
+                <DepartmentGrid Departments="departmentDtos" OnEdit="Edit" OnDelete="OnDeleteDepartment" OnShowUsers="ShowUser"
+                                OnAdd="AddDept" OnAddDepartment="AddDept" CurrentPage="currentPage"
+                                PageChanged="ChangePage" PageSizeChanged="ChangePageSize" PageSize="pageSize" TotalPages="totalPages" TotalCount="totalCount" /> 
                 break;
 
             case DepartmentViewType.Tree:
-                <DepartmentTree Departments="rootDepartments"
-                                OnEdit="Edit"
-                                OnDelete="OnDeleteDepartment"
-                                OnShowUsers="ShowUser"
-                                OnAddDepartment="HandleAddDepartment" />
+                <div class="card flex-grow-1">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-lg-10 ">
+                                <DepartmentTree Departments="rootDepartments" OnEdit="Edit" OnDelete="OnDeleteDepartment"
+                                                OnAddDepartment="AddDept" OnShowUsers="ShowUser" OnAdd="AddDept" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 break;
 
             case DepartmentViewType.Hierarchy:
-                <DepartmentHierarchy Departments="RootDepartments"
-                                     OnEdit="Edit"
-                                     OnDelete="OnDeleteDepartment"
-                                     OnShowUsers="ShowUser" />
+                <div class="card card-hierarchy">
+                    <div class="card-body">
+                        <DepartmentHierarchy Departments="RootDepartments" OnEdit="Edit" OnDelete="OnDeleteDepartment"
+                                             OnAddDepartment="AddDept" OnShowUsers="ShowUser" OnAdd="AddDept" />
+                    </div>
+                </div>
                 break;
         }
-
     </div>
-    <Pagination CurrentPage="@currentPage" TotalPages="@totalPages" TotalCount="@totalCount" PageSize="@pageSize"
-                PageChanged="ChangePage" PageSizeChangedCallback="ChangePageSize" />
+
 
 }
 
@@ -96,24 +119,26 @@ else
     private bool? sortAscending = true;
     private DepartmentViewType currentView = DepartmentViewType.Grid;
     private List<SortableColumn> tableColumns = new();
-    List<SourceDtoWithName> sources = new();
-    List<SourceDtoWithName> initialSources = new();
-    private List<DepartmentDto> RootDepartments => departmentDtos
-     .Where(d => d.ParentdepartmentId == Guid.Empty)
-     .ToList();
+    string searchdata { set; get; }
+    private List<DepartmentDto> RootDepartments = new();
+    List<DepartmentDto> allDepartments = new List<DepartmentDto>();
+    private Search? searchComponent;
+
     private async Task ChangePageSize(int newSize)
     {
         pageSize = newSize;
         currentPage = 1;
-        await LoadSources();
+        await LoadDepartmentsAsync();
     }
+
     protected override async Task OnInitializedAsync()
     {
+
         tableColumns = new()
         {
             new() { Field = "NameEnglish", DisplayName = Loc["NameEnglish"] },
-                        new() { Field = "NameArabic", DisplayName = Loc["NameArabic"] },
-                                              new() { Field = "DepartmentParent", DisplayName = Loc["ParentdepartmentName"] },
+            new() { Field = "NameArabic", DisplayName = Loc["NameArabic"] },
+            new() { Field = "DepartmentParent", DisplayName = Loc["ParentdepartmentName"] },
 
             new() { Field = "CreateDate", DisplayName = Loc["CreationDate"] },
             new() { Field = "CreatedBy", DisplayName = Loc["CreatedBy"] },
@@ -122,61 +147,85 @@ else
             new() { Field = "Action", DisplayName = Loc["Action"] ,IsSortable = false},
         };
 
-        await LoadSources();
-        initialSources = sources;
-
-
-
-        BuildHierarchy();
+        await LoadDepartmentsAsync();
+        StateHasChanged();
     }
     private async Task ChangePage(int page)
     {
         currentPage = page;
-        await LoadSources();
+        await LoadDepartmentsAsync();
     }
-    private void Add() { 
-        
-       // navigationManager.NavigateTo("/Add-Department"); 
-        PopupService.ShowNew(@<AddDepartment OnValidSubmit="OnInitializedAsync"></AddDepartment>, headerText: @Loc["AddDepartment"]);
-
-    }
-    private void Edit(Guid id) 
+    private void Add()
     {
-        PopupService.ShowNew(@<UpdateDepartment Id="id" OnValidSubmit="OnInitializedAsync"></UpdateDepartment>, headerText: @Loc["EditDepartment"]);
-
-      //  navigationManager.NavigateTo($"/Update-Department/{id}");
-    }
-    private void ShowUser(Guid id) { 
-       // navigationManager.NavigateTo($"/UsersDepartment/{id}"); 
-        PopupService.ShowNew(@<UsersDepartment Id="id" ></UsersDepartment>, headerText: @Loc["UsersDepartment"]);
+        PopupService.ShowNew(@<AddDepartment OnValidSubmit="OnInitializedAsync"></AddDepartment>,Loc["AddDepartment"]);
 
     }
-    
-    private void ChangeView(DepartmentViewType view) => currentView = view;
+    private async Task ClearSearch()
+    {
+        currentPage = 1;
+        searchComponent.SearchTerm = "";
+
+        await searchComponent?.SearchSubmit.InvokeAsync("");
+        await LoadDepartmentsAsync(isSearch: false, null);
+
+    }
+    private void Edit(Guid id)
+    {
+        PopupService.ShowNew(@<UpdateDepartment Id="id" OnValidSubmit="OnInitializedAsync"></UpdateDepartment>, headerText:
+        @Loc["EditDepartment"]);
+
+    }
+    private void ShowUser(Guid id)
+    {
+        navigationManager.NavigateTo($"/UsersDepartment/{id}");
+
+    }
+    private void AddDept(Guid id)
+    {
+        PopupService.ShowNew(@<AddDepartment ParentId="id"></AddDepartment>,Loc["AddDepartment"]);
+
+    }
+    private async Task ChangeView(DepartmentViewType view)
+    {
+        currentView = view;
+
+        // if Tree or Hierarchy → fetch all departments at once
+        if (currentView == DepartmentViewType.Tree || currentView == DepartmentViewType.Hierarchy)
+        {
+            pageSize = 10000;
+        }
+        else
+        {
+            pageSize = 10; // normal pagination for Grid
+        }
+
+        await LoadDepartmentsAsync(isSearch: !string.IsNullOrEmpty(searchdata), searchdata);
+    }
+
 
     private void OnDeleteDepartment(Guid departmentId)
     {
         PopupService.ShowConfirmation(
-            @Loc["SureDeleteDepartment"],
-            "Yes, Delete",
-            async (confirmed) =>
-            {
-                if (confirmed)
-                    await DeleteConfirmed(departmentId);
-            },
-            ConfirmationType.Danger
+        @Loc["SureDeleteDepartment"],
+        "Yes, Delete",
+        async (confirmed) =>
+        {
+            if (confirmed)
+                await DeleteConfirmed(departmentId);
+        },
+        ConfirmationType.Danger
         );
     }
     public List<SearchFieldDepartment> searchFields = new List<SearchFieldDepartment>() {
-SearchFieldDepartment.NameEnglish,
-SearchFieldDepartment.NameArabic,
-SearchFieldDepartment.CreatedBy,
-SearchFieldDepartment.UpdatedBy,
-SearchFieldDepartment.CreateDate,
-SearchFieldDepartment.UpdateDate,
-SearchFieldDepartment.ParentNameAR,
-SearchFieldDepartment.ParentNameEN
-};
+                SearchFieldDepartment.NameEnglish,
+                SearchFieldDepartment.NameArabic,
+                SearchFieldDepartment.CreatedBy,
+                SearchFieldDepartment.UpdatedBy,
+                SearchFieldDepartment.CreateDate,
+                SearchFieldDepartment.UpdateDate,
+                SearchFieldDepartment.ParentNameAR,
+                SearchFieldDepartment.ParentNameEN
+                                                  };
     private async Task DeleteConfirmed(Guid departmentId)
     {
         var result = await _departmentConsumer.DeleteDepartment(departmentId);
@@ -188,8 +237,8 @@ SearchFieldDepartment.ParentNameEN
                 departmentDtos.Remove(toRemove);
             }
 
-            await ToastService.ShowToastAsync(Loc["Deleted successfully"], "success");
-            BuildHierarchy();
+            await ToastService.ShowToastAsync(Loc["Deletedsuccessfully"], "success");
+            await LoadDepartmentsAsync();
         }
         else
         {
@@ -200,23 +249,6 @@ SearchFieldDepartment.ParentNameEN
     }
 
 
-    private void BuildHierarchy()
-    {
-        var dict = departmentDtos.ToDictionary(x => x.Id);
-        foreach (var dept in departmentDtos)
-            dept.Children = new List<DepartmentDto>();
-
-        foreach (var dept in departmentDtos)
-        {
-            if (dept.ParentdepartmentId != Guid.Empty && dict.ContainsKey(dept.ParentdepartmentId))
-                dict[dept.ParentdepartmentId].Children.Add(dept);
-        }
-
-        rootDepartments = departmentDtos
-            .Where(d => d.ParentdepartmentId == Guid.Empty ||
-                        !departmentDtos.Any(x => x.Id == d.ParentdepartmentId))
-            .ToList();
-    }
 
     private void HandleAddDepartment(string parentId)
     {
@@ -224,21 +256,58 @@ SearchFieldDepartment.ParentNameEN
     }
     public async Task Search(string searchTerm)
     {
-        await LoadSources(true, searchTerm);
+        searchdata = searchTerm;
+        await LoadDepartmentsAsync(true, searchTerm);
     }
-    private async Task LoadSources(bool isSearch = false, string searchTerm = null)
+
+    private async Task LoadDepartmentsAsync(bool isSearch = false, string searchTerm = null)
     {
-        var resp = await _departmentConsumer.GetDepartments(currentPage, pageSize, currentSortColumn, sortAscending.Value, isSearch ?
-        searchFields : null, isSearch ? searchTerm : null);
-        departmentDtos = resp.Data.Items.OrderBy(k => k.CreateDate).ToList();
+        // Determine page size dynamically
+        var effectivePageSize = (currentView == DepartmentViewType.Tree || currentView == DepartmentViewType.Hierarchy)
+            ? 10000
+            : pageSize;
+
+        var resp = await _departmentConsumer.GetDepartments(
+            currentPage,
+            effectivePageSize,
+            currentSortColumn,
+            sortAscending.Value,
+            isSearch ? searchFields : null,
+            isSearch ? searchTerm : null
+        );
 
         if (!(resp?.Success ?? false) || resp.Data is null)
             return;
 
         var data = resp.Data;
+
+        // Paginated or full list (depends on view)
+        departmentDtos = data.Items.OrderBy(k => k.CreateDate).ToList();
         totalPages = data.TotalPages;
         totalCount = data.TotalCount;
+
+        // Build hierarchy tree using same data
+        allDepartments = data.Items.ToList();
+        var dict = allDepartments.ToDictionary(x => x.Id);
+
+        foreach (var dept in allDepartments)
+            dept.Children = new List<DepartmentDto>();
+
+        foreach (var dept in allDepartments)
+        {
+            if (dept.ParentdepartmentId != Guid.Empty && dict.ContainsKey(dept.ParentdepartmentId))
+                dict[dept.ParentdepartmentId].Children.Add(dept);
+        }
+
+        rootDepartments = allDepartments
+            .Where(d => d.ParentdepartmentId == Guid.Empty ||
+                        !allDepartments.Any(x => x.Id == d.ParentdepartmentId))
+            .ToList();
+
+        RootDepartments = rootDepartments; // alias for hierarchy view
     }
+
+
     private enum DepartmentViewType
     {
         Grid,

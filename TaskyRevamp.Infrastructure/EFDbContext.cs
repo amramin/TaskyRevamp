@@ -2,13 +2,17 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TaskyRevamp.Domain.Interfaces;
+using TaskyRevamp.Domain.Models.Permissions;
+using TaskyRevamp.Domain.Models.Permissions.GeneralModule;
+using TaskyRevamp.Domain.Models.Permissions.ReportModule;
+using TaskyRevamp.Domain.Models.Permissions.TaskModule;
 using TaskyRevamp.Domain.Models.SystemConfiguration;
 using TaskyRevamp.Domain.Models.Task;
 using TaskyRevamp.Domain.Models.Users;
-using TaskyRevamp.Domain.Models.Users.UserDelegations;
+using UserDelegations;
 using Type = TaskyRevamp.Domain.Models.SystemConfiguration.Type;
 
-namespace SurveyRevamp.Infrastructure;
+namespace TaskyRevamp.Infrastructure;
 
 public class EfDbContext : DbContext
 {
@@ -19,7 +23,7 @@ public class EfDbContext : DbContext
     public DbSet<RecycleBinSettings> RecycleBinSettings { get; set; }
     public DbSet<RejectionSettings> RejectionSettings { get; set; }
     public DbSet<PrioritySettings> PrioritySettings { get; set; }
-	public DbSet<StatusSettings> StatusSettings { get; set; }
+    public DbSet<StatusSettings> StatusSettings { get; set; }
     public DbSet<ViewTaskSettings> ViewTaskSettings { get; set; }
     public DbSet<DefaultViewSettings> DefaultViewSettings { get; set; }
     public DbSet<WorkingDaysSettings> WorkingDaysSettings { get; set; }
@@ -29,6 +33,13 @@ public class EfDbContext : DbContext
     public DbSet<DefaultColumnsSettings> DefaultColumnsSettings { get; set; }
     public DbSet<FilterFieldsSettings> FilterFieldsSettings { get; set; }
     public DbSet<AddTaskSettings> AddTaskSettings { get; set; }
+    public DbSet<Privilege> Privilege { get; set; }
+    public DbSet<GeneralModule> GeneralModule { get; set; }
+    public DbSet<GeneralModulePermission> GeneralModulePermission { get; set; }
+    public DbSet<ReportModule> ReportModule { get; set; }
+    public DbSet<ReportModulePermission> ReportModulePermission { get; set; }
+    public DbSet<TaskModuleUserDepartment>  TaskModuleUserDepartment { get; set; }
+    public DbSet<TaskModuleExternalDepartment>  TaskModuleExternalDepartment { get; set; }
     public DbSet<SystemIdentity>  SystemIdentity { get; set; }
     public EfDbContext(DbContextOptions<EfDbContext> options, IHttpContextAccessor httpContextAccessor)
         : base(options)

@@ -19,6 +19,7 @@
   --backdrop-bg: #dfe5ef;
   --bs-danger-rgb: 232, 44, 44;
   --bs-success-rgb: 84, 192, 127;
-  --warning:#FFA000;
-  --warning-light:#FCF6ED;
+  --warning: #ffa000;
+  --warning-light: #fcf6ed;
+  --bs-border-color: var(var(--light-300)) !important;
 }

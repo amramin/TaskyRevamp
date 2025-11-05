@@ -1,0 +1,55 @@
+﻿@using Blazored.LocalStorage
+@using TaskyRevamp.Client.Consumer
+@inject UserConsumer _userConsumer
+@inject UserDelegationConsumer _userDelegationConsumer
+@inject ILocalStorageService LocalStorageService
+
+@using TaskyRevamp.Dto;
+@using TaskyRevamp.Dto.UserDelegation
+
+@inject IStringLocalizer<SharedResources> Loc
+
+<Form ButtonText="@Loc["Edit"]" IsStarted="@IsStarted" IsAdmine="@IsAdmine" userDelegation="@userDelegation"
+                                              OnValidSubmit="@update" />
+
+@code {
+    [Parameter] public string UserDelegationId { get; set; }
+    UserDelegationDto userDelegation = new UserDelegationDto();
+    [Parameter]
+    public bool IsAdmine { set; get; }
+    [Parameter]
+    public bool IsStarted { set; get; }
+    [Parameter] public EventCallback<UserDelegationDto> OnValidSubmit { get; set; }
+
+
+    protected override async Task OnParametersSetAsync()
+    {
+        var res = await _userDelegationConsumer.GetById(UserDelegationId);
+        if (!res.Success)
+        {
+            return;
+        }
+        userDelegation = res.Data;
+        if (userDelegation.FromDate < DateTime.Now)
+        {
+            IsStarted = true;
+        }
+        StateHasChanged();
+    }
+
+    async Task update()
+    {
+        if (userDelegation.ToUserId == Guid.Empty)
+            return;
+        if (!IsAdmine)
+        {
+            var current = await LocalStorageService.GetItemAsStringAsync("Id");
+            userDelegation.FromUserId = Guid.Parse(current);
+        }
+        await _userDelegationConsumer.update(userDelegation);
+
+
+        await OnValidSubmit.InvokeAsync(userDelegation);
+    }
+
+}

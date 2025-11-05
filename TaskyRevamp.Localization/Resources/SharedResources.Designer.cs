@@ -61,6 +61,24 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Above user department level.
+        /// </summary>
+        public static string AboveUserDepartmentLevel {
+            get {
+                return ResourceManager.GetString("AboveUserDepartmentLevel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This option allows you to apply the permission to departments located above the user&apos;s department level. The system will automatically follow the vertical hierarchy linked to the parent of the user&apos;s department.
+        /// </summary>
+        public static string AboveUserDepartmentLevelHint {
+            get {
+                return ResourceManager.GetString("AboveUserDepartmentLevelHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Action .
         /// </summary>
         public static string Action {
@@ -97,20 +115,47 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add.
+        /// </summary>
+        public static string Add {
+            get {
+                return ResourceManager.GetString("Add", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add A New Privilege To Get Started.
+        /// </summary>
+        public static string AddANewPrivilegeToGetStarted {
+            get {
+                return ResourceManager.GetString("AddANewPrivilegeToGetStarted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add a new task source to get started..
         /// </summary>
-        public static string Add_a_new_task_source_to_get_started_ {
+        public static string AddANewTaskSourceToGetStarted {
             get {
-                return ResourceManager.GetString("Add a new task source to get started.", resourceCulture);
+                return ResourceManager.GetString("AddANewTaskSourceToGetStarted", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Add a new task type to get started..
         /// </summary>
-        public static string Add_a_new_task_type_to_get_started_ {
+        public static string AddANewTaskTypeToGetStarted {
             get {
-                return ResourceManager.GetString("Add a new task type to get started.", resourceCulture);
+                return ResourceManager.GetString("AddANewTaskTypeToGetStarted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add Delegation.
+        /// </summary>
+        public static string AddDelegation {
+            get {
+                return ResourceManager.GetString("AddDelegation", resourceCulture);
             }
         }
         
@@ -147,6 +192,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string AddNewPriority {
             get {
                 return ResourceManager.GetString("AddNewPriority", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add New Privilege.
+        /// </summary>
+        public static string AddNewPrivilege {
+            get {
+                return ResourceManager.GetString("AddNewPrivilege", resourceCulture);
             }
         }
         
@@ -205,6 +259,24 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add Users.
+        /// </summary>
+        public static string Addusers {
+            get {
+                return ResourceManager.GetString("Addusers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to All.
+        /// </summary>
+        public static string All {
+            get {
+                return ResourceManager.GetString("All", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to All rights are safe - Kingdom of Saudi Arabia.
         /// </summary>
         public static string AllrightsKSA {
@@ -219,6 +291,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string Arabic {
             get {
                 return ResourceManager.GetString("Arabic", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Arabic Name.
+        /// </summary>
+        public static string ArabicName {
+            get {
+                return ResourceManager.GetString("ArabicName", resourceCulture);
             }
         }
         
@@ -246,6 +327,24 @@ namespace TaskyRevamp.Localization.Resources {
         public static string Background_Color_Indicator {
             get {
                 return ResourceManager.GetString("Background Color Indicator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Below user department leve.
+        /// </summary>
+        public static string BelowUserDepartmentLevel {
+            get {
+                return ResourceManager.GetString("BelowUserDepartmentLevel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This option allows you to apply the permission to departments located below the user&apos;s department level. The system will automatically follow the vertical hierarchy linked to user&apos;s department.
+        /// </summary>
+        public static string BelowUserDepartmentLevelHint {
+            get {
+                return ResourceManager.GetString("BelowUserDepartmentLevelHint", resourceCulture);
             }
         }
         
@@ -286,6 +385,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Creation Date.
+        /// </summary>
+        public static string CreateDate {
+            get {
+                return ResourceManager.GetString("CreateDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Created By.
         /// </summary>
         public static string CreatedBy {
@@ -300,6 +408,24 @@ namespace TaskyRevamp.Localization.Resources {
         public static string CreatedByDepartment {
             get {
                 return ResourceManager.GetString("CreatedByDepartment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create task on him.
+        /// </summary>
+        public static string CreateTaskOnHim {
+            get {
+                return ResourceManager.GetString("CreateTaskOnHim", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This allows the user to create tasks for himself and see his tasks only as creator or assignee.
+        /// </summary>
+        public static string CreateTaskOnHimHint {
+            get {
+                return ResourceManager.GetString("CreateTaskOnHimHint", resourceCulture);
             }
         }
         
@@ -475,11 +601,29 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Deleted successfully.
+        /// </summary>
+        public static string Deletedsuccessfully {
+            get {
+                return ResourceManager.GetString("Deletedsuccessfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Delete Task Source.
         /// </summary>
         public static string DeleteTaskSource {
             get {
                 return ResourceManager.GetString("DeleteTaskSource", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Department.
+        /// </summary>
+        public static string Department {
+            get {
+                return ResourceManager.GetString("Department", resourceCulture);
             }
         }
         
@@ -520,11 +664,56 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Different Department.
+        /// </summary>
+        public static string DifferentDepartment {
+            get {
+                return ResourceManager.GetString("DifferentDepartment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Direction Level.
+        /// </summary>
+        public static string DirectionLevel {
+            get {
+                return ResourceManager.GetString("DirectionLevel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Direction Type.
+        /// </summary>
+        public static string DirectionType {
+            get {
+                return ResourceManager.GetString("DirectionType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Duration.
         /// </summary>
         public static string Duration {
             get {
                 return ResourceManager.GetString("Duration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit Delegation.
+        /// </summary>
+        public static string EditDelegation {
+            get {
+                return ResourceManager.GetString("EditDelegation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit.
+        /// </summary>
+        public static string Edit {
+            get {
+                return ResourceManager.GetString("Edit", resourceCulture);
             }
         }
         
@@ -574,6 +763,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Employee&apos;s Tasks.
+        /// </summary>
+        public static string EmployeesTasks {
+            get {
+                return ResourceManager.GetString("EmployeesTasks", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to End Date.
         /// </summary>
         public static string EndDate {
@@ -588,6 +786,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string English {
             get {
                 return ResourceManager.GetString("English", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to English Name.
+        /// </summary>
+        public static string EnglishName {
+            get {
+                return ResourceManager.GetString("EnglishName", resourceCulture);
             }
         }
         
@@ -637,6 +844,60 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Error database.
+        /// </summary>
+        public static string Errordatabase {
+            get {
+                return ResourceManager.GetString("Errordatabase", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter Privilege Arabic Name.
+        /// </summary>
+        public static string EnterPrivilegeArabicName {
+            get {
+                return ResourceManager.GetString("EnterPrivilegeArabicName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter Privilege English Name.
+        /// </summary>
+        public static string EnterPrivilegeEnglishName {
+            get {
+                return ResourceManager.GetString("EnterPrivilegeEnglishName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Permissions English Name.
+        /// </summary>
+        public static string EnterPrivilegeName {
+            get {
+                return ResourceManager.GetString("EnterPrivilegeName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to External Department.
+        /// </summary>
+        public static string ExternalDepartment {
+            get {
+                return ResourceManager.GetString("ExternalDepartment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You can use an external department not related to the user department to apply the permission to it.
+        /// </summary>
+        public static string ExternalDepartmentHint {
+            get {
+                return ResourceManager.GetString("ExternalDepartmentHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Field Names.
         /// </summary>
         public static string FieldNames {
@@ -682,6 +943,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Start Date .
+        /// </summary>
+        public static string FromDate {
+            get {
+                return ResourceManager.GetString("FromDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to From End Date.
         /// </summary>
         public static string FromEndDate {
@@ -700,11 +970,29 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to From User.
+        /// </summary>
+        public static string FromUser {
+            get {
+                return ResourceManager.GetString("FromUser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Gantt Chart view.
         /// </summary>
         public static string Gantt {
             get {
                 return ResourceManager.GetString("Gantt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to General Modules .
+        /// </summary>
+        public static string GeneralModules {
+            get {
+                return ResourceManager.GetString("GeneralModules", resourceCulture);
             }
         }
         
@@ -723,6 +1011,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string inactive {
             get {
                 return ResourceManager.GetString("inactive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Including Sub-Department.
+        /// </summary>
+        public static string IncludingSubDepartment {
+            get {
+                return ResourceManager.GetString("IncludingSubDepartment", resourceCulture);
             }
         }
         
@@ -799,11 +1096,29 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Loading.
+        /// </summary>
+        public static string Loading {
+            get {
+                return ResourceManager.GetString("Loading", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Login.
         /// </summary>
         public static string Login {
             get {
                 return ResourceManager.GetString("Login", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Manager&apos;s Tasks.
+        /// </summary>
+        public static string ManagersTasks {
+            get {
+                return ResourceManager.GetString("ManagersTasks", resourceCulture);
             }
         }
         
@@ -831,6 +1146,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string Maximum_Subtask_Level {
             get {
                 return ResourceManager.GetString("Maximum_Subtask_Level", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Module.
+        /// </summary>
+        public static string Module {
+            get {
+                return ResourceManager.GetString("Module", resourceCulture);
             }
         }
         
@@ -916,11 +1240,11 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No Task Sources Available.
+        ///   Looks up a localized string similar to No Delegations available.
         /// </summary>
-        public static string No_Task_Sources_Available {
+        public static string NoDelegationvailable {
             get {
-                return ResourceManager.GetString("No Task Sources Available", resourceCulture);
+                return ResourceManager.GetString("NoDelegationvailable", resourceCulture);
             }
         }
         
@@ -931,6 +1255,24 @@ namespace TaskyRevamp.Localization.Resources {
         public static string Nodepartmentavailable {
             get {
                 return ResourceManager.GetString("Nodepartmentavailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No Privilege Available.
+        /// </summary>
+        public static string NoPrivilegeAvailable {
+            get {
+                return ResourceManager.GetString("NoPrivilegeAvailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No Task Sources Available.
+        /// </summary>
+        public static string NoTaskSourcesAvailable {
+            get {
+                return ResourceManager.GetString("NoTaskSourcesAvailable", resourceCulture);
             }
         }
         
@@ -958,6 +1300,33 @@ namespace TaskyRevamp.Localization.Resources {
         public static string ParentNotFound {
             get {
                 return ResourceManager.GetString("ParentNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Peer&apos;s level.
+        /// </summary>
+        public static string PeersLevel {
+            get {
+                return ResourceManager.GetString("PeersLevel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to  Same level departments: This option will automatically select the peer departments that are at the same level as the user&apos;s department. Only departments that share the same parent as the user&apos;s department will be selected to apply the permission to them..
+        /// </summary>
+        public static string PeersLevelHint {
+            get {
+                return ResourceManager.GetString("PeersLevelHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Permissions.
+        /// </summary>
+        public static string Permissions {
+            get {
+                return ResourceManager.GetString("Permissions", resourceCulture);
             }
         }
         
@@ -1043,6 +1412,24 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Privilege .
+        /// </summary>
+        public static string Privilege {
+            get {
+                return ResourceManager.GetString("Privilege", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Privilege with Id {id} not found..
+        /// </summary>
+        public static string PrivilegeNotFound {
+            get {
+                return ResourceManager.GetString("PrivilegeNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Recycle Bin Configuration.
         /// </summary>
         public static string RecycleBinConfiguration {
@@ -1097,6 +1484,24 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Report Module.
+        /// </summary>
+        public static string ReportModule {
+            get {
+                return ResourceManager.GetString("ReportModule", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to All the options below are optional. If no option is selected, then no report will be sent from the system to the users..
+        /// </summary>
+        public static string ReportModuleHint {
+            get {
+                return ResourceManager.GetString("ReportModuleHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to This Field Required.
         /// </summary>
         public static string Required {
@@ -1111,6 +1516,33 @@ namespace TaskyRevamp.Localization.Resources {
         public static string RetentionPeriodOptions {
             get {
                 return ResourceManager.GetString("RetentionPeriodOptions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Same Department.
+        /// </summary>
+        public static string SameDepartment {
+            get {
+                return ResourceManager.GetString("SameDepartment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This option will automatically select your department to apply the permission to it.
+        /// </summary>
+        public static string SameDepartmentHint {
+            get {
+                return ResourceManager.GetString("SameDepartmentHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Same User.
+        /// </summary>
+        public static string SameUser {
+            get {
+                return ResourceManager.GetString("SameUser", resourceCulture);
             }
         }
         
@@ -1142,11 +1574,29 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Select at least one value..
+        /// </summary>
+        public static string SelectAtLeastOneValue {
+            get {
+                return ResourceManager.GetString("SelectAtLeastOneValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Parent Department .
         /// </summary>
         public static string SelectParent {
             get {
                 return ResourceManager.GetString("SelectParent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select Report Options.
+        /// </summary>
+        public static string SelectReportOptions {
+            get {
+                return ResourceManager.GetString("SelectReportOptions", resourceCulture);
             }
         }
         
@@ -1268,6 +1718,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to remove this delegation?.
+        /// </summary>
+        public static string SureDeleteDelegation {
+            get {
+                return ResourceManager.GetString("SureDeleteDelegation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Are you sure you want to delete this department?.
         /// </summary>
         public static string SureDeleteDepartment {
@@ -1300,6 +1759,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string TaskFilterHint {
             get {
                 return ResourceManager.GetString("TaskFilterHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Task Module.
+        /// </summary>
+        public static string TaskModule {
+            get {
+                return ResourceManager.GetString("TaskModule", resourceCulture);
             }
         }
         
@@ -1358,6 +1826,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to End Date.
+        /// </summary>
+        public static string ToDate {
+            get {
+                return ResourceManager.GetString("ToDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to To End Date.
         /// </summary>
         public static string ToEndDate {
@@ -1372,6 +1849,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string ToStartDate {
             get {
                 return ResourceManager.GetString("ToStartDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to To User.
+        /// </summary>
+        public static string ToUser {
+            get {
+                return ResourceManager.GetString("ToUser", resourceCulture);
             }
         }
         
@@ -1448,6 +1934,24 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to User Department.
+        /// </summary>
+        public static string UserDepartment {
+            get {
+                return ResourceManager.GetString("UserDepartment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to View.
+        /// </summary>
+        public static string View {
+            get {
+                return ResourceManager.GetString("View", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to View Options.
         /// </summary>
         public static string ViewOptions {
@@ -1457,11 +1961,29 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to View Permissions.
+        /// </summary>
+        public static string ViewPermission {
+            get {
+                return ResourceManager.GetString("ViewPermission", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Use this option to enable different task views in your system for better task management and visualization..
         /// </summary>
         public static string ViewTaskSettingHint {
             get {
                 return ResourceManager.GetString("ViewTaskSettingHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Users.
+        /// </summary>
+        public static string ViewUsers {
+            get {
+                return ResourceManager.GetString("ViewUsers", resourceCulture);
             }
         }
         

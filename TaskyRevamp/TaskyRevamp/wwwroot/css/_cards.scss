@@ -5,16 +5,19 @@
     flex-grow: 1;
     display: flex;
     flex-direction: column;
-
     .text-content {
       margin-bottom: 1.5rem;
     }
-    & > .card-body {
+    & > .card-body{
       flex: 1;
-
       overflow-y: auto;
       max-height: calc(100svh - 16.5rem);
       border-radius: var(--bs-border-radius);
+    }
+    & > form > .card-body {
+       max-height: calc(100svh - 19.5rem);
+  flex: 1;
+      overflow-y: auto;
     }
     .card-footer {
       padding-block: 0;
@@ -115,4 +118,121 @@
       }
     }
   }
+  &.card-hierarchy {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+
+    & > .card-body {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      border-radius: var(--bs-border-radius);
+      .hierarchy-container {
+        display: flex;
+        justify-content: center;
+        position: relative;
+        gap: 1rem;
+        .hierarchy-node {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          position: relative;
+          .node-box-container {
+            .node-box {
+              border: 1px solid var(--light-300);
+              width: 200px;
+              display: flex;
+              padding: 1.5rem 0.25rem ;
+              padding-inline-start: 0.75rem;
+              justify-content: space-between;
+              border-radius: 1rem;
+              background-color: var(--light-300);
+              font-size: 0.875rem;
+            }
+          }
+        }
+        .children {
+           border-top: 1px solid var(--light-300);
+          margin-left: 0.5rem;
+          margin-inline-end: 1rem;
+          margin-top: 1.5rem;
+          position: relative;
+          &::after {
+            content: "";
+            position: absolute;
+            width: 1px;
+            height: 1.5rem;
+            background-color: var(--light-300);
+            left: 50%;
+            transform: translateX(-50%);
+            top: -1.5rem;
+          }
+        
+         
+          .hierarchy-node {
+           padding-top: 1.5rem;
+             position: relative;
+           
+             &:first-child,&:last-child{
+              &::after{
+                content: "";
+                position: absolute;
+                height: 1px;
+                width:50%;
+                background-color: var(--bs-white);
+              
+                top:-1px;
+                z-index: 2;
+              }
+             }
+             &:last-child::after{  inset-inline-end: 0;}
+             &:first-child::after{   inset-inline-start: 0;}
+             &:only-child::after {
+            background-color: var(--bs-white);
+            width: 100%;
+             }
+          }
+          .node-box-container {
+            .node-box {
+              background-color: var(--light-200);
+              position: relative;
+              &::after {
+                content: "";
+                position: absolute;
+                width: 1px;
+                height: 1.5rem;
+                background-color: var(--light-300);
+                left: 50%;
+                transform: translateX(-50%);
+                top: -1.5rem;
+              }
+            
+            }
+        
+          }
+        }
+      }
+      & > .hierarchy-container {
+        flex: 1;
+        width: 100%;
+        overflow: auto;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start;
+      }
+    }
+  }
 }
+
+/* Connecting each child up to the horizontal line */
+// .hierarchy-node:not(:only-child)::before {
+//   content: "";
+//   position: absolute;
+//   top: -1rem;;
+//   left: 50%;
+//   width: 2px;
+//   height: 20px;
+//   background: #007bff;
+//   transform: translateX(-50%);
+// }

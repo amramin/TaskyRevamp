@@ -47,7 +47,7 @@
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" href="#" @onclick="CloseSettingsNav">
+                <a class="nav-link" href="/UserDelegations" @onclick="CloseSettingsNav">
                     <div class="icon-text">
                         <span class="nav-icon">
                             <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Delegation"></SVGCrud>
@@ -220,7 +220,7 @@ Children = new List<ChildItem> {
 new ChildItem { Text = "Users", Url = "/Users", Icon = SVGCrud.SVGTypeEnum.UsersEdit, DataId = "users-config" },
 new ChildItem { Text = "Departments", Url = "/Departments", Icon = SVGCrud.SVGTypeEnum.DataFlow, DataId =
 "departments-config" },
-new ChildItem { Text = "Privilege", Url = "/Privilege", Icon = SVGCrud.SVGTypeEnum.PrivilegeConfig, DataId =
+new ChildItem { Text = @Loc["Privilege"], Url = "/Privileges", Icon = SVGCrud.SVGTypeEnum.PrivilegeConfig, DataId =
 "Privilege-config" }
 }
 },

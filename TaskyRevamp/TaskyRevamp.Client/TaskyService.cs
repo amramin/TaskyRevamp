@@ -85,6 +85,29 @@ public class TaskyService
         return queryString;
     }
 
+
+
+    public string PrepareNoPaginatedSearchQueryString<T>( List<T> searchFields = null, string searchText = null)
+    {
+        var query = new List<string>();
+           
+
+        if (searchFields != null && searchFields.Count > 0)
+        {
+            foreach (var field in searchFields)
+            {
+                query.Add($"searchFields={field.ToString()}");
+            }
+        }
+
+        if (!string.IsNullOrWhiteSpace(searchText))
+            query.Add($"searchText={searchText}");
+
+        var queryString = "?" + string.Join("&", query);
+
+        return queryString;
+    }
+
     public string GetMimeType(byte[] bytes)
     {
         if (bytes.Length < 4) return null;

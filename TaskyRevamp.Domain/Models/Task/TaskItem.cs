@@ -9,22 +9,22 @@ namespace TaskyRevamp.Domain.Models.Task;
 
 public class TaskItem : Entity, IHasCreationMetaData, IHasUpdateMetaData
 {
-    public string TitleEnglish { get;  set; }
-    public string TitleArabic { get;  set; }
+    public string TitleEnglish { get; set; }
+    public string TitleArabic { get; set; }
 
-    public string DescriptionEnglish { get;  set; }
-    public string DescriptionArabic { get;  set; }
-    public Guid TaskTypeId {set; get; }
-    public TaskType Type { get;  set; }
+    public string DescriptionEnglish { get; set; }
+    public string DescriptionArabic { get; set; }
+    public Guid TaskTypeId { set; get; }
+    public TaskType Type { get; set; }
     public Guid TaskSourceId { set; get; }
-    public TaskSource Source { get;  set; }
-    public DateTime StartDate { get;  set; }
-    public DateTime EndDate { get;  set; }
+    public TaskSource Source { get; set; }
+    public DateTime StartDate { get; set; }
+    public DateTime EndDate { get; set; }
     public List<TaskChecklist> taskChecklists { get; set; }
     public int Duration => (EndDate.Date - StartDate.Date).Days + 1;
-    public Reminder? Reminder { get;  set; }
-    public Priority Priority { get;  set; }
-     Weight weight;
+    public Reminder? Reminder { get; set; }
+    public Priority Priority { get; set; }
+    Weight weight;
     public Weight PlannedWeight
     {
         get
@@ -38,9 +38,9 @@ public class TaskItem : Entity, IHasCreationMetaData, IHasUpdateMetaData
 
             return new Weight(finalWeight);
         }
-         set => weight = value;
+        set => weight = value;
     }
-     Weight _actualWeight;
+    Weight _actualWeight;
     public Weight ActualWeight
     {
         get
@@ -54,7 +54,7 @@ public class TaskItem : Entity, IHasCreationMetaData, IHasUpdateMetaData
 
             return new Weight(finalWeight);
         }
-         set => _actualWeight = value;
+        set => _actualWeight = value;
     }
     public Progress PlannedProgress
     {
@@ -64,7 +64,7 @@ public class TaskItem : Entity, IHasCreationMetaData, IHasUpdateMetaData
             {
                 double averageProgress = _subtasks.Average(st => st.PlannedProgress.Percentage);
                 int roundedProgress = (int)Math.Round(averageProgress, MidpointRounding.AwayFromZero);
-                int finalProgress = Math.Min(100, roundedProgress); 
+                int finalProgress = Math.Min(100, roundedProgress);
                 return new Progress(finalProgress);
             }
 
@@ -81,7 +81,7 @@ public class TaskItem : Entity, IHasCreationMetaData, IHasUpdateMetaData
             return new Progress(roundedPercentage);
         }
     }
-     Progress _actualProgress;
+    Progress _actualProgress;
     public Progress ActualProgress
     {
         get
@@ -95,9 +95,9 @@ public class TaskItem : Entity, IHasCreationMetaData, IHasUpdateMetaData
 
             return new Progress(finalProgress);
         }
-         set => _actualProgress = value;
+        set => _actualProgress = value;
     }
-     TaskStatus _status;
+    TaskStatus _status;
     public TaskStatus Status
     {
         get
@@ -113,54 +113,54 @@ public class TaskItem : Entity, IHasCreationMetaData, IHasUpdateMetaData
 
             return _status;
         }
-         set => _status = value;
+        set => _status = value;
     }
 
     //public Guid CreatorId { set; get; }
     //public User Creator { get;  set; }
 
-    public IEnumerable<TaskAssignees> Assignees { get;  set; }
+    public IEnumerable<TaskAssignees> Assignees { get; set; }
     public List<Guid> AssignedDepartmentIds { set; get; }
     public List<Guid> AssignedIds { set; get; }
-    
-   // public IEnumerable<Department>? AssignedDepartments { set; get; }
-    public TaskDependencies? Dependencies { get;  set; }
-  //  public List<Guid> DependenciesIds { set; get; }
 
-    public TaskItem? Parent { get;  set; }
-     readonly List<TaskItem> _subtasks = new();
+    // public IEnumerable<Department>? AssignedDepartments { set; get; }
+    public TaskDependencies? Dependencies { get; set; }
+    //  public List<Guid> DependenciesIds { set; get; }
+
+    public TaskItem? Parent { get; set; }
+    readonly List<TaskItem> _subtasks = new();
     public IReadOnlyCollection<TaskItem> Subtasks => _subtasks.AsReadOnly();
 
-    public TaskChecklist? Checklist { get;  set; }
-    public TaskComment? Comments { get;  set; }
-    public TaskAttachments? Attachments { get;  set; }
-     readonly List<TaskHistoryEntry> _history = new();
+    public TaskChecklist? Checklist { get; set; }
+    public TaskComment? Comments { get; set; }
+    public TaskAttachments? Attachments { get; set; }
+    readonly List<TaskHistoryEntry> _history = new();
     public IReadOnlyCollection<TaskHistoryEntry> History => _history.AsReadOnly();
-     readonly List<ChangeEndDateRequest> _changeRequests = new();
+    readonly List<ChangeEndDateRequest> _changeRequests = new();
     public IReadOnlyCollection<ChangeEndDateRequest> ChangeRequests => _changeRequests.AsReadOnly();
-     readonly List<TaskEscalation> _escalations = new();
+    readonly List<TaskEscalation> _escalations = new();
     public IReadOnlyCollection<TaskEscalation> Escalations => _escalations.AsReadOnly();
     public int Level => GetLevel();
 
     public Guid CreatedById { get; set; }
     public DateTime CreateDate { get; set; }
-    public User CreatedBy { get; set ; }
-    public Guid? UpdatedById { get ; set ; }
-    public DateTime? UpdateDate { get ; set; }
-    public User? UpdatedBy { get ; set ; }
+    public User CreatedBy { get; set; }
+    public Guid? UpdatedById { get; set; }
+    public DateTime? UpdateDate { get; set; }
+    public User? UpdatedBy { get; set; }
 
-     TaskItem() {  }
-    public TaskItem(Guid id, string titleEnglish,string titleArabic, string descEN,string descAR, Guid type, Guid source, DateTime start, DateTime end, Priority priority, Weight plannedWeight, Guid creatorid, List<Department> assgndep,List<Guid>assigids)
+    TaskItem() { }
+    public TaskItem(Guid id, string titleEnglish, string titleArabic, string descEN, string descAR, Guid type, Guid source, DateTime start, DateTime end, Priority priority, Weight plannedWeight, Guid creatorid, List<Department> assgndep, List<Guid> assigids)
     {
         if (end < start) throw new ArgumentException("End date must be after start date.");
         Id = id;
         TitleEnglish = titleEnglish;
-        TitleArabic= titleArabic;
+        TitleArabic = titleArabic;
         //AssignedDepartments = assgndep;
         AssignedDepartmentIds = assgndep.Select(k => k.Id).ToList();
         AssignedIds = assigids;
         DescriptionEnglish = descEN;
-        DescriptionArabic= descAR;
+        DescriptionArabic = descAR;
         TaskTypeId = type;
         TaskSourceId = source;
         StartDate = start;
@@ -172,13 +172,13 @@ public class TaskItem : Entity, IHasCreationMetaData, IHasUpdateMetaData
         _actualWeight = new Weight(0);
         CreatedById = creatorid;
         //Creator = creator;
-        
-       // Checklist = new TaskChecklist(this);
+
+        // Checklist = new TaskChecklist(this);
         //Comments = new TaskComments(this);
         //Attachments = new TaskAttachments(this);
         //AddHistoryEntry(CreatedBy, $"created the task");
     }
-     int GetLevel()
+    int GetLevel()
     {
         int level = 0;
         var current = Parent;
@@ -189,25 +189,25 @@ public class TaskItem : Entity, IHasCreationMetaData, IHasUpdateMetaData
         }
         return level;
     }
-    public  bool SetData(CreateTaskDto tsakdto)
+    public bool SetData(CreateTaskDto tsakdto)
     {
         Id = tsakdto.Id;
         DescriptionArabic = tsakdto.DescriptionArabic;
         TitleEnglish = tsakdto.TitleEnglish;
         TitleArabic = tsakdto.TitleArabic;
-         DescriptionEnglish=tsakdto.DescriptionEnglish;
+        DescriptionEnglish = tsakdto.DescriptionEnglish;
         return true;
 
     }
-    public void UpdateTitle(string titleEn,string titleAR, User by)
+    public void UpdateTitle(string titleEn, string titleAR, User by)
     {
         TitleEnglish = titleEn;
-        TitleArabic= titleAR;
+        TitleArabic = titleAR;
         AddHistoryEntry(by, $"updated the title");
     }
     public void UpdateStatus(TaskStatus taskStus, User by)
     {
-        _status=taskStus;
+        _status = taskStus;
         AddHistoryEntry(by, $"updated the TaskStatus");
     }
     public CreateTaskDto CopyToDto()
@@ -215,21 +215,21 @@ public class TaskItem : Entity, IHasCreationMetaData, IHasUpdateMetaData
         return new CreateTaskDto
         {
             Id = Id,
-         DescriptionArabic = DescriptionArabic,
-         TitleEnglish= TitleEnglish,
-         TitleArabic= TitleArabic,
-         weight=weight.Value,
-         SourceId=Source.Id,
-         
+            DescriptionArabic = DescriptionArabic,
+            TitleEnglish = TitleEnglish,
+            TitleArabic = TitleArabic,
+            weight = weight.Value,
+            //SourceId=Source.Id,
+
 
 
 
         };
     }
-    public void UpdateDescription(string descEN,string descAR, User by)
+    public void UpdateDescription(string descEN, string descAR, User by)
     {
         DescriptionEnglish = descEN;
-        DescriptionArabic= descAR;
+        DescriptionArabic = descAR;
         AddHistoryEntry(by, $"updated the description");
     }
 
@@ -275,7 +275,7 @@ public class TaskItem : Entity, IHasCreationMetaData, IHasUpdateMetaData
         AddHistoryEntry(by, $"added subtask {subtask.Id}");
     }
 
-     void SetParent(TaskItem parent, User by)
+    void SetParent(TaskItem parent, User by)
     {
         Parent = parent;
         AddHistoryEntry(by, $"set parent task to {parent.Id}");
@@ -327,14 +327,14 @@ public class TaskItem : Entity, IHasCreationMetaData, IHasUpdateMetaData
             throw new InvalidOperationException("The new end date should be equal to or greater than the current date.");
         }
 
-        var request = new ChangeEndDateRequest(Guid.NewGuid(),Id , newEnd, reason, requester.Id);
+        var request = new ChangeEndDateRequest(Guid.NewGuid(), Id, newEnd, reason, requester.Id);
         _changeRequests.Add(request);
         AddHistoryEntry(requester, $"requested end-date change to {newEnd:yyyy-MM-dd}");
-       // Comments.Add($"End date request reason: {reason}", requester);
+        // Comments.Add($"End date request reason: {reason}", requester);
         return request;
     }
 
-    public void Escalate(User toUser, string reason, User by,int level,int tregrAfter,int trgerstatus)
+    public void Escalate(User toUser, string reason, User by, int level, int tregrAfter, int trgerstatus)
     {
         var esc = new TaskEscalation(Guid.NewGuid(), this, toUser, reason, level, tregrAfter, trgerstatus, by);
         _escalations.Add(esc);
@@ -371,7 +371,7 @@ public class TaskItem : Entity, IHasCreationMetaData, IHasUpdateMetaData
             throw new InvalidOperationException("A parent task with subtasks cannot be deleted. Please delete all subtasks first.");
         }
 
-        _status = TaskStatus.Returned; 
+        _status = TaskStatus.Returned;
         AddHistoryEntry(by, $"deleted the task");
     }
 
@@ -385,7 +385,7 @@ public class TaskItem : Entity, IHasCreationMetaData, IHasUpdateMetaData
         _status = TaskStatus.NotStarted;
         if (reassignToCreator)
         {
-           // Assignees.ClearAndAdd(CreatedBy, by);
+            // Assignees.ClearAndAdd(CreatedBy, by);
         }
         AddHistoryEntry(by, $"restored the task");
     }
@@ -401,7 +401,7 @@ public class TaskItem : Entity, IHasCreationMetaData, IHasUpdateMetaData
         _history.Add(entry);
     }
 
-     void EnsureAllPrerequisitesAreMet()
+    void EnsureAllPrerequisitesAreMet()
     {
         //if (Dependencies.Any().Items.Any(d => d.Status != TaskStatus.Closed))
         //{

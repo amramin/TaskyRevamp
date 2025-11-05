@@ -47,7 +47,10 @@ builder.Services.AddTransient<RecycleBinSettingConsumer>();
 builder.Services.AddTransient<RejectionSettingConsumer>();
 builder.Services.AddTransient<PrioritySettingConsumer>();
 builder.Services.AddTransient<DepartmentConsumer>();
+builder.Services.AddTransient<TaskConsumer>();
+
 builder.Services.AddTransient<UserConsumer>();
+builder.Services.AddTransient<UserDelegationConsumer>();
 
 builder.Services.AddTransient<StatusSettingConsumer>();
 builder.Services.AddTransient<ViewTaskSettingConsumer>();
@@ -55,10 +58,13 @@ builder.Services.AddTransient<DefaultViewSettingConsumer>();
 builder.Services.AddTransient<WorkingDaysSettingConsumer>();
 builder.Services.AddTransient<SourceSettingConsumer>();
 builder.Services.AddTransient<TypeSettingConsumer>();
-builder.Services.AddTransient<WeeklyReportSettingConsumer>();   
+builder.Services.AddTransient<WeeklyReportSettingConsumer>();
 builder.Services.AddTransient<DefaultColumnsSettingConsumer>();
 builder.Services.AddTransient<FilterFieldsSettingConsumer>();
 builder.Services.AddTransient<AddTaskSettingConsumer>();
+builder.Services.AddTransient<GeneralModuleConsumer>();
+builder.Services.AddTransient<ReportModuleConsumer>();
+builder.Services.AddTransient<PrivilegeConsumer>();
 builder.Services.AddTransient<SystemIdentityConsumer>();
 
 var configuration = builder.Configuration;

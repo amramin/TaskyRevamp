@@ -10,15 +10,15 @@ using prioritySettings = TaskyRevamp.Domain.Models.SystemConfiguration.PriorityS
 
 namespace TaskyRevamp.Services.SystemConfiguration.PriorityConfiguration.Query
 {
-	public record GetProrityQuery() :IRequest<List<PriorityDto>>;
-	public class GetPriorityConfigurationsHandler : IRequestHandler<GetProrityQuery, List<PriorityDto>>
+	public record GetPriorityQuery() :IRequest<List<PriorityDto>>;
+	public class GetPriorityConfigurationsHandler : IRequestHandler<GetPriorityQuery, List<PriorityDto>>
 	{
 		private readonly IRepository<prioritySettings> _priorityRepository;
 		public GetPriorityConfigurationsHandler(IRepository<prioritySettings> priorityRepository)
 		{
 			this._priorityRepository = priorityRepository;
 		}
-		public async Task<List<PriorityDto>> Handle(GetProrityQuery request, CancellationToken cancellationToken)
+		public async Task<List<PriorityDto>> Handle(GetPriorityQuery request, CancellationToken cancellationToken)
 		{
 			var priorityDto = new List<PriorityDto>();
 			var priortiyQuieriesResponse = await _priorityRepository.AllAsNoTracking();

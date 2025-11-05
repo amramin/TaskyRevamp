@@ -1,0 +1,181 @@
+﻿@using TaskyRevamp.Client.Consumer
+@using TaskyRevamp.Client.Pages.Department
+@using TaskyRevamp.Dto.Department
+@using TaskyRevamp.Dto.Enums
+@using TaskyRevamp.Dto.Permissions
+@using TaskyRevamp.Dto.Permissions.TaskModule
+@using Stingray.Components.MultiSelectComponent
+@using TaskyRevamp.Client.Pages.Permission.Components
+@using TaskyRevamp.Dto.SystemConfiguration
+@inject IStringLocalizer<SharedResources> Loc
+@inject DepartmentConsumer _departmentConsumer
+@inject StatusSettingConsumer _statusSettingConsumer
+@inject SourceSettingConsumer _sourceSettingConsumer
+
+<div class="card shadow-sm p-3 mt-2">
+    <h6 class="fw-bold">@Loc["UserDepartment"]</h6>
+    <hr />
+    @foreach (var item in PrivilegeDto.TaskModuleUserDepartmentDto)
+    {
+        <div class="form-check">
+            <input class="form-check-input"
+                   type="checkbox"
+                   id="@item.SelectedOption"
+                   checked="@item.IsActive"
+                   @onchange="(e) => ToggleSelection(item, e.Value as bool?)" />
+            <label class="form-check-label fw-bold" for="@item.SelectedOption">
+                @Loc[item.SelectedOption.ToString()]
+            </label>
+        </div>
+
+        <!-- Hint Message -->
+        <div class="form-text text-muted small">
+            @Loc[$"{item.SelectedOption.ToString()}Hint"]
+        </div>
+
+        @if (item.IsActive)
+        {
+            <UserDepartmentExtendedFields Item="item"
+                                          ShowDirectionFields="@ShouldShowDirection(item.SelectedOption)"
+                                          ShowPermissionFields="@ShouldShowPermission(item.SelectedOption)">
+            </UserDepartmentExtendedFields>
+        }
+    }
+</div>
+<div class="card shadow-sm p-3 mt-2">
+    <h6 class="fw-bold">@Loc["ExternalDepartment"]</h6>
+    <hr />
+    <div class="form-text text-muted small mb-2">
+        @Loc["ExternalDepartmentHint"]
+    </div>
+    <!-- Department selection -->
+    <div class="row align-items-end mb-3">
+        <div class="col-md-6">
+            <label class="form-label">@Loc["Department"]</label>
+            <SearchableMultiDropdownOffline TInput="DepartmentDto"
+                                            TOutput="Guid"
+                                            Datasource="Departments"
+                                            TextSelector="(d => d.Name)"
+                                            OutputSelector="(d => d.Id)"
+                                            SelectedOptions="@SelectedDepartments"
+                                            SelectedOptionsChanged="@OnDepartmentsChanged" />
+        </div>
+        <div class="col-md-3">
+            <button class="btn btn-primary mt-3" @onclick="AddDepartments" disabled="@(!SelectedDepartments.Any())">
+                @Loc["Add"]
+            </button>
+        </div>
+    </div>
+    @foreach (var dept in PrivilegeDto.TaskModuleExternalDepartmentDto ?? new List<TaskModuleExternalDepartmentDto>())
+    {
+        <ExternalDepartmentExtendedFields Item="dept"
+                                          DepartmentName="@GetDepartmentName(dept.DepartmentId)"
+                                          OnRemove="RemoveDepartment"
+                                          StatusList="@StatusList"
+                                          SourceList="@SourceList" />
+    }
+</div>
+@code {
+    [Parameter] public PrivilegeDto PrivilegeDto { get; set; } = new PrivilegeDto();
+    private List<DepartmentDto> Departments { get; set; } = new List<DepartmentDto>();
+    private List<Guid> SelectedDepartments { get; set; } = new();
+    private List<StatusSettingsDto> StatusList { get; set; } = new();
+    private List<SourceDto> SourceList { get; set; } = new();
+    protected override async Task OnInitializedAsync()
+    {
+        var res = await _departmentConsumer.GetDepartmentsNoPagnation();
+        if (res.Success && res != null && res.Data != null)
+        {
+            Departments = res.Data;
+        }
+
+        var statusRes = await _statusSettingConsumer.GetStatusConfiguration();
+        if (statusRes.Success && statusRes != null && statusRes.Data != null)
+        {
+            StatusList = statusRes.Data;
+        }
+
+        var sourceRes = await _sourceSettingConsumer.GetSourcesWithoutPagination();
+        if (sourceRes.Success && sourceRes != null && sourceRes.Data != null)
+        {
+            SourceList = sourceRes.Data;
+        }
+
+        if (PrivilegeDto.TaskModuleUserDepartmentDto == null)
+            PrivilegeDto.TaskModuleUserDepartmentDto = new();
+
+        var existingOptions = PrivilegeDto.TaskModuleUserDepartmentDto
+            .Select(x => x.SelectedOption)
+            .ToHashSet();
+
+        foreach (UserDepartmentOptions option in Enum.GetValues(typeof(UserDepartmentOptions)))
+        {
+            if (!existingOptions.Contains(option))
+            {
+                PrivilegeDto.TaskModuleUserDepartmentDto.Add(new TaskModuleUserDepartmentPermissionDto
+                {
+                    PrivilegeId = PrivilegeDto.Id,
+                    SelectedOption = option,
+                    IsActive = false,
+                    IsManagerTasks = false,
+                    IsEmployeeTasks = false,
+                });
+            }
+        }
+    }
+    private void ToggleSelection(TaskModuleUserDepartmentPermissionDto item, bool? isChecked)
+    {
+        item.IsActive = isChecked == true;
+    }
+    private bool ShouldShowDirection(UserDepartmentOptions option)
+    {
+        return option == UserDepartmentOptions.BelowUserDepartmentLevel
+            || option == UserDepartmentOptions.AboveUserDepartmentLevel;
+    }
+    private bool ShouldShowPermission(UserDepartmentOptions option)
+    {
+        return option == UserDepartmentOptions.BelowUserDepartmentLevel
+            || option == UserDepartmentOptions.AboveUserDepartmentLevel
+            || option == UserDepartmentOptions.PeersLevel
+            || option == UserDepartmentOptions.SameDepartment;
+    }
+    private void OnDepartmentsChanged(List<Guid> selected)
+    {
+        SelectedDepartments = selected;
+    }
+    private void AddDepartments(MouseEventArgs args)
+    {
+
+        PrivilegeDto.TaskModuleExternalDepartmentDto ??= new();
+        foreach (var deptId in SelectedDepartments)
+        {
+            if (PrivilegeDto.TaskModuleExternalDepartmentDto.Any(d => d.DepartmentId == deptId))
+                continue;
+
+            PrivilegeDto.TaskModuleExternalDepartmentDto.Add(new TaskModuleExternalDepartmentDto
+            {
+                Id = Guid.NewGuid(),
+                PrivilegeId = PrivilegeDto.Id,
+                DepartmentId = deptId,
+                IsIncludeSubDepartment = false,
+                IsManagerTasks = false,
+                IsEmployeeTasks = false,
+                PermissionId = new(),
+                Status = new(),
+                Source = new()
+            });
+        }
+        SelectedDepartments.Clear();
+    }
+
+
+    private void RemoveDepartment(TaskModuleExternalDepartmentDto dept)
+    {
+        PrivilegeDto.TaskModuleExternalDepartmentDto?.Remove(dept);
+    }
+    private string GetDepartmentName(Guid id)
+    {
+        var dept = Departments.FirstOrDefault(d => d.Id == id);
+        return dept != null ? dept.Name : string.Empty;
+    }
+}

@@ -40,7 +40,6 @@ namespace TaskyRevamp.Services.SystemConfiguration.PriorityConfiguration.Command
 			); 
 
 			await _priorityRepository.Insert(priority);
-			await _priorityRepository.SaveChangesAsync();
 
 			return true;
 		}

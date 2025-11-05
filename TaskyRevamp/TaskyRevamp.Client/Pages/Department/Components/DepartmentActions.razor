@@ -16,6 +16,14 @@
             </button>
         </li>
         <li>
+            <button class="dropdown-item" @onclick="@(() => OnAdd.InvokeAsync(DepartmentId))">
+                <span class="icon">
+                    <SVGCrud SVGType="SVGCrud.SVGTypeEnum.AddColumn"></SVGCrud>
+                </span>
+                @Loc["AddDepartment"]
+            </button>
+        </li>
+        <li>
             <button class="dropdown-item" @onclick="@(() => Edit.InvokeAsync(DepartmentId))">
                 <span class="icon">
                     <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Edit"></SVGCrud>
@@ -39,4 +47,7 @@
     [Parameter] public EventCallback<Guid> ShowUsers { get; set; }
     [Parameter] public EventCallback<Guid> Edit { get; set; }
     [Parameter] public EventCallback<Guid> Delete { get; set; }
+
+    [Parameter] public EventCallback<Guid> OnAdd { get; set; }
+
 }

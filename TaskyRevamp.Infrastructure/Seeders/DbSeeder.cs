@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using SurveyRevamp.Infrastructure;
+using TaskyRevamp.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,6 +21,9 @@ namespace TaskyRevamp.Infrastructure.Seeders
                 new WorkingDaysSeeder(),
                 new DefaultColumnsSettingSeeder(),
                 new FilterFieldsSettingSeeder(),
+                new AddTaskSettingSeeder(),
+                new GeneralModuleSeeder(),
+                new ReportModuleSeeder(),
                 new AddTaskSettingSeeder(),
                 new SystemIdentitySeeder()
             };

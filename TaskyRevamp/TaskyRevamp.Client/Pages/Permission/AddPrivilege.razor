@@ -1,0 +1,164 @@
+﻿@page "/add-privilege"
+@using TaskyRevamp.Client.Pages.Permission.Modules
+@using TaskyRevamp.Client.Services
+@using TaskyRevamp.Dto.Enums
+@using TaskyRevamp.Dto.Permissions
+@using TaskyRevamp.Client.Consumer
+@inject PrivilegeConsumer _privilegeConsumer
+@inject IStringLocalizer<SharedResources> Loc
+@inject ToastService ToastService
+@inject NavigationManager navigationManager
+
+<div class="page-header">
+    <div class="title-block">
+        <button class="btn btn-action-24">
+            <span class="icon">
+                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.BackArrow"></SVGCrud>
+            </span>
+        </button>
+        <h1 class="page-headline"> @Loc["AddNewPrivilege"]</h1>
+    </div>
+
+</div>
+<div class="page-body">
+    <!-- Tabs -->
+    <div class="line-tabs-nav">
+        @foreach (var tab in new[] { "General", "Task", "Report" })
+        {
+            <button class="btn-tab @(SelectedTab == tab ? "active" : "")" @onclick='() => SelectTab(tab)'>
+                <span class="icon">
+                    @switch (tab)
+                    {
+                        case "General":
+                            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.PrivilegePluse"></SVGCrud>
+                            break;
+
+                        case "Task":
+                            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.File"></SVGCrud>
+                            break;
+
+                        case "Report":
+                            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.User"></SVGCrud>
+                            break;
+
+                        default:
+                            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Pluse"></SVGCrud>
+                            break;
+                    }
+                </span>
+                <span class="text"> @Loc[$"{tab}Module"]</span>
+            </button>
+        }
+    </div>
+    <div class="card setting-card">
+        <!-- Form -->
+        <EditForm class="d-flex flex-column flex-1" EditContext="editContext" OnValidSubmit="SaveSettings">
+            <DataAnnotationsValidator />
+
+            <div class="card-body">
+                <div class="row justify-content-center">
+                    <div class="col-xxl-7 col-xl-8 col-lg-9 col-md-11">
+                        <div style="display:@(SelectedTab == "General" ? "block" : "none")">
+                            <div class="border-bottom mb-4 pb-3">
+                                <div class="row ">
+                                    <div class="col-md-6">
+                                        <label class="form-label fw-bold">
+                                            @Loc["ArabicName"] <span class="text-danger">*</span>
+                                        </label>
+                                        <InputText class="form-control" @bind-Value="PrivilegeDto.NameArabic"
+                                                   placeholder=@Loc["EnterPrivilegeArabicName"] />
+                                        <ValidationMessage For="@(() => PrivilegeDto.NameArabic)"
+                                                           class="small text-danger" />
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label fw-bold">
+                                            @Loc["EnglishName"] <span class="text-danger">*</span>
+                                        </label>
+                                        <InputText class="form-control" @bind-Value="PrivilegeDto.NameEnglish"
+                                                   placeholder=@Loc["EnterPrivilegeEnglishName"] />
+                                        <ValidationMessage For="@(() => PrivilegeDto.NameEnglish)"
+                                                           class="small text-danger" />
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- GeneralModule child component -->
+                            <GeneralModule PrivilegeDto="PrivilegeDto"
+                                           OnValidationStateChanged="@OnGeneralModuleValidationChanged" />
+                        </div>
+                        <div style="display:@(SelectedTab == "Task" ? "block" : "none")">
+                            <TaskModule PrivilegeDto="PrivilegeDto" />
+                        </div>
+                        <div style="display:@(SelectedTab == "Report" ? "block" : "none")">
+                            <ReportModule PrivilegeDto="PrivilegeDto" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Shared Footer -->
+            <div class="card-footer">
+                <div class="row justify-content-center">
+                    <div class="col-xxl-7 col-xl-8 col-lg-9 col-md-11">
+                        <div class="action-buttons">
+                            <button type="button" class="btn btn-lg btn-light"
+                                    @onclick="CancelSettings">
+                                @Loc["Cancel"]
+                            </button>
+                            <button type="submit" class="btn btn-lg btn-primary">@Loc["Save"]</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </EditForm>
+    </div>
+</div>
+@code {
+    public PrivilegeDto PrivilegeDto { get; set; } = new PrivilegeDto();
+    private string SelectedTab { get; set; } = "General";
+    private EditContext? editContext;
+    private bool isGeneralModuleValid = true;
+    private bool HasInvalidDirectionLevel =>
+                    PrivilegeDto.TaskModuleExternalDepartmentDto?.Any(d =>
+                        d.IsIncludeSubDepartment && d.DirectionLevel < 1) == true ||
+                    PrivilegeDto.TaskModuleUserDepartmentDto?.Any(d =>
+                        (d.SelectedOption == UserDepartmentOptions.BelowUserDepartmentLevel ||
+                         d.SelectedOption == UserDepartmentOptions.AboveUserDepartmentLevel) &&
+                         d.DirectionLevel < 1) == true;
+
+    protected override void OnInitialized()
+    {
+        editContext = new EditContext(PrivilegeDto);
+    }
+
+    void SelectTab(string tab) => SelectedTab = tab;
+
+    private void OnGeneralModuleValidationChanged(bool isValid)
+    {
+        isGeneralModuleValid = isValid;
+    }
+    private void CancelSettings()
+    {
+        // Navigate away or reset DTO
+        PrivilegeDto = new PrivilegeDto();
+        editContext = new EditContext(PrivilegeDto);
+        SelectedTab = "General";
+    }
+
+    private async Task SaveSettings()
+    {
+        if (!isGeneralModuleValid)
+        {
+            return;
+        }
+        var json = System.Text.Json.JsonSerializer.Serialize(PrivilegeDto, new System.Text.Json.JsonSerializerOptions
+        {
+            WriteIndented = true
+        });
+        Console.WriteLine(json);
+
+        await _privilegeConsumer.CreatePrivilege(PrivilegeDto);
+        await ToastService.ShowToastAsync(Loc["Added successfully"], "success");
+        navigationManager.NavigateTo("/Privileges");
+    }
+}

@@ -8,18 +8,18 @@ using TaskyRevamp.Dto.Department;
 
 namespace userRevamp.Services.userCQRS.Query;
 
-public record GetAllUsersByDepartmentQuery(Guid departmentId) : IRequest<DepartmentDto>;
+public record GetUsersByDepartmentQuery(Guid departmentId) : IRequest<DepartmentDto>;
 
-public class GetAllUsersByDepartmentHandler : IRequestHandler<GetAllUsersByDepartmentQuery,DepartmentDto>
+public class GetUsersByDepartmentHandler : IRequestHandler<GetUsersByDepartmentQuery,DepartmentDto>
 {
     private readonly IRepository<Department> _departmentRepository;
 
-    public GetAllUsersByDepartmentHandler(IRepository<Department> departmentRepository)
+    public GetUsersByDepartmentHandler(IRepository<Department> departmentRepository)
     {
         _departmentRepository = departmentRepository;
     }
 
-    public async Task<DepartmentDto> Handle(GetAllUsersByDepartmentQuery request, CancellationToken cancellationToken)
+    public async Task<DepartmentDto> Handle(GetUsersByDepartmentQuery request, CancellationToken cancellationToken)
     {
 
        DepartmentDto returned = new DepartmentDto();
