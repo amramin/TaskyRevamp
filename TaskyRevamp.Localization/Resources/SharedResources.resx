@@ -556,6 +556,30 @@ Add a new department to get started</value>
   <data name="DefaultColumnNotFound" xml:space="preserve">
     <value>Default Column with Id {id} not found.</value>
   </data>
+  <data name="System Identity Configuration" xml:space="preserve">
+    <value>System Identity Configuration</value>
+  </data>
+  <data name="Primary Color" xml:space="preserve">
+    <value>Primary Color</value>
+  </data>
+  <data name="Primary Active Color" xml:space="preserve">
+    <value>Primary Active Color</value>
+  </data>
+  <data name="Main Title" xml:space="preserve">
+    <value>Main Title</value>
+  </data>
+  <data name="Sub Title" xml:space="preserve">
+    <value>Sub Title</value>
+  </data>
+  <data name="Navigation Background" xml:space="preserve">
+    <value>Navigation Background</value>
+  </data>
+  <data name="Border Color" xml:space="preserve">
+    <value>Border Color</value>
+  </data>
+  <data name="System Identity" xml:space="preserve">
+    <value>System Identity</value>
+  </data>
   <data name="AddNewPriority" xml:space="preserve">
     <value>Add New Priority</value>
   </data>

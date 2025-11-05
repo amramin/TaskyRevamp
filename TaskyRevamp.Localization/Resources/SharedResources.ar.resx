@@ -556,6 +556,30 @@
   <data name="DefaultColumnNotFound" xml:space="preserve">
     <value>لم يتم العثور على العمود الافتراضي {id}</value>
   </data>
+  <data name="System Identity Configuration" xml:space="preserve">
+    <value>إعدادات هوية النظام</value>
+  </data>
+  <data name="Primary Color" xml:space="preserve">
+    <value>اللون الرئيسي</value>
+  </data>
+  <data name="Primary Active Color" xml:space="preserve">
+    <value>Primary Active Color</value>
+  </data>
+  <data name="Main Title" xml:space="preserve">
+    <value>العناوين الرئيسية</value>
+  </data>
+  <data name="Sub Title" xml:space="preserve">
+    <value>العناوين الفرعية</value>
+  </data>
+  <data name="Navigation Background" xml:space="preserve">
+    <value>خلفية التنقل</value>
+  </data>
+  <data name="Border Color" xml:space="preserve">
+    <value>الوان الحدود</value>
+  </data>
+  <data name="System Identity" xml:space="preserve">
+    <value>هوية النظام</value>
+  </data>
   <data name="AddNewPriority" xml:space="preserve">
     <value>إضافة أولوية جديدة</value>
   </data>

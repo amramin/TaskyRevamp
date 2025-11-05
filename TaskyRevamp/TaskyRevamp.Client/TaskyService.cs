@@ -4,6 +4,7 @@ using Microsoft.JSInterop;
 using Newtonsoft.Json;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net.Http.Headers;
+using System.Text;
 using TaskyRevamp.Client.Extensions;
 using TaskyRevamp.Client.Services;
 using TaskyRevamp.Dto.GeneralDto;
@@ -106,6 +107,68 @@ public class TaskyService
 
         return queryString;
     }
+
+    public string GetMimeType(byte[] bytes)
+    {
+        if (bytes.Length < 4) return null;
+
+        // PNG
+        if (bytes[0] == 0x89 && bytes[1] == 0x50 && bytes[2] == 0x4E && bytes[3] == 0x47)
+            return "image/png";
+
+        // JPG
+        if (bytes[0] == 0xFF && bytes[1] == 0xD8)
+            return "image/jpeg";
+
+        // SVG (starts with "<svg")
+        if (Encoding.UTF8.GetString(bytes.Take(4).ToArray()).Contains("<svg"))
+            return "image/svg+xml";
+
+        return null;
+    }
+
+    public async Task<SystemIdentityDto> GetSystemIdentity()
+    {
+        var systemIdentity = new SystemIdentityDto();
+        var url = $"api/SystemIdentity/GetSystemIdentitySetting";
+        var res = await GetFromJsonAsync<CommonApiResponse<SystemIdentityDto>>(url);
+
+        if (res.Success)
+        {
+            systemIdentity = res.Data;
+        }
+
+        return systemIdentity;
+    }
+
+    public string GetSystemLogoAsImgSrc(byte[] logo)
+    {
+        var systemLogoBase64 = "";
+        var mimeType = GetMimeType(logo);
+        systemLogoBase64 = $"data:{mimeType};base64,{Convert.ToBase64String(logo)}";
+
+        return systemLogoBase64;
+    }
+
+	public event Action<SystemIdentityDto> OnSystemIdentityChanged;
+	public void NotifySystemIdentityChanged(SystemIdentityDto identity)
+	{
+		OnSystemIdentityChanged?.Invoke(identity);
+	}
+	public async Task ChangeTheme(SystemIdentityDto systemIdentity)
+    {
+        await JS.InvokeVoidAsync("setThemeColor", "--primary-color", systemIdentity.PrimaryColor);
+        await JS.InvokeVoidAsync("setThemeColor", "--secondary-color", systemIdentity.PrimaryColor);
+
+        await JS.InvokeVoidAsync("setThemeColor", "--active-primary", systemIdentity.PrimaryActiveColor);
+    
+        await JS.InvokeVoidAsync("setThemeColor", "--light-200", systemIdentity.NavigationBackground);
+        await JS.InvokeVoidAsync("setThemeColor", "--light-300", systemIdentity.BorderColor);
+
+        await JS.InvokeVoidAsync("setThemeColor", "--dark-900", systemIdentity.MainTitle);
+        await JS.InvokeVoidAsync("setThemeColor", "--dark-800", systemIdentity.SubTitle);
+
+	}
 
     private async Task<bool> CheckForToken()
     {

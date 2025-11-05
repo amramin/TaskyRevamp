@@ -349,6 +349,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Border Color.
+        /// </summary>
+        public static string Border_Color {
+            get {
+                return ResourceManager.GetString("Border Color", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cancel.
         /// </summary>
         public static string Cancel {
@@ -1114,6 +1123,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Main Title.
+        /// </summary>
+        public static string Main_Title {
+            get {
+                return ResourceManager.GetString("Main Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Mandatory.
         /// </summary>
         public static string Mandatory {
@@ -1200,6 +1218,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string NameEnglish {
             get {
                 return ResourceManager.GetString("NameEnglish", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Navigation Background.
+        /// </summary>
+        public static string Navigation_Background {
+            get {
+                return ResourceManager.GetString("Navigation Background", resourceCulture);
             }
         }
         
@@ -1318,6 +1345,24 @@ namespace TaskyRevamp.Localization.Resources {
         public static string PlannedWeight {
             get {
                 return ResourceManager.GetString("PlannedWeight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Primary Active Color.
+        /// </summary>
+        public static string Primary_Active_Color {
+            get {
+                return ResourceManager.GetString("Primary Active Color", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Primary Color.
+        /// </summary>
+        public static string Primary_Color {
+            get {
+                return ResourceManager.GetString("Primary Color", resourceCulture);
             }
         }
         
@@ -1628,6 +1673,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sub Title.
+        /// </summary>
+        public static string Sub_Title {
+            get {
+                return ResourceManager.GetString("Sub Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Set the maximum number of subtask levels allowed when creating a task. This controls how deeply tasks can be nested..
         /// </summary>
         public static string subtask_hint {
@@ -1678,6 +1732,24 @@ namespace TaskyRevamp.Localization.Resources {
         public static string SureDeleteDepartment {
             get {
                 return ResourceManager.GetString("SureDeleteDepartment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to System Identity.
+        /// </summary>
+        public static string System_Identity {
+            get {
+                return ResourceManager.GetString("System Identity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to System Identity Configuration.
+        /// </summary>
+        public static string System_Identity_Configuration {
+            get {
+                return ResourceManager.GetString("System Identity Configuration", resourceCulture);
             }
         }
         

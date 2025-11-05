@@ -40,7 +40,8 @@ public class EfDbContext : DbContext
     public DbSet<ReportModulePermission> ReportModulePermission { get; set; }
     public DbSet<TaskModuleUserDepartment>  TaskModuleUserDepartment { get; set; }
     public DbSet<TaskModuleExternalDepartment>  TaskModuleExternalDepartment { get; set; }
-	public EfDbContext(DbContextOptions<EfDbContext> options, IHttpContextAccessor httpContextAccessor)
+    public DbSet<SystemIdentity>  SystemIdentity { get; set; }
+    public EfDbContext(DbContextOptions<EfDbContext> options, IHttpContextAccessor httpContextAccessor)
         : base(options)
     {
         _httpContextAccessor = httpContextAccessor;
