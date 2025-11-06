@@ -4,10 +4,12 @@
 @using TaskyRevamp.Client.Services
 @using TaskyRevamp.Dto.Enums
 @using TaskyRevamp.Dto.SystemConfiguration
+@using Stingray.Components.MultiSelectComponent
 @inject WeeklyReportSettingConsumer _weeklyReportSettingConsumer
 @inject WorkingDaysSettingConsumer _workingDaysSettingConsumer
 @inject IStringLocalizer<SharedResources> Loc
 @inject ToastService ToastService
+
 <div class="page-header">
     <div class="title-block">
         <h1 class="page-headline">@Loc["WeeklyReport"]</h1>
@@ -25,29 +27,25 @@
                         <label for="daylabel" class="form-label">
                             @Loc["Day"]<span class="text-danger">*</span>
                         </label>
-                        <select class="form-select" @bind="settingsDto.Day">
-                            @if (workingDaysSettingsDtos != null)
-                            {
-                                @foreach (var day in workingDaysSettingsDtos.Where(w => w.IsActive == true))
-                                {
-                                    <option value="@day.Day">@Loc[day.Day.ToString()]</option>
-                                }
-                            }
-                        </select>
+                        <SearchableSingleDropdownOffline TInput="WorkingDaysSettingsDto"
+                                                         TOutput="WeekDays"
+                                                         TextSelector="(w => Loc[w.Day.ToString()])"
+                                                         OutputSelector="(w => w.Day)"
+                                                         Datasource="workingDaysSettingsDtos!.Where(w => w.IsActive).ToList()"
+                                                         @bind-SelectedOption="settingsDto.Day"
+                                                         PlaceHolder="@($"--{Loc["SelectDay"]}--")" />
                     </div>
                     <div class="mb-4">
                         <label for="timelabel" class="form-label">
                             @Loc["Time"]<span class="text-danger">*</span>
                         </label>
-                        <select @bind="settingsDto.Time" class="form-select">
-                            @if (TimeSlots != null)
-                            {
-                                @foreach (var time in TimeSlots)
-                                {
-                                    <option value="@time.Value">@time.Text</option>
-                                }
-                            }
-                        </select>
+                        <SearchableSingleDropdownOffline TInput="(TimeSpan Value, string Text)"
+                                                         TOutput="TimeSpan"
+                                                         TextSelector="t => t.Text"
+                                                         OutputSelector="t => t.Value"
+                                                         Datasource="TimeSlots"
+                                                         @bind-SelectedOption="settingsDto.Time"
+                                                         PlaceHolder="@($"--{Loc["SelectTime"]}--")" />
                     </div>
                     <div class="text-content mb-2">
                         <h6 class="headline-6">@Loc["ReportLanguage"]</h6>
@@ -81,12 +79,10 @@
     </div>
 </div>
 
-
-
 @code {
     public WeeklyReportSettingsDto settingsDto { get; set; } = new WeeklyReportSettingsDto { Language = Language.English };
     private List<WorkingDaysSettingsDto> workingDaysSettingsDtos = new List<WorkingDaysSettingsDto>();
-    private List<(string Value, string Text)>? TimeSlots { get; set; }
+    private List<(TimeSpan Value, string Text)>? TimeSlots { get; set; }
     public List<Language> languages = EnumExtensions.GetOrderedValues<Language>();
 
     protected override async Task OnInitializedAsync()
@@ -118,21 +114,17 @@
             await ToastService.ShowToastAsync(Loc["EditSuccess"], "success");
         }
     }
-    private List<(string Value, string Text)> GenerateTimeSlots()
+    private List<(TimeSpan Value, string Text)> GenerateTimeSlots()
     {
-        var times = new List<(string Value, string Text)>();
+        var times = new List<(TimeSpan Value, string Text)>();
         var start = new TimeSpan(0, 0, 0);
         var end = new TimeSpan(23, 45, 0);
 
         while (start <= end)
         {
-            var value = start.ToString(@"hh\:mm\:ss");
-            var text = DateTime.Today.Add(start).ToString("hh:mm tt");
-
-            times.Add((value, text));
+            times.Add((start, DateTime.Today.Add(start).ToString("hh:mm tt")));
             start = start.Add(new TimeSpan(0, 15, 0));
         }
-
         return times;
     }
     private void OnSettingChange(Language newValue)
