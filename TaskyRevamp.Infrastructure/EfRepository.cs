@@ -441,6 +441,7 @@ public class EfRepository<TEntity> : IRepository<TEntity> where TEntity : Entity
     {
         await _dbSet.AddAsync(entity);
         await SaveChangesAsync();
+        await SaveChangesAsync();
     }
 
     public async Task InsertRange(IEnumerable<TEntity> entities)
