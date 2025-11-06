@@ -37,6 +37,10 @@
                            min="1"
                            @oninput="ValidateDirectionLevel"
                            @bind="Item.DirectionLevel" />
+                    @if(Item.DirectionLevel == null)
+                    {
+                        <div class="text-danger small mt-1">@Loc["Required"]</div>
+                    }
                 </div>
             }
             <div class="form-check mb-2">
@@ -58,6 +62,10 @@
                                                 OutputSelector="(p => (int)p)"
                                                 SelectedOptions="Item.PermissionId"
                                                 SelectedOptionsChanged="OnPermissionsChanged" />
+                @if (Item.PermissionId == null || !Item.PermissionId.Any())
+                {
+                   <div class="text-danger small mt-1">@Loc["Required"]</div>
+                }
             </div>
 
             <div class="mb-3">
@@ -69,6 +77,10 @@
                                                 OutputSelector="(s => s.Id)"
                                                 SelectedOptions="Item.Status"
                                                 SelectedOptionsChanged="OnStatusChanged" />
+                @* @if (Item.Status == null || !Item.Status.Any())
+                {
+                    <div class="text-danger small mt-1">@Loc["Required"]</div>
+                } *@
             </div>
 
             <div class="mb-3">
@@ -80,6 +92,10 @@
                                                 OutputSelector="(s => s.Id)"
                                                 SelectedOptions="Item.Source"
                                                 SelectedOptionsChanged="OnSourceChanged" />
+                @* @if (Item.Source == null || !Item.Source.Any())
+                {
+                    <div class="text-danger small mt-1">@Loc["Required"]</div>
+                } *@
             </div>
         </div>
     }
@@ -96,15 +112,18 @@
     private void OnPermissionsChanged(List<int> selectedPermissions)
     {
         Item.PermissionId = selectedPermissions;
+        StateHasChanged();
     }
     private void OnStatusChanged(List<Guid> selectedStatuses)
     {
         Item.Status = selectedStatuses;
+        StateHasChanged();
     }
 
     private void OnSourceChanged(List<Guid> selectedSources)
     {
         Item.Source = selectedSources;
+        StateHasChanged();
     }
     private async Task RemoveClicked()
     {
@@ -124,5 +143,6 @@
         {
             Item.DirectionLevel = 1;
         }
+        StateHasChanged();
     }
 }

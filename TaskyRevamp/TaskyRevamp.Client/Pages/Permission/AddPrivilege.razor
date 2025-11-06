@@ -119,13 +119,6 @@
     private EditContext? editContext;
     private ValidationMessageStore messageStore;
     private bool isGeneralModuleValid = true;
-    private bool HasInvalidDirectionLevel =>
-                    PrivilegeDto.TaskModuleExternalDepartmentDto?.Any(d =>
-                        d.IsIncludeSubDepartment && d.DirectionLevel < 1) == true ||
-                    PrivilegeDto.TaskModuleUserDepartmentDto?.Any(d =>
-                        (d.SelectedOption == UserDepartmentOptions.BelowUserDepartmentLevel ||
-                         d.SelectedOption == UserDepartmentOptions.AboveUserDepartmentLevel) &&
-                         d.DirectionLevel < 1) == true;
 
     protected override void OnInitialized()
     {
@@ -133,7 +126,6 @@
         messageStore = new ValidationMessageStore(editContext);
         editContext.OnFieldChanged += (_, e) =>
         {
-            // Clear server-side messages for this field
             messageStore.Clear(e.FieldIdentifier);
             editContext.NotifyValidationStateChanged();
         };
@@ -171,10 +163,65 @@
         }
         editContext!.NotifyValidationStateChanged();
     }
+    private bool HasInvalidUserDepartments()
+    {
+        if (PrivilegeDto.TaskModuleUserDepartmentDto == null)
+            return false;
+
+        foreach (var item in PrivilegeDto.TaskModuleUserDepartmentDto.Where(x => x.IsActive))
+        {
+            // Validate permissions
+            bool shouldShowPermission =
+                item.SelectedOption == UserDepartmentOptions.BelowUserDepartmentLevel ||
+                item.SelectedOption == UserDepartmentOptions.AboveUserDepartmentLevel ||
+                item.SelectedOption == UserDepartmentOptions.PeersLevel ||
+                item.SelectedOption == UserDepartmentOptions.SameDepartment;
+
+            if (shouldShowPermission && (item.PermissionId == null || !item.PermissionId.Any()))
+                return true;
+
+            // Validate direction level
+            bool shouldShowDirection =
+                item.SelectedOption == UserDepartmentOptions.BelowUserDepartmentLevel ||
+                item.SelectedOption == UserDepartmentOptions.AboveUserDepartmentLevel;
+
+            if (shouldShowDirection && (item.DirectionLevel == null || item.DirectionLevel < 1))
+                return true;
+        }
+        return false;
+    }
+    private bool HasInvalidExternalDepartments()
+    {
+        if (PrivilegeDto.TaskModuleExternalDepartmentDto == null ||
+            !PrivilegeDto.TaskModuleExternalDepartmentDto.Any())
+            return false;
+
+        foreach (var dept in PrivilegeDto.TaskModuleExternalDepartmentDto)
+        {
+            // Direction Level
+            if (dept.IsIncludeSubDepartment && (dept.DirectionLevel == null || dept.DirectionLevel < 1))
+                return true;
+
+            // Permissions
+            if (dept.PermissionId == null || !dept.PermissionId.Any())
+                return true;
+        }
+
+        return false;
+    }
+
     private async Task SaveSettings()
     {
         if (!isGeneralModuleValid)
         {
+            SelectedTab = "General";
+            StateHasChanged();
+            return;
+        }
+        if (HasInvalidUserDepartments() || HasInvalidExternalDepartments())
+        {
+            SelectedTab = "Task";
+            StateHasChanged();
             return;
         }
         var json = System.Text.Json.JsonSerializer.Serialize(PrivilegeDto, new System.Text.Json.JsonSerializerOptions
@@ -187,7 +234,7 @@
         var res = await _privilegeConsumer.CreatePrivilege(PrivilegeDto);
         if (res.Errors != null && res.Errors.Count > 0)
         {
-            AddErrorsToEditContext(res.Errors); 
+            AddErrorsToEditContext(res.Errors);
             return;
         }
         await ToastService.ShowToastAsync(Loc["Added successfully"], "success");

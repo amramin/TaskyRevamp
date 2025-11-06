@@ -981,9 +981,9 @@ namespace TaskyRevamp.Localization.Resources {
         /// <summary>
         ///   Looks up a localized string similar to General Modules .
         /// </summary>
-        public static string GeneralModules {
+        public static string GeneralModule {
             get {
-                return ResourceManager.GetString("GeneralModules", resourceCulture);
+                return ResourceManager.GetString("GeneralModule", resourceCulture);
             }
         }
         

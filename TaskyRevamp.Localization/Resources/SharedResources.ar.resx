@@ -619,7 +619,7 @@
   <data name="NoDelegationvailable" xml:space="preserve">
     <value>لا يوجد تفويضات متاحه</value>
   </data>
-  <data name="GeneralModules" xml:space="preserve">
+  <data name="GeneralModule" xml:space="preserve">
     <value>الوحدات العامة</value>
   </data>
   <data name="Privilege" xml:space="preserve">
