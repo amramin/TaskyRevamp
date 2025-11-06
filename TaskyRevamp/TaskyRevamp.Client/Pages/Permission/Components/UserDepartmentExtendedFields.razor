@@ -16,6 +16,11 @@
                                             OutputSelector="(p => (int)p)"
                                             SelectedOptions="Item.PermissionId"
                                             SelectedOptionsChanged="OnPermissionsChanged" />
+            @if (Item.IsActive && (Item.PermissionId == null || !Item.PermissionId.Any()))
+            {
+                <div class="text-danger small mt-1">@Loc["Required"]</div>
+
+            }
         }
     </div>
 
@@ -51,7 +56,12 @@
         <div class="mb-3">
             <label class="form-label fw-bold">@Loc["DirectionLevel"] <span class="text-danger">*</span></label>
             <input type="number" class="form-control @(Item.DirectionLevel < 1 ? "border-danger" : "")" min="1" @oninput="ValidateDirectionLevel" @bind="Item.DirectionLevel" />
+            @if(Item.DirectionLevel == null)
+            {
+                <div class="text-danger small mt-1">@Loc["Required"]</div>
+            }
         </div>
+        
     }
 </div>
 
@@ -74,7 +84,8 @@
         }
         else
         {
-            Item.DirectionLevel = 1; 
+            Item.DirectionLevel = 1;
         }
+        StateHasChanged();
     }
 }

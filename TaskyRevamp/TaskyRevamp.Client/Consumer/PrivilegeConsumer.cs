@@ -13,7 +13,7 @@ namespace TaskyRevamp.Client.Consumer
         {
             _taskyService = taskyService;
         }
-		public async Task<CommonApiResponse<PagedResult<PrivilegeDtoWithName>>> GetPrivileges(int pageNumber, int pageSize, string sortByColumnName, bool sortAscending, List<SearchField> searchFields = null, string searchText = null)
+		public async Task<CommonApiResponse<PagedResult<PrivilegeDtoWithName>>> GetPrivileges(int pageNumber, int pageSize, string sortByColumnName, bool sortAscending, List<SearchFieldPrivileg> searchFields = null, string searchText = null)
 		{
 			var queryString = _taskyService.PreparePaginatedSearchQueryString(pageNumber, pageSize, sortByColumnName, sortAscending, searchFields, searchText);
 

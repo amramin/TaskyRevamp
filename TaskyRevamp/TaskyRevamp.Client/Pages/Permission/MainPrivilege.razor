@@ -226,14 +226,13 @@ else
         await LoadPrivilegs();
     }
 
-    public List<SearchField> searchFields = new List<SearchField>() {
-            SearchField.NameEnglish,
-            SearchField.NameArabic,
-            SearchField.CreatedBy,
-            SearchField.UpdatedBy,
-            SearchField.CreateDate,
-            SearchField.UpdateDate,
-            SearchField.ActiveStatus
+    public List<SearchFieldPrivileg> searchFields = new List<SearchFieldPrivileg>() {
+            SearchFieldPrivileg.NameEnglish,
+            SearchFieldPrivileg.NameArabic,
+            SearchFieldPrivileg.CreatedBy,
+            SearchFieldPrivileg.UpdatedBy,
+            SearchFieldPrivileg.CreateDate,
+            SearchFieldPrivileg.UpdateDate,
     };
 
     public async Task Search(string searchTerm)

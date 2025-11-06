@@ -126,6 +126,12 @@
     private void ToggleSelection(TaskModuleUserDepartmentPermissionDto item, bool? isChecked)
     {
         item.IsActive = isChecked == true;
+        if (!item.IsActive)
+        {
+            item.PermissionId?.Clear();
+        }
+
+        StateHasChanged();
     }
     private bool ShouldShowDirection(UserDepartmentOptions option)
     {

@@ -10,7 +10,7 @@ using Privileges = TaskyRevamp.Domain.Models.Permissions.Privilege;
 
 namespace TaskyRevamp.Services.Permission.Privilege.Query
 {
-	public record GetPrivilegesQuery(int pageNumber, int pageSize, string sortByColumnName, bool sortAscending, List<SearchField> SearchFields, string SearchText) : IRequest<PagedResult<PrivilegeDtoWithName>>;
+	public record GetPrivilegesQuery(int pageNumber, int pageSize, string sortByColumnName, bool sortAscending, List<SearchFieldPrivileg> SearchFields, string SearchText) : IRequest<PagedResult<PrivilegeDtoWithName>>;
 	public class GetPrivilegesHandler : IRequestHandler<GetPrivilegesQuery, PagedResult<PrivilegeDtoWithName>>
 	{
 		private readonly IRepository<Privileges> _privilegesRepository;
