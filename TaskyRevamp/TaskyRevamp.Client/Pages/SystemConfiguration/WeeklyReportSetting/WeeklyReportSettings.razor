@@ -83,7 +83,6 @@
     private List<WorkingDaysSettingsDto> workingDaysSettingsDtos = new List<WorkingDaysSettingsDto>();
     private List<(TimeSpan Value, string Text)>? TimeSlots { get; set; }
     public List<Language> languages = EnumExtensions.GetOrderedValues<Language>();
-    private EditContext? editContext;
 
     protected override async Task OnInitializedAsync()
     {
@@ -100,7 +99,6 @@
             settingsDto = res.Data;
         }
         TimeSlots = GenerateTimeSlots();
-        editContext = new EditContext(settingsDto);
     }
 
     private void Cancel(MouseEventArgs args)
