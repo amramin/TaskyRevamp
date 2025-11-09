@@ -58,7 +58,7 @@ builder.Services.AddDbContext<EfDbContext>(options =>
                 maxRetryDelay: TimeSpan.FromSeconds(10),
                 errorNumbersToAdd: null);
         }));
-builder.Services.AddScoped<ITaskRepository,TaskRepository>();
+builder.Services.AddScoped<ITaskRepository, TaskRepository>();
 
 
 builder.Services.AddHttpContextAccessor();
@@ -172,7 +172,7 @@ app.UseMiddleware<ExtractCustomHeaderMiddleware>();
 
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment() || app.Environment.IsProduction())
 {
     app.UseSwagger();
     app.UseSwaggerUI(c =>
