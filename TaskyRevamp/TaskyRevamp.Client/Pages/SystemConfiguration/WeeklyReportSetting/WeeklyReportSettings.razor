@@ -1,5 +1,6 @@
 ﻿@page "/WeeklyReportSetting"
 
+@using System.ComponentModel.DataAnnotations
 @using TaskyRevamp.Client.Consumer
 @using TaskyRevamp.Client.Services
 @using TaskyRevamp.Dto.Enums
@@ -17,65 +18,70 @@
 </div>
 <div class="page-body">
     <div class="card setting-card">
-        <div class="card-body">
-            <div class="row justify-content-center">
-                <div class="col-xxl-7 col-xl-8 col-lg-9 col-md-11">
-                    <div class="text-content">
-                        <p class="small-medium-text hint">@Loc["weeklyReportHint"]</p>
-                    </div>
-                    <div class="mb-3">
-                        <label for="daylabel" class="form-label">
-                            @Loc["Day"]<span class="text-danger">*</span>
-                        </label>
-                        <SearchableSingleDropdownOffline TInput="WorkingDaysSettingsDto"
-                                                         TOutput="WeekDays"
-                                                         TextSelector="(w => Loc[w.Day.ToString()])"
-                                                         OutputSelector="(w => w.Day)"
-                                                         Datasource="workingDaysSettingsDtos!.Where(w => w.IsActive).ToList()"
-                                                         @bind-SelectedOption="settingsDto.Day"
-                                                         PlaceHolder="@($"--{Loc["SelectDay"]}--")" />
-                    </div>
-                    <div class="mb-4">
-                        <label for="timelabel" class="form-label">
-                            @Loc["Time"]<span class="text-danger">*</span>
-                        </label>
-                        <SearchableSingleDropdownOffline TInput="(TimeSpan Value, string Text)"
-                                                         TOutput="TimeSpan"
-                                                         TextSelector="t => t.Text"
-                                                         OutputSelector="t => t.Value"
-                                                         Datasource="TimeSlots"
-                                                         @bind-SelectedOption="settingsDto.Time"
-                                                         PlaceHolder="@($"--{Loc["SelectTime"]}--")" />
-                    </div>
-                    <div class="text-content mb-2">
-                        <h6 class="headline-6">@Loc["ReportLanguage"]</h6>
-                        <p class="small-medium-text hint">@Loc["languageHint"]</p>
-                    </div>
-                    <InputRadioGroup TValue="Language" Value="settingsDto.Language" ValueChanged="OnSettingChange"
-                        ValueExpression="() => settingsDto.Language">
-                        @foreach (var value in languages)
-                        {
-                            var radioId = $"Language_{value}";
-                            <div class="form-check-card">
-                                <InputRadio id="@radioId" Value="@value" />
-                                <label for="@radioId"> @value.GetDescription()</label>
-                            </div>
-                        }
-                    </InputRadioGroup>
-                </div>
-            </div>
-        </div>
-        <div class="card-footer">
-            <div class="row justify-content-center">
-                <div class="col-xxl-7 col-xl-8 col-lg-9 col-md-11">
-                    <div class="action-buttons">
-                        <button class="btn btn-lg btn-light" @onclick="Cancel">@Loc["Cancel"]</button>
-                        <button class="btn btn-lg  btn-primary" @onclick="Save">@Loc["Save"]</button>
+        <EditForm Model="settingsDto" OnValidSubmit="@Save">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+            <div class="card-body">
+                <div class="row justify-content-center">
+                    <div class="col-xxl-7 col-xl-8 col-lg-9 col-md-11">
+                        <div class="text-content">
+                            <p class="small-medium-text hint">@Loc["weeklyReportHint"]</p>
+                        </div>
+                        <div class="mb-3">
+                            <label for="daylabel" class="form-label">
+                                @Loc["Day"]<span class="text-danger">*</span>
+                            </label>
+                            <SearchableSingleDropdownOffline TInput="WorkingDaysSettingsDto"
+                                                                TOutput="WeekDays"
+                                                                TextSelector="(w => Loc[w.Day.ToString()])"
+                                                                OutputSelector="(w => w.Day)"
+                                                                Datasource="workingDaysSettingsDtos!.Where(w => w.IsActive).ToList()"
+                                                                @bind-SelectedOption="settingsDto.Day"
+                                                                PlaceHolder="@($"--{Loc["SelectDay"]}--")" />
+                            <ValidationMessage For="@(() => settingsDto.Day)" />
+                        </div>
+                        <div class="mb-4">
+                            <label for="timelabel" class="form-label">
+                                @Loc["Time"]<span class="text-danger">*</span>
+                            </label>
+                            <SearchableSingleDropdownOffline TInput="(TimeSpan Value, string Text)"
+                                                                TOutput="TimeSpan"
+                                                                TextSelector="t => t.Text"
+                                                                OutputSelector="t => t.Value"
+                                                                Datasource="TimeSlots"
+                                                                @bind-SelectedOption="settingsDto.Time"
+                                                                PlaceHolder="@($"--{Loc["SelectTime"]}--")" />
+                            <ValidationMessage For="@(() => settingsDto.Time)" />
+                        </div>
+                        <div class="text-content mb-2">
+                            <h6 class="headline-6">@Loc["ReportLanguage"]</h6>
+                            <p class="small-medium-text hint">@Loc["languageHint"]</p>
+                        </div>
+                        <InputRadioGroup TValue="Language" Value="settingsDto.Language" ValueChanged="OnSettingChange"
+                            ValueExpression="() => settingsDto.Language">
+                            @foreach (var value in languages)
+                            {
+                                var radioId = $"Language_{value}";
+                                <div class="form-check-card">
+                                    <InputRadio id="@radioId" Value="@value" />
+                                    <label for="@radioId"> @value.GetDescription()</label>
+                                </div>
+                            }
+                        </InputRadioGroup>
                     </div>
                 </div>
             </div>
-        </div>
-
+            <div class="card-footer">
+                <div class="row justify-content-center">
+                    <div class="col-xxl-7 col-xl-8 col-lg-9 col-md-11">
+                        <div class="action-buttons">
+                            <button class="btn btn-lg btn-light" @onclick="Cancel">@Loc["Cancel"]</button>
+                            <button type="submit" class="btn btn-lg btn-primary" >@Loc["Save"]</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </EditForm>
     </div>
 </div>
 
@@ -84,9 +90,11 @@
     private List<WorkingDaysSettingsDto> workingDaysSettingsDtos = new List<WorkingDaysSettingsDto>();
     private List<(TimeSpan Value, string Text)>? TimeSlots { get; set; }
     public List<Language> languages = EnumExtensions.GetOrderedValues<Language>();
+    private EditContext? editContext;
 
     protected override async Task OnInitializedAsync()
     {
+
         var defaultRes = await _workingDaysSettingConsumer.GetWorkingDaysSetting();
         if (defaultRes.Success && defaultRes != null && defaultRes.Data != null)
         {
@@ -99,6 +107,7 @@
             settingsDto = res.Data;
         }
         TimeSlots = GenerateTimeSlots();
+        editContext = new EditContext(settingsDto);
     }
 
     private void Cancel(MouseEventArgs args)
@@ -106,8 +115,16 @@
         throw new NotImplementedException();
     }
 
-    private async Task Save(MouseEventArgs args)
+    private async Task Save()
     {
+        if (editContext is null)
+            return;
+
+        bool isValid = editContext.Validate(); // trigger form validation
+
+        if (!isValid)
+            return;
+
         var res = await _weeklyReportSettingConsumer.UpdateWeeklyReportSetting(settingsDto);
         if (res.Success)
         {
