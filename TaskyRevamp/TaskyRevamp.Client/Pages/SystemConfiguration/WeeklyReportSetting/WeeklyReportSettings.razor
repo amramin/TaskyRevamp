@@ -1,6 +1,5 @@
 ﻿@page "/WeeklyReportSetting"
 
-@using System.ComponentModel.DataAnnotations
 @using TaskyRevamp.Client.Consumer
 @using TaskyRevamp.Client.Services
 @using TaskyRevamp.Dto.Enums
@@ -71,7 +70,7 @@
                     <div class="col-xxl-7 col-xl-8 col-lg-9 col-md-11">
                         <div class="action-buttons">
                             <button class="btn btn-lg btn-light" @onclick="Cancel">@Loc["Cancel"]</button>
-                            <button type="submit" class="btn btn-lg btn-primary" >@Loc["Save"]</button>
+                            <button class="btn btn-lg btn-primary" @onclick="Save">@Loc["Save"]</button>
                         </div>
                     </div>
                 </div>
