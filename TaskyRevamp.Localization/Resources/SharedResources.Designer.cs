@@ -1114,20 +1114,20 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Manager&apos;s Tasks.
-        /// </summary>
-        public static string ManagersTasks {
-            get {
-                return ResourceManager.GetString("ManagersTasks", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Main Title.
         /// </summary>
         public static string Main_Title {
             get {
                 return ResourceManager.GetString("Main Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Manager&apos;s Tasks.
+        /// </summary>
+        public static string ManagersTasks {
+            get {
+                return ResourceManager.GetString("ManagersTasks", resourceCulture);
             }
         }
         
@@ -1511,7 +1511,7 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This Field Required.
+        ///   Looks up a localized string similar to This field is required.
         /// </summary>
         public static string Required {
             get {

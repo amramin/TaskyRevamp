@@ -139,7 +139,7 @@
     <value>Never</value>
   </data>
   <data name="Required" xml:space="preserve">
-    <value>This Field Required</value>
+    <value>This field is required</value>
   </data>
   <data name="DataSavedSuccessfully" xml:space="preserve">
     <value>Data Saved Successfully</value>
