@@ -43,7 +43,7 @@
             <div class="col-xxl-7 col-xl-8 col-lg-9 col-md-11">
                 <div class="action-buttons">
                     <button class="btn btn-lg btn-light" @onclick="Cancel">@Loc["Cancel"]</button>
-                    <button class="btn btn-lg  btn-primary" @onclick="Save"  disabled="@(ViewSetting.SubTaskLevels <= 0)">@Loc["Save"]</button>
+                    <button class="btn btn-lg  btn-primary" @onclick="Save" disabled="@(ViewSetting.SubTaskLevels <= 0)">@Loc["Save"]</button>
                 </div>
             </div>
         </div>
@@ -67,26 +67,27 @@
     }
     private async Task Save(MouseEventArgs args)
     {
-        if (ViewSetting.SubTaskLevels < 0)
+        if (ViewSetting.SubTaskLevels <= 0)
         {
             return;
         }
-        var res = await _defaultViewSettingConsumer.UpdateSubTaskLevelDefaultViewSetting(ViewSetting);
-        if (res.Success)
+        else
         {
-            await ToastService.ShowToastAsync(Loc["EditSuccess"], "success");
+            var res = await _defaultViewSettingConsumer.UpdateSubTaskLevelDefaultViewSetting(ViewSetting);
+            if (res.Success)
+            {
+                await ToastService.ShowToastAsync(Loc["EditSuccess"], "success");
+            }
         }
     }
     private void OnCustomDaysChange(ChangeEventArgs e)
     {
         var input = e.Value?.ToString()?.Trim();
-
         if (string.IsNullOrEmpty(input) || !int.TryParse(input, out var number) || number <= 0)
         {
-            // ViewSetting.SubTaskLevels = 3;
+            ViewSetting.SubTaskLevels = 0;
             return;
         }
-
         ViewSetting.SubTaskLevels = number;
     }
     private void Cancel(MouseEventArgs args)
