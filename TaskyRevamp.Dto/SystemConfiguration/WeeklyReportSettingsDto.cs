@@ -12,9 +12,7 @@ namespace TaskyRevamp.Dto.SystemConfiguration
 	public class WeeklyReportSettingsDto
 	{
 		public Guid Id { get; set; }
-		[Required(ErrorMessageResourceType = typeof(SharedResources), ErrorMessageResourceName = "Required")]
 		public WeekDays Day { get; set; }
-		[Required(ErrorMessageResourceType = typeof(SharedResources), ErrorMessageResourceName = "Required")]
 		public TimeSpan Time { get; set; }
 		public Language Language { get; set; }
 	}
