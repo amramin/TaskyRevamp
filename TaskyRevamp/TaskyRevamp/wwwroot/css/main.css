@@ -839,6 +839,66 @@ html[dir=rtl] input[type=number] {
 }
 
 /*.end view-scope-toggle*/
+/* start change-logo-Container */
+.change-logo-Container {
+  position: relative;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  margin: auto;
+  width: 120px;
+}
+.change-logo-Container .logo {
+  width: 120px;
+  height: 120px;
+  max-height: 120px;
+  border: 1px solid var(--light-300);
+  border-radius: 50%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+.change-logo-Container .logo img {
+  max-width: 56px;
+  max-height: 100%;
+}
+.change-logo-Container .upload-logo-btn {
+  width: 2.25rem;
+  height: 2.25rem;
+  background-color: var(--light-300);
+  border-radius: 50%;
+  border: 1px solid var(--bs-white);
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.16);
+          box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.16);
+  position: absolute;
+  bottom: 0;
+  inset-inline-end: 0;
+}
+.change-logo-Container .upload-logo-btn svg {
+  width: 0.875rem;
+  height: 0.875rem;
+  color: var(--dark-900);
+}
+
+/* end change-logo-Container */
 .group-input {
   width: 100%;
   position: relative;
@@ -1749,6 +1809,9 @@ html[dir=rtl] input[type=number] {
       -ms-flex: 1;
           flex: 1;
   overflow-y: auto;
+}
+.card.setting-card > form > .card-body.identity {
+  max-height: calc(100svh - 16.5rem);
 }
 .card.setting-card .card-footer {
   padding-block: 0;
