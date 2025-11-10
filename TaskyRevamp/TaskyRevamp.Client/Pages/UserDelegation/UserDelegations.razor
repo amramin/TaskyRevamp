@@ -39,7 +39,7 @@
 {
 
     <NoDataAvailable MessageTitle="@Loc["NoDelegationvailable"]" MessageSubtitle="@Loc["Nodepartmentavailable"]"
-                     ButtonText="@Loc["AddDelegation"]" OnButtonClick="Add" />
+        ButtonText="@Loc["AddDelegation"]" OnButtonClick="Add" />
     <h6 class="mb-3">@Loc["NoDelegationavailable"]</h6>
 }
 
@@ -51,77 +51,73 @@ else if (AlluserDelegation != null && AlluserDelegation.Count() == 0)
 
 else
 {
+    <div class="page-body">
+        <div class="table-responsive sticky-header-custom">
 
-    <div class="table-responsive sticky-header-custom">
-
-        <SortableTable TItem="UserDelegationDto"
-                       Columns="@tableColumns"
-                       Items="@AlluserDelegation"
-                       SortColumn="@currentSortColumn"
-                       SortAscending="@sortAscending"
-                       OnSortRequested="HandleSort">
-
-            <RowTemplate>
+            <SortableTable TItem="UserDelegationDto" Columns="@tableColumns" Items="@AlluserDelegation"
+                SortColumn="@currentSortColumn" SortAscending="@sortAscending" OnSortRequested="HandleSort">
+                <RowTemplate>
 
 
-                @foreach (var p in AlluserDelegation)
-                {
-                    <tr>
-                        <td>@p.FromUser</td>
-                        <td>@p.ToUserAr</td>
-                        <td>@p.FromDate.ToString("yyyy-MM-dd")</td>
-                        <td>@p.ToDate.ToString("yyyy-MM-dd")</td>
+                    @foreach (var p in AlluserDelegation)
+                    {
+                        <tr>
+                            <td>@p.FromUser</td>
+                            <td>@p.ToUserAr</td>
+                            <td>@p.FromDate.ToString("yyyy-MM-dd")</td>
+                            <td>@p.ToDate.ToString("yyyy-MM-dd")</td>
 
-                        <td>@p.CreatedByName</td>
-                        <td>@p.CreateDate?.ToString("yyyy-MM-dd")</td>
-                        <td>@p.UpdatedByName</td>
-                        <td>@p.UpdateDate?.ToString("yyyy-MM-dd")</td>
+                            <td>@p.CreatedByName</td>
+                            <td>@p.CreateDate?.ToString("yyyy-MM-dd")</td>
+                            <td>@p.UpdatedByName</td>
+                            <td>@p.UpdateDate?.ToString("yyyy-MM-dd")</td>
 
-                        <td class="sticky-end-action">
-                            <div class="dropdown actions">
-                                <button class="btn btn-action-24" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <SVGCrud SVGType="SVGCrud.SVGTypeEnum.EllipseVertical"></SVGCrud>
-                                </button>
-                                <ul class="dropdown-menu">
-
-
-                              
-                                    <li>
-                                        
-                                        <button class="dropdown-item" @onclick="@(() => ShowEditPopup(p.Id))">
-                                            <span class="icon">
-                                                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Edit"></SVGCrud>
-                                            </span>
-                                            @Loc["EditDelegation"]
-                                        </button>
-                                    </li>
-                                  
-                                    <li>
-                                        <button class="dropdown-item text-danger" @onclick="@(() => OnDeleteDelegation(p.Id))">
-                                            <span class="icon">
-                                                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Delete"></SVGCrud>
-                                            </span>
-                                            @Loc["Delete"]
-                                        </button>
-                                    </li>
-                                </ul>
-                            </div>
-                        </td>
-                    </tr>
-                }
+                            <td class="sticky-end-action">
+                                <div class="dropdown actions">
+                                    <button class="btn btn-action-24" type="button" data-bs-toggle="dropdown"
+                                        aria-expanded="false">
+                                        <SVGCrud SVGType="SVGCrud.SVGTypeEnum.EllipseVertical"></SVGCrud>
+                                    </button>
+                                    <ul class="dropdown-menu">
 
 
 
-            </RowTemplate>
-        </SortableTable>
+                                        <li>
 
+                                            <button class="dropdown-item" @onclick="@(() => ShowEditPopup(p.Id))">
+                                                <span class="icon">
+                                                    <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Edit"></SVGCrud>
+                                                </span>
+                                                @Loc["EditDelegation"]
+                                            </button>
+                                        </li>
+
+                                        <li>
+                                            <button class="dropdown-item text-danger"
+                                                @onclick="@(() => OnDeleteDelegation(p.Id))">
+                                                <span class="icon">
+                                                    <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Delete"></SVGCrud>
+                                                </span>
+                                                @Loc["Delete"]
+                                            </button>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+
+
+
+                </RowTemplate>
+            </SortableTable>
+
+
+        </div>
+        <Pagination CurrentPage="@currentPage" TotalPages="@totalPages" TotalCount="@totalCount" PageSize="@pageSize"
+            PageChanged="ChangePage" PageSizeChangedCallback="ChangePageSize" />
 
     </div>
-    <Pagination CurrentPage="@currentPage" TotalPages="@totalPages" TotalCount="@totalCount" PageSize="@pageSize"
-                PageChanged="ChangePage" PageSizeChangedCallback="ChangePageSize" />
-
-
-
 }
 
 @code {
@@ -155,21 +151,21 @@ else
         var current = await LocalStorageService.GetItemAsStringAsync("Id");
         currentuser = Guid.Parse(current);
         tableColumns = new()
-        {
-            new() { Field = "FromUser", DisplayName = Loc["FromUser"] },
-            new() { Field = "ToUser", DisplayName = Loc["ToUser"] },
-            new() { Field = "FromDate", DisplayName = Loc["FromDate"] },
+{
+new() { Field = "FromUser", DisplayName = Loc["FromUser"] },
+new() { Field = "ToUser", DisplayName = Loc["ToUser"] },
+new() { Field = "FromDate", DisplayName = Loc["FromDate"] },
 
-            new() { Field = "ToDate", DisplayName = Loc["ToDate"] },
+new() { Field = "ToDate", DisplayName = Loc["ToDate"] },
 
-            new() { Field = "CreatedBy", DisplayName = Loc["CreatedBy"] },
+new() { Field = "CreatedBy", DisplayName = Loc["CreatedBy"] },
 
-            new() { Field = "CreateDate", DisplayName = Loc["CreationDate"] },
-            new() { Field = "UpdatedBy", DisplayName = Loc["UpdatedBy"] },
+new() { Field = "CreateDate", DisplayName = Loc["CreationDate"] },
+new() { Field = "UpdatedBy", DisplayName = Loc["UpdatedBy"] },
 
-            new() { Field = "UpdateDate", DisplayName = Loc["UpdateDate"] },
-            new() { Field = "Action", DisplayName = Loc["Action"] ,IsSortable = false},
-        };
+new() { Field = "UpdateDate", DisplayName = Loc["UpdateDate"] },
+new() { Field = "Action", DisplayName = Loc["Action"] ,IsSortable = false},
+};
 
         await GetDelegations();
         StateHasChanged();
@@ -252,7 +248,8 @@ else
 
     public void ShowEditPopup(Guid id)
     {
-        PopupService.ShowNew(@<Edit UserDelegationId="@id.ToString()" IsAdmine="@IsAdmine" OnValidSubmit="OnInitializedAsync"></Edit>, headerText:
+        PopupService.ShowNew(@<Edit UserDelegationId="@id.ToString()" IsAdmine="@IsAdmine" OnValidSubmit="OnInitializedAsync">
+        </Edit>, headerText:
         @Loc["EditDelegation"]);
     }
     private async Task OnConfirmDelete(bool confirmed)
@@ -292,23 +289,23 @@ else
         StateHasChanged();
     }
     public List<SearchFieldDelegation> searchFields = new List<SearchFieldDelegation>() {
-    SearchFieldDelegation.FromUser,
-    SearchFieldDelegation.ToUser,
-    SearchFieldDelegation.FromDate,
-        SearchFieldDelegation.ToDate,
-         SearchFieldDelegation.CreatedBy,
-             SearchFieldDelegation.CreateDate,
-    SearchFieldDelegation.UpdatedBy,
-    SearchFieldDelegation.UpdateDate
+SearchFieldDelegation.FromUser,
+SearchFieldDelegation.ToUser,
+SearchFieldDelegation.FromDate,
+SearchFieldDelegation.ToDate,
+SearchFieldDelegation.CreatedBy,
+SearchFieldDelegation.CreateDate,
+SearchFieldDelegation.UpdatedBy,
+SearchFieldDelegation.UpdateDate
 
-    };
+};
 
     private async Task Save()
     {
         if (userDelegation.ToUserId == Guid.Empty)
             return;
-     
-        userDelegation.FromUserId = currentuser; 
+
+        userDelegation.FromUserId = currentuser;
         await _userDelegationConsumer.CreateUserDelegation(userDelegation);
 
         await GetDelegations();
@@ -332,21 +329,22 @@ else
 
     private async Task GetDelegations(bool isSearch = false, string searchTerm = null)
     {
-       
-        userDelegation.FromUserId = currentuser;
-      
 
-            var res = await _userDelegationConsumer.GetAllUserDelegation(currentPage, pageSize, currentSortColumn, sortAscending.Value, isSearch ?
-                 searchFields : null, isSearch ? searchTerm : null);
+        userDelegation.FromUserId = currentuser;
+
+
+        var res = await _userDelegationConsumer.GetAllUserDelegation(currentPage, pageSize, currentSortColumn,
+        sortAscending.Value, isSearch ?
+        searchFields : null, isSearch ? searchTerm : null);
         AlluserDelegation = res.Data.Items.Where(K => K.CreatedBy == currentuser).ToList();
 
-            if (!(res?.Success ?? false) || res.Data is null)
-                return;
+        if (!(res?.Success ?? false) || res.Data is null)
+            return;
 
-            var data = res.Data;
-            totalPages = data.TotalPages;
-            totalCount = data.TotalCount;
-       
+        var data = res.Data;
+        totalPages = data.TotalPages;
+        totalCount = data.TotalCount;
+
         StateHasChanged();
     }
 
