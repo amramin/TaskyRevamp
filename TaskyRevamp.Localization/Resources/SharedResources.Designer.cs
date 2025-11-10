@@ -196,6 +196,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add Task.
+        /// </summary>
+        public static string AddTask {
+            get {
+                return ResourceManager.GetString("AddTask", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add Task Fields Configuration.
         /// </summary>
         public static string AddTaskFieldsConfiguration {
@@ -300,6 +309,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string AssignedToDepartment {
             get {
                 return ResourceManager.GetString("AssignedToDepartment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Assignee .
+        /// </summary>
+        public static string AssigneduserNames {
+            get {
+                return ResourceManager.GetString("AssigneduserNames", resourceCulture);
             }
         }
         
@@ -592,6 +610,24 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Description Arabic.
+        /// </summary>
+        public static string DescriptionArabic {
+            get {
+                return ResourceManager.GetString("DescriptionArabic", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Description English.
+        /// </summary>
+        public static string DescriptionEnglish {
+            get {
+                return ResourceManager.GetString("DescriptionEnglish", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Different Department.
         /// </summary>
         public static string DifferentDepartment {
@@ -610,20 +646,20 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Edit Delegation.
-        /// </summary>
-        public static string EditDelegation {
-            get {
-                return ResourceManager.GetString("EditDelegation", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Edit.
         /// </summary>
         public static string Edit {
             get {
                 return ResourceManager.GetString("Edit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit Delegation.
+        /// </summary>
+        public static string EditDelegation {
+            get {
+                return ResourceManager.GetString("EditDelegation", resourceCulture);
             }
         }
         
@@ -745,15 +781,6 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Error database.
-        /// </summary>
-        public static string Errordatabase {
-            get {
-                return ResourceManager.GetString("Errordatabase", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Enter Privilege Arabic Name.
         /// </summary>
         public static string EnterPrivilegeArabicName {
@@ -777,6 +804,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string EnterPrivilegeName {
             get {
                 return ResourceManager.GetString("EnterPrivilegeName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error database.
+        /// </summary>
+        public static string Errordatabase {
+            get {
+                return ResourceManager.GetString("Errordatabase", resourceCulture);
             }
         }
         
@@ -988,6 +1024,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Log out.
+        /// </summary>
+        public static string Logout {
+            get {
+                return ResourceManager.GetString("Logout", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Mandatory.
         /// </summary>
         public static string Mandatory {
@@ -1178,6 +1223,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Priority.
+        /// </summary>
+        public static string Priority2 {
+            get {
+                return ResourceManager.GetString("Priority2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Priority Configuration.
         /// </summary>
         public static string PriorityConfiguration {
@@ -1273,6 +1327,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string RejectionPeriodOptions {
             get {
                 return ResourceManager.GetString("RejectionPeriodOptions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reminder Date.
+        /// </summary>
+        public static string ReminderDate {
+            get {
+                return ResourceManager.GetString("ReminderDate", resourceCulture);
             }
         }
         
@@ -1385,11 +1448,38 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Select Priority.
+        /// </summary>
+        public static string SelectPriority {
+            get {
+                return ResourceManager.GetString("SelectPriority", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Select Report Options.
         /// </summary>
         public static string SelectReportOptions {
             get {
                 return ResourceManager.GetString("SelectReportOptions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select Source.
+        /// </summary>
+        public static string SelectSource {
+            get {
+                return ResourceManager.GetString("SelectSource", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select Type.
+        /// </summary>
+        public static string SelectType {
+            get {
+                return ResourceManager.GetString("SelectType", resourceCulture);
             }
         }
         
@@ -1538,6 +1628,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Task Status.
+        /// </summary>
+        public static string TaskStatus {
+            get {
+                return ResourceManager.GetString("TaskStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Tasks Views.
         /// </summary>
         public static string Tasksviews {
@@ -1579,6 +1678,33 @@ namespace TaskyRevamp.Localization.Resources {
         public static string Title {
             get {
                 return ResourceManager.GetString("Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Title Arabic.
+        /// </summary>
+        public static string TitleArabic {
+            get {
+                return ResourceManager.GetString("TitleArabic", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Title.
+        /// </summary>
+        public static string Titlee {
+            get {
+                return ResourceManager.GetString("Titlee", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Title English.
+        /// </summary>
+        public static string TitleEnglish {
+            get {
+                return ResourceManager.GetString("TitleEnglish", resourceCulture);
             }
         }
         
@@ -1783,9 +1909,9 @@ namespace TaskyRevamp.Localization.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Weight.
         /// </summary>
-        public static string Weight {
+        public static string weight {
             get {
-                return ResourceManager.GetString("Weight", resourceCulture);
+                return ResourceManager.GetString("weight", resourceCulture);
             }
         }
         

@@ -119,7 +119,7 @@ public class TaskItem : Entity, IHasCreationMetaData, IHasUpdateMetaData
     //public Guid CreatorId { set; get; }
     //public User Creator { get;  set; }
 
-    public IEnumerable<TaskAssignees> Assignees { get; set; }
+    public List<TaskAssignees> Assignees { get; set; }
     public List<Guid> AssignedDepartmentIds { set; get; }
     public List<Guid> AssignedIds { set; get; }
 
@@ -150,7 +150,7 @@ public class TaskItem : Entity, IHasCreationMetaData, IHasUpdateMetaData
     public User? UpdatedBy { get; set; }
 
     TaskItem() { }
-    public TaskItem(Guid id, string titleEnglish, string titleArabic, string descEN, string descAR, Guid type, Guid source, DateTime start, DateTime end, Priority priority, Weight plannedWeight, Guid creatorid, List<Department> assgndep, List<Guid> assigids)
+    public TaskItem(Guid id, string titleEnglish, string titleArabic, string descEN, string descAR, Guid type, Guid source, DateTime start, DateTime end, Priority priority, Weight plannedWeight, Guid creatorid, List<Department> assgndep, List<Guid> assigids, DateTime? rmind, int actualprocess, int wight, List<Guid> dependcy)
     {
         if (end < start) throw new ArgumentException("End date must be after start date.");
         Id = id;
@@ -167,10 +167,13 @@ public class TaskItem : Entity, IHasCreationMetaData, IHasUpdateMetaData
         EndDate = end;
         Priority = priority;
         weight = plannedWeight;
-        _actualProgress = new Progress(0);
+        _actualProgress = new Progress(actualprocess);
         _status = TaskStatus.NotStarted;
-        _actualWeight = new Weight(0);
+        _actualWeight = new Weight(wight);
         CreatedById = creatorid;
+        Reminder = rmind == null ? null : new Reminder(rmind.Value);
+        //  Dependencies = new TaskDependencies(dependcy.Select(id => new TaskItem { Id = id }).ToList()
+        //);
         //Creator = creator;
 
         // Checklist = new TaskChecklist(this);
@@ -220,10 +223,14 @@ public class TaskItem : Entity, IHasCreationMetaData, IHasUpdateMetaData
             TitleArabic = TitleArabic,
             weight = weight.Value,
             //SourceId=Source.Id,
-
-
-
-
+            CreateDate = CreateDate,
+            UpdateDate = UpdateDate,
+            StartDate = StartDate,
+            EndDate = EndDate,
+            Priority = (int)Priority,
+            CreatedByName = CreatedBy?.Username,
+            UpdatedBy = UpdatedBy?.Username,
+            ReminderDate = Reminder?.Date
         };
     }
     public void UpdateDescription(string descEN, string descAR, User by)

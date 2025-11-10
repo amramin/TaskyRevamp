@@ -15,7 +15,9 @@ public class User : Entity
     public bool IsActive { get; set; }
     public bool IsManager { get; set; }
     public Guid? DepartmentId { get; set; }
-    public Department? Department { get;  set; }
+    public Department? Department { get; set; }
+    // public TaskItem TaskItem { get; set; }
+
     public User()
     {
 

@@ -13,11 +13,16 @@ namespace TaskyRevamp.Services.SearchMappings
 {
     public class TaskSearchFieldMap
     {
+
         public static readonly Dictionary<SearchFieldTask, Expression<Func<TaskItem, object>>> Map = new()
         {
-            { SearchFieldTask.TitleEnglish, x => x.TitleEnglish},
-            { SearchFieldTask.TitleArabic, x => x.TitleArabic },
-             { SearchFieldTask.Level, x => x.Level },
+            { SearchFieldTask.Title, x =>   x.TitleEnglish},
+            { SearchFieldTask.Priority, x => x.Priority },
+             { SearchFieldTask.StartDate, x => x.StartDate },
+             { SearchFieldTask.EndDate, x =>   x.EndDate},
+            { SearchFieldTask.weight, x => x.ActualWeight },
+             { SearchFieldTask.AssigneduserNames, x => x.Assignees.Select(k=>k.User.NameEnglish) },
+                         { SearchFieldTask.TaskStatus, x =>   x.Status},
             { SearchFieldTask.CreateDate, x => x.CreateDate },
             { SearchFieldTask.CreatedBy, x => x.CreatedBy.NameEnglish },
             { SearchFieldTask.UpdateDate, x => x.UpdateDate },

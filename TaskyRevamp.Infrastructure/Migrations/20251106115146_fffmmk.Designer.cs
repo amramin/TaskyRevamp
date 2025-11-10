@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TaskyRevamp.Infrastructure;
 
@@ -11,9 +12,11 @@ using TaskyRevamp.Infrastructure;
 namespace TaskyRevamp.Infrastructure.Migrations
 {
     [DbContext(typeof(EfDbContext))]
-    partial class EfDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251106115146_fffmmk")]
+    partial class fffmmk
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1068,12 +1071,17 @@ namespace TaskyRevamp.Infrastructure.Migrations
                     b.Property<string>("NameEnglish")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid>("TaskItemId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("Username")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("DepartmentId");
+
+                    b.HasIndex("TaskItemId");
 
                     b.ToTable("Users");
                 });
@@ -1581,7 +1589,15 @@ namespace TaskyRevamp.Infrastructure.Migrations
                         .HasForeignKey("DepartmentId")
                         .OnDelete(DeleteBehavior.NoAction);
 
+                    b.HasOne("TaskyRevamp.Domain.Models.Task.TaskItem", "TaskItem")
+                        .WithMany()
+                        .HasForeignKey("TaskItemId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Department");
+
+                    b.Navigation("TaskItem");
                 });
 
             modelBuilder.Entity("UserDelegations.UserDelegation", b =>

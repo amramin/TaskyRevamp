@@ -72,5 +72,14 @@ public class TaskController : ControllerBase
         return Ok(Task);
     }
 
+    [HttpGet("GetTasksForDDL")]
+    public async Task<IActionResult> GetTasksForDDL()
+    {
+
+        var all = await _mediator.Send(new GetTasksForDDLQuery());
+
+        return Ok(all);
+    }
+
 
 }

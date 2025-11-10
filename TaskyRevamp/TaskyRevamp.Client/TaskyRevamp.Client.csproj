@@ -20,6 +20,8 @@
 		<PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="9.0.8" />
 		
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+		
+		<PackageReference Include="Syncfusion.Blazor.RichTextEditor" Version="31.2.5" />
 		<PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.13.0" />
 
 	</ItemGroup>

@@ -27,9 +27,13 @@ internal class TaskItemConfiguration : IEntityTypeConfiguration<TaskItem>
 
         builder
              .HasOne(te => te.CreatedBy)
-             .WithMany()
-             .OnDelete(DeleteBehavior.Restrict);
+             .WithMany().HasForeignKey(k => k.CreatedById)
+             .OnDelete(DeleteBehavior.NoAction);
+        builder
 
+     .HasOne(te => te.UpdatedBy)
+     .WithMany()
+     .OnDelete(DeleteBehavior.NoAction);
 
         builder
             .HasOne(te => te.Comments)

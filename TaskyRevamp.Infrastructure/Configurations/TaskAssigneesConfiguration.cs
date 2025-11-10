@@ -16,15 +16,15 @@ internal class TaskAssigneesConfiguration : IEntityTypeConfiguration<TaskAssigne
     {
         builder
    .HasOne(te => te.task)
-   .WithMany().HasForeignKey(t => t.taskId)
+   .WithMany(tt => tt.Assignees).HasForeignKey(t => t.taskId)
    .OnDelete(DeleteBehavior.Restrict); // or NoAction in EF Core 5+
 
         builder
             .HasOne(te => te.User)
-            .WithMany().HasForeignKey(l=>l.UserId)
+            .WithMany().HasForeignKey(l => l.UserId)
             .OnDelete(DeleteBehavior.Restrict);
 
 
-       
+
     }
 }

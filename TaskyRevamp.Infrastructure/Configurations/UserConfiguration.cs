@@ -16,11 +16,12 @@ internal class UserConfiguration : IEntityTypeConfiguration<User>
     public void Configure(EntityTypeBuilder<User> builder)
     {
         builder
-    
+
 .HasOne(r => r.Department)
-.WithMany(k=>k.AssignedUser).HasForeignKey(r => r.DepartmentId)
+.WithMany(k => k.AssignedUser).HasForeignKey(r => r.DepartmentId)
 .OnDelete(DeleteBehavior.NoAction);
 
-   
+
+
     }
 }

@@ -42,10 +42,12 @@ public class TaskyService
         var returnUrl = NavigationManager.ToBaseRelativePath(NavigationManager.Uri);
         var loginUrl = string.IsNullOrEmpty(returnUrl) ? "/login" : $"/login?returnUrl={returnUrl}";
 
-        ClearLocalStorage();
+
 
         NavigationManager.NavigateTo(loginUrl, true);
+        ClearLocalStorage();
     }
+
 
     public void ClearLocalStorage()
     {
@@ -86,10 +88,10 @@ public class TaskyService
 
 
 
-    public string PrepareNoPaginatedSearchQueryString<T>( List<T> searchFields = null, string searchText = null)
+    public string PrepareNoPaginatedSearchQueryString<T>(List<T> searchFields = null, string searchText = null)
     {
         var query = new List<string>();
-           
+
 
         if (searchFields != null && searchFields.Count > 0)
         {

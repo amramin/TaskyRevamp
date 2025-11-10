@@ -4,15 +4,17 @@ using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using Microsoft.JSInterop;
+using SurveyRevamp.Client.SyncfusionLocalization;
+using Syncfusion.Blazor;
 using System.Globalization;
 using System.Text.Json;
 using TaskyRevamp.Client;
+using TaskyRevamp.Client.Consumer;
 using TaskyRevamp.Client.Extensions;
 using TaskyRevamp.Client.Services;
 using TaskyRevamp.Dto.GeneralDto;
-using Microsoft.Extensions.Options;
-using TaskyRevamp.Client.Consumer;
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 
 using var http = new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) };
@@ -22,6 +24,7 @@ builder.Configuration.AddJsonStream(stream);
 
 builder.Services.AddBlazoredLocalStorage();
 builder.Services.AddLocalization();
+Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("Ngo9BigBOggjHTQxAR8/V1NNaF5cXmBCf1FpRmJGdld5fUVHYVZUTXxaS00DNHVRdkdmWXtdcHVTRGBeVkBzWkNWYE4=");
 
 builder.Services.Configure<RequestLocalizationOptions>(options =>
 {
@@ -32,7 +35,7 @@ builder.Services.Configure<RequestLocalizationOptions>(options =>
 });
 
 
-
+builder.Services.AddSyncfusionBlazor();
 builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
 builder.Services.AddScoped<CustomAuthenticationService>();
 builder.Services.AddSingleton<PopupService>();
@@ -79,6 +82,7 @@ builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(apiUrl) 
 
 builder.Services.Configure<PaginationSettings>(
     builder.Configuration.GetSection("Pagination"));
+builder.Services.AddSingleton(typeof(ISyncfusionStringLocalizer), typeof(SyncfusionLocalizer));
 
 var host = builder.Build();
 const string defaultCulture = "ar-EG";

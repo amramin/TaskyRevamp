@@ -9,9 +9,15 @@ namespace TaskyRevamp.Dto.Enums.SearchFields
 
     public enum SearchFieldTask
     {
-        TitleEnglish,
-        TitleArabic,
-        Level,
+        Title,
+        Priority,
+        TaskStatus,
+        StartDate,
+        EndDate,
+        weight,
+        AssigneduserNames,
+        PlannedProgress,
+
         UpdatedBy,
 
         CreateDate,

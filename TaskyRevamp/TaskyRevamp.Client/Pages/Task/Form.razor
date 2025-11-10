@@ -12,17 +12,22 @@
 @using TaskyRevamp.Dto.TaskDto
 @using TaskyRevamp.Dto.TaskSourceDto
 @using TaskyRevamp.Dto.TaskTypeDto
-@inject DefaultColumnsSettingConsumer _defaultColumnsSettingConsumer
 @inject IStringLocalizer<SharedResources> Loc
 @inject ToastService ToastService
 @inject TaskTypeConsumer _taskTypeConsumer
 @inject TaskSourceConsumer _taskSourceConsumer
+@inject TaskConsumer _taskConsumer
 @inject DepartmentConsumer _departmentConsumer
-@inject UserConsumer _userConsumer
-<EditForm Model="@taskdto" OnInvalidSubmit="HandleValidSubmit" OnValidSubmit="HandleValidSubmit" FormName="Testmmfmmmff">
+@inject AddTaskSettingConsumer _addTaskSettingConsumer
 
+@inject UserConsumer _userConsumer
+<EditForm Model="@taskdto" EditContext="@editContext"
+          OnValidSubmit="HandleValidSubmit"
+          OnInvalidSubmit="HandleInvalidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
     <div class="row">
-        @foreach (var column in ColumnsList.Where(c => c.IsActive).OrderBy(c => c.Order))
+        @foreach (var column in AddTaskSettings.Where(c => c.IsActive).OrderBy(c => c.Order))
         {
             switch (column.NameEnglish)
             {
@@ -30,9 +35,11 @@
 
                     <div class="mb-3">
                         <label class="form-label">
-                            @Loc["NameEnglish"]
-                            <span class="text-danger"> *</span>
-
+                            @Loc["TitleEnglish"]
+                            @if (column.IsMandatory)
+                            {
+                                <span class="text-danger"> *</span>
+                            }
                         </label>
                         <InputText class="form-control" @bind-Value="taskdto.TitleEnglish" placeholder="@Loc["NameEnglish"]" />
                         <ValidationMessage class="small text-danger" For="@(() => taskdto.TitleEnglish)"></ValidationMessage>
@@ -40,16 +47,83 @@
                     <div class="mb-3">
                         <label class="form-label">
                             @Loc["TitleArabic"]
-                            <span class="text-danger"> *</span>
-
+                            @if (column.IsMandatory)
+                            {
+                                <span class="text-danger"> *</span>
+                            }
                         </label>
                         <InputText class="form-control" @bind-Value="taskdto.TitleArabic" placeholder="@Loc["NameEnglish"]" />
                         <ValidationMessage class="small text-danger" For="@(() => taskdto.TitleArabic)"></ValidationMessage>
                     </div>
 
                     break;
+
+
+                case "Description":
+
+                    <div class="mb-3">
+                        <label class="form-label">
+                            @Loc["DescriptionEnglish"]
+                            @if (column.IsMandatory)
+                            {
+                                <span class="text-danger"> *</span>
+                            }
+                        </label>
+
+                        <div class="col-lg-12">
+                            <div class="mb-2">
+
+
+                              @*   <RichTextEditorComponent EditorId="RTE_English2" @ref="RichTextEditorComponentRefDescriptionEnglish"
+                                                         Content="@taskdto.DescriptionEnglish"
+                                                         ContentChanged="OnDescriptionEnglishChanged"></RichTextEditorComponent>
+ *@
+                                <div class="d-flex align-items-center justify-content-between">
+                                    <div class="d-flex gap-2">
+                                        <ValidationMessage class="small text-danger" For="@(() => taskdto.DescriptionEnglish)" />
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">
+                            @Loc["DescriptionArabic"]
+                            @if (column.IsMandatory)
+                            {
+                                <span class="text-danger"> *</span>
+                            }
+                        </label>
+
+                        <div class="col-lg-12">
+                            <div class="mb-2">
+
+
+                          @*       <RichTextEditorComponent EditorId="RTE_English3" @ref="RichTextEditorComponentRefDescriptionEnglish"
+                                                         Content="@taskdto.DescriptionArabic"
+                                                         ContentChanged="OnContentDescriptionArabicChanged"></RichTextEditorComponent>
+ *@
+                                <div class="d-flex align-items-center justify-content-between">
+                                    <div class="d-flex gap-2">
+                                        <ValidationMessage class="small text-danger" For="@(() => taskdto.DescriptionArabic)" />
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    break;
                 case "Type":
                     <div class="mb-3">
+                        <label class="form-label">
+                            @Loc["SelectType"]
+                            @if (column.IsMandatory)
+                            {
+                                <span class="text-danger"> *</span>
+                            }
+                        </label>
                         <SearchableSingleDropdownOffline TInput=TaskTypeDto
                                                          TOutput=Guid
                                                          TextSelector="(TaskTypeDto x)=> x.Name"
@@ -62,7 +136,13 @@
                     </div>
                     break;
                 case "Source":
-
+                    <label class="form-label">
+                        @Loc["SelectSource"]
+                        @if (column.IsMandatory)
+                        {
+                            <span class="text-danger"> *</span>
+                        }
+                    </label>
                     <div class="mb-3">
                         <SearchableSingleDropdownOffline TInput=TaskSourceDto
                                                          TOutput=Guid
@@ -80,7 +160,10 @@
                     <div class="mb-3">
                         <label class="form-label" for="fromDate">
                             @Loc["FromDate"]
-                            <span class="text-danger"> *</span>
+                            @if (column.IsMandatory)
+                            {
+                                <span class="text-danger"> *</span>
+                            }
                         </label>
 
                         <div class="date-group">
@@ -89,9 +172,32 @@
                         <ValidationMessage class="small text-danger" For="@(() => taskdto.StartDate)" />
                     </div>
                     break;
+
+
+                case " Reminder Date":
+                    <div class="mb-3">
+                        <label class="form-label" for="fromDate">
+                            @Loc["ReminderDate"]
+                            @if (column.IsMandatory)
+                            {
+                                <span class="text-danger"> *</span>
+                            }
+                        </label>
+
+                        <div class="date-group">
+                            <InputDate class="form-control" id="fromDate" @bind-Value="taskdto.ReminderDate" />
+                        </div>
+                        <ValidationMessage class="small text-danger" For="@(() => taskdto.ReminderDate)" />
+                    </div>
+                    break;
                 case "End Date":
                     <div class="mb-3">
-                        <label class="form-label" for="toDate">@Loc["ToDate"]<span class="text-danger"> *</span></label>
+                        <label class="form-label" for="toDate">@Loc["ToDate"]
+                            @if (column.IsMandatory)
+                            {
+                            <span class="text-danger"> *</span>
+                            }    
+                        </label>
                         <div class="date-group">
                             <InputDate class="form-control" id="toDate" @bind-Value="taskdto.EndDate" />
                         </div>
@@ -99,34 +205,105 @@
 
                     </div>
                     break;
-                case "Assigned To Department":
+                case "Department":
                     <div class="mb-3">
                         <label class="form-label">
                             @Loc["AssignedToDepartment"]
-                            <span class="text-danger">*</span>
+                            @if (column.IsMandatory)
+                            {
+                                <span class="text-danger">*</span>
+                            }
                         </label>
                         <SearchableMultiDropdownOffline TInput=DepartmentDto TOutput="Guid" Datasource=departmentDtos
                                                         TextSelector=@(x=>x.NameEnglish) OutputSelector="x=> x.Id" @bind-SelectedOptions=taskdto.AssignedDepartmentIds />
+                    </div>
+                    break;
+                case "Dependency ":
+                    <div class="mb-3">
+                        <label class="form-label">
+                            @Loc["Dependency"]
+                            @if (column.IsMandatory)
+                            {
+                                <span class="text-danger">*</span>
+                            }
+                        </label>
+                        <SearchableMultiDropdownOffline TInput=CreateTaskDto TOutput="Guid" Datasource=allTaskDtos
+                                                        TextSelector=@(x=>x.Title) OutputSelector="x=> x.Id" @bind-SelectedOptions=taskdto.Dependencies />
                     </div>
                     break;
                 case "Assigned To":
                     <div class="mb-3">
                         <label class="form-label">
                             @Loc["AssignedTo"]
-                            <span class="text-danger">*</span>
+                            @if (column.IsMandatory)
+                            {
+                                <span class="text-danger">*</span>
+                            }
                         </label>
                         <SearchableMultiDropdownOffline TInput=UserDto TOutput="Guid" Datasource=userDtos
                                                         TextSelector=@(x=>x.UserName) OutputSelector="x=> x.Id" @bind-SelectedOptions=taskdto.AssignedIds />
                     </div>
-                    @*   case "Status":
+                   break;
+
+                case "Checklist":
+                    <div class="mb-3">
+                        <label class="form-label">
+                            @Loc["Checklist"]
+                            @if (column.IsMandatory)
+                            {
+                                <span class="text-danger">*</span>
+                            }
+                        </label>
+                       
+                    </div>
+        @*   case "Status":
         case "Priority":
         case "Type":
         case "Type":
         case "Type": *@
                     break;
+                case "Comments":
 
+                    <div class="mb-3">
+                        <label class="form-label">
+                            @Loc["Comments"]
+                            @if (column.IsMandatory)
+                            {
+                                <span class="text-danger"> *</span>
+                            }
+                        </label>
+                       
+                           <div class="col-lg-12">
+                                                    <div class="mb-2">
+                                                        <label class="form-label">
+                                                            @Loc["Comment"]
+                                                            <span class="text-danger"> *</span>
+                                                        </label>
+@* 
+                                                        <RichTextEditorComponent EditorId="RTE_English4" @ref="RichTextEditorComponentRefComment"
+                                                             Content="@taskdto.Content"
+                                                            ContentChanged="OnContentChanged"
+                                                            ></RichTextEditorComponent>
+ *@
+                                                        <div class="d-flex align-items-center justify-content-between">
+                                                            <div class="d-flex gap-2">
+                                                                <ValidationMessage class="small text-danger" For="@(() => taskdto.Content)" />
+                                                               </div>
+                                                               </div>
+</div>
+                                                                   
+                  </div>
+                  </div>
+                    break;
                 case "Priority":
                     <div class="mb-3">
+                        <label class="form-label">
+                            @Loc["SelectPriority"]
+                            @if (column.IsMandatory)
+                            {
+                                <span class="text-danger"> *</span>
+                            }
+                        </label>
                         <SearchableSingleDropdownOffline TInput=Priority
                                                          TOutput=int
                                                          TextSelector="(Priority x)=> x.GetDescription()"
@@ -138,18 +315,58 @@
 
                     </div>
                     break;
-                    @*   case "Status":
-        case "Priority":
-        case "Type":
-        case "Type":
-        case "Type": *@
+
+                case "Weight":
+                    <div class="mb-3">
+                        <div class="mb-3">
+                            <label class="form-label" for="maxLength">
+                                @Loc["Weight"]
+                            </label>
+                            <InputNumber class="form-control" min="0" max="100" id="maxLength" @bind-Value="taskdto.weight" />
+                            <ValidationMessage class="small text-danger" For="@(() => taskdto.weight)" />
+
+                        </div>
+
+                    </div>
                     break;
 
-            }
-        }
-    </div>
 
-    <button class="btn btn-primary mt-3" type="submit">Submit</button>
+
+                case "Actual Progress":
+                <div class= "mb-3" >
+                <label class= "form-label" for= "maxLength" >
+                    @Loc["ActualProgress"]
+                                @if (column.IsMandatory)
+                                {
+                                    <span class="text-danger"> *</span>
+                                }
+                </label>
+                            <div class="mb-3">
+
+                            <input type="range" class="form-range"
+                                   min="0" max="100"
+                                   @bind="taskdto.ActualProcess" />
+
+                            <!-- Optional visual bar to match -->
+                            <div class="progress" style="height: 20px;">
+                                <div class="progress-bar" role="progressbar"
+                                     style="width:@taskdto.ActualProcess%;"
+                                     aria-valuenow="@taskdto.ActualProcess"
+                                     aria-valuemin="0" aria-valuemax="100">
+                                </div>
+                            </div>
+
+                </div>
+
+                </div>
+                break;
+      
+            }
+        
+          }
+          </div>
+              
+                <button class="btn btn-primary mt-3" type="submit">Submit</button>
 </EditForm>
 
 @code {
@@ -159,25 +376,53 @@
     [Parameter] public EventCallback OnCancel { get; set; }
 
     [Parameter] public string ButtonText { get; set; }
-    private List<DefaultColumnsSettingDto> ColumnsList = new();
+    public List<AddTaskSettingDto> AddTaskSettings { get; set; } = new List<AddTaskSettingDto>();
+    private EditContext editContext;
+    private ValidationMessageStore messageStore;
     private Dictionary<string, object?> formData = new();
 
     List<TaskTypeDto> taskTypeDtos = new List<TaskTypeDto>();
     List<TaskSourceDto> taskSourceDtos = new List<TaskSourceDto>();
     List<DepartmentDto> departmentDtos = new List<DepartmentDto>();
+    List<CreateTaskDto> allTaskDtos = new List<CreateTaskDto>();
+    private RichTextEditorComponent RichTextEditorComponentRefComment;
+    private RichTextEditorComponent RichTextEditorComponentRefDescriptionEnglish;
+
+    private RichTextEditorComponent RichTextEditorComponentRefDescriptionArabic;
 
     List<UserDto> userDtos = new List<UserDto>();
     List<Priority> priorities = new List<Priority>();
-
+    private void OnContentChanged(string html)
+    {
+        taskdto.Content = html;
+    }
+    private void OnContentDescriptionArabicChanged(string html)
+    {
+        taskdto.DescriptionArabic= html;
+    }
+    private void OnDescriptionEnglishChanged(string html)
+    {
+        taskdto.DescriptionEnglish = html;
+    }
     protected async override Task OnInitializedAsync()
     {
-        var res = await _defaultColumnsSettingConsumer.GetDefaultColumnsSettings();
+        // var res = await _defaultColumnsSettingConsumer.GetDefaultColumnsSettings();
+        // if (res.Success)
+        // {
+        //     var settings = res.Data;
+        //     if (settings != null)
+        //     {
+        //         ColumnsList = settings;
+        //     }
+
+        // }
+        var res = await _addTaskSettingConsumer.GetAddTaskSettings();
         if (res.Success)
         {
             var settings = res.Data;
             if (settings != null)
             {
-                ColumnsList = settings;
+                AddTaskSettings = settings;
             }
 
         }
@@ -190,24 +435,105 @@
         var departs = await _departmentConsumer.GetDepartmentsForDDL();
         departmentDtos = departs.Data.ToList();
         priorities = Enum.GetValues(typeof(Priority)).Cast<Priority>().ToList();
+        var tsks=await _taskConsumer.GetTasksForDDL();
 
+        allTaskDtos = tsks.Data.ToList();
         StateHasChanged();
-        // Initialize data dictionary
-        // foreach (var col in ColumnsList)
-        // {
-        //     formData[col.NameEnglish] = col.FieldType == "checkbox" ? false : null;
-        // }
+        
+    }
+
+     private void ValidateDynamicFields(object sender, ValidationRequestedEventArgs e)
+    {
+        ValidateDynamicFields((EditContext)sender);
+    }
+
+    private void ValidateDynamicFields(EditContext context)
+    {
+        // Clear previous messages
+        messageStore.Clear();
+
+        foreach (var column in AddTaskSettings.Where(c => c.IsMandatory))
+        {
+            // Map column name to property name in CreateTaskDto
+            // e.g., "Start Date" -> "StartDate"
+            string propName = column.NameEnglish.Replace(" ", "").Trim();
+            var prop = typeof(CreateTaskDto).GetProperty(propName);
+            if (prop == null)
+                continue;
+
+            var value = prop.GetValue(taskdto);
+            bool isEmpty = false;
+
+            if (value == null)
+            {
+                isEmpty = true;
+            }
+            else
+            {
+                var type = prop.PropertyType;
+
+                // String
+                if (type == typeof(string))
+                {
+                    isEmpty = string.IsNullOrWhiteSpace(value as string);
+                }
+                // Guid / Nullable<Guid>
+                else if (type == typeof(Guid) || type == typeof(Guid?))
+                {
+                    isEmpty = (Guid)value == Guid.Empty;
+                }
+                // DateTime / Nullable<DateTime>
+                else if (type == typeof(DateTime) || type == typeof(DateTime?))
+                {
+                    isEmpty = value == null;
+                }
+                // Numeric types (optional: you can treat 0 as invalid if needed)
+                else if (type == typeof(int) || type == typeof(int?) ||
+                         type == typeof(double) || type == typeof(double?) ||
+                         type == typeof(decimal) || type == typeof(decimal?))
+                {
+                    // Example: consider 0 as invalid
+                    // isEmpty = Convert.ToDecimal(value) == 0;
+                }
+                // Collections (List<Guid>, List<string>, etc.)
+                else if (typeof(System.Collections.IEnumerable).IsAssignableFrom(type)
+                         && type != typeof(string))
+                {
+                    var enumerable = (System.Collections.IEnumerable)value;
+                    isEmpty = !enumerable.Cast<object>().Any();
+                }
+            }
+
+            if (isEmpty)
+            {
+                var fieldId = new FieldIdentifier(taskdto, prop.Name);
+                // Optional: use column.DisplayName for friendly message
+                messageStore.Add(fieldId, $"{column.NameEnglish} is required.");
+            }
+        }
+
+        // Notify EditContext to refresh validation messages
+        context.NotifyValidationStateChanged();
     }
 
 
     private async Task HandleValidSubmit(EditContext context)
     {
-
+        // proceed with saving
         await OnValidSubmit.InvokeAsync(context);
     }
 
+    private void HandleInvalidSubmit(EditContext context)
+    {
+         ToastService.ShowToastAsync("Please fill all required fields before submitting", "error");
+
+    }
+
+   }
 
 
 
+    
+    }
 
-}
+
