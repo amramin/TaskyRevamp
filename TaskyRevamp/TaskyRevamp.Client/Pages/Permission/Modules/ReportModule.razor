@@ -6,16 +6,16 @@
 @inject ReportModuleConsumer _reportModuleConsumer
 @inject IStringLocalizer<SharedResources> Loc
 
-<div class="container mt-4" style="max-width: 600px;">
-    <h6 class="mb-3 fw-semibold">@Loc["SelectReportOptions"]</h6>
-    <p class="text-muted small">
-        @Loc["ReportModuleHint"]
-    </p>
+<div >
 
+    <div class="text-content">
+        <h6 class="headline-6">@Loc["SelectReportOptions"]</h6>
+        <p class="small-medium-text hint"> @Loc["ReportModuleHint"]</p>
+    </div>
     @foreach (var module in ReportModules)
     {
         var permission = ReportPermissions.First(x => x.ReportModuleId == module.Id);
-        <div class="form-check p-3 border rounded-3 mb-2 shadow-sm @(permission.IsActive ? "bg-light border-primary" : "")">
+        <div class="form-check p-3 @(permission.IsActive ? "bg-light border-primary" : "")">
             <InputCheckbox @bind-Value="permission.IsActive" class="form-check-input" id="@module.Id" />
             <label class="form-check-label w-100" for="@module.Id">
                 <div class="fw-semibold">@module.Name</div>
@@ -24,7 +24,7 @@
         </div>
     }
 </div>
-@code{
+@code {
 
     [Parameter] public PrivilegeDto PrivilegeDto { get; set; } = new PrivilegeDto();
 

@@ -8,16 +8,19 @@
     .text-content {
       margin-bottom: 1.5rem;
     }
-    & > .card-body{
+    & > .card-body {
       flex: 1;
       overflow-y: auto;
       max-height: calc(100svh - 16.5rem);
       border-radius: var(--bs-border-radius);
     }
     & > form > .card-body {
-       max-height: calc(100svh - 19.5rem);
-  flex: 1;
+      max-height: calc(100svh - 19.5rem);
+      flex: 1;
       overflow-y: auto;
+      &.identity {
+        max-height: calc(100svh - 16.5rem);
+      }
     }
     .card-footer {
       padding-block: 0;
@@ -53,6 +56,10 @@
     display: flex;
     flex-direction: row;
     margin-bottom: 0.5rem;
+    cursor: grab;
+    &:hover{
+      box-shadow:var(--bs-shadow)
+    }
     .card-body {
       padding: 0.5rem 0.75rem;
       font-size: 0.875rem;
@@ -143,7 +150,7 @@
               border: 1px solid var(--light-300);
               width: 200px;
               display: flex;
-              padding: 1.5rem 0.25rem ;
+              padding: 1.5rem 0.25rem;
               padding-inline-start: 0.75rem;
               justify-content: space-between;
               border-radius: 1rem;
@@ -153,7 +160,7 @@
           }
         }
         .children {
-           border-top: 1px solid var(--light-300);
+          border-top: 1px solid var(--light-300);
           margin-left: 0.5rem;
           margin-inline-end: 1rem;
           margin-top: 1.5rem;
@@ -168,30 +175,34 @@
             transform: translateX(-50%);
             top: -1.5rem;
           }
-        
-         
+
           .hierarchy-node {
-           padding-top: 1.5rem;
-             position: relative;
-           
-             &:first-child,&:last-child{
-              &::after{
+            padding-top: 1.5rem;
+            position: relative;
+
+            &:first-child,
+            &:last-child {
+              &::after {
                 content: "";
                 position: absolute;
                 height: 1px;
-                width:50%;
+                width: 50%;
                 background-color: var(--bs-white);
-              
-                top:-1px;
+
+                top: -1px;
                 z-index: 2;
               }
-             }
-             &:last-child::after{  inset-inline-end: 0;}
-             &:first-child::after{   inset-inline-start: 0;}
-             &:only-child::after {
-            background-color: var(--bs-white);
-            width: 100%;
-             }
+            }
+            &:last-child::after {
+              inset-inline-end: 0;
+            }
+            &:first-child::after {
+              inset-inline-start: 0;
+            }
+            &:only-child::after {
+              background-color: var(--bs-white);
+              width: 100%;
+            }
           }
           .node-box-container {
             .node-box {
@@ -207,9 +218,7 @@
                 transform: translateX(-50%);
                 top: -1.5rem;
               }
-            
             }
-        
           }
         }
       }

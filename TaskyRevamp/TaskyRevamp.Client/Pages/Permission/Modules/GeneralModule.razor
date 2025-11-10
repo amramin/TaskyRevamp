@@ -208,9 +208,15 @@
     void OnAddChanged(GeneralModulePermissionDto permission, ChangeEventArgs e)
     {
         permission.IsAdd = (bool)e.Value!;
+        // If Add is unchecked, clear validation error
+        if (!permission.IsAdd)
+        {
+            showDelegationFromUserError = false;
+            OnValidationStateChanged.InvokeAsync(true);
+        }
+
         StateHasChanged();
     }
-
     private void OnDelegationToUserClicked(DelegationToUser value, GeneralModulePermissionDto permission)
     {
         if (permission.DelegationToUser == value)
@@ -232,8 +238,9 @@
         {
             permission.DelegationFromUser.Remove(value);
         }
-        showDelegationFromUserError =
-        permission.IsAdd && (permission.DelegationFromUser == null || !permission.DelegationFromUser.Any());
+        showDelegationFromUserError = permission.IsAdd &&
+                                 (permission.DelegationFromUser == null || !permission.DelegationFromUser.Any());
+
         await OnValidationStateChanged.InvokeAsync(!showDelegationFromUserError);
         StateHasChanged();
     }

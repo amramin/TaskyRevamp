@@ -784,6 +784,15 @@ Add a new department to get started</value>
   <data name="PrivilegeDuplicateValidation" xml:space="preserve">
     <value>You can't duplicate the privilege name</value>
   </data>
+  <data name="Subtask_Levels" xml:space="preserve">
+    <value>Subtask Levels</value>
+  </data>
+  <data name="SelectDay" xml:space="preserve">
+    <value>Select Day</value>
+  </data>
+  <data name="SelectTime" xml:space="preserve">
+    <value>Select Time</value>
+  </data>
   <data name="users" xml:space="preserve">
     <value>Users </value>
   </data>
