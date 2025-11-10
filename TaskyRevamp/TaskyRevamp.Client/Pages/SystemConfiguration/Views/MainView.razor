@@ -20,12 +20,6 @@
             </span>
             <span class="text"> @Loc["Default view"]</span>
         </button>
-        <button class="btn tab-btn  @(activeTab == 's' ? "active" : "")" @onclick="() => SetTab('s')">
-            <span class="icon">
-                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.SubTasks"></SVGCrud>
-            </span>
-            <span class="text"> @Loc["Subtask_Level"]</span>
-        </button>
     </div>
     <div class="page-body">
 
@@ -39,11 +33,6 @@
         {
             <TaskyRevamp.Client.Pages.SystemConfiguration.Views.DefaultViewSetting.DefaultViewSetting />
         }
-        else if (activeTab == 's')
-        {
-            <TaskyRevamp.Client.Pages.SystemConfiguration.Views.SubTaskLevels.SubTaskLevel />
-        }
-
     </div>
 </div>
 @code {
@@ -64,7 +53,7 @@
         {
             'v' => @Loc["ViewOptions"],
             'd' => @Loc["Default view"],
-            's' => @Loc["Subtask_Level"],
+            // 's' => @Loc["Subtask_Level"],
             _ => ""
         };
     }
