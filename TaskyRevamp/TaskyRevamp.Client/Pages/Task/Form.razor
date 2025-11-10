@@ -74,10 +74,10 @@
                             <div class="mb-2">
 
 
-                              @*   <RichTextEditorComponent EditorId="RTE_English2" @ref="RichTextEditorComponentRefDescriptionEnglish"
+                                <RichTextEditorComponent EditorId="RTE_English2" @ref="RichTextEditorComponentRefDescriptionEnglish"
                                                          Content="@taskdto.DescriptionEnglish"
                                                          ContentChanged="OnDescriptionEnglishChanged"></RichTextEditorComponent>
- *@
+
                                 <div class="d-flex align-items-center justify-content-between">
                                     <div class="d-flex gap-2">
                                         <ValidationMessage class="small text-danger" For="@(() => taskdto.DescriptionEnglish)" />
@@ -100,10 +100,10 @@
                             <div class="mb-2">
 
 
-                          @*       <RichTextEditorComponent EditorId="RTE_English3" @ref="RichTextEditorComponentRefDescriptionEnglish"
+                                <RichTextEditorComponent EditorId="RTE_English3" @ref="RichTextEditorComponentRefDescriptionEnglish"
                                                          Content="@taskdto.DescriptionArabic"
                                                          ContentChanged="OnContentDescriptionArabicChanged"></RichTextEditorComponent>
- *@
+
                                 <div class="d-flex align-items-center justify-content-between">
                                     <div class="d-flex gap-2">
                                         <ValidationMessage class="small text-danger" For="@(() => taskdto.DescriptionArabic)" />
@@ -279,12 +279,12 @@
                                                             @Loc["Comment"]
                                                             <span class="text-danger"> *</span>
                                                         </label>
-@* 
+
                                                         <RichTextEditorComponent EditorId="RTE_English4" @ref="RichTextEditorComponentRefComment"
                                                              Content="@taskdto.Content"
                                                             ContentChanged="OnContentChanged"
                                                             ></RichTextEditorComponent>
- *@
+
                                                         <div class="d-flex align-items-center justify-content-between">
                                                             <div class="d-flex gap-2">
                                                                 <ValidationMessage class="small text-danger" For="@(() => taskdto.Content)" />

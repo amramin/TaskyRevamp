@@ -6,7 +6,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Microsoft.JSInterop;
-using SurveyRevamp.Client.SyncfusionLocalization;
 using Syncfusion.Blazor;
 using System.Globalization;
 using System.Text.Json;
@@ -14,6 +13,7 @@ using TaskyRevamp.Client;
 using TaskyRevamp.Client.Consumer;
 using TaskyRevamp.Client.Extensions;
 using TaskyRevamp.Client.Services;
+using TaskyRevamp.Client.SyncfusionLocalization;
 using TaskyRevamp.Dto.GeneralDto;
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 
@@ -34,6 +34,7 @@ builder.Services.Configure<RequestLocalizationOptions>(options =>
            .AddSupportedUICultures(supportedCultures);
 });
 
+builder.Services.AddSingleton(typeof(ISyncfusionStringLocalizer), typeof(SyncfusionLocalizer));
 
 builder.Services.AddSyncfusionBlazor();
 builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
@@ -83,7 +84,7 @@ builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(apiUrl) 
 
 builder.Services.Configure<PaginationSettings>(
     builder.Configuration.GetSection("Pagination"));
-builder.Services.AddSingleton(typeof(ISyncfusionStringLocalizer), typeof(SyncfusionLocalizer));
+//builder.Services.AddSingleton(typeof(ISyncfusionStringLocalizer), typeof(SyncfusionLocalizer));
 
 var host = builder.Build();
 const string defaultCulture = "ar-EG";

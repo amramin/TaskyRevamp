@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace SurveyRevamp.Client.SyncfusionLocalization {
+namespace TaskyRevamp.Client.SyncfusionLocalization {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace SurveyRevamp.Client.SyncfusionLocalization {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("SurveyRevamp.Client.SyncfusionLocalization.SfResources", typeof(SfResources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("TaskyRevamp.Client.SyncfusionLocalization.SfResources", typeof(SfResources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

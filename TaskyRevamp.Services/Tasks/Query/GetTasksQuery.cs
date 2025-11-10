@@ -65,30 +65,34 @@ public class GetTasksHandler : IRequestHandler<GetTasksQuery, PagedResult<Create
 
             tasky.CreatedByName = currentCulture == "ar" ? tsk.CreatedBy?.NameArabic : tsk.CreatedBy?.NameEnglish;
             tasky.UpdatedBy = currentCulture == "ar" ? tsk.UpdatedBy?.NameArabic : tsk.UpdatedBy?.NameEnglish;
+            tasky.AssigneduserNames = string.Join(",", assgnedusr.Value.Select(k => k.Username));// string.Join(", ", tsk.Assignees.Select(k => k.User.NameEnglish));
+            if (tasky.AssigneduserNames.Count() > 0)
+            {
+                var initials = string.Join(", ",
 
-            var initials = string.Join(", ",
-    tasky.AssigneduserNames
-        .Split(',', StringSplitOptions.RemoveEmptyEntries) // split users
-        .Select(u =>
-        {
-            var parts = u.Trim().Split(' ', StringSplitOptions.RemoveEmptyEntries);
-            if (parts.Length >= 2)
+                    tasky.AssigneduserNames
+            .Split(',', StringSplitOptions.RemoveEmptyEntries) // split users
+            .Select(u =>
             {
-                return $"{parts[0][0]}{parts[1][0]}"; // first letter of first and last name
-            }
-            else if (parts.Length == 1)
-            {
-                return $"{parts[0][0]}"; // only first name exists
-            }
-            else
-            {
-                return string.Empty;
-            }
-        })
-        .Where(x => !string.IsNullOrEmpty(x)) // remove empty
-);
+                var parts = u.Trim().Split(' ', StringSplitOptions.RemoveEmptyEntries);
+                if (parts.Length >= 2)
+                {
+                    return $"{parts[0][0]}{parts[1][0]}"; // first letter of first and last name
+                }
+                else if (parts.Length == 1)
+                {
+                    return $"{parts[0][0]}"; // only first name exists
+                }
+                else
+                {
+                    return string.Empty;
+                }
+            })
+            .Where(x => !string.IsNullOrEmpty(x)) // remove empty
+    );
 
-            tasky.AssigneduserNames = initials;
+                tasky.AssigneduserNames = initials;
+            }
             alltasks.Add(tasky);
 
         }
