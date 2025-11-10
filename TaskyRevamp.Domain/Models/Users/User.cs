@@ -1,9 +1,11 @@
+using TaskyRevamp.Domain.Interfaces;
+using TaskyRevamp.Domain.Models.Permissions;
 using TaskyRevamp.Domain.Models.Task;
 using TaskyRevamp.Dto.Account;
 
 namespace TaskyRevamp.Domain.Models.Users;
 
-public class User : Entity
+public class User : Entity, IHasCreationMetaData, IHasUpdateMetaData
 {
     public string? Username { get; set; }
     public string? NameEnglish { get; set; }
@@ -14,9 +16,18 @@ public class User : Entity
     public string? Mobile { get; set; }
     public bool IsActive { get; set; }
     public bool IsManager { get; set; }
-    public Guid? DepartmentId { get; set; }
+	public Guid PrivilegeId { get; set; }
+	public Privilege Privilege { get; set; }
+	public Guid? DepartmentId { get; set; }
     public Department? Department { get;  set; }
-    public User()
+	public Guid CreatedById { get; set; }
+	public User CreatedBy { get; set; }
+	public DateTime CreateDate { get; set; }
+	public Guid? UpdatedById { get; set; }
+	public User? UpdatedBy { get; set; }
+	public DateTime? UpdateDate { get; set; }
+
+	public User()
     {
 
     }
@@ -41,8 +52,16 @@ public class User : Entity
             userNameAR = NameArabic,
             userNameEN = NameEnglish,
             Email = Email,
-        };
-
+            Mobile = Mobile,
+            IsActive = IsActive,
+            IsManager = IsManager,
+            DepartmentId = DepartmentId,
+            PrivilegeId = PrivilegeId,
+			CreatedById = CreatedById,
+			CreateDate = CreateDate,
+			UpdatedById = UpdatedById,
+			UpdateDate = UpdateDate,
+		};
         return dto;
     }
 }

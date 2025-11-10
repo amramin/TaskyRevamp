@@ -124,6 +124,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add user.
+        /// </summary>
+        public static string Add_user {
+            get {
+                return ResourceManager.GetString("Add_user", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add A New Privilege To Get Started.
         /// </summary>
         public static string AddANewPrivilegeToGetStarted {
@@ -147,6 +156,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string AddANewTaskTypeToGetStarted {
             get {
                 return ResourceManager.GetString("AddANewTaskTypeToGetStarted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add a new user to get started.
+        /// </summary>
+        public static string AddANewUserToGetStarted {
+            get {
+                return ResourceManager.GetString("AddANewUserToGetStarted", resourceCulture);
             }
         }
         
@@ -763,6 +781,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Email Address.
+        /// </summary>
+        public static string email {
+            get {
+                return ResourceManager.GetString("email", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Employee&apos;s Tasks.
         /// </summary>
         public static string EmployeesTasks {
@@ -1286,6 +1313,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No users available.
+        /// </summary>
+        public static string NoUsersAvailable {
+            get {
+                return ResourceManager.GetString("NoUsersAvailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Priority Ranking.
         /// </summary>
         public static string Order {
@@ -1606,6 +1642,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string SelectReportOptions {
             get {
                 return ResourceManager.GetString("SelectReportOptions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Set as Manager.
+        /// </summary>
+        public static string setAsManager {
+            get {
+                return ResourceManager.GetString("setAsManager", resourceCulture);
             }
         }
         
@@ -1948,6 +1993,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string UserDepartment {
             get {
                 return ResourceManager.GetString("UserDepartment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Users .
+        /// </summary>
+        public static string users {
+            get {
+                return ResourceManager.GetString("users", resourceCulture);
             }
         }
         

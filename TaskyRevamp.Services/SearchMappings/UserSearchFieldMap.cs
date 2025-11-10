@@ -1,0 +1,24 @@
+﻿using System.Linq.Expressions;
+using TaskyRevamp.Domain.Models.Users;
+using TaskyRevamp.Dto.Enums.SearchFields;
+
+namespace TaskyRevamp.Services.SearchMappings
+{
+	public class UserSearchFieldMap
+	{
+		public static readonly Dictionary<SearchFieldUser, Expression<Func<User, object>>> Map = new()
+		{
+			{ SearchFieldUser.NameEnglish, x => x.NameEnglish },
+			{ SearchFieldUser.NameArabic, x => x.NameArabic },
+			{ SearchFieldUser.CreateDate, x => x.CreateDate },
+			{ SearchFieldUser.CreatedBy, x => x.CreatedBy.NameEnglish },
+			{ SearchFieldUser.UpdateDate, x => x.UpdateDate },
+			{ SearchFieldUser.UpdatedBy, x => x.UpdatedBy.NameEnglish },
+			{ SearchFieldUser.ActiveStatus, x => x.IsActive },
+			{ SearchFieldUser.Email, x => x.Email },
+			{ SearchFieldUser.Department, x => x.Department },
+			{ SearchFieldUser.Privilege, x => x.Privilege },
+			{ SearchFieldUser.IsManager, x => x.IsManager }
+		};
+	}
+}

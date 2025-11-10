@@ -106,8 +106,31 @@ public class EfDbContext : DbContext
 
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(EfDbContext).Assembly);
 
+		modelBuilder.Entity<Privilege>()
+	   .HasOne(p => p.CreatedBy)
+	   .WithMany()
+	   .HasForeignKey(p => p.CreatedById)
+	   .OnDelete(DeleteBehavior.Restrict);
 
-        foreach (var fk in modelBuilder.Model
+		modelBuilder.Entity<Privilege>()
+			.HasOne(p => p.UpdatedBy)
+			.WithMany()
+			.HasForeignKey(p => p.UpdatedById)
+			.OnDelete(DeleteBehavior.Restrict);
+
+		modelBuilder.Entity<User>()
+	   .HasOne(u => u.CreatedBy)
+	   .WithMany()
+	   .HasForeignKey(u => u.CreatedById)
+	   .OnDelete(DeleteBehavior.Restrict);
+
+		modelBuilder.Entity<User>()
+			.HasOne(u => u.UpdatedBy)
+			.WithMany()
+			.HasForeignKey(u => u.UpdatedById)
+			.OnDelete(DeleteBehavior.Restrict);
+
+		foreach (var fk in modelBuilder.Model
          .GetEntityTypes()
          .SelectMany(t => t.GetForeignKeys())
          .Where(fk => fk.PrincipalEntityType.ClrType == typeof(User)))

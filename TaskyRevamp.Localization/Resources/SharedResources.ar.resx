@@ -784,4 +784,22 @@
   <data name="PrivilegeDuplicateValidation" xml:space="preserve">
     <value>لا يمكنك تكرار اسم الصلاحية</value>
   </data>
+  <data name="users" xml:space="preserve">
+    <value>المستخدمين</value>
+  </data>
+  <data name="email" xml:space="preserve">
+    <value>البريد اللإلكتروني</value>
+  </data>
+  <data name="Add_user" xml:space="preserve">
+    <value>إضافة مستخدم</value>
+  </data>
+  <data name="NoUsersAvailable" xml:space="preserve">
+    <value>لا يوجد مستخدمون متاحون</value>
+  </data>
+  <data name="AddANewUserToGetStarted" xml:space="preserve">
+    <value>أضف مستخدمًا جديدًا للبدء</value>
+  </data>
+  <data name="setAsManager" xml:space="preserve">
+    <value>التعيين كمدير</value>
+  </data>
 </root>

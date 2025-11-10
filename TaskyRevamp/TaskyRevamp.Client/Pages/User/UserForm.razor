@@ -1,0 +1,79 @@
+﻿@using TaskyRevamp.Dto.SystemConfiguration
+@inject IStringLocalizer<SharedResources> Loc
+
+
+<EditForm EditContext="@editContext" OnValidSubmit="@OnSubmitHandler">
+    <DataAnnotationsValidator />
+    <div class="offcanvas-body">
+        <div class="mb-3">
+            <label class="form-label">
+                @Loc["Name English"]
+                <span class="text-danger">*</span>
+            </label>
+            <InputText class="form-control" @bind-Value="source.NameEnglish" placeholder=@Loc["Type Source Name English"] />
+            <ValidationMessage class="small text-danger" For="@(() => source.NameEnglish)"></ValidationMessage>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">
+                @Loc["Name Arabic"]
+                <span class="text-danger">*</span>
+            </label>
+            <InputText class="form-control" @bind-Value="source.NameArabic" placeholder=@Loc["Type Source Name Arabic"] />
+            <ValidationMessage class="small text-danger" For="@(() => source.NameArabic)"></ValidationMessage>
+        </div>
+
+        <div class="form-check form-switch custom">
+            <InputCheckbox @bind-Value="source.IsActive" class="form-check-input" id="inactiveSwitch" />
+            <label class="form-check-label" for="inactiveSwitch">
+                <span class="toggler-icon"></span>
+                @Loc[source.IsActive ? "inactive" : "active"]
+            </label>
+        </div>
+    </div>
+    <div class="offcanvas-footer">
+        <div class="row g-2">
+            <div class="col-6">
+                <div class="d-grid">
+                    <button type="button" class="btn btn-lg btn-light" @onclick="OnCancelClick">@Loc["Cancel"]</button>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-lg btn-primary">@Loc[@SubmitButtonText]</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</EditForm>
+
+@code {
+    [Parameter] public SourceDto source { get; set; } = new SourceDto();
+    [Parameter] public EventCallback<EditContext> OnValidSubmit { get; set; }
+    [Parameter] public EventCallback OnCancel { get; set; }
+    [Parameter] public string SubmitButtonText { get; set; } = "Save";
+    private EditContext editContext;
+
+    protected override void OnParametersSet()
+    {
+        if (editContext == null || editContext.Model != source)
+        {
+            editContext = new EditContext(source);
+        }
+    }
+
+    private async Task OnSubmitHandler(EditContext context)
+    {
+        await OnValidSubmit.InvokeAsync(context);
+    }
+    private async void OnCancelClick()
+    {
+        await OnCancel.InvokeAsync();
+    }
+    public void ClearValidationMessages()
+    {
+        editContext.NotifyValidationStateChanged();
+    }
+}
