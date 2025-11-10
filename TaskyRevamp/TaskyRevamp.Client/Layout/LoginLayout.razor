@@ -1,16 +1,20 @@
 @using TaskyRevamp.Client.Services
 @inherits LayoutComponentBase
 @inject LoaderService LoaderService
+@inject TaskyService taskyService
+@inject IJSRuntime JS
+@using TaskyRevamp.Client.Consumer
+@inject SystemIdentityConsumer _systemIdentityConsumer
 
 @Body
 
 <Loader IsVisible="@isLoaderVisible" />
 
 @code {
-
     private bool isLoaderVisible;
+    private string systemLogoAsImgSrc = "";
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
         LoaderService.OnShow += () =>
         {
@@ -21,6 +25,18 @@
         {
             isLoaderVisible = false;
             InvokeAsync(StateHasChanged); // force UI refresh
+        };
+
+        var identity = await taskyService.GetSystemIdentity();
+        systemLogoAsImgSrc = taskyService.GetSystemLogoAsImgSrc(identity.Logo);
+
+        await taskyService.ChangeTheme(identity);
+
+        taskyService.OnSystemIdentityChanged += async (updatedIdentity) =>
+        {
+            systemLogoAsImgSrc = taskyService.GetSystemLogoAsImgSrc(updatedIdentity.Logo);
+            await taskyService.ChangeTheme(updatedIdentity);
+            await InvokeAsync(StateHasChanged);
         };
     }
 }
