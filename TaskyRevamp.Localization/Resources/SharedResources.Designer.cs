@@ -2019,6 +2019,15 @@ namespace TaskyRevamp.Localization.Resources
         }
 
         /// <summary>
+        ///   Looks up a localized string similar to Select Day.
+        /// </summary>
+        public static string SelectDay {
+            get {
+                return ResourceManager.GetString("SelectDay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Parent Department .
         /// </summary>
         public static string SelectParent
@@ -2073,6 +2082,15 @@ namespace TaskyRevamp.Localization.Resources
             }
         }
 
+        /// <summary>
+        ///   Looks up a localized string similar to Select Time.
+        /// </summary>
+        public static string SelectTime {
+            get {
+                return ResourceManager.GetString("SelectTime", resourceCulture);
+            }
+        }
+        
         /// <summary>
         ///   Looks up a localized string similar to Source.
         /// </summary>
@@ -2194,6 +2212,15 @@ namespace TaskyRevamp.Localization.Resources
             }
         }
 
+        /// <summary>
+        ///   Looks up a localized string similar to Subtask Levels.
+        /// </summary>
+        public static string Subtask_Levels {
+            get {
+                return ResourceManager.GetString("Subtask_Levels", resourceCulture);
+            }
+        }
+        
         /// <summary>
         ///   Looks up a localized string similar to Sunday.
         /// </summary>

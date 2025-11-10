@@ -826,4 +826,13 @@
   <data name="PrivilegeDuplicateValidation" xml:space="preserve">
     <value>لا يمكنك تكرار اسم الصلاحية</value>
   </data>
+  <data name="Subtask_Levels" xml:space="preserve">
+    <value>مستويات المهمة الفرعية</value>
+  </data>
+  <data name="SelectDay" xml:space="preserve">
+    <value>اختر اليوم</value>
+  </data>
+  <data name="SelectTime" xml:space="preserve">
+    <value>اختر الوقت</value>
+  </data>
 </root>
