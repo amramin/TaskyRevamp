@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 using TaskyRevamp.Dto.Permissions.GeneralModule;
 using TaskyRevamp.Dto.Permissions.ReportModule;
+using TaskyRevamp.Dto.Permissions.TaskModule;
 using TaskyRevamp.Localization.Resources;
 
 namespace TaskyRevamp.Dto.Permissions
@@ -26,6 +22,8 @@ namespace TaskyRevamp.Dto.Permissions
 		public DateTime? UpdateDate { get; set; }
 		public List<GeneralModulePermissionDto> GeneralModulePermissions { get; set; } = new List<GeneralModulePermissionDto>();
 		public List<ReportModulePermissionDto> ReportModulePermissionDtos { get; set; } = new List<ReportModulePermissionDto>();
+		public List<TaskModuleUserDepartmentPermissionDto> TaskModuleUserDepartmentDto { get; set; } = new List<TaskModuleUserDepartmentPermissionDto>();
+		public List<TaskModuleExternalDepartmentDto> TaskModuleExternalDepartmentDto { get; set; } = new List<TaskModuleExternalDepartmentDto>();
 	}
 	public class PrivilegeDtoWithName
 	{

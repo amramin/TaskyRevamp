@@ -139,7 +139,7 @@
     <value>Never</value>
   </data>
   <data name="Required" xml:space="preserve">
-    <value>This Field Required</value>
+    <value>This field is required</value>
   </data>
   <data name="DataSavedSuccessfully" xml:space="preserve">
     <value>Data Saved Successfully</value>
@@ -556,6 +556,30 @@ Add a new department to get started</value>
   <data name="DefaultColumnNotFound" xml:space="preserve">
     <value>Default Column with Id {id} not found.</value>
   </data>
+  <data name="System Identity Configuration" xml:space="preserve">
+    <value>System Identity Configuration</value>
+  </data>
+  <data name="Primary Color" xml:space="preserve">
+    <value>Primary Color</value>
+  </data>
+  <data name="Primary Active Color" xml:space="preserve">
+    <value>Primary Active Color</value>
+  </data>
+  <data name="Main Title" xml:space="preserve">
+    <value>Main Title</value>
+  </data>
+  <data name="Sub Title" xml:space="preserve">
+    <value>Sub Title</value>
+  </data>
+  <data name="Navigation Background" xml:space="preserve">
+    <value>Navigation Background</value>
+  </data>
+  <data name="Border Color" xml:space="preserve">
+    <value>Border Color</value>
+  </data>
+  <data name="System Identity" xml:space="preserve">
+    <value>System Identity</value>
+  </data>
   <data name="AddNewPriority" xml:space="preserve">
     <value>Add New Priority</value>
   </data>
@@ -619,7 +643,7 @@ Add a new department to get started</value>
   <data name="NoDelegationvailable" xml:space="preserve">
     <value>No Delegations available</value>
   </data>
-  <data name="GeneralModules" xml:space="preserve">
+  <data name="GeneralModule" xml:space="preserve">
     <value>General Modules </value>
   </data>
   <data name="Privilege" xml:space="preserve">
@@ -741,5 +765,65 @@ Add a new department to get started</value>
   </data>
   <data name="SelectPriority" xml:space="preserve">
     <value>Select Priority</value>
+  </data>
+  <data name="AboveUserDepartmentLevel" xml:space="preserve">
+    <value>Above user department level</value>
+  </data>
+  <data name="BelowUserDepartmentLevel" xml:space="preserve">
+    <value>Below user department leve</value>
+  </data>
+  <data name="PeersLevel" xml:space="preserve">
+    <value>Peer's level</value>
+  </data>
+  <data name="CreateTaskOnHim" xml:space="preserve">
+    <value>Create task on him</value>
+  </data>
+  <data name="CreateTaskOnHimHint" xml:space="preserve">
+    <value>This allows the user to create tasks for himself and see his tasks only as creator or assignee</value>
+  </data>
+  <data name="SameDepartmentHint" xml:space="preserve">
+    <value>This option will automatically select your department to apply the permission to it</value>
+  </data>
+  <data name="PeersLevelHint" xml:space="preserve">
+    <value> Same level departments: This option will automatically select the peer departments that are at the same level as the user's department. Only departments that share the same parent as the user's department will be selected to apply the permission to them.</value>
+  </data>
+  <data name="BelowUserDepartmentLevelHint" xml:space="preserve">
+    <value>This option allows you to apply the permission to departments located below the user's department level. The system will automatically follow the vertical hierarchy linked to user's department</value>
+  </data>
+  <data name="AboveUserDepartmentLevelHint" xml:space="preserve">
+    <value>This option allows you to apply the permission to departments located above the user's department level. The system will automatically follow the vertical hierarchy linked to the parent of the user's department</value>
+  </data>
+  <data name="ExternalDepartmentHint" xml:space="preserve">
+    <value>You can use an external department not related to the user department to apply the permission to it</value>
+  </data>
+  <data name="UserDepartment" xml:space="preserve">
+    <value>User Department</value>
+  </data>
+  <data name="ExternalDepartment" xml:space="preserve">
+    <value>External Department</value>
+  </data>
+  <data name="Department" xml:space="preserve">
+    <value>Department</value>
+  </data>
+  <data name="Permissions" xml:space="preserve">
+    <value>Permissions</value>
+  </data>
+  <data name="EmployeesTasks" xml:space="preserve">
+    <value>Employee's Tasks</value>
+  </data>
+  <data name="ManagersTasks" xml:space="preserve">
+    <value>Manager's Tasks</value>
+  </data>
+  <data name="DirectionLevel" xml:space="preserve">
+    <value>Direction Level</value>
+  </data>
+  <data name="DirectionType" xml:space="preserve">
+    <value>Direction Type</value>
+  </data>
+  <data name="IncludingSubDepartment" xml:space="preserve">
+    <value>Including Sub-Department</value>
+  </data>
+  <data name="PrivilegeDuplicateValidation" xml:space="preserve">
+    <value>You can't duplicate the privilege name</value>
   </data>
 </root>

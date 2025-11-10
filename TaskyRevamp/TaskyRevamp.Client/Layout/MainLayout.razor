@@ -2,8 +2,10 @@
 @using Blazored.LocalStorage
 @using TaskyRevamp.Client.Services
 @using TaskyRevamp.Client.Shared.Popups
+@using TaskyRevamp.Client.Consumer
+@using TaskyRevamp.Dto.SystemConfiguration
 @inherits LayoutComponentBase
-@inject Blazored.LocalStorage.ILocalStorageService LocalStorage
+@inject SystemIdentityConsumer _systemIdentityConsumer
 @inject ILocalStorageService localStorageService
 @inject NavigationManager NavigationManager
 @inject TaskyService taskyService
@@ -35,13 +37,13 @@
                 <div class="end">
                     <CultureSelector @rendermode="StaticClasses.InteractiveAutoRenderModeFalse" />
                     @*                     <button class="btn-change-lang btn" onclick="@ChangeLanguage">
-                        <span class="ar">
-                            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.AR"></SVGCrud>
-                        </span>
-                        <span class="en">
-                            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.EN"></SVGCrud>
-                        </span>
-                    </button> *@
+                            <span class="ar">
+                                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.AR"></SVGCrud>
+                            </span>
+                            <span class="en">
+                                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.EN"></SVGCrud>
+                            </span>
+                        </button> *@
                     <div class="dropdown notifcation-dropdown">
                         <button class="btn btn-action"
                                 data-bs-toggle="dropdown"
@@ -60,8 +62,8 @@
                         </ul>
                     </div>
                     <img class="logo"
-                         src="images/stingray-logo.svg"
-                         alt="stingray-logo" />
+                         src="@(string.IsNullOrEmpty(systemLogoAsImgSrc)? "" : systemLogoAsImgSrc)"
+                         alt="system-logo" />
                     <div class="dropdown dropdown-user">
                         <button class="btn btn-user"
                                 data-bs-toggle="dropdown"
@@ -104,7 +106,7 @@
             <CascadingValue Value="ToggleDialog">
                 <CascadingValue Value="SetRenderFragment">
                     <CascadingValue Value="Loc">
-                    @Body
+                        @Body
                     </CascadingValue>
                     <PopupHost />
                 </CascadingValue>
@@ -112,14 +114,14 @@
 
             <footer class="page-footer">
                 @* <span class="start-text">
-                    Copyright &copy;
-                    <a class="primary-link-btn" href="#"> Stingray Tasky</a>
-                    <span class="year">2024</span> . All rights reserved.
-                </span>
-                <span class="end-text">
-                    Power by
-                    <a href="#" class="primary-link-btn text-decoration-none">Stingray</a>
-                </span> *@
+                        Copyright &copy;
+                        <a class="primary-link-btn" href="#"> Stingray Tasky</a>
+                        <span class="year">2024</span> . All rights reserved.
+                    </span>
+                    <span class="end-text">
+                        Power by
+                        <a href="#" class="primary-link-btn text-decoration-none">Stingray</a>
+                    </span> *@
                 <span class="text-center  flex-grow-1">All rights are safe - Kingdom of Saudi Arabia</span>
             </footer>
         </section>
@@ -140,6 +142,8 @@
     private string SideMenuWrapperClass =>
     IsSideMenuCollapsed ? "main-wrapper mainlayout-collapsed" : "main-wrapper";
 
+    private string systemLogoAsImgSrc = "";
+
     private void ToggleSideMenu()
     {
         IsSideMenuCollapsed = !IsSideMenuCollapsed;
@@ -150,7 +154,7 @@
         await base.OnAfterRenderAsync(firstRender);
     }
 
-    protected override void OnInitialized()
+    protected async override Task OnInitializedAsync()
     {
         LoaderService.OnShow += () =>
         {
@@ -161,6 +165,17 @@
         {
             isLoaderVisible = false;
             InvokeAsync(StateHasChanged); // force UI refresh
+        };
+
+        var identity = await taskyService.GetSystemIdentity();
+        systemLogoAsImgSrc = taskyService.GetSystemLogoAsImgSrc(identity.Logo);
+
+        await taskyService.ChangeTheme(identity);
+        // Listen for logo
+        taskyService.OnSystemIdentityChanged += (updatedIdentity) =>
+        {
+            systemLogoAsImgSrc = taskyService.GetSystemLogoAsImgSrc(updatedIdentity.Logo);
+            InvokeAsync(StateHasChanged);
         };
     }
 
@@ -203,4 +218,6 @@
             taskyService.NavigateToLogin();
         }
     }
+
+   
 }

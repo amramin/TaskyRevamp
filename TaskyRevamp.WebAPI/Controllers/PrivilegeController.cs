@@ -27,7 +27,7 @@ namespace TaskyRevamp.WebAPI.Controllers
 			[FromQuery] int? pageSize = null,
 			[FromQuery] string sortByColumnName = "CreateDate",
 			[FromQuery] bool sortAscending = true,
-			[FromQuery] List<SearchField> searchFields = null,
+			[FromQuery] List<SearchFieldPrivileg> searchFields = null,
 			[FromQuery] string searchText = null)
 		{
 
@@ -45,7 +45,7 @@ namespace TaskyRevamp.WebAPI.Controllers
 		[HttpPost("CreatePrivilege")]
         public async Task<IActionResult> CreatePrivilege([FromBody] PrivilegeDto privilegeDto)
         {
-            return Ok(await _mediator.Send(new CreatePrivilegeCommand(privilegeDto)));
+			return Ok(await _mediator.Send(new CreatePrivilegeCommand(privilegeDto)));
         }
 
         [HttpPost("UpdatePrivilege")]

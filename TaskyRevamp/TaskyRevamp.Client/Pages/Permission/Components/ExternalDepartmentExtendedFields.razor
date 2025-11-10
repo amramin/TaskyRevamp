@@ -1,0 +1,148 @@
+﻿@using TaskyRevamp.Dto.Department
+@using TaskyRevamp.Dto.SystemConfiguration
+@using TaskyRevamp.Dto.Enums
+@using TaskyRevamp.Dto.Permissions.TaskModule
+@using TaskyRevamp.Client.Consumer
+@using Stingray.Components.MultiSelectComponent
+@inject IStringLocalizer<SharedResources> Loc
+
+<div class="card mb-3 border">
+    <div class="card-header d-flex justify-content-between align-items-center bg-light">
+        <strong>@DepartmentName</strong>
+        <div>
+            <button class="btn btn-sm btn-outline-secondary" @onclick="ToggleExpand">
+                @(IsExpanded ? "-" : "+")
+            </button>
+            <button class="btn btn-sm btn-outline-danger ms-2" @onclick="RemoveClicked">
+                <span class="icon">
+                    <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Delete"></SVGCrud>
+                </span>
+            </button>
+        </div>
+    </div>
+
+    @if (IsExpanded)
+    {
+        <div class="card-body">
+            <div class="form-check mb-2">
+                <input class="form-check-input" type="checkbox" @bind="Item.IsIncludeSubDepartment" />
+                <label class="form-check-label">@Loc["IncludingSubDepartment"]</label>
+            </div>
+            @if (Item.IsIncludeSubDepartment)
+            {
+                <div class="mb-3">
+                    <label class="form-label fw-bold">@Loc["DirectionLevel"] <span class="text-danger">*</span></label>
+                    <input type="number"
+                           class="form-control @(Item.DirectionLevel < 1 ? "border-danger" : "")"
+                           min="1"
+                           @oninput="ValidateDirectionLevel"
+                           @bind="Item.DirectionLevel" />
+                    @if(Item.DirectionLevel == null)
+                    {
+                        <div class="text-danger small mt-1">@Loc["Required"]</div>
+                    }
+                </div>
+            }
+            <div class="form-check mb-2">
+                <input class="form-check-input" type="checkbox" @bind="Item.IsManagerTasks" />
+                <label class="form-check-label">@Loc["ManagersTasks"]</label>
+            </div>
+
+            <div class="form-check mb-3">
+                <input class="form-check-input" type="checkbox" @bind="Item.IsEmployeeTasks" />
+                <label class="form-check-label">@Loc["EmployeesTasks"]</label>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label fw-bold">@Loc["Permissions"] <span class="text-danger">*</span></label>
+                <SearchableMultiDropdownOffline TInput="Permission"
+                                                TOutput="int"
+                                                Datasource="PermissionList"
+                                                TextSelector="(p => Loc[p.ToString()])"
+                                                OutputSelector="(p => (int)p)"
+                                                SelectedOptions="Item.PermissionId"
+                                                SelectedOptionsChanged="OnPermissionsChanged" />
+                @if (Item.PermissionId == null || !Item.PermissionId.Any())
+                {
+                   <div class="text-danger small mt-1">@Loc["Required"]</div>
+                }
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">@Loc["Status"]<span class="text-danger">*</span></label>
+                <SearchableMultiDropdownOffline TInput="StatusSettingsDto"
+                                                TOutput="Guid"
+                                                Datasource="StatusList"
+                                                TextSelector="(s => s.Name)"
+                                                OutputSelector="(s => s.Id)"
+                                                SelectedOptions="Item.Status"
+                                                SelectedOptionsChanged="OnStatusChanged" />
+                @* @if (Item.Status == null || !Item.Status.Any())
+                {
+                    <div class="text-danger small mt-1">@Loc["Required"]</div>
+                } *@
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">@Loc["Source"]<span class="text-danger">*</span></label>
+                <SearchableMultiDropdownOffline TInput="SourceDto"
+                                                TOutput="Guid"
+                                                Datasource="SourceList"
+                                                TextSelector="(s => s.DisplayedName)"
+                                                OutputSelector="(s => s.Id)"
+                                                SelectedOptions="Item.Source"
+                                                SelectedOptionsChanged="OnSourceChanged" />
+                @* @if (Item.Source == null || !Item.Source.Any())
+                {
+                    <div class="text-danger small mt-1">@Loc["Required"]</div>
+                } *@
+            </div>
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter] public TaskModuleExternalDepartmentDto Item { get; set; }
+    [Parameter] public string DepartmentName { get; set; } = string.Empty;
+    [Parameter] public EventCallback<TaskModuleExternalDepartmentDto> OnRemove { get; set; }
+    [Parameter] public List<StatusSettingsDto> StatusList { get; set; } = new();
+    [Parameter] public List<SourceDto> SourceList { get; set; } = new();
+    private bool IsExpanded { get; set; } = true;
+    private List<Permission> PermissionList = Enum.GetValues(typeof(Permission)).Cast<Permission>().ToList();
+    private void OnPermissionsChanged(List<int> selectedPermissions)
+    {
+        Item.PermissionId = selectedPermissions;
+        StateHasChanged();
+    }
+    private void OnStatusChanged(List<Guid> selectedStatuses)
+    {
+        Item.Status = selectedStatuses;
+        StateHasChanged();
+    }
+
+    private void OnSourceChanged(List<Guid> selectedSources)
+    {
+        Item.Source = selectedSources;
+        StateHasChanged();
+    }
+    private async Task RemoveClicked()
+    {
+        await OnRemove.InvokeAsync(Item);
+    }
+    private void ToggleExpand()
+    {
+        IsExpanded = !IsExpanded;
+    }
+    private void ValidateDirectionLevel(ChangeEventArgs e)
+    {
+        if (int.TryParse(e.Value?.ToString(), out int value))
+        {
+            Item.DirectionLevel = value < 1 ? 1 : value;
+        }
+        else
+        {
+            Item.DirectionLevel = 1;
+        }
+        StateHasChanged();
+    }
+}

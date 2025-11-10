@@ -1,0 +1,208 @@
+﻿@page "/SystemIdentitySetting"
+
+@using TaskyRevamp.Client.Consumer
+@using TaskyRevamp.Client.Services
+@using TaskyRevamp.Dto.Enums
+@using TaskyRevamp.Dto.SystemConfiguration
+@inject SystemIdentityConsumer _systemIdentitySettingConsumer
+@inject IStringLocalizer<SharedResources> Loc
+@inject ToastService ToastService
+@inject NavigationManager NavigationManager
+@inject TaskyService taskyService
+
+<h4 class="fw-bold mb-4 ms-4">@Loc["System Identity"]</h4>
+<div class="card shadow-sm p-4">
+    <EditForm Model="@_systemIdentity" OnValidSubmit="@SaveSystemIdentity">
+        <DataAnnotationsValidator />
+
+        <!-- Logo Section -->
+        <div class="text-center mb-4">
+            <div class="position-relative d-inline-block">
+                @if (_systemIdentity.Logo != null)
+                {
+                    <img src="@GetSystemLogo()" alt="Logo" class="rounded-circle border" style="width:200px; height:200px;" />
+                }
+
+                <label for="logoUpload" class="position-absolute bottom-0 end-0 bg-light border rounded-circle p-2" style="cursor:pointer; width: 50px;">
+                    <span class="icon">
+                        <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Pluse"></SVGCrud>
+                    </span>
+                </label>
+                <InputFile id="logoUpload" class="d-none" OnChange="HandleFileSelected" accept=".png,.jpg,.jpeg,.svg" />
+            </div>
+        </div>
+
+        <!-- Form Fields -->
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                @* <div class="mb-3">
+                        <label class="form-label fw-semibold">System Name</label>
+                        <div class="input-group">
+                            <input class="form-control" placeholder="Enter system name" @bind="_systemIdentity.NameEnglish" />
+                            <span class="input-group-text bg-white"><i class="bi bi-pencil"></i></span>
+                        </div>
+                    </div> *@
+
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">System Name English</label>
+                    <div class="d-flex align-items-center gap-2">
+                        <InputText class="form-control" placeholder="Enter system name English" @bind-Value="_systemIdentity.NameEnglish" />
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">System Name Arabic</label>
+                    <div class="d-flex align-items-center gap-2">
+                        <InputText id ="arabic-text" class="form-control" placeholder="Enter system name Arabic" @bind-Value="_systemIdentity.NameArabic" />
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">@Loc["Primary Color"]</label>
+                    <div class="color-group d-flex align-items-center gap-2">
+                        <InputText class="form-control" @bind-Value="_systemIdentity.PrimaryColor" />
+                        <span class="rounded-circle cl-preview border"
+                              style="width:25px; height:25px; background-color:@_systemIdentity.PrimaryColor"></span>
+                        <span class="color-indicator">
+                            <input type="color" id="primary-color" class="d-none" @bind="_systemIdentity.PrimaryColor" />
+                            <label for="primary-color">
+                                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.ColorPalette"></SVGCrud>
+                            </label>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">@Loc["Primary Active Color"]</label>
+                    <div class="color-group d-flex align-items-center gap-2">
+                        <InputText class="form-control" @bind-Value="_systemIdentity.PrimaryActiveColor" />
+                        <span class="rounded-circle cl-preview border"
+                              style="width:25px; height:25px; background-color:@_systemIdentity.PrimaryActiveColor"></span>
+                        <span class="color-indicator">
+                            <input type="color" id="primary-active" class="d-none" @bind="_systemIdentity.PrimaryActiveColor" />
+                            <label for="primary-active">
+                                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.ColorPalette"></SVGCrud>
+                            </label>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">@Loc["Main Title"]</label>
+                    <div class="color-group d-flex align-items-center gap-2">
+                        <InputText class="form-control" @bind-Value="_systemIdentity.MainTitle" />
+                        <span class="rounded-circle cl-preview border"
+                              style="width:25px; height:25px; background-color:@_systemIdentity.MainTitle"></span>
+                        <span class="color-indicator">
+                            <input type="color" id="main-title" class="d-none" @bind="_systemIdentity.MainTitle" />
+                            <label for="main-title">
+                                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.ColorPalette"></SVGCrud>
+                            </label>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">@Loc["Sub Title"]</label>
+                    <div class="color-group d-flex align-items-center gap-2">
+                        <InputText class="form-control" @bind-Value="_systemIdentity.SubTitle" />
+                        <span class="rounded-circle cl-preview border"
+                              style="width:25px; height:25px; background-color:@_systemIdentity.SubTitle"></span>
+                        <span class="color-indicator">
+                            <input type="color" id="sub-title" class="d-none" @bind="_systemIdentity.SubTitle" />
+                            <label for="sub-title">
+                                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.ColorPalette"></SVGCrud>
+                            </label>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">@Loc["Navigation Background"]</label>
+                    <div class="color-group d-flex align-items-center gap-2">
+                        <InputText class="form-control" @bind-Value="_systemIdentity.NavigationBackground" />
+                        <span class="rounded-circle cl-preview border"
+                              style="width:25px; height:25px; background-color:@_systemIdentity.NavigationBackground"></span>
+                        <span class="color-indicator">
+                            <input type="color" id="nav-bg" class="d-none" @bind="_systemIdentity.NavigationBackground" />
+                            <label for="nav-bg">
+                                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.ColorPalette"></SVGCrud>
+                            </label>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">@Loc["Border Color"]</label>
+                    <div class="color-group d-flex align-items-center gap-2">
+                        <InputText class="form-control" @bind-Value="_systemIdentity.BorderColor" />
+                        <span class="rounded-circle cl-preview border"
+                              style="width:25px; height:25px; background-color:@_systemIdentity.BorderColor"></span>
+                        <span class="color-indicator">
+                            <input type="color" id="border-color" class="d-none" @bind="_systemIdentity.BorderColor" />
+                            <label for="border-color">
+                                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.ColorPalette"></SVGCrud>
+                            </label>
+                        </span>
+                    </div>
+                </div>
+
+
+                <div class="d-flex justify-content-end gap-2 mt-4">
+                    <button type="button" class="btn btn-light px-4" @onclick="Cancel">@Loc["Cancel"]</button>
+                    <button type="submit" class="btn btn-primary px-4">@Loc["Save"]</button>
+                </div>
+            </div>
+        </div>
+    </EditForm>
+</div>
+
+@code {
+    SystemIdentityDto _systemIdentity = new SystemIdentityDto();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var res = await _systemIdentitySettingConsumer.GetSystemIdentitySetting();
+        if (res.Success && res != null && res.Data != null)
+        {
+            _systemIdentity = res.Data;
+        }
+    }
+    private async Task HandleFileSelected(InputFileChangeEventArgs e)
+    {
+        var file = e.File;
+        if (file != null)
+        {
+            var allowed = new[] { "image/png", "image/jpeg", "image/jpg", "image/svg+xml" };
+            if (!allowed.Contains(file.ContentType))
+            {
+                Console.WriteLine("Invalid file type.");
+                return;
+            }
+            using var ms = new MemoryStream();
+            await file.OpenReadStream(maxAllowedSize: 5_000_000).CopyToAsync(ms);
+            _systemIdentity.Logo = ms.ToArray();
+
+            StateHasChanged();
+        }
+    }
+    private async Task SaveSystemIdentity()
+    {
+        var res = await _systemIdentitySettingConsumer.UpdateSystemIdentitySetting(_systemIdentity);
+        if (res.Success)
+        {
+            await ToastService.ShowToastAsync(Loc["EditSuccess"], "success");
+            await taskyService.ChangeTheme(_systemIdentity);
+            taskyService.NotifySystemIdentityChanged(_systemIdentity);
+        }
+    }
+    private void Cancel(MouseEventArgs args)
+    {
+        throw new NotImplementedException();
+    }
+
+    private string GetSystemLogo()
+    {
+        var mimeType = taskyService.GetMimeType(_systemIdentity.Logo);
+        return $"data:{mimeType};base64,{_systemIdentity.LogoBase64}";
+    }
+}

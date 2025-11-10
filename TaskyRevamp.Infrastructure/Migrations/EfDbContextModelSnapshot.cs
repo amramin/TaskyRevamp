@@ -184,6 +184,90 @@ namespace TaskyRevamp.Infrastructure.Migrations
                     b.ToTable("ReportModulePermission");
                 });
 
+            modelBuilder.Entity("TaskyRevamp.Domain.Models.Permissions.TaskModule.TaskModuleExternalDepartment", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("DepartmentId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int?>("DirectionLevel")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("DirectionType")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsEmployeeTasks")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsIncludeSubDepartment")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsManagerTasks")
+                        .HasColumnType("bit");
+
+                    b.PrimitiveCollection<string>("PermissionId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("PrivilegeId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.PrimitiveCollection<string>("Source")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.PrimitiveCollection<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DepartmentId");
+
+                    b.HasIndex("PrivilegeId");
+
+                    b.ToTable("TaskModuleExternalDepartment");
+                });
+
+            modelBuilder.Entity("TaskyRevamp.Domain.Models.Permissions.TaskModule.TaskModuleUserDepartment", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int?>("DirectionLevel")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("DirectionType")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool?>("IsEmployeeTasks")
+                        .HasColumnType("bit");
+
+                    b.Property<bool?>("IsManagerTasks")
+                        .HasColumnType("bit");
+
+                    b.PrimitiveCollection<string>("PermissionId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("PrivilegeId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("SelectedOption")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PrivilegeId");
+
+                    b.ToTable("TaskModuleUserDepartment");
+                });
+
             modelBuilder.Entity("TaskyRevamp.Domain.Models.SystemConfiguration.AddTaskSettings", b =>
                 {
                     b.Property<Guid>("Id")
@@ -406,6 +490,53 @@ namespace TaskyRevamp.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("StatusSettings");
+                });
+
+            modelBuilder.Entity("TaskyRevamp.Domain.Models.SystemConfiguration.SystemIdentity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("BorderColor")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<byte[]>("Logo")
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<string>("MainTitle")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NameArabic")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NameEnglish")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NavigationBackground")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PrimaryActiveColor")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PrimaryColor")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SubTitle")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SystemIdentity");
                 });
 
             modelBuilder.Entity("TaskyRevamp.Domain.Models.SystemConfiguration.Type", b =>
@@ -1177,6 +1308,36 @@ namespace TaskyRevamp.Infrastructure.Migrations
                     b.Navigation("ReportModule");
                 });
 
+            modelBuilder.Entity("TaskyRevamp.Domain.Models.Permissions.TaskModule.TaskModuleExternalDepartment", b =>
+                {
+                    b.HasOne("TaskyRevamp.Domain.Models.Task.Department", "Department")
+                        .WithMany()
+                        .HasForeignKey("DepartmentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TaskyRevamp.Domain.Models.Permissions.Privilege", "Privilege")
+                        .WithMany("TaskModuleExternalDepartmentPermissions")
+                        .HasForeignKey("PrivilegeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Department");
+
+                    b.Navigation("Privilege");
+                });
+
+            modelBuilder.Entity("TaskyRevamp.Domain.Models.Permissions.TaskModule.TaskModuleUserDepartment", b =>
+                {
+                    b.HasOne("TaskyRevamp.Domain.Models.Permissions.Privilege", "Privilege")
+                        .WithMany("TaskModuleUserDepartmentPermissions")
+                        .HasForeignKey("PrivilegeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Privilege");
+                });
+
             modelBuilder.Entity("TaskyRevamp.Domain.Models.SystemConfiguration.Source", b =>
                 {
                     b.HasOne("TaskyRevamp.Domain.Models.Users.User", "CreatedBy")
@@ -1623,6 +1784,10 @@ namespace TaskyRevamp.Infrastructure.Migrations
                     b.Navigation("GeneralModulePermissions");
 
                     b.Navigation("ReportModulePermissions");
+
+                    b.Navigation("TaskModuleExternalDepartmentPermissions");
+
+                    b.Navigation("TaskModuleUserDepartmentPermissions");
                 });
 
             modelBuilder.Entity("TaskyRevamp.Domain.Models.Permissions.ReportModule.ReportModule", b =>

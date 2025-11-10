@@ -11,14 +11,14 @@ namespace TaskyRevamp.Services.SearchMappings
 {
 	public class PrivilegeSearchFieldMap
 	{
-		public static readonly Dictionary<SearchField, Expression<Func<Privilege, object>>> Map = new()
+		public static readonly Dictionary<SearchFieldPrivileg, Expression<Func<Privilege, object>>> Map = new()
 		{
-			{ SearchField.NameEnglish, x => x.NameEnglish },
-			{ SearchField.NameArabic, x => x.NameArabic },
-			{ SearchField.CreateDate, x => x.CreateDate },
-			{ SearchField.CreatedBy, x => x.CreatedBy.NameEnglish },
-			{ SearchField.UpdateDate, x => x.UpdateDate },
-			{ SearchField.UpdatedBy, x => x.UpdatedBy.NameEnglish },
+			{ SearchFieldPrivileg.NameEnglish, x => x.NameEnglish },
+			{ SearchFieldPrivileg.NameArabic, x => x.NameArabic },
+			{ SearchFieldPrivileg.CreateDate, x => x.CreateDate },
+			{ SearchFieldPrivileg.CreatedBy, x => x.CreatedBy.NameEnglish },
+			{ SearchFieldPrivileg.UpdateDate, x => x.UpdateDate },
+			{ SearchFieldPrivileg.UpdatedBy, x => x.UpdatedBy.NameEnglish },
 		};
 	}
 }

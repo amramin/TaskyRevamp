@@ -1,5 +1,7 @@
 ﻿@page "/add-privilege"
+@using TaskyRevamp.Client.Pages.Permission.Modules
 @using TaskyRevamp.Client.Services
+@using TaskyRevamp.Dto.Enums
 @using TaskyRevamp.Dto.Permissions
 @using TaskyRevamp.Client.Consumer
 @inject PrivilegeConsumer _privilegeConsumer
@@ -7,71 +9,126 @@
 @inject ToastService ToastService
 @inject NavigationManager navigationManager
 
-<h4 class="mb-1 mt-2 ms-2 fw-bold"> ← @Loc["AddNewPrivilege"]</h4>
+<div class="page-header">
+    <div class="title-block">
+        <button class="btn btn-action-24">
+            <span class="icon">
+                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.BackArrow"></SVGCrud>
+            </span>
+        </button>
+        <h1 class="page-headline"> @Loc["AddNewPrivilege"]</h1>
+    </div>
 
-<!-- Tabs -->
-<div class="d-flex border-bottom mb-1">
-    @foreach (var tab in new[] { "General", "Task", "Report" })
-    {
-        <div class="px-3 py-2 me-3 d-flex align-items-center @(SelectedTab == tab ? "border-bottom border-2 border-primary text-primary fw-bold" : "text-secondary")"
-             style="cursor:pointer"
-             @onclick='() => SelectTab(tab)'>
-            @Loc[$"{tab}Module"]
-        </div>
-    }
 </div>
+<div class="page-body">
+    <!-- Tabs -->
+    <div class="line-tabs-nav">
+        @foreach (var tab in new[] { "General", "Task", "Report" })
+        {
+            <button class="btn-tab @(SelectedTab == tab ? "active" : "")" @onclick='() => SelectTab(tab)'>
+                <span class="icon">
+                    @switch (tab)
+                    {
+                        case "General":
+                            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.PrivilegePluse"></SVGCrud>
+                            break;
 
-<!-- Form -->
-<EditForm EditContext="editContext" OnValidSubmit="SaveSettings">
-    <DataAnnotationsValidator />
-    <div class="card p-2 shadow-sm rounded">
-        <div class="card-body">
-            <div style="display:@(SelectedTab == "General" ? "block" : "none")">
-                <div class="row mb-4">
-                    <div class="col-md-6">
-                        <label class="form-label fw-bold">@Loc["ArabicName"] <span class="text-danger">*</span></label>
-                        <InputText class="form-control" @bind-Value="PrivilegeDto.NameArabic" placeholder=@Loc["EnterPrivilegeArabicName"] />
-                        <ValidationMessage For="@(() => PrivilegeDto.NameArabic)" class="small text-danger" />
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label fw-bold">@Loc["EnglishName"] <span class="text-danger">*</span></label>
-                        <InputText class="form-control" @bind-Value="PrivilegeDto.NameEnglish" placeholder=@Loc["EnterPrivilegeEnglishName"] />
-                        <ValidationMessage For="@(() => PrivilegeDto.NameEnglish)" class="small text-danger" />
+                        case "Task":
+                            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.File"></SVGCrud>
+                            break;
+
+                        case "Report":
+                            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.User"></SVGCrud>
+                            break;
+
+                        default:
+                            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Pluse"></SVGCrud>
+                            break;
+                    }
+                </span>
+                <span class="text"> @Loc[$"{tab}Module"]</span>
+            </button>
+        }
+    </div>
+    <div class="card setting-card">
+        <!-- Form -->
+        <EditForm class="d-flex flex-column flex-1" EditContext="editContext" OnValidSubmit="SaveSettings">
+            <DataAnnotationsValidator />
+
+            <div class="card-body">
+                <div class="row justify-content-center">
+                    <div class="col-xxl-7 col-xl-8 col-lg-9 col-md-11">
+                        <div style="display:@(SelectedTab == "General" ? "block" : "none")">
+                            <div class="border-bottom mb-4 pb-3">
+                                <div class="row ">
+                                    <div class="col-md-6">
+                                        <label class="form-label fw-bold">
+                                            @Loc["ArabicName"] <span class="text-danger">*</span>
+                                        </label>
+                                        <InputText class="form-control" @bind-Value="PrivilegeDto.NameArabic"
+                                                   placeholder=@Loc["EnterPrivilegeArabicName"] />
+                                        <ValidationMessage For="@(() => PrivilegeDto.NameArabic)"
+                                                           class="small text-danger" />
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label fw-bold">
+                                            @Loc["EnglishName"] <span class="text-danger">*</span>
+                                        </label>
+                                        <InputText class="form-control" @bind-Value="PrivilegeDto.NameEnglish"
+                                                   placeholder=@Loc["EnterPrivilegeEnglishName"] />
+                                        <ValidationMessage For="@(() => PrivilegeDto.NameEnglish)"
+                                                           class="small text-danger" />
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- GeneralModule child component -->
+                            <GeneralModule PrivilegeDto="PrivilegeDto"
+                                           OnValidationStateChanged="@OnGeneralModuleValidationChanged" />
+                        </div>
+                        <div style="display:@(SelectedTab == "Task" ? "block" : "none")">
+                            <TaskModule PrivilegeDto="PrivilegeDto" />
+                        </div>
+                        <div style="display:@(SelectedTab == "Report" ? "block" : "none")">
+                            <ReportModule PrivilegeDto="PrivilegeDto" />
+                        </div>
                     </div>
                 </div>
-                <!-- GeneralModule child component -->
-                <GeneralModule PrivilegeDto="PrivilegeDto" OnValidationStateChanged="@OnGeneralModuleValidationChanged" />
             </div>
-            <div style="display:@(SelectedTab == "Task" ? "block" : "none")">
-                <TaskModule PrivilegeDto="PrivilegeDto"/>
-            </div>
-            <div style="display:@(SelectedTab == "Report" ? "block" : "none")">
-                <ReportModule PrivilegeDto="PrivilegeDto"/>
-            </div>
-        </div>
-    </div>
 
-    <!-- Shared Footer -->
-    <div class="card-footer mt-3">
-        <div class="row justify-content-center">
-            <div class="col-xxl-7 col-xl-8 col-lg-9 col-md-11 d-flex justify-content-end gap-2">
-                <button type="button" class="btn btn-lg btn-light" @onclick="CancelSettings">@Loc["Cancel"]</button>
-                <button type="submit" class="btn btn-lg btn-primary">@Loc["Save"]</button>
-            </div>
-        </div>
-    </div>
-</EditForm>
 
+            <!-- Shared Footer -->
+            <div class="card-footer">
+                <div class="row justify-content-center">
+                    <div class="col-xxl-7 col-xl-8 col-lg-9 col-md-11">
+                        <div class="action-buttons">
+                            <button type="button" class="btn btn-lg btn-light"
+                                    @onclick="CancelSettings">
+                                @Loc["Cancel"]
+                            </button>
+                            <button type="submit" class="btn btn-lg btn-primary">@Loc["Save"]</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </EditForm>
+    </div>
+</div>
 @code {
     public PrivilegeDto PrivilegeDto { get; set; } = new PrivilegeDto();
     private string SelectedTab { get; set; } = "General";
     private EditContext? editContext;
+    private ValidationMessageStore messageStore;
     private bool isGeneralModuleValid = true;
 
-    
     protected override void OnInitialized()
     {
         editContext = new EditContext(PrivilegeDto);
+        messageStore = new ValidationMessageStore(editContext);
+        editContext.OnFieldChanged += (_, e) =>
+        {
+            messageStore.Clear(e.FieldIdentifier);
+            editContext.NotifyValidationStateChanged();
+        };
     }
 
     void SelectTab(string tab) => SelectedTab = tab;
@@ -88,17 +145,100 @@
         SelectedTab = "General";
     }
 
+    private void ClearValidationMessages()
+    {
+        messageStore.Clear();
+        editContext!.NotifyValidationStateChanged();
+    }
+    private void AddErrorsToEditContext(IReadOnlyDictionary<string, List<string>> errors)
+    {
+        messageStore.Clear();
+        foreach (var error in errors)
+        {
+            var fieldIdentifier = new FieldIdentifier(PrivilegeDto, error.Key);
+            foreach (var msg in error.Value)
+            {
+                messageStore.Add(fieldIdentifier, msg);
+            }
+        }
+        editContext!.NotifyValidationStateChanged();
+    }
+    private bool HasInvalidUserDepartments()
+    {
+        if (PrivilegeDto.TaskModuleUserDepartmentDto == null)
+            return false;
+
+        foreach (var item in PrivilegeDto.TaskModuleUserDepartmentDto.Where(x => x.IsActive))
+        {
+            // Validate permissions
+            bool shouldShowPermission =
+                item.SelectedOption == UserDepartmentOptions.BelowUserDepartmentLevel ||
+                item.SelectedOption == UserDepartmentOptions.AboveUserDepartmentLevel ||
+                item.SelectedOption == UserDepartmentOptions.PeersLevel ||
+                item.SelectedOption == UserDepartmentOptions.SameDepartment;
+
+            if (shouldShowPermission && (item.PermissionId == null || !item.PermissionId.Any()))
+                return true;
+
+            // Validate direction level
+            bool shouldShowDirection =
+                item.SelectedOption == UserDepartmentOptions.BelowUserDepartmentLevel ||
+                item.SelectedOption == UserDepartmentOptions.AboveUserDepartmentLevel;
+
+            if (shouldShowDirection && (item.DirectionLevel == null || item.DirectionLevel < 1))
+                return true;
+        }
+        return false;
+    }
+    private bool HasInvalidExternalDepartments()
+    {
+        if (PrivilegeDto.TaskModuleExternalDepartmentDto == null ||
+            !PrivilegeDto.TaskModuleExternalDepartmentDto.Any())
+            return false;
+
+        foreach (var dept in PrivilegeDto.TaskModuleExternalDepartmentDto)
+        {
+            // Direction Level
+            if (dept.IsIncludeSubDepartment && (dept.DirectionLevel == null || dept.DirectionLevel < 1))
+                return true;
+
+            // Permissions
+            if (dept.PermissionId == null || !dept.PermissionId.Any())
+                return true;
+        }
+
+        return false;
+    }
+
     private async Task SaveSettings()
     {
         if (!isGeneralModuleValid)
         {
+            SelectedTab = "General";
+            StateHasChanged();
             return;
         }
-        var json = System.Text.Json.JsonSerializer.Serialize(PrivilegeDto, new System.Text.Json.JsonSerializerOptions { WriteIndented = true });
+        if (HasInvalidUserDepartments() || HasInvalidExternalDepartments())
+        {
+            SelectedTab = "Task";
+            StateHasChanged();
+            return;
+        }
+        var json = System.Text.Json.JsonSerializer.Serialize(PrivilegeDto, new System.Text.Json.JsonSerializerOptions
+        {
+            WriteIndented = true
+        });
         Console.WriteLine(json);
 
-        await _privilegeConsumer.CreatePrivilege(PrivilegeDto);
+        ClearValidationMessages();
+        var res = await _privilegeConsumer.CreatePrivilege(PrivilegeDto);
+        if (res.Errors != null && res.Errors.Count > 0)
+        {
+            AddErrorsToEditContext(res.Errors);
+            return;
+        }
         await ToastService.ShowToastAsync(Loc["Added successfully"], "success");
         navigationManager.NavigateTo("/Privileges");
     }
+
 }

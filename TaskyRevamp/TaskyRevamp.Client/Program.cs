@@ -69,6 +69,7 @@ builder.Services.AddTransient<AddTaskSettingConsumer>();
 builder.Services.AddTransient<GeneralModuleConsumer>();
 builder.Services.AddTransient<ReportModuleConsumer>();
 builder.Services.AddTransient<PrivilegeConsumer>();
+builder.Services.AddTransient<SystemIdentityConsumer>();
 
 var configuration = builder.Configuration;
 

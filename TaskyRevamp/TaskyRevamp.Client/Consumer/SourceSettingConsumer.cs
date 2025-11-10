@@ -24,6 +24,12 @@ namespace TaskyRevamp.Client.Consumer
             return res;
         }
 
+		public async Task<CommonApiResponse<List<SourceDto>>> GetSourcesWithoutPagination()
+		{
+			var url = $"api/SourceSetting/GetSourceWithoutPagination";
+			var res = await _taskyService.GetFromJsonAsync<CommonApiResponse<List<SourceDto>>>(url);
+			return res;
+		}
 		public async Task<CommonApiResponse<SourceDto>> GetSourceById(Guid id)
 		{
 			var url = $"api/SourceSetting/GetSourceSettingById/{id}";
