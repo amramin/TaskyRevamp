@@ -32,7 +32,7 @@ namespace TaskyRevamp.Client.Consumer
 
             var queryString = _taskyService.PreparePaginatedSearchQueryString(pageNumber, pageSize, sortByColumnName, sortAscending, searchFields, searchText);
 
-            var url = $"api/Task/GetAllAllTask{queryString}";
+            var url = $"api/Task/GetAllTask{queryString}";
 
 
             var res = await _taskyService.GetFromJsonAsync<CommonApiResponse<PagedResult<CreateTaskDto>>>(url);

@@ -1,11 +1,12 @@
-﻿using System;
+﻿using SurveyRevamp.Client.SyncfusionLocalization;
+using Syncfusion.Blazor;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Syncfusion.Blazor;
 
-namespace SurveyRevamp.Client.SyncfusionLocalization
+namespace TaskyRevamp.Client.SyncfusionLocalization
 {
     public class SyncfusionLocalizer : ISyncfusionStringLocalizer
     {

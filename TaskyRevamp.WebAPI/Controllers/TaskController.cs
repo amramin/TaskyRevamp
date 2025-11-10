@@ -43,8 +43,8 @@ public class TaskController : ControllerBase
         return Ok(await _mediator.Send(new DeleteTaskCommand(Guid.Parse(id))));
     }
 
-    [HttpGet("GetAllAllTask")]
-    public async Task<IActionResult> GetAllAllTask(
+    [HttpGet("GetAllTask")]
+    public async Task<IActionResult> GetAllTask(
          [FromServices] IOptions<PaginationSettings> paginationSettings,
          [FromQuery] int pageNumber = 1,
          [FromQuery] int? pageSize = null,
