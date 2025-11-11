@@ -12,37 +12,33 @@
 @inject StatusSettingConsumer _statusSettingConsumer
 @inject SourceSettingConsumer _sourceSettingConsumer
 
-<div class="card">
-    <h6 class="fw-bold">@Loc["UserDepartment"]</h6>
-    <hr />
-    @foreach (var item in PrivilegeDto.TaskModuleUserDepartmentDto)
-    {
-        <div class="form-check">
-            <input class="form-check-input"
-                type="checkbox"
-                id="@item.SelectedOption"
-                checked="@item.IsActive"
-                @onchange="(e) => ToggleSelection(item, e.Value as bool?)" />
-            <label class="form-check-label fw-bold" for="@item.SelectedOption">
-                @Loc[item.SelectedOption.ToString()]
-            </label>
-        </div>
+<div class="card mb-2">
+    <div class="card-body">
+        <h6 class="headline-6 pb-2 mb-3 border-bottom">@Loc["UserDepartment"]</h6>
 
-        <!-- Hint Message -->
-        <div class="form-text text-muted small">
-            @Loc[$"{item.SelectedOption.ToString()}Hint"]
-        </div>
-
-        @if (item.IsActive)
+        @foreach (var item in PrivilegeDto.TaskModuleUserDepartmentDto)
         {
-            <UserDepartmentExtendedFields Item="item"
-                ShowDirectionFields="@ShouldShowDirection(item.SelectedOption)"
-                ShowPermissionFields="@ShouldShowPermission(item.SelectedOption)">
-            </UserDepartmentExtendedFields>
+            <div class="form-check mb-3">
+                <input class="form-check-input" type="checkbox" id="@item.SelectedOption" checked="@item.IsActive"
+                    @onchange="(e) => ToggleSelection(item, e.Value as bool?)" />
+                <label class="form-check-label fw-bold" for="@item.SelectedOption">
+                    <div>
+                        <h6 class="headline-7 mb-0"> @Loc[item.SelectedOption.ToString()]</h6>
+                        <p class="small-medium-text mb-0">@Loc[$"{item.SelectedOption.ToString()}Hint"]</p>
+                    </div>
+                </label>
+            </div>
+
+            @if (item.IsActive)
+            {
+                <UserDepartmentExtendedFields Item="item" ShowDirectionFields="@ShouldShowDirection(item.SelectedOption)"
+                    ShowPermissionFields="@ShouldShowPermission(item.SelectedOption)">
+                </UserDepartmentExtendedFields>
+            }
         }
-    }
+    </div>
 </div>
-<div class="card shadow-sm p-3 mt-2">
+<div class="card">
     <h6 class="fw-bold">@Loc["ExternalDepartment"]</h6>
     <hr />
     <div class="form-text text-muted small mb-2">
@@ -52,13 +48,9 @@
     <div class="row align-items-end mb-3">
         <div class="col-md-6">
             <label class="form-label">@Loc["Department"]</label>
-            <SearchableMultiDropdownOffline TInput="DepartmentDto"
-                                            TOutput="Guid"
-                                            Datasource="Departments"
-                                            TextSelector="(d => d.Name)"
-                                            OutputSelector="(d => d.Id)"
-                                            SelectedOptions="@SelectedDepartments"
-                                            SelectedOptionsChanged="@OnDepartmentsChanged" />
+            <SearchableMultiDropdownOffline TInput="DepartmentDto" TOutput="Guid" Datasource="Departments"
+                TextSelector="(d => d.Name)" OutputSelector="(d => d.Id)" SelectedOptions="@SelectedDepartments"
+                SelectedOptionsChanged="@OnDepartmentsChanged" />
         </div>
         <div class="col-md-3">
             <button class="btn btn-primary mt-3" @onclick="AddDepartments" disabled="@(!SelectedDepartments.Any())">
@@ -68,11 +60,8 @@
     </div>
     @foreach (var dept in PrivilegeDto.TaskModuleExternalDepartmentDto ?? new List<TaskModuleExternalDepartmentDto>())
     {
-        <ExternalDepartmentExtendedFields Item="dept"
-                                          DepartmentName="@GetDepartmentName(dept.DepartmentId)"
-                                          OnRemove="RemoveDepartment"
-                                          StatusList="@StatusList"
-                                          SourceList="@SourceList" />
+        <ExternalDepartmentExtendedFields Item="dept" DepartmentName="@GetDepartmentName(dept.DepartmentId)"
+            OnRemove="RemoveDepartment" StatusList="@StatusList" SourceList="@SourceList" />
     }
 </div>
 @code {
@@ -105,8 +94,8 @@
             PrivilegeDto.TaskModuleUserDepartmentDto = new();
 
         var existingOptions = PrivilegeDto.TaskModuleUserDepartmentDto
-            .Select(x => x.SelectedOption)
-            .ToHashSet();
+        .Select(x => x.SelectedOption)
+        .ToHashSet();
 
         foreach (UserDepartmentOptions option in Enum.GetValues(typeof(UserDepartmentOptions)))
         {
@@ -136,14 +125,14 @@
     private bool ShouldShowDirection(UserDepartmentOptions option)
     {
         return option == UserDepartmentOptions.BelowUserDepartmentLevel
-            || option == UserDepartmentOptions.AboveUserDepartmentLevel;
+        || option == UserDepartmentOptions.AboveUserDepartmentLevel;
     }
     private bool ShouldShowPermission(UserDepartmentOptions option)
     {
         return option == UserDepartmentOptions.BelowUserDepartmentLevel
-            || option == UserDepartmentOptions.AboveUserDepartmentLevel
-            || option == UserDepartmentOptions.PeersLevel
-            || option == UserDepartmentOptions.SameDepartment;
+        || option == UserDepartmentOptions.AboveUserDepartmentLevel
+        || option == UserDepartmentOptions.PeersLevel
+        || option == UserDepartmentOptions.SameDepartment;
     }
     private void OnDepartmentsChanged(List<Guid> selected)
     {
