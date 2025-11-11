@@ -1179,11 +1179,8 @@ namespace TaskyRevamp.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime>("CreateDate")
+                    b.Property<DateTime?>("CreateDate")
                         .HasColumnType("datetime2");
-
-                    b.Property<Guid>("CreatedById")
-                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid?>("DepartmentId")
                         .HasColumnType("uniqueidentifier");
@@ -1212,7 +1209,7 @@ namespace TaskyRevamp.Infrastructure.Migrations
                     b.Property<string>("NameEnglish")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("PrivilegeId")
+                    b.Property<Guid?>("PrivilegeId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime?>("UpdateDate")
@@ -1225,8 +1222,6 @@ namespace TaskyRevamp.Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CreatedById");
 
                     b.HasIndex("DepartmentId");
 
@@ -1769,12 +1764,6 @@ namespace TaskyRevamp.Infrastructure.Migrations
 
             modelBuilder.Entity("TaskyRevamp.Domain.Models.Users.User", b =>
                 {
-                    b.HasOne("TaskyRevamp.Domain.Models.Users.User", "CreatedBy")
-                        .WithMany()
-                        .HasForeignKey("CreatedById")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.HasOne("TaskyRevamp.Domain.Models.Task.Department", "Department")
                         .WithMany("AssignedUser")
                         .HasForeignKey("DepartmentId")
@@ -1782,16 +1771,12 @@ namespace TaskyRevamp.Infrastructure.Migrations
 
                     b.HasOne("TaskyRevamp.Domain.Models.Permissions.Privilege", "Privilege")
                         .WithMany()
-                        .HasForeignKey("PrivilegeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("PrivilegeId");
 
                     b.HasOne("TaskyRevamp.Domain.Models.Users.User", "UpdatedBy")
                         .WithMany()
                         .HasForeignKey("UpdatedById")
                         .OnDelete(DeleteBehavior.Restrict);
-
-                    b.Navigation("CreatedBy");
 
                     b.Navigation("Department");
 

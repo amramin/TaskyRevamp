@@ -41,7 +41,7 @@
                         {
                             var checkboxId = $"source-active-{item.user.Id}";
                             <tr>
-                                <td>@item.user.UserName</td>
+                                <td>@item.user.DisplayedName</td>
                                 <td>@item.user.Email</td>
                                 <td>@item.PrivilegeName</td>
                                 <td>@item.DepartmentName</td>
@@ -63,10 +63,8 @@
                                         </label>
                                     </div>
                                 </td>
-                                <td>@item.user.CreateDate.ToLocalTime().ToString("dd/MM/yyyy")</td>
-                                <td>@item.CreatedByName</td>
                                 <td>@(item.user.UpdateDate?.ToLocalTime().ToString("dd/MM/yyyy"))</td>
-                                <td>@item.UpdatedByName</td>
+                                <td>@item.user.UserName</td>
                                 <td>
                                     <div class="dropdown actions">
                                         <button class="btn btn-action-24" type="button" data-bs-toggle="dropdown"
@@ -75,17 +73,9 @@
                                         </button>
                                         <ul class="dropdown-menu">
                                             <li>
-                                                <button class="dropdown-item" @onclick="@(() => EditUser(item.user.Id))">
-                                                    <span class="icon">
-                                                        <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Edit"></SVGCrud>
-                                                    </span>
-                                                    @Loc["EditaUser"]
-                                                </button>
-                                            </li>
-                                            <li>
                                                 <button class="dropdown-item" @onclick="@(() => ViewPrivilege(item.user.Id))">
                                                     <span class="icon">
-                                                        <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Users"></SVGCrud>
+                                                        <SVGCrud SVGType="SVGCrud.SVGTypeEnum.PrivilegeConfig"></SVGCrud>
                                                     </span>
                                                     @Loc["ViewPrivilege"]
                                                 </button>
@@ -93,9 +83,9 @@
                                             <li>
                                                 <button class="dropdown-item" @onclick="@(() => ViewUser(item.user.Id))">
                                                     <span class="icon">
-                                                        <SVGCrud SVGType="SVGCrud.SVGTypeEnum.PrivilegeConfig"></SVGCrud>
+                                                        <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Users"></SVGCrud>
                                                     </span>
-                                                    @Loc["ViewUser"]
+                                                    @Loc["LinkUser"]
                                                 </button>
                                             </li>
                                             <li>
@@ -167,8 +157,8 @@ else
             new() { Field = "Department", DisplayName = Loc["Department"] },
             new() { Field = "Set as Manager", DisplayName = Loc["setAsManager"] },
             new() { Field = "IsActive", DisplayName = Loc["active"] },
-            new() { Field = "CreateDate", DisplayName = Loc["CreationDate"] },
-            new() { Field = "CreatedBy", DisplayName = Loc["CreatedBy"] },
+            // new() { Field = "CreateDate", DisplayName = Loc["CreationDate"] },
+            // new() { Field = "CreatedBy", DisplayName = Loc["CreatedBy"] },
             new() { Field = "UpdateDate", DisplayName = Loc["UpdateDate"] },
             new() { Field = "UpdatedBy", DisplayName = Loc["UpdatedBy"] },
             new() { Field = "Action", DisplayName = Loc["Action"] ,IsSortable = false},
@@ -251,9 +241,9 @@ else
             SearchFieldUser.IsManager,
             SearchFieldUser.Privilege,
             SearchFieldUser.Department,
-            SearchFieldUser.CreatedBy,
+            // SearchFieldUser.CreatedBy,
             SearchFieldUser.UpdatedBy,
-            SearchFieldUser.CreateDate,
+            // SearchFieldUser.CreateDate,
             SearchFieldUser.UpdateDate,
             SearchFieldUser.ActiveStatus
     };

@@ -1069,6 +1069,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Link a user to department and privilege.
+        /// </summary>
+        public static string LinkUser {
+            get {
+                return ResourceManager.GetString("LinkUser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to List view.
         /// </summary>
         public static string List {
@@ -1471,6 +1480,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string PrivilegeNotFound {
             get {
                 return ResourceManager.GetString("PrivilegeNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Privileges.
+        /// </summary>
+        public static string Privileges {
+            get {
+                return ResourceManager.GetString("Privileges", resourceCulture);
             }
         }
         
@@ -2056,6 +2074,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string ViewPermission {
             get {
                 return ResourceManager.GetString("ViewPermission", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to View Privilege.
+        /// </summary>
+        public static string ViewPrivilege {
+            get {
+                return ResourceManager.GetString("ViewPrivilege", resourceCulture);
             }
         }
         

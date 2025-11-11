@@ -10,14 +10,13 @@ namespace TaskyRevamp.Services.SearchMappings
 		{
 			{ SearchFieldUser.NameEnglish, x => x.NameEnglish },
 			{ SearchFieldUser.NameArabic, x => x.NameArabic },
-			{ SearchFieldUser.CreateDate, x => x.CreateDate },
-			{ SearchFieldUser.CreatedBy, x => x.CreatedBy.NameEnglish },
+			//{ SearchFieldUser.CreateDate, x => x.CreateDate },
 			{ SearchFieldUser.UpdateDate, x => x.UpdateDate },
 			{ SearchFieldUser.UpdatedBy, x => x.UpdatedBy.NameEnglish },
 			{ SearchFieldUser.ActiveStatus, x => x.IsActive },
 			{ SearchFieldUser.Email, x => x.Email },
-			{ SearchFieldUser.Department, x => x.Department },
-			{ SearchFieldUser.Privilege, x => x.Privilege },
+			{ SearchFieldUser.Department, x => x.Department.NameEnglish },
+			{ SearchFieldUser.Privilege, x => x.Privilege.NameEnglish },
 			{ SearchFieldUser.IsManager, x => x.IsManager }
 		};
 	}

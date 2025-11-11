@@ -647,7 +647,7 @@
     <value>الوحدات العامة</value>
   </data>
   <data name="Privilege" xml:space="preserve">
-    <value>صلاحيات</value>
+    <value>صلاحية</value>
   </data>
   <data name="TaskModule" xml:space="preserve">
     <value>وحدة المهام</value>
@@ -810,5 +810,14 @@
   </data>
   <data name="setAsManager" xml:space="preserve">
     <value>التعيين كمدير</value>
+  </data>
+  <data name="Privileges" xml:space="preserve">
+    <value>صلاحيات</value>
+  </data>
+  <data name="ViewPrivilege" xml:space="preserve">
+    <value>عرض الصلاحية</value>
+  </data>
+  <data name="LinkUser" xml:space="preserve">
+    <value>Link a user to department and privilege</value>
   </data>
 </root>

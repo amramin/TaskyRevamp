@@ -1,11 +1,9 @@
 ﻿using MediatR;
 using System.Linq.Expressions;
-using TaskyRevamp.Domain.Models.SystemConfiguration;
 using TaskyRevamp.Domain.Repositeries;
 using TaskyRevamp.Dto.Account;
 using TaskyRevamp.Dto.Enums.SearchFields;
 using TaskyRevamp.Dto.GeneralDto;
-using TaskyRevamp.Dto.SystemConfiguration;
 using TaskyRevamp.Services.Helpers;
 using TaskyRevamp.Services.SearchMappings;
 using User = TaskyRevamp.Domain.Models.Users.User;
@@ -38,12 +36,11 @@ namespace TaskyRevamp.Services.Users.Query
 								null,
 								searchExpression,
 								orderBy: orderBy,
-								includeProperties: $"{nameof(User.CreatedBy)},{nameof(User.UpdatedBy)},{nameof(User.Privilege)},{nameof(User.Department)} ");
+								includeProperties: $"{nameof(User.UpdatedBy)},{nameof(User.Privilege)},{nameof(User.Department)}");
 
 			var items = res.Items.Select(u => new UserDtoWithName
 			{
 				user = u.CopyToDto(),
-				CreatedByName = u.CreatedBy != null ? u.CreatedBy.NameEnglish! : string.Empty,
 				UpdatedByName = u.UpdatedBy != null ? u.UpdatedBy.NameEnglish! : string.Empty,
 				PrivilegeName = u.Privilege != null ? (currentCulture == "ar" ? u.Privilege.NameArabic : u.Privilege.NameEnglish) : string.Empty,
 				DepartmentName = u.Department != null ? (currentCulture == "ar" ? u.Department.NameArabic : u.Department.NameEnglish) : string.Empty
@@ -73,11 +70,6 @@ namespace TaskyRevamp.Services.Users.Query
 					return sortAscending
 						? q => q.OrderBy(u => u.UpdateDate)
 						: q => q.OrderByDescending(u => u.UpdateDate);
-
-				case "CreatedBy":
-					return sortAscending
-						? q => q.OrderBy(u => u.CreatedBy!.NameEnglish)
-						: q => q.OrderByDescending(u => u.CreatedBy!.NameEnglish);
 
 				case "UpdatedBy":
 					return sortAscending

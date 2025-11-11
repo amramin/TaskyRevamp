@@ -811,4 +811,13 @@ Add a new department to get started</value>
   <data name="setAsManager" xml:space="preserve">
     <value>Set as Manager</value>
   </data>
+  <data name="Privileges" xml:space="preserve">
+    <value>Privileges</value>
+  </data>
+  <data name="ViewPrivilege" xml:space="preserve">
+    <value>View Privilege</value>
+  </data>
+  <data name="LinkUser" xml:space="preserve">
+    <value>Link a user to department and privilege</value>
+  </data>
 </root>
