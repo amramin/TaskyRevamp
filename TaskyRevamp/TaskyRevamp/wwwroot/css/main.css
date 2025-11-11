@@ -1156,13 +1156,19 @@ html[dir=rtl] input[type=number] {
   color: var(--dark-600);
 }
 .form-check .form-check-input:checked {
-  background-color: var(--primary-color);
-  border-color: var(--primary-color);
+  background-color: var(--primary-color) !important;
+  border-color: var(--primary-color) !important;
   --bs-form-check-bg-image: url("data:image/svg+xml,%3Csvg width='10' height='8' viewBox='0 0 10 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M9.78571 0.571402C9.5 0.285688 9.07143 0.285688 8.78571 0.571402L3.42857 5.92854L1.21429 3.71426C0.928571 3.42855 0.5 3.42855 0.214286 3.71426C-0.0714286 3.99997 -0.0714286 4.42855 0.214286 4.71426L2.92857 7.42854C3.07143 7.5714 3.21429 7.64283 3.42857 7.64283C3.64286 7.64283 3.78571 7.5714 3.92857 7.42854L9.78571 1.5714C10.0714 1.28569 10.0714 0.857117 9.78571 0.571402Z' fill='white'/%3E%3C/svg%3E") !important;
   background-size: 10px;
 }
 .form-check .form-check-input:checked + label {
   color: var(--dark-800);
+}
+.form-check .form-check-input:checked {
+  background-color: var(--primary-color) !important;
+  border-color: var(--primary-color) !important;
+  --bs-form-check-bg-image: url("data:image/svg+xml,%3Csvg width='10' height='8' viewBox='0 0 10 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M9.78571 0.571402C9.5 0.285688 9.07143 0.285688 8.78571 0.571402L3.42857 5.92854L1.21429 3.71426C0.928571 3.42855 0.5 3.42855 0.214286 3.71426C-0.0714286 3.99997 -0.0714286 4.42855 0.214286 4.71426L2.92857 7.42854C3.07143 7.5714 3.21429 7.64283 3.42857 7.64283C3.64286 7.64283 3.78571 7.5714 3.92857 7.42854L9.78571 1.5714C10.0714 1.28569 10.0714 0.857117 9.78571 0.571402Z' fill='white'/%3E%3C/svg%3E") !important;
+  background-size: 10px;
 }
 .form-check .form-check-label {
   display: -webkit-box;

@@ -12,7 +12,7 @@
 @inject StatusSettingConsumer _statusSettingConsumer
 @inject SourceSettingConsumer _sourceSettingConsumer
 
-<div class="card mb-2">
+<div class="card mb-3">
     <div class="card-body">
         <h6 class="headline-6 pb-2 mb-3 border-bottom">@Loc["UserDepartment"]</h6>
 
@@ -39,9 +39,9 @@
     </div>
 </div>
 <div class="card">
-    <h6 class="fw-bold">@Loc["ExternalDepartment"]</h6>
-    <hr />
-    <div class="form-text text-muted small mb-2">
+  <div class="card-body">
+    <h6 class="headline-6 ">@Loc["ExternalDepartment"]</h6>
+    <div class="small-medium-text pb-2 mb-3 border-bottom">
         @Loc["ExternalDepartmentHint"]
     </div>
     <!-- Department selection -->
@@ -63,6 +63,7 @@
         <ExternalDepartmentExtendedFields Item="dept" DepartmentName="@GetDepartmentName(dept.DepartmentId)"
             OnRemove="RemoveDepartment" StatusList="@StatusList" SourceList="@SourceList" />
     }
+    </div>
 </div>
 @code {
     [Parameter] public PrivilegeDto PrivilegeDto { get; set; } = new PrivilegeDto();
