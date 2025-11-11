@@ -14,12 +14,19 @@
       max-height: calc(100svh - 16.5rem);
       border-radius: var(--bs-border-radius);
     }
-    & > form > .card-body {
-      max-height: calc(100svh - 19.5rem);
+    & > form {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
       flex: 1;
-      overflow-y: auto;
-      &.identity {
-        max-height: calc(100svh - 16.5rem);
+
+      & > .card-body {
+        max-height: calc(100svh - 19.5rem);
+        flex: 1;
+        overflow-y: auto;
+        &.identity {
+          max-height: fit-content;
+        }
       }
     }
     .card-footer {
@@ -57,8 +64,8 @@
     flex-direction: row;
     margin-bottom: 0.5rem;
     cursor: grab;
-    &:hover{
-      box-shadow:var(--bs-shadow)
+    &:hover {
+      box-shadow: var(--bs-shadow);
     }
     .card-body {
       padding: 0.5rem 0.75rem;

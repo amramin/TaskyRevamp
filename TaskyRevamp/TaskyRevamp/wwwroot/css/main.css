@@ -330,6 +330,37 @@
     max-width: 350px;
   }
 }
+@media (max-width: 600px) {
+  .main-wrapper .main-header .main-header-body .start .group-input {
+    width: 2.5rem;
+    height: 2.5rem;
+    border: 1px solid var(--light-300);
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    border-radius: var(--bs-border-radius);
+  }
+  .main-wrapper .main-header .main-header-body .start .group-input .start-icon svg {
+    position: static;
+    -webkit-transform: none;
+            transform: none;
+  }
+  .main-wrapper .main-header .main-header-body .start .group-input .form-control {
+    display: none;
+  }
+}
+@media (max-width: 991.9px) {
+  .main-wrapper .main-header .main-header-body .start {
+    -webkit-padding-start: 2.75rem;
+            padding-inline-start: 2.75rem;
+  }
+}
 .main-wrapper .main-header .main-header-body .end {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -742,13 +773,45 @@
 .main-wrapper.mainlayout-collapsed .side-nav.setting-nav-open:hover .sid-nav-body > .nav .setting-menu .dropdown.open .dropdown-toggler {
   opacity: 1;
 }
-@media (max-width: 920px) {
+@media (max-width: 991.9px) {
   .main-wrapper {
     -webkit-padding-start: 0;
             padding-inline-start: 0;
   }
   .main-wrapper .side-nav {
-    display: none;
+    inset-inline-start: -240px;
+    -webkit-transition: var(--transtion-3ms-e-out);
+    transition: var(--transtion-3ms-e-out);
+  }
+  .main-wrapper .side-nav .btn-toggle-sidenav {
+    position: absolute;
+    top: 0.75rem;
+    inset-inline-end: -3rem;
+    z-index: 100;
+    background-color: var(--bs-white);
+  }
+  .main-wrapper .side-nav .btn-toggle-sidenav.overlay {
+    border-radius: 0;
+    position: fixed;
+    width: calc(100% - 240px);
+    height: 100%;
+    top: 0;
+    inset-inline-end: -100%;
+    z-index: -1;
+    background-color: var(--backdrop-bg);
+    opacity: 0.75;
+    -webkit-transition: var(--transtion-3ms-e-out);
+    transition: var(--transtion-3ms-e-out);
+  }
+  .main-wrapper .side-nav.side-nav-open-mobile {
+    inset-inline-start: 0;
+    -webkit-transition: var(--transtion-3ms-e-out);
+    transition: var(--transtion-3ms-e-out);
+  }
+  .main-wrapper .side-nav.side-nav-open-mobile .btn-toggle-sidenav.overlay {
+    inset-inline-end: 0;
+    -webkit-transition: var(--transtion-3ms-e-out);
+    transition: var(--transtion-3ms-e-out);
   }
 }
 
@@ -1059,110 +1122,6 @@ html[dir=rtl] input[type=number] {
           margin-inline-start: 0.25rem;
 }
 
-.form-check-card:not(:last-child) {
-  margin-bottom: 0.5rem;
-}
-.form-check-card > input {
-  display: none;
-}
-.form-check-card > input + label {
-  border: 1px solid var(--light-300);
-  border-radius: var(--bs-border-radius);
-  padding: 1rem 0.75rem;
-  max-height: 3.5rem;
-  cursor: pointer;
-  width: 100%;
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: var(--dark-700);
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-          justify-content: space-between;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  position: relative;
-}
-.form-check-card > input + label .form-control {
-  max-width: 50%;
-}
-.form-check-card > input:checked + label {
-  border-color: var(--primary-color);
-  background-color: var(--light-200);
-  color: var(--dark-900);
-}
-.form-check-card input[type=radio] + label {
-  -webkit-padding-start: 2.5rem;
-          padding-inline-start: 2.5rem;
-}
-.form-check-card input[type=radio] + label::after {
-  content: "";
-  position: absolute;
-  width: 1.25rem;
-  height: 1.25rem;
-  border: 2px solid var(--light-400);
-  border-radius: 50%;
-  top: 50%;
-  inset-inline-start: 0.75rem;
-  -webkit-transform: translateY(-50%);
-          transform: translateY(-50%);
-}
-.form-check-card input[type=radio]:checked + label::after {
-  border: 6px solid var(--primary-color);
-}
-.form-check-card.switch input + label {
-  padding-block: 0.5rem;
-}
-.form-check-card.switch input:checked + label .toggler-icon {
-  background-color: var(--primary-color);
-}
-.form-check-card.switch input:checked + label .toggler-icon::after {
-  inset-inline-start: auto;
-  inset-inline-end: 0.125rem;
-  -webkit-transition: var(--transtion-3ms-e-out);
-  transition: var(--transtion-3ms-e-out);
-  -webkit-box-shadow: none;
-          box-shadow: none;
-}
-
-.color-group {
-  position: relative;
-}
-.color-group .form-control {
-  -webkit-padding-start: 2.75rem;
-          padding-inline-start: 2.75rem;
-}
-.color-group .cl-preview {
-  position: absolute;
-  display: block;
-  width: 1.25rem;
-  height: 1.25rem;
-  top: 50%;
-  inset-inline-start: 1rem;
-  -webkit-transform: translateY(-50%);
-          transform: translateY(-50%);
-  border: 1px solid var(--light-300);
-}
-.color-group .color-indicator {
-  position: absolute;
-  top: 50%;
-  -webkit-transform: translateY(-50%);
-          transform: translateY(-50%);
-  inset-inline-end: 1rem;
-  cursor: pointer;
-}
-.color-group .color-indicator input {
-  opacity: 0;
-  width: 0;
-  height: 0;
-}
-.color-group .color-indicator input + label {
-  cursor: pointer;
-}
-
 .form-check {
   padding-left: 0;
   display: -webkit-box;
@@ -1214,6 +1173,131 @@ html[dir=rtl] input[type=number] {
   cursor: pointer;
   font-size: 0.875rem;
   font-weight: 500;
+}
+
+.form-check-card {
+  position: relative;
+  width: 100%;
+}
+.form-check-card:not(:last-child) {
+  margin-bottom: 0.5rem;
+}
+.form-check-card > input {
+  display: none;
+}
+.form-check-card > input + label {
+  border: 1px solid var(--light-300);
+  border-radius: var(--bs-border-radius);
+  padding: 1rem 0.75rem;
+  cursor: pointer;
+  width: 100%;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--dark-700);
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  position: relative;
+}
+.form-check-card > input + label .form-control {
+  max-width: 50%;
+}
+.form-check-card > input:checked + label {
+  border-color: var(--primary-color);
+  background-color: var(--light-200);
+  color: var(--dark-900);
+}
+.form-check-card input[type=radio] + label {
+  -webkit-padding-start: 2.5rem;
+          padding-inline-start: 2.5rem;
+}
+.form-check-card input[type=radio] + label::after {
+  content: "";
+  position: absolute;
+  width: 1.25rem;
+  height: 1.25rem;
+  border: 2px solid var(--light-400);
+  border-radius: 50%;
+  top: 50%;
+  inset-inline-start: 0.75rem;
+  -webkit-transform: translateY(-50%);
+          transform: translateY(-50%);
+}
+.form-check-card input[type=radio]:checked + label::after {
+  border: 6px solid var(--primary-color);
+}
+.form-check-card input[type=checkbox] {
+  display: block;
+  position: absolute;
+  width: 1.25rem;
+  height: 1.25rem;
+  inset-inline-start: 0.75rem;
+  top: 1rem;
+  z-index: 1;
+}
+.form-check-card input[type=checkbox] + label {
+  -webkit-padding-start: 2.5rem;
+          padding-inline-start: 2.5rem;
+}
+.form-check-card.switch input {
+  display: none;
+}
+.form-check-card.switch input + label {
+  padding-block: 0.5rem;
+  -webkit-padding-start: 1rem;
+          padding-inline-start: 1rem;
+}
+.form-check-card.switch input:checked + label .toggler-icon {
+  background-color: var(--primary-color);
+}
+.form-check-card.switch input:checked + label .toggler-icon::after {
+  inset-inline-start: auto;
+  inset-inline-end: 0.125rem;
+  -webkit-transition: var(--transtion-3ms-e-out);
+  transition: var(--transtion-3ms-e-out);
+  -webkit-box-shadow: none;
+          box-shadow: none;
+}
+
+.color-group {
+  position: relative;
+}
+.color-group .form-control {
+  -webkit-padding-start: 2.75rem;
+          padding-inline-start: 2.75rem;
+}
+.color-group .cl-preview {
+  position: absolute;
+  display: block;
+  width: 1.25rem;
+  height: 1.25rem;
+  top: 50%;
+  inset-inline-start: 1rem;
+  -webkit-transform: translateY(-50%);
+          transform: translateY(-50%);
+  border: 1px solid var(--light-300);
+}
+.color-group .color-indicator {
+  position: absolute;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+          transform: translateY(-50%);
+  inset-inline-end: 1rem;
+  cursor: pointer;
+}
+.color-group .color-indicator input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+.color-group .color-indicator input + label {
+  cursor: pointer;
 }
 
 /* end inputs */
@@ -1469,6 +1553,11 @@ html[dir=rtl] input[type=number] {
   font-size: 1rem;
   font-weight: 600;
   color: var(--dark-800);
+}
+
+.headline-7 {
+  font-size: 0.875rem;
+  font-weight: 600;
 }
 
 .small-medium-text {
@@ -1804,6 +1893,21 @@ html[dir=rtl] input[type=number] {
   max-height: calc(100svh - 16.5rem);
   border-radius: var(--bs-border-radius);
 }
+.card.setting-card > form {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+}
 .card.setting-card > form > .card-body {
   max-height: calc(100svh - 19.5rem);
   -webkit-box-flex: 1;
@@ -1812,7 +1916,9 @@ html[dir=rtl] input[type=number] {
   overflow-y: auto;
 }
 .card.setting-card > form > .card-body.identity {
-  max-height: calc(100svh - 16.5rem);
+  max-height: -webkit-fit-content;
+  max-height: -moz-fit-content;
+  max-height: fit-content;
 }
 .card.setting-card .card-footer {
   padding-block: 0;
@@ -2616,6 +2722,15 @@ ul {
   list-style: none;
 }
 
+html {
+  font-size: 13px;
+}
+@media (min-width: 1200px) {
+  html {
+    font-size: 16px;
+  }
+}
+
 /* end Global */
 /* start .auth */
 .auth {
@@ -2754,6 +2869,8 @@ ul {
 .tree-list {
   -webkit-padding-start: 0;
           padding-inline-start: 0;
+  padding-left: 0;
+  padding-right: 0;
 }
 .tree-list .item {
   margin-bottom: 1rem;
@@ -2770,6 +2887,8 @@ ul {
   z-index: 0;
 }
 .tree-list .item ul {
+  padding-left: 0;
+  padding-right: 0;
   -webkit-padding-start: 1.5rem;
           padding-inline-start: 1.5rem;
 }
