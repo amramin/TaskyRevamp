@@ -63,7 +63,10 @@
     display: flex;
     flex-direction: row;
     margin-bottom: 0.5rem;
-    cursor: grab;
+    
+    &:has(.btn-group-vertical){
+cursor: grab;
+    }
     &:hover {
       box-shadow: var(--bs-shadow);
     }

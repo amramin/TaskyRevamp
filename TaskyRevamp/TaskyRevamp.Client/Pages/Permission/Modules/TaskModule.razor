@@ -12,17 +12,17 @@
 @inject StatusSettingConsumer _statusSettingConsumer
 @inject SourceSettingConsumer _sourceSettingConsumer
 
-<div class="card shadow-sm p-3 mt-2">
+<div class="card">
     <h6 class="fw-bold">@Loc["UserDepartment"]</h6>
     <hr />
     @foreach (var item in PrivilegeDto.TaskModuleUserDepartmentDto)
     {
         <div class="form-check">
             <input class="form-check-input"
-                   type="checkbox"
-                   id="@item.SelectedOption"
-                   checked="@item.IsActive"
-                   @onchange="(e) => ToggleSelection(item, e.Value as bool?)" />
+                type="checkbox"
+                id="@item.SelectedOption"
+                checked="@item.IsActive"
+                @onchange="(e) => ToggleSelection(item, e.Value as bool?)" />
             <label class="form-check-label fw-bold" for="@item.SelectedOption">
                 @Loc[item.SelectedOption.ToString()]
             </label>
@@ -36,8 +36,8 @@
         @if (item.IsActive)
         {
             <UserDepartmentExtendedFields Item="item"
-                                          ShowDirectionFields="@ShouldShowDirection(item.SelectedOption)"
-                                          ShowPermissionFields="@ShouldShowPermission(item.SelectedOption)">
+                ShowDirectionFields="@ShouldShowDirection(item.SelectedOption)"
+                ShowPermissionFields="@ShouldShowPermission(item.SelectedOption)">
             </UserDepartmentExtendedFields>
         }
     }

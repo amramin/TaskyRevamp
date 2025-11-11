@@ -1964,6 +1964,8 @@ html[dir=rtl] input[type=number] {
       -ms-flex-direction: row;
           flex-direction: row;
   margin-bottom: 0.5rem;
+}
+.card.card-order-control:has(.btn-group-vertical) {
   cursor: -webkit-grab;
   cursor: grab;
 }
