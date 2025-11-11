@@ -14,11 +14,13 @@
 @using TaskyRevamp.Dto.TaskTypeDto
 @inject IStringLocalizer<SharedResources> Loc
 @inject ToastService ToastService
-@inject TaskTypeConsumer _taskTypeConsumer
-@inject TaskSourceConsumer _taskSourceConsumer
 @inject TaskConsumer _taskConsumer
+@inject TypeSettingConsumer _typeSettingConsumer
+
 @inject DepartmentConsumer _departmentConsumer
 @inject AddTaskSettingConsumer _addTaskSettingConsumer
+@inject PrioritySettingConsumer _prioritySettingConsumer
+@inject SourceSettingConsumer _sourceSettingConsumer
 
 @inject UserConsumer _userConsumer
 <EditForm Model="@taskdto" EditContext="@editContext"
@@ -124,9 +126,9 @@
                                 <span class="text-danger"> *</span>
                             }
                         </label>
-                        <SearchableSingleDropdownOffline TInput=TaskTypeDto
+                        <SearchableSingleDropdownOffline TInput=TypeDto
                                                          TOutput=Guid
-                                                         TextSelector="(TaskTypeDto x)=> x.Name"
+                                                         TextSelector="(TypeDto x)=> x.DisplayedName"
                                                          OutputSelector="x => x.Id"
                                                          Datasource="taskTypeDtos"
                                                          MinCharacterCount="1"
@@ -144,9 +146,9 @@
                         }
                     </label>
                     <div class="mb-3">
-                        <SearchableSingleDropdownOffline TInput=TaskSourceDto
+                        <SearchableSingleDropdownOffline TInput=SourceDto
                                                          TOutput=Guid
-                                                         TextSelector="(TaskSourceDto x)=> x.Name"
+                                                         TextSelector="(SourceDto x)=> x.DisplayedName"
                                                          OutputSelector="x => x.Id"
                                                          Datasource="taskSourceDtos"
                                                          MinCharacterCount="1"
@@ -192,11 +194,12 @@
                     break;
                 case "End Date":
                     <div class="mb-3">
-                        <label class="form-label" for="toDate">@Loc["ToDate"]
+                        <label class="form-label" for="toDate">
+                            @Loc["ToDate"]
                             @if (column.IsMandatory)
                             {
-                            <span class="text-danger"> *</span>
-                            }    
+                                <span class="text-danger"> *</span>
+                            }
                         </label>
                         <div class="date-group">
                             <InputDate class="form-control" id="toDate" @bind-Value="taskdto.EndDate" />
@@ -243,7 +246,7 @@
                         <SearchableMultiDropdownOffline TInput=UserDto TOutput="Guid" Datasource=userDtos
                                                         TextSelector=@(x=>x.UserName) OutputSelector="x=> x.Id" @bind-SelectedOptions=taskdto.AssignedIds />
                     </div>
-                   break;
+                    break;
 
                 case "Checklist":
                     <div class="mb-3">
@@ -254,13 +257,9 @@
                                 <span class="text-danger">*</span>
                             }
                         </label>
-                       
+
                     </div>
-        @*   case "Status":
-        case "Priority":
-        case "Type":
-        case "Type":
-        case "Type": *@
+
                     break;
                 case "Comments":
 
@@ -272,28 +271,27 @@
                                 <span class="text-danger"> *</span>
                             }
                         </label>
-                       
-                           <div class="col-lg-12">
-                                                    <div class="mb-2">
-                                                        <label class="form-label">
-                                                            @Loc["Comment"]
-                                                            <span class="text-danger"> *</span>
-                                                        </label>
 
-                                                        <RichTextEditorComponent EditorId="RTE_English4" @ref="RichTextEditorComponentRefComment"
-                                                             Content="@taskdto.Content"
-                                                            ContentChanged="OnContentChanged"
-                                                            ></RichTextEditorComponent>
+                        <div class="col-lg-12">
+                            <div class="mb-2">
+                                <label class="form-label">
+                                    @Loc["Comment"]
+                                    <span class="text-danger"> *</span>
+                                </label>
 
-                                                        <div class="d-flex align-items-center justify-content-between">
-                                                            <div class="d-flex gap-2">
-                                                                <ValidationMessage class="small text-danger" For="@(() => taskdto.Content)" />
-                                                               </div>
-                                                               </div>
-</div>
-                                                                   
-                  </div>
-                  </div>
+                                <RichTextEditorComponent EditorId="RTE_English4" @ref="RichTextEditorComponentRefComment"
+                                                         Content="@taskdto.Content"
+                                                         ContentChanged="OnContentChanged"></RichTextEditorComponent>
+
+                                <div class="d-flex align-items-center justify-content-between">
+                                    <div class="d-flex gap-2">
+                                        <ValidationMessage class="small text-danger" For="@(() => taskdto.Content)" />
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
                     break;
                 case "Priority":
                     <div class="mb-3">
@@ -304,15 +302,14 @@
                                 <span class="text-danger"> *</span>
                             }
                         </label>
-                        <SearchableSingleDropdownOffline TInput=Priority
-                                                         TOutput=int
-                                                         TextSelector="(Priority x)=> x.GetDescription()"
-                                                         OutputSelector="x => (int)x"
-                                                         Datasource="priorities"
+                        <SearchableSingleDropdownOffline TInput=PriorityDto
+                                                         TOutput=Guid
+                                                         TextSelector=" (PriorityDto x)=> x.Name"
+                                                         OutputSelector="x => x.Id"
+                                                         Datasource="Priorities"
                                                          MinCharacterCount="1"
                                                          @bind-SelectedOption="@taskdto.Priority"
                                                          PlaceHolder="@($"--{Loc["SelectPriority"]}--")" />
-
                     </div>
                     break;
 
@@ -333,15 +330,15 @@
 
 
                 case "Actual Progress":
-                <div class= "mb-3" >
-                <label class= "form-label" for= "maxLength" >
-                    @Loc["ActualProgress"]
-                                @if (column.IsMandatory)
-                                {
-                                    <span class="text-danger"> *</span>
-                                }
-                </label>
-                            <div class="mb-3">
+                    <div class="mb-3">
+                        <label class="form-label" for="maxLength">
+                            @Loc["ActualProgress"]
+                            @if (column.IsMandatory)
+                            {
+                                <span class="text-danger"> *</span>
+                            }
+                        </label>
+                        <div class="mb-3">
 
                             <input type="range" class="form-range"
                                    min="0" max="100"
@@ -356,17 +353,17 @@
                                 </div>
                             </div>
 
-                </div>
+                        </div>
 
-                </div>
-                break;
-      
+                    </div>
+                    break;
+
             }
-        
-          }
-          </div>
-              
-                <button class="btn btn-primary mt-3" type="submit">Submit</button>
+
+        }
+    </div>
+
+    <button class="btn btn-primary mt-3" type="submit">Submit</button>
 </EditForm>
 
 @code {
@@ -380,9 +377,10 @@
     private EditContext editContext;
     private ValidationMessageStore messageStore;
     private Dictionary<string, object?> formData = new();
+    public List<PriorityDto> Priorities = new List<PriorityDto>();
 
-    List<TaskTypeDto> taskTypeDtos = new List<TaskTypeDto>();
-    List<TaskSourceDto> taskSourceDtos = new List<TaskSourceDto>();
+    List<TypeDto> taskTypeDtos = new List<TypeDto>();
+    List<SourceDto> taskSourceDtos = new List<SourceDto>();
     List<DepartmentDto> departmentDtos = new List<DepartmentDto>();
     List<CreateTaskDto> allTaskDtos = new List<CreateTaskDto>();
     private RichTextEditorComponent RichTextEditorComponentRefComment;
@@ -391,14 +389,13 @@
     private RichTextEditorComponent RichTextEditorComponentRefDescriptionArabic;
 
     List<UserDto> userDtos = new List<UserDto>();
-    List<Priority> priorities = new List<Priority>();
     private void OnContentChanged(string html)
     {
         taskdto.Content = html;
     }
     private void OnContentDescriptionArabicChanged(string html)
     {
-        taskdto.DescriptionArabic= html;
+        taskdto.DescriptionArabic = html;
     }
     private void OnDescriptionEnglishChanged(string html)
     {
@@ -406,16 +403,7 @@
     }
     protected async override Task OnInitializedAsync()
     {
-        // var res = await _defaultColumnsSettingConsumer.GetDefaultColumnsSettings();
-        // if (res.Success)
-        // {
-        //     var settings = res.Data;
-        //     if (settings != null)
-        //     {
-        //         ColumnsList = settings;
-        //     }
 
-        // }
         var res = await _addTaskSettingConsumer.GetAddTaskSettings();
         if (res.Success)
         {
@@ -426,23 +414,27 @@
             }
 
         }
-        var typs = await _taskTypeConsumer.GetTaskTypesForDDL();
+        var typs = await _typeSettingConsumer.GetTaskTypesForDDL();
         taskTypeDtos = typs.Data;
-        var sorce = await _taskSourceConsumer.GetTaskSourcesForDDL();
+        var sorce = await _sourceSettingConsumer.GetTaskSourcesForDDL();
         taskSourceDtos = sorce.Data;
         var users = await _userConsumer.GetUsers();
         userDtos = users.Data;
         var departs = await _departmentConsumer.GetDepartmentsForDDL();
         departmentDtos = departs.Data.ToList();
-        priorities = Enum.GetValues(typeof(Priority)).Cast<Priority>().ToList();
-        var tsks=await _taskConsumer.GetTasksForDDL();
+        var tsks = await _taskConsumer.GetTasksForDDL();
 
         allTaskDtos = tsks.Data.ToList();
+        var ress = await _prioritySettingConsumer.GetPriorities();
+        if (ress.Success && ress.Data != null)
+        {
+            Priorities = ress.Data;
+        }
         StateHasChanged();
-        
+
     }
 
-     private void ValidateDynamicFields(object sender, ValidationRequestedEventArgs e)
+    private void ValidateDynamicFields(object sender, ValidationRequestedEventArgs e)
     {
         ValidateDynamicFields((EditContext)sender);
     }
@@ -525,15 +517,15 @@
 
     private void HandleInvalidSubmit(EditContext context)
     {
-         ToastService.ShowToastAsync("Please fill all required fields before submitting", "error");
+        ToastService.ShowToastAsync("Please fill all required fields before submitting", "error");
 
     }
 
-   }
+}
 
 
 
-    
-    
+
+
 
 

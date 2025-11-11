@@ -1,4 +1,5 @@
 using TaskyRevamp.Domain.Interfaces;
+using TaskyRevamp.Domain.Models.SystemConfiguration;
 using TaskyRevamp.Domain.Models.Users;
 using TaskyRevamp.Dto.Enums;
 using TaskyRevamp.Dto.SystemConfiguration;
@@ -15,15 +16,17 @@ public class TaskItem : Entity, IHasCreationMetaData, IHasUpdateMetaData
     public string? DescriptionEnglish { get; set; }
     public string? DescriptionArabic { get; set; }
     public Guid TaskTypeId { set; get; }
-    public TaskType Type { get; set; }
+    public TaskyRevamp.Domain.Models.SystemConfiguration.Type Type { get; set; }
     public Guid TaskSourceId { set; get; }
-    public TaskSource Source { get; set; }
+    public Guid PriorityId { set; get; }
+    public Guid? StatusId { set; get; }
+    public Source Source { get; set; }
     public DateTime StartDate { get; set; }
     public DateTime EndDate { get; set; }
     public List<TaskChecklist> taskChecklists { get; set; }
     public int Duration => (EndDate.Date - StartDate.Date).Days + 1;
     public Reminder? Reminder { get; set; }
-    public Priority Priority { get; set; }
+    public PrioritySettings Priority { get; set; }
     Weight weight;
     public Weight PlannedWeight
     {
@@ -97,35 +100,16 @@ public class TaskItem : Entity, IHasCreationMetaData, IHasUpdateMetaData
         }
         set => _actualProgress = value;
     }
-    TaskStatus _status;
-    public TaskStatus Status
-    {
-        get
-        {
-            if (_status == TaskStatus.Returned) return _status;
+    public StatusSettings status { set; get; }
 
-            if (_subtasks.Any())
-            {
-                if (ActualProgress.Percentage == 100) return TaskStatus.Closed;
-                if (_subtasks.Any(s => s.Status is TaskStatus.InProgress or TaskStatus.Delayed)) return TaskStatus.InProgress;
-                return TaskStatus.NotStarted;
-            }
 
-            return _status;
-        }
-        set => _status = value;
-    }
 
-    //public Guid CreatorId { set; get; }
-    //public User Creator { get;  set; }
 
     public List<TaskAssignees> Assignees { get; set; }
     public List<Guid> AssignedDepartmentIds { set; get; }
     public List<Guid> AssignedIds { set; get; }
 
-    // public IEnumerable<Department>? AssignedDepartments { set; get; }
     public TaskDependencies? Dependencies { get; set; }
-    //  public List<Guid> DependenciesIds { set; get; }
 
     public TaskItem? Parent { get; set; }
     readonly List<TaskItem> _subtasks = new();
@@ -150,7 +134,7 @@ public class TaskItem : Entity, IHasCreationMetaData, IHasUpdateMetaData
     public User? UpdatedBy { get; set; }
 
     TaskItem() { }
-    public TaskItem(Guid id, string titleEnglish, string titleArabic, string descEN, string descAR, Guid type, Guid source, DateTime start, DateTime end, Priority priority, Weight plannedWeight, Guid creatorid, List<Department> assgndep, List<Guid> assigids, DateTime? rmind, int actualprocess, int wight, List<Guid> dependcy)
+    public TaskItem(Guid id, string titleEnglish, string titleArabic, string descEN, string descAR, Guid type, Guid source, DateTime start, DateTime end, Guid priority, Weight plannedWeight, Guid creatorid, List<Department> assgndep, List<Guid> assigids, DateTime? rmind, int actualprocess, int wight, List<Guid> dependcy)
     {
         if (end < start) throw new ArgumentException("End date must be after start date.");
         Id = id;
@@ -165,10 +149,10 @@ public class TaskItem : Entity, IHasCreationMetaData, IHasUpdateMetaData
         TaskSourceId = source;
         StartDate = start;
         EndDate = end;
-        Priority = priority;
+        PriorityId = priority;
         weight = plannedWeight;
         _actualProgress = new Progress(actualprocess);
-        _status = TaskStatus.NotStarted;
+
         _actualWeight = new Weight(wight);
         CreatedById = creatorid;
         Reminder = rmind == null ? null : new Reminder(rmind.Value);
@@ -208,9 +192,9 @@ public class TaskItem : Entity, IHasCreationMetaData, IHasUpdateMetaData
         TitleArabic = titleAR;
         AddHistoryEntry(by, $"updated the title");
     }
-    public void UpdateStatus(TaskStatus taskStus, User by)
+    public void UpdateStatus(StatusSettings taskStus, User by)
     {
-        _status = taskStus;
+        status = taskStus;
         AddHistoryEntry(by, $"updated the TaskStatus");
     }
     public CreateTaskDto CopyToDto()
@@ -227,7 +211,7 @@ public class TaskItem : Entity, IHasCreationMetaData, IHasUpdateMetaData
             UpdateDate = UpdateDate,
             StartDate = StartDate,
             EndDate = EndDate,
-            Priority = (int)Priority,
+            Priority = PriorityId,
             CreatedByName = CreatedBy?.Username,
             UpdatedBy = UpdatedBy?.Username,
             ReminderDate = Reminder?.Date
@@ -297,10 +281,10 @@ public class TaskItem : Entity, IHasCreationMetaData, IHasUpdateMetaData
 
         if (percent == 100)
         {
-            EnsureAllPrerequisitesAreMet();
+            //  EnsureAllPrerequisitesAreMet();
         }
         _actualProgress = new Progress(percent);
-        _status = percent == 100 ? TaskStatus.Closed : TaskStatus.InProgress;
+        // _status = percent == 100 ? TaskStatus.Closed : TaskStatus.InProgress;
         AddHistoryEntry(by, $"updated progress to {percent}%");
     }
 
@@ -311,9 +295,9 @@ public class TaskItem : Entity, IHasCreationMetaData, IHasUpdateMetaData
             throw new InvalidOperationException("Cannot manually complete a parent task. A parent task is completed automatically when all its subtasks are complete.");
         }
 
-        EnsureAllPrerequisitesAreMet();
+        // EnsureAllPrerequisitesAreMet();
         _actualProgress = new Progress(100);
-        _status = TaskStatus.Closed;
+        //_status = TaskStatus.Closed;
         AddHistoryEntry(by, $"completed the task");
     }
 
@@ -378,18 +362,18 @@ public class TaskItem : Entity, IHasCreationMetaData, IHasUpdateMetaData
             throw new InvalidOperationException("A parent task with subtasks cannot be deleted. Please delete all subtasks first.");
         }
 
-        _status = TaskStatus.Returned;
+        // _status = TaskStatus.Returned;
         AddHistoryEntry(by, $"deleted the task");
     }
 
     public void Restore(bool reassignToCreator, User by)
     {
-        if (Parent is { Status: TaskStatus.Closed or TaskStatus.Returned })
-        {
-            Parent = null;
-        }
+        //if (Parent is { Status: TaskStatus.Closed or TaskStatus.Returned })
+        //{
+        //    Parent = null;
+        //}
 
-        _status = TaskStatus.NotStarted;
+        //_status = TaskStatus.NotStarted;
         if (reassignToCreator)
         {
             // Assignees.ClearAndAdd(CreatedBy, by);
@@ -408,11 +392,5 @@ public class TaskItem : Entity, IHasCreationMetaData, IHasUpdateMetaData
         _history.Add(entry);
     }
 
-    void EnsureAllPrerequisitesAreMet()
-    {
-        //if (Dependencies.Any().Items.Any(d => d.Status != TaskStatus.Closed))
-        //{
-        //    throw new InvalidOperationException("This task cannot be marked as Closed because one or more prerequisite tasks are still in progress, Delayed, or Returned.");
-        //}
-    }
+
 }

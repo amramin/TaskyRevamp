@@ -23,10 +23,12 @@ public class GetTasksHandler : IRequestHandler<GetTasksQuery, PagedResult<Create
 
     private readonly IRepository<User> _userRepository;
     private readonly IRepository<TaskItem> _taskRepository;
+    private readonly IRepository<Department> _departmenRepository;
 
-    public GetTasksHandler(IRepository<TaskItem> taskRepository, IRepository<User> userRepository)
+    public GetTasksHandler(IRepository<TaskItem> taskRepository, IRepository<User> userRepository, IRepository<Department> departmentRepository)
     {
         _taskRepository = taskRepository;
+        _departmenRepository = departmentRepository;
         _userRepository = userRepository;
         _currentLanguage = Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName;
     }
@@ -53,16 +55,22 @@ public class GetTasksHandler : IRequestHandler<GetTasksQuery, PagedResult<Create
                             null,
                             searchExpression,
                             orderBy: orderBy,
-                            includeProperties: $"{nameof(TaskItem.CreatedBy)},{nameof(TaskItem.ActualWeight)},{nameof(TaskItem.Type)},{nameof(TaskItem.Source)},{nameof(TaskItem.UpdatedBy)},{nameof(TaskItem.Assignees)}.{nameof(TaskyRevamp.Domain.Models.Task.TaskAssignees.User)}");
+                            includeProperties: $"{nameof(TaskItem.CreatedBy)},{nameof(TaskItem.Priority)},{nameof(TaskItem.ActualWeight)},{nameof(TaskItem.Type)},{nameof(TaskItem.Source)},{nameof(TaskItem.status)},{nameof(TaskItem.UpdatedBy)},{nameof(TaskItem.Assignees)}.{nameof(TaskyRevamp.Domain.Models.Task.TaskAssignees.User)}");
 
         foreach (var tsk in res.Items)
         {
             var assgnedusr = await _userRepository.FindBy(k => tsk.AssignedIds.Contains(k.Id));
 
             CreateTaskDto tasky = tsk.CopyToDto();
-            tasky.TypeName = tsk.Type?.Name;
-            tasky.SourceName = tsk.Source?.Name;
+            tasky.TypeName = currentCulture == "ar" ? tsk.Type?.NameArabic : tsk.Type?.NameEnglish;
+            tasky.SourceName = currentCulture == "ar" ? tsk.Source?.NameArabic : tsk.Source?.NameEnglish;
+            tasky.PriorityName = currentCulture == "ar" ? tsk.Priority?.NameArabic : tsk.Priority?.NameEnglish;
+            var departments = await _departmenRepository.FindBy(k => tsk.AssignedDepartmentIds.Contains(k.Id));
+            var depsName = departments.Value.Select(k => k.NameEnglish);
+            tasky.AssignedDepartmentName = string.Join(" ", depsName);
 
+
+            tasky.TaskStatusName = currentCulture == "ar" ? tsk.status?.NameArabic : tsk.status?.NameEnglish;
             tasky.CreatedByName = currentCulture == "ar" ? tsk.CreatedBy?.NameArabic : tsk.CreatedBy?.NameEnglish;
             tasky.UpdatedBy = currentCulture == "ar" ? tsk.UpdatedBy?.NameArabic : tsk.UpdatedBy?.NameEnglish;
             tasky.AssigneduserNames = string.Join(",", assgnedusr.Value.Select(k => k.Username));// string.Join(", ", tsk.Assignees.Select(k => k.User.NameEnglish));
@@ -141,8 +149,8 @@ public class GetTasksHandler : IRequestHandler<GetTasksQuery, PagedResult<Create
             case "TaskStatus":
 
                 return sortAscending
-                    ? q => q.OrderBy(u => u.Status)
-                    : q => q.OrderByDescending(u => u.Status);
+                    ? q => q.OrderBy(u => u.status!.NameEnglish)
+                    : q => q.OrderByDescending(u => u.status!.NameEnglish);
             case "StartDate":
                 return sortAscending
                     ? q => q.OrderBy(u => u.StartDate)

@@ -483,14 +483,14 @@
             builder.AddContent(0, task.Title);
             break;
         case "Priority":
-            builder.AddContent(0, task.Priority);
+            builder.AddContent(0, task.PriorityName);
             break;
             
         case "Assigned To":
             builder.AddContent(0, task.AssigneduserNames);
             break;
         case "Status":
-            builder.AddContent(0, ((TaskStatus)task.TaskStatus).ToString());
+            builder.AddContent(0, (task.TaskStatusName)?.ToString());
             break;
         case "Start Date":
             builder.AddContent(0, task.StartDate.ToString("yyyy-MM-dd"));
@@ -518,7 +518,7 @@
             break;
        
         case "Assigned To Department":
-            builder.AddContent(0, task.AssignedDepartmentIds);
+            builder.AddContent(0, task.AssignedDepartmentName);
             break;
         case "Source":
             builder.AddContent(0, task.SourceName);

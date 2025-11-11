@@ -7,24 +7,26 @@ using TaskyRevamp.Dto.GeneralDto;
 using TaskyRevamp.Services.Helpers;
 using TaskyRevamp.Services.SearchMappings;
 using TaskyRevamp.Dto.TaskSourceDto;
+using TaskyRevamp.Domain.Models.SystemConfiguration;
+using TaskyRevamp.Dto.SystemConfiguration;
 
 namespace TaskyRevamp.Services.TaskSources.Query;
 
-public record GetTaskSourcesQuery() : IRequest<List<TaskSourceDto>>;
+public record GetTaskSourcesQuery() : IRequest<List<SourceDto>>;
 
-public class GetTaskSourcesHandler : IRequestHandler<GetTaskSourcesQuery, List<TaskSourceDto>>
+public class GetTaskSourcesHandler : IRequestHandler<GetTaskSourcesQuery, List<SourceDto>>
 {
-    private readonly IRepository<TaskSource> _TaskSourceRepository;
+    private readonly IRepository<Source> _TaskSourceRepository;
 
 
-    public GetTaskSourcesHandler(IRepository<TaskSource> TaskSourceRepository)
+    public GetTaskSourcesHandler(IRepository<Source> TaskSourceRepository)
     {
         _TaskSourceRepository = TaskSourceRepository;
     }
 
-    public async Task<List<TaskSourceDto>> Handle(GetTaskSourcesQuery request, CancellationToken cancellationToken)
+    public async Task<List<SourceDto>> Handle(GetTaskSourcesQuery request, CancellationToken cancellationToken)
     {
-        List<TaskSourceDto> allTaskSources = new List<TaskSourceDto>();
+        List<SourceDto> allTaskSources = new List<SourceDto>();
 
 
         var data = await _TaskSourceRepository.FindBy(K => K.Id != null);
@@ -33,7 +35,7 @@ public class GetTaskSourcesHandler : IRequestHandler<GetTaskSourcesQuery, List<T
 
         foreach (var TaskSource in data.Value)
         {
-            TaskSourceDto dep = TaskSource.CopyToDto();
+            SourceDto dep = TaskSource.CopyToDto();
 
             allTaskSources.Add(dep);
 
