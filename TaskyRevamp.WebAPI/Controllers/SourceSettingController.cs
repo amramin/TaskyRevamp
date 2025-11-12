@@ -8,63 +8,73 @@ using TaskyRevamp.Dto.SystemConfiguration;
 using TaskyRevamp.Services.Account.Query;
 using TaskyRevamp.Services.SystemConfiguration.SourceConfiguration.Command;
 using TaskyRevamp.Services.SystemConfiguration.SourceConfiguration.Query;
+using TaskyRevamp.Services.TaskSources.Query;
 
 namespace TaskyRevamp.WebAPI.Controllers
 {
-	[Route("api/[controller]")]
-	[ApiController]
-	public class SourceSettingController : ControllerBase
-	{
-		private readonly IMediator _mediator;
-		public SourceSettingController(IMediator mediator)
-		{
-			_mediator = mediator;
-		}
+    [Route("api/[controller]")]
+    [ApiController]
+    public class SourceSettingController : ControllerBase
+    {
+        private readonly IMediator _mediator;
+        public SourceSettingController(IMediator mediator)
+        {
+            _mediator = mediator;
+        }
 
-		[HttpGet("GetSourceSettings")]
-		public async Task<IActionResult> GetSourceSettings(
-			[FromServices] IOptions<PaginationSettings> paginationSettings,
-			[FromQuery] int pageNumber = 1,
-			[FromQuery] int? pageSize = null,
-			[FromQuery] string sortByColumnName = "CreateDate",
-			[FromQuery] bool sortAscending = true,
-			[FromQuery] List<SearchField> searchFields = null,
-			[FromQuery] string searchText = null)
-		{
+        [HttpGet("GetSourceSettings")]
+        public async Task<IActionResult> GetSourceSettings(
+            [FromServices] IOptions<PaginationSettings> paginationSettings,
+            [FromQuery] int pageNumber = 1,
+            [FromQuery] int? pageSize = null,
+            [FromQuery] string sortByColumnName = "CreateDate",
+            [FromQuery] bool sortAscending = true,
+            [FromQuery] List<SearchField> searchFields = null,
+            [FromQuery] string searchText = null)
+        {
 
             var size = pageSize ?? paginationSettings.Value.DefaultPageSize;
-			var result = await _mediator.Send(new GetSourceConfigurationQuery(pageNumber, size, sortByColumnName, sortAscending, searchFields, searchText));
-			return Ok(result);
-		}
+            var result = await _mediator.Send(new GetSourceConfigurationQuery(pageNumber, size, sortByColumnName, sortAscending, searchFields, searchText));
+            return Ok(result);
+        }
 
-		[HttpGet("GetSourceWithoutPagination")]
-		public async Task<IActionResult> GetSourceWithoutPagination()
-		{
-			return Ok(await _mediator.Send(new GetSourcesWithoutPaginationQuery()));
-		}
+        [HttpGet("GetSourceWithoutPagination")]
+        public async Task<IActionResult> GetSourceWithoutPagination()
+        {
+            return Ok(await _mediator.Send(new GetSourcesWithoutPaginationQuery()));
+        }
 
-		[HttpGet("GetSourceSettingById/{id}")]
-		public async Task<IActionResult> GetSourceSettingById(Guid id)
-		{
-			return Ok(await _mediator.Send(new GetSourceByIdQuery(id)));
-		}
+        [HttpGet("GetSourceSettingById/{id}")]
+        public async Task<IActionResult> GetSourceSettingById(Guid id)
+        {
+            return Ok(await _mediator.Send(new GetSourceByIdQuery(id)));
+        }
 
-		[HttpPost("CreateSource")]
-		public async Task<IActionResult> CreateSource(SourceDto source)
-		{
-			return Ok(await _mediator.Send(new CreateSourceCommand(source)));
-		}
+        [HttpPost("CreateSource")]
+        public async Task<IActionResult> CreateSource(SourceDto source)
+        {
+            return Ok(await _mediator.Send(new CreateSourceCommand(source)));
+        }
 
-		[HttpPost("UpdateSource")]
-		public async Task<IActionResult> UpdateSource(SourceDto source)
-		{
-			return Ok(await _mediator.Send(new UpdateSourceCommand(source)));
-		}
+        [HttpPost("UpdateSource")]
+        public async Task<IActionResult> UpdateSource(SourceDto source)
+        {
+            return Ok(await _mediator.Send(new UpdateSourceCommand(source)));
+        }
 
-		[HttpDelete("DeleteSource/{id}")]
-		public async Task<IActionResult> DeleteSource(Guid id)
-		{
-			return Ok(await _mediator.Send(new DeleteSourceCommand(id)));
-		}
-	}
+        [HttpDelete("DeleteSource/{id}")]
+        public async Task<IActionResult> DeleteSource(Guid id)
+        {
+            return Ok(await _mediator.Send(new DeleteSourceCommand(id)));
+        }
+
+        [HttpGet("GetTaskSourcesForDDL")]
+        public async Task<IActionResult> GetTaskSourcesForDDL()
+        {
+
+            var all = await _mediator.Send(new GetTaskSourcesQuery());
+
+            return Ok(all);
+        }
+    }
 }

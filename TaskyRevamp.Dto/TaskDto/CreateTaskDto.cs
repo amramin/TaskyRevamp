@@ -25,21 +25,37 @@ public class CreateTaskDto
     )]
     public string TitleArabic { get; set; }
 
-    public string DescriptionEnglish { get; set; }
-    public string DescriptionArabic { get; set; }
+    public string Title => Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName == "ar" ? TitleArabic : TitleEnglish;
+
+    public string? DescriptionEnglish { get; set; }
+    public string? DescriptionArabic { get; set; }
     public DateTime StartDate { get; set; }
     public DateTime EndDate { get; set; }
     public Guid TypeId { get; set; }
     public Guid SourceId { get; set; }
-    public int Priority { get; set; }
-    public int weight { get; set; }
+    public Guid Priority { get; set; }
+
+    public int weight { get; set; } = 0;
+    public int ActualProcess { get; set; }
     public int Duration => (EndDate.Date - StartDate.Date).Days + 1;
-    public int TaskStatus { get; set; }
+    public Guid? TaskStatus { get; set; }
+    public string? TaskStatusName { get; set; }
     public List<Guid> AssignedDepartmentIds { set; get; }
+    public string? AssignedDepartmentName { set; get; }
     public List<Guid> AssignedIds { set; get; }
+
+    public List<Guid>? Dependencies { set; get; }
+
     public Guid CreatedBy { get; set; }
     public string? CreatedByName { get; set; }
     public DateTime? CreateDate { get; set; }
-    public string UpdatedBy { get; set; }
+    public string? UpdatedBy { get; set; }
     public DateTime? UpdateDate { get; set; }
+    public string? Content { get; set; }
+    public string? SourceName { get; set; }
+    public string? TypeName { get; set; }
+    public string? PriorityName { get; set; }
+
+    public DateTime? ReminderDate { get; set; }
+    public string? AssigneduserNames { get; set; }
 }

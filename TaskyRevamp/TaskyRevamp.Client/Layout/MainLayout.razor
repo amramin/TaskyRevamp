@@ -87,16 +87,16 @@
                                     Change Password
                                 </a>
                             </li>
-                            <li><hr class="dropdown-divider" /></li>
+
                             <li class="dropdown-item">
-                                <a class="drop-link" href="login.html">
+                                <a class="drop-link" @onclick="Logout">
                                     <span class="icon">
                                         <SVGCrud SVGType="SVGCrud.SVGTypeEnum.LogOut"></SVGCrud>
                                     </span>
-
-                                    Logout
+                                    @Loc["Logout"]
                                 </a>
                             </li>
+                           
                         </ul>
                     </div>
                 </div>
@@ -195,7 +195,7 @@
         IsShowDialog = isShow;
         StateHasChanged();
     }
-
+    
 
     private async Task CheckAuth(bool firstRender)
     {

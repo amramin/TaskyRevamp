@@ -1,0 +1,79 @@
+﻿@using Syncfusion.Blazor
+@using Syncfusion.Blazor.RichTextEditor
+
+<SfRichTextEditor @ref="rte" ID="@EditorId" SaveInterval="5000" @bind-Value="InternalContent" EnablePersistence="false" ShowCharCount="true" MaxLength="3000" CssClass="@(EnableRtl? "arabic-rte" : "")" >
+    <RichTextEditorToolbarSettings Items="@Tools" />
+    <RichTextEditorQuickToolbarSettings Link="@Link" />
+</SfRichTextEditor>
+
+<style>
+    .arabic-rte .e-rte-content{
+        text-align: right;
+    }
+</style>
+
+
+@code {
+    [Parameter]
+    public string EditorId { get; set; }
+    [Parameter]
+    public string Content { set; get; }
+
+    [Parameter]
+    public EventCallback<string> ContentChanged { get; set; }
+
+    [Parameter]
+    public bool EnableRtl { get; set; } = false;
+
+    private SfRichTextEditor rte;
+
+    private List<ToolbarItemModel> Tools = new()
+{
+        new ToolbarItemModel() { Command = ToolbarCommand.OrderedList },
+        new ToolbarItemModel() { Command = ToolbarCommand.UnorderedList },
+        new ToolbarItemModel() { Command = ToolbarCommand.Underline },
+        new ToolbarItemModel() { Command = ToolbarCommand.Italic },
+        new ToolbarItemModel() { Command = ToolbarCommand.Bold },
+        new ToolbarItemModel() { Command = ToolbarCommand.BackgroundColor },
+        new ToolbarItemModel() { Command = ToolbarCommand.FontColor },
+        new ToolbarItemModel() { Command = ToolbarCommand.StrikeThrough },
+        new ToolbarItemModel() { Command = ToolbarCommand.Image },
+        new ToolbarItemModel() { Command = ToolbarCommand.CreateLink },
+        new ToolbarItemModel() { Command = ToolbarCommand.Alignments },
+        new ToolbarItemModel() { Command = ToolbarCommand.FontSize },
+        new ToolbarItemModel() { Command = ToolbarCommand.FontName },
+        new ToolbarItemModel() { Command = ToolbarCommand.Indent },
+        new ToolbarItemModel() { Command = ToolbarCommand.Outdent },
+        new ToolbarItemModel() { Command = ToolbarCommand.Separator },
+        new ToolbarItemModel() { Command = ToolbarCommand.Formats },
+        new ToolbarItemModel() { Command = ToolbarCommand.SourceCode },
+        new ToolbarItemModel() { Command = ToolbarCommand.Separator },
+        new ToolbarItemModel() { Command = ToolbarCommand.SubScript},
+        new ToolbarItemModel() { Command = ToolbarCommand.SuperScript},
+        new ToolbarItemModel() { Command = ToolbarCommand.Undo },
+        new ToolbarItemModel() { Command = ToolbarCommand.Redo },
+
+    };
+
+    private List<LinkToolbarItemModel> Link = new List<LinkToolbarItemModel>()
+    {
+        new LinkToolbarItemModel() { Command = LinkToolbarCommand.Open },
+        new LinkToolbarItemModel() { Command = LinkToolbarCommand.Edit },
+        new LinkToolbarItemModel() { Command = LinkToolbarCommand.UnLink }
+    };
+
+    private string InternalContent
+    {
+        get => Content;
+        set
+        {
+            if (Content != value)
+            {
+                Content = value;
+                ContentChanged.InvokeAsync(value);
+            }
+        }
+    }
+
+    public string GetContent() => Content;
+}

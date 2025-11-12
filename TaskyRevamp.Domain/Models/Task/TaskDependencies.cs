@@ -7,7 +7,7 @@ public class TaskDependencies : Entity
 {
     private readonly TaskItem _task;
     private readonly List<TaskItem> _items = new();
-    public IReadOnlyCollection<TaskItem> Items => _items.AsReadOnly();
+    public List<TaskItem> Items { set; get; }
 
     internal TaskDependencies(TaskItem task)
     {
@@ -17,7 +17,10 @@ public class TaskDependencies : Entity
     public TaskDependencies()
     {
     }
-
+    public TaskDependencies(List<TaskItem> allitem)
+    {
+        Items = allitem;
+    }
     public void Add(TaskItem dependency, User by)
     {
         if (dependency.Id == _task.Id) throw new InvalidOperationException("A task cannot depend on itself.");

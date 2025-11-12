@@ -9,18 +9,22 @@ using TaskyRevamp.Localization.Resources;
 
 namespace TaskyRevamp.Dto.SystemConfiguration
 {
-	public class PriorityDto
-	{
-		public Guid Id { get; set; }
-		[Required(ErrorMessageResourceType = typeof(SharedResources), ErrorMessageResourceName = "Required")]
-		public string NameEnglish { get; set; }
-		[Required(ErrorMessageResourceType = typeof(SharedResources), ErrorMessageResourceName = "Required")]
-		public string NameArabic { get; set; }
-		[Required(ErrorMessageResourceType = typeof(SharedResources), ErrorMessageResourceName = "Required")]
-		public string NameColor { get; set; }
-		[Required(ErrorMessageResourceType = typeof(SharedResources), ErrorMessageResourceName = "Required")]
-		public string BackgroundColor { get; set; }
-		public int Order { get; set; }
+    public class PriorityDto
+    {
+        public Guid Id { get; set; }
+        [Required(ErrorMessageResourceType = typeof(SharedResources), ErrorMessageResourceName = "Required")]
+        public string NameEnglish { get; set; }
+        [Required(ErrorMessageResourceType = typeof(SharedResources), ErrorMessageResourceName = "Required")]
+        public string NameArabic { get; set; }
+
+
+        public string Name => Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName == "ar" ? NameArabic : NameEnglish;
+
+        [Required(ErrorMessageResourceType = typeof(SharedResources), ErrorMessageResourceName = "Required")]
+        public string NameColor { get; set; }
+        [Required(ErrorMessageResourceType = typeof(SharedResources), ErrorMessageResourceName = "Required")]
+        public string BackgroundColor { get; set; }
+        public int Order { get; set; }
 
         public static PriorityDto CopyFrom(PriorityDto source)
         {

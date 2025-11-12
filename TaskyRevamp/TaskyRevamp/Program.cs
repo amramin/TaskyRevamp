@@ -13,7 +13,7 @@ using TaskyRevamp.Client.Pages;
 using TaskyRevamp.Client.Services;
 using TaskyRevamp.Components;
 using TaskyRevamp.Dto.GeneralDto;
-
+using Syncfusion.Blazor;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -21,6 +21,7 @@ builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents()
     .AddInteractiveWebAssemblyComponents();
 builder.Services.AddLocalization();
+Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("Ngo9BigBOggjHTQxAR8/V1NNaF5cXmBCf1FpRmJGdld5fUVHYVZUTXxaS00DNHVRdkdmWXtdcHVTRGBeVkBzWkNWYE4=");
 
 builder.Services.AddEndpointsApiExplorer();
 //builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
@@ -111,7 +112,6 @@ app.UseHttpsRedirection();
 
 
 app.UseAntiforgery();
-
 app.MapStaticAssets();
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode()
