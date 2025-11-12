@@ -35,8 +35,8 @@
     {
 
 
-        var current = await LocalStorageService.GetItemAsStringAsync("Id");
-        _newType.CreatedById = Guid.Parse(current);
+    //    var current = await LocalStorageService.GetItemAsStringAsync("Id");
+      //  _newType.CreatedById = Guid.Parse(current);
 
 
         var res = await _typeSettingConsumer.CreateType(_newType);
