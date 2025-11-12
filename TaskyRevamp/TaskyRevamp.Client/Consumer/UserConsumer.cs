@@ -2,6 +2,7 @@
 using System.Net.Http.Json;
 using TaskyRevamp.Dto.Account;
 using TaskyRevamp.Dto.Department;
+using TaskyRevamp.Dto.Enums.SearchFields;
 using TaskyRevamp.Dto.GeneralDto;
 using TaskyRevamp.Dto.SystemConfiguration;
 
@@ -19,6 +20,15 @@ namespace TaskyRevamp.Client.Consumer
 		{
 			var ret = await _taskyService.httpClient.GetFromJsonAsync<CommonApiResponse<List<UserDto>>>($"api/User/GetUsers");
 			return ret;
+		}
+		public async Task<CommonApiResponse<PagedResult<UserDtoWithName>>> GetUsersWithPagination(int pageNumber, int pageSize, string sortByColumnName, bool sortAscending, List<SearchFieldUser> searchFields = null, string searchText = null)
+		{
+			var queryString = _taskyService.PreparePaginatedSearchQueryString(pageNumber, pageSize, sortByColumnName, sortAscending, searchFields, searchText);
+
+			var url = $"api/User/GetUsersWithPagination{queryString}";
+			var res = await _taskyService.GetFromJsonAsync<CommonApiResponse<PagedResult<UserDtoWithName>>>(url);
+
+			return res;
 		}
 		public async Task<CommonApiResponse<DepartmentDto>> GetUsersByDepartment(Guid DepartmentId)
 		{

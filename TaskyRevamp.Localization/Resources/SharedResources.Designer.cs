@@ -147,6 +147,15 @@ namespace TaskyRevamp.Localization.Resources
         }
 
         /// <summary>
+        ///   Looks up a localized string similar to Add user.
+        /// </summary>
+        public static string Add_user {
+            get {
+                return ResourceManager.GetString("Add_user", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add A New Privilege To Get Started.
         /// </summary>
         public static string AddANewPrivilegeToGetStarted
@@ -179,6 +188,15 @@ namespace TaskyRevamp.Localization.Resources
             }
         }
 
+        /// <summary>
+        ///   Looks up a localized string similar to Add a new user to get started.
+        /// </summary>
+        public static string AddANewUserToGetStarted {
+            get {
+                return ResourceManager.GetString("AddANewUserToGetStarted", resourceCulture);
+            }
+        }
+        
         /// <summary>
         ///   Looks up a localized string similar to Add Delegation.
         /// </summary>
@@ -972,6 +990,15 @@ namespace TaskyRevamp.Localization.Resources
         }
 
         /// <summary>
+        ///   Looks up a localized string similar to Email Address.
+        /// </summary>
+        public static string email {
+            get {
+                return ResourceManager.GetString("email", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Employee&apos;s Tasks.
         /// </summary>
         public static string EmployeesTasks
@@ -1314,6 +1341,15 @@ namespace TaskyRevamp.Localization.Resources
         }
 
         /// <summary>
+        ///   Looks up a localized string similar to Link a user to department and privilege.
+        /// </summary>
+        public static string LinkUser {
+            get {
+                return ResourceManager.GetString("LinkUser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to List view.
         /// </summary>
         public static string List
@@ -1623,6 +1659,15 @@ namespace TaskyRevamp.Localization.Resources
         }
 
         /// <summary>
+        ///   Looks up a localized string similar to No users available.
+        /// </summary>
+        public static string NoUsersAvailable {
+            get {
+                return ResourceManager.GetString("NoUsersAvailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Priority Ranking.
         /// </summary>
         public static string Order
@@ -1820,6 +1865,15 @@ namespace TaskyRevamp.Localization.Resources
             }
         }
 
+        /// <summary>
+        ///   Looks up a localized string similar to Privileges.
+        /// </summary>
+        public static string Privileges {
+            get {
+                return ResourceManager.GetString("Privileges", resourceCulture);
+            }
+        }
+        
         /// <summary>
         ///   Looks up a localized string similar to Recycle Bin Configuration.
         /// </summary>
@@ -2088,6 +2142,15 @@ namespace TaskyRevamp.Localization.Resources
         public static string SelectTime {
             get {
                 return ResourceManager.GetString("SelectTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Set as Manager.
+        /// </summary>
+        public static string setAsManager {
+            get {
+                return ResourceManager.GetString("setAsManager", resourceCulture);
             }
         }
         
@@ -2563,6 +2626,15 @@ namespace TaskyRevamp.Localization.Resources
         }
 
         /// <summary>
+        ///   Looks up a localized string similar to Users .
+        /// </summary>
+        public static string users {
+            get {
+                return ResourceManager.GetString("users", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to View.
         /// </summary>
         public static string View
@@ -2595,6 +2667,15 @@ namespace TaskyRevamp.Localization.Resources
             }
         }
 
+        /// <summary>
+        ///   Looks up a localized string similar to View Privilege.
+        /// </summary>
+        public static string ViewPrivilege {
+            get {
+                return ResourceManager.GetString("ViewPrivilege", resourceCulture);
+            }
+        }
+        
         /// <summary>
         ///   Looks up a localized string similar to Use this option to enable different task views in your system for better task management and visualization..
         /// </summary>
