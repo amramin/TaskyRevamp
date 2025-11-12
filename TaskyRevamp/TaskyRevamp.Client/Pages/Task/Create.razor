@@ -1,0 +1,42 @@
+﻿@using Blazored.LocalStorage
+@using TaskyRevamp.Client.Consumer
+
+@inject ILocalStorageService LocalStorageService
+
+@using TaskyRevamp.Client.Services
+@using TaskyRevamp.Dto;
+@using TaskyRevamp.Dto.TaskDto
+@inject IStringLocalizer<SharedResources> Loc
+@inject ToastService ToastService
+@inject TaskConsumer _taskonsumer
+
+@inject IStringLocalizer<SharedResources> Loc
+
+@if (IsLoaded)
+{
+    <Form ButtonText="@Loc["Add"]" taskdto="@Taskdto" OnValidSubmit="@Creat" />
+}
+
+
+@code {
+    CreateTaskDto Taskdto = new CreateTaskDto();
+    [Parameter]
+    public bool IsAdmine { set; get; }
+    [Parameter] public EventCallback<CreateTaskDto> OnValidSubmit { get; set; }
+
+    bool IsLoaded = false;
+    protected override async Task OnInitializedAsync()
+    {
+        IsLoaded = true;
+    }
+    async Task Creat()
+    {
+        var current = await LocalStorageService.GetItemAsStringAsync("Id");
+        Taskdto.CreatedBy = Guid.Parse(current);
+        await _taskonsumer.AddTask(Taskdto);
+
+        await OnValidSubmit.InvokeAsync(Taskdto);
+     }
+      
+    }
+

@@ -8,14 +8,14 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <Content Remove="compilerconfig.json" />
+		<Content Remove="compilerconfig.json" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <None Include="..\TaskyRevamp.Client\Pages\SystemConfiguration\SourceSetting\Component.razor" Link="Component.razor" />
-	  <None Include="..\TaskyRevamp.Client\Pages\SystemConfiguration\Views\ViewTaskSettings.razor" Link="ViewTaskSettings.razor" />
-	  <None Include="..\TaskyRevamp.Client\Pages\SystemConfiguration\ViewTaskSetting\InputSwitch.razor" Link="InputSwitch.razor" />
-	  <None Include="compilerconfig.json" />
+		<None Include="..\TaskyRevamp.Client\Pages\SystemConfiguration\SourceSetting\Component.razor" Link="Component.razor" />
+		<None Include="..\TaskyRevamp.Client\Pages\SystemConfiguration\Views\ViewTaskSettings.razor" Link="ViewTaskSettings.razor" />
+		<None Include="..\TaskyRevamp.Client\Pages\SystemConfiguration\ViewTaskSetting\InputSwitch.razor" Link="InputSwitch.razor" />
+		<None Include="compilerconfig.json" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -25,6 +25,9 @@
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="9.0.7" />
 		<PackageReference Include="Microsoft.Extensions.Localization" Version="9.0.8" />
 		<PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="9.0.8" />
+
+		<PackageReference Include="Syncfusion.Blazor.RichTextEditor" Version="31.1.21" />
+		<PackageReference Include="Syncfusion.Blazor.Themes" Version="31.1.21"/>
 	</ItemGroup>
 
 </Project>

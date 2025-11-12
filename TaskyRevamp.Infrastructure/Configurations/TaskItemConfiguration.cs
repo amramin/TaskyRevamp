@@ -16,20 +16,31 @@ internal class TaskItemConfiguration : IEntityTypeConfiguration<TaskItem>
     {
         builder
    .HasOne(te => te.Source)
-   .WithMany()
+   .WithMany().HasForeignKey(te => te.TaskSourceId)
    .OnDelete(DeleteBehavior.Restrict); // or NoAction in EF Core 5+
 
         builder
             .HasOne(te => te.Type)
-            .WithMany()
+            .WithMany().HasForeignKey(k => k.TaskTypeId)
             .OnDelete(DeleteBehavior.Restrict);
-
+        builder
+        .HasOne(te => te.status)
+        .WithMany().HasForeignKey(k => k.StatusId)
+        .OnDelete(DeleteBehavior.Restrict);
 
         builder
+         .HasOne(te => te.Priority)
+         .WithMany().HasForeignKey(k => k.PriorityId)
+         .OnDelete(DeleteBehavior.Restrict);
+        builder
              .HasOne(te => te.CreatedBy)
-             .WithMany()
-             .OnDelete(DeleteBehavior.Restrict);
+             .WithMany().HasForeignKey(k => k.CreatedById)
+             .OnDelete(DeleteBehavior.NoAction);
+        builder
 
+     .HasOne(te => te.UpdatedBy)
+     .WithMany()
+     .OnDelete(DeleteBehavior.NoAction);
 
         builder
             .HasOne(te => te.Comments)

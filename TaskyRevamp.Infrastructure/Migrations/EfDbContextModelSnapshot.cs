@@ -844,9 +844,6 @@ namespace TaskyRevamp.Infrastructure.Migrations
                     b.Property<string>("RejectReason")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid?>("TaskItemId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
 
@@ -856,8 +853,6 @@ namespace TaskyRevamp.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CreatedById");
-
-                    b.HasIndex("TaskItemId");
 
                     b.HasIndex("UserId");
 
@@ -1068,11 +1063,9 @@ namespace TaskyRevamp.Infrastructure.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("DescriptionArabic")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("DescriptionEnglish")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("EndDate")
@@ -1081,14 +1074,14 @@ namespace TaskyRevamp.Infrastructure.Migrations
                     b.Property<Guid?>("ParentId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("Priority")
-                        .HasColumnType("int");
+                    b.Property<Guid>("PriorityId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
+                    b.Property<Guid?>("StatusId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("TaskSourceId")
                         .HasColumnType("uniqueidentifier");
@@ -1122,6 +1115,10 @@ namespace TaskyRevamp.Infrastructure.Migrations
 
                     b.HasIndex("ParentId");
 
+                    b.HasIndex("PriorityId");
+
+                    b.HasIndex("StatusId");
+
                     b.HasIndex("TaskSourceId");
 
                     b.HasIndex("TaskTypeId");
@@ -1131,7 +1128,7 @@ namespace TaskyRevamp.Infrastructure.Migrations
                     b.ToTable("TaskItem");
                 });
 
-            modelBuilder.Entity("TaskyRevamp.Domain.Models.Task.TaskSource", b =>
+            modelBuilder.Entity("TaskyRevamp.Domain.Models.Users.User", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -1533,7 +1530,7 @@ namespace TaskyRevamp.Infrastructure.Migrations
                         .IsRequired();
 
                     b.HasOne("TaskyRevamp.Domain.Models.Task.TaskItem", "task")
-                        .WithMany()
+                        .WithMany("Assignees")
                         .HasForeignKey("taskId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -1665,13 +1662,24 @@ namespace TaskyRevamp.Infrastructure.Migrations
                         .WithMany("Subtasks")
                         .HasForeignKey("ParentId");
 
-                    b.HasOne("TaskyRevamp.Domain.Models.Task.TaskSource", "Source")
+                    b.HasOne("TaskyRevamp.Domain.Models.SystemConfiguration.PrioritySettings", "Priority")
+                        .WithMany()
+                        .HasForeignKey("PriorityId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("TaskyRevamp.Domain.Models.SystemConfiguration.StatusSettings", "status")
+                        .WithMany()
+                        .HasForeignKey("StatusId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("TaskyRevamp.Domain.Models.SystemConfiguration.Source", "Source")
                         .WithMany()
                         .HasForeignKey("TaskSourceId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("TaskyRevamp.Domain.Models.Task.TaskType", "Type")
+                    b.HasOne("TaskyRevamp.Domain.Models.SystemConfiguration.Type", "Type")
                         .WithMany()
                         .HasForeignKey("TaskTypeId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -1753,6 +1761,8 @@ namespace TaskyRevamp.Infrastructure.Migrations
                     b.Navigation("PlannedWeight")
                         .IsRequired();
 
+                    b.Navigation("Priority");
+
                     b.Navigation("Reminder");
 
                     b.Navigation("Source");
@@ -1760,6 +1770,8 @@ namespace TaskyRevamp.Infrastructure.Migrations
                     b.Navigation("Type");
 
                     b.Navigation("UpdatedBy");
+
+                    b.Navigation("status");
                 });
 
             modelBuilder.Entity("TaskyRevamp.Domain.Models.Users.User", b =>

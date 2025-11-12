@@ -387,7 +387,7 @@
   <data name="EndDate" xml:space="preserve">
     <value>End Date</value>
   </data>
-  <data name="Weight" xml:space="preserve">
+  <data name="weight" xml:space="preserve">
     <value>Weight</value>
   </data>
   <data name="AssignedTo" xml:space="preserve">
@@ -723,6 +723,48 @@ Add a new department to get started</value>
   </data>
   <data name="NoPrivilegeAvailable" xml:space="preserve">
     <value>No Privilege Available</value>
+  </data>
+  <data name="Priority2" xml:space="preserve">
+    <value>Priority</value>
+  </data>
+  <data name="Logout" xml:space="preserve">
+    <value>Log out</value>
+  </data>
+  <data name="Titlee" xml:space="preserve">
+    <value>Title</value>
+  </data>
+  <data name="TaskStatus" xml:space="preserve">
+    <value>Task Status</value>
+  </data>
+  <data name="AssigneduserNames" xml:space="preserve">
+    <value>Assignee </value>
+  </data>
+  <data name="AddTask" xml:space="preserve">
+    <value>Add Task</value>
+  </data>
+  <data name="TitleEnglish" xml:space="preserve">
+    <value>Title English</value>
+  </data>
+  <data name="TitleArabic" xml:space="preserve">
+    <value>Title Arabic</value>
+  </data>
+  <data name="DescriptionEnglish" xml:space="preserve">
+    <value>Description English</value>
+  </data>
+  <data name="DescriptionArabic" xml:space="preserve">
+    <value>Description Arabic</value>
+  </data>
+  <data name="SelectType" xml:space="preserve">
+    <value>Select Type</value>
+  </data>
+  <data name="SelectSource" xml:space="preserve">
+    <value>Select Source</value>
+  </data>
+  <data name="ReminderDate" xml:space="preserve">
+    <value>Reminder Date</value>
+  </data>
+  <data name="SelectPriority" xml:space="preserve">
+    <value>Select Priority</value>
   </data>
   <data name="AboveUserDepartmentLevel" xml:space="preserve">
     <value>Above user department level</value>

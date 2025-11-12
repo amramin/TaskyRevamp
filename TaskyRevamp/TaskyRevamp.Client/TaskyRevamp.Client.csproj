@@ -18,14 +18,35 @@
 		<PackageReference Include="Microsoft.AspNetCore.Localization" Version="2.3.0" />
 		<PackageReference Include="Microsoft.Extensions.Localization" Version="9.0.8" />
 		<PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="9.0.8" />
-		
+
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+
+
+		<PackageReference Include="Syncfusion.Blazor.RichTextEditor" Version="31.1.21" />
+		<PackageReference Include="Syncfusion.Blazor.Themes" Version="31.1.21"/>
 		<PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.13.0" />
 
+	</ItemGroup>
+	<ItemGroup>
+		<Compile Update="SyncfusionLocalization\SfResources.Designer.cs">
+			<DependentUpon>SfResources.resx</DependentUpon>
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+		</Compile>
 	</ItemGroup>
 
 	<ItemGroup>
 		<ProjectReference Include="..\..\TaskyRevamp.Dto\TaskyRevamp.Dto.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Folder Include="Pages\NewFolder\" />
+	</ItemGroup>
+	<ItemGroup>
+		<EmbeddedResource Update="SyncfusionLocalization\SfResources.resx">
+			<LastGenOutput>SfResources.Designer.cs</LastGenOutput>
+			<Generator>PublicResXFileCodeGenerator</Generator>
+		</EmbeddedResource>
 	</ItemGroup>
 
 </Project>

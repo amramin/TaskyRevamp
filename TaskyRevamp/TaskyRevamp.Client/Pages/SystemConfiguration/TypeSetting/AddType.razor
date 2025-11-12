@@ -1,5 +1,6 @@
 ﻿@page "/AddType"
 
+@using Blazored.LocalStorage
 @using TaskyRevamp.Client.Consumer
 @using TaskyRevamp.Client.Services
 @using TaskyRevamp.Dto.SystemConfiguration
@@ -7,6 +8,8 @@
 @inject IStringLocalizer<SharedResources> Loc
 @inject ToastService ToastService
 @inject TypeSettingConsumer _typeSettingConsumer
+@inject ILocalStorageService LocalStorageService
+
 @inject PopupService PopupService
 
 
@@ -30,6 +33,11 @@
 
     private async Task Save(EditContext editContext)
     {
+
+
+    //    var current = await LocalStorageService.GetItemAsStringAsync("Id");
+      //  _newType.CreatedById = Guid.Parse(current);
+
 
         var res = await _typeSettingConsumer.CreateType(_newType);
         if (res.Success)

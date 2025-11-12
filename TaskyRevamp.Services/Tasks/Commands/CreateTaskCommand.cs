@@ -42,9 +42,9 @@ public class CreateTaskHandler : IRequestHandler<CreateTaskCommand, Guid>
             request.CreateTaskDto.TitleArabic, request.CreateTaskDto.DescriptionEnglish,
             request.CreateTaskDto.DescriptionArabic, request.CreateTaskDto.TypeId, request.CreateTaskDto.SourceId,
             request.CreateTaskDto.StartDate, request.CreateTaskDto.EndDate,
-            (Priority)request.CreateTaskDto.Priority
+         request.CreateTaskDto.Priority
             , new Weight(request.CreateTaskDto.weight), user.Value.Id, departments.Value.ToList(),
-            request.CreateTaskDto.AssignedIds);
+            request.CreateTaskDto.AssignedIds, request.CreateTaskDto.ReminderDate, request.CreateTaskDto.ActualProcess, request.CreateTaskDto.weight, request.CreateTaskDto.Dependencies);
 
         await _taskRepository.Insert(task);
         await _taskRepository.SaveChangesAsync();
