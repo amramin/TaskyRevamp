@@ -52,6 +52,12 @@
 ul {
   list-style: none;
 }
+html {
+  font-size: 13px;
+  @media (min-width: 1200px) {
+    font-size: 16px;
+  }
+}
 /* end Global */
 /* start .auth */
 .auth {
@@ -174,7 +180,8 @@ ul {
 /* start treelist*/
 .tree-list {
   padding-inline-start: 0;
-
+  padding-left: 0;
+  padding-right: 0;
   .item {
     margin-bottom: 1rem;
     position: relative;
@@ -193,6 +200,8 @@ ul {
     }
 
     ul {
+      padding-left: 0;
+      padding-right: 0;
       padding-inline-start: 1.5rem;
 
       li {
@@ -209,11 +218,13 @@ ul {
           z-index: 0;
         }
       }
-      &.dropdown-menu{
+      &.dropdown-menu {
         padding-inline-start: 0;
-        li{&::after{
-          display: none;
-        }}
+        li {
+          &::after {
+            display: none;
+          }
+        }
       }
     }
   }

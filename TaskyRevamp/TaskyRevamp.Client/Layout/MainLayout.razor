@@ -19,7 +19,7 @@
         <header class="main-header sticky-top">
             <div class="main-header-body">
                 <div class="start">
-                    <button class="btn btn-action-40 btn-outline-light" @onclick="ToggleSideMenu">
+                    <button class="btn btn-action-40 btn-outline-light d-none d-lg-flex" @onclick="ToggleSideMenu">
                         <span class="icon">
                             <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Menu"></SVGCrud>
                         </span>
@@ -152,6 +152,7 @@
     {
         await CheckAuth(firstRender);
         await base.OnAfterRenderAsync(firstRender);
+      
     }
 
     protected async override Task OnInitializedAsync()
