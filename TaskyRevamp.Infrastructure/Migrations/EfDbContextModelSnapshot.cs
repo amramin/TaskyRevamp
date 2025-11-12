@@ -1134,6 +1134,9 @@ namespace TaskyRevamp.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<DateTime?>("CreateDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<Guid?>("DepartmentId")
                         .HasColumnType("uniqueidentifier");
 
@@ -1161,12 +1164,25 @@ namespace TaskyRevamp.Infrastructure.Migrations
                     b.Property<string>("NameEnglish")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid?>("PrivilegeId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("UpdateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("UpdatedById")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("Username")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("DepartmentId");
+
+                    b.HasIndex("PrivilegeId");
+
+                    b.HasIndex("UpdatedById");
 
                     b.ToTable("Users");
                 });
@@ -1719,7 +1735,20 @@ namespace TaskyRevamp.Infrastructure.Migrations
                         .HasForeignKey("DepartmentId")
                         .OnDelete(DeleteBehavior.NoAction);
 
+                    b.HasOne("TaskyRevamp.Domain.Models.Permissions.Privilege", "Privilege")
+                        .WithMany()
+                        .HasForeignKey("PrivilegeId");
+
+                    b.HasOne("TaskyRevamp.Domain.Models.Users.User", "UpdatedBy")
+                        .WithMany()
+                        .HasForeignKey("UpdatedById")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.Navigation("Department");
+
+                    b.Navigation("Privilege");
+
+                    b.Navigation("UpdatedBy");
                 });
 
             modelBuilder.Entity("UserDelegations.UserDelegation", b =>

@@ -3,19 +3,15 @@
 @using Stingray.Components.MultiSelectComponent
 @inject IStringLocalizer<SharedResources> Loc
 
-<div class="ms-1 mt-1 rounded-3">
+<div class="mb-3">
     <!-- Permissions -->
     <div class="mb-3">
         @if (ShowPermissionFields)
         {
-            <label class="form-label fw-bold">@Loc["Permissions"] <span class="text-danger">*</span></label>
-            <SearchableMultiDropdownOffline TInput="Permission"
-                                            TOutput="int"
-                                            Datasource="PermissionList"
-                                            TextSelector="(p => Loc[p.ToString()])"
-                                            OutputSelector="(p => (int)p)"
-                                            SelectedOptions="Item.PermissionId"
-                                            SelectedOptionsChanged="OnPermissionsChanged" />
+            <label class="form-label ">@Loc["Permissions"] <span class="text-danger">*</span></label>
+            <SearchableMultiDropdownOffline TInput="Permission" TOutput="int" Datasource="PermissionList"
+                TextSelector="(p => Loc[p.ToString()])" OutputSelector="(p => (int)p)" SelectedOptions="Item.PermissionId"
+                SelectedOptionsChanged="OnPermissionsChanged" />
             @if (Item.IsActive && (Item.PermissionId == null || !Item.PermissionId.Any()))
             {
                 <div class="text-danger small mt-1">@Loc["Required"]</div>
@@ -25,17 +21,21 @@
     </div>
 
     <!-- Manager / Employee toggles -->
-    <div class="d-flex flex-column gap-2 mb-2">
-        <div class="form-check form-switch">
+    <div class="d-flex flex-column gap-2 mb-3">
+        <div class="form-check form-switch custom">
             <input class="form-check-input" type="checkbox" id="manager_@Item.SelectedOption"
-                   @bind="Item.IsManagerTasks" />
-            <label class="form-check-label" for="manager_@Item.SelectedOption">@Loc["ManagersTasks"]</label>
+                @bind="Item.IsManagerTasks" />
+            <label class="form-check-label" for="manager_@Item.SelectedOption">
+                <span class="toggler-icon"></span>
+                @Loc["ManagersTasks"]</label>
         </div>
 
-        <div class="form-check form-switch">
+        <div class="form-check form-switch custom">
             <input class="form-check-input" type="checkbox" id="employee_@Item.SelectedOption"
-                   @bind="Item.IsEmployeeTasks" />
-            <label class="form-check-label" for="employee_@Item.SelectedOption">@Loc["EmployeesTasks"]</label>
+                @bind="Item.IsEmployeeTasks" />
+            <label class="form-check-label" for="employee_@Item.SelectedOption">
+                <span class="toggler-icon"></span>
+                @Loc["EmployeesTasks"]</label>
         </div>
     </div>
 
@@ -43,7 +43,7 @@
     @if (ShowDirectionFields)
     {
         <div class="mb-3">
-            <label class="form-label fw-bold">@Loc["DirectionType"] <span class="text-danger">*</span></label>
+            <label class="form-label ">@Loc["DirectionType"] <span class="text-danger">*</span></label>
             <select class="form-select" @bind="Item.DirectionType">
                 <option value=""></option>
                 @foreach (var type in Enum.GetValues(typeof(DirectionType)).Cast<DirectionType>())
@@ -54,14 +54,15 @@
         </div>
 
         <div class="mb-3">
-            <label class="form-label fw-bold">@Loc["DirectionLevel"] <span class="text-danger">*</span></label>
-            <input type="number" class="form-control @(Item.DirectionLevel < 1 ? "border-danger" : "")" min="1" @oninput="ValidateDirectionLevel" @bind="Item.DirectionLevel" />
-            @if(Item.DirectionLevel == null)
+            <label class="form-label ">@Loc["DirectionLevel"] <span class="text-danger">*</span></label>
+            <input type="number" class="form-control @(Item.DirectionLevel < 1 ? "border-danger" : "")" min="1"
+                @oninput="ValidateDirectionLevel" @bind="Item.DirectionLevel" />
+            @if (Item.DirectionLevel == null)
             {
                 <div class="text-danger small mt-1">@Loc["Required"]</div>
             }
         </div>
-        
+
     }
 </div>
 

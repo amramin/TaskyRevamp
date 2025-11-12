@@ -66,24 +66,24 @@
                                             @Loc["ArabicName"] <span class="text-danger">*</span>
                                         </label>
                                         <InputText class="form-control" @bind-Value="PrivilegeDto.NameArabic"
-                                                   placeholder=@Loc["EnterPrivilegeArabicName"] />
+                                            placeholder=@Loc["EnterPrivilegeArabicName"] />
                                         <ValidationMessage For="@(() => PrivilegeDto.NameArabic)"
-                                                           class="small text-danger" />
+                                            class="small text-danger" />
                                     </div>
                                     <div class="col-md-6">
                                         <label class="form-label">
                                             @Loc["EnglishName"] <span class="text-danger">*</span>
                                         </label>
                                         <InputText class="form-control" @bind-Value="PrivilegeDto.NameEnglish"
-                                                   placeholder=@Loc["EnterPrivilegeEnglishName"] />
+                                            placeholder=@Loc["EnterPrivilegeEnglishName"] />
                                         <ValidationMessage For="@(() => PrivilegeDto.NameEnglish)"
-                                                           class="small text-danger" />
+                                            class="small text-danger" />
                                     </div>
                                 </div>
                             </div>
                             <!-- GeneralModule child component -->
                             <GeneralModule PrivilegeDto="PrivilegeDto"
-                                           OnValidationStateChanged="@OnGeneralModuleValidationChanged" />
+                                OnValidationStateChanged="@OnGeneralModuleValidationChanged" />
                         </div>
                         <div style="display:@(SelectedTab == "Task" ? "block" : "none")">
                             <TaskModule PrivilegeDto="PrivilegeDto" />
@@ -94,15 +94,12 @@
                     </div>
                 </div>
             </div>
-
-
             <!-- Shared Footer -->
             <div class="card-footer">
                 <div class="row justify-content-center">
                     <div class="col-xxl-7 col-xl-8 col-lg-9 col-md-11">
                         <div class="action-buttons">
-                            <button type="button" class="btn btn-lg btn-light"
-                                    @onclick="CancelSettings">
+                            <button type="button" class="btn btn-lg btn-light" @onclick="CancelSettings">
                                 @Loc["Cancel"]
                             </button>
                             <button type="submit" class="btn btn-lg btn-primary">@Loc["Save"]</button>
@@ -172,18 +169,18 @@
         {
             // Validate permissions
             bool shouldShowPermission =
-                item.SelectedOption == UserDepartmentOptions.BelowUserDepartmentLevel ||
-                item.SelectedOption == UserDepartmentOptions.AboveUserDepartmentLevel ||
-                item.SelectedOption == UserDepartmentOptions.PeersLevel ||
-                item.SelectedOption == UserDepartmentOptions.SameDepartment;
+            item.SelectedOption == UserDepartmentOptions.BelowUserDepartmentLevel ||
+            item.SelectedOption == UserDepartmentOptions.AboveUserDepartmentLevel ||
+            item.SelectedOption == UserDepartmentOptions.PeersLevel ||
+            item.SelectedOption == UserDepartmentOptions.SameDepartment;
 
             if (shouldShowPermission && (item.PermissionId == null || !item.PermissionId.Any()))
                 return true;
 
             // Validate direction level
             bool shouldShowDirection =
-                item.SelectedOption == UserDepartmentOptions.BelowUserDepartmentLevel ||
-                item.SelectedOption == UserDepartmentOptions.AboveUserDepartmentLevel;
+            item.SelectedOption == UserDepartmentOptions.BelowUserDepartmentLevel ||
+            item.SelectedOption == UserDepartmentOptions.AboveUserDepartmentLevel;
 
             if (shouldShowDirection && (item.DirectionLevel == null || item.DirectionLevel < 1))
                 return true;
@@ -193,7 +190,7 @@
     private bool HasInvalidExternalDepartments()
     {
         if (PrivilegeDto.TaskModuleExternalDepartmentDto == null ||
-            !PrivilegeDto.TaskModuleExternalDepartmentDto.Any())
+        !PrivilegeDto.TaskModuleExternalDepartmentDto.Any())
             return false;
 
         foreach (var dept in PrivilegeDto.TaskModuleExternalDepartmentDto)

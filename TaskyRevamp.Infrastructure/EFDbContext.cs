@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TaskyRevamp.Domain.Interfaces;
 using TaskyRevamp.Domain.Models.Permissions;
 using TaskyRevamp.Domain.Models.Permissions.GeneralModule;
@@ -105,15 +104,24 @@ public class EfDbContext : DbContext
         base.OnModelCreating(modelBuilder);
 
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(EfDbContext).Assembly);
+		foreach (var fk in modelBuilder.Model
+		 .GetEntityTypes()
+		 .SelectMany(t => t.GetForeignKeys())
+		 .Where(fk => fk.PrincipalEntityType.ClrType == typeof(User)))
+		{
+			fk.DeleteBehavior = DeleteBehavior.Restrict;
+		}
+        modelBuilder.Entity<Privilege>()
+           .HasOne(p => p.CreatedBy)
+           .WithMany()
+           .HasForeignKey(p => p.CreatedById)
+           .OnDelete(DeleteBehavior.Restrict);
 
-
-        foreach (var fk in modelBuilder.Model
-         .GetEntityTypes()
-         .SelectMany(t => t.GetForeignKeys())
-         .Where(fk => fk.PrincipalEntityType.ClrType == typeof(User)))
-        {
-            fk.DeleteBehavior = DeleteBehavior.Restrict;
-        }
+        modelBuilder.Entity<Privilege>()
+            .HasOne(p => p.UpdatedBy)
+            .WithMany()
+            .HasForeignKey(p => p.UpdatedById)
+            .OnDelete(DeleteBehavior.Restrict);
 
         //var serverTimeZone = TimeZoneInfo.Local; // Your server's timezone
 

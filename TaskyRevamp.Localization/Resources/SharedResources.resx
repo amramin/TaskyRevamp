@@ -835,4 +835,31 @@ Add a new department to get started</value>
   <data name="SelectTime" xml:space="preserve">
     <value>Select Time</value>
   </data>
+  <data name="users" xml:space="preserve">
+    <value>Users </value>
+  </data>
+  <data name="email" xml:space="preserve">
+    <value>Email Address</value>
+  </data>
+  <data name="Add_user" xml:space="preserve">
+    <value>Add user</value>
+  </data>
+  <data name="NoUsersAvailable" xml:space="preserve">
+    <value>No users available</value>
+  </data>
+  <data name="AddANewUserToGetStarted" xml:space="preserve">
+    <value>Add a new user to get started</value>
+  </data>
+  <data name="setAsManager" xml:space="preserve">
+    <value>Set as Manager</value>
+  </data>
+  <data name="Privileges" xml:space="preserve">
+    <value>Privileges</value>
+  </data>
+  <data name="ViewPrivilege" xml:space="preserve">
+    <value>View Privilege</value>
+  </data>
+  <data name="LinkUser" xml:space="preserve">
+    <value>Link a user to department and privilege</value>
+  </data>
 </root>

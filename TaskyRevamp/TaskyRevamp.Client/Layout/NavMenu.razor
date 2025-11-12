@@ -1,7 +1,8 @@
 ﻿@inject IStringLocalizer<SharedResources> Loc
 @inject NavigationManager NavigationManager
 
-<aside class="side-nav side-nav @(IsSettingOpen ? "setting-nav-open" : "")">
+<aside
+    class="side-nav side-nav @(IsSettingOpen ? "setting-nav-open" : "")  @(isMobileNavOpen ? "side-nav-open-mobile" : "")">
     <div class="side-nav-header">
         <div class="side-nav-logo">
             <span class="icon">
@@ -9,12 +10,21 @@
             </span>
             <span class="text">Tasky</span>
         </div>
+        <button class="btn btn-action-40 btn-outline-light d-flex d-lg-none btn-toggle-sidenav"
+            @onclick="ToggleMobileNav">
+            <span class="icon">
+                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Menu"></SVGCrud>
+            </span>
+        </button>
+        <button class="btn overlay btn-toggle-sidenav d-flex d-lg-none" @onclick="ToggleMobileNav">
+        </button>
     </div>
 
     <div class="sid-nav-body">
         <ul class="nav menu flex-column">
             <li class="nav-item">
-                <NavLink href="/tasks" class="nav-link" Match="NavLinkMatch.All" @onclick="CloseSettingsNav">
+                <NavLink href="/tasks" class="nav-link" Match="NavLinkMatch.All"
+                    @onclick="() => { CloseSettingsNav(); ToggleMobileNav(); }">
                     <div class="icon-text">
                         <span class="nav-icon">
                             <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Dashboard"></SVGCrud>
@@ -25,7 +35,8 @@
             </li>
 
             <li class="nav-item">
-                <NavLink href="/MainTasks" class="nav-link" Match="NavLinkMatch.All" @onclick="CloseSettingsNav">
+                <NavLink href="/MainTasks" class="nav-link" Match="NavLinkMatch.All"
+                    @onclick="() => { CloseSettingsNav(); ToggleMobileNav(); }">
                     <div class="icon-text">
                         <span class="nav-icon">
                             <SVGCrud SVGType="SVGCrud.SVGTypeEnum.List"></SVGCrud>
@@ -36,7 +47,8 @@
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" href="#" data-id="completed-list" @onclick="CloseSettingsNav">
+                <a class="nav-link" href="#" data-id="completed-list"
+                    @onclick="() => { CloseSettingsNav(); ToggleMobileNav(); }">
                     <div class="icon-text">
                         <span class="nav-icon">
                             <SVGCrud SVGType="SVGCrud.SVGTypeEnum.CompletedList"></SVGCrud>
@@ -47,7 +59,7 @@
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" href="/UserDelegations" @onclick="CloseSettingsNav">
+                <a class="nav-link" href="/UserDelegations" @onclick="() => { CloseSettingsNav(); ToggleMobileNav(); }">
                     <div class="icon-text">
                         <span class="nav-icon">
                             <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Delegation"></SVGCrud>
@@ -69,45 +81,44 @@
                     </div>
                 </a>
 
-               <ul class="nav setting-menu">
-    @foreach (var item in MenuItems)
-    {
-        <li class="nav-item dropdown @(item.IsOpen ? "open" : "") @(item.IsActive ? "active" : "")">
-            <button class="nav-link dropdown-toggler" @onclick="() => ToggleMenu(item)">
-                <span class="nav-icon">
-                    @if (item.IsOpen)
+                <ul class="nav setting-menu">
+                    @foreach (var item in MenuItems)
                     {
-                        <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Minus"></SVGCrud>
-                    }
-                    else
-                    {
-                        <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Pluse"></SVGCrud>
-                    }
-                </span>
-                @Loc[item.Title]
-            </button>
-
-            <ul class="dropdown-menu @(item.IsOpen ? "show" : "")">
-                @foreach (var child in item.Children)
-                {
-                    <li class="nav-item">
-                        <a class="nav-link @(child.IsActive ? "active" : "")"
-                           data-id="@child.DataId"
-                           href="@child.Url"
-                           @onclick="() => SetActiveItem(item, child)">
-                            <div class="icon-text">
+                        <li class="nav-item dropdown @(item.IsOpen ? "open" : "") @(item.IsActive ? "active" : "")">
+                            <button class="nav-link dropdown-toggler" @onclick="() => ToggleMenu(item)">
                                 <span class="nav-icon">
-                                    <SVGCrud SVGType="@child.Icon"></SVGCrud>
+                                    @if (item.IsOpen)
+                                    {
+                                        <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Minus"></SVGCrud>
+                                    }
+                                    else
+                                    {
+                                        <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Pluse"></SVGCrud>
+                                    }
                                 </span>
-                                <span class="text">@Loc[child.Text]</span>
-                            </div>
-                        </a>
-                    </li>
-                }
-            </ul>
-        </li>
-    }
-</ul>
+                                @Loc[item.Title]
+                            </button>
+
+                            <ul class="dropdown-menu @(item.IsOpen ? "show" : "")">
+                                @foreach (var child in item.Children)
+                                {
+                                    <li class="nav-item">
+                                        <a class="nav-link @(child.IsActive ? "active" : "")" data-id="@child.DataId"
+                                            href="@child.Url"
+                                            @onclick="() => { SetActiveItem(item, child); ToggleMobileNav(); }">
+                                            <div class="icon-text">
+                                                <span class="nav-icon">
+                                                    <SVGCrud SVGType="@child.Icon"></SVGCrud>
+                                                </span>
+                                                <span class="text">@Loc[child.Text]</span>
+                                            </div>
+                                        </a>
+                                    </li>
+                                }
+                            </ul>
+                        </li>
+                    }
+                </ul>
             </li>
         </ul>
     </div>
@@ -203,7 +214,8 @@ new ChildItem { Text = "SourceConfiguration", Url = "/SourceSettings", Icon = SV
 new ChildItem { Text = "TaskTypeConfiguration", Url = "/TypeConfiguration", Icon = SVGCrud.SVGTypeEnum.TaskType, DataId
 = "taskType-config" },
 new ChildItem { Text = "Tasksviews", Url = "/Views", Icon = SVGCrud.SVGTypeEnum.List, DataId = "taskViews-config" },
-new ChildItem {Text= "Subtask_Levels", Url="/sub_task", Icon = SVGCrud.SVGTypeEnum.SubTasks, DataId = "taskViews-config"},
+new ChildItem {Text= "Subtask_Levels", Url="/sub_task", Icon = SVGCrud.SVGTypeEnum.SubTasks, DataId =
+"taskViews-config"},
 new ChildItem { Text = "WeeklyReport", Url = "/WeeklyReportSetting", Icon = SVGCrud.SVGTypeEnum.BarChartSquarPluse,
 DataId = "weeklyReport-config" }
 }
@@ -211,14 +223,15 @@ DataId = "weeklyReport-config" }
 new MenuItem {
 Title = "Appearance", IsOpen = false,
 Children = new List<ChildItem> {
-new ChildItem { Text = @Loc["System Identity Configuration"], Url = "/SystemIdentitySetting", Icon = SVGCrud.SVGTypeEnum.RollerBrush, DataId =
+new ChildItem { Text = @Loc["System Identity Configuration"], Url = "/SystemIdentitySetting", Icon =
+SVGCrud.SVGTypeEnum.RollerBrush, DataId =
 "systemIdentity-config" }
 }
 },
 new MenuItem {
 Title = "Management", IsOpen = false,
 Children = new List<ChildItem> {
-new ChildItem { Text = "Users", Url = "/Users", Icon = SVGCrud.SVGTypeEnum.UsersEdit, DataId = "users-config" },
+new ChildItem { Text = "users", Url = "/Users", Icon = SVGCrud.SVGTypeEnum.UsersEdit, DataId = "users-config" },
 new ChildItem { Text = "Departments", Url = "/Departments", Icon = SVGCrud.SVGTypeEnum.DataFlow, DataId =
 "departments-config" },
 new ChildItem { Text = @Loc["Privilege"], Url = "/Privileges", Icon = SVGCrud.SVGTypeEnum.PrivilegeConfig, DataId =
@@ -280,5 +293,12 @@ new ChildItem { Text = "TaskHistory", Url = "/TaskHistory", Icon = SVGCrud.SVGTy
         child.IsActive = true;
 
         StateHasChanged(); // refresh immediately
+    }
+    // toggle side menu mobile
+    private bool isMobileNavOpen = false;
+
+    private void ToggleMobileNav()
+    {
+        isMobileNavOpen = !isMobileNavOpen;
     }
 }

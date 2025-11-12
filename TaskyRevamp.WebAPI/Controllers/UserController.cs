@@ -1,11 +1,14 @@
 ﻿using DepartmentyRevamp.Services.Departments.Commands;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using TaskyRevamp.Dto;
 using TaskyRevamp.Dto.Account;
 using TaskyRevamp.Dto.Department;
+using TaskyRevamp.Dto.Enums.SearchFields;
 using TaskyRevamp.Dto.GeneralDto;
 using TaskyRevamp.Services.Account.Query;
+using TaskyRevamp.Services.SystemConfiguration.TypeConfigurarion.Query;
 using TaskyRevamp.Services.Users.Query;
 using userRevamp.Services.userCQRS.Query;
 using userRevamp.Services.UserS.Query;
@@ -41,6 +44,21 @@ public class UserController : ControllerBase
 		var all = await _mediator.Send(new GetUnassignedUsersToDepartmentQuery());
 
 		return Ok(all);
+	}
+
+	[HttpGet("GetUsersWithPagination")]
+	public async Task<IActionResult> GetUsersWithPagination(
+			[FromServices] IOptions<PaginationSettings> paginationSettings,
+			[FromQuery] int pageNumber = 1,
+			[FromQuery] int? pageSize = null,
+			[FromQuery] string sortByColumnName = "CreateDate",
+			[FromQuery] bool sortAscending = true,
+			[FromQuery] List<SearchFieldUser> searchFields = null,
+			[FromQuery] string searchText = null)
+	{
+		var size = pageSize ?? paginationSettings.Value.DefaultPageSize;
+		var result = await _mediator.Send(new GetUsersWithPaginationQuery(pageNumber, size, sortByColumnName, sortAscending, searchFields, searchText));
+		return Ok(result);
 	}
 
 
