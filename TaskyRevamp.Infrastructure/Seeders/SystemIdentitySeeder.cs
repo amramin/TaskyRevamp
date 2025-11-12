@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using TaskyRevamp.Domain.Models.SystemConfiguration;
 using TaskyRevamp.Domain.Models.Users;
-using TaskyRevamp.Infrastructure.Migrations;
 using static System.Net.Mime.MediaTypeNames;
 
 namespace TaskyRevamp.Infrastructure.Seeders
