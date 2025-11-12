@@ -89,23 +89,26 @@
         }
     </div>
     }
-else if (departmentDtos != null && departmentDtos.Any() && (departmentDtos == null || !departmentDtos.Any()))
-    {
+else if (intialDepartmentDtos != null && intialDepartmentDtos.Any())
+{
+    <NoSearchResults OnResetClick="ClearSearch"></NoSearchResults>
 
+}
+
+else
+{
     <NoDataAvailable MessageTitle="@Loc["Nodepartmentavailable"]" MessageSubtitle="@Loc["Nodepartmentavailable"]"
                      ButtonText="@Loc["AddDepartment"]" OnButtonClick="Add" />
     <h6 class="mb-3">@Loc["Nodepartmentavailable"]</h6>
-}
 
-else 
-{
-    <NoSearchResults OnResetClick="ClearSearch"></NoSearchResults>
 }
 
 
 
 @code {
     private List<DepartmentDto> departmentDtos = new();
+    private List<DepartmentDto> intialDepartmentDtos = new();
+
     private List<DepartmentDto> rootDepartments = new();
     private DepartmentDto? selectedDepartment;
     private int currentPage = 1;
@@ -145,6 +148,8 @@ else
         };
 
         await LoadDepartmentsAsync();
+        intialDepartmentDtos = departmentDtos;
+
         StateHasChanged();
     }
     private async Task ChangePage(int page)
