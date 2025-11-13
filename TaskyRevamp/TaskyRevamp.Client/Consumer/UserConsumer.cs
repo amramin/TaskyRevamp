@@ -18,7 +18,7 @@ namespace TaskyRevamp.Client.Consumer
 		}
 		public async Task<CommonApiResponse<List<UserDto>>> GetUsers()
 		{
-			var ret = await _taskyService.httpClient.GetFromJsonAsync<CommonApiResponse<List<UserDto>>>($"api/User/GetUsers");
+			var ret = await _taskyService.GetFromJsonAsync<CommonApiResponse<List<UserDto>>>($"api/User/GetUsers");
 			return ret;
 		}
 		public async Task<CommonApiResponse<PagedResult<UserDtoWithName>>> GetUsersWithPagination(int pageNumber, int pageSize, string sortByColumnName, bool sortAscending, List<SearchFieldUser> searchFields = null, string searchText = null)

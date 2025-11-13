@@ -434,4 +434,42 @@
   }
 }
 
+/* start  text-editor */
+.e-toolbar-wrapper,
+.e-toolbar-container {
+  border-bottom-color: var(--light-300);
+  border-radius: var(--bs-border-radius) var(--bs-border-radius) 0 0;
+  background-color: var(--bs-white);
+}
+.e-rte-container {
+  border-color: var(--light-300);
+  border-radius: var(--bs-border-radius);
+}
+.e-toolbar .e-toolbar-items,
+.e-toolbar,
+.e-toolbar .e-toolbar-item .e-tbar-btn,
+.e-richtexteditor
+  .e-rte-toolbar
+  .e-toolbar-item
+  .e-split-btn-wrapper
+  .e-rte-dropdown {
+  background-color: var(--bs-white);
+  border-radius: var(--bs-border-radius);
+  color: var(--dark-600);
+}
+.e-toolbar .e-toolbar-item .e-tbar-btn:hover {
+  background-color: var(--dark-600);
+ 
+}
+.e-toolbar .e-hor-nav {
+  right: auto;
+  inset-inline-end: 0.125rem;
+  background-color: var(--bs-white);
+  border-radius: var(--bs-border-radius);
+}
+.e-toolbar.e-extended-toolbar {
+  border-radius: var(--bs-border-radius);
+}
+/* end  text-editor */
+
 /* end inputs */

@@ -4,7 +4,7 @@ html[dir="rtl"] {
     transform: rotate(180deg);
   }
 
-  *:not(i):not(.fa):not(mat-icon) {
+  *:not(i):not(.fa):not(mat-icon):not(.e-icons) {
     font-family: "Almarai", sans-serif;
   }
 
