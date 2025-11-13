@@ -1546,6 +1546,17 @@ html[dir=rtl] input[type=number] {
   height: 1rem;
 }
 
+.btn.disabled,
+.btn:disabled,
+fieldset:disabled .btn {
+  color: var(--dark-600);
+  pointer-events: none;
+  background-color: var(--light-200);
+  border-color: var(--light-200);
+  opacity: var(--bs-btn-disabled-opacity);
+  cursor: not-allowed;
+}
+
 /* end button*/
 /* start typography*/
 .auth-headline {
