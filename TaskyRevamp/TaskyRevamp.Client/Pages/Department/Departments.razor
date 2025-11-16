@@ -54,22 +54,7 @@
         </button>
     </div>
 </div>
-
-@if (departmentDtos == null && !departmentDtos.Any())
-
-{
-
-    <NoDataAvailable MessageTitle="@Loc["Nodepartmentavailable"]" MessageSubtitle="@Loc["Nodepartmentavailable"]"
-                     ButtonText="@Loc["AddDepartment"]" OnButtonClick="Add" />
-    <h6 class="mb-3">@Loc["Nodepartmentavailable"]</h6>
-}
-
-else if (departmentDtos != null && departmentDtos.Count() == 0)
-{
-    <NoSearchResults OnResetClick="ClearSearch"></NoSearchResults>
-}
-
-else
+@if (departmentDtos != null && departmentDtos.Any())
 {
     <div class="page-body">
         @switch (currentView)
@@ -77,7 +62,7 @@ else
             case DepartmentViewType.Grid:
                 <DepartmentGrid Departments="departmentDtos" OnEdit="Edit" OnDelete="OnDeleteDepartment" OnShowUsers="ShowUser"
                                 OnAdd="AddDept" OnAddDepartment="AddDept" CurrentPage="currentPage"
-                                PageChanged="ChangePage" PageSizeChanged="ChangePageSize" PageSize="pageSize" TotalPages="totalPages" TotalCount="totalCount" /> 
+                                PageChanged="ChangePage" PageSizeChanged="ChangePageSize" PageSize="pageSize" TotalPages="totalPages" TotalCount="totalCount" />
                 break;
 
             case DepartmentViewType.Tree:
@@ -103,12 +88,27 @@ else
                 break;
         }
     </div>
-
+    }
+else if (intialDepartmentDtos != null && intialDepartmentDtos.Any())
+{
+    <NoSearchResults OnResetClick="ClearSearch"></NoSearchResults>
 
 }
 
+else
+{
+    <NoDataAvailable MessageTitle="@Loc["Nodepartmentavailable"]" MessageSubtitle="@Loc["Nodepartmentavailable"]"
+                     ButtonText="@Loc["AddDepartment"]" OnButtonClick="Add" />
+    <h6 class="mb-3">@Loc["Nodepartmentavailable"]</h6>
+
+}
+
+
+
 @code {
     private List<DepartmentDto> departmentDtos = new();
+    private List<DepartmentDto> intialDepartmentDtos = new();
+
     private List<DepartmentDto> rootDepartments = new();
     private DepartmentDto? selectedDepartment;
     private int currentPage = 1;
@@ -148,6 +148,8 @@ else
         };
 
         await LoadDepartmentsAsync();
+        intialDepartmentDtos = departmentDtos;
+
         StateHasChanged();
     }
     private async Task ChangePage(int page)
