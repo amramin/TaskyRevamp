@@ -11,76 +11,24 @@
 @inject IStringLocalizer<SharedResources> Loc
 @inject DefaultColumnsSettingConsumer _defaultColumnsSettingConsumer
 
-<div class="page-header">
-    <div class="action-btn-list">
-        <Search SearchSubmit="Search" CssClass="form-control"></Search>
 
-
-
-        <button class="btn btn-primary" @onclick="Add">
-            <span class="icon">
-                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Pluse"></SVGCrud>
-            </span>
-            @Loc["AddTask"]
-        </button>
-    </div>
-</div>
 <div class="tab-pills flex-grow-1">
     <ul class="nav nav-pills" id="myTab" role="tablist">
         <li class="nav-item" role="presentation">
-            <button class="nav-link active"
-                    id="List-view"
-                    data-bs-toggle="tab"
-                    data-bs-target="#List-view-tab"
-                    type="button"
-                    role="tab"
-                    aria-controls="List-view-tab"
-                    aria-selected="true">
+            <button class="nav-link active" id="List-view" data-bs-toggle="tab" data-bs-target="#List-view-tab"
+                type="button" role="tab" aria-controls="List-view-tab" aria-selected="true">
                 <span class="icon">
                     <SVGCrud SVGType="SVGCrud.SVGTypeEnum.List"></SVGCrud>
                 </span>
                 List view
             </button>
 
-            <div class="table-responsive sticky-header-custom">
 
-           
-                  <SortableTable TItem="CreateTaskDto"
-                               Columns="@tableColumns"
-                               Items="@allTaks"
-                               SortColumn="@currentSortColumn"
-                               SortAscending="@sortAscending"
-                               OnSortRequested="HandleSort">
-
-                    <RowTemplate>
-                        @foreach (var task in allTaks)
-                        {
-                            <tr>
-                                @foreach (var column in tableColumns)
-                                {
-                                    <td>
-                                        @RenderColumnValue(task, column.Field)
-                                    </td>
-                                }
-                            </tr>
-                        }
-                    </RowTemplate>
-                </SortableTable>
-
-
-            </div>
-            <Pagination CurrentPage="@currentPage" TotalPages="@totalPages" TotalCount="@totalCount" PageSize="@pageSize"
-                        PageChanged="ChangePage" PageSizeChangedCallback="ChangePageSize" />
 
         </li>
         <li class="nav-item" role="presentation">
-            <button class="nav-link"
-                    data-bs-toggle="tab"
-                    data-bs-target="#kanban-view-tab"
-                    type="button"
-                    role="tab"
-                    aria-controls="profile"
-                    aria-selected="false">
+            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#kanban-view-tab" type="button" role="tab"
+                aria-controls="profile" aria-selected="false">
                 <span class="icon">
                     <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Kanban"></SVGCrud>
 
@@ -89,14 +37,8 @@
             </button>
         </li>
         <li class="nav-item" role="presentation">
-            <button class="nav-link"
-                    id="gannt-tab"
-                    data-bs-toggle="tab"
-                    data-bs-target="#gannt-view-tab"
-                    type="button"
-                    role="tab"
-                    aria-controls="gannt-tab"
-                    aria-selected="false">
+            <button class="nav-link" id="gannt-tab" data-bs-toggle="tab" data-bs-target="#gannt-view-tab" type="button"
+                role="tab" aria-controls="gannt-tab" aria-selected="false">
                 <span class="icon">
                     <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Gantt"></SVGCrud>
 
@@ -106,32 +48,19 @@
         </li>
     </ul>
     <div class="tab-content" id="myTabContent">
-        <div class="tab-pane fade show active"
-             id="List-view-tab"
-             role="tabpanel"
-             aria-labelledby="List-view-tab">
+        <div class="tab-pane fade show active" id="List-view-tab" role="tabpanel" aria-labelledby="List-view-tab">
             <div class="page-header">
                 <div class="title-block">
                     <h1 class="page-headline">Task list</h1>
-                    <div class="view-scope-toggle"
-                         role="group"
-                         aria-label="Basic radio toggle button group">
-                        <input type="radio"
-                               class="btn-check"
-                               name="taskRadio"
-                               id="mineRadio-task"
-                               autocomplete="off"
-                               checked />
+                    <div class="view-scope-toggle" role="group" aria-label="Basic radio toggle button group">
+                        <input type="radio" class="btn-check" name="taskRadio" id="mineRadio-task" autocomplete="off"
+                            checked />
                         <label class="btn" for="mineRadio-task">
                             <SVGCrud SVGType="SVGCrud.SVGTypeEnum.User"></SVGCrud>
                             <span>Mine</span>
                         </label>
 
-                        <input type="radio"
-                               class="btn-check"
-                               name="taskRadio"
-                               id="teamRadio-task"
-                               autocomplete="off" />
+                        <input type="radio" class="btn-check" name="taskRadio" id="teamRadio-task" autocomplete="off" />
                         <label class="btn" for="teamRadio-task">
                             <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Users"></SVGCrud>
 
@@ -141,77 +70,75 @@
                 </div>
 
                 <div class="action-btn-list">
-                   @*  <button class="btn btn-primary"
-                            type="button"
-                            data-bs-toggle="offcanvas"
-                            data-bs-target="#survey-type-modal"
-                            aria-controls="offcanvasWithBothOptions">
+                    <button class="btn btn-primary" @onclick="Add">
                         <span class="icon">
                             <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Pluse"></SVGCrud>
                         </span>
-                        Add Task
-                    </button> *@
-
-                    <button type="button"
-                            data-bs-toggle="tooltip"
-                            data-bs-placement="top"
-                            title="Filter"
-                            class="btn btn-action-40 btn-outline-light-pimary">
+                        @Loc["AddTask"]
+                    </button>
+                    <Search SearchSubmit="Search" CssClass="form-control"></Search>
+                    <button type="button" data-bs-toggle="tooltip" data-bs-placement="top" title="Filter"
+                        class="btn btn-action-40 btn-outline-light-pimary">
                         <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Filter"></SVGCrud>
 
                     </button>
-                    <button type="button"
-                            data-bs-toggle="tooltip"
-                            data-bs-placement="top"
-                            title="View column"
-                            class="btn btn-action-40 btn-outline-light-pimary">
+                    <button type="button" data-bs-toggle="tooltip" data-bs-placement="top" title="View column"
+                        class="btn btn-action-40 btn-outline-light-pimary">
                         <SVGCrud SVGType="SVGCrud.SVGTypeEnum.AddColumn"></SVGCrud>
 
                     </button>
-                    <button type="button"
-                            data-bs-toggle="tooltip"
-                            data-bs-placement="top"
-                            title="Card View"
-                            class="btn btn-action-40 btn-outline-light-pimary">
+                    <button type="button" data-bs-toggle="tooltip" data-bs-placement="top" title="Card View"
+                        class="btn btn-action-40 btn-outline-light-pimary">
                         <SVGCrud SVGType="SVGCrud.SVGTypeEnum.CardView"></SVGCrud>
                     </button>
-                    <button type="button"
-                            data-bs-toggle="tooltip"
-                            data-bs-placement="top"
-                            title="Export Excel"
-                            class="btn btn-action-40 btn-outline-light-pimary">
+                    <button type="button" data-bs-toggle="tooltip" data-bs-placement="top" title="Export Excel"
+                        class="btn btn-action-40 btn-outline-light-pimary">
                         <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Excel"></SVGCrud>
                     </button>
                 </div>
             </div>
-            <div class="page-body"></div>
+            <div class="page-body">
+                <div class="table-responsive sticky-header-custom">
+
+
+                    <SortableTable TItem="CreateTaskDto" Columns="@tableColumns" Items="@allTaks"
+                        SortColumn="@currentSortColumn" SortAscending="@sortAscending" OnSortRequested="HandleSort">
+
+                        <RowTemplate>
+                            @foreach (var task in allTaks)
+                            {
+                                <tr>
+                                    @foreach (var column in tableColumns)
+                                    {
+                                        <td>
+                                            @RenderColumnValue(task, column.Field)
+                                        </td>
+                                    }
+                                </tr>
+                            }
+                        </RowTemplate>
+                    </SortableTable>
+
+
+                </div>
+                <Pagination CurrentPage="@currentPage" TotalPages="@totalPages" TotalCount="@totalCount"
+                    PageSize="@pageSize" PageChanged="ChangePage" PageSizeChangedCallback="ChangePageSize" />
+
+            </div>
         </div>
-        <div class="tab-pane fade"
-             id="kanban-view-tab"
-             role="tabpanel"
-             aria-labelledby="kanban-tab">
+        <div class="tab-pane fade" id="kanban-view-tab" role="tabpanel" aria-labelledby="kanban-tab">
             <div class="page-header">
                 <div class="title-block">
                     <h1 class="page-headline">Task list</h1>
-                    <div class="view-scope-toggle"
-                         role="group"
-                         aria-label="Basic radio toggle button group">
-                        <input type="radio"
-                               class="btn-check"
-                               name="btnradio"
-                               id="mineRadio"
-                               autocomplete="off"
-                               checked />
+                    <div class="view-scope-toggle" role="group" aria-label="Basic radio toggle button group">
+                        <input type="radio" class="btn-check" name="btnradio" id="mineRadio" autocomplete="off"
+                            checked />
                         <label class="btn" for="mineRadio">
                             <SVGCrud SVGType="SVGCrud.SVGTypeEnum.User"></SVGCrud>
                             <span>Mine</span>
                         </label>
 
-                        <input type="radio"
-                               class="btn-check"
-                               name="btnradio"
-                               id="teamRadio"
-                               autocomplete="off" />
+                        <input type="radio" class="btn-check" name="btnradio" id="teamRadio" autocomplete="off" />
                         <label class="btn" for="teamRadio">
                             <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Users"></SVGCrud>
 
@@ -221,32 +148,23 @@
                 </div>
 
                 <div class="action-btn-list">
-                    <button class="btn btn-primary"
-                            type="button"
-                            data-bs-toggle="offcanvas"
-                            data-bs-target="#survey-type-modal"
-                            aria-controls="offcanvasWithBothOptions">
+                    <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas"
+                        data-bs-target="#survey-type-modal" aria-controls="offcanvasWithBothOptions">
                         <span class="icon">
                             <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Pluse"></SVGCrud>
                         </span>
                         Add Task
                     </button>
 
-                    <button type="button"
-                            data-bs-toggle="tooltip"
-                            data-bs-placement="top"
-                            title="Filter"
-                            class="btn btn-action-40 btn-outline-light-pimary">
+                    <button type="button" data-bs-toggle="tooltip" data-bs-placement="top" title="Filter"
+                        class="btn btn-action-40 btn-outline-light-pimary">
                         <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Filter"></SVGCrud>
                     </button>
                 </div>
             </div>
             <div class="page-body"></div>
         </div>
-        <div class="tab-pane fade"
-             id="gannt-view-tab"
-             role="tabpanel"
-             aria-labelledby="gannt-tab">
+        <div class="tab-pane fade" id="gannt-view-tab" role="tabpanel" aria-labelledby="gannt-tab">
             <div class="page-body"></div>
         </div>
 
@@ -284,32 +202,32 @@
     protected override async Task OnInitializedAsync()
     {
         tableColumns = new()
-        {
-            new() { Field = "Title", DisplayName = Loc["Title"] },
-            new() { Field = "Priority", DisplayName = Loc["Priority2"] },
+{
+new() { Field = "Title", DisplayName = Loc["Title"] },
+new() { Field = "Priority", DisplayName = Loc["Priority2"] },
 
-           new() { Field = "Status", DisplayName = Loc["TaskStatus"] },
-            new() { Field = "Start Date", DisplayName = Loc["StartDate"] },
-             new() { Field = "End Date", DisplayName = Loc["EndDate"] },
-              new() { Field = "Planned Progress", DisplayName = Loc["PlannedProgress"] },
+new() { Field = "Status", DisplayName = Loc["TaskStatus"] },
+new() { Field = "Start Date", DisplayName = Loc["StartDate"] },
+new() { Field = "End Date", DisplayName = Loc["EndDate"] },
+new() { Field = "Planned Progress", DisplayName = Loc["PlannedProgress"] },
 
-                         new() { Field = "Source", DisplayName = Loc["Source"] },
-                                    new() { Field = "Type", DisplayName = Loc["Type"] },
+new() { Field = "Source", DisplayName = Loc["Source"] },
+new() { Field = "Type", DisplayName = Loc["Type"] },
 
-              
-           new() { Field = "weight", DisplayName = Loc["weight"] },
-            new() { Field = "Assigned To", DisplayName = Loc["AssigneduserNames"] },
-                       new() { Field = "Assigned To Department", DisplayName = Loc["AssignedToDepartment"] },
 
-            
-            new() { Field = "Created By", DisplayName = Loc["CreatedBy"] },
+new() { Field = "weight", DisplayName = Loc["weight"] },
+new() { Field = "Assigned To", DisplayName = Loc["AssigneduserNames"] },
+new() { Field = "Assigned To Department", DisplayName = Loc["AssignedToDepartment"] },
 
-            new() { Field = "Creation Date", DisplayName = Loc["CreationDate"] },
-            new() { Field = "UpdatedBy", DisplayName = Loc["UpdatedBy"] },
 
-            new() { Field = "UpdateDate", DisplayName = Loc["UpdateDate"] },
-            new() { Field = "Action", DisplayName = Loc["Action"] ,IsSortable = false},
-        };
+new() { Field = "Created By", DisplayName = Loc["CreatedBy"] },
+
+new() { Field = "Creation Date", DisplayName = Loc["CreationDate"] },
+new() { Field = "UpdatedBy", DisplayName = Loc["UpdatedBy"] },
+
+new() { Field = "UpdateDate", DisplayName = Loc["UpdateDate"] },
+new() { Field = "Action", DisplayName = Loc["Action"] ,IsSortable = false},
+};
 
         await GetTasks();
 
@@ -323,22 +241,22 @@
             }
 
         }
-       // ColumnsList = res.Data;
+        // ColumnsList = res.Data;
 
         // Filter and order by settings
         tableColumns = tableColumns
-            .Where(c => ColumnsList.Any(s => s.IsActive &&
-                string.Equals(s.NameEnglish, c.Field, StringComparison.OrdinalIgnoreCase)))
-            .OrderBy(c => ColumnsList
-                .First(s => string.Equals(s.NameEnglish, c.Field, StringComparison.OrdinalIgnoreCase))
-                .Order ?? int.MaxValue)
-            .ToList();
+        .Where(c => ColumnsList.Any(s => s.IsActive &&
+        string.Equals(s.NameEnglish, c.Field, StringComparison.OrdinalIgnoreCase)))
+        .OrderBy(c => ColumnsList
+        .First(s => string.Equals(s.NameEnglish, c.Field, StringComparison.OrdinalIgnoreCase))
+        .Order ?? int.MaxValue)
+        .ToList();
         // Apply order from DB
         // var xx = ColumnsList.OrderBy(x=>,
-        //           c => c.PropertyName,
-        //           o => o.ColumnName,
-        //           (c, o) => c)
-        //     .ToList();
+        // c => c.PropertyName,
+        // o => o.ColumnName,
+        // (c, o) => c)
+        // .ToList();
         StateHasChanged();
     }
     public async Task ResetPage()
@@ -421,7 +339,8 @@
 
     public void ShowEditPopup(Guid id)
     {
-        PopupService.ShowNew(@<Edit UserDelegationId="@id.ToString()" IsAdmine="@IsAdmine" OnValidSubmit="OnInitializedAsync"></Edit>, headerText:
+        PopupService.ShowNew(@<Edit UserDelegationId="@id.ToString()" IsAdmine="@IsAdmine" OnValidSubmit="OnInitializedAsync">
+        </Edit>, headerText:
         @Loc["EditDelegation"]);
     }
     private async Task OnConfirmDelete(bool confirmed)
@@ -461,80 +380,80 @@
         StateHasChanged();
     }
     public List<SearchFieldTask> searchFields = new List<SearchFieldTask>() {
-    SearchFieldTask.Title,
-    SearchFieldTask.Priority,
-    SearchFieldTask.TaskStatus,
-    SearchFieldTask.StartDate,
-    SearchFieldTask.EndDate,
-    SearchFieldTask.weight,
-    SearchFieldTask.AssigneduserNames,
-    SearchFieldTask.CreatedBy,
-    SearchFieldTask.CreateDate,
-    SearchFieldTask.UpdatedBy,
-    SearchFieldTask.UpdateDate,
-    SearchFieldTask.PlannedProgress
+SearchFieldTask.Title,
+SearchFieldTask.Priority,
+SearchFieldTask.TaskStatus,
+SearchFieldTask.StartDate,
+SearchFieldTask.EndDate,
+SearchFieldTask.weight,
+SearchFieldTask.AssigneduserNames,
+SearchFieldTask.CreatedBy,
+SearchFieldTask.CreateDate,
+SearchFieldTask.UpdatedBy,
+SearchFieldTask.UpdateDate,
+SearchFieldTask.PlannedProgress
 
-    };
-    private RenderFragment RenderColumnValue(CreateTaskDto task, string field) => builder =>
-{
-    switch (field)
-    {
-        case "Title":
-            builder.AddContent(0, task.Title);
-            break;
-        case "Priority":
-            builder.AddContent(0, task.PriorityName);
-            break;
-            
-        case "Assigned To":
-            builder.AddContent(0, task.AssigneduserNames);
-            break;
-        case "Status":
-            builder.AddContent(0, (task.TaskStatusName)?.ToString());
-            break;
-        case "Start Date":
-            builder.AddContent(0, task.StartDate.ToString("yyyy-MM-dd"));
-            break;
-        case "End Date":
-            builder.AddContent(0, task.EndDate.ToString("yyyy-MM-dd"));
-            break;
-        case "weight":
-            builder.AddContent(0, task.weight);
-            break;
-        case "AssigneduserNames":
-            builder.AddContent(0, task.AssigneduserNames);
-            break;
-        case "Created By":
-            builder.AddContent(0, task.CreatedByName);
-            break;
-        case "Creation Date":
-            builder.AddContent(0, task.CreateDate?.ToString("yyyy-MM-dd"));
-            break;
-        case "UpdatedBy":
-            builder.AddContent(0, task.UpdatedBy);
-            break;
-        case "UpdateDate":
-            builder.AddContent(0, task.UpdateDate?.ToString("yyyy-MM-dd"));
-            break;
-       
-        case "Assigned To Department":
-            builder.AddContent(0, task.AssignedDepartmentName);
-            break;
-        case "Source":
-            builder.AddContent(0, task.SourceName);
-            break;
-        case "Planned Progress":
-            builder.AddContent(0, task.ActualProcess);
-            break;
-        case "Type":
-       
-            builder.AddContent(0, task.TypeName);
-            break;
-        case "Action":
-            builder.AddContent(0, "...");
-            break;
-    }
 };
+    private RenderFragment RenderColumnValue(CreateTaskDto task, string field) => builder =>
+    {
+        switch (field)
+        {
+            case "Title":
+                builder.AddContent(0, task.Title);
+                break;
+            case "Priority":
+                builder.AddContent(0, task.PriorityName);
+                break;
+
+            case "Assigned To":
+                builder.AddContent(0, task.AssigneduserNames);
+                break;
+            case "Status":
+                builder.AddContent(0, (task.TaskStatusName)?.ToString());
+                break;
+            case "Start Date":
+                builder.AddContent(0, task.StartDate.ToString("yyyy-MM-dd"));
+                break;
+            case "End Date":
+                builder.AddContent(0, task.EndDate.ToString("yyyy-MM-dd"));
+                break;
+            case "weight":
+                builder.AddContent(0, task.weight);
+                break;
+            case "AssigneduserNames":
+                builder.AddContent(0, task.AssigneduserNames);
+                break;
+            case "Created By":
+                builder.AddContent(0, task.CreatedByName);
+                break;
+            case "Creation Date":
+                builder.AddContent(0, task.CreateDate?.ToString("yyyy-MM-dd"));
+                break;
+            case "UpdatedBy":
+                builder.AddContent(0, task.UpdatedBy);
+                break;
+            case "UpdateDate":
+                builder.AddContent(0, task.UpdateDate?.ToString("yyyy-MM-dd"));
+                break;
+
+            case "Assigned To Department":
+                builder.AddContent(0, task.AssignedDepartmentName);
+                break;
+            case "Source":
+                builder.AddContent(0, task.SourceName);
+                break;
+            case "Planned Progress":
+                builder.AddContent(0, task.ActualProcess);
+                break;
+            case "Type":
+
+                builder.AddContent(0, task.TypeName);
+                break;
+            case "Action":
+                builder.AddContent(0, "...");
+                break;
+        }
+    };
     private async Task Save()
     {
 
@@ -564,7 +483,7 @@
 
 
         var res = await _taskConsumer.GetTasks(currentPage, pageSize, currentSortColumn, sortAscending.Value, isSearch ?
-                 searchFields : null, isSearch ? searchTerm : null);
+        searchFields : null, isSearch ? searchTerm : null);
         allTaks = res.Data.Items.ToList();
 
         if (!(res?.Success ?? false) || res.Data is null)

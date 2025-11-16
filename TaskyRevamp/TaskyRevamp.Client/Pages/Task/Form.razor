@@ -23,12 +23,12 @@
 @inject SourceSettingConsumer _sourceSettingConsumer
 
 @inject UserConsumer _userConsumer
-<EditForm Model="@taskdto" EditContext="@editContext"
-          OnValidSubmit="HandleValidSubmit"
-          OnInvalidSubmit="HandleInvalidSubmit">
+<EditForm Model="@taskdto" EditContext="@editContext" OnValidSubmit="HandleValidSubmit"
+    OnInvalidSubmit="HandleInvalidSubmit">
     <DataAnnotationsValidator />
     <ValidationSummary />
-    <div class="row">
+
+    <div class="offcanvas-body">
         @foreach (var column in AddTaskSettings.Where(c => c.IsActive).OrderBy(c => c.Order))
         {
             switch (column.NameEnglish)
@@ -77,8 +77,8 @@
 
 
                                 <RichTextEditorComponent EditorId="RTE_English2" @ref="RichTextEditorComponentRefDescriptionEnglish"
-                                                         Content="@taskdto.DescriptionEnglish"
-                                                         ContentChanged="OnDescriptionEnglishChanged"></RichTextEditorComponent>
+                                    Content="@taskdto.DescriptionEnglish" ContentChanged="OnDescriptionEnglishChanged">
+                                </RichTextEditorComponent>
 
                                 <div class="d-flex align-items-center justify-content-between">
                                     <div class="d-flex gap-2">
@@ -103,8 +103,8 @@
 
 
                                 <RichTextEditorComponent EditorId="RTE_English3" @ref="RichTextEditorComponentRefDescriptionEnglish"
-                                                         Content="@taskdto.DescriptionArabic"
-                                                         ContentChanged="OnContentDescriptionArabicChanged"></RichTextEditorComponent>
+                                    Content="@taskdto.DescriptionArabic" ContentChanged="OnContentDescriptionArabicChanged">
+                                </RichTextEditorComponent>
 
                                 <div class="d-flex align-items-center justify-content-between">
                                     <div class="d-flex gap-2">
@@ -126,14 +126,9 @@
                                 <span class="text-danger"> *</span>
                             }
                         </label>
-                        <SearchableSingleDropdownOffline TInput=TypeDto
-                                                         TOutput=Guid
-                                                         TextSelector="(TypeDto x)=> x.DisplayedName"
-                                                         OutputSelector="x => x.Id"
-                                                         Datasource="taskTypeDtos"
-                                                         MinCharacterCount="1"
-                                                         @bind-SelectedOption="@taskdto.TypeId"
-                                                         PlaceHolder="@($"--{Loc["SelectType"]}--")" />
+                        <SearchableSingleDropdownOffline TInput=TypeDto TOutput=Guid TextSelector="(TypeDto x) => x.DisplayedName"
+                            OutputSelector="x => x.Id" Datasource="taskTypeDtos" MinCharacterCount="1"
+                            @bind-SelectedOption="@taskdto.TypeId" PlaceHolder="@($"--{Loc["SelectType"]}--")" />
 
                     </div>
                     break;
@@ -146,14 +141,10 @@
                         }
                     </label>
                     <div class="mb-3">
-                        <SearchableSingleDropdownOffline TInput=SourceDto
-                                                         TOutput=Guid
-                                                         TextSelector="(SourceDto x)=> x.DisplayedName"
-                                                         OutputSelector="x => x.Id"
-                                                         Datasource="taskSourceDtos"
-                                                         MinCharacterCount="1"
-                                                         @bind-SelectedOption="@taskdto.SourceId"
-                                                         PlaceHolder="@($"--{Loc["SelectSource"]}--")" />
+                        <SearchableSingleDropdownOffline TInput=SourceDto TOutput=Guid
+                            TextSelector="(SourceDto x)=> x.DisplayedName" OutputSelector="x => x.Id" Datasource="taskSourceDtos"
+                            MinCharacterCount="1" @bind-SelectedOption="@taskdto.SourceId"
+                            PlaceHolder="@($"--{Loc["SelectSource"]}--")" />
 
                     </div>
                     break;
@@ -218,7 +209,8 @@
                             }
                         </label>
                         <SearchableMultiDropdownOffline TInput=DepartmentDto TOutput="Guid" Datasource=departmentDtos
-                                                        TextSelector=@(x=>x.NameEnglish) OutputSelector="x=> x.Id" @bind-SelectedOptions=taskdto.AssignedDepartmentIds />
+                            TextSelector=@(x=>x.NameEnglish) OutputSelector="x=> x.Id"
+                            @bind-SelectedOptions=taskdto.AssignedDepartmentIds />
                     </div>
                     break;
                 case "Dependency ":
@@ -231,7 +223,7 @@
                             }
                         </label>
                         <SearchableMultiDropdownOffline TInput=CreateTaskDto TOutput="Guid" Datasource=allTaskDtos
-                                                        TextSelector=@(x=>x.Title) OutputSelector="x=> x.Id" @bind-SelectedOptions=taskdto.Dependencies />
+                            TextSelector=@(x=>x.Title) OutputSelector="x=> x.Id" @bind-SelectedOptions=taskdto.Dependencies />
                     </div>
                     break;
                 case "Assigned To":
@@ -244,7 +236,7 @@
                             }
                         </label>
                         <SearchableMultiDropdownOffline TInput=UserDto TOutput="Guid" Datasource=userDtos
-                                                        TextSelector=@(x=>x.UserName) OutputSelector="x=> x.Id" @bind-SelectedOptions=taskdto.AssignedIds />
+                            TextSelector=@(x=>x.UserName) OutputSelector="x=> x.Id" @bind-SelectedOptions=taskdto.AssignedIds />
                     </div>
                     break;
 
@@ -280,8 +272,7 @@
                                 </label>
 
                                 <RichTextEditorComponent EditorId="RTE_English4" @ref="RichTextEditorComponentRefComment"
-                                                         Content="@taskdto.Content"
-                                                         ContentChanged="OnContentChanged"></RichTextEditorComponent>
+                                    Content="@taskdto.Content" ContentChanged="OnContentChanged"></RichTextEditorComponent>
 
                                 <div class="d-flex align-items-center justify-content-between">
                                     <div class="d-flex gap-2">
@@ -302,14 +293,9 @@
                                 <span class="text-danger"> *</span>
                             }
                         </label>
-                        <SearchableSingleDropdownOffline TInput=PriorityDto
-                                                         TOutput=Guid
-                                                         TextSelector=" (PriorityDto x)=> x.Name"
-                                                         OutputSelector="x => x.Id"
-                                                         Datasource="Priorities"
-                                                         MinCharacterCount="1"
-                                                         @bind-SelectedOption="@taskdto.Priority"
-                                                         PlaceHolder="@($"--{Loc["SelectPriority"]}--")" />
+                        <SearchableSingleDropdownOffline TInput=PriorityDto TOutput=Guid TextSelector=" (PriorityDto x)=> x.Name"
+                            OutputSelector="x => x.Id" Datasource="Priorities" MinCharacterCount="1"
+                            @bind-SelectedOption="@taskdto.Priority" PlaceHolder="@($"--{Loc["SelectPriority"]}--")" />
                     </div>
                     break;
 
@@ -340,16 +326,12 @@
                         </label>
                         <div class="mb-3">
 
-                            <input type="range" class="form-range"
-                                   min="0" max="100"
-                                   @bind="taskdto.ActualProcess" />
+                            <input type="range" class="form-range" min="0" max="100" @bind="taskdto.ActualProcess" />
 
                             <!-- Optional visual bar to match -->
                             <div class="progress" style="height: 20px;">
-                                <div class="progress-bar" role="progressbar"
-                                     style="width:@taskdto.ActualProcess%;"
-                                     aria-valuenow="@taskdto.ActualProcess"
-                                     aria-valuemin="0" aria-valuemax="100">
+                                <div class="progress-bar" role="progressbar" style="width:@taskdto.ActualProcess%;"
+                                    aria-valuenow="@taskdto.ActualProcess" aria-valuemin="0" aria-valuemax="100">
                                 </div>
                             </div>
 
@@ -362,8 +344,17 @@
 
         }
     </div>
+    <div class="offcanvas-footer">
+        <div class="row g-2">
+            <div class="col-12">
+                <div class="d-grid">
+                    <button class="btn btn-primary mt-3" type="submit">Submit</button>
+                </div>
+            </div>
+        </div>
 
-    <button class="btn btn-primary mt-3" type="submit">Submit</button>
+    </div>
+
 </EditForm>
 
 @code {
@@ -481,15 +472,15 @@
                 }
                 // Numeric types (optional: you can treat 0 as invalid if needed)
                 else if (type == typeof(int) || type == typeof(int?) ||
-                         type == typeof(double) || type == typeof(double?) ||
-                         type == typeof(decimal) || type == typeof(decimal?))
+                type == typeof(double) || type == typeof(double?) ||
+                type == typeof(decimal) || type == typeof(decimal?))
                 {
                     // Example: consider 0 as invalid
                     // isEmpty = Convert.ToDecimal(value) == 0;
                 }
                 // Collections (List<Guid>, List<string>, etc.)
                 else if (typeof(System.Collections.IEnumerable).IsAssignableFrom(type)
-                         && type != typeof(string))
+                && type != typeof(string))
                 {
                     var enumerable = (System.Collections.IEnumerable)value;
                     isEmpty = !enumerable.Cast<object>().Any();
@@ -522,10 +513,3 @@
     }
 
 }
-
-
-
-
-
-
-

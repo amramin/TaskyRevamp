@@ -18,12 +18,12 @@
     </div>
     <div class="action-btn-list">
         <Search @ref="searchComponent" SearchSubmit="Search" CssClass="form-control"></Search>
-        <button class="btn  btn-primary" @onclick="AddUser">
+        @* <button class="btn  btn-primary" @onclick="AddUser">
             <span class="icon">
                 <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Pluse"></SVGCrud>
             </span>
             @Loc["Add_user"]
-        </button>
+        </button> *@
     </div>
 </div>
 @if (users != null && users.Any())
@@ -33,8 +33,8 @@
             @if (users != null && users.Any())
             {
 
-                <SortableTable TItem="UserDtoWithName" Columns="@tableColumns" Items="@users"
-                               SortColumn="@currentSortColumn" SortAscending="@sortAscending" OnSortRequested="HandleSort">
+                <SortableTable TItem="UserDtoWithName" Columns="@tableColumns" Items="@users" SortColumn="@currentSortColumn"
+                    SortAscending="@sortAscending" OnSortRequested="HandleSort">
 
                     <RowTemplate>
                         @foreach (var item in users)
@@ -48,7 +48,7 @@
                                 <td>
                                     <div class="form-check form-switch custom">
                                         <InputCheckbox id="@checkboxId" @bind-Value="item.user.IsManager" class="form-check-input"
-                                                       disabled />
+                                            disabled />
                                         <label for="@checkboxId" class="form-check-label">
                                             <span class="toggler-icon"></span>
                                         </label>
@@ -57,7 +57,7 @@
                                 <td>
                                     <div class="form-check form-switch custom">
                                         <InputCheckbox id="@checkboxId" @bind-Value="item.user.IsActive" class="form-check-input"
-                                                       disabled />
+                                            disabled />
                                         <label for="@checkboxId" class="form-check-label">
                                             <span class="toggler-icon"></span>
                                         </label>
@@ -68,7 +68,7 @@
                                 <td>
                                     <div class="dropdown actions">
                                         <button class="btn btn-action-24" type="button" data-bs-toggle="dropdown"
-                                                aria-expanded="false">
+                                            aria-expanded="false">
                                             <SVGCrud SVGType="SVGCrud.SVGTypeEnum.EllipseVertical"></SVGCrud>
                                         </button>
                                         <ul class="dropdown-menu">
@@ -106,7 +106,7 @@
             }
         </div>
         <Pagination CurrentPage="@currentPage" TotalPages="@totalPages" TotalCount="@totalCount" PageSize="@pageSize"
-                    PageChanged="ChangePage" PageSizeChangedCallback="ChangePageSize" />
+            PageChanged="ChangePage" PageSizeChangedCallback="ChangePageSize" />
     </div>
 
 }
@@ -116,10 +116,8 @@ else if (initialUsers != null && initialUsers.Any())
 }
 else
 {
-    <NoDataAvailable MessageTitle="@Loc["NoUsersAvailable"]"
-                     MessageSubtitle="@Loc["AddANewUserToGetStarted"]"
-                     ButtonText="@Loc["Add_user"]"
-                     OnButtonClick="AddUser" />
+    <NoDataAvailable MessageTitle="@Loc["NoUsersAvailable"]" MessageSubtitle="@Loc["AddANewUserToGetStarted"]"
+        ButtonText="@Loc["Add_user"]" OnButtonClick="AddUser" />
 }
 @code {
     List<UserDtoWithName> users = new();
@@ -150,19 +148,19 @@ else
     protected override async Task OnInitializedAsync()
     {
         tableColumns = new()
-        {
-            new() { Field = "Name", DisplayName = Loc["name"] },
-            new() { Field = "Email", DisplayName = Loc["email"] },
-            new() { Field = "Privileges", DisplayName = Loc["Privileges"] },
-            new() { Field = "Department", DisplayName = Loc["Department"] },
-            new() { Field = "Set as Manager", DisplayName = Loc["setAsManager"] },
-            new() { Field = "IsActive", DisplayName = Loc["active"] },
-            // new() { Field = "CreateDate", DisplayName = Loc["CreationDate"] },
-            // new() { Field = "CreatedBy", DisplayName = Loc["CreatedBy"] },
-            new() { Field = "UpdateDate", DisplayName = Loc["UpdateDate"] },
-            new() { Field = "UpdatedBy", DisplayName = Loc["UpdatedBy"] },
-            new() { Field = "Action", DisplayName = Loc["Action"] ,IsSortable = false},
-        };
+{
+new() { Field = "Name", DisplayName = Loc["name"] },
+new() { Field = "Email", DisplayName = Loc["email"] },
+new() { Field = "Privileges", DisplayName = Loc["Privileges"] },
+new() { Field = "Department", DisplayName = Loc["Department"] },
+new() { Field = "Set as Manager", DisplayName = Loc["setAsManager"] },
+new() { Field = "IsActive", DisplayName = Loc["active"] },
+// new() { Field = "CreateDate", DisplayName = Loc["CreationDate"] },
+// new() { Field = "CreatedBy", DisplayName = Loc["CreatedBy"] },
+new() { Field = "UpdateDate", DisplayName = Loc["UpdateDate"] },
+new() { Field = "UpdatedBy", DisplayName = Loc["UpdatedBy"] },
+new() { Field = "Action", DisplayName = Loc["Action"] ,IsSortable = false},
+};
 
         await LoadUsers();
         initialUsers = users;
@@ -214,11 +212,11 @@ else
     }
     private void ViewUser(Guid Id)
     {
-        
+
     }
     private void ViewPrivilege(Guid Id)
     {
-        
+
     }
     private async Task SortBy(string columnName)
     {
@@ -235,18 +233,18 @@ else
     }
 
     public List<SearchFieldUser> searchFields = new List<SearchFieldUser>() {
-            SearchFieldUser.NameEnglish,
-            SearchFieldUser.NameArabic,
-            SearchFieldUser.Email,
-            SearchFieldUser.IsManager,
-            SearchFieldUser.Privilege,
-            SearchFieldUser.Department,
-            // SearchFieldUser.CreatedBy,
-            SearchFieldUser.UpdatedBy,
-            // SearchFieldUser.CreateDate,
-            SearchFieldUser.UpdateDate,
-            SearchFieldUser.ActiveStatus
-    };
+SearchFieldUser.NameEnglish,
+SearchFieldUser.NameArabic,
+SearchFieldUser.Email,
+SearchFieldUser.IsManager,
+SearchFieldUser.Privilege,
+SearchFieldUser.Department,
+// SearchFieldUser.CreatedBy,
+SearchFieldUser.UpdatedBy,
+// SearchFieldUser.CreateDate,
+SearchFieldUser.UpdateDate,
+SearchFieldUser.ActiveStatus
+};
 
     public async Task Search(string searchTerm)
     {
