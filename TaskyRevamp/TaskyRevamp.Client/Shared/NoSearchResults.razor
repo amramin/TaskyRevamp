@@ -8,8 +8,8 @@
                 <SVGCrud SVGType="SVGCrud.SVGTypeEnum.NoSearchReasult"></SVGCrud>
             </span>
             <div class="content mt-3">
-                <h5 class="headline-5">@MessageTitle</h5>
-                <p class="small-medium-text">@MessageSubtitle</p>
+                <h5 class="headline-5">@Loc[MessageTitle]</h5>
+                <p class="small-medium-text">@Loc[MessageSubtitle]</p>
             </div>
             @if (ShowResetButton)
             {
@@ -18,7 +18,7 @@
                         <span class="icon">
                             <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Repeat"></SVGCrud>
                         </span>
-                        @ButtonText
+                        @Loc[ButtonText]
                     </button>
                 </div>
             }
@@ -27,9 +27,9 @@
 </div>
 
 @code {
-    [Parameter] public string? MessageTitle { get; set; } = "No results found";
-    [Parameter] public string? MessageSubtitle { get; set; } = "Try adjusting your search.";
+    [Parameter] public string? MessageTitle { get; set; } = "NoResultsFound";
+    [Parameter] public string? MessageSubtitle { get; set; } = "TryAjustingYourSearch";
     [Parameter] public bool ShowResetButton { get; set; } = true;
-    [Parameter] public string? ButtonText { get; set; } = "Clear Search";
+    [Parameter] public string? ButtonText { get; set; } = "ClearSearch";
     [Parameter] public EventCallback OnResetClick { get; set; }
 }

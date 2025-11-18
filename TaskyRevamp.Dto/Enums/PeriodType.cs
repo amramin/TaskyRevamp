@@ -10,22 +10,22 @@ namespace TaskyRevamp.Dto.Enums
     public enum PeriodType
     {
         [LocalizedDescription("Never", typeof(SharedResources))]
-        [Order(1)]
+        [Order(6)]
         Never = 0,
         [LocalizedDescription("Custom", typeof(SharedResources))]
-        [Order(6)]
+        [Order(5)]
         Custom = 1,
         [LocalizedDescription("Days7", typeof(SharedResources))]
-        [Order(2)]
+        [Order(1)]
         Days7 = 7,
         [LocalizedDescription("Days15", typeof(SharedResources))]
-        [Order(3)]
+        [Order(2)]
         Days15 = 15,
         [LocalizedDescription("Days30", typeof(SharedResources))]
-        [Order(4)]
+        [Order(3)]
         Days30 = 30,
         [LocalizedDescription("Days60", typeof(SharedResources))]
-        [Order(5)]
+        [Order(4)]
         Days60 = 60
     }
 }
