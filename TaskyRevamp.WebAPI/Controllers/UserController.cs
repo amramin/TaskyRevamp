@@ -34,7 +34,21 @@ public class UserController : ControllerBase
 		return Ok(all);
 	}
 
-
+	[HttpGet("GetAllUsersByDepartmentWithPaginationQuery/{DepartmentId}")]
+	public async Task<IActionResult> GetAllUsersByDepartmentWithPagination(
+			Guid DepartmentId,
+			[FromServices] IOptions<PaginationSettings> paginationSettings,
+			[FromQuery] int pageNumber = 1,
+			[FromQuery] int? pageSize = null,
+			[FromQuery] string sortByColumnName = "CreateDate",
+			[FromQuery] bool sortAscending = true,
+			[FromQuery] List<SearchFieldUserDepartment> searchFields = null,
+			[FromQuery] string searchText = null)
+	{
+		var size = pageSize ?? paginationSettings.Value.DefaultPageSize;
+		var result = await _mediator.Send(new GetAllUsersByDepartmentWithPaginationQuery(DepartmentId, pageNumber, size, sortByColumnName, sortAscending, searchFields, searchText));
+		return Ok(result);
+	}
 
 	[HttpGet("GetAllUsers")]
 	public async Task<IActionResult> GetAllUsers()
