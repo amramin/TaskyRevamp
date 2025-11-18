@@ -163,7 +163,7 @@
     <value>تم التعديل بنجاح</value>
   </data>
   <data name="Hours24" xml:space="preserve">
-    <value>ساعة 24 </value>
+    <value>24 ساعة</value>
   </data>
   <data name="ListWeek" xml:space="preserve">
     <value>أسبوع</value>
@@ -202,7 +202,7 @@
     <value>تعديل أولوية</value>
   </data>
   <data name="AddPriority" xml:space="preserve">
-    <value>إضافة أولوية جديدة</value>
+    <value>إضافة أولوية </value>
   </data>
   <data name="Sure" xml:space="preserve">
     <value>هل أنت متأكد أنك تريد حذف هذه الأولوية؟</value>
@@ -580,9 +580,6 @@
   <data name="System Identity" xml:space="preserve">
     <value>هوية النظام</value>
   </data>
-  <data name="AddNewPriority" xml:space="preserve">
-    <value>إضافة أولوية جديدة</value>
-  </data>
   <data name="EditStatus" xml:space="preserve">
     <value>تعديل الحالة</value>
   </data>
@@ -829,11 +826,8 @@
   <data name="Subtask_Levels" xml:space="preserve">
     <value>مستويات المهمة الفرعية</value>
   </data>
-  <data name="SelectDay" xml:space="preserve">
-    <value>اختر اليوم</value>
-  </data>
-  <data name="SelectTime" xml:space="preserve">
-    <value>اختر الوقت</value>
+  <data name="Select" xml:space="preserve">
+    <value>اختر </value>
   </data>
   <data name="users" xml:space="preserve">
     <value>المستخدمين</value>
@@ -861,5 +855,17 @@
   </data>
   <data name="LinkUser" xml:space="preserve">
     <value>Link a user to department and privilege</value>
+  </data>
+  <data name="NoResultsFound" xml:space="preserve">
+    <value>لم يتم العثور على نتائج</value>
+  </data>
+  <data name="TryAjustingYourSearch" xml:space="preserve">
+    <value>حاول تعديل بحثك</value>
+  </data>
+  <data name="ClearSearch" xml:space="preserve">
+    <value>مسح البحث</value>
+  </data>
+  <data name="KanbanView" xml:space="preserve">
+    <value>عرض اللوحة</value>
   </data>
 </root>

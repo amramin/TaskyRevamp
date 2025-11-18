@@ -32,20 +32,24 @@
                                                                 TextSelector="(w => Loc[w.Day.ToString()])"
                                                                 OutputSelector="(w => w.Day)"
                                                                 Datasource="workingDaysSettingsDtos!.Where(w => w.IsActive).ToList()"
-                                                                @bind-SelectedOption="settingsDto.Day"
-                                                                PlaceHolder="@($"--{Loc["SelectDay"]}--")" />
+                                                                SelectedOption="settingsDto.Day"
+                                                                SelectedOptionChanged="OnDayChanged"
+                                                                PlaceHolder="@($"{Loc["Select"]}")" />
+                        <div class="text-danger small mt-1">@DayError</div>
                         </div>
                         <div class="mb-4">
                             <label for="timelabel" class="form-label">
                                 @Loc["Time"]<span class="text-danger">*</span>
                             </label>
-                            <SearchableSingleDropdownOffline TInput="(TimeSpan Value, string Text)"
-                                                                TOutput="TimeSpan"
-                                                                TextSelector="t => t.Text"
-                                                                OutputSelector="t => t.Value"
-                                                                Datasource="TimeSlots"
-                                                                @bind-SelectedOption="settingsDto.Time"
-                                                                PlaceHolder="@($"--{Loc["SelectTime"]}--")" />
+                        <SearchableSingleDropdownOffline TInput="(TimeSpan Value, string Text)"
+                                                         TOutput="string"
+                                                         TextSelector="t => t.Text"
+                                                         OutputSelector="t => t.Text"
+                                                         Datasource="TimeSlots"
+                                                         SelectedOption="SelectedTimeText"
+                                                         SelectedOptionChanged="OnTimeTextChanged"
+                                                         PlaceHolder="@($"{Loc["Select"]}")" />
+                        <div class="text-danger small mt-1">@TimeError</div>
                         </div>
                         <div class="text-content mb-2">
                             <h6 class="headline-6">@Loc["ReportLanguage"]</h6>
@@ -62,6 +66,7 @@
                                 </div>
                             }
                         </InputRadioGroup>
+                        <div class="text-danger small mt-1">@LanguageError</div>
                     </div>
                 </div>
             </div>
@@ -83,6 +88,10 @@
     private List<WorkingDaysSettingsDto> workingDaysSettingsDtos = new List<WorkingDaysSettingsDto>();
     private List<(TimeSpan Value, string Text)>? TimeSlots { get; set; }
     public List<Language> languages = EnumExtensions.GetOrderedValues<Language>();
+    private string DayError = "";
+    private string TimeError = "";
+    private string LanguageError = "";
+    private string? SelectedTimeText;
 
     protected override async Task OnInitializedAsync()
     {
@@ -97,8 +106,26 @@
         if (res.Success && res != null && res.Data != null)
         {
             settingsDto = res.Data;
+            settingsDto.Time = new TimeSpan(settingsDto.Time.Hours, settingsDto.Time.Minutes, 0);
         }
         TimeSlots = GenerateTimeSlots();
+        var match = TimeSlots.FirstOrDefault(t => t.Value == settingsDto.Time);
+        SelectedTimeText = match != default ? match.Text : null;
+    }
+    private void OnTimeTextChanged(string newText)
+    {
+        SelectedTimeText = newText;
+        TimeError = ""; 
+    }
+    private void OnSettingChange(Language newValue)
+    {
+        settingsDto.Language = newValue;
+        LanguageError = "";
+    }
+    private void OnDayChanged(WeekDays newDay)
+    {
+        settingsDto.Day = newDay;
+        DayError = "";
     }
 
     private void Cancel(MouseEventArgs args)
@@ -108,6 +135,30 @@
 
     private async Task Save()
     {
+        bool isValid = true;
+        if (settingsDto.Day == 0)
+        {
+            DayError = Loc["Required"];
+            isValid = false;
+        }
+
+        if (string.IsNullOrEmpty(SelectedTimeText))
+        {
+            TimeError = Loc["Required"];
+            isValid = false;
+        }
+        else
+        {
+            var selected = TimeSlots!.FirstOrDefault(t => t.Text == SelectedTimeText);
+            settingsDto.Time = selected.Value;
+        }
+        if (!Enum.IsDefined(typeof(Language), settingsDto.Language))
+        {
+            LanguageError = Loc["Required"];
+            isValid = false;
+        }
+        if (!isValid) return; // stop saving
+
         var res = await _weeklyReportSettingConsumer.UpdateWeeklyReportSetting(settingsDto);
         if (res.Success)
         {
@@ -122,13 +173,10 @@
 
         while (start <= end)
         {
-            times.Add((start, DateTime.Today.Add(start).ToString("hh:mm tt")));
+            times.Add((start, DateTime.Today.Add(start).ToString("h:mm tt")));
             start = start.Add(new TimeSpan(0, 15, 0));
         }
         return times;
     }
-    private void OnSettingChange(Language newValue)
-    {
-        settingsDto.Language = newValue;
-    }
+   
 }

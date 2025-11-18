@@ -24,7 +24,7 @@
                         var radioId = $"ViewType_{value}";
                         <div class="form-check-card">
                             <InputRadio id="@radioId" Value="@value" />
-                            <label for="@radioId">  @value.GetDescription()</label>
+                            <label for="@radioId">   @(value == ViewType.Kanban ? @Loc["KanbanView"] : value.GetDescription()) </label>
                         </div>
                     }
                 </InputRadioGroup>
