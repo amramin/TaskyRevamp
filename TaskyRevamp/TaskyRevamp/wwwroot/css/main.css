@@ -842,6 +842,10 @@ html[dir=rtl] .btn-change-lang .icon-text .en-text {
 html[dir=rtl] input[type=number] {
   direction: rtl;
 }
+html[dir=rtl] .end-0 {
+  right: auto !important;
+  left: 0 !important;
+}
 
 /* end rtl*/
 /* start inputs */
