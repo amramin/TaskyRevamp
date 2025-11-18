@@ -8,11 +8,10 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace TaskyRevamp.Localization.Resources
-{
+namespace TaskyRevamp.Localization.Resources {
     using System;
-
-
+    
+    
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
     /// </summary>
@@ -23,129 +22,107 @@ namespace TaskyRevamp.Localization.Resources
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class SharedResources
-    {
-
+    public class SharedResources {
+        
         private static global::System.Resources.ResourceManager resourceMan;
-
+        
         private static global::System.Globalization.CultureInfo resourceCulture;
-
+        
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal SharedResources()
-        {
+        internal SharedResources() {
         }
-
+        
         /// <summary>
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        public static global::System.Resources.ResourceManager ResourceManager
-        {
-            get
-            {
-                if (object.ReferenceEquals(resourceMan, null))
-                {
+        public static global::System.Resources.ResourceManager ResourceManager {
+            get {
+                if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("TaskyRevamp.Localization.Resources.SharedResources", typeof(SharedResources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
             }
         }
-
+        
         /// <summary>
         ///   Overrides the current thread's CurrentUICulture property for all
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        public static global::System.Globalization.CultureInfo Culture
-        {
-            get
-            {
+        public static global::System.Globalization.CultureInfo Culture {
+            get {
                 return resourceCulture;
             }
-            set
-            {
+            set {
                 resourceCulture = value;
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Above user department level.
         /// </summary>
-        public static string AboveUserDepartmentLevel
-        {
-            get
-            {
+        public static string AboveUserDepartmentLevel {
+            get {
                 return ResourceManager.GetString("AboveUserDepartmentLevel", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to This option allows you to apply the permission to departments located above the user&apos;s department level. The system will automatically follow the vertical hierarchy linked to the parent of the user&apos;s department.
         /// </summary>
-        public static string AboveUserDepartmentLevelHint
-        {
-            get
-            {
+        public static string AboveUserDepartmentLevelHint {
+            get {
                 return ResourceManager.GetString("AboveUserDepartmentLevelHint", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Action .
         /// </summary>
-        public static string Action
-        {
-            get
-            {
+        public static string Action {
+            get {
                 return ResourceManager.GetString("Action", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Active.
         /// </summary>
-        public static string active
-        {
-            get
-            {
+        public static string active {
+            get {
                 return ResourceManager.GetString("active", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Actual Progress.
         /// </summary>
-        public static string ActualProgress
-        {
-            get
-            {
+        public static string ActualProgress {
+            get {
                 return ResourceManager.GetString("ActualProgress", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Actual Weight.
         /// </summary>
-        public static string ActualWeight
-        {
-            get
-            {
+        public static string ActualWeight {
+            get {
                 return ResourceManager.GetString("ActualWeight", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Add.
         /// </summary>
-        public static string Add
-        {
-            get
-            {
+        public static string Add {
+            get {
                 return ResourceManager.GetString("Add", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Add user.
         /// </summary>
@@ -158,36 +135,30 @@ namespace TaskyRevamp.Localization.Resources
         /// <summary>
         ///   Looks up a localized string similar to Add A New Privilege To Get Started.
         /// </summary>
-        public static string AddANewPrivilegeToGetStarted
-        {
-            get
-            {
+        public static string AddANewPrivilegeToGetStarted {
+            get {
                 return ResourceManager.GetString("AddANewPrivilegeToGetStarted", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Add a new task source to get started..
         /// </summary>
-        public static string AddANewTaskSourceToGetStarted
-        {
-            get
-            {
+        public static string AddANewTaskSourceToGetStarted {
+            get {
                 return ResourceManager.GetString("AddANewTaskSourceToGetStarted", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Add a new task type to get started..
         /// </summary>
-        public static string AddANewTaskTypeToGetStarted
-        {
-            get
-            {
+        public static string AddANewTaskTypeToGetStarted {
+            get {
                 return ResourceManager.GetString("AddANewTaskTypeToGetStarted", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Add a new user to get started.
         /// </summary>
@@ -200,795 +171,651 @@ namespace TaskyRevamp.Localization.Resources
         /// <summary>
         ///   Looks up a localized string similar to Add Delegation.
         /// </summary>
-        public static string AddDelegation
-        {
-            get
-            {
+        public static string AddDelegation {
+            get {
                 return ResourceManager.GetString("AddDelegation", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Add Department.
         /// </summary>
-        public static string AddDepartment
-        {
-            get
-            {
+        public static string AddDepartment {
+            get {
                 return ResourceManager.GetString("AddDepartment", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Added successfully.
         /// </summary>
-        public static string Added_successfully
-        {
-            get
-            {
+        public static string Added_successfully {
+            get {
                 return ResourceManager.GetString("Added successfully", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Added successfully.
         /// </summary>
-        public static string Addedsuccessfully
-        {
-            get
-            {
+        public static string Addedsuccessfully {
+            get {
                 return ResourceManager.GetString("Addedsuccessfully", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Add New Priority.
         /// </summary>
-        public static string AddNewPriority
-        {
-            get
-            {
+        public static string AddNewPriority {
+            get {
                 return ResourceManager.GetString("AddNewPriority", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Add New Privilege.
         /// </summary>
-        public static string AddNewPrivilege
-        {
-            get
-            {
+        public static string AddNewPrivilege {
+            get {
                 return ResourceManager.GetString("AddNewPrivilege", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Add Priority.
         /// </summary>
-        public static string AddPriority
-        {
-            get
-            {
+        public static string AddPriority {
+            get {
                 return ResourceManager.GetString("AddPriority", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Add Task.
         /// </summary>
-        public static string AddTask
-        {
-            get
-            {
+        public static string AddTask {
+            get {
                 return ResourceManager.GetString("AddTask", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Add Task Fields Configuration.
         /// </summary>
-        public static string AddTaskFieldsConfiguration
-        {
-            get
-            {
+        public static string AddTaskFieldsConfiguration {
+            get {
                 return ResourceManager.GetString("AddTaskFieldsConfiguration", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Use this option to activate the fields that will appear on the task creation/editing page. You can also specify which fields should be marked as mandatory..
         /// </summary>
-        public static string AddTaskHint
-        {
-            get
-            {
+        public static string AddTaskHint {
+            get {
                 return ResourceManager.GetString("AddTaskHint", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Add Task Setting with Id {id} not found..
         /// </summary>
-        public static string AddTaskSettingNotFound
-        {
-            get
-            {
+        public static string AddTaskSettingNotFound {
+            get {
                 return ResourceManager.GetString("AddTaskSettingNotFound", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Add Task Source.
         /// </summary>
-        public static string AddTaskSource
-        {
-            get
-            {
+        public static string AddTaskSource {
+            get {
                 return ResourceManager.GetString("AddTaskSource", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Add Type.
         /// </summary>
-        public static string AddTaskType
-        {
-            get
-            {
+        public static string AddTaskType {
+            get {
                 return ResourceManager.GetString("AddTaskType", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Add Users.
         /// </summary>
-        public static string Addusers
-        {
-            get
-            {
+        public static string Addusers {
+            get {
                 return ResourceManager.GetString("Addusers", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to All.
         /// </summary>
-        public static string All
-        {
-            get
-            {
+        public static string All {
+            get {
                 return ResourceManager.GetString("All", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to All rights are safe - Kingdom of Saudi Arabia.
         /// </summary>
-        public static string AllrightsKSA
-        {
-            get
-            {
+        public static string AllrightsKSA {
+            get {
                 return ResourceManager.GetString("AllrightsKSA", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Arabic.
         /// </summary>
-        public static string Arabic
-        {
-            get
-            {
+        public static string Arabic {
+            get {
                 return ResourceManager.GetString("Arabic", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Arabic Name.
         /// </summary>
-        public static string ArabicName
-        {
-            get
-            {
+        public static string ArabicName {
+            get {
                 return ResourceManager.GetString("ArabicName", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Assigned To.
         /// </summary>
-        public static string AssignedTo
-        {
-            get
-            {
+        public static string AssignedTo {
+            get {
                 return ResourceManager.GetString("AssignedTo", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Assigned To Department.
         /// </summary>
-        public static string AssignedToDepartment
-        {
-            get
-            {
+        public static string AssignedToDepartment {
+            get {
                 return ResourceManager.GetString("AssignedToDepartment", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Assignee .
         /// </summary>
-        public static string AssigneduserNames
-        {
-            get
-            {
+        public static string AssigneduserNames {
+            get {
                 return ResourceManager.GetString("AssigneduserNames", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Background Color Indicator.
         /// </summary>
-        public static string Background_Color_Indicator
-        {
-            get
-            {
+        public static string Background_Color_Indicator {
+            get {
                 return ResourceManager.GetString("Background Color Indicator", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Below user department leve.
         /// </summary>
-        public static string BelowUserDepartmentLevel
-        {
-            get
-            {
+        public static string BelowUserDepartmentLevel {
+            get {
                 return ResourceManager.GetString("BelowUserDepartmentLevel", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to This option allows you to apply the permission to departments located below the user&apos;s department level. The system will automatically follow the vertical hierarchy linked to user&apos;s department.
         /// </summary>
-        public static string BelowUserDepartmentLevelHint
-        {
-            get
-            {
+        public static string BelowUserDepartmentLevelHint {
+            get {
                 return ResourceManager.GetString("BelowUserDepartmentLevelHint", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Border Color.
         /// </summary>
-        public static string Border_Color
-        {
-            get
-            {
+        public static string Border_Color {
+            get {
                 return ResourceManager.GetString("Border Color", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Cancel.
         /// </summary>
-        public static string Cancel
-        {
-            get
-            {
+        public static string Cancel {
+            get {
                 return ResourceManager.GetString("Cancel", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Card view.
         /// </summary>
-        public static string Card
-        {
-            get
-            {
+        public static string Card {
+            get {
                 return ResourceManager.GetString("Card", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Confirm.
         /// </summary>
-        public static string Confirm
-        {
-            get
-            {
+        public static string Confirm {
+            get {
                 return ResourceManager.GetString("Confirm", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Creation Date.
         /// </summary>
-        public static string CreateDate
-        {
-            get
-            {
+        public static string CreateDate {
+            get {
                 return ResourceManager.GetString("CreateDate", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Created By.
         /// </summary>
-        public static string CreatedBy
-        {
-            get
-            {
+        public static string CreatedBy {
+            get {
                 return ResourceManager.GetString("CreatedBy", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Created By Department.
         /// </summary>
-        public static string CreatedByDepartment
-        {
-            get
-            {
+        public static string CreatedByDepartment {
+            get {
                 return ResourceManager.GetString("CreatedByDepartment", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Create task on him.
         /// </summary>
-        public static string CreateTaskOnHim
-        {
-            get
-            {
+        public static string CreateTaskOnHim {
+            get {
                 return ResourceManager.GetString("CreateTaskOnHim", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to This allows the user to create tasks for himself and see his tasks only as creator or assignee.
         /// </summary>
-        public static string CreateTaskOnHimHint
-        {
-            get
-            {
+        public static string CreateTaskOnHimHint {
+            get {
                 return ResourceManager.GetString("CreateTaskOnHimHint", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Creation Date.
         /// </summary>
-        public static string CreationDate
-        {
-            get
-            {
+        public static string CreationDate {
+            get {
                 return ResourceManager.GetString("CreationDate", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Creator Department.
         /// </summary>
-        public static string CreatorDepartment
-        {
-            get
-            {
+        public static string CreatorDepartment {
+            get {
                 return ResourceManager.GetString("CreatorDepartment", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Custom.
         /// </summary>
-        public static string Custom
-        {
-            get
-            {
+        public static string Custom {
+            get {
                 return ResourceManager.GetString("Custom", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Dashboard.
         /// </summary>
-        public static string Dashboard
-        {
-            get
-            {
+        public static string Dashboard {
+            get {
                 return ResourceManager.GetString("Dashboard", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Data Saved Successfully.
         /// </summary>
-        public static string DataSavedSuccessfully
-        {
-            get
-            {
+        public static string DataSavedSuccessfully {
+            get {
                 return ResourceManager.GetString("DataSavedSuccessfully", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Day.
         /// </summary>
-        public static string Day
-        {
-            get
-            {
+        public static string Day {
+            get {
                 return ResourceManager.GetString("Day", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to 15 days.
         /// </summary>
-        public static string Days15
-        {
-            get
-            {
+        public static string Days15 {
+            get {
                 return ResourceManager.GetString("Days15", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to 3 days.
         /// </summary>
-        public static string Days3
-        {
-            get
-            {
+        public static string Days3 {
+            get {
                 return ResourceManager.GetString("Days3", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to 30 days.
         /// </summary>
-        public static string Days30
-        {
-            get
-            {
+        public static string Days30 {
+            get {
                 return ResourceManager.GetString("Days30", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to 60 days.
         /// </summary>
-        public static string Days60
-        {
-            get
-            {
+        public static string Days60 {
+            get {
                 return ResourceManager.GetString("Days60", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to 7 days.
         /// </summary>
-        public static string Days7
-        {
-            get
-            {
+        public static string Days7 {
+            get {
                 return ResourceManager.GetString("Days7", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Default View.
         /// </summary>
-        public static string Default_view
-        {
-            get
-            {
+        public static string Default_view {
+            get {
                 return ResourceManager.GetString("Default view", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to The selected default page is no longer active..
         /// </summary>
-        public static string Default_View_Error
-        {
-            get
-            {
+        public static string Default_View_Error {
+            get {
                 return ResourceManager.GetString("Default View Error", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Default Column with Id {id} not found..
         /// </summary>
-        public static string DefaultColumnNotFound
-        {
-            get
-            {
+        public static string DefaultColumnNotFound {
+            get {
                 return ResourceManager.GetString("DefaultColumnNotFound", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Default Columns Configuration.
         /// </summary>
-        public static string DefaultColumnsConfiguration
-        {
-            get
-            {
+        public static string DefaultColumnsConfiguration {
+            get {
                 return ResourceManager.GetString("DefaultColumnsConfiguration", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Customize the columns you want to display and set the default column view that will appear when the user logs into the system..
         /// </summary>
-        public static string DefaultColumnsHint
-        {
-            get
-            {
+        public static string DefaultColumnsHint {
+            get {
                 return ResourceManager.GetString("DefaultColumnsHint", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Select your default page after login.
         /// </summary>
-        public static string DefaultViewHint
-        {
-            get
-            {
+        public static string DefaultViewHint {
+            get {
                 return ResourceManager.GetString("DefaultViewHint", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Delete.
         /// </summary>
-        public static string Delete
-        {
-            get
-            {
+        public static string Delete {
+            get {
                 return ResourceManager.GetString("Delete", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Deleted successfully.
         /// </summary>
-        public static string Deleted_successfully
-        {
-            get
-            {
+        public static string Deleted_successfully {
+            get {
                 return ResourceManager.GetString("Deleted successfully", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Deleted successfully.
         /// </summary>
-        public static string Deletedsuccessfully
-        {
-            get
-            {
+        public static string Deletedsuccessfully {
+            get {
                 return ResourceManager.GetString("Deletedsuccessfully", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Delete Task Source.
         /// </summary>
-        public static string DeleteTaskSource
-        {
-            get
-            {
+        public static string DeleteTaskSource {
+            get {
                 return ResourceManager.GetString("DeleteTaskSource", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Department.
         /// </summary>
-        public static string Department
-        {
-            get
-            {
+        public static string Department {
+            get {
                 return ResourceManager.GetString("Department", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Department name must be unique. Please type a different name.
         /// </summary>
-        public static string DepartmentDuplicateValidation
-        {
-            get
-            {
+        public static string DepartmentDuplicateValidation {
+            get {
                 return ResourceManager.GetString("DepartmentDuplicateValidation", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Parent Department.
         /// </summary>
-        public static string DepartmentParent
-        {
-            get
-            {
+        public static string DepartmentParent {
+            get {
                 return ResourceManager.GetString("DepartmentParent", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Departments.
         /// </summary>
-        public static string Departments
-        {
-            get
-            {
+        public static string Departments {
+            get {
                 return ResourceManager.GetString("Departments", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Dependency.
         /// </summary>
-        public static string Dependency
-        {
-            get
-            {
+        public static string Dependency {
+            get {
                 return ResourceManager.GetString("Dependency", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Description Arabic.
         /// </summary>
-        public static string DescriptionArabic
-        {
-            get
-            {
+        public static string DescriptionArabic {
+            get {
                 return ResourceManager.GetString("DescriptionArabic", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Description English.
         /// </summary>
-        public static string DescriptionEnglish
-        {
-            get
-            {
+        public static string DescriptionEnglish {
+            get {
                 return ResourceManager.GetString("DescriptionEnglish", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Different Department.
         /// </summary>
-        public static string DifferentDepartment
-        {
-            get
-            {
+        public static string DifferentDepartment {
+            get {
                 return ResourceManager.GetString("DifferentDepartment", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Direction Level.
         /// </summary>
-        public static string DirectionLevel
-        {
-            get
-            {
+        public static string DirectionLevel {
+            get {
                 return ResourceManager.GetString("DirectionLevel", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Direction Type.
         /// </summary>
-        public static string DirectionType
-        {
-            get
-            {
+        public static string DirectionType {
+            get {
                 return ResourceManager.GetString("DirectionType", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Duration.
         /// </summary>
-        public static string Duration
-        {
-            get
-            {
+        public static string Duration {
+            get {
                 return ResourceManager.GetString("Duration", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Edit.
         /// </summary>
-        public static string Edit
-        {
-            get
-            {
+        public static string Edit {
+            get {
                 return ResourceManager.GetString("Edit", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Edit Delegation.
         /// </summary>
-        public static string EditDelegation
-        {
-            get
-            {
+        public static string EditDelegation {
+            get {
                 return ResourceManager.GetString("EditDelegation", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Edit Priority.
         /// </summary>
-        public static string EditPriority
-        {
-            get
-            {
+        public static string EditPriority {
+            get {
                 return ResourceManager.GetString("EditPriority", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Edit Status.
         /// </summary>
-        public static string EditStatus
-        {
-            get
-            {
+        public static string EditStatus {
+            get {
                 return ResourceManager.GetString("EditStatus", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Edited successfully.
         /// </summary>
-        public static string EditSuccess
-        {
-            get
-            {
+        public static string EditSuccess {
+            get {
                 return ResourceManager.GetString("EditSuccess", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Edit Task Source.
         /// </summary>
-        public static string EditTaskSource
-        {
-            get
-            {
+        public static string EditTaskSource {
+            get {
                 return ResourceManager.GetString("EditTaskSource", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Edit Task Type.
         /// </summary>
-        public static string EditTaskType
-        {
-            get
-            {
+        public static string EditTaskType {
+            get {
                 return ResourceManager.GetString("EditTaskType", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Email Address.
         /// </summary>
@@ -1001,345 +828,282 @@ namespace TaskyRevamp.Localization.Resources
         /// <summary>
         ///   Looks up a localized string similar to Employee&apos;s Tasks.
         /// </summary>
-        public static string EmployeesTasks
-        {
-            get
-            {
+        public static string EmployeesTasks {
+            get {
                 return ResourceManager.GetString("EmployeesTasks", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to End Date.
         /// </summary>
-        public static string EndDate
-        {
-            get
-            {
+        public static string EndDate {
+            get {
                 return ResourceManager.GetString("EndDate", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to English.
         /// </summary>
-        public static string English
-        {
-            get
-            {
+        public static string English {
+            get {
                 return ResourceManager.GetString("English", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to English Name.
         /// </summary>
-        public static string EnglishName
-        {
-            get
-            {
+        public static string EnglishName {
+            get {
                 return ResourceManager.GetString("EnglishName", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Enter Priority Name Arabic.
         /// </summary>
-        public static string Enter_Priority_Name_Arabic
-        {
-            get
-            {
+        public static string Enter_Priority_Name_Arabic {
+            get {
                 return ResourceManager.GetString("Enter Priority Name Arabic", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Enter Priority Name English.
         /// </summary>
-        public static string Enter_Priority_Name_English
-        {
-            get
-            {
+        public static string Enter_Priority_Name_English {
+            get {
                 return ResourceManager.GetString("Enter Priority Name English", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Enter Task Type Name Arabic.
         /// </summary>
-        public static string Enter_Task_Type_Name_Arabic
-        {
-            get
-            {
+        public static string Enter_Task_Type_Name_Arabic {
+            get {
                 return ResourceManager.GetString("Enter Task Type Name Arabic", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Enter Task Type Name English.
         /// </summary>
-        public static string Enter_Task_Type_Name_English
-        {
-            get
-            {
+        public static string Enter_Task_Type_Name_English {
+            get {
                 return ResourceManager.GetString("Enter Task Type Name English", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Enter number of days.
         /// </summary>
-        public static string EnterDaysNumber
-        {
-            get
-            {
+        public static string EnterDaysNumber {
+            get {
                 return ResourceManager.GetString("EnterDaysNumber", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Enter Privilege Arabic Name.
         /// </summary>
-        public static string EnterPrivilegeArabicName
-        {
-            get
-            {
+        public static string EnterPrivilegeArabicName {
+            get {
                 return ResourceManager.GetString("EnterPrivilegeArabicName", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Enter Privilege English Name.
         /// </summary>
-        public static string EnterPrivilegeEnglishName
-        {
-            get
-            {
+        public static string EnterPrivilegeEnglishName {
+            get {
                 return ResourceManager.GetString("EnterPrivilegeEnglishName", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Permissions English Name.
         /// </summary>
-        public static string EnterPrivilegeName
-        {
-            get
-            {
+        public static string EnterPrivilegeName {
+            get {
                 return ResourceManager.GetString("EnterPrivilegeName", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Error database.
         /// </summary>
-        public static string Errordatabase
-        {
-            get
-            {
+        public static string Errordatabase {
+            get {
                 return ResourceManager.GetString("Errordatabase", resourceCulture);
             }
         }
-
-
+        
         /// <summary>
         ///   Looks up a localized string similar to External Department.
         /// </summary>
-        public static string ExternalDepartment
-        {
-            get
-            {
+        public static string ExternalDepartment {
+            get {
                 return ResourceManager.GetString("ExternalDepartment", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to You can use an external department not related to the user department to apply the permission to it.
         /// </summary>
-        public static string ExternalDepartmentHint
-        {
-            get
-            {
+        public static string ExternalDepartmentHint {
+            get {
                 return ResourceManager.GetString("ExternalDepartmentHint", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Field Names.
         /// </summary>
-        public static string FieldNames
-        {
-            get
-            {
+        public static string FieldNames {
+            get {
                 return ResourceManager.GetString("FieldNames", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Filter Field with Id {id} not found..
         /// </summary>
-        public static string FilterFieldNotFound
-        {
-            get
-            {
+        public static string FilterFieldNotFound {
+            get {
                 return ResourceManager.GetString("FilterFieldNotFound", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Filter Fields.
         /// </summary>
-        public static string FilterFields
-        {
-            get
-            {
+        public static string FilterFields {
+            get {
                 return ResourceManager.GetString("FilterFields", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Friday.
         /// </summary>
-        public static string Friday
-        {
-            get
-            {
+        public static string Friday {
+            get {
                 return ResourceManager.GetString("Friday", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to From Creation Date.
         /// </summary>
-        public static string FromCreationDate
-        {
-            get
-            {
+        public static string FromCreationDate {
+            get {
                 return ResourceManager.GetString("FromCreationDate", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Start Date .
         /// </summary>
-        public static string FromDate
-        {
-            get
-            {
+        public static string FromDate {
+            get {
                 return ResourceManager.GetString("FromDate", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to From End Date.
         /// </summary>
-        public static string FromEndDate
-        {
-            get
-            {
+        public static string FromEndDate {
+            get {
                 return ResourceManager.GetString("FromEndDate", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to From Start Date.
         /// </summary>
-        public static string FromStartDate
-        {
-            get
-            {
+        public static string FromStartDate {
+            get {
                 return ResourceManager.GetString("FromStartDate", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to From User.
         /// </summary>
-        public static string FromUser
-        {
-            get
-            {
+        public static string FromUser {
+            get {
                 return ResourceManager.GetString("FromUser", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Gantt Chart view.
         /// </summary>
-        public static string Gantt
-        {
-            get
-            {
+        public static string Gantt {
+            get {
                 return ResourceManager.GetString("Gantt", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to General Modules .
         /// </summary>
-        public static string GeneralModule
-        {
-            get
-            {
+        public static string GeneralModule {
+            get {
                 return ResourceManager.GetString("GeneralModule", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to 24 hours.
         /// </summary>
-        public static string Hours24
-        {
-            get
-            {
+        public static string Hours24 {
+            get {
                 return ResourceManager.GetString("Hours24", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Inactive.
         /// </summary>
-        public static string inactive
-        {
-            get
-            {
+        public static string inactive {
+            get {
                 return ResourceManager.GetString("inactive", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Including Sub-Department.
         /// </summary>
-        public static string IncludingSubDepartment
-        {
-            get
-            {
+        public static string IncludingSubDepartment {
+            get {
                 return ResourceManager.GetString("IncludingSubDepartment", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Kanban view.
         /// </summary>
-        public static string Kanban
-        {
-            get
-            {
+        public static string Kanban {
+            get {
                 return ResourceManager.GetString("Kanban", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to You can select the report language that will be sent via email..
         /// </summary>
-        public static string languageHint
-        {
-            get
-            {
+        public static string languageHint {
+            get {
                 return ResourceManager.GetString("languageHint", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Link a user to department and privilege.
         /// </summary>
@@ -1352,312 +1116,265 @@ namespace TaskyRevamp.Localization.Resources
         /// <summary>
         ///   Looks up a localized string similar to List view.
         /// </summary>
-        public static string List
-        {
-            get
-            {
+        public static string List {
+            get {
                 return ResourceManager.GetString("List", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Overall view.
         /// </summary>
-        public static string List_Overall
-        {
-            get
-            {
+        public static string List_Overall {
+            get {
                 return ResourceManager.GetString("List_Overall", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Source View.
         /// </summary>
-        public static string List_Source
-        {
-            get
-            {
+        public static string List_Source {
+            get {
                 return ResourceManager.GetString("List_Source", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Timeline view.
         /// </summary>
-        public static string List_Timeline
-        {
-            get
-            {
+        public static string List_Timeline {
+            get {
                 return ResourceManager.GetString("List_Timeline", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Type View.
         /// </summary>
-        public static string List_Type
-        {
-            get
-            {
+        public static string List_Type {
+            get {
                 return ResourceManager.GetString("List_Type", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to 1 week.
         /// </summary>
-        public static string ListWeek
-        {
-            get
-            {
+        public static string ListWeek {
+            get {
                 return ResourceManager.GetString("ListWeek", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Loading.
         /// </summary>
-        public static string Loading
-        {
-            get
-            {
+        public static string Loading {
+            get {
                 return ResourceManager.GetString("Loading", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Login.
         /// </summary>
-        public static string Login
-        {
-            get
-            {
+        public static string Login {
+            get {
                 return ResourceManager.GetString("Login", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Log out.
         /// </summary>
-        public static string Logout
-        {
-            get
-            {
+        public static string Logout {
+            get {
                 return ResourceManager.GetString("Logout", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Main Title.
         /// </summary>
-        public static string Main_Title
-        {
-            get
-            {
+        public static string Main_Title {
+            get {
                 return ResourceManager.GetString("Main Title", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Manager&apos;s Tasks.
         /// </summary>
-        public static string ManagersTasks
-        {
-            get
-            {
+        public static string ManagersTasks {
+            get {
                 return ResourceManager.GetString("ManagersTasks", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Mandatory.
         /// </summary>
-        public static string Mandatory
-        {
-            get
-            {
+        public static string Mandatory {
+            get {
                 return ResourceManager.GetString("Mandatory", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Maximum subtask level.
         /// </summary>
-        public static string Maximum_Subtask_Level
-        {
-            get
-            {
+        public static string Maximum_Subtask_Level {
+            get {
                 return ResourceManager.GetString("Maximum_Subtask_Level", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Module.
         /// </summary>
-        public static string Module
-        {
-            get
-            {
+        public static string Module {
+            get {
                 return ResourceManager.GetString("Module", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Monday.
         /// </summary>
-        public static string Monday
-        {
-            get
-            {
+        public static string Monday {
+            get {
                 return ResourceManager.GetString("Monday", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Name .
         /// </summary>
-        public static string name
-        {
-            get
-            {
+        public static string name {
+            get {
                 return ResourceManager.GetString("name", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Name Arabic.
         /// </summary>
-        public static string Name_Arabic
-        {
-            get
-            {
+        public static string Name_Arabic {
+            get {
                 return ResourceManager.GetString("Name Arabic", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Name Color Indicator.
         /// </summary>
-        public static string Name_Color_Indicator
-        {
-            get
-            {
+        public static string Name_Color_Indicator {
+            get {
                 return ResourceManager.GetString("Name Color Indicator", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Name English.
         /// </summary>
-        public static string Name_English
-        {
-            get
-            {
+        public static string Name_English {
+            get {
                 return ResourceManager.GetString("Name English", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Name Arabic.
         /// </summary>
-        public static string NameArabic
-        {
-            get
-            {
+        public static string NameArabic {
+            get {
                 return ResourceManager.GetString("NameArabic", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Name English.
         /// </summary>
-        public static string NameEnglish
-        {
-            get
-            {
+        public static string NameEnglish {
+            get {
                 return ResourceManager.GetString("NameEnglish", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Navigation Background.
         /// </summary>
-        public static string Navigation_Background
-        {
-            get
-            {
+        public static string Navigation_Background {
+            get {
                 return ResourceManager.GetString("Navigation Background", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Never.
         /// </summary>
-        public static string Never
-        {
-            get
-            {
+        public static string Never {
+            get {
                 return ResourceManager.GetString("Never", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to No Delegations available.
         /// </summary>
-        public static string NoDelegationvailable
-        {
-            get
-            {
+        public static string NoDelegationvailable {
+            get {
                 return ResourceManager.GetString("NoDelegationvailable", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to  No department available
         ///Add a new department to get started.
         /// </summary>
-        public static string Nodepartmentavailable
-        {
-            get
-            {
+        public static string Nodepartmentavailable {
+            get {
                 return ResourceManager.GetString("Nodepartmentavailable", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to No Privilege Available.
         /// </summary>
-        public static string NoPrivilegeAvailable
-        {
-            get
-            {
+        public static string NoPrivilegeAvailable {
+            get {
                 return ResourceManager.GetString("NoPrivilegeAvailable", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to No Task Sources Available.
         /// </summary>
-        public static string NoTaskSourcesAvailable
-        {
-            get
-            {
+        public static string NoTaskSourcesAvailable {
+            get {
                 return ResourceManager.GetString("NoTaskSourcesAvailable", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to No Task Type Available.
         /// </summary>
-        public static string NoTaskTypeAvailable
-        {
-            get
-            {
+        public static string NoTaskTypeAvailable {
+            get {
                 return ResourceManager.GetString("NoTaskTypeAvailable", resourceCulture);
             }
         }
-
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Configure Notifications.
+        /// </summary>
+        public static string NotificationTypeTemplateConfiguration {
+            get {
+                return ResourceManager.GetString("NotificationTypeTemplateConfiguration", resourceCulture);
+            }
+        }
+        
         /// <summary>
         ///   Looks up a localized string similar to No users available.
         /// </summary>
@@ -1670,201 +1387,165 @@ namespace TaskyRevamp.Localization.Resources
         /// <summary>
         ///   Looks up a localized string similar to Priority Ranking.
         /// </summary>
-        public static string Order
-        {
-            get
-            {
+        public static string Order {
+            get {
                 return ResourceManager.GetString("Order", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Parent Not Found.
         /// </summary>
-        public static string ParentNotFound
-        {
-            get
-            {
+        public static string ParentNotFound {
+            get {
                 return ResourceManager.GetString("ParentNotFound", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Peer&apos;s level.
         /// </summary>
-        public static string PeersLevel
-        {
-            get
-            {
+        public static string PeersLevel {
+            get {
                 return ResourceManager.GetString("PeersLevel", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to  Same level departments: This option will automatically select the peer departments that are at the same level as the user&apos;s department. Only departments that share the same parent as the user&apos;s department will be selected to apply the permission to them..
         /// </summary>
-        public static string PeersLevelHint
-        {
-            get
-            {
+        public static string PeersLevelHint {
+            get {
                 return ResourceManager.GetString("PeersLevelHint", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Permissions.
         /// </summary>
-        public static string Permissions
-        {
-            get
-            {
+        public static string Permissions {
+            get {
                 return ResourceManager.GetString("Permissions", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Planned Progress.
         /// </summary>
-        public static string PlannedProgress
-        {
-            get
-            {
+        public static string PlannedProgress {
+            get {
                 return ResourceManager.GetString("PlannedProgress", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Planned Weight.
         /// </summary>
-        public static string PlannedWeight
-        {
-            get
-            {
+        public static string PlannedWeight {
+            get {
                 return ResourceManager.GetString("PlannedWeight", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Primary Active Color.
         /// </summary>
-        public static string Primary_Active_Color
-        {
-            get
-            {
+        public static string Primary_Active_Color {
+            get {
                 return ResourceManager.GetString("Primary Active Color", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Primary Color.
         /// </summary>
-        public static string Primary_Color
-        {
-            get
-            {
+        public static string Primary_Color {
+            get {
                 return ResourceManager.GetString("Primary Color", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Tasks priority Configuration.
         /// </summary>
-        public static string Priority
-        {
-            get
-            {
+        public static string Priority {
+            get {
                 return ResourceManager.GetString("Priority", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Priority.
         /// </summary>
-        public static string Priority2
-        {
-            get
-            {
+        public static string Priority2 {
+            get {
                 return ResourceManager.GetString("Priority2", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Priority Configuration.
         /// </summary>
-        public static string PriorityConfiguration
-        {
-            get
-            {
+        public static string PriorityConfiguration {
+            get {
                 return ResourceManager.GetString("PriorityConfiguration", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to You can&apos;t duplicate the priority name.
         /// </summary>
-        public static string PriorityDuplicateValidation
-        {
-            get
-            {
+        public static string PriorityDuplicateValidation {
+            get {
                 return ResourceManager.GetString("PriorityDuplicateValidation", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to The parent task’s priority is automatically set to match the highest priority among its sub-tasks..
         /// </summary>
-        public static string priorityHint
-        {
-            get
-            {
+        public static string priorityHint {
+            get {
                 return ResourceManager.GetString("priorityHint", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Priority Options.
         /// </summary>
-        public static string PriorityOptions
-        {
-            get
-            {
+        public static string PriorityOptions {
+            get {
                 return ResourceManager.GetString("PriorityOptions", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Privilege .
         /// </summary>
-        public static string Privilege
-        {
-            get
-            {
+        public static string Privilege {
+            get {
                 return ResourceManager.GetString("Privilege", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to You can&apos;t duplicate the privilege name.
         /// </summary>
-        public static string PrivilegeDuplicateValidation
-        {
-            get
-            {
+        public static string PrivilegeDuplicateValidation {
+            get {
                 return ResourceManager.GetString("PrivilegeDuplicateValidation", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Privilege with Id {id} not found..
         /// </summary>
-        public static string PrivilegeNotFound
-        {
-            get
-            {
+        public static string PrivilegeNotFound {
+            get {
                 return ResourceManager.GetString("PrivilegeNotFound", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Privileges.
         /// </summary>
@@ -1877,201 +1558,165 @@ namespace TaskyRevamp.Localization.Resources
         /// <summary>
         ///   Looks up a localized string similar to Recycle Bin Configuration.
         /// </summary>
-        public static string RecycleBinConfiguration
-        {
-            get
-            {
+        public static string RecycleBinConfiguration {
+            get {
                 return ResourceManager.GetString("RecycleBinConfiguration", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Set the auto deletion period from the system for deleted tasks inside the recycle bin.
         /// </summary>
-        public static string recycleHint
-        {
-            get
-            {
+        public static string recycleHint {
+            get {
                 return ResourceManager.GetString("recycleHint", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Task Rejection Configuration.
         /// </summary>
-        public static string RejectionConfiguration
-        {
-            get
-            {
+        public static string RejectionConfiguration {
+            get {
                 return ResourceManager.GetString("RejectionConfiguration", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Set maximum allowed rejection period for the task from the assignee.
         /// </summary>
-        public static string rejectionHint
-        {
-            get
-            {
+        public static string rejectionHint {
+            get {
                 return ResourceManager.GetString("rejectionHint", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Rejection Period Options.
         /// </summary>
-        public static string RejectionPeriodOptions
-        {
-            get
-            {
+        public static string RejectionPeriodOptions {
+            get {
                 return ResourceManager.GetString("RejectionPeriodOptions", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Reminder Date.
         /// </summary>
-        public static string ReminderDate
-        {
-            get
-            {
+        public static string ReminderDate {
+            get {
                 return ResourceManager.GetString("ReminderDate", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Report Language.
         /// </summary>
-        public static string ReportLanguage
-        {
-            get
-            {
+        public static string ReportLanguage {
+            get {
                 return ResourceManager.GetString("ReportLanguage", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Report Module.
         /// </summary>
-        public static string ReportModule
-        {
-            get
-            {
+        public static string ReportModule {
+            get {
                 return ResourceManager.GetString("ReportModule", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to All the options below are optional. If no option is selected, then no report will be sent from the system to the users..
         /// </summary>
-        public static string ReportModuleHint
-        {
-            get
-            {
+        public static string ReportModuleHint {
+            get {
                 return ResourceManager.GetString("ReportModuleHint", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to This field is required.
         /// </summary>
-        public static string Required
-        {
-            get
-            {
+        public static string Required {
+            get {
                 return ResourceManager.GetString("Required", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Retention Period Options.
         /// </summary>
-        public static string RetentionPeriodOptions
-        {
-            get
-            {
+        public static string RetentionPeriodOptions {
+            get {
                 return ResourceManager.GetString("RetentionPeriodOptions", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Same Department.
         /// </summary>
-        public static string SameDepartment
-        {
-            get
-            {
+        public static string SameDepartment {
+            get {
                 return ResourceManager.GetString("SameDepartment", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to This option will automatically select your department to apply the permission to it.
         /// </summary>
-        public static string SameDepartmentHint
-        {
-            get
-            {
+        public static string SameDepartmentHint {
+            get {
                 return ResourceManager.GetString("SameDepartmentHint", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Same User.
         /// </summary>
-        public static string SameUser
-        {
-            get
-            {
+        public static string SameUser {
+            get {
                 return ResourceManager.GetString("SameUser", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Saturday.
         /// </summary>
-        public static string Saturday
-        {
-            get
-            {
+        public static string Saturday {
+            get {
                 return ResourceManager.GetString("Saturday", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Save.
         /// </summary>
-        public static string Save
-        {
-            get
-            {
+        public static string Save {
+            get {
                 return ResourceManager.GetString("Save", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Search.
         /// </summary>
-        public static string Search
-        {
-            get
-            {
+        public static string Search {
+            get {
                 return ResourceManager.GetString("Search", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Select at least one value..
         /// </summary>
-        public static string SelectAtLeastOneValue
-        {
-            get
-            {
+        public static string SelectAtLeastOneValue {
+            get {
                 return ResourceManager.GetString("SelectAtLeastOneValue", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Select Day.
         /// </summary>
@@ -2084,64 +1729,54 @@ namespace TaskyRevamp.Localization.Resources
         /// <summary>
         ///   Looks up a localized string similar to Parent Department .
         /// </summary>
-        public static string SelectParent
-        {
-            get
-            {
+        public static string SelectParent {
+            get {
                 return ResourceManager.GetString("SelectParent", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Select Priority.
         /// </summary>
-        public static string SelectPriority
-        {
-            get
-            {
+        public static string SelectPriority {
+            get {
                 return ResourceManager.GetString("SelectPriority", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Select Report Options.
         /// </summary>
-        public static string SelectReportOptions
-        {
-            get
-            {
+        public static string SelectReportOptions {
+            get {
                 return ResourceManager.GetString("SelectReportOptions", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Select Source.
         /// </summary>
-        public static string SelectSource
-        {
-            get
-            {
+        public static string SelectSource {
+            get {
                 return ResourceManager.GetString("SelectSource", resourceCulture);
             }
         }
-
-        /// <summary>
-        ///   Looks up a localized string similar to Select Type.
-        /// </summary>
-        public static string SelectType
-        {
-            get
-            {
-                return ResourceManager.GetString("SelectType", resourceCulture);
-            }
-        }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Select Time.
         /// </summary>
         public static string SelectTime {
             get {
                 return ResourceManager.GetString("SelectTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select Type.
+        /// </summary>
+        public static string SelectType {
+            get {
+                return ResourceManager.GetString("SelectType", resourceCulture);
             }
         }
         
@@ -2157,124 +1792,102 @@ namespace TaskyRevamp.Localization.Resources
         /// <summary>
         ///   Looks up a localized string similar to Source.
         /// </summary>
-        public static string Source
-        {
-            get
-            {
+        public static string Source {
+            get {
                 return ResourceManager.GetString("Source", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Task source Configuration.
         /// </summary>
-        public static string SourceConfiguration
-        {
-            get
-            {
+        public static string SourceConfiguration {
+            get {
                 return ResourceManager.GetString("SourceConfiguration", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Are you sure you want to delete this task source?.
         /// </summary>
-        public static string SourceSure
-        {
-            get
-            {
+        public static string SourceSure {
+            get {
                 return ResourceManager.GetString("SourceSure", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Start Date.
         /// </summary>
-        public static string StartDate
-        {
-            get
-            {
+        public static string StartDate {
+            get {
                 return ResourceManager.GetString("StartDate", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Status.
         /// </summary>
-        public static string Status
-        {
-            get
-            {
+        public static string Status {
+            get {
                 return ResourceManager.GetString("Status", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Tasks status Configuration .
         /// </summary>
-        public static string StatusConfig
-        {
-            get
-            {
+        public static string StatusConfig {
+            get {
                 return ResourceManager.GetString("StatusConfig", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Status Options.
         /// </summary>
-        public static string StatusOptions
-        {
-            get
-            {
+        public static string StatusOptions {
+            get {
                 return ResourceManager.GetString("StatusOptions", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Displaying more than 3 levels may impact the user interface performance and readability.
         /// </summary>
-        public static string sub_task_warning
-        {
-            get
-            {
+        public static string sub_task_warning {
+            get {
                 return ResourceManager.GetString("sub_task_warning", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Sub Title.
         /// </summary>
-        public static string Sub_Title
-        {
-            get
-            {
+        public static string Sub_Title {
+            get {
                 return ResourceManager.GetString("Sub Title", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Set the maximum number of subtask levels allowed when creating a task. This controls how deeply tasks can be nested..
         /// </summary>
-        public static string subtask_hint
-        {
-            get
-            {
+        public static string subtask_hint {
+            get {
                 return ResourceManager.GetString("subtask_hint", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to subtask level.
         /// </summary>
-        public static string Subtask_Level
-        {
-            get
-            {
+        public static string Subtask_Level {
+            get {
                 return ResourceManager.GetString("Subtask_Level", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Subtask Levels.
         /// </summary>
@@ -2287,344 +1900,282 @@ namespace TaskyRevamp.Localization.Resources
         /// <summary>
         ///   Looks up a localized string similar to Sunday.
         /// </summary>
-        public static string Sunday
-        {
-            get
-            {
+        public static string Sunday {
+            get {
                 return ResourceManager.GetString("Sunday", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Are you sure you want to delete this priority?.
         /// </summary>
-        public static string Sure
-        {
-            get
-            {
+        public static string Sure {
+            get {
                 return ResourceManager.GetString("Sure", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Are you sure you want to remove this delegation?.
         /// </summary>
-        public static string SureDeleteDelegation
-        {
-            get
-            {
+        public static string SureDeleteDelegation {
+            get {
                 return ResourceManager.GetString("SureDeleteDelegation", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Are you sure you want to delete this department?.
         /// </summary>
-        public static string SureDeleteDepartment
-        {
-            get
-            {
+        public static string SureDeleteDepartment {
+            get {
                 return ResourceManager.GetString("SureDeleteDepartment", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to System Identity.
         /// </summary>
-        public static string System_Identity
-        {
-            get
-            {
+        public static string System_Identity {
+            get {
                 return ResourceManager.GetString("System Identity", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to System Identity Configuration.
         /// </summary>
-        public static string System_Identity_Configuration
-        {
-            get
-            {
+        public static string System_Identity_Configuration {
+            get {
                 return ResourceManager.GetString("System Identity Configuration", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Select which fields to display in any task filter.
         /// </summary>
-        public static string TaskFilterHint
-        {
-            get
-            {
+        public static string TaskFilterHint {
+            get {
                 return ResourceManager.GetString("TaskFilterHint", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Task Module.
         /// </summary>
-        public static string TaskModule
-        {
-            get
-            {
+        public static string TaskModule {
+            get {
                 return ResourceManager.GetString("TaskModule", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Task Status.
         /// </summary>
-        public static string TaskStatus
-        {
-            get
-            {
+        public static string TaskStatus {
+            get {
                 return ResourceManager.GetString("TaskStatus", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Tasks Views.
         /// </summary>
-        public static string Tasksviews
-        {
-            get
-            {
+        public static string Tasksviews {
+            get {
                 return ResourceManager.GetString("Tasksviews", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Tasks type Configuration.
         /// </summary>
-        public static string TaskTypeConfiguration
-        {
-            get
-            {
+        public static string TaskTypeConfiguration {
+            get {
                 return ResourceManager.GetString("TaskTypeConfiguration", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Thursday.
         /// </summary>
-        public static string Thursday
-        {
-            get
-            {
+        public static string Thursday {
+            get {
                 return ResourceManager.GetString("Thursday", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Time.
         /// </summary>
-        public static string Time
-        {
-            get
-            {
+        public static string Time {
+            get {
                 return ResourceManager.GetString("Time", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Title.
         /// </summary>
-        public static string Title
-        {
-            get
-            {
+        public static string Title {
+            get {
                 return ResourceManager.GetString("Title", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Title Arabic.
         /// </summary>
-        public static string TitleArabic
-        {
-            get
-            {
+        public static string TitleArabic {
+            get {
                 return ResourceManager.GetString("TitleArabic", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Title.
         /// </summary>
-        public static string Titlee
-        {
-            get
-            {
+        public static string Titlee {
+            get {
                 return ResourceManager.GetString("Titlee", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Title English.
         /// </summary>
-        public static string TitleEnglish
-        {
-            get
-            {
+        public static string TitleEnglish {
+            get {
                 return ResourceManager.GetString("TitleEnglish", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to To Creation Date.
         /// </summary>
-        public static string ToCreationDate
-        {
-            get
-            {
+        public static string ToCreationDate {
+            get {
                 return ResourceManager.GetString("ToCreationDate", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to End Date.
         /// </summary>
-        public static string ToDate
-        {
-            get
-            {
+        public static string ToDate {
+            get {
                 return ResourceManager.GetString("ToDate", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to To End Date.
         /// </summary>
-        public static string ToEndDate
-        {
-            get
-            {
+        public static string ToEndDate {
+            get {
                 return ResourceManager.GetString("ToEndDate", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to To Start Date.
         /// </summary>
-        public static string ToStartDate
-        {
-            get
-            {
+        public static string ToStartDate {
+            get {
                 return ResourceManager.GetString("ToStartDate", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to To User.
         /// </summary>
-        public static string ToUser
-        {
-            get
-            {
+        public static string ToUser {
+            get {
                 return ResourceManager.GetString("ToUser", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Tuesday.
         /// </summary>
-        public static string Tuesday
-        {
-            get
-            {
+        public static string Tuesday {
+            get {
                 return ResourceManager.GetString("Tuesday", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Type.
         /// </summary>
-        public static string Type
-        {
-            get
-            {
+        public static string Type {
+            get {
                 return ResourceManager.GetString("Type", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Type Source Name Arabic.
         /// </summary>
-        public static string Type_Source_Name_Arabic
-        {
-            get
-            {
+        public static string Type_Source_Name_Arabic {
+            get {
                 return ResourceManager.GetString("Type Source Name Arabic", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Type Source Name English.
         /// </summary>
-        public static string Type_Source_Name_English
-        {
-            get
-            {
+        public static string Type_Source_Name_English {
+            get {
                 return ResourceManager.GetString("Type Source Name English", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Are you sure you want to delete this task type?.
         /// </summary>
-        public static string TypeSure
-        {
-            get
-            {
+        public static string TypeSure {
+            get {
                 return ResourceManager.GetString("TypeSure", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Update.
         /// </summary>
-        public static string Update
-        {
-            get
-            {
+        public static string Update {
+            get {
                 return ResourceManager.GetString("Update", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Updated Date.
         /// </summary>
-        public static string UpdateDate
-        {
-            get
-            {
+        public static string UpdateDate {
+            get {
                 return ResourceManager.GetString("UpdateDate", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Updated By.
         /// </summary>
-        public static string UpdatedBy
-        {
-            get
-            {
+        public static string UpdatedBy {
+            get {
                 return ResourceManager.GetString("UpdatedBy", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to User Department.
         /// </summary>
-        public static string UserDepartment
-        {
-            get
-            {
+        public static string UserDepartment {
+            get {
                 return ResourceManager.GetString("UserDepartment", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Users .
         /// </summary>
@@ -2635,38 +2186,41 @@ namespace TaskyRevamp.Localization.Resources
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Use this option to enable system notifications that will be automatically sent when the specified action is triggered..
+        /// </summary>
+        public static string Usethisoption {
+            get {
+                return ResourceManager.GetString("Usethisoption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to View.
         /// </summary>
-        public static string View
-        {
-            get
-            {
+        public static string View {
+            get {
                 return ResourceManager.GetString("View", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to View Options.
         /// </summary>
-        public static string ViewOptions
-        {
-            get
-            {
+        public static string ViewOptions {
+            get {
                 return ResourceManager.GetString("ViewOptions", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to View Permissions.
         /// </summary>
-        public static string ViewPermission
-        {
-            get
-            {
+        public static string ViewPermission {
+            get {
                 return ResourceManager.GetString("ViewPermission", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to View Privilege.
         /// </summary>
@@ -2679,98 +2233,80 @@ namespace TaskyRevamp.Localization.Resources
         /// <summary>
         ///   Looks up a localized string similar to Use this option to enable different task views in your system for better task management and visualization..
         /// </summary>
-        public static string ViewTaskSettingHint
-        {
-            get
-            {
+        public static string ViewTaskSettingHint {
+            get {
                 return ResourceManager.GetString("ViewTaskSettingHint", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Users.
         /// </summary>
-        public static string ViewUsers
-        {
-            get
-            {
+        public static string ViewUsers {
+            get {
                 return ResourceManager.GetString("ViewUsers", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Wednesday.
         /// </summary>
-        public static string Wednesday
-        {
-            get
-            {
+        public static string Wednesday {
+            get {
                 return ResourceManager.GetString("Wednesday", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to 1 week.
         /// </summary>
-        public static string Week
-        {
-            get
-            {
+        public static string Week {
+            get {
                 return ResourceManager.GetString("Week", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Weekly report.
         /// </summary>
-        public static string WeeklyReport
-        {
-            get
-            {
+        public static string WeeklyReport {
+            get {
                 return ResourceManager.GetString("WeeklyReport", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Select the weekly report sent day and time.
         /// </summary>
-        public static string weeklyReportHint
-        {
-            get
-            {
+        public static string weeklyReportHint {
+            get {
                 return ResourceManager.GetString("weeklyReportHint", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Weight.
         /// </summary>
-        public static string weight
-        {
-            get
-            {
+        public static string weight {
+            get {
                 return ResourceManager.GetString("weight", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Working days Configuration.
         /// </summary>
-        public static string WorkingDaysConfiguration
-        {
-            get
-            {
+        public static string WorkingDaysConfiguration {
+            get {
                 return ResourceManager.GetString("WorkingDaysConfiguration", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Define the official working days for your organization. This configuration will be used for task scheduling, deadlines, and workload calculations.
         /// </summary>
-        public static string workingDaysHint
-        {
-            get
-            {
+        public static string workingDaysHint {
+            get {
                 return ResourceManager.GetString("workingDaysHint", resourceCulture);
             }
         }

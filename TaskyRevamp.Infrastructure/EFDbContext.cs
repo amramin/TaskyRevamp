@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using TaskyRevamp.Domain.Interfaces;
+using TaskyRevamp.Domain.Models.Notification;
 using TaskyRevamp.Domain.Models.Permissions;
 using TaskyRevamp.Domain.Models.Permissions.GeneralModule;
 using TaskyRevamp.Domain.Models.Permissions.ReportModule;
@@ -19,6 +20,8 @@ public class EfDbContext : DbContext
     public DbSet<User> Users { get; set; }
     public DbSet<UserDelegation> UserDelegation { get; set; }
     public DbSet<TaskItem> TaskItem { get; set; }
+    public DbSet<NotificationTypeTemplate> NotificationTypeTemplate { get; set; }
+
     public DbSet<RecycleBinSettings> RecycleBinSettings { get; set; }
     public DbSet<RejectionSettings> RejectionSettings { get; set; }
     public DbSet<PrioritySettings> PrioritySettings { get; set; }
@@ -37,9 +40,9 @@ public class EfDbContext : DbContext
     public DbSet<GeneralModulePermission> GeneralModulePermission { get; set; }
     public DbSet<ReportModule> ReportModule { get; set; }
     public DbSet<ReportModulePermission> ReportModulePermission { get; set; }
-    public DbSet<TaskModuleUserDepartment>  TaskModuleUserDepartment { get; set; }
-    public DbSet<TaskModuleExternalDepartment>  TaskModuleExternalDepartment { get; set; }
-    public DbSet<SystemIdentity>  SystemIdentity { get; set; }
+    public DbSet<TaskModuleUserDepartment> TaskModuleUserDepartment { get; set; }
+    public DbSet<TaskModuleExternalDepartment> TaskModuleExternalDepartment { get; set; }
+    public DbSet<SystemIdentity> SystemIdentity { get; set; }
     public EfDbContext(DbContextOptions<EfDbContext> options, IHttpContextAccessor httpContextAccessor)
         : base(options)
     {
@@ -104,13 +107,13 @@ public class EfDbContext : DbContext
         base.OnModelCreating(modelBuilder);
 
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(EfDbContext).Assembly);
-		foreach (var fk in modelBuilder.Model
-		 .GetEntityTypes()
-		 .SelectMany(t => t.GetForeignKeys())
-		 .Where(fk => fk.PrincipalEntityType.ClrType == typeof(User)))
-		{
-			fk.DeleteBehavior = DeleteBehavior.Restrict;
-		}
+        foreach (var fk in modelBuilder.Model
+         .GetEntityTypes()
+         .SelectMany(t => t.GetForeignKeys())
+         .Where(fk => fk.PrincipalEntityType.ClrType == typeof(User)))
+        {
+            fk.DeleteBehavior = DeleteBehavior.Restrict;
+        }
         modelBuilder.Entity<Privilege>()
            .HasOne(p => p.CreatedBy)
            .WithMany()

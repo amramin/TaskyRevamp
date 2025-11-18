@@ -23,7 +23,7 @@
 
 
 		<PackageReference Include="Syncfusion.Blazor.RichTextEditor" Version="31.1.21" />
-		<PackageReference Include="Syncfusion.Blazor.Themes" Version="31.1.21"/>
+		<PackageReference Include="Syncfusion.Blazor.Themes" Version="31.1.21" />
 		<PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.13.0" />
 
 	</ItemGroup>

@@ -412,10 +412,10 @@
         var users = await _userConsumer.GetUsers();
         userDtos = users.Data;
         var departs = await _departmentConsumer.GetDepartmentsForDDL();
-        departmentDtos = departs.Data.ToList();
+        departmentDtos = departs.Data;
         var tsks = await _taskConsumer.GetTasksForDDL();
 
-        allTaskDtos = tsks.Data.ToList();
+        allTaskDtos = tsks.Data;
         var ress = await _prioritySettingConsumer.GetPriorities();
         if (ress.Success && ress.Data != null)
         {
