@@ -66,6 +66,9 @@
 
     &:has(.btn-group-vertical) {
       cursor: grab;
+      .card-body{
+      max-width: calc(100% - 2.5rem);
+      }
     }
     &:hover {
       box-shadow: var(--bs-shadow);
@@ -73,8 +76,20 @@
     .card-body {
       padding: 0.5rem 0.75rem;
       font-size: 0.875rem;
+      max-width: 100%;
     }
+    .status-name {
+      display: flex;
 
+      overflow: hidden;
+      max-width: calc(100% - 120px);
+      span {
+        overflow: hidden;
+        display: inline-block;
+        flex-grow: 1;
+        text-overflow: ellipsis;
+      }
+    }
     .cl-preview {
       width: 1.5rem;
       height: 1.5rem;
@@ -262,14 +277,14 @@
         font-weight: 500;
         font-size: 1rem;
         position: relative;
-        &::after{
-          content:"";
+        &::after {
+          content: "";
           position: absolute;
-          top:50%;
+          top: 50%;
           transform: translateY(-50%);
           inset-inline-end: 0;
-          height:1rem;
-          width: 1px ;
+          height: 1rem;
+          width: 1px;
           background-color: var(--light-300);
         }
         &.active {
