@@ -781,6 +781,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Edit Privilege.
+        /// </summary>
+        public static string EditPrivilege {
+            get {
+                return ResourceManager.GetString("EditPrivilege", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Edit Status.
         /// </summary>
         public static string EditStatus {
@@ -1808,15 +1817,6 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Are you sure you want to delete this task source?.
-        /// </summary>
-        public static string SourceSure {
-            get {
-                return ResourceManager.GetString("SourceSure", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Start Date.
         /// </summary>
         public static string StartDate {
@@ -1907,7 +1907,7 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Are you sure you want to delete this priority?.
+        ///   Looks up a localized string similar to Are you sure you want to delete this ?.
         /// </summary>
         public static string Sure {
             get {
@@ -2137,15 +2137,6 @@ namespace TaskyRevamp.Localization.Resources {
         public static string Type_Source_Name_English {
             get {
                 return ResourceManager.GetString("Type Source Name English", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Are you sure you want to delete this task type?.
-        /// </summary>
-        public static string TypeSure {
-            get {
-                return ResourceManager.GetString("TypeSure", resourceCulture);
             }
         }
         

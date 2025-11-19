@@ -16,7 +16,7 @@
     {
         var permission = ReportPermissions.First(x => x.ReportModuleId == module.Id);
         <div class="form-check form-check-card">
-            <InputCheckbox @bind-Value="permission.IsActive" class="form-check-input" id="@module.Id" />
+            <InputCheckbox @bind-Value="permission.IsActive" disabled="@IsViewMode" class="form-check-input" id="@module.Id"/>
             <label class="form-check-label" for="@module.Id">
                 <div>
                     <h6 class="headline-7 small"> @module.Name</h6>
@@ -30,7 +30,8 @@
 @code {
 
     [Parameter] public PrivilegeDto PrivilegeDto { get; set; } = new PrivilegeDto();
-
+    [Parameter] public string Mode { get; set; }
+    [Parameter] public bool IsViewMode { get; set; }
     public List<ReportModuleDto> ReportModules { get; set; } = new List<ReportModuleDto>();
     public List<ReportModulePermissionDto> ReportPermissions { get; set; } = new List<ReportModulePermissionDto>();
 

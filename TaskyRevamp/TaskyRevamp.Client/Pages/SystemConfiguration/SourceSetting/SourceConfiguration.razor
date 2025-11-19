@@ -165,7 +165,7 @@ else
     }
     private void DeleteSource(SourceDtoWithName source)
     {
-        PopupService.ShowConfirmation(@Loc["SourceSure"], @Loc["Confirm"], OnDeleteConfirmed, type: ConfirmationType.Danger);
+        PopupService.ShowConfirmation(@Loc["Sure"], @Loc["Confirm"], OnDeleteConfirmed, type: ConfirmationType.Danger);
         selectedSource = source;
         showConfirm = true;
     }

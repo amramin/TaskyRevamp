@@ -158,7 +158,7 @@ else
     }
     private void DeleteType(TypeDtoWithName type)
     {
-        PopupService.ShowConfirmation(@Loc["TypeSure"], @Loc["Confirm"], OnDeleteConfirmed, ConfirmationType.Danger);
+        PopupService.ShowConfirmation(@Loc["Sure"], @Loc["Confirm"], OnDeleteConfirmed, ConfirmationType.Danger);
         selectedType = type;
         showConfirm = true;
     }

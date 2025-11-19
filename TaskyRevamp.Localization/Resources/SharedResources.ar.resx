@@ -204,9 +204,6 @@
   <data name="AddPriority" xml:space="preserve">
     <value>إضافة أولوية </value>
   </data>
-  <data name="Sure" xml:space="preserve">
-    <value>هل أنت متأكد أنك تريد حذف هذه الأولوية؟</value>
-  </data>
   <data name="Delete" xml:space="preserve">
     <value>حذف</value>
   </data>
@@ -429,9 +426,6 @@
   <data name="UpdatedBy" xml:space="preserve">
     <value>تم تعديله بواسطة</value>
   </data>
-  <data name="SourceSure" xml:space="preserve">
-    <value>هل أنت متأكد من أنك تريد حذف مصدر المهمة؟</value>
-  </data>
   <data name="Action" xml:space="preserve">
     <value>الإجراء</value>
   </data>
@@ -443,9 +437,6 @@
   </data>
   <data name="TaskTypeConfiguration" xml:space="preserve">
     <value>إعدادات أنواع المهام</value>
-  </data>
-  <data name="TypeSure" xml:space="preserve">
-    <value>هل أنت متأكد من أنك تريد حذف نوع المهمة؟</value>
   </data>
   <data name="AddTaskType" xml:space="preserve">
     <value>إضافة نوع المهمة</value>
@@ -653,7 +644,7 @@
     <value>وحدة التقارير</value>
   </data>
   <data name="AddNewPrivilege" xml:space="preserve">
-    <value>إضافة صلاحية جديدة</value>
+    <value>إضافة صلاحية </value>
   </data>
   <data name="SelectReportOptions" xml:space="preserve">
     <value>اختر خيارات التقرير</value>
@@ -867,5 +858,11 @@
   </data>
   <data name="KanbanView" xml:space="preserve">
     <value>عرض اللوحة</value>
+  </data>
+  <data name="EditPrivilege" xml:space="preserve">
+    <value>تعديل الصلاحية</value>
+  </data>
+  <data name="Sure" xml:space="preserve">
+    <value>هل أنت متأكد أنك تريد الحذف؟ </value>
   </data>
 </root>

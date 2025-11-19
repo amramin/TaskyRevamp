@@ -6,7 +6,6 @@ using TaskyRevamp.Dto.GeneralDto;
 using TaskyRevamp.Dto.Permissions;
 using TaskyRevamp.Services.Permission.Privilege.Command;
 using TaskyRevamp.Services.Permission.Privilege.Query;
-using TaskyRevamp.Services.SystemConfiguration.SourceConfiguration.Query;
 
 namespace TaskyRevamp.WebAPI.Controllers
 {
@@ -39,7 +38,7 @@ namespace TaskyRevamp.WebAPI.Controllers
 		[HttpGet("GetPrivilegeById/{id}")]
 		public async Task<IActionResult> GetPrivilegeById(Guid id)
 		{
-			return Ok(await _mediator.Send(new GetSourceByIdQuery(id)));
+			return Ok(await _mediator.Send(new GetPrivilegeByIdQuery(id)));
 		}
 
 		[HttpPost("CreatePrivilege")]
@@ -54,6 +53,10 @@ namespace TaskyRevamp.WebAPI.Controllers
             return Ok(await _mediator.Send(new UpdatePrivilegeCommand(privilegeDto)));
         }
 
-
-    }
+		[HttpDelete("DeletePrivilege/{id}")]
+		public async Task<IActionResult> DeletePrivilege(Guid id)
+		{
+			return Ok(await _mediator.Send(new DeletePrivilegeCommand(id)));
+		}
+	}
 }
