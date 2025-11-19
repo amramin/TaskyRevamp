@@ -1750,14 +1750,6 @@ namespace TaskyRevamp.Localization.Resources {
             }
         }
         
-        /// <summary>
-        ///   Looks up a localized string similar to Select at least one value..
-        /// </summary>
-        public static string SelectAtLeastOneValue {
-            get {
-                return ResourceManager.GetString("SelectAtLeastOneValue", resourceCulture);
-            }
-        }
         
         /// <summary>
         ///   Looks up a localized string similar to Parent Department .
