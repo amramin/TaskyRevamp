@@ -1120,10 +1120,14 @@ html[dir=rtl] .end-0 {
   color: var(--dark-900);
   font-size: 0.75rem;
   font-weight: 600;
+  text-transform: lowercase;
 }
 .form-label .text-danger {
   -webkit-margin-start: 0.25rem;
           margin-inline-start: 0.25rem;
+}
+.form-label::first-letter {
+  text-transform: uppercase;
 }
 
 .form-check {
@@ -1181,8 +1185,6 @@ html[dir=rtl] .end-0 {
 .form-check-card {
   position: relative;
   width: 100%;
-}
-.form-check-card:not(:last-child) {
   margin-bottom: 0.5rem;
 }
 .form-check-card > input {
@@ -1215,6 +1217,21 @@ html[dir=rtl] .end-0 {
   border-color: var(--primary-color);
   background-color: var(--light-200);
   color: var(--dark-900);
+}
+.form-check-card .actions {
+  -webkit-padding-start: 0.75rem;
+          padding-inline-start: 0.75rem;
+  -webkit-margin-start: 0.75rem;
+          margin-inline-start: 0.75rem;
+  -webkit-border-start: 1px solid var(--light-200);
+          border-inline-start: 1px solid var(--light-200);
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  gap: 0.5rem;
 }
 .form-check-card input[type=radio] + label {
   -webkit-padding-start: 2.5rem;
@@ -1621,6 +1638,10 @@ fieldset:disabled .btn {
   line-height: 1.5rem;
   color: var(--dark-900);
   margin-bottom: 0;
+  text-transform: lowercase;
+}
+.page-headline::first-letter {
+  text-transform: uppercase;
 }
 .page-headline .parent-page-link {
   text-decoration: none;
@@ -1636,29 +1657,49 @@ fieldset:disabled .btn {
   font-size: 1.25rem;
   font-weight: 600;
   color: var(--dark-800);
+  text-transform: lowercase;
+}
+.headline-5::first-letter {
+  text-transform: uppercase;
 }
 
 .headline-6 {
   font-size: 1rem;
   font-weight: 600;
   color: var(--dark-800);
+  text-transform: lowercase;
+}
+.headline-6::first-letter {
+  text-transform: uppercase;
 }
 
 .headline-7 {
   font-size: 0.875rem;
   font-weight: 600;
+  text-transform: lowercase;
+}
+.headline-7::first-letter {
+  text-transform: uppercase;
 }
 
 .small-medium-text {
   font-size: 0.875rem;
   color: var(--dark-600);
   font-weight: 500;
+  text-transform: lowercase;
+}
+.small-medium-text::first-letter {
+  text-transform: uppercase;
 }
 
 .badge {
   font-size: 0.875rem;
   padding: 0.65rem 0.5rem;
   font-weight: 500;
+  text-transform: lowercase;
+}
+.badge::first-letter {
+  text-transform: uppercase;
 }
 
 /* strat alert*/
@@ -2090,21 +2131,6 @@ fieldset:disabled .btn {
   height: 1.5rem;
   border: 1px solid var(--light-300);
 }
-.card.card-order-control .actions {
-  -webkit-padding-start: 0.75rem;
-          padding-inline-start: 0.75rem;
-  -webkit-margin-start: 0.75rem;
-          margin-inline-start: 0.75rem;
-  -webkit-border-start: 1px solid var(--light-200);
-          border-inline-start: 1px solid var(--light-200);
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  gap: 0.5rem;
-}
 .card.card-order-control .toggle {
   padding: 0 1rem;
   width: 4.5rem;
@@ -2354,6 +2380,21 @@ fieldset:disabled .btn {
 }
 .card.collapse-card .card-body {
   border-top: 1px solid var(--light-300);
+}
+.card .actions {
+  -webkit-padding-start: 0.75rem;
+          padding-inline-start: 0.75rem;
+  -webkit-margin-start: 0.75rem;
+          margin-inline-start: 0.75rem;
+  -webkit-border-start: 1px solid var(--light-200);
+          border-inline-start: 1px solid var(--light-200);
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  gap: 0.5rem;
 }
 
 /* Connecting each child up to the horizontal line */

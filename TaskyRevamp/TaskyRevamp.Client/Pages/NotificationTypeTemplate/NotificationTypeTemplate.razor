@@ -13,9 +13,9 @@
 
 <div class="page-header">
     <div class="title-block">
-        <h1 class="page-headline">@Loc["NotificationTypeTemplateConfiguration"]</h1>
+        <h1 class="page-headline">@Loc["SystemNotifications"]</h1>
     </div>
- 
+
 </div>
 <div class="page-body">
 
@@ -24,47 +24,53 @@
             <div class="row justify-content-center">
                 <div class="col-xxl-7 col-xl-8 col-lg-9 col-md-11">
                     <div class="text-content">
-                        <h6 class="x-small bg-warning d-flex mb-2 align-items-center text-dark rounded py-1 px-2 mb-0">
-                            <span class="icon icon-32">
-                                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Info"></SVGCrud>
-                            </span>
-                            @Loc["Usethisoption"]
-                        </h6>
-
+                        <div class="text-content">
+                            <h6 class="headline-6">@Loc["Types of system notification Messages"]</h6>
+                            <p class="small-medium-text hint"> @Loc["Usethisoption"]</p>
+                        </div>
                     </div>
 
                     <SortableList Id="defaultColsList" Items="NotificationTypeTemplates.ToList()"
                         KeySelector="@(item => item.Id)" Context="p">
                         <SortableItemTemplate>
-<div class="card card-order-control">
-                                <div class="card-body d-flex justify-content-between align-items-center">
+                          
+                                <div class="form-check-card switch ">
 
-                                    <div class="flex-fill">
-                                        @p.NameEnglish -
-                                        <span class="ar-text">@p.NameArabic</span>
-                                    </div>
-                                    <div class="toggle">
-                                        <div class="form-switch custom ">
+                                   
+                                      
                                             <input type="checkbox" id="IsActive@(p.Id)" class="form-check-input"
                                                 @bind="p.IsEnable" />
 
                                             <label for="IsActive@(p.Id)">
+                                            <span class="d-flex justify-content-between gap-2 align-items-center flex-grow-1">
+                                                @p.NameEnglish
                                                 <span class="toggler-icon"></span>
+                                                </span>
+                                                <div class="actions">
+
+                                                    <button class="btn btn-action-24 btn-edit"
+                                                        @onclick=" () => Edit(p)">
+                                                        <span class="icon">
+                                                            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Edit"></SVGCrud>
+                                                        </span>
+                                                    </button>
+                                                </div>
                                             </label>
-                                        </div>
-                                    </div>
-                                </div><div class="actions">
-                                    <button class="btn btn-action-24 btn-edit" @onclick=" () => Edit(p)">
-                                        <span class="icon">
-                                            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Edit"></SVGCrud>
-                                        </span>
-                                    </button>
-                                    </div>
-</div>
+                                       
+                                   
+                                </div>
+
+                           
+                            @* <div class="form-check-card switch flex-grow-1">
+                                <InputCheckbox id="@inputId" @bind-Value="view.IsActive" class="form-check-input" />
+                                <label for="@inputId">@Loc[view.ViewType.ToString()]
+                                    <span class="toggler-icon"></span>
+                                </label>
+                            </div> *@
                         </SortableItemTemplate>
                     </SortableList>
 
-                  
+
                 </div>
             </div>
 
@@ -100,7 +106,7 @@
         }
     }
 
-    private void Edit(NotificationTypeTemplateDto notificationTypeTemplateDto  )
+    private void Edit(NotificationTypeTemplateDto notificationTypeTemplateDto)
     {
         navigationManager.NavigateTo($"EditTemplate/{notificationTypeTemplateDto.Id}");
     }
@@ -114,7 +120,8 @@
     {
         if (confirmed && selectedNotificationTypeTemplate != null)
         {
-            var result = await _NotificationTypeTemplateConsumer.DeleteNotificationTypeTemplate(selectedNotificationTypeTemplate.Id);
+            var result = await
+            _NotificationTypeTemplateConsumer.DeleteNotificationTypeTemplate(selectedNotificationTypeTemplate.Id);
             if (result.Success)
             {
                 NotificationTypeTemplates.Remove(selectedNotificationTypeTemplate);
@@ -126,35 +133,35 @@
         selectedNotificationTypeTemplate = null;
         StateHasChanged();
     }
-   
-  
+
+
     private async Task Save(MouseEventArgs args)
     {
-        
+
         var res = await _NotificationTypeTemplateConsumer.UpdateNotificationTypeTemplates(NotificationTypeTemplates);
-            if (res.Success)
-            {
-                isOrdered = false;
-                await ToastService.ShowToastAsync(Loc["EditSuccess"], "success");
-            
-            }
-        
+        if (res.Success)
+        {
+            isOrdered = false;
+            await ToastService.ShowToastAsync(Loc["EditSuccess"], "success");
+
+        }
+
     }
     private void Cancel(MouseEventArgs args)
     {
         // NotificationTypeTemplates = OriginalNotificationTypeTemplates!.Select(p => new NotificationTypeTemplateDto
         // {
-        //     Id = p.Id,
-        //     NameEnglish = p.NameEnglish,
-        //     NameArabic = p.NameArabic,
-        //     IsEnable = p.IsEnable,
-        //     moduleType = p.moduleType,
-        //     SubjectArabic = p.SubjectArabic,
-        //     SubjectEnglish=p.SubjectEnglish,
-        //     TemplateArabic=p.TemplateArabic,
-        //     TemplateEnglish=p.TemplateEnglish
+        // Id = p.Id,
+        // NameEnglish = p.NameEnglish,
+        // NameArabic = p.NameArabic,
+        // IsEnable = p.IsEnable,
+        // moduleType = p.moduleType,
+        // SubjectArabic = p.SubjectArabic,
+        // SubjectEnglish=p.SubjectEnglish,
+        // TemplateArabic=p.TemplateArabic,
+        // TemplateEnglish=p.TemplateEnglish
         // }).ToList();
-        
+
         StateHasChanged();
     }
     private List<NotificationTypeTemplateDto> CopyPriorites()
@@ -167,7 +174,7 @@
             SubjectArabic = p.SubjectArabic,
             SubjectEnglish = p.SubjectEnglish,
             IsEnable = p.IsEnable,
-moduleType=p.moduleType
+            moduleType = p.moduleType
         }).ToList();
     }
 }

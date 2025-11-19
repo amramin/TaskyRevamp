@@ -129,7 +129,9 @@
   font-weight: 500;
   &::placeholder {
     color: var(--dark-500);
+    
   }
+
 }
 .form-switch {
   &.custom {
@@ -229,6 +231,10 @@
   .text-danger {
     margin-inline-start: 0.25rem;
   }
+  text-transform: lowercase;
+  &::first-letter {
+    text-transform: uppercase;
+  }
 }
 .form-check {
   padding-left: 0;
@@ -282,9 +288,7 @@
 .form-check-card {
   position: relative;
   width: 100%;
-  &:not(:last-child) {
-    margin-bottom: 0.5rem;
-  }
+  margin-bottom: 0.5rem;
 
   & > input {
     display: none;
@@ -292,7 +296,7 @@
       border: 1px solid var(--light-300);
       border-radius: var(--bs-border-radius);
       padding: 1rem 0.75rem;
-
+     
       cursor: pointer;
       width: 100%;
       font-size: 0.875rem;
@@ -312,7 +316,16 @@
       background-color: var(--light-200);
       color: var(--dark-900);
     }
+   
   }
+   .actions {
+      padding-inline-start: 0.75rem;
+      margin-inline-start: 0.75rem;
+      border-inline-start: 1px solid var(--light-200);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
   input[type="radio"] {
     & + label {
       padding-inline-start: 2.5rem;
@@ -459,7 +472,6 @@
 }
 .e-toolbar .e-toolbar-item .e-tbar-btn:hover {
   background-color: var(--dark-600);
- 
 }
 .e-toolbar .e-hor-nav {
   right: auto;
