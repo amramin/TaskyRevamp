@@ -862,4 +862,10 @@ Add a new department to get started</value>
   <data name="LinkUser" xml:space="preserve">
     <value>Link a user to department and privilege</value>
   </data>
+  <data name="Usethisoption" xml:space="preserve">
+    <value>Use this option to enable system notifications that will be automatically sent when the specified action is triggered.</value>
+  </data>
+  <data name="NotificationTypeTemplateConfiguration" xml:space="preserve">
+    <value>Configure Notifications</value>
+  </data>
 </root>

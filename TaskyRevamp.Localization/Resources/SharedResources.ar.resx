@@ -862,4 +862,10 @@
   <data name="LinkUser" xml:space="preserve">
     <value>Link a user to department and privilege</value>
   </data>
+  <data name="Usethisoption" xml:space="preserve">
+    <value>استخدم هذا الخيار لتفعيل إشعارات النظام التي سيتم إرسالها تلقائيًا عند تنفيذ الإجراء المحدد</value>
+  </data>
+  <data name="NotificationTypeTemplateConfiguration" xml:space="preserve">
+    <value>اعداد التنبيهات</value>
+  </data>
 </root>
