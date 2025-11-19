@@ -1,4 +1,4 @@
-﻿@page "/NotificationTypeTemplates"
+﻿@page "/NotificationTypeTemplates/{ModuleType:int}"
 
 @using TaskyRevamp.Client.Consumer
 @using TaskyRevamp.Client.Services
@@ -84,6 +84,7 @@
 </div>
 
 @code {
+    [Parameter] public int ModuleType { get; set; }
     public List<NotificationTypeTemplateDto> NotificationTypeTemplates = new List<NotificationTypeTemplateDto>();
     private Guid SelectedNotificationTypeTemplateId { get; set; }
     private NotificationTypeTemplateDto? selectedNotificationTypeTemplate;
@@ -96,10 +97,10 @@
         var res = await _NotificationTypeTemplateConsumer.GetNotificationTypeTemplates();
         if (res.Success && res.Data != null)
         {
-            NotificationTypeTemplates = res.Data;
+            NotificationTypeTemplates = res.Data.Where(k => k.moduleType == (Dto.Enums.ModuleType)ModuleType)
+                .ToList();
         }
     }
-
     private void Edit(NotificationTypeTemplateDto notificationTypeTemplateDto  )
     {
         navigationManager.NavigateTo($"EditTemplate/{notificationTypeTemplateDto.Id}");
