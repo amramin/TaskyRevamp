@@ -205,6 +205,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add New Priority.
+        /// </summary>
+        public static string AddNewPriority {
+            get {
+                return ResourceManager.GetString("AddNewPriority", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add New Privilege.
         /// </summary>
         public static string AddNewPrivilege {
@@ -1394,6 +1403,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Configure Notifications.
+        /// </summary>
+        public static string NotificationTypeTemplateConfiguration {
+            get {
+                return ResourceManager.GetString("NotificationTypeTemplateConfiguration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No users available.
         /// </summary>
         public static string NoUsersAvailable {
@@ -1729,20 +1747,18 @@ namespace TaskyRevamp.Localization.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Select.
         /// </summary>
+
+        public static string SelectAtLeastOneValue {
+            get {
+                return ResourceManager.GetString("SelectAtLeastOneValue", resourceCulture);
+            }
+        }
         public static string Select {
             get {
                 return ResourceManager.GetString("Select", resourceCulture);
             }
         }
         
-        /// <summary>
-        ///   Looks up a localized string similar to Select at least one value..
-        /// </summary>
-        public static string SelectAtLeastOneValue {
-            get {
-                return ResourceManager.GetString("SelectAtLeastOneValue", resourceCulture);
-            }
-        }
         
         /// <summary>
         ///   Looks up a localized string similar to Parent Department .
@@ -1777,6 +1793,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string SelectSource {
             get {
                 return ResourceManager.GetString("SelectSource", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select Time.
+        /// </summary>
+        public static string SelectTime {
+            get {
+                return ResourceManager.GetString("SelectTime", resourceCulture);
             }
         }
         
@@ -2182,6 +2207,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string users {
             get {
                 return ResourceManager.GetString("users", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Use this option to enable system notifications that will be automatically sent when the specified action is triggered..
+        /// </summary>
+        public static string Usethisoption {
+            get {
+                return ResourceManager.GetString("Usethisoption", resourceCulture);
             }
         }
         

@@ -15,6 +15,7 @@ namespace TaskyRevamp.Infrastructure.Seeders
             var seeders = new List<ISeeder>
             {
                 new PrioritySeeder(),
+                new NotificationTypeTemplateSeeder(),
                 new StatusSeeder(),
                 new ViewTaskListSeeder(),
                 new SubTaskLevelSeeder(),

@@ -842,6 +842,10 @@ html[dir=rtl] .btn-change-lang .icon-text .en-text {
 html[dir=rtl] input[type=number] {
   direction: rtl;
 }
+html[dir=rtl] .end-0 {
+  right: auto !important;
+  left: 0 !important;
+}
 
 /* end rtl*/
 /* start inputs */
@@ -2054,6 +2058,9 @@ fieldset:disabled .btn {
   cursor: -webkit-grab;
   cursor: grab;
 }
+.card.card-order-control:has(.btn-group-vertical) .card-body {
+  max-width: calc(100% - 2.5rem);
+}
 .card.card-order-control:hover {
   -webkit-box-shadow: var(--bs-shadow);
           box-shadow: var(--bs-shadow);
@@ -2061,6 +2068,22 @@ fieldset:disabled .btn {
 .card.card-order-control .card-body {
   padding: 0.5rem 0.75rem;
   font-size: 0.875rem;
+  max-width: 100%;
+}
+.card.card-order-control .status-name {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  overflow: hidden;
+  max-width: calc(100% - 120px);
+}
+.card.card-order-control .status-name span {
+  overflow: hidden;
+  display: inline-block;
+  -webkit-box-flex: 1;
+      -ms-flex-positive: 1;
+          flex-grow: 1;
+  text-overflow: ellipsis;
 }
 .card.card-order-control .cl-preview {
   width: 1.5rem;
@@ -2844,6 +2867,7 @@ fieldset:disabled .btn {
 
 .ar-text {
   font-family: "Almarai", sans-serif;
+  direction: rtl;
 }
 
 /* start Global */
