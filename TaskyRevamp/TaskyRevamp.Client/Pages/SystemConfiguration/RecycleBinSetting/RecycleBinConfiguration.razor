@@ -34,8 +34,12 @@
 
                                     @if (RecycleBinSetting.PeriodType == PeriodType.Custom && value == PeriodType.Custom)
                                     {
-                                        <input placeholder="@Loc["EnterDaysNumber"]" type="number" min="1" class="form-control" @bind="RecycleBinSetting.CustomDays"
-                                            @oninput="OnCustomDaysChange" />
+                                        <input placeholder="@Loc["EnterDaysNumber"]"
+                                               type="text"
+                                               class="form-control"
+                                               maxlength="10"
+                                               value="@CustomDaysText"
+                                               @oninput="OnCustomDaysChange" />
                                     }
                                 </label>
                             </div>
@@ -51,7 +55,7 @@
                     <div class="action-buttons">
                         <button class="btn btn-lg btn-light" @onclick="CancelSettings">@Loc["Cancel"]</button>
                         <button class="btn btn-lg  btn-primary" @onclick="SaveSettings"
-                                disabled="@(RecycleBinSetting.PeriodType == PeriodType.Custom && (RecycleBinSetting.CustomDays is null || RecycleBinSetting.CustomDays <= 0))">
+                                disabled="@(RecycleBinSetting.PeriodType == PeriodType.Custom && (RecycleBinSetting.CustomDays is null))">
                                 @Loc["Save"]
                         </button>
                     </div>
@@ -67,7 +71,7 @@
     {
         PeriodType = PeriodType.Days30
     };
-
+    private string CustomDaysText => RecycleBinSetting.CustomDays?.ToString() ?? "";
     protected async override Task OnInitializedAsync()
     {
 
@@ -106,13 +110,17 @@
 
     private void OnCustomDaysChange(ChangeEventArgs e)
     {
-        var input = e.Value?.ToString();
-
-        if (string.IsNullOrEmpty(input) || !int.TryParse(input, out var number) || number <= 0)
+        var input = e.Value?.ToString() ?? "";
+        input = new string(input.Where(char.IsDigit).ToArray());
+        if (input.Length > 10)
+            input = input.Substring(0, 10);
+        if (int.TryParse(input, out var number) && number > 0)
+        {
+            RecycleBinSetting.CustomDays = number;
+        }
+        else
         {
             RecycleBinSetting.CustomDays = null;
-            return;
         }
-        RecycleBinSetting.CustomDays = number;
     }
 }

@@ -35,12 +35,12 @@
                                     @value.GetDescription()
                                     @if (RejectionSetting.PeriodType == RejectionPeriodType.Custom && value == RejectionPeriodType.Custom)
                                     {
-                                        <input placeholder="@Loc["EnterDaysNumber"]" 
-                                                type="number" 
-                                                min="1" 
-                                                class="form-control" 
-                                                @bind="RejectionSetting.CustomDays"
-                                                @oninput="OnCustomDaysChange" />
+                                        <input placeholder="@Loc["EnterDaysNumber"]"
+                                               type="text"
+                                               class="form-control"
+                                               maxlength="10"
+                                               value="@CustomDaysText"
+                                               @oninput="OnCustomDaysChange" />
                                     }
                                 </label>
                             </div>
@@ -56,7 +56,7 @@
                     <div class="action-buttons">
                         <button class="btn btn-lg btn-light" @onclick="CancelSettings">@Loc["Cancel"]</button>
                         <button class="btn btn-lg  btn-primary" @onclick="SaveSettings"
-                                disabled="@(RejectionSetting.PeriodType == RejectionPeriodType.Custom && (RejectionSetting.CustomDays is null || RejectionSetting.CustomDays <= 0))">
+                                disabled="@(RejectionSetting.PeriodType == RejectionPeriodType.Custom && (RejectionSetting.CustomDays is null))">
                             @Loc["Save"]
                         </button>
                     </div>
@@ -73,7 +73,7 @@
     {
         PeriodType = RejectionPeriodType.Days3
     };
-
+    private string CustomDaysText => RejectionSetting.CustomDays?.ToString() ?? "";
     protected async override Task OnInitializedAsync()
     {
         var res = await _rejectionSettingConsumer.GetRejectionSetting();
@@ -112,14 +112,17 @@
 
     private void OnCustomDaysChange(ChangeEventArgs e)
     {
-        var input = e.Value?.ToString()?.Trim();
-
-        if (string.IsNullOrEmpty(input) || !int.TryParse(input, out var number) || number <= 0)
+        var input = e.Value?.ToString() ?? "";
+        input = new string(input.Where(char.IsDigit).ToArray());
+        if (input.Length > 10)
+            input = input.Substring(0, 10);
+        if (int.TryParse(input, out var number) && number > 0)
+        {
+            RejectionSetting.CustomDays = number;
+        }
+        else
         {
             RejectionSetting.CustomDays = null;
-            return;
         }
-
-        RejectionSetting.CustomDays = number;
     }
 }

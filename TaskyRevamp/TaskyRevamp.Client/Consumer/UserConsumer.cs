@@ -36,6 +36,15 @@ namespace TaskyRevamp.Client.Consumer
 
 			return ret;
 		}
+		public async Task<CommonApiResponse<PagedResult<DepartmentDto>>> GetAllUsersByDepartmentWithPagination(Guid DepartmentId, int pageNumber, int pageSize, string sortByColumnName, bool sortAscending, List<SearchFieldUserDepartment> searchFields = null, string searchText = null)
+		{
+			var queryString = _taskyService.PreparePaginatedSearchQueryString(pageNumber, pageSize, sortByColumnName, sortAscending, searchFields, searchText);
+
+			var url = $"api/User/GetAllUsersByDepartmentWithPaginationQuery/{DepartmentId}{queryString}";
+			var res = await _taskyService.GetFromJsonAsync<CommonApiResponse<PagedResult<DepartmentDto>>>(url);
+
+			return res;
+		}
 		public async Task<CommonApiResponse<List<UserDto>>> GetAllUNassignedUsers()
 		{
 			var url = $"api/User/GetAllUsers";
