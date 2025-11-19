@@ -98,18 +98,22 @@ namespace TaskyRevamp.Services.Helpers
             {
                 if (bool.TryParse(searchText, out var boolValue))
                     return Expression.Equal(member, Expression.Constant(boolValue));
+                //if (searchText.Equals("yes", StringComparison.OrdinalIgnoreCase) ||
+                //    searchText.Equals("active", StringComparison.OrdinalIgnoreCase) ||
+                //    searchText == "1")
+                //    return Expression.Equal(member, Expression.Constant(true));
 
-                if (searchText.Equals("yes", StringComparison.OrdinalIgnoreCase) ||
-                    searchText.Equals("active", StringComparison.OrdinalIgnoreCase) ||
-                    searchText == "1")
-                    return Expression.Equal(member, Expression.Constant(true));
+                //if (searchText.Equals("no", StringComparison.OrdinalIgnoreCase) ||
+                //    searchText.Equals("inactive", StringComparison.OrdinalIgnoreCase) ||
+                //    searchText == "0")
+                //    return Expression.Equal(member, Expression.Constant(false));
+				var normalized = searchText.Replace(" ","").Trim().ToLower();
+				if (normalized == "yes" || normalized == "active" || normalized == "1" || normalized == "نشط")
+					return Expression.Equal(member, Expression.Constant(true));
 
-                if (searchText.Equals("no", StringComparison.OrdinalIgnoreCase) ||
-                    searchText.Equals("inactive", StringComparison.OrdinalIgnoreCase) ||
-                    searchText == "0")
-                    return Expression.Equal(member, Expression.Constant(false));
-
-                return null;
+				if (normalized == "no" || normalized == "inactive" || normalized == "0" || normalized == "غيرنشط")
+					return Expression.Equal(member, Expression.Constant(false));
+				return null;
             }
 
             // Handle numeric types

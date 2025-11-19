@@ -580,9 +580,6 @@ Add a new department to get started</value>
   <data name="System Identity" xml:space="preserve">
     <value>System Identity</value>
   </data>
-  <data name="AddNewPriority" xml:space="preserve">
-    <value>Add New Priority</value>
-  </data>
   <data name="EditStatus" xml:space="preserve">
     <value>Edit Status</value>
   </data>
@@ -829,11 +826,8 @@ Add a new department to get started</value>
   <data name="Subtask_Levels" xml:space="preserve">
     <value>Subtask Levels</value>
   </data>
-  <data name="SelectDay" xml:space="preserve">
-    <value>Select Day</value>
-  </data>
-  <data name="SelectTime" xml:space="preserve">
-    <value>Select Time</value>
+  <data name="Select" xml:space="preserve">
+    <value>Select</value>
   </data>
   <data name="users" xml:space="preserve">
     <value>Users </value>
@@ -867,5 +861,17 @@ Add a new department to get started</value>
   </data>
   <data name="NotificationTypeTemplateConfiguration" xml:space="preserve">
     <value>Configure Notifications</value>
+  </data>
+  <data name="NoResultsFound" xml:space="preserve">
+    <value>No results found</value>
+  </data>
+  <data name="TryAjustingYourSearch" xml:space="preserve">
+    <value>Try adjusting your search.</value>
+  </data>
+  <data name="ClearSearch" xml:space="preserve">
+    <value>Clear search</value>
+  </data>
+  <data name="KanbanView" xml:space="preserve">
+    <value>Kanban view</value>
   </data>
 </root>

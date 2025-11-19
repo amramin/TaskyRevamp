@@ -412,6 +412,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Clear search.
+        /// </summary>
+        public static string ClearSearch {
+            get {
+                return ResourceManager.GetString("ClearSearch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Confirm.
         /// </summary>
         public static string Confirm {
@@ -1096,6 +1105,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Kanban view.
+        /// </summary>
+        public static string KanbanView {
+            get {
+                return ResourceManager.GetString("KanbanView", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to You can select the report language that will be sent via email..
         /// </summary>
         public static string languageHint {
@@ -1345,6 +1363,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string NoPrivilegeAvailable {
             get {
                 return ResourceManager.GetString("NoPrivilegeAvailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No results found.
+        /// </summary>
+        public static string NoResultsFound {
+            get {
+                return ResourceManager.GetString("NoResultsFound", resourceCulture);
             }
         }
         
@@ -1709,20 +1736,26 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select at least one value..
+        ///   Looks up a localized string similar to Select.
         /// </summary>
+
         public static string SelectAtLeastOneValue {
             get {
                 return ResourceManager.GetString("SelectAtLeastOneValue", resourceCulture);
             }
         }
+        public static string Select {
+            get {
+                return ResourceManager.GetString("Select", resourceCulture);
+            }
+        }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select Day.
+        ///   Looks up a localized string similar to Select at least one value..
         /// </summary>
-        public static string SelectDay {
+        public static string SelectAtLeastOneValue {
             get {
-                return ResourceManager.GetString("SelectDay", resourceCulture);
+                return ResourceManager.GetString("SelectAtLeastOneValue", resourceCulture);
             }
         }
         
@@ -2092,6 +2125,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string ToUser {
             get {
                 return ResourceManager.GetString("ToUser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Try adjusting your search..
+        /// </summary>
+        public static string TryAjustingYourSearch {
+            get {
+                return ResourceManager.GetString("TryAjustingYourSearch", resourceCulture);
             }
         }
         
