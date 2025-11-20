@@ -1,4 +1,4 @@
-﻿@page "/add-privilege"
+﻿@page "/privilege"
 @using TaskyRevamp.Client.Pages.Permission.Modules
 @using TaskyRevamp.Client.Services
 @using TaskyRevamp.Dto.Enums
@@ -11,16 +11,18 @@
 
 <div class="page-header">
     <div class="title-block">
-        <button class="btn btn-action-24">
+        <button type="button" class="btn btn-action-24" @onclick="Return">
             <span class="icon">
                 <SVGCrud SVGType="SVGCrud.SVGTypeEnum.BackArrow"></SVGCrud>
             </span>
         </button>
-        <h1 class="page-headline"> @Loc["AddNewPrivilege"]</h1>
+        <h1 class="page-headline"> @Loc[PageTitle]</h1>
     </div>
 
 </div>
 <div class="page-body">
+     @if (editContext != null)
+    {
     <!-- Tabs -->
     <div class="line-tabs-nav">
         @foreach (var tab in new[] { "General", "Task", "Report" })
@@ -65,31 +67,27 @@
                                         <label class="form-label">
                                             @Loc["ArabicName"] <span class="text-danger">*</span>
                                         </label>
-                                        <InputText class="form-control" @bind-Value="PrivilegeDto.NameArabic"
-                                            placeholder=@Loc["EnterPrivilegeArabicName"] />
-                                        <ValidationMessage For="@(() => PrivilegeDto.NameArabic)"
-                                            class="small text-danger" />
+                                        <InputText class="form-control" @bind-Value="PrivilegeDto.NameArabic" placeholder=@Loc["EnterPrivilegeArabicName"] />
+                                        <ValidationMessage For="@(() => PrivilegeDto.NameArabic)" class="small text-danger" />
                                     </div>
                                     <div class="col-md-6">
                                         <label class="form-label">
                                             @Loc["EnglishName"] <span class="text-danger">*</span>
                                         </label>
-                                        <InputText class="form-control" @bind-Value="PrivilegeDto.NameEnglish"
-                                            placeholder=@Loc["EnterPrivilegeEnglishName"] />
-                                        <ValidationMessage For="@(() => PrivilegeDto.NameEnglish)"
-                                            class="small text-danger" />
+                                        <InputText class="form-control" @bind-Value="PrivilegeDto.NameEnglish" placeholder=@Loc["EnterPrivilegeEnglishName"] />
+                                        <ValidationMessage For="@(() => PrivilegeDto.NameEnglish)" class="small text-danger" />
                                     </div>
                                 </div>
                             </div>
                             <!-- GeneralModule child component -->
-                            <GeneralModule PrivilegeDto="PrivilegeDto"
-                                OnValidationStateChanged="@OnGeneralModuleValidationChanged" />
+                                <GeneralModule PrivilegeDto="PrivilegeDto" Mode="Mode" IsViewMode="IsViewMode"
+                                           OnValidationStateChanged="@OnGeneralModuleValidationChanged" />
                         </div>
                         <div style="display:@(SelectedTab == "Task" ? "block" : "none")">
-                            <TaskModule PrivilegeDto="PrivilegeDto" />
+                            <TaskModule PrivilegeDto="PrivilegeDto" Mode="Mode" IsViewMode="IsViewMode"/>
                         </div>
                         <div style="display:@(SelectedTab == "Report" ? "block" : "none")">
-                            <ReportModule PrivilegeDto="PrivilegeDto" />
+                            <ReportModule PrivilegeDto="PrivilegeDto" Mode="Mode" IsViewMode="IsViewMode"/>
                         </div>
                     </div>
                 </div>
@@ -102,25 +100,42 @@
                             <button type="button" class="btn btn-lg btn-light" @onclick="CancelSettings">
                                 @Loc["Cancel"]
                             </button>
-                            <button type="submit" class="btn btn-lg btn-primary">@Loc["Save"]</button>
+                            <button type="submit" disabled="@IsViewMode" class="btn btn-lg btn-primary">@Loc["Save"]</button>
                         </div>
                     </div>
                 </div>
             </div>
         </EditForm>
     </div>
+    }
 </div>
 @code {
+    [Parameter][SupplyParameterFromQuery] public string Mode { get; set; } = "add";
+    [Parameter][SupplyParameterFromQuery] public Guid? Id { get; set; }
     public PrivilegeDto PrivilegeDto { get; set; } = new PrivilegeDto();
     private string SelectedTab { get; set; } = "General";
     private EditContext? editContext;
-    private ValidationMessageStore messageStore;
+    private ValidationMessageStore? messageStore;
     private bool isGeneralModuleValid = true;
+    private string PageTitle =>
+                Mode == "add" ? "AddNewPrivilege" :
+                Mode == "edit" ? "EditPrivilege" : "ViewPermission";
+    public bool IsViewMode => Mode == "view";
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
         editContext = new EditContext(PrivilegeDto);
         messageStore = new ValidationMessageStore(editContext);
+        if (Mode != "add" && Id.HasValue)
+        {
+            var res = await _privilegeConsumer.GetPrivilegeById(Id.Value);
+            if (res.Success && res.Data != null)
+            {
+                PrivilegeDto = res.Data;
+                editContext = new EditContext(PrivilegeDto);
+                messageStore = new ValidationMessageStore(editContext);
+            }
+        }
         editContext.OnFieldChanged += (_, e) =>
         {
             messageStore.Clear(e.FieldIdentifier);
@@ -144,12 +159,12 @@
 
     private void ClearValidationMessages()
     {
-        messageStore.Clear();
+        messageStore!.Clear();
         editContext!.NotifyValidationStateChanged();
     }
     private void AddErrorsToEditContext(IReadOnlyDictionary<string, List<string>> errors)
     {
-        messageStore.Clear();
+        messageStore!.Clear();
         foreach (var error in errors)
         {
             var fieldIdentifier = new FieldIdentifier(PrivilegeDto, error.Key);
@@ -209,6 +224,9 @@
 
     private async Task SaveSettings()
     {
+        if (IsViewMode)
+            return;
+
         if (!isGeneralModuleValid)
         {
             SelectedTab = "General";
@@ -221,21 +239,34 @@
             StateHasChanged();
             return;
         }
-        var json = System.Text.Json.JsonSerializer.Serialize(PrivilegeDto, new System.Text.Json.JsonSerializerOptions
-        {
-            WriteIndented = true
-        });
-        Console.WriteLine(json);
-
+        // var json = System.Text.Json.JsonSerializer.Serialize(PrivilegeDto, new System.Text.Json.JsonSerializerOptions
+        // {
+        //     WriteIndented = true
+        // });
+        // Console.WriteLine(json);
         ClearValidationMessages();
-        var res = await _privilegeConsumer.CreatePrivilege(PrivilegeDto);
-        if (res.Errors != null && res.Errors.Count > 0)
+        if (Mode == "add")
         {
-            AddErrorsToEditContext(res.Errors);
-            return;
+            var res = await _privilegeConsumer.CreatePrivilege(PrivilegeDto);
+            if (res.Errors != null && res.Errors.Count > 0)
+            {
+                AddErrorsToEditContext(res.Errors);
+                return;
+            }
+            await ToastService.ShowToastAsync(Loc["Added successfully"], "success");
         }
-        await ToastService.ShowToastAsync(Loc["Added successfully"], "success");
+        else if (Mode == "edit")
+        {
+            var res = await _privilegeConsumer.UpdatePrivilege(PrivilegeDto);
+            if (res.Errors != null && res.Errors.Count > 0)
+            {
+                AddErrorsToEditContext(res.Errors);
+                return;
+            }
+            await ToastService.ShowToastAsync(Loc["Edited successfully"], "success");
+        }
         navigationManager.NavigateTo("/Privileges");
-    }
 
+    }
+    private void Return() => navigationManager.NavigateTo("/Privileges");
 }

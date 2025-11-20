@@ -87,7 +87,7 @@
                                                 </button>
                                             </li>
                                             <li>
-                                                <button class="dropdown-item" @onclick="@(() => DeletePrivilege(item))">
+                                                <button class="dropdown-item text-danger" @onclick="@(() => DeletePrivilege(item))">
                                                     <span class="icon">
                                                         <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Delete"></SVGCrud>
                                                     </span>
@@ -176,15 +176,13 @@ else
         totalPages = data.TotalPages;
         totalCount = data.TotalCount;
     }
-    private void AddPrivilege() => navigationManager.NavigateTo("/add-privilege");
+    private void AddPrivilege() => navigationManager.NavigateTo("/privilege?mode=add");
+    private void EditPrivilege(Guid id) => navigationManager.NavigateTo($"/privilege?mode=edit&id={id}");
+    private void ViewPermission(Guid id) => navigationManager.NavigateTo($"/privilege?mode=view&id={id}");
 
-    private void EditPrivilege(Guid id)
-    {
-       
-    }
     private void DeletePrivilege(PrivilegeDtoWithName privilege)
     {
-        PopupService.ShowConfirmation(@Loc["SourceSure"], @Loc["Confirm"], OnDeleteConfirmed, type: ConfirmationType.Danger);
+        PopupService.ShowConfirmation(@Loc["Sure"], @Loc["Confirm"], OnDeleteConfirmed, type: ConfirmationType.Danger);
         selectedPrivilege = privilege;
         showConfirm = true;
     }
@@ -192,23 +190,19 @@ else
     {
         if (confirmed && selectedPrivilege != null)
         {
-            // var result = await _sourceSettingConsumer.DeleteSource(selectedPrivilege.PrivilegeDto.Id);
-            // if (result.Success)
-            // {
-            //     Privilegs.Remove(selectedPrivilege);
-            //     initialPrivilegs = initialPrivilegs.Where(s => s.PrivilegeDto.Id != selectedPrivilege.PrivilegeDto.Id).ToList();
-            //     showConfirm = false;
-            //     StateHasChanged();
-            //     await ToastService.ShowToastAsync(Loc["Deleted successfully"], "success");
-            // }
+            var result = await _privilegeConsumer.DeletePrivilege(selectedPrivilege.PrivilegeDto.Id);
+            if (result.Success)
+            {
+                Privilegs.Remove(selectedPrivilege);
+                initialPrivilegs = initialPrivilegs.Where(s => s.PrivilegeDto.Id != selectedPrivilege.PrivilegeDto.Id).ToList();
+                showConfirm = false;
+                StateHasChanged();
+                await ToastService.ShowToastAsync(Loc["Deleted successfully"], "success");
+            }
         }
         selectedPrivilege = null;
     }
     private void ViewUsers(Guid id)
-    {
-
-    }
-    private void ViewPermission(Guid id)
     {
 
     }

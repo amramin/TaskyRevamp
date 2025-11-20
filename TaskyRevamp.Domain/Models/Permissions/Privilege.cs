@@ -9,6 +9,9 @@ using TaskyRevamp.Domain.Models.Permissions.ReportModule;
 using TaskyRevamp.Domain.Models.Permissions.TaskModule;
 using TaskyRevamp.Domain.Models.Users;
 using TaskyRevamp.Dto.Permissions;
+using TaskyRevamp.Dto.Permissions.GeneralModule;
+using TaskyRevamp.Dto.Permissions.ReportModule;
+using TaskyRevamp.Dto.Permissions.TaskModule;
 
 namespace TaskyRevamp.Domain.Models.Permissions
 {
@@ -99,6 +102,18 @@ namespace TaskyRevamp.Domain.Models.Permissions
 				CreatedById = CreatedById,
 				UpdateDate = UpdateDate,
 				UpdatedById= UpdatedById,
+				GeneralModulePermissions = GeneralModulePermissions?
+									  .Select(g => g.CopyToDto())
+									  .ToList() ?? new List<GeneralModulePermissionDto>(),
+				ReportModulePermissionDtos = ReportModulePermissions?
+									  .Select(r => r.CopyToDto())
+									  .ToList() ?? new List<ReportModulePermissionDto>(),
+				TaskModuleUserDepartmentDto = TaskModuleUserDepartmentPermissions?
+									  .Select(t => t.CopyToDto())
+									  .ToList() ?? new List<TaskModuleUserDepartmentPermissionDto>(),
+				TaskModuleExternalDepartmentDto = TaskModuleExternalDepartmentPermissions?
+									  .Select(e => e.CopyToDto())
+									  .ToList() ?? new List<TaskModuleExternalDepartmentDto>()
 			};
 		}
 	}
