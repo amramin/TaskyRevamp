@@ -5,84 +5,105 @@
 @inject IStringLocalizer<SharedResources> Loc
 @inject NotificationTypeTemplateConsumer _NotificationTypeTemplateConsumer
 
+<div class="page-header">
+    <div class="title-block">
+        <button class="btn btn-action-24">
+            <span class="icon">
+                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.BackArrow"></SVGCrud>
+            </span>
+        </button>
+        <h1 class="page-headline">Configure system notification content</h1>
+    </div>
 
+</div>
+<div class="page-body">
+ <div class="card setting-card">
 <EditForm EditContext="@editContext" OnSubmit="@OnSubmitHandler">
     <DataAnnotationsValidator />
-    <div class="body">
-        <div class="row g-2">
-        <div class="col-lg-6">
-        <div class="mb-6">
-            <label class="form-label">
-                @Loc["SubjectEnglish"]
-                <span class="text-danger">*</span>
-            </label>
-            <InputText class="form-control" @bind-Value="NotificationTypeTamplate.SubjectEnglish" />
-            <ValidationMessage class="small text-danger" For="@(() => NotificationTypeTamplate.SubjectEnglish)"></ValidationMessage>
-        </div>
-        </div>
-        <div class="col-lg-6">
-           
-            <label class="form-label">
-                @Loc["SubjectArabic"]
-                <span class="text-danger">*</span>
-            </label>
-
-            <div class="color-group">
-                <InputText class="form-control" @bind-Value="NotificationTypeTamplate.SubjectArabic" />
-
-
-
+    <div class="card-body">
+        <div class="row g-3">
+            <div class="col-lg-6">
+               
+                    <label class="form-label">
+                        @Loc["SubjectEnglish"]
+                        <span class="text-danger">*</span>
+                    </label>
+                    <InputText class="form-control" @bind-Value="NotificationTypeTamplate.SubjectEnglish" />
+                    <ValidationMessage class="small text-danger" For="@(() => NotificationTypeTamplate.SubjectEnglish)">
+                    </ValidationMessage>
+                
             </div>
-            <ValidationMessage class="small text-danger" For="@(() => NotificationTypeTamplate.SubjectEnglish)"></ValidationMessage>
-        </div>
-        </div>
-       </div>
-        <div class="row g-2">
+            <div class="col-lg-6">
+
+                <label class="form-label">
+                    @Loc["SubjectArabic"]
+                    <span class="text-danger">*</span>
+                </label>
+
+                <div class="color-group">
+                    <InputText class="form-control" @bind-Value="NotificationTypeTamplate.SubjectArabic" />
+
+
+
+                </div>
+                <ValidationMessage class="small text-danger" For="@(() => NotificationTypeTamplate.SubjectEnglish)">
+                </ValidationMessage>
+            </div>
+       
         <div class="col-lg-6">
-         <div class="mb-6">
-
-
-                <RichTextEditorComponent EditorId="RTE_EnglishTemplateEnglish" @ref="RichTextEditorComponentRefTemplateEnglish"
-                                         Content="@NotificationTypeTamplate.TemplateEnglish" ContentChanged="OnDescriptionEnglishChanged">
+         <label class="form-label">
+                          Email body in English
+                    <span class="text-danger">*</span>
+                </label>
+                <RichTextEditorComponent EditorId="RTE_EnglishTemplateEnglish"
+                    @ref="RichTextEditorComponentRefTemplateEnglish" Content="@NotificationTypeTamplate.TemplateEnglish"
+                    ContentChanged="OnDescriptionEnglishChanged">
                 </RichTextEditorComponent>
 
                 <div class="d-flex align-items-center justify-content-between">
                     <div class="d-flex gap-2">
-                        <ValidationMessage class="small text-danger" For="@(() => NotificationTypeTamplate.TemplateEnglish)" />
+                        <ValidationMessage class="small text-danger"
+                            For="@(() => NotificationTypeTamplate.TemplateEnglish)" />
                     </div>
                 </div>
-            </div>
+            
         </div>
         <div class="col-lg-6">
-            <div class="mb-6">
-
-
-                <RichTextEditorComponent EditorId="RTE_EnglishTemplateArabic" @ref="RichTextEditorComponentRefTemplateArabic"
-                                         Content="@NotificationTypeTamplate.TemplateArabic" ContentChanged="OnDescriptionArabicChanged">
+         <label class="form-label">
+                          Email body in Arabic
+                    <span class="text-danger">*</span>
+                </label>
+                <RichTextEditorComponent EditorId="RTE_EnglishTemplateArabic"
+                    @ref="RichTextEditorComponentRefTemplateArabic" Content="@NotificationTypeTamplate.TemplateArabic"
+                    ContentChanged="OnDescriptionArabicChanged">
                 </RichTextEditorComponent>
 
                 <div class="d-flex align-items-center justify-content-between">
                     <div class="d-flex gap-2">
-                        <ValidationMessage class="small text-danger" For="@(() => NotificationTypeTamplate.TemplateArabic)" />
+                        <ValidationMessage class="small text-danger"
+                            For="@(() => NotificationTypeTamplate.TemplateArabic)" />
                     </div>
                 </div>
-            </div>
-
         </div>
     </div>
+ </div>
     
-    <div class="offcanvas-footer">
-        <div class="row g-2">
-            <div class="col-3">
-                <div class="d-grid">  <button type="button" class="btn btn-lg btn-light" @onclick="OnCancelClick">@Loc["Cancel"]</button></div>
+     <div class="card-footer">
+                <div class="row justify-content-center">
+                    <div class="col-xxl-12 col-xl-12 col-lg-12 col-md-12">
+                        <div class="action-buttons">
+                           <button type="button" class="btn btn-lg btn-light"
+                        @onclick="OnCancelClick">@Loc["Cancel"]</button>
+                            <button type="submit"
+                        class="btn btn-lg btn-primary">@Loc[@SubmitButtonText]</button>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="col-3">
-                <div class="d-grid">    <button type="submit" class="btn btn-lg btn-primary">@Loc[@SubmitButtonText]</button></div>
-            </div>
-        </div>
-    </div>
+       
 </EditForm>
-
+</div>
+</div>
 
 @code {
 

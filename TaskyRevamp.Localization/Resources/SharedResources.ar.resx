@@ -153,6 +153,9 @@
   <data name="RetentionPeriodOptions" xml:space="preserve">
     <value>خيارات فترة الإحتفاظ</value>
   </data>
+    <data name="SystemNotifications" xml:space="preserve">
+    <value>إشعارات النظام</value>
+  </data>
   <data name="Cancel" xml:space="preserve">
     <value>إلغاء</value>
   </data>
@@ -263,6 +266,9 @@
   </data>
   <data name="Subtask_Level" xml:space="preserve">
     <value>مستوى المهمة الفرعية</value>
+  </data>
+   <data name="Types of system notification Messages" xml:space="preserve">
+    <value>أنواع رسائل إشعارات النظام</value>
   </data>
   <data name="subtask_hint" xml:space="preserve">
     <value>حدد الحد الأقصى لمستويات المهام الفرعية المسموح بها عند إنشاء مهمة. هذا الخيار يتحكم في عمق تداخل المهام</value>

@@ -17,6 +17,10 @@
   line-height: 1.5rem;
   color: var(--dark-900);
   margin-bottom: 0;
+   text-transform: lowercase;
+  &::first-letter{
+      text-transform: uppercase;
+  }
   .parent-page-link {
     text-decoration: none;
     color: var(--dark-900);
@@ -31,26 +35,46 @@
   font-size: 1.25rem;
   font-weight: 600;
   color: var(--dark-800);
+  text-transform: lowercase;
+  &::first-letter{
+      text-transform: uppercase;
+  }
 }
 .headline-6 {
   font-size: 1rem;
   font-weight: 600;
   color: var(--dark-800);
+   text-transform: lowercase;
+  &::first-letter{
+      text-transform: uppercase;
+  }
 }
 .headline-7 {
   font-size: 0.875rem;
   font-weight: 600;
+   text-transform: lowercase;
+  &::first-letter{
+      text-transform: uppercase;
+  }
  
 }
 .small-medium-text {
   font-size: 0.875rem;
   color: var(--dark-600);
   font-weight: 500;
+   text-transform: lowercase;
+  &::first-letter{
+      text-transform: uppercase;
+  }
 }
 .badge {
   font-size: 0.875rem;
   padding: 0.65rem 0.5rem;
   font-weight: 500;
+   text-transform: lowercase;
+  &::first-letter{
+      text-transform: uppercase;
+  }
 }
 /* strat alert*/
 /* strat alert*/

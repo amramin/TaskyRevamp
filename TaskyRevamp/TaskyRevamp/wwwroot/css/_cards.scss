@@ -66,8 +66,8 @@
 
     &:has(.btn-group-vertical) {
       cursor: grab;
-      .card-body{
-      max-width: calc(100% - 2.5rem);
+      .card-body {
+        max-width: calc(100% - 2.5rem);
       }
     }
     &:hover {
@@ -96,14 +96,6 @@
       border: 1px solid var(--light-300);
     }
 
-    .actions {
-      padding-inline-start: 0.75rem;
-      margin-inline-start: 0.75rem;
-      border-inline-start: 1px solid var(--light-200);
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
     .toggle {
       padding: 0 1rem;
       width: 4.5rem;
@@ -299,6 +291,14 @@
       border-top: 1px solid var(--light-300);
     }
   }
+  .actions {
+  padding-inline-start: 0.75rem;
+  margin-inline-start: 0.75rem;
+  border-inline-start: 1px solid var(--light-200);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
 }
 
 /* Connecting each child up to the horizontal line */

@@ -153,6 +153,9 @@
   <data name="RetentionPeriodOptions" xml:space="preserve">
     <value>Retention Period Options</value>
   </data>
+  <data name="SystemNotifications" xml:space="preserve">
+    <value>System notifications</value>
+  </data>
   <data name="Cancel" xml:space="preserve">
     <value>Cancel</value>
   </data>
@@ -263,6 +266,9 @@
   </data>
   <data name="Subtask_Level" xml:space="preserve">
     <value>subtask level</value>
+  </data>
+    <data name="Types of system notification Messages" xml:space="preserve">
+    <value>Types of system notification Messages</value>
   </data>
   <data name="subtask_hint" xml:space="preserve">
     <value>Set the maximum number of subtask levels allowed when creating a task. This controls how deeply tasks can be nested.</value>
