@@ -17,12 +17,13 @@
 
 </div>
 <div class="page-body">
+ <div class="card setting-card">
 <EditForm EditContext="@editContext" OnSubmit="@OnSubmitHandler">
     <DataAnnotationsValidator />
-    <div class="body">
-        <div class="row g-2">
+    <div class="card-body">
+        <div class="row g-3">
             <div class="col-lg-6">
-                <div class="mb-6">
+               
                     <label class="form-label">
                         @Loc["SubjectEnglish"]
                         <span class="text-danger">*</span>
@@ -30,7 +31,7 @@
                     <InputText class="form-control" @bind-Value="NotificationTypeTamplate.SubjectEnglish" />
                     <ValidationMessage class="small text-danger" For="@(() => NotificationTypeTamplate.SubjectEnglish)">
                     </ValidationMessage>
-                </div>
+                
             </div>
             <div class="col-lg-6">
 
@@ -48,13 +49,12 @@
                 <ValidationMessage class="small text-danger" For="@(() => NotificationTypeTamplate.SubjectEnglish)">
                 </ValidationMessage>
             </div>
-        </div>
-    </div>
-    <div class="row g-2">
+       
         <div class="col-lg-6">
-            <div class="mb-6">
-
-
+         <label class="form-label">
+                          Email body in English
+                    <span class="text-danger">*</span>
+                </label>
                 <RichTextEditorComponent EditorId="RTE_EnglishTemplateEnglish"
                     @ref="RichTextEditorComponentRefTemplateEnglish" Content="@NotificationTypeTamplate.TemplateEnglish"
                     ContentChanged="OnDescriptionEnglishChanged">
@@ -66,12 +66,13 @@
                             For="@(() => NotificationTypeTamplate.TemplateEnglish)" />
                     </div>
                 </div>
-            </div>
+            
         </div>
         <div class="col-lg-6">
-            <div class="mb-6">
-
-
+         <label class="form-label">
+                          Email body in Arabic
+                    <span class="text-danger">*</span>
+                </label>
                 <RichTextEditorComponent EditorId="RTE_EnglishTemplateArabic"
                     @ref="RichTextEditorComponentRefTemplateArabic" Content="@NotificationTypeTamplate.TemplateArabic"
                     ContentChanged="OnDescriptionArabicChanged">
@@ -83,24 +84,25 @@
                             For="@(() => NotificationTypeTamplate.TemplateArabic)" />
                     </div>
                 </div>
-            </div>
-
         </div>
     </div>
-
-    <div class="offcanvas-footer">
-        <div class="row g-2">
-            <div class="col-3">
-                <div class="d-grid"> <button type="button" class="btn btn-lg btn-light"
-                        @onclick="OnCancelClick">@Loc["Cancel"]</button></div>
+ </div>
+    
+     <div class="card-footer">
+                <div class="row justify-content-center">
+                    <div class="col-xxl-12 col-xl-12 col-lg-12 col-md-12">
+                        <div class="action-buttons">
+                           <button type="button" class="btn btn-lg btn-light"
+                        @onclick="OnCancelClick">@Loc["Cancel"]</button>
+                            <button type="submit"
+                        class="btn btn-lg btn-primary">@Loc[@SubmitButtonText]</button>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="col-3">
-                <div class="d-grid"> <button type="submit"
-                        class="btn btn-lg btn-primary">@Loc[@SubmitButtonText]</button></div>
-            </div>
-        </div>
-    </div>
+       
 </EditForm>
+</div>
 </div>
 
 @code {
