@@ -142,20 +142,24 @@
     <value>This field is required</value>
   </data>
   <data name="DataSavedSuccessfully" xml:space="preserve">
-    <value>Data Saved Successfully</value>
+    <value>Data saved successfully</value>
   </data>
   <data name="ParentNotFound" xml:space="preserve">
-    <value>Parent Not Found</value>
+    <value>Parent not found</value>
   </data>
   <data name="RecycleBinConfiguration" xml:space="preserve">
-    <value>Recycle Bin Configuration</value>
+    <value>Recycle bin configuration</value>
   </data>
   <data name="RetentionPeriodOptions" xml:space="preserve">
-    <value>Retention Period Options</value>
+    <value>Retention period Options</value>
   </data>
   <data name="SystemNotifications" xml:space="preserve">
     <value>System notifications</value>
   </data>
+  <data name="EmailNotification" xml:space="preserve">
+    <value>Email notifications</value>
+  </data>
+  
   <data name="Cancel" xml:space="preserve">
     <value>Cancel</value>
   </data>
@@ -175,37 +179,37 @@
     <value>3 days</value>
   </data>
   <data name="RejectionConfiguration" xml:space="preserve">
-    <value>Task Rejection Configuration</value>
+    <value>Task rejection configuration</value>
   </data>
   <data name="RejectionPeriodOptions" xml:space="preserve">
-    <value>Rejection Period Options</value>
+    <value>Rejection period options</value>
   </data>
   <data name="Priority" xml:space="preserve">
-    <value>Tasks priority Configuration</value>
+    <value>Tasks priority configuration</value>
   </data>
   <data name="Added successfully" xml:space="preserve">
     <value>Added successfully</value>
   </data>
   <data name="Name English" xml:space="preserve">
-    <value>Name English</value>
+    <value>Name english</value>
   </data>
   <data name="Name Arabic" xml:space="preserve">
-    <value>Name Arabic</value>
+    <value>Name arabic</value>
   </data>
   <data name="Background Color Indicator" xml:space="preserve">
-    <value>Background Color Indicator</value>
+    <value>Background color indicator</value>
   </data>
   <data name="Name Color Indicator" xml:space="preserve">
-    <value>Name Color Indicator</value>
+    <value>Name color indicator</value>
   </data>
   <data name="Order" xml:space="preserve">
-    <value>Priority Ranking</value>
+    <value>Priority ranking</value>
   </data>
   <data name="EditPriority" xml:space="preserve">
-    <value>Edit Priority</value>
+    <value>Edit priority</value>
   </data>
   <data name="AddPriority" xml:space="preserve">
-    <value>Add Priority</value>
+    <value>Add priority</value>
   </data>
   <data name="Delete" xml:space="preserve">
     <value>Delete</value>
@@ -217,22 +221,22 @@
     <value>You can't duplicate the priority name</value>
   </data>
   <data name="PriorityConfiguration" xml:space="preserve">
-    <value>Priority Configuration</value>
+    <value>Priority configuration</value>
   </data>
   <data name="PriorityOptions" xml:space="preserve">
-    <value>Priority Options</value>
+    <value>Priority options</value>
   </data>
   <data name="StatusConfig" xml:space="preserve">
-    <value>Tasks status Configuration </value>
+    <value>Tasks status configuration </value>
   </data>
   <data name="StatusOptions" xml:space="preserve">
-    <value>Status Options</value>
+    <value>Status options</value>
   </data>
   <data name="List" xml:space="preserve">
     <value>List view</value>
   </data>
   <data name="Gantt" xml:space="preserve">
-    <value>Gantt Chart view</value>
+    <value>Gantt chart view</value>
   </data>
   <data name="Kanban" xml:space="preserve">
     <value>Kanban view</value>
@@ -241,10 +245,10 @@
     <value>Card view</value>
   </data>
   <data name="List_Type" xml:space="preserve">
-    <value>Type View</value>
+    <value>Type view</value>
   </data>
   <data name="List_Source" xml:space="preserve">
-    <value>Source View</value>
+    <value>Source view</value>
   </data>
   <data name="List_Timeline" xml:space="preserve">
     <value>Timeline view</value>
@@ -256,19 +260,19 @@
     <value>Dashboard</value>
   </data>
   <data name="Tasksviews" xml:space="preserve">
-    <value>Tasks Views</value>
+    <value>Tasks views</value>
   </data>
   <data name="Default View Error" xml:space="preserve">
     <value>The selected default page is no longer active.</value>
   </data>
   <data name="Default view" xml:space="preserve">
-    <value>Default View</value>
+    <value>Default view</value>
   </data>
   <data name="Subtask_Level" xml:space="preserve">
     <value>subtask level</value>
   </data>
     <data name="Types of system notification Messages" xml:space="preserve">
-    <value>Types of system notification Messages</value>
+    <value>Types of system notification messages</value>
   </data>
   <data name="subtask_hint" xml:space="preserve">
     <value>Set the maximum number of subtask levels allowed when creating a task. This controls how deeply tasks can be nested.</value>
@@ -286,10 +290,10 @@
     <value>Select your default page after login</value>
   </data>
   <data name="ViewOptions" xml:space="preserve">
-    <value>View Options</value>
+    <value>View options</value>
   </data>
   <data name="WorkingDaysConfiguration" xml:space="preserve">
-    <value>Working days Configuration</value>
+    <value>Working days configuration</value>
   </data>
   <data name="workingDaysHint" xml:space="preserve">
     <value>Define the official working days for your organization. This configuration will be used for task scheduling, deadlines, and workload calculations</value>
@@ -331,7 +335,7 @@
     <value>You can select the report language that will be sent via email.</value>
   </data>
   <data name="ReportLanguage" xml:space="preserve">
-    <value>Report Language</value>
+    <value>Report language</value>
   </data>
   <data name="Day" xml:space="preserve">
     <value>Day</value>
@@ -352,16 +356,16 @@
     <value>Set the auto deletion period from the system for deleted tasks inside the recycle bin</value>
   </data>
   <data name="SourceConfiguration" xml:space="preserve">
-    <value>Task source Configuration</value>
+    <value>Task source configuration</value>
   </data>
   <data name="AddTaskSource" xml:space="preserve">
-    <value>Add Task Source</value>
+    <value>Add task source</value>
   </data>
   <data name="EditTaskSource" xml:space="preserve">
-    <value>Edit Task Source</value>
+    <value>Edit task source</value>
   </data>
   <data name="DeleteTaskSource" xml:space="preserve">
-    <value>Delete Task Source</value>
+    <value>Delete task source</value>
   </data>
   <data name="active" xml:space="preserve">
     <value>Active</value>
@@ -370,7 +374,7 @@
     <value>Inactive</value>
   </data>
   <data name="name" xml:space="preserve">
-    <value>Name </value>
+    <value>Name</value>
   </data>
   <data name="AllrightsKSA" xml:space="preserve">
     <value>All rights are safe - Kingdom of Saudi Arabia</value>
@@ -379,28 +383,28 @@
     <value>Title</value>
   </data>
   <data name="ActualProgress" xml:space="preserve">
-    <value>Actual Progress</value>
+    <value>Actual progress</value>
   </data>
   <data name="Source" xml:space="preserve">
     <value>Source</value>
   </data>
   <data name="StartDate" xml:space="preserve">
-    <value>Start Date</value>
+    <value>Start date</value>
   </data>
   <data name="EndDate" xml:space="preserve">
-    <value>End Date</value>
+    <value>End date</value>
   </data>
   <data name="weight" xml:space="preserve">
     <value>Weight</value>
   </data>
   <data name="AssignedTo" xml:space="preserve">
-    <value>Assigned To</value>
+    <value>Assigned to</value>
   </data>
   <data name="CreatorDepartment" xml:space="preserve">
-    <value>Creator Department</value>
+    <value>Creator department</value>
   </data>
   <data name="AssignedToDepartment" xml:space="preserve">
-    <value>Assigned To Department</value>
+    <value>Assigned to department</value>
   </data>
   <data name="Mandatory" xml:space="preserve">
     <value>Mandatory</value>
@@ -412,43 +416,43 @@
     <value>Dependency</value>
   </data>
   <data name="CreatedBy" xml:space="preserve">
-    <value>Created By</value>
+    <value>Created by</value>
   </data>
   <data name="CreatedByDepartment" xml:space="preserve">
-    <value>Created By Department</value>
+    <value>Created by department</value>
   </data>
   <data name="Duration" xml:space="preserve">
     <value>Duration</value>
   </data>
   <data name="PlannedProgress" xml:space="preserve">
-    <value>Planned Progress</value>
+    <value>Planned progress</value>
   </data>
   <data name="CreationDate" xml:space="preserve">
-    <value>Creation Date</value>
+    <value>Creation date</value>
   </data>
   <data name="UpdateDate" xml:space="preserve">
-    <value>Updated Date</value>
+    <value>Updated date</value>
   </data>
   <data name="UpdatedBy" xml:space="preserve">
-    <value>Updated By</value>
+    <value>Updated by</value>
   </data>
   <data name="Action" xml:space="preserve">
     <value>Action </value>
   </data>
   <data name="NoTaskSourcesAvailable" xml:space="preserve">
-    <value>No Task Sources Available</value>
+    <value>No task sources available</value>
   </data>
   <data name="AddANewTaskSourceToGetStarted" xml:space="preserve">
     <value>Add a new task source to get started.</value>
   </data>
   <data name="TaskTypeConfiguration" xml:space="preserve">
-    <value>Tasks type Configuration</value>
+    <value>Tasks type configuration</value>
   </data>
   <data name="AddTaskType" xml:space="preserve">
-    <value>Add Type</value>
+    <value>Add type</value>
   </data>
   <data name="NoTaskTypeAvailable" xml:space="preserve">
-    <value>No Task Type Available</value>
+    <value>No task type available</value>
   </data>
   <data name="AddANewTaskTypeToGetStarted" xml:space="preserve">
     <value>Add a new task type to get started.</value>
@@ -457,53 +461,52 @@
     <value>Type</value>
   </data>
   <data name="ActualWeight" xml:space="preserve">
-    <value>Actual Weight</value>
+    <value>Actual weight</value>
   </data>
   <data name="PlannedWeight" xml:space="preserve">
-    <value>Planned Weight</value>
+    <value>Planned weight</value>
   </data>
   <data name="FromStartDate" xml:space="preserve">
-    <value>From Start Date</value>
+    <value>From start date</value>
   </data>
   <data name="ToStartDate" xml:space="preserve">
-    <value>To Start Date</value>
+    <value>To start date</value>
   </data>
   <data name="FromEndDate" xml:space="preserve">
-    <value>From End Date</value>
+    <value>From end date</value>
   </data>
   <data name="ToEndDate" xml:space="preserve">
-    <value>To End Date</value>
+    <value>To end date</value>
   </data>
   <data name="FromCreationDate" xml:space="preserve">
-    <value>From Creation Date</value>
+    <value>From creation date</value>
   </data>
   <data name="ToCreationDate" xml:space="preserve">
-    <value>To Creation Date</value>
+    <value>To creation date</value>
   </data>
   <data name="DefaultColumnsConfiguration" xml:space="preserve">
-    <value>Default Columns Configuration</value>
+    <value>Default columns configuration</value>
   </data>
   <data name="FilterFields" xml:space="preserve">
-    <value>Filter Fields</value>
+    <value>Filter fields</value>
   </data>
   <data name="AddTaskFieldsConfiguration" xml:space="preserve">
-    <value>Add Task Fields Configuration</value>
+    <value>Add task fields configuration</value>
   </data>
   <data name="Nodepartmentavailable" xml:space="preserve">
-    <value> No department available
-Add a new department to get started</value>
+    <value> No department available add a new department to get started</value>
   </data>
   <data name="DepartmentDuplicateValidation" xml:space="preserve">
     <value>Department name must be unique. Please type a different name</value>
   </data>
   <data name="NameEnglish" xml:space="preserve">
-    <value>Name English</value>
+    <value>Name english</value>
   </data>
   <data name="NameArabic" xml:space="preserve">
-    <value>Name Arabic</value>
+    <value>Name arabic</value>
   </data>
   <data name="SelectParent" xml:space="preserve">
-    <value>Parent Department </value>
+    <value>Parent department </value>
   </data>
   <data name="Update" xml:space="preserve">
     <value>Update</value>
@@ -512,10 +515,10 @@ Add a new department to get started</value>
     <value>Departments</value>
   </data>
   <data name="AddDepartment" xml:space="preserve">
-    <value>Add Department</value>
+    <value>Add department</value>
   </data>
   <data name="DepartmentParent" xml:space="preserve">
-    <value>Parent Department</value>
+    <value>Parent department</value>
   </data>
   <data name="DefaultColumnsHint" xml:space="preserve">
     <value>Customize the columns you want to display and set the default column view that will appear when the user logs into the system.</value>
@@ -542,118 +545,118 @@ Add a new department to get started</value>
     <value>Enter number of days</value>
   </data>
   <data name="FieldNames" xml:space="preserve">
-    <value>Field Names</value>
+    <value>Field names</value>
   </data>
   <data name="AddTaskSettingNotFound" xml:space="preserve">
-    <value>Add Task Setting with Id {id} not found.</value>
+    <value>Add task setting with Id {id} not found.</value>
   </data>
   <data name="FilterFieldNotFound" xml:space="preserve">
-    <value>Filter Field with Id {id} not found.</value>
+    <value>Filter field with Id {id} not found.</value>
   </data>
   <data name="DefaultColumnNotFound" xml:space="preserve">
-    <value>Default Column with Id {id} not found.</value>
+    <value>Default column with Id {id} not found.</value>
   </data>
   <data name="System Identity Configuration" xml:space="preserve">
-    <value>System Identity Configuration</value>
+    <value>System identity configuration</value>
   </data>
   <data name="Primary Color" xml:space="preserve">
-    <value>Primary Color</value>
+    <value>Primary color</value>
   </data>
   <data name="Primary Active Color" xml:space="preserve">
-    <value>Primary Active Color</value>
+    <value>Primary active color</value>
   </data>
   <data name="Main Title" xml:space="preserve">
-    <value>Main Title</value>
+    <value>Main title</value>
   </data>
   <data name="Sub Title" xml:space="preserve">
-    <value>Sub Title</value>
+    <value>Sub title</value>
   </data>
   <data name="Navigation Background" xml:space="preserve">
-    <value>Navigation Background</value>
+    <value>Navigation background</value>
   </data>
   <data name="Border Color" xml:space="preserve">
-    <value>Border Color</value>
+    <value>Border color</value>
   </data>
   <data name="System Identity" xml:space="preserve">
-    <value>System Identity</value>
+    <value>System identity</value>
   </data>
   <data name="EditStatus" xml:space="preserve">
-    <value>Edit Status</value>
+    <value>Edit status</value>
   </data>
   <data name="Type Source Name English" xml:space="preserve">
-    <value>Type Source Name English</value>
+    <value>Type source name english</value>
   </data>
   <data name="Type Source Name Arabic" xml:space="preserve">
-    <value>Type Source Name Arabic</value>
+    <value>Type source name arabic</value>
   </data>
   <data name="Enter Task Type Name English" xml:space="preserve">
-    <value>Enter Task Type Name English</value>
+    <value>Enter task type name english</value>
   </data>
   <data name="Enter Task Type Name Arabic" xml:space="preserve">
-    <value>Enter Task Type Name Arabic</value>
+    <value>Enter task type name arabic</value>
   </data>
   <data name="EditTaskType" xml:space="preserve">
-    <value>Edit Task Type</value>
+    <value>Edit task type</value>
   </data>
   <data name="Enter Priority Name English" xml:space="preserve">
-    <value>Enter Priority Name English</value>
+    <value>Enter priority name english</value>
   </data>
   <data name="Enter Priority Name Arabic" xml:space="preserve">
-    <value>Enter Priority Name Arabic</value>
+    <value>Enter priority name arabic</value>
   </data>
   <data name="Deletedsuccessfully" xml:space="preserve">
     <value>Deleted successfully</value>
   </data>
   <data name="Addusers" xml:space="preserve">
-    <value>Add Users</value>
+    <value>Add users</value>
   </data>
   <data name="Errordatabase" xml:space="preserve">
     <value>Error database</value>
   </data>
   <data name="AddDelegation" xml:space="preserve">
-    <value>Add Delegation</value>
+    <value>Add delegation</value>
   </data>
   <data name="EditDelegation" xml:space="preserve">
-    <value>Edit Delegation</value>
+    <value>Edit delegation</value>
   </data>
   <data name="FromUser" xml:space="preserve">
-    <value>From User</value>
+    <value>From user</value>
   </data>
   <data name="ToUser" xml:space="preserve">
-    <value>To User</value>
+    <value>To user</value>
   </data>
   <data name="FromDate" xml:space="preserve">
-    <value>Start Date </value>
+    <value>Start date </value>
   </data>
   <data name="ToDate" xml:space="preserve">
-    <value>End Date</value>
+    <value>End date</value>
   </data>
   <data name="CreateDate" xml:space="preserve">
-    <value>Creation Date</value>
+    <value>Creation date</value>
   </data>
   <data name="SureDeleteDelegation" xml:space="preserve">
     <value>Are you sure you want to remove this delegation?</value>
   </data>
   <data name="NoDelegationvailable" xml:space="preserve">
-    <value>No Delegations available</value>
+    <value>No delegations available</value>
   </data>
   <data name="GeneralModule" xml:space="preserve">
-    <value>General Modules </value>
+    <value>General modules </value>
   </data>
   <data name="Privilege" xml:space="preserve">
     <value>Privilege </value>
   </data>
   <data name="TaskModule" xml:space="preserve">
-    <value>Task Module</value>
+    <value>Task module</value>
   </data>
   <data name="ReportModule" xml:space="preserve">
-    <value>Report Module</value>
+    <value>Report module</value>
   </data>
   <data name="AddNewPrivilege" xml:space="preserve">
-    <value>Add New Privilege</value>
+    <value>Add new privilege</value>
   </data>
   <data name="SelectReportOptions" xml:space="preserve">
-    <value>Select Report Options</value>
+    <value>Select report options</value>
   </data>
   <data name="ReportModuleHint" xml:space="preserve">
     <value>All the options below are optional. If no option is selected, then no report will be sent from the system to the users.</value>
@@ -665,19 +668,19 @@ Add a new department to get started</value>
     <value>Privilege with Id {id} not found.</value>
   </data>
   <data name="EnterPrivilegeName" xml:space="preserve">
-    <value>Permissions English Name</value>
+    <value>Permissions english name</value>
   </data>
   <data name="ArabicName" xml:space="preserve">
-    <value>Arabic Name</value>
+    <value>Arabic name</value>
   </data>
   <data name="EnglishName" xml:space="preserve">
-    <value>English Name</value>
+    <value>English name</value>
   </data>
   <data name="EnterPrivilegeArabicName" xml:space="preserve">
-    <value>Enter Privilege Arabic Name</value>
+    <value>Enter privilege arabic name</value>
   </data>
   <data name="EnterPrivilegeEnglishName" xml:space="preserve">
-    <value>Enter Privilege English Name</value>
+    <value>Enter privilege english name</value>
   </data>
   <data name="SelectAtLeastOneValue" xml:space="preserve">
     <value>Select at least one value.</value>
@@ -695,28 +698,28 @@ Add a new department to get started</value>
     <value>All</value>
   </data>
   <data name="DifferentDepartment" xml:space="preserve">
-    <value>Different Department</value>
+    <value>Different department</value>
   </data>
   <data name="SameDepartment" xml:space="preserve">
-    <value>Same Department</value>
+    <value>Same department</value>
   </data>
   <data name="SameUser" xml:space="preserve">
-    <value>Same User</value>
+    <value>Same user</value>
   </data>
   <data name="Module" xml:space="preserve">
     <value>Module</value>
   </data>
   <data name="ViewPermission" xml:space="preserve">
-    <value>View Permissions</value>
+    <value>View permissions</value>
   </data>
   <data name="ViewUsers" xml:space="preserve">
     <value>Users</value>
   </data>
   <data name="AddANewPrivilegeToGetStarted" xml:space="preserve">
-    <value>Add A New Privilege To Get Started</value>
+    <value>Add a new privilege to get started</value>
   </data>
   <data name="NoPrivilegeAvailable" xml:space="preserve">
-    <value>No Privilege Available</value>
+    <value>No privilege available</value>
   </data>
   <data name="Priority2" xml:space="preserve">
     <value>Priority</value>
@@ -728,37 +731,37 @@ Add a new department to get started</value>
     <value>Title</value>
   </data>
   <data name="TaskStatus" xml:space="preserve">
-    <value>Task Status</value>
+    <value>Task status</value>
   </data>
   <data name="AssigneduserNames" xml:space="preserve">
-    <value>Assignee </value>
+    <value>Assignee</value>
   </data>
   <data name="AddTask" xml:space="preserve">
-    <value>Add Task</value>
+    <value>Add task</value>
   </data>
   <data name="TitleEnglish" xml:space="preserve">
-    <value>Title English</value>
+    <value>Title english</value>
   </data>
   <data name="TitleArabic" xml:space="preserve">
-    <value>Title Arabic</value>
+    <value>Title aabic</value>
   </data>
   <data name="DescriptionEnglish" xml:space="preserve">
-    <value>Description English</value>
+    <value>Description english</value>
   </data>
   <data name="DescriptionArabic" xml:space="preserve">
-    <value>Description Arabic</value>
+    <value>Description arabic</value>
   </data>
   <data name="SelectType" xml:space="preserve">
-    <value>Select Type</value>
+    <value>Select type</value>
   </data>
   <data name="SelectSource" xml:space="preserve">
-    <value>Select Source</value>
+    <value>Select source</value>
   </data>
   <data name="ReminderDate" xml:space="preserve">
-    <value>Reminder Date</value>
+    <value>Reminder date</value>
   </data>
   <data name="SelectPriority" xml:space="preserve">
-    <value>Select Priority</value>
+    <value>Select priority</value>
   </data>
   <data name="AboveUserDepartmentLevel" xml:space="preserve">
     <value>Above user department level</value>
@@ -791,10 +794,10 @@ Add a new department to get started</value>
     <value>You can use an external department not related to the user department to apply the permission to it</value>
   </data>
   <data name="UserDepartment" xml:space="preserve">
-    <value>User Department</value>
+    <value>User department</value>
   </data>
   <data name="ExternalDepartment" xml:space="preserve">
-    <value>External Department</value>
+    <value>External department</value>
   </data>
   <data name="Department" xml:space="preserve">
     <value>Department</value>
@@ -803,34 +806,34 @@ Add a new department to get started</value>
     <value>Permissions</value>
   </data>
   <data name="EmployeesTasks" xml:space="preserve">
-    <value>Employee's Tasks</value>
+    <value>Employee's tasks</value>
   </data>
   <data name="ManagersTasks" xml:space="preserve">
-    <value>Manager's Tasks</value>
+    <value>Manager's tasks</value>
   </data>
   <data name="DirectionLevel" xml:space="preserve">
-    <value>Direction Level</value>
+    <value>Direction level</value>
   </data>
   <data name="DirectionType" xml:space="preserve">
-    <value>Direction Type</value>
+    <value>Direction type</value>
   </data>
   <data name="IncludingSubDepartment" xml:space="preserve">
-    <value>Including Sub-Department</value>
+    <value>Including sub-department</value>
   </data>
   <data name="PrivilegeDuplicateValidation" xml:space="preserve">
     <value>You can't duplicate the privilege name</value>
   </data>
   <data name="Subtask_Levels" xml:space="preserve">
-    <value>Subtask Levels</value>
+    <value>Subtask levels</value>
   </data>
   <data name="Select" xml:space="preserve">
     <value>Select</value>
   </data>
   <data name="users" xml:space="preserve">
-    <value>Users </value>
+    <value>Users</value>
   </data>
   <data name="email" xml:space="preserve">
-    <value>Email Address</value>
+    <value>Email address</value>
   </data>
   <data name="Add_user" xml:space="preserve">
     <value>Add user</value>
@@ -848,16 +851,16 @@ Add a new department to get started</value>
     <value>Privileges</value>
   </data>
   <data name="ViewPrivilege" xml:space="preserve">
-    <value>View Privilege</value>
+    <value>View privilege</value>
   </data>
   <data name="LinkUser" xml:space="preserve">
-    <value>Link a user to department and privilege</value>
+    <value>Link  to department and privilege</value>
   </data>
   <data name="Usethisoption" xml:space="preserve">
     <value>Use this option to enable system notifications that will be automatically sent when the specified action is triggered.</value>
   </data>
   <data name="NotificationTypeTemplateConfiguration" xml:space="preserve">
-    <value>Configure Notifications</value>
+    <value>Configure notifications</value>
   </data>
   <data name="NoResultsFound" xml:space="preserve">
     <value>No results found</value>
@@ -872,7 +875,7 @@ Add a new department to get started</value>
     <value>Kanban view</value>
   </data>
   <data name="EditPrivilege" xml:space="preserve">
-    <value>Edit Privilege</value>
+    <value>Edit privilege</value>
   </data>
   <data name="Sure" xml:space="preserve">
     <value>Are you sure you want to delete this ?</value>

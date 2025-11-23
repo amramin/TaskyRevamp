@@ -18,16 +18,16 @@ namespace TaskyRevamp.Infrastructure.Seeders
                 new AddTaskSettings { Id = Guid.NewGuid(), NameEnglish = "Description", NameArabic = "الوصف", IsActive = true, IsMandatory = false, Order = 2 },
                 new AddTaskSettings { Id = Guid.NewGuid(), NameEnglish = "Source", NameArabic = "المصدر", IsActive = true, IsMandatory = true, Order = 3 },
                 new AddTaskSettings { Id = Guid.NewGuid(), NameEnglish = "Type", NameArabic = "النوع", IsActive = true, IsMandatory = false, Order = 4 },
-                new AddTaskSettings { Id = Guid.NewGuid(), NameEnglish = "Start Date", NameArabic = "تاريخ البدء", IsActive = true, IsMandatory = true, Order = 5 },
-                new AddTaskSettings { Id = Guid.NewGuid(), NameEnglish = "End Date", NameArabic = "تاريخ الإنتهاء", IsActive = true, IsMandatory = true, Order = 6 },
-                new AddTaskSettings { Id = Guid.NewGuid(), NameEnglish = "Reminder Date", NameArabic = "تاريخ التذكير", IsActive = true, IsMandatory = false, Order = 7 },
+                new AddTaskSettings { Id = Guid.NewGuid(), NameEnglish = "Start date", NameArabic = "تاريخ البدء", IsActive = true, IsMandatory = true, Order = 5 },
+                new AddTaskSettings { Id = Guid.NewGuid(), NameEnglish = "End date", NameArabic = "تاريخ الإنتهاء", IsActive = true, IsMandatory = true, Order = 6 },
+                new AddTaskSettings { Id = Guid.NewGuid(), NameEnglish = "Reminder date", NameArabic = "تاريخ التذكير", IsActive = true, IsMandatory = false, Order = 7 },
                 new AddTaskSettings { Id = Guid.NewGuid(), NameEnglish = "Priority", NameArabic = "الأولوية", IsActive = true, IsMandatory = true, Order = 8 },
                 new AddTaskSettings { Id = Guid.NewGuid(), NameEnglish = "Weight", NameArabic = "الوزن", IsActive = true, IsMandatory = true, Order = 9 },
                 new AddTaskSettings { Id = Guid.NewGuid(), NameEnglish = "Department", NameArabic = "الإدارة", IsActive = true, IsMandatory = true, Order = 10 },
-                new AddTaskSettings { Id = Guid.NewGuid(), NameEnglish = "Assigned To", NameArabic = "المسند إليه", IsActive = true, IsMandatory = true, Order = 11 },
+                new AddTaskSettings { Id = Guid.NewGuid(), NameEnglish = "Assigned to", NameArabic = "المسند إليه", IsActive = true, IsMandatory = true, Order = 11 },
                 new AddTaskSettings { Id = Guid.NewGuid(), NameEnglish = "Dependency", NameArabic = "تبعية المهمة", IsActive = true, IsMandatory = false, Order = 12 },
-                new AddTaskSettings { Id = Guid.NewGuid(), NameEnglish = "File Upload", NameArabic = "تحميل ملف", IsActive = true, IsMandatory = false, Order = 13 },
-                new AddTaskSettings { Id = Guid.NewGuid(), NameEnglish = "Actual Progress", NameArabic = "التقدم الفعلي", IsActive = true, IsMandatory = true, Order = 14 },
+                new AddTaskSettings { Id = Guid.NewGuid(), NameEnglish = "File upload", NameArabic = "تحميل ملف", IsActive = true, IsMandatory = false, Order = 13 },
+                new AddTaskSettings { Id = Guid.NewGuid(), NameEnglish = "Actual progress", NameArabic = "التقدم الفعلي", IsActive = true, IsMandatory = true, Order = 14 },
             };
 
             var existingNames = context.AddTaskSettings

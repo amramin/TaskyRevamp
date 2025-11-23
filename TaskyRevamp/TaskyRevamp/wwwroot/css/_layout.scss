@@ -80,7 +80,6 @@
         .dropdown {
           .nav-link {
             justify-content: space-between;
-
             .nav-icon {
               img,
               svg {
@@ -102,7 +101,6 @@
 
           &.active {
             background-color: var(--white-opacity-10);
-
             &::before {
               content: "";
               position: absolute;
@@ -118,6 +116,7 @@
             display: flex;
             align-items: center;
             gap: 0.75rem;
+
             .text {
               line-height: normal;
             }
@@ -549,7 +548,6 @@
               position: static;
               padding: 0.25rem;
               background-color: transparent;
-
               inset-inline-start: 0;
             }
 

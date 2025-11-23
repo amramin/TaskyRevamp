@@ -30,7 +30,7 @@ namespace TaskyRevamp.Infrastructure.Seeders
                 new ReportModule
                 {
                     Id = Guid.NewGuid(),
-                    NameEnglish = "User Department tasks with manager tasks",
+                    NameEnglish = "User department tasks with manager tasks",
                     NameArabic = "مهام إدارة المستخدم مع مهام المدير",
                     HintEnglish = "The report includes all tasks of the user department, with all tasks related to the managers of the user department.",
                     HintArabic = "يتضمن التقرير جميع مهام إدارة المستخدم، مع جميع المهام المتعلقة بمديري إدارة المستخدمين."

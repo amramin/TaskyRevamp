@@ -28,7 +28,7 @@ namespace TaskyRevamp.Infrastructure.Seeders
 				},
 				new GeneralModule
 				{
-					NameEnglish = "Privileges ",
+					NameEnglish = "Privileges",
 					NameArabic = "صلاحيات",
 					HasView = true,
 					HasEdit = true,
@@ -64,7 +64,7 @@ namespace TaskyRevamp.Infrastructure.Seeders
 				},
 				new GeneralModule
 				{
-					NameEnglish = "Add Task configuration",
+					NameEnglish = "Add task configuration",
 					NameArabic = "إضافة إعدادات المهمة",
 					HasView = true,
 					HasEdit = true,
@@ -100,7 +100,7 @@ namespace TaskyRevamp.Infrastructure.Seeders
 				},
 				new GeneralModule
 				{
-					NameEnglish = "System Identity",
+					NameEnglish = "System identity",
 					NameArabic = "هوية النظام",
 					HasView = true,
 					HasEdit = true,
@@ -109,7 +109,7 @@ namespace TaskyRevamp.Infrastructure.Seeders
 				},
 				new GeneralModule
 				{
-					NameEnglish = "Task History log",
+					NameEnglish = "Task history log",
 					NameArabic = "سجل تاريخ المهمة",
 					HasView = true,
 					HasEdit = true,
