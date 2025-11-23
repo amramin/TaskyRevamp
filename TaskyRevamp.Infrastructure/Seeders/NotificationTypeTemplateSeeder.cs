@@ -297,7 +297,7 @@ namespace TaskyRevamp.Infrastructure.Seeders
                    moduleType= Dto.Enums.ModuleType.Email,
 
                }, new NotificationTypeTemplate{
-                   NameEnglish = "Add Delegation",
+                   NameEnglish = "Add delegation",
                    IsEnable = true, NameArabic = "اضافه تفويض",
                    moduleType= Dto.Enums.ModuleType.Email,
 
