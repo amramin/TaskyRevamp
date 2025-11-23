@@ -153,7 +153,7 @@
   <data name="RetentionPeriodOptions" xml:space="preserve">
     <value>خيارات فترة الإحتفاظ</value>
   </data>
-    <data name="SystemNotifications" xml:space="preserve">
+  <data name="SystemNotifications" xml:space="preserve">
     <value>إشعارات النظام</value>
   </data>
   <data name="Cancel" xml:space="preserve">
@@ -267,7 +267,7 @@
   <data name="Subtask_Level" xml:space="preserve">
     <value>مستوى المهمة الفرعية</value>
   </data>
-   <data name="Types of system notification Messages" xml:space="preserve">
+  <data name="Types of system notification Messages" xml:space="preserve">
     <value>أنواع رسائل إشعارات النظام</value>
   </data>
   <data name="subtask_hint" xml:space="preserve">
@@ -346,7 +346,7 @@
     <value>أسبوع</value>
   </data>
   <data name="priorityHint" xml:space="preserve">
-    <value>يتم تعيين أولوية المهمة الرئيسية تلقائيًا لتتطابق مع أعلى أولوية بين المهام الفرعية.</value>
+    <value>يتم تعيين أولوية المهمة الرئيسية تلقائيًا لتتطابق مع أعلى أولوية بين المهام الفرعية. </value>
   </data>
   <data name="recycleHint" xml:space="preserve">
     <value>تعيين فترة الحذف التلقائي من النظام للمهام المحذوفة داخل سلة المحذوفات</value>
@@ -876,5 +876,8 @@
   </data>
   <data name="Sure" xml:space="preserve">
     <value>هل أنت متأكد أنك تريد الحذف؟ </value>
+  </data>
+  <data name="priorityHint2" xml:space="preserve">
+    <value>ملاحظة: ترتيب الأولويات هو كالتالي — 1 (أعلى/أكثر أهمية)، 2، 3 (أقل أهمية).      ستأخذ المهمة الرئيسية دائمًا أعلى ترتيب أولوية من بين المهام الفرعية، أي الأكثر أهمية.</value>
   </data>
 </root>

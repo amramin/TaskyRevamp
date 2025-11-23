@@ -205,15 +205,6 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Add New Priority.
-        /// </summary>
-        public static string AddNewPriority {
-            get {
-                return ResourceManager.GetString("AddNewPriority", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Add New Privilege.
         /// </summary>
         public static string AddNewPrivilege {
@@ -1538,11 +1529,20 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The parent task’s priority is automatically set to match the highest priority among its sub-tasks..
+        ///   Looks up a localized string similar to The parent task’s priority is automatically set to match the highest priority among its sub-tasks. .
         /// </summary>
         public static string priorityHint {
             get {
                 return ResourceManager.GetString("priorityHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Note: Priority order follows this order — 1 (highest/most critical), 2, 3 (lowest). The parent will always take the highest priority number (the most critical) from its sub-tasks..
+        /// </summary>
+        public static string priorityHint2 {
+            get {
+                return ResourceManager.GetString("priorityHint2", resourceCulture);
             }
         }
         
@@ -1747,18 +1747,20 @@ namespace TaskyRevamp.Localization.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Select.
         /// </summary>
-
-        public static string SelectAtLeastOneValue {
-            get {
-                return ResourceManager.GetString("SelectAtLeastOneValue", resourceCulture);
-            }
-        }
         public static string Select {
             get {
                 return ResourceManager.GetString("Select", resourceCulture);
             }
         }
         
+        /// <summary>
+        ///   Looks up a localized string similar to Select at least one value..
+        /// </summary>
+        public static string SelectAtLeastOneValue {
+            get {
+                return ResourceManager.GetString("SelectAtLeastOneValue", resourceCulture);
+            }
+        }
         
         /// <summary>
         ///   Looks up a localized string similar to Parent Department .
@@ -1793,15 +1795,6 @@ namespace TaskyRevamp.Localization.Resources {
         public static string SelectSource {
             get {
                 return ResourceManager.GetString("SelectSource", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Select Time.
-        /// </summary>
-        public static string SelectTime {
-            get {
-                return ResourceManager.GetString("SelectTime", resourceCulture);
             }
         }
         
@@ -1973,6 +1966,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string System_Identity_Configuration {
             get {
                 return ResourceManager.GetString("System Identity Configuration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to System notifications.
+        /// </summary>
+        public static string SystemNotifications {
+            get {
+                return ResourceManager.GetString("SystemNotifications", resourceCulture);
             }
         }
         
@@ -2162,6 +2164,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string Type_Source_Name_English {
             get {
                 return ResourceManager.GetString("Type Source Name English", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Types of system notification Messages.
+        /// </summary>
+        public static string Types_of_system_notification_Messages {
+            get {
+                return ResourceManager.GetString("Types of system notification Messages", resourceCulture);
             }
         }
         
