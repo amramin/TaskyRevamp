@@ -17,6 +17,7 @@ namespace TaskyRevamp.Services.SearchMappings
 			{ SearchFieldUserDepartment.NameArabic, x => x.NameArabic },
 			{ SearchFieldUserDepartment.Email, x => x.Email },
 			{ SearchFieldUserDepartment.Privilage, x => x.Privilege.NameEnglish },
+			{ SearchFieldUserDepartment.IsManager, x => x.IsManager},
 		};
 	}
 }

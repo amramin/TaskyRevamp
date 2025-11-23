@@ -57,7 +57,9 @@ namespace TaskyRevamp.Services.Users.Query
 				userNameAR = u.NameArabic,
 				userNameEN = u.NameEnglish,
 				Email = u.Email,
-				PrivilegName = u.Privilege?.NameEnglish
+				PrivilegeId = u.PrivilegeId,
+				PrivilegeName = u.Privilege != null ? (currentCulture == "ar" ? u.Privilege.NameArabic : u.Privilege.NameEnglish) : string.Empty,
+				IsManager = u.IsManager
 			}).ToList();
 
 			return new PagedResult<DepartmentDto>
@@ -102,8 +104,12 @@ namespace TaskyRevamp.Services.Users.Query
 						? q => q.OrderBy(u => u.Privilege!.NameEnglish)
 						: q => q.OrderByDescending(u => u.Privilege!.NameEnglish);
 					}
+				case "IsManager":
+					return sortAscending
+						? q => q.OrderBy(u => u.IsManager)
+						: q => q.OrderByDescending(u => u.IsManager);
 				default:
-					return q => q.OrderBy(u => u.CreateDate);
+					return q => q.OrderByDescending(u => u.IsManager);
 			}
 		}
 	}

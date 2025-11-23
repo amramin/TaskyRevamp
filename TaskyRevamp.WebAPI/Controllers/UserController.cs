@@ -50,6 +50,22 @@ public class UserController : ControllerBase
 		return Ok(result);
 	}
 
+	[HttpGet("GetUsersByPrivilegeWithPaginationQuery/{PrivilegeId}")]
+	public async Task<IActionResult> GetUsersByPrivilegeWithPagination(
+			Guid PrivilegeId,
+			[FromServices] IOptions<PaginationSettings> paginationSettings,
+			[FromQuery] int pageNumber = 1,
+			[FromQuery] int? pageSize = null,
+			[FromQuery] string sortByColumnName = "CreateDate",
+			[FromQuery] bool sortAscending = true,
+			[FromQuery] List<SearchFieldUserPrivilege> searchFields = null,
+			[FromQuery] string searchText = null)
+	{
+		var size = pageSize ?? paginationSettings.Value.DefaultPageSize;
+		var result = await _mediator.Send(new GetAllUsersByPrivilegeQuery(PrivilegeId, pageNumber, size, sortByColumnName, sortAscending, searchFields, searchText));
+		return Ok(result);
+	}
+
 	[HttpGet("GetAllUsers")]
 	public async Task<IActionResult> GetAllUsers()
 	{

@@ -30,6 +30,15 @@ namespace TaskyRevamp.Client.Consumer
 
 			return res;
 		}
+		public async Task<CommonApiResponse<PagedResult<UserDtoWithName>>> GetUsersByPrivilegeIdWithPagination(Guid PrivilegeId, int pageNumber, int pageSize, string sortByColumnName, bool sortAscending, List<SearchFieldUserPrivilege> searchFields = null, string searchText = null)
+		{
+			var queryString = _taskyService.PreparePaginatedSearchQueryString(pageNumber, pageSize, sortByColumnName, sortAscending, searchFields, searchText);
+
+			var url = $"api/User/GetUsersByPrivilegeWithPaginationQuery/{PrivilegeId}{queryString}";
+			var res = await _taskyService.GetFromJsonAsync<CommonApiResponse<PagedResult<UserDtoWithName>>>(url);
+
+			return res;
+		}
 		public async Task<CommonApiResponse<DepartmentDto>> GetUsersByDepartment(Guid DepartmentId)
 		{
 			var ret = await _taskyService.GetFromJsonAsync<CommonApiResponse<DepartmentDto>>($"api/User/GetUsersByDepartment/{DepartmentId.ToString()}");

@@ -71,7 +71,7 @@
                                                 </button>
                                             </li>
                                             <li>
-                                                <button class="dropdown-item" @onclick="@(() => ViewUsers(item.PrivilegeDto.Id))">
+                                                <button class="dropdown-item" @onclick="@(() => ViewUsers(item.PrivilegeDto.Id, item.PrivilegeDto.Name))">
                                                     <span class="icon">
                                                         <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Users"></SVGCrud>
                                                     </span>
@@ -187,6 +187,7 @@ else
     private void AddPrivilege() => navigationManager.NavigateTo("/privilege?mode=add");
     private void EditPrivilege(Guid id) => navigationManager.NavigateTo($"/privilege?mode=edit&id={id}");
     private void ViewPermission(Guid id) => navigationManager.NavigateTo($"/privilege?mode=view&id={id}");
+    private void ViewUsers(Guid id, string PrivilegeName) => navigationManager.NavigateTo($"/UsersPrivilege/{id}/{PrivilegeName}");
 
     private void DeletePrivilege(PrivilegeDtoWithName privilege)
     {
@@ -210,10 +211,7 @@ else
         }
         selectedPrivilege = null;
     }
-    private void ViewUsers(Guid id)
-    {
-
-    }
+   
     private async Task SortBy(string columnName)
     {
         if (currentSortColumn == columnName)
