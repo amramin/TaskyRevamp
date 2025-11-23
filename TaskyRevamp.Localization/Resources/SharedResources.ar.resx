@@ -153,7 +153,7 @@
   <data name="RetentionPeriodOptions" xml:space="preserve">
     <value>خيارات فترة الإحتفاظ</value>
   </data>
-    <data name="SystemNotifications" xml:space="preserve">
+  <data name="SystemNotifications" xml:space="preserve">
     <value>إشعارات النظام</value>
   </data>
   <data name="Cancel" xml:space="preserve">
@@ -267,7 +267,7 @@
   <data name="Subtask_Level" xml:space="preserve">
     <value>مستوى المهمة الفرعية</value>
   </data>
-   <data name="Types of system notification Messages" xml:space="preserve">
+  <data name="Types of system notification Messages" xml:space="preserve">
     <value>أنواع رسائل إشعارات النظام</value>
   </data>
   <data name="subtask_hint" xml:space="preserve">
@@ -704,7 +704,7 @@
     <value>نفس المستخدم</value>
   </data>
   <data name="Module" xml:space="preserve">
-    <value>وحدة</value>
+    <value>الوحدة</value>
   </data>
   <data name="ViewPermission" xml:space="preserve">
     <value>عرض الأذونات</value>

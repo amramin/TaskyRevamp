@@ -205,15 +205,6 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Add New Priority.
-        /// </summary>
-        public static string AddNewPriority {
-            get {
-                return ResourceManager.GetString("AddNewPriority", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Add New Privilege.
         /// </summary>
         public static string AddNewPrivilege {
@@ -727,7 +718,7 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Different Department.
+        ///   Looks up a localized string similar to Different departments.
         /// </summary>
         public static string DifferentDepartment {
             get {
@@ -1069,7 +1060,7 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to General Modules .
+        ///   Looks up a localized string similar to General modules .
         /// </summary>
         public static string GeneralModule {
             get {
@@ -1655,7 +1646,7 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Report Module.
+        ///   Looks up a localized string similar to Report module.
         /// </summary>
         public static string ReportModule {
             get {
@@ -1691,7 +1682,7 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Same Department.
+        ///   Looks up a localized string similar to Same department.
         /// </summary>
         public static string SameDepartment {
             get {
@@ -1709,7 +1700,7 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Same User.
+        ///   Looks up a localized string similar to Same user.
         /// </summary>
         public static string SameUser {
             get {
@@ -1747,18 +1738,20 @@ namespace TaskyRevamp.Localization.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Select.
         /// </summary>
-
-        public static string SelectAtLeastOneValue {
-            get {
-                return ResourceManager.GetString("SelectAtLeastOneValue", resourceCulture);
-            }
-        }
         public static string Select {
             get {
                 return ResourceManager.GetString("Select", resourceCulture);
             }
         }
         
+        /// <summary>
+        ///   Looks up a localized string similar to Select at least one value..
+        /// </summary>
+        public static string SelectAtLeastOneValue {
+            get {
+                return ResourceManager.GetString("SelectAtLeastOneValue", resourceCulture);
+            }
+        }
         
         /// <summary>
         ///   Looks up a localized string similar to Parent Department .
@@ -1793,15 +1786,6 @@ namespace TaskyRevamp.Localization.Resources {
         public static string SelectSource {
             get {
                 return ResourceManager.GetString("SelectSource", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Select Time.
-        /// </summary>
-        public static string SelectTime {
-            get {
-                return ResourceManager.GetString("SelectTime", resourceCulture);
             }
         }
         
@@ -1977,6 +1961,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to System notifications.
+        /// </summary>
+        public static string SystemNotifications {
+            get {
+                return ResourceManager.GetString("SystemNotifications", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Select which fields to display in any task filter.
         /// </summary>
         public static string TaskFilterHint {
@@ -1986,7 +1979,7 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Task Module.
+        ///   Looks up a localized string similar to Task module.
         /// </summary>
         public static string TaskModule {
             get {
@@ -2162,6 +2155,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string Type_Source_Name_English {
             get {
                 return ResourceManager.GetString("Type Source Name English", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Types of system notification Messages.
+        /// </summary>
+        public static string Types_of_system_notification_Messages {
+            get {
+                return ResourceManager.GetString("Types of system notification Messages", resourceCulture);
             }
         }
         

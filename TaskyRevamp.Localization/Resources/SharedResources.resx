@@ -267,7 +267,7 @@
   <data name="Subtask_Level" xml:space="preserve">
     <value>subtask level</value>
   </data>
-    <data name="Types of system notification Messages" xml:space="preserve">
+  <data name="Types of system notification Messages" xml:space="preserve">
     <value>Types of system notification Messages</value>
   </data>
   <data name="subtask_hint" xml:space="preserve">
@@ -638,16 +638,16 @@ Add a new department to get started</value>
     <value>No Delegations available</value>
   </data>
   <data name="GeneralModule" xml:space="preserve">
-    <value>General Modules </value>
+    <value>General modules </value>
   </data>
   <data name="Privilege" xml:space="preserve">
     <value>Privilege </value>
   </data>
   <data name="TaskModule" xml:space="preserve">
-    <value>Task Module</value>
+    <value>Task module</value>
   </data>
   <data name="ReportModule" xml:space="preserve">
-    <value>Report Module</value>
+    <value>Report module</value>
   </data>
   <data name="AddNewPrivilege" xml:space="preserve">
     <value>Add New Privilege</value>
@@ -695,13 +695,13 @@ Add a new department to get started</value>
     <value>All</value>
   </data>
   <data name="DifferentDepartment" xml:space="preserve">
-    <value>Different Department</value>
+    <value>Different departments</value>
   </data>
   <data name="SameDepartment" xml:space="preserve">
-    <value>Same Department</value>
+    <value>Same department</value>
   </data>
   <data name="SameUser" xml:space="preserve">
-    <value>Same User</value>
+    <value>Same user</value>
   </data>
   <data name="Module" xml:space="preserve">
     <value>Module</value>
