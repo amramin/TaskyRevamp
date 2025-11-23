@@ -317,13 +317,13 @@ namespace TaskyRevamp.Infrastructure.Seeders
 
                },
                new NotificationTypeTemplate{
-                   NameEnglish = "Add Escalation",
+                   NameEnglish = "Add escalation",
                    IsEnable=true,
                    NameArabic = "اضافه جدوله",
                     moduleType= Dto.Enums.ModuleType.Email,
 
                }, new NotificationTypeTemplate{
-                   NameEnglish = "Delete Escalation",
+                   NameEnglish = "Delete escalation",
                      IsEnable=true,
                    NameArabic = "حذف جدوله",
                     moduleType= Dto.Enums.ModuleType.Email,
@@ -331,7 +331,7 @@ namespace TaskyRevamp.Infrastructure.Seeders
 
                },
                new NotificationTypeTemplate{
-                   NameEnglish = "Edit Escalation",
+                   NameEnglish = "Edit escalation",
                         IsEnable=true,
                    NameArabic = "تعديل جدوله",
                   moduleType= Dto.Enums.ModuleType.Email,
