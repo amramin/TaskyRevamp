@@ -51,9 +51,9 @@
                             var checkboxId = $"source-active-{item.PrivilegeDto.Id}";
                             <tr>
                                 <td>@item.PrivilegeDto.Name</td>
-                                <td>@item.PrivilegeDto.CreateDate.ToLocalTime().ToString("dd/MM/yyyy")</td>
+                                <td>@item.PrivilegeDto.CreateDate.ToLocalTime().ToString("dd-MM-yyyy")</td>
                                 <td>@item.CreatedByName</td>
-                                <td>@(item.PrivilegeDto.UpdateDate?.ToLocalTime().ToString("dd/MM/yyyy"))</td>
+                                <td>@(item.PrivilegeDto.UpdateDate?.ToLocalTime().ToString("dd-MM-yyyy"))</td>
                                 <td>@item.UpdatedByName</td>
                                 <td>
                                     <div class="dropdown actions">

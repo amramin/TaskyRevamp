@@ -45,9 +45,9 @@
                             var checkboxId = $"source-active-{item.Source.Id}";
                             <tr>
                                 <td>@item.Source.DisplayedName</td>
-                                <td>@item.Source.CreateDate.ToLocalTime().ToString("dd/MM/yyyy")</td>
+                                <td>@item.Source.CreateDate.ToLocalTime().ToString("dd-MM-yyyy")</td>
                                 <td>@item.CreatedByName</td>
-                                <td>@(item.Source.UpdateDate?.ToLocalTime().ToString("dd/MM/yyyy"))</td>
+                                <td>@(item.Source.UpdateDate?.ToLocalTime().ToString("dd-MM-yyyy"))</td>
                                 <td>@item.UpdatedByName</td>
                                 <td>
                                     <div class="form-check form-switch custom">
