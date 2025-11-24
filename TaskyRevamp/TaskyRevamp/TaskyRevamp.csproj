@@ -21,13 +21,17 @@
 	<ItemGroup>
 		<ProjectReference Include="..\TaskyRevamp.Client\TaskyRevamp.Client.csproj" />
 		<PackageReference Include="Blazored.LocalStorage" Version="4.5.0" />
+		<PackageReference Include="MailKit" Version="4.14.1" />
 		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.8" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="9.0.7" />
+		<PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="10.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Localization" Version="9.0.8" />
 		<PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="9.0.8" />
+		<PackageReference Include="Microsoft.Identity.Client" Version="4.79.2" />
+		<PackageReference Include="MimeKit" Version="4.14.0" />
 
 		<PackageReference Include="Syncfusion.Blazor.RichTextEditor" Version="31.1.21" />
-		<PackageReference Include="Syncfusion.Blazor.Themes" Version="31.1.21"/>
+		<PackageReference Include="Syncfusion.Blazor.Themes" Version="31.1.21" />
 	</ItemGroup>
 
 </Project>

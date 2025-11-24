@@ -1,4 +1,6 @@
-﻿using MediatR;
+﻿using FluentValidation;
+using FluentValidation.Validators;
+using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Localization;
@@ -6,25 +8,27 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using TaskyRevamp.Infrastructure;
 using System.Configuration;
 using System.Globalization;
 using System.Reflection;
 using System.Text;
+using TaskyRevamp.Domain.Interfaces.Notification;
+using TaskyRevamp.Domain.Interfaces.Repositeries;
+using TaskyRevamp.Infrastructure.Services.Notification;
 using TaskyRevamp.Domain.Repositeries;
+using TaskyRevamp.Dto.Email;
 using TaskyRevamp.Dto.GeneralDto;
+using TaskyRevamp.Infrastructure;
+using TaskyRevamp.Infrastructure.Hubs;
+using TaskyRevamp.Infrastructure.Repositories;
 using TaskyRevamp.Infrastructure.Seeders;
+using TaskyRevamp.Infrastructure.Services.Notification;
 using TaskyRevamp.Services;
 using TaskyRevamp.Services.Account.Commands;
 using TaskyRevamp.WebAPI;
 using TaskyRevamp.WebAPI.Exeptions;
 using TaskyRevamp.WebAPI.Middleware;
 using TaskyRevamp.WebAPI.Pipeline;
-using FluentValidation;
-using FluentValidation.Validators;
-using TaskyRevamp.Domain.Interfaces.Repositeries;
-using TaskyRevamp.Infrastructure;
-using TaskyRevamp.Infrastructure.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -69,11 +73,13 @@ builder.Services.AddScoped(typeof(IPipelineBehavior<,>), typeof(LoggingBehaviour
 builder.Services.AddScoped(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 builder.Services.AddScoped(typeof(IPipelineBehavior<,>), typeof(UnhandledExceptionBehaviour<,>));
 builder.Services.AddScoped<ExceptionHandlingMiddleware>();
+//ilder.Services.AddScoped(typeof(INotificationService), typeof(NotificationService));
+builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("MailSettings"));
+
 builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("AppSettings"));
 builder.Services.Configure<LdapSettings>(builder.Configuration.GetSection("LDAP"));
 builder.Services.AddExceptionHandler<ApiExceptionHandler>();
 builder.Services.AddProblemDetails();
-
 // Localization
 //builder.Services.AddLocalization(options => options.ResourcesPath = "SharedResources");
 builder.Services.AddLocalization();
@@ -132,8 +138,13 @@ builder.Services.AddAuthentication(options =>
         };
     });
 
-builder.Services.AddAuthorization();
 
+builder.Services.AddAuthorization();
+builder.Services.AddAuthorizationCore();
+//builder.Services.AddSignalR();
+
+builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("MailSettings"));
+//builder.Services.AddScoped<INotificationService, NotificationService>();
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAllOrigins", builder =>
@@ -169,6 +180,11 @@ app.UseCors(x =>
 app.UseRequestLocalization();
 app.UseMiddleware<LocalizedExceptionMiddleware>();
 app.UseMiddleware<ExtractCustomHeaderMiddleware>();
+app.UseResponseCompression();
+//app.MapHub<ChatHub>("chathub");
+//app.MapHub<NotificationHub>("notification-hub");
+
+app.UseRequestLocalization(locOptions.Value);
 
 
 // Configure the HTTP request pipeline.

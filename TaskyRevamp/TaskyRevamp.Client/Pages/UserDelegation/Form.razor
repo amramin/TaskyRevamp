@@ -3,6 +3,8 @@
 @using Stingray.Components.MultiSelectComponent.Dtos
 @using TaskyRevamp.Client.Consumer
 @inject UserConsumer _userConsumer
+@inject SendEmailConsumer _sendmailConsumer
+
 @inject UserDelegationConsumer _userDelegationConsumer
 @inject ILocalStorageService LocalStorageService
 @inject Microsoft.Extensions.Configuration.IConfiguration _configuration;
@@ -11,6 +13,7 @@
 @using System.Globalization
 @using TaskyRevamp.Client.Consumer
 @using TaskyRevamp.Dto.Account
+@using TaskyRevamp.Dto.Email
 @using TaskyRevamp.Dto.GeneralDto
 @using TaskyRevamp.Dto.UserDelegation
 
@@ -113,7 +116,7 @@
     public bool IsStarted { set; get; }
     List<UserDto> Fromusers = new List<UserDto>();
     List<UserDto> Tousers = new List<UserDto>();
-    
+
     bool IsFromUser;
     bool IsToUser;
     private string applicationURL;
@@ -136,7 +139,7 @@
             var current = await LocalStorageService.GetItemAsStringAsync("Id");
             userDelegation.FromUserId = Guid.Parse(current);
         }
-    
+        await SendMail();
         await OnValidSubmit.InvokeAsync();
 
     }
@@ -188,8 +191,98 @@
         await OnValidSubmit.InvokeAsync();
 
     }
+    SendEmailDto sendEamilDto = new SendEmailDto();
+    string fromUserMail;
+    string toUserMail;
 
-   
+    public async Task SendMail()
+    {
+
+        toUserMail = Fromusers.Where(K => K.Id == userDelegation.FromUserId).First().DisplayedName;
+        fromUserMail = Fromusers.Where(K => K.Id == userDelegation.ToUserId).First().DisplayedName;
+        var sentmail = Fromusers.Where(K => K.Id == userDelegation.ToUserId).First().Email;
+        var frmdate = userDelegation.FromDate.ToString("dd MMMM yyyy", CultureInfo.InvariantCulture);
+        var todat = userDelegation.ToDate.ToString("dd MMMM yyyy", CultureInfo.InvariantCulture);
+        sendEamilDto.EmailSubject = "تفويض مهام";
+        sendEamilDto.EmailToId = sentmail;
+        sendEamilDto.EmailToName = sentmail;
+        string html = $@"
+                <!DOCTYPE html>
+                <html lang=""en"">
+                <head>
+                <meta charset=""utf-8"" />
+                <meta name=""viewport"" content=""width=device-width, initial-scale=1"" />
+                <title>Delegate</title>
+                </head>
+                <body style=""font-family: 'Almarai', sans-serif; margin: 0; padding: 0"">
+                <div
+                style=""width: 100%; max-width: 800px; margin: 0 auto; padding: 1.5rem 2rem; box-sizing: border-box;""
+                >
+                <!-- Header Section -->
+                <table
+                width=""100%""
+                cellspacing=""0""
+                cellpadding=""0""
+                style=""width: 100%; border-spacing: 0""
+                >
+                <tr>
+                <td style=""width: 50%; text-align: start"">
+                <img src=""{applicationURL}images/MOH-Logo.png"" alt=""MOH LOGO"" style=""height: 64px"" />
+                </td>
+                <td style=""width: 50%; text-align: end"">
+                <img src=""{applicationURL}images/samim-logo.png"" alt=""Samim LOGO"" style=""height: 64px"" />
+                </td>
+                </tr>
+                </table>
+
+                <!-- Main Content Section -->
+                <div
+                style=""border-top: 6px solid #449f95; border-bottom: 6px solid #449f95; padding: 2rem 0;""
+                >
+                <!-- English Article -->
+                <div style=""width: 100%; margin-bottom: 2rem"">
+                <p>Dear <strong>{fromUserMail}</strong></p>
+                <p>
+                You have been authorized to carry out the tasks of
+                <strong>{toUserMail}</strong>
+                </p>
+                <p>From <strong>{frmdate}</strong> To <strong>{todat}</strong></p>
+                <p>We trust in your ability to complete the tasks efficiently.</p>
+                <p>
+                <span>For any inquiries, please contact us via email at:</span>
+                <br /><br />
+                <span style=""color: blue; text-decoration: underline;"">Sameem-Team@moh.gov.sa</span>
+                </p>
+                <h5>Best Regards,</h5>
+                <p>Deputyship of e-Health and Digital Transformation</p>
+                </div>
+
+                <!-- Arabic Article -->
+                <div
+                style=""width: 100%; border-top: 1px solid #cecece; direction: rtl; text-align: start;""
+                >
+                <p>عزيزي/عزيزتي <strong>{fromUserMail}</strong></p>
+                <p>تم تفويضك بمهام الزميل/ة <strong>{toUserMail}</strong></p>
+                <p>من <strong>{frmdate}</strong> حتى <strong>{todat}</strong></p>
+                <p>نثق بقدرتك على إتمام المهام بكفاءة</p>
+                <p>
+                <span>لأي استفسار، تواصل معنا عبر البريد الإلكتروني:</span>
+                <br /><br />
+                <span style=""color: blue; text-decoration: underline;"">Sameem-Team@moh.gov.sa</span>
+                </p>
+                <h5>مع التحية،</h5>
+                <p>وكالة الوزارة للصحة الإلكترونية والتحول الرقمي</p>
+                </div>
+                </div>
+                </div>
+                </body>
+                </html>";
+
+        sendEamilDto.EmailBody = html.ToString();
+        await _sendmailConsumer.SendEmail(sendEamilDto);
+
+
+    }
 
 
 }

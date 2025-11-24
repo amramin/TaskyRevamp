@@ -1,6 +1,7 @@
 using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Components.Authorization;
+
 using Microsoft.AspNetCore.Localization;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.JSInterop;
@@ -32,7 +33,7 @@ builder.Services.AddScoped<CustomAuthenticationService>();
 builder.Services.AddScoped<PopupService>();
 builder.Services.AddScoped<ToastService>();
 builder.Services.AddSingleton<LoaderService>();
-
+builder.Services.AddAuthorizationCore();
 //Consumers
 builder.Services.AddTransient<AccountConsumer>();
 
