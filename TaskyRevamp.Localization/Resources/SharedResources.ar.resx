@@ -490,8 +490,10 @@
     <value>إعدادات حقول إضافة المهمة</value>
   </data>
   <data name="Nodepartmentavailable" xml:space="preserve">
-    <value> لا توجد إدارة متاحة
-أضف إدارة جديدة للبدء</value>
+    <value> لا توجد إدارة متاحة</value>
+  </data>
+  <data name="Add department to get started" xml:space="preserve">
+    <value> أضف إدارة جديدة للبدء</value>
   </data>
   <data name="DepartmentDuplicateValidation" xml:space="preserve">
     <value>يجب أن يكون اسم الإدارة فريدًا. يرجى كتابة اسم آخر</value>
@@ -663,6 +665,12 @@
   </data>
   <data name="PrivilegeNotFound" xml:space="preserve">
     <value>لم يتم العثور على الصلاحية  {id}</value>
+  </data>
+    <data name="All rights are safe" xml:space="preserve">
+    <value>جميع الحقوق محفوظة</value>
+  </data>
+   <data name="Kingdom of Saudi Arabia" xml:space="preserve">
+    <value>المملكة العربية السعودية</value>
   </data>
   <data name="EnterPrivilegeName" xml:space="preserve">
     <value>اسم الصلاحية عربي</value>
