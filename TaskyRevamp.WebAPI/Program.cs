@@ -141,10 +141,16 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.AddAuthorization();
 builder.Services.AddAuthorizationCore();
-//builder.Services.AddSignalR();
+builder.Services.AddSignalR();
+
+// Add Response Compression
+builder.Services.AddResponseCompression(options =>
+{
+    options.EnableForHttps = true;
+});
 
 builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("MailSettings"));
-//builder.Services.AddScoped<INotificationService, NotificationService>();
+builder.Services.AddScoped<INotificationService, NotificationService>();
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAllOrigins", builder =>
@@ -182,7 +188,7 @@ app.UseMiddleware<LocalizedExceptionMiddleware>();
 app.UseMiddleware<ExtractCustomHeaderMiddleware>();
 app.UseResponseCompression();
 //app.MapHub<ChatHub>("chathub");
-//app.MapHub<NotificationHub>("notification-hub");
+app.MapHub<NotificationHub>("/notification-hub");
 
 app.UseRequestLocalization(locOptions.Value);
 
