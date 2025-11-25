@@ -267,7 +267,7 @@
   <data name="Subtask_Level" xml:space="preserve">
     <value>subtask level</value>
   </data>
-    <data name="Types of system notification Messages" xml:space="preserve">
+  <data name="Types of system notification Messages" xml:space="preserve">
     <value>Types of system notification Messages</value>
   </data>
   <data name="subtask_hint" xml:space="preserve">
@@ -355,10 +355,10 @@
     <value>Task source Configuration</value>
   </data>
   <data name="AddTaskSource" xml:space="preserve">
-    <value>Add Task Source</value>
+    <value>Add Source</value>
   </data>
   <data name="EditTaskSource" xml:space="preserve">
-    <value>Edit Task Source</value>
+    <value>Edit Source</value>
   </data>
   <data name="DeleteTaskSource" xml:space="preserve">
     <value>Delete Task Source</value>

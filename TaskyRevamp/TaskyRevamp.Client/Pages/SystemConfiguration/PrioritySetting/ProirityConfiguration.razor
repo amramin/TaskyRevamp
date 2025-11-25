@@ -122,12 +122,40 @@
     private void Add()
     {
         PopupService.ShowNew(
-        @<AddPriority OnValidSubmit="OnInitializedAsync"></AddPriority> , headerText: @Loc["AddPriority"]
+        @<AddPriority OnValidSubmit="OnPriorityUpdated"></AddPriority> , headerText: @Loc["AddPriority"]
 );
     }
     private void Edit(Guid id)
     {
-        PopupService.ShowNew(@<UpdatePriority Id="id" OnValidSubmit="OnInitializedAsync" />, headerText: @Loc["EditPriority"]);
+        PopupService.ShowNew(@<UpdatePriority Id="id" OnValidSubmit="OnPriorityUpdated" />, headerText: @Loc["EditPriority"]);
+    }
+    private async Task OnPriorityUpdated(PriorityDto updatedPriority)
+    {
+        var existing = Priorities.FirstOrDefault(p => p.Id == updatedPriority.Id);
+        if (existing != null)
+        {
+            existing.NameEnglish = updatedPriority.NameEnglish;
+            existing.NameArabic = updatedPriority.NameArabic;
+            existing.NameColor = updatedPriority.NameColor;
+            existing.BackgroundColor = updatedPriority.BackgroundColor;
+        }
+        else
+        {
+            Priorities.Add(updatedPriority);
+        }
+        var isexistinoriginal = OriginalPriorities!.FirstOrDefault(p => p.Id == updatedPriority.Id);
+        if (isexistinoriginal != null)
+        {
+            isexistinoriginal.NameEnglish = updatedPriority.NameEnglish;
+            isexistinoriginal.NameArabic = updatedPriority.NameArabic;
+            isexistinoriginal.NameColor = updatedPriority.NameColor;
+            isexistinoriginal.BackgroundColor = updatedPriority.BackgroundColor;
+        }
+        else
+        {
+            OriginalPriorities!.Add(updatedPriority);
+        }
+        StateHasChanged();
     }
     private void ShowDeleteConfirm(PriorityDto p)
     {
