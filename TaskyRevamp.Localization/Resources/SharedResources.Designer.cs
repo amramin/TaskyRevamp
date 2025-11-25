@@ -205,15 +205,6 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Add New Priority.
-        /// </summary>
-        public static string AddNewPriority {
-            get {
-                return ResourceManager.GetString("AddNewPriority", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Add New Privilege.
         /// </summary>
         public static string AddNewPrivilege {
@@ -309,6 +300,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string AllrightsKSA {
             get {
                 return ResourceManager.GetString("AllrightsKSA", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to All user privileges and tasks will be transferred to the delegated user.
+        /// </summary>
+        public static string Alluserprivileges {
+            get {
+                return ResourceManager.GetString("Alluserprivileges", resourceCulture);
             }
         }
         
@@ -624,6 +624,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string DefaultViewHint {
             get {
                 return ResourceManager.GetString("DefaultViewHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delegation Options.
+        /// </summary>
+        public static string DelegationOptions {
+            get {
+                return ResourceManager.GetString("DelegationOptions", resourceCulture);
             }
         }
         
@@ -1421,6 +1430,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Only the tasks that the user is a creator or assigned to will be visible to the delegated user.
+        /// </summary>
+        public static string Onlythetasksthattheuser {
+            get {
+                return ResourceManager.GetString("Onlythetasksthattheuser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Priority Ranking.
         /// </summary>
         public static string Order {
@@ -1592,6 +1610,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Privileges and User Tasks.
+        /// </summary>
+        public static string Privilegesandusertasks {
+            get {
+                return ResourceManager.GetString("Privilegesandusertasks", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Recycle Bin Configuration.
         /// </summary>
         public static string RecycleBinConfiguration {
@@ -1747,18 +1774,20 @@ namespace TaskyRevamp.Localization.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Select.
         /// </summary>
-
-        public static string SelectAtLeastOneValue {
-            get {
-                return ResourceManager.GetString("SelectAtLeastOneValue", resourceCulture);
-            }
-        }
         public static string Select {
             get {
                 return ResourceManager.GetString("Select", resourceCulture);
             }
         }
         
+        /// <summary>
+        ///   Looks up a localized string similar to Select at least one value..
+        /// </summary>
+        public static string SelectAtLeastOneValue {
+            get {
+                return ResourceManager.GetString("SelectAtLeastOneValue", resourceCulture);
+            }
+        }
         
         /// <summary>
         ///   Looks up a localized string similar to Parent Department .
@@ -1793,15 +1822,6 @@ namespace TaskyRevamp.Localization.Resources {
         public static string SelectSource {
             get {
                 return ResourceManager.GetString("SelectSource", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Select Time.
-        /// </summary>
-        public static string SelectTime {
-            get {
-                return ResourceManager.GetString("SelectTime", resourceCulture);
             }
         }
         
@@ -1973,6 +1993,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string System_Identity_Configuration {
             get {
                 return ResourceManager.GetString("System Identity Configuration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to System notifications.
+        /// </summary>
+        public static string SystemNotifications {
+            get {
+                return ResourceManager.GetString("SystemNotifications", resourceCulture);
             }
         }
         
@@ -2166,6 +2195,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Types of system notification Messages.
+        /// </summary>
+        public static string Types_of_system_notification_Messages {
+            get {
+                return ResourceManager.GetString("Types of system notification Messages", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Update.
         /// </summary>
         public static string Update {
@@ -2207,6 +2245,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string users {
             get {
                 return ResourceManager.GetString("users", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User Tasks.
+        /// </summary>
+        public static string UserTasks {
+            get {
+                return ResourceManager.GetString("UserTasks", resourceCulture);
             }
         }
         

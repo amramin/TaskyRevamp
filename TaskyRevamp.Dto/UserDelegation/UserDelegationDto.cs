@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TaskyRevamp.Dto.Enums;
 using TaskyRevamp.Localization.Resources;
 
 namespace TaskyRevamp.Dto.UserDelegation
@@ -26,6 +27,7 @@ namespace TaskyRevamp.Dto.UserDelegation
         public string? ToUser => Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName == "ar" ? ToUserAr : ToUserEn;
         public DateTime FromDate { get; set; } = DateTime.UtcNow;
 
+        public DelegationOptions DelegationOption { get; set; }
         public DateTime ToDate { get; set; } = DateTime.UtcNow;
 
         public DateTime? CreateDate { get; set; }
