@@ -877,4 +877,19 @@
   <data name="Sure" xml:space="preserve">
     <value>هل أنت متأكد أنك تريد الحذف؟ </value>
   </data>
+  <data name="Privilegesandusertasks" xml:space="preserve">
+    <value>صلاحيات ومهام المستخدمين</value>
+  </data>
+  <data name="UserTasks" xml:space="preserve">
+    <value>مهام المستخدم</value>
+  </data>
+  <data name="DelegationOptions" xml:space="preserve">
+    <value>اختيارات التفويض</value>
+  </data>
+  <data name="Onlythetasksthattheuser" xml:space="preserve">
+    <value>ستظهر فقط مهام المستخدم [المهام التي يكون المستخدم هو منشئها أو تم تعيينه لها] للمستخدم المفوض</value>
+  </data>
+  <data name="Alluserprivileges" xml:space="preserve">
+    <value>سيتم نقل جميع صلاحيات المستخدم ومهامه إلى المستخدم المفوض</value>
+  </data>
 </root>

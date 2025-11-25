@@ -11,6 +11,7 @@
 @using System.Globalization
 @using TaskyRevamp.Client.Consumer
 @using TaskyRevamp.Dto.Account
+@using TaskyRevamp.Dto.Enums
 @using TaskyRevamp.Dto.GeneralDto
 @using TaskyRevamp.Dto.UserDelegation
 
@@ -81,7 +82,64 @@
             <ValidationMessage class="small text-danger" For="@(() => userDelegation.ToDate)" />
        
             </div>
+
+            
+        <div class="mb-3">
+
+            <label class="form-label" for="body">
+                @Loc["DelegationOptions"]
+                <span class="text-danger"> *</span>
+            </label>
+            <SearchableSingleDropdownOffline 
+                TInput=DelegationOptions 
+                TOutput="DelegationOptions"
+                Datasource=all
+                TextSelector=@(x=>x.GetDescription())
+                OutputSelector="x=> x"
+                MinCharacterCount="1"
+                @bind-SelectedOption=userDelegation.DelegationOption
+                PlaceHolder="@($"--{Loc["DelegationOption"]}--")" />
+
+
+           
+
+
+        </div>
+        @if (userDelegation.DelegationOption == DelegationOptions.UserTasks)
+{
+            <div class="col-xxl-7 col-xl-8 col-lg-9 col-md-11">
+
+            <div class="text-content">
+                <div class="text-content">
+                    <p class="small-medium-text hint"> @Loc["Onlythetasksthattheuser"]</p>
+                </div>
+            </div>
+            </div>
+
+        }
+        @if (userDelegation.DelegationOption == DelegationOptions.Privilegesandusertasks)
+{
+            <div class="col-xxl-7 col-xl-8 col-lg-9 col-md-11">
+
+            <div class="text-content">
+                <div class="text-content">
+                    <p class="small-medium-text hint"> @Loc["Alluserprivileges"]</p>
+                </div>
+            </div>
+            </div>
+
+        }
+        <ValidationMessage class="small text-danger" For="@(() => userDelegation.DelegationOption)" />
+        @if (IsDelegated)
+        {
+            <label class="small text-danger"> @Loc["Required"]</label>
+
+        }
+            
+
     </div>
+
+
     <div class="offcanvas-footer">
         <div class="row g-3">
             <div class="col-6">
@@ -113,21 +171,27 @@
     public bool IsStarted { set; get; }
     List<UserDto> Fromusers = new List<UserDto>();
     List<UserDto> Tousers = new List<UserDto>();
-    
+    bool IsDelegated;
     bool IsFromUser;
     bool IsToUser;
     private string applicationURL;
+    List<DelegationOptions> all = EnumExtensions.GetOrderedValues<DelegationOptions>();
+
     private async Task Save()
     {
         IsFromUser = false;
         IsToUser = false;
-        if (userDelegation.ToUserId == Guid.Empty || userDelegation.FromUserId == Guid.Empty)
+
+      
+        if (userDelegation.ToUserId == Guid.Empty || userDelegation.FromUserId == Guid.Empty || userDelegation.DelegationOption==null)
 
         {
             if (userDelegation.ToUserId == Guid.Empty)
                 IsToUser = true;
             if (userDelegation.FromUserId == Guid.Empty)
                 IsFromUser = true;
+            if (userDelegation.DelegationOption == null)
+                IsDelegated = true;
             return;
 
         }
@@ -178,6 +242,9 @@
         }
         throw new Exception(ret.ErrorMessage);
     }
+
+
+    
 
     private async Task onivald(EditContext obj)
     {

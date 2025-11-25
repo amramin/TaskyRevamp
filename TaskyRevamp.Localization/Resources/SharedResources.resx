@@ -877,4 +877,19 @@ Add a new department to get started</value>
   <data name="Sure" xml:space="preserve">
     <value>Are you sure you want to delete this ?</value>
   </data>
+  <data name="Privilegesandusertasks" xml:space="preserve">
+    <value>Privileges and User Tasks</value>
+  </data>
+  <data name="UserTasks" xml:space="preserve">
+    <value>User Tasks</value>
+  </data>
+  <data name="DelegationOptions" xml:space="preserve">
+    <value>Delegation Options</value>
+  </data>
+  <data name="Onlythetasksthattheuser" xml:space="preserve">
+    <value>Only the tasks that the user is a creator or assigned to will be visible to the delegated user</value>
+  </data>
+  <data name="Alluserprivileges" xml:space="preserve">
+    <value>All user privileges and tasks will be transferred to the delegated user</value>
+  </data>
 </root>

@@ -304,6 +304,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to All user privileges and tasks will be transferred to the delegated user.
+        /// </summary>
+        public static string Alluserprivileges {
+            get {
+                return ResourceManager.GetString("Alluserprivileges", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Arabic.
         /// </summary>
         public static string Arabic {
@@ -615,6 +624,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string DefaultViewHint {
             get {
                 return ResourceManager.GetString("DefaultViewHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delegation Options.
+        /// </summary>
+        public static string DelegationOptions {
+            get {
+                return ResourceManager.GetString("DelegationOptions", resourceCulture);
             }
         }
         
@@ -1412,6 +1430,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Only the tasks that the user is a creator or assigned to will be visible to the delegated user.
+        /// </summary>
+        public static string Onlythetasksthattheuser {
+            get {
+                return ResourceManager.GetString("Onlythetasksthattheuser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Priority Ranking.
         /// </summary>
         public static string Order {
@@ -1579,6 +1606,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string Privileges {
             get {
                 return ResourceManager.GetString("Privileges", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Privileges and User Tasks.
+        /// </summary>
+        public static string Privilegesandusertasks {
+            get {
+                return ResourceManager.GetString("Privilegesandusertasks", resourceCulture);
             }
         }
         
@@ -2209,6 +2245,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string users {
             get {
                 return ResourceManager.GetString("users", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User Tasks.
+        /// </summary>
+        public static string UserTasks {
+            get {
+                return ResourceManager.GetString("UserTasks", resourceCulture);
             }
         }
         
