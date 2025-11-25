@@ -183,7 +183,7 @@ app.UseCors(x =>
 
 });
 
-app.UseRequestLocalization();
+//app.UseRequestLocalization();
 app.UseMiddleware<LocalizedExceptionMiddleware>();
 app.UseMiddleware<ExtractCustomHeaderMiddleware>();
 app.UseResponseCompression();
