@@ -120,6 +120,8 @@ else
     private DepartmentViewType currentView = DepartmentViewType.Grid;
     private List<SortableColumn> tableColumns = new();
     string searchdata { set; get; }
+    private string? lastSearchTerm = null;
+    private bool isSearchMode = false;
     private List<DepartmentDto> RootDepartments = new();
     List<DepartmentDto> allDepartments = new List<DepartmentDto>();
     private Search? searchComponent;
@@ -268,14 +270,19 @@ else
         var effectivePageSize = (currentView == DepartmentViewType.Tree || currentView == DepartmentViewType.Hierarchy)
             ? 10000
             : pageSize;
-
+        if (isSearchMode && !isSearch)
+        {
+            isSearch = true;
+            searchTerm = lastSearchTerm;
+        }
+        var encodedTerm = searchTerm != null ? Uri.EscapeDataString(searchTerm) : null;
         var resp = await _departmentConsumer.GetDepartments(
             currentPage,
             effectivePageSize,
             currentSortColumn,
             sortAscending.Value,
             isSearch ? searchFields : null,
-            isSearch ? searchTerm : null
+            isSearch ? encodedTerm : null
         );
 
         if (!(resp?.Success ?? false) || resp.Data is null)

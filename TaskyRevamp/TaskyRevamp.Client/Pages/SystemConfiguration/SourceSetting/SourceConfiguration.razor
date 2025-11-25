@@ -45,9 +45,9 @@
                             var checkboxId = $"source-active-{item.Source.Id}";
                             <tr>
                                 <td>@item.Source.DisplayedName</td>
-                                <td>@item.Source.CreateDate.ToLocalTime().ToString("dd/MM/yyyy")</td>
+                                <td>@item.Source.CreateDate.ToLocalTime().ToString("dd-MM-yyyy")</td>
                                 <td>@item.CreatedByName</td>
-                                <td>@(item.Source.UpdateDate?.ToLocalTime().ToString("dd/MM/yyyy"))</td>
+                                <td>@(item.Source.UpdateDate?.ToLocalTime().ToString("dd-MM-yyyy"))</td>
                                 <td>@item.UpdatedByName</td>
                                 <td>
                                     <div class="form-check form-switch custom">
@@ -112,6 +112,8 @@ else
     private bool? sortAscending = true;
     private List<SortableColumn> tableColumns = new();
     private Search? searchComponent;
+    private string? lastSearchTerm = null;
+    private bool isSearchMode = false;
 
     private async Task ChangePage(int page)
     {
@@ -143,8 +145,15 @@ else
     }
     private async Task LoadSources(bool isSearch = false, string searchTerm = null)
     {
+       
+        if (isSearchMode && !isSearch)
+        {
+            isSearch = true;
+            searchTerm = lastSearchTerm;
+        }
+        var encodedTerm = searchTerm != null ? Uri.EscapeDataString(searchTerm) : null;
         var resp = await _sourceSettingConsumer.GetSources(currentPage, pageSize, currentSortColumn, sortAscending.Value,
-        isSearch ? searchFields : null, isSearch ? searchTerm : null);
+        isSearch ? searchFields : null, isSearch ? encodedTerm : null);
 
         if (!(resp?.Success ?? false) || resp.Data is null)
             return;
@@ -212,11 +221,15 @@ else
 
     public async Task Search(string searchTerm)
     {
+        lastSearchTerm = searchTerm;
+        isSearchMode = true;
         await LoadSources(true, searchTerm);
     }
     private async Task ClearSearch()
     {
         currentPage = 1;
+        lastSearchTerm = null;
+        isSearchMode = false;
         searchComponent?.ClearSearchText();
         await LoadSources(isSearch: false);
     }

@@ -1556,11 +1556,20 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The parent task’s priority is automatically set to match the highest priority among its sub-tasks..
+        ///   Looks up a localized string similar to The parent task’s priority is automatically set to match the highest priority among its sub-tasks. .
         /// </summary>
         public static string priorityHint {
             get {
                 return ResourceManager.GetString("priorityHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Note: Priority order follows this order — 1 (highest/most critical), 2, 3 (lowest). The parent will always take the highest priority number (the most critical) from its sub-tasks..
+        /// </summary>
+        public static string priorityHint2 {
+            get {
+                return ResourceManager.GetString("priorityHint2", resourceCulture);
             }
         }
         

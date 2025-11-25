@@ -346,7 +346,7 @@
     <value>أسبوع</value>
   </data>
   <data name="priorityHint" xml:space="preserve">
-    <value>يتم تعيين أولوية المهمة الرئيسية تلقائيًا لتتطابق مع أعلى أولوية بين المهام الفرعية.</value>
+    <value>يتم تعيين أولوية المهمة الرئيسية تلقائيًا لتتطابق مع أعلى أولوية بين المهام الفرعية. </value>
   </data>
   <data name="recycleHint" xml:space="preserve">
     <value>تعيين فترة الحذف التلقائي من النظام للمهام المحذوفة داخل سلة المحذوفات</value>
@@ -355,10 +355,10 @@
     <value>إعدادات مصادر المهام</value>
   </data>
   <data name="AddTaskSource" xml:space="preserve">
-    <value>إضافة مصدر</value>
+    <value>إضافة مصدر المهمة</value>
   </data>
   <data name="EditTaskSource" xml:space="preserve">
-    <value>تعديل مصدر</value>
+    <value>تعديل مصدر المهمة</value>
   </data>
   <data name="DeleteTaskSource" xml:space="preserve">
     <value>حذف مصدر المهمة</value>
@@ -490,10 +490,8 @@
     <value>إعدادات حقول إضافة المهمة</value>
   </data>
   <data name="Nodepartmentavailable" xml:space="preserve">
-    <value> لا توجد إدارة متاحة</value>
-  </data>
-  <data name="Add department to get started" xml:space="preserve">
-    <value> أضف إدارة جديدة للبدء</value>
+    <value> لا توجد إدارة متاحة
+أضف إدارة جديدة للبدء</value>
   </data>
   <data name="DepartmentDuplicateValidation" xml:space="preserve">
     <value>يجب أن يكون اسم الإدارة فريدًا. يرجى كتابة اسم آخر</value>
@@ -666,12 +664,6 @@
   <data name="PrivilegeNotFound" xml:space="preserve">
     <value>لم يتم العثور على الصلاحية  {id}</value>
   </data>
-    <data name="All rights are safe" xml:space="preserve">
-    <value>جميع الحقوق محفوظة</value>
-  </data>
-   <data name="Kingdom of Saudi Arabia" xml:space="preserve">
-    <value>المملكة العربية السعودية</value>
-  </data>
   <data name="EnterPrivilegeName" xml:space="preserve">
     <value>اسم الصلاحية عربي</value>
   </data>
@@ -712,7 +704,7 @@
     <value>نفس المستخدم</value>
   </data>
   <data name="Module" xml:space="preserve">
-    <value>الوحدة</value>
+    <value>وحدة</value>
   </data>
   <data name="ViewPermission" xml:space="preserve">
     <value>عرض الأذونات</value>
@@ -885,19 +877,7 @@
   <data name="Sure" xml:space="preserve">
     <value>هل أنت متأكد أنك تريد الحذف؟ </value>
   </data>
-  <data name="Privilegesandusertasks" xml:space="preserve">
-    <value>صلاحيات ومهام المستخدمين</value>
-  </data>
-  <data name="UserTasks" xml:space="preserve">
-    <value>مهام المستخدم</value>
-  </data>
-  <data name="DelegationOptions" xml:space="preserve">
-    <value>اختيارات التفويض</value>
-  </data>
-  <data name="Onlythetasksthattheuser" xml:space="preserve">
-    <value>ستظهر فقط مهام المستخدم [المهام التي يكون المستخدم هو منشئها أو تم تعيينه لها] للمستخدم المفوض</value>
-  </data>
-  <data name="Alluserprivileges" xml:space="preserve">
-    <value>سيتم نقل جميع صلاحيات المستخدم ومهامه إلى المستخدم المفوض</value>
+  <data name="priorityHint2" xml:space="preserve">
+    <value>ملاحظة: ترتيب الأولويات هو كالتالي — 1 (أعلى/أكثر أهمية)، 2، 3 (أقل أهمية).      ستأخذ المهمة الرئيسية دائمًا أعلى ترتيب أولوية من بين المهام الفرعية، أي الأكثر أهمية.</value>
   </data>
 </root>

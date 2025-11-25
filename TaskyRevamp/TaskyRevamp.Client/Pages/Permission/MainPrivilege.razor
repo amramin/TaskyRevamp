@@ -51,9 +51,9 @@
                             var checkboxId = $"source-active-{item.PrivilegeDto.Id}";
                             <tr>
                                 <td>@item.PrivilegeDto.Name</td>
-                                <td>@item.PrivilegeDto.CreateDate.ToLocalTime().ToString("dd/MM/yyyy")</td>
+                                <td>@item.PrivilegeDto.CreateDate.ToLocalTime().ToString("dd-MM-yyyy")</td>
                                 <td>@item.CreatedByName</td>
-                                <td>@(item.PrivilegeDto.UpdateDate?.ToLocalTime().ToString("dd/MM/yyyy"))</td>
+                                <td>@(item.PrivilegeDto.UpdateDate?.ToLocalTime().ToString("dd-MM-yyyy"))</td>
                                 <td>@item.UpdatedByName</td>
                                 <td>
                                     <div class="dropdown actions">
@@ -135,6 +135,8 @@ else
     private bool? sortAscending = true;
     private List<SortableColumn> tableColumns = new();
     private Search? searchComponent;
+    private string? lastSearchTerm = null;
+    private bool isSearchMode = false;
 
     private async Task ChangePage(int page)
     {
@@ -165,6 +167,12 @@ else
     }
     private async Task LoadPrivilegs(bool isSearch = false, string searchTerm = null)
     {
+        if (isSearchMode && !isSearch)
+        {
+            isSearch = true;
+            searchTerm = lastSearchTerm;
+        }
+        var encodedTerm = searchTerm != null ? Uri.EscapeDataString(searchTerm) : null;
         var resp = await _privilegeConsumer.GetPrivileges(currentPage, pageSize, currentSortColumn, sortAscending.Value,
         isSearch ? searchFields : null, isSearch ? searchTerm : null);
 
@@ -231,11 +239,15 @@ else
 
     public async Task Search(string searchTerm)
     {
+        lastSearchTerm = searchTerm;
+        isSearchMode = true;
         await LoadPrivilegs(true, searchTerm);
     }
     private async Task ClearSearch()
     {
         currentPage = 1;
+        lastSearchTerm = null;
+        isSearchMode = false;
         searchComponent?.ClearSearchText();
         await LoadPrivilegs(isSearch: false);
     }

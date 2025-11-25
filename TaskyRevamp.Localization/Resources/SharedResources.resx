@@ -346,7 +346,7 @@
     <value>1 week</value>
   </data>
   <data name="priorityHint" xml:space="preserve">
-    <value>The parent task’s priority is automatically set to match the highest priority among its sub-tasks.</value>
+    <value>The parent task’s priority is automatically set to match the highest priority among its sub-tasks. </value>
   </data>
   <data name="recycleHint" xml:space="preserve">
     <value>Set the auto deletion period from the system for deleted tasks inside the recycle bin</value>
@@ -355,10 +355,10 @@
     <value>Task source Configuration</value>
   </data>
   <data name="AddTaskSource" xml:space="preserve">
-    <value>Add Source</value>
+    <value>Add Task Source</value>
   </data>
   <data name="EditTaskSource" xml:space="preserve">
-    <value>Edit Source</value>
+    <value>Edit Task Source</value>
   </data>
   <data name="DeleteTaskSource" xml:space="preserve">
     <value>Delete Task Source</value>
@@ -491,10 +491,7 @@
   </data>
   <data name="Nodepartmentavailable" xml:space="preserve">
     <value> No department available
-</value>
- <data name="Add department to get started" xml:space="preserve">
-    <value> Add department to get started</value>
-  </data>
+Add a new department to get started</value>
   </data>
   <data name="DepartmentDuplicateValidation" xml:space="preserve">
     <value>Department name must be unique. Please type a different name</value>
@@ -641,16 +638,16 @@
     <value>No Delegations available</value>
   </data>
   <data name="GeneralModule" xml:space="preserve">
-    <value>General modules </value>
+    <value>General Modules </value>
   </data>
   <data name="Privilege" xml:space="preserve">
     <value>Privilege </value>
   </data>
   <data name="TaskModule" xml:space="preserve">
-    <value>Task module</value>
+    <value>Task Module</value>
   </data>
   <data name="ReportModule" xml:space="preserve">
-    <value>Report module</value>
+    <value>Report Module</value>
   </data>
   <data name="AddNewPrivilege" xml:space="preserve">
     <value>Add New Privilege</value>
@@ -698,13 +695,13 @@
     <value>All</value>
   </data>
   <data name="DifferentDepartment" xml:space="preserve">
-    <value>Different departments</value>
+    <value>Different Department</value>
   </data>
   <data name="SameDepartment" xml:space="preserve">
-    <value>Same department</value>
+    <value>Same Department</value>
   </data>
   <data name="SameUser" xml:space="preserve">
-    <value>Same user</value>
+    <value>Same User</value>
   </data>
   <data name="Module" xml:space="preserve">
     <value>Module</value>
@@ -823,12 +820,6 @@
   <data name="PrivilegeDuplicateValidation" xml:space="preserve">
     <value>You can't duplicate the privilege name</value>
   </data>
-   <data name="All rights are safe" xml:space="preserve">
-    <value>All rights are safe</value>
-  </data>
-   <data name="Kingdom of Saudi Arabia" xml:space="preserve">
-    <value>Kingdom of Saudi Arabia</value>
-  </data>
   <data name="Subtask_Levels" xml:space="preserve">
     <value>Subtask Levels</value>
   </data>
@@ -886,19 +877,7 @@
   <data name="Sure" xml:space="preserve">
     <value>Are you sure you want to delete this ?</value>
   </data>
-  <data name="Privilegesandusertasks" xml:space="preserve">
-    <value>Privileges and User Tasks</value>
-  </data>
-  <data name="UserTasks" xml:space="preserve">
-    <value>User Tasks</value>
-  </data>
-  <data name="DelegationOptions" xml:space="preserve">
-    <value>Delegation Options</value>
-  </data>
-  <data name="Onlythetasksthattheuser" xml:space="preserve">
-    <value>Only the tasks that the user is a creator or assigned to will be visible to the delegated user</value>
-  </data>
-  <data name="Alluserprivileges" xml:space="preserve">
-    <value>All user privileges and tasks will be transferred to the delegated user</value>
+  <data name="priorityHint2" xml:space="preserve">
+    <value>Note: Priority order follows this order — 1 (highest/most critical), 2, 3 (lowest). The parent will always take the highest priority number (the most critical) from its sub-tasks.</value>
   </data>
 </root>
