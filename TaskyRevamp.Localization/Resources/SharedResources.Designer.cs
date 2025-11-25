@@ -736,7 +736,7 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Different Department.
+        ///   Looks up a localized string similar to Different departments.
         /// </summary>
         public static string DifferentDepartment {
             get {
@@ -1078,7 +1078,7 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to General Modules .
+        ///   Looks up a localized string similar to General modules .
         /// </summary>
         public static string GeneralModule {
             get {
@@ -1682,7 +1682,7 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Report Module.
+        ///   Looks up a localized string similar to Report module.
         /// </summary>
         public static string ReportModule {
             get {
@@ -1718,7 +1718,7 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Same Department.
+        ///   Looks up a localized string similar to Same department.
         /// </summary>
         public static string SameDepartment {
             get {
@@ -1736,7 +1736,7 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Same User.
+        ///   Looks up a localized string similar to Same user.
         /// </summary>
         public static string SameUser {
             get {
@@ -2015,7 +2015,7 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Task Module.
+        ///   Looks up a localized string similar to Task module.
         /// </summary>
         public static string TaskModule {
             get {

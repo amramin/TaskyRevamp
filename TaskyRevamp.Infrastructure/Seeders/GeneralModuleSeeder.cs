@@ -29,7 +29,7 @@ namespace TaskyRevamp.Infrastructure.Seeders
 				new GeneralModule
 				{
 					NameEnglish = "Privileges ",
-					NameArabic = "صلاحيات",
+					NameArabic = "الصلاحيات",
 					HasView = true,
 					HasEdit = true,
 					HasDelete = true,
@@ -38,7 +38,7 @@ namespace TaskyRevamp.Infrastructure.Seeders
 				new GeneralModule
 				{
 					NameEnglish = "Task source",
-					NameArabic = "مصدر المهمة",
+					NameArabic = "مصادر المهام",
 					HasView = true,
 					HasEdit = true,
 					HasDelete = true,
@@ -46,8 +46,8 @@ namespace TaskyRevamp.Infrastructure.Seeders
 				},
 				new GeneralModule
 				{
-					NameEnglish = "Recycle bin configuration",
-					NameArabic = "إعدادات سلة المحذوفات",
+					NameEnglish = "Recycle bin",
+					NameArabic = "سلة المحذوفات",
 					HasView = true,
 					HasEdit = true,
 					HasDelete = false,
@@ -55,8 +55,8 @@ namespace TaskyRevamp.Infrastructure.Seeders
 				},
 				new GeneralModule
 				{
-					NameEnglish = "Rejection configuration",
-					NameArabic = "إعدادات رفض المهمة",
+					NameEnglish = "Task rejection",
+					NameArabic = "رفض المهمة",
 					HasView = true,
 					HasEdit = true,
 					HasDelete = false,
@@ -64,8 +64,8 @@ namespace TaskyRevamp.Infrastructure.Seeders
 				},
 				new GeneralModule
 				{
-					NameEnglish = "Add Task configuration",
-					NameArabic = "إضافة إعدادات المهمة",
+					NameEnglish = "Add Task fields",
+					NameArabic = "حقول إضافة المهام",
 					HasView = true,
 					HasEdit = true,
 					HasDelete = false,
@@ -73,8 +73,8 @@ namespace TaskyRevamp.Infrastructure.Seeders
 				},
 				new GeneralModule
 				{
-					NameEnglish = "Default columns configuration",
-					NameArabic = "إعدادات الأعمدة الافتراضية",
+					NameEnglish = "Default columns",
+					NameArabic = "الأعمدة الافتراضية",
 					HasView = true,
 					HasEdit = true,
 					HasDelete = false,
@@ -92,7 +92,7 @@ namespace TaskyRevamp.Infrastructure.Seeders
 				new GeneralModule
 				{
 					NameEnglish = "Task type",
-					NameArabic = "نوع المهمة",
+					NameArabic = "نوع المهام",
 					HasView = true,
 					HasEdit = true,
 					HasDelete = true,
@@ -100,7 +100,7 @@ namespace TaskyRevamp.Infrastructure.Seeders
 				},
 				new GeneralModule
 				{
-					NameEnglish = "System Identity",
+					NameEnglish = "System identity",
 					NameArabic = "هوية النظام",
 					HasView = true,
 					HasEdit = true,
@@ -109,8 +109,8 @@ namespace TaskyRevamp.Infrastructure.Seeders
 				},
 				new GeneralModule
 				{
-					NameEnglish = "Task History log",
-					NameArabic = "سجل تاريخ المهمة",
+					NameEnglish = "Task history log",
+					NameArabic = "سجل تاريخ المهام",
 					HasView = true,
 					HasEdit = true,
 					HasDelete = false,
@@ -136,8 +136,8 @@ namespace TaskyRevamp.Infrastructure.Seeders
 				},
 				new GeneralModule
 				{
-					NameEnglish = "Working days configuration",
-					NameArabic = "إعدادات أيام العمل",
+					NameEnglish = "Working days",
+					NameArabic = "أيام العمل",
 					HasView = true,
 					HasEdit = true,
 					HasDelete = false,
@@ -154,8 +154,8 @@ namespace TaskyRevamp.Infrastructure.Seeders
 				},
 				new GeneralModule
 				{
-					NameEnglish = "Priority",
-					NameArabic = "الأولوية",
+					NameEnglish = "Task priority",
+					NameArabic = "أولوية المهمة",
 					HasView = true,
 					HasEdit = true,
 					HasDelete = true,
@@ -163,8 +163,8 @@ namespace TaskyRevamp.Infrastructure.Seeders
 				},
 				new GeneralModule
 				{
-					NameEnglish = "Status",
-					NameArabic = "الحالة",
+					NameEnglish = "Task status",
+					NameArabic = "حالات المهمة",
 					HasView = true,
 					HasEdit = true,
 					HasDelete = true,
@@ -172,16 +172,7 @@ namespace TaskyRevamp.Infrastructure.Seeders
 				},
 				new GeneralModule
 				{
-					NameEnglish = "Status trigger",
-					NameArabic = "حالة التأهب",
-					HasView = true,
-					HasEdit = true,
-					HasDelete = false,
-					HasAdd = false
-				},
-				new GeneralModule
-				{
-					NameEnglish = "Tasks views",
+					NameEnglish = "Task views",
 					NameArabic = "عرض المهام",
 					HasView = true,
 					HasEdit = true,
