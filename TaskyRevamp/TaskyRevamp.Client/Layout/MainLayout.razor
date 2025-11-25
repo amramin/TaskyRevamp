@@ -28,10 +28,7 @@
                         <span class="start-icon">
                             <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Search"></SVGCrud>
                         </span>
-                        <input class="form-control form-control-lg"
-                               placeholder="User name"
-                               id="id-number"
-                               required />
+                        <input class="form-control form-control-lg" placeholder="User name" id="id-number" required />
                     </div>
                 </div>
                 <div class="end">
@@ -45,9 +42,7 @@
                             </span>
                         </button> *@
                     <div class="dropdown notifcation-dropdown">
-                        <button class="btn btn-action"
-                                data-bs-toggle="dropdown"
-                                aria-expanded="false">
+                        <button class="btn btn-action" data-bs-toggle="dropdown" aria-expanded="false">
                             <span class="icon">
                                 <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Bell"></SVGCrud>
                             </span>
@@ -61,13 +56,10 @@
                             </li>
                         </ul>
                     </div>
-                    <img class="logo"
-                         src="@(string.IsNullOrEmpty(systemLogoAsImgSrc)? "" : systemLogoAsImgSrc)"
-                         alt="system-logo" />
+                    <img class="logo" src="@(string.IsNullOrEmpty(systemLogoAsImgSrc) ? "" : systemLogoAsImgSrc)"
+                        alt="system-logo" />
                     <div class="dropdown dropdown-user">
-                        <button class="btn btn-user"
-                                data-bs-toggle="dropdown"
-                                aria-expanded="false">
+                        <button class="btn btn-user" data-bs-toggle="dropdown" aria-expanded="false">
                             <span class="first-user-letter">AM</span>
                         </button>
                         <ul class="dropdown-menu" aria-labelledby="topDropdown">
@@ -96,7 +88,7 @@
                                     @Loc["Logout"]
                                 </a>
                             </li>
-                           
+
                         </ul>
                     </div>
                 </div>
@@ -122,7 +114,9 @@
                         Power by
                         <a href="#" class="primary-link-btn text-decoration-none">Stingray</a>
                     </span> *@
-                <span class="text-center  flex-grow-1">All rights are safe - Kingdom of Saudi Arabia</span>
+                <span class="text-center  flex-grow-1">
+                    @Loc["All rights are safe"] - @Loc["Kingdom of Saudi Arabia"]
+                </span>
             </footer>
         </section>
     </section>
@@ -138,7 +132,7 @@
     string HeaderName;
     RenderFragment Content { get; set; }
     bool IsShowDialog = false;
- private bool IsSideMenuCollapsed = false;
+    private bool IsSideMenuCollapsed = false;
     private string SideMenuWrapperClass =>
     IsSideMenuCollapsed ? "main-wrapper mainlayout-collapsed" : "main-wrapper";
 
@@ -152,7 +146,7 @@
     {
         await CheckAuth(firstRender);
         await base.OnAfterRenderAsync(firstRender);
-      
+
     }
 
     protected async override Task OnInitializedAsync()
@@ -196,7 +190,7 @@
         IsShowDialog = isShow;
         StateHasChanged();
     }
-    
+
 
     private async Task CheckAuth(bool firstRender)
     {
@@ -220,5 +214,5 @@
         }
     }
 
-   
+
 }

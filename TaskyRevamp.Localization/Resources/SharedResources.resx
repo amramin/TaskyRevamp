@@ -491,7 +491,10 @@
   </data>
   <data name="Nodepartmentavailable" xml:space="preserve">
     <value> No department available
-Add a new department to get started</value>
+</value>
+ <data name="Add department to get started" xml:space="preserve">
+    <value> Add department to get started</value>
+  </data>
   </data>
   <data name="DepartmentDuplicateValidation" xml:space="preserve">
     <value>Department name must be unique. Please type a different name</value>
@@ -819,6 +822,12 @@ Add a new department to get started</value>
   </data>
   <data name="PrivilegeDuplicateValidation" xml:space="preserve">
     <value>You can't duplicate the privilege name</value>
+  </data>
+   <data name="All rights are safe" xml:space="preserve">
+    <value>All rights are safe</value>
+  </data>
+   <data name="Kingdom of Saudi Arabia" xml:space="preserve">
+    <value>Kingdom of Saudi Arabia</value>
   </data>
   <data name="Subtask_Levels" xml:space="preserve">
     <value>Subtask Levels</value>

@@ -2116,7 +2116,7 @@ fieldset:disabled .btn {
   display: -ms-flexbox;
   display: flex;
   overflow: hidden;
-  max-width: calc(100% - 120px);
+  max-width: calc(100% - 156px);
 }
 .card.card-order-control .status-name span {
   overflow: hidden;
