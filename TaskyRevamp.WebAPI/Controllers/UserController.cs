@@ -113,6 +113,12 @@ public class UserController : ControllerBase
 		var res = await _mediator.Send(new AssignUsersToPrivilegeCommand(usersDto,id));
 		return Ok(res);
 	}
+	[HttpGet("CheckUserHasOpenTask/{departmentId}/{userId}")]
+	public async Task<ActionResult<bool>> CheckUserHasOpenTask(Guid departmentId, Guid userId)
+	{
+		var res = await _mediator.Send(new IfUserHasOpenTasksOnDepartmentCommand(departmentId, userId));
+		return Ok(res);
+	}
 
 	[HttpGet("GetUsers")]
 	public async Task<List<UserDto>> GetUsers()
@@ -149,6 +155,13 @@ public class UserController : ControllerBase
 	public async Task<UserDto> GetUserById(Guid id)
 	{
 		var data = await _mediator.Send(new GetUserByIdQuery(id));
+		
+		return data;
+	}
+	[HttpDelete("DeleteUser/{id}")]
+	public async Task<bool> DeleteUser(Guid id)
+	{
+		var data = await _mediator.Send(new DeleteUserCommand(id));
 		return data;
 	}
 

@@ -9,6 +9,7 @@
 @inject IStringLocalizer<SharedResources> Loc
 @inject ToastService ToastService
 @inject UserConsumer _userConsumer
+@inject TaskConsumer _taskConsumer
 @inject PopupService PopupService
 
 <div class="page-header">
@@ -20,6 +21,7 @@
         <Search @ref="searchComponent" SearchSubmit="Search" CssClass="form-control"></Search>
     </div>
 </div>
+
 @if (users != null && users.Any())
 {
     <div class="page-body">
@@ -82,11 +84,11 @@
                                                 </button>
                                             </li>
                                             <li>
-                                                <button class="dropdown-item" @onclick="@(() => DeleteUser(item))">
+                                                <button class="dropdown-item text-danger" @onclick="@(() => DeleteUser(item))">
                                                     <span class="icon">
                                                         <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Delete"></SVGCrud>
                                                     </span>
-                                                    <span class="text-danger">@Loc["Delete"]</span>
+                                                    <span>@Loc["Delete"]</span>
                                                 </button>
                                             </li>
                                         </ul>
@@ -111,6 +113,8 @@ else
 {
     <NoDataAvailable MessageTitle="@Loc["NoUsersAvailable"]"/>
 }
+
+
 @code {
     List<UserDtoWithName> users = new();
     List<UserDtoWithName> initialUsers = new();
@@ -177,6 +181,20 @@ else
     {
         if (confirmed && selectedUser != null)
         {
+            if (selectedUser.user.IsActive)
+            {
+                await ToastService.ShowToastAsync(Loc["user_is_active"], "error");
+                return;
+            }
+            else
+            {
+                var hasTasks = await _taskConsumer.CheckOpenedTaskForUser(selectedUser.user.Id);
+                if (hasTasks.Data)
+                {
+                    await ToastService.ShowToastAsync(Loc["userHasTasksValidation"], "error");
+                    return;
+                }
+            }
             var result = await _userConsumer.DeleteUser(selectedUser.user.Id);
             if (result.Success)
             {

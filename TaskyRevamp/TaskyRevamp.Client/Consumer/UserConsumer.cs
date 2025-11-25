@@ -99,6 +99,13 @@ namespace TaskyRevamp.Client.Consumer
 
 			return res.Data;
 		}
+		public async Task<CommonApiResponse<bool>> CheckUserHasOpenTask(Guid departmentId, Guid userId)
+		{
+			var url = $"api/User/CheckUserHasOpenTask/{departmentId}/{userId}";
+			var res = await _taskyService.GetFromJsonAsync<CommonApiResponse<bool>>(url);
+
+			return res;
+		}
 		public async Task<CommonApiResponse<bool>> AssignUsersToPrivilege(List<UserDto> usersDto, Guid id)
 		{
 			var url = $"api/User/AssignUsersToPrivilege/{id}";
@@ -118,7 +125,7 @@ namespace TaskyRevamp.Client.Consumer
 
 		public async Task<CommonApiResponse<bool>> DeleteUser(Guid id)
 		{
-			var url = $"api/User/{id}";
+			var url = $"api/User/DeleteUser/{id}";
 			var res = await _taskyService.DeleteFromJsonAsync<CommonApiResponse<bool>>(url);
 
 			return res;
