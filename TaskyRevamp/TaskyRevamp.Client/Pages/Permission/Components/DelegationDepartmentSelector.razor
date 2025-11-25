@@ -1,6 +1,7 @@
 ﻿@using TaskyRevamp.Dto.Department
 @using TaskyRevamp.Dto.Account
 @using Stingray.Components.MultiSelectComponent
+@inject IStringLocalizer<SharedResources> Loc
 
 <div>
     <!-- Department Selector -->
@@ -38,7 +39,7 @@
                         }
                         else if (!dept.Value.Any())
                         {
-                            <div class="text-muted small px-2">No users assigned to this department.</div>
+                            <div class="text-muted small px-2">@Loc["NoUsers"]</div>
                         }
                         else
                         {

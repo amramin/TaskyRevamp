@@ -35,6 +35,12 @@ namespace TaskyRevamp.WebAPI.Controllers
 			return Ok(result);
 		}
 
+		[HttpGet("GetPrivilegesWithoutPagination")]
+		public async Task<IActionResult> GetPrivilegesWithoutPagination()
+		{
+			return Ok(await _mediator.Send(new GetPrivilegesWithoutPaginationQuery()));
+		}
+
 		[HttpGet("GetPrivilegeById/{id}")]
 		public async Task<IActionResult> GetPrivilegeById(Guid id)
 		{

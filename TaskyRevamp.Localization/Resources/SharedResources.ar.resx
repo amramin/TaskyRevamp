@@ -153,9 +153,6 @@
   <data name="RetentionPeriodOptions" xml:space="preserve">
     <value>خيارات فترة الإحتفاظ</value>
   </data>
-  <data name="SystemNotifications" xml:space="preserve">
-    <value>إشعارات النظام</value>
-  </data>
   <data name="Cancel" xml:space="preserve">
     <value>إلغاء</value>
   </data>
@@ -851,7 +848,7 @@
     <value>عرض الصلاحية</value>
   </data>
   <data name="LinkUser" xml:space="preserve">
-    <value>Link a user to department and privilege</value>
+    <value>ربط المستخدم</value>
   </data>
   <data name="Usethisoption" xml:space="preserve">
     <value>استخدم هذا الخيار لتفعيل إشعارات النظام التي سيتم إرسالها تلقائيًا عند تنفيذ الإجراء المحدد</value>
@@ -879,9 +876,6 @@
   </data>
   <data name="SystemNotifications" xml:space="preserve">
     <value>إشعارات النظام</value>
-  </data>
-  <data name="Types of system notification Messages" xml:space="preserve">
-    <value>أنواع رسائل إشعارات النظام</value>
   </data>
   <data name="ViewUserPrivilege" xml:space="preserve">
     <value>عرض الصلاحيات</value>

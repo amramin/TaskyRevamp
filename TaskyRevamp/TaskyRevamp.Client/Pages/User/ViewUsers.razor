@@ -18,12 +18,6 @@
     </div>
     <div class="action-btn-list">
         <Search @ref="searchComponent" SearchSubmit="Search" CssClass="form-control"></Search>
-        @* <button class="btn  btn-primary" @onclick="AddUser">
-            <span class="icon">
-                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Pluse"></SVGCrud>
-            </span>
-            @Loc["Add_user"]
-        </button> *@
     </div>
 </div>
 @if (users != null && users.Any())
@@ -34,8 +28,7 @@
             {
 
                 <SortableTable TItem="UserDtoWithName" Columns="@tableColumns" Items="@users" SortColumn="@currentSortColumn"
-                    SortAscending="@sortAscending" OnSortRequested="HandleSort">
-
+                               SortAscending="@sortAscending" OnSortRequested="HandleSort">
                     <RowTemplate>
                         @foreach (var item in users)
                         {
@@ -48,7 +41,7 @@
                                 <td>
                                     <div class="form-check form-switch custom">
                                         <InputCheckbox id="@checkboxId" @bind-Value="item.user.IsManager" class="form-check-input"
-                                            disabled />
+                                                       disabled />
                                         <label for="@checkboxId" class="form-check-label">
                                             <span class="toggler-icon"></span>
                                         </label>
@@ -57,7 +50,7 @@
                                 <td>
                                     <div class="form-check form-switch custom">
                                         <InputCheckbox id="@checkboxId" @bind-Value="item.user.IsActive" class="form-check-input"
-                                            disabled />
+                                                       disabled />
                                         <label for="@checkboxId" class="form-check-label">
                                             <span class="toggler-icon"></span>
                                         </label>
@@ -68,12 +61,12 @@
                                 <td>
                                     <div class="dropdown actions">
                                         <button class="btn btn-action-24" type="button" data-bs-toggle="dropdown"
-                                            aria-expanded="false">
+                                                aria-expanded="false">
                                             <SVGCrud SVGType="SVGCrud.SVGTypeEnum.EllipseVertical"></SVGCrud>
                                         </button>
                                         <ul class="dropdown-menu">
                                             <li>
-                                                <button class="dropdown-item" @onclick="@(() => ViewPrivilege(item.user.Id))">
+                                                <button class="dropdown-item" @onclick="@(() => ViewPrivilege(item.user.PrivilegeId))">
                                                     <span class="icon">
                                                         <SVGCrud SVGType="SVGCrud.SVGTypeEnum.PrivilegeConfig"></SVGCrud>
                                                     </span>
@@ -81,7 +74,7 @@
                                                 </button>
                                             </li>
                                             <li>
-                                                <button class="dropdown-item" @onclick="@(() => ViewUser(item.user.Id))">
+                                                <button class="dropdown-item" @onclick="@(() => LinkUser(item.user.Id))">
                                                     <span class="icon">
                                                         <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Users"></SVGCrud>
                                                     </span>
@@ -106,7 +99,7 @@
             }
         </div>
         <Pagination CurrentPage="@currentPage" TotalPages="@totalPages" TotalCount="@totalCount" PageSize="@pageSize"
-            PageChanged="ChangePage" PageSizeChangedCallback="ChangePageSize" />
+                    PageChanged="ChangePage" PageSizeChangedCallback="ChangePageSize" />
     </div>
 
 }
@@ -116,8 +109,7 @@ else if (initialUsers != null && initialUsers.Any())
 }
 else
 {
-    <NoDataAvailable MessageTitle="@Loc["NoUsersAvailable"]" MessageSubtitle="@Loc["AddANewUserToGetStarted"]"
-        ButtonText="@Loc["Add_user"]" OnButtonClick="AddUser" />
+    <NoDataAvailable MessageTitle="@Loc["NoUsersAvailable"]"/>
 }
 @code {
     List<UserDtoWithName> users = new();
@@ -148,20 +140,17 @@ else
     protected override async Task OnInitializedAsync()
     {
         tableColumns = new()
-{
-new() { Field = "Name", DisplayName = Loc["name"] },
-new() { Field = "Email", DisplayName = Loc["email"] },
-new() { Field = "Privileges", DisplayName = Loc["Privileges"] },
-new() { Field = "Department", DisplayName = Loc["Department"] },
-new() { Field = "Set as Manager", DisplayName = Loc["setAsManager"] },
-new() { Field = "IsActive", DisplayName = Loc["active"] },
-// new() { Field = "CreateDate", DisplayName = Loc["CreationDate"] },
-// new() { Field = "CreatedBy", DisplayName = Loc["CreatedBy"] },
-new() { Field = "UpdateDate", DisplayName = Loc["UpdateDate"] },
-new() { Field = "UpdatedBy", DisplayName = Loc["UpdatedBy"] },
-new() { Field = "Action", DisplayName = Loc["Action"] ,IsSortable = false},
-};
-
+        {
+            new() { Field = "Name", DisplayName = Loc["name"] },
+            new() { Field = "Email", DisplayName = Loc["email"] },
+            new() { Field = "Privileges", DisplayName = Loc["Privileges"] },
+            new() { Field = "Department", DisplayName = Loc["Department"] },
+            new() { Field = "Set as Manager", DisplayName = Loc["setAsManager"] },
+            new() { Field = "IsActive", DisplayName = Loc["active"] },
+            new() { Field = "UpdateDate", DisplayName = Loc["UpdateDate"] },
+            new() { Field = "UpdatedBy", DisplayName = Loc["UpdatedBy"] },
+            new() { Field = "Action", DisplayName = Loc["Action"] ,IsSortable = false},
+        };
         await LoadUsers();
         initialUsers = users;
     }
@@ -178,18 +167,9 @@ new() { Field = "Action", DisplayName = Loc["Action"] ,IsSortable = false},
         totalPages = data.TotalPages;
         totalCount = data.TotalCount;
     }
-    private void AddUser()
-    {
-        // PopupService.ShowNew(@<AddSource OnValidSubmit="OnInitializedAsync"></AddSource>, headerText: @Loc["Add_user"]);
-    }
-    private void EditUser(Guid id)
-    {
-        // PopupService.ShowNew(@<UpdateSource Id="id" OnValidSubmit="OnInitializedAsync"></UpdateSource>, headerText:
-        // @Loc["EditTaskSource"]);
-    }
     private void DeleteUser(UserDtoWithName user)
     {
-        PopupService.ShowConfirmation(@Loc["SourceSure"], @Loc["Confirm"], OnDeleteConfirmed, type: ConfirmationType.Danger);
+        PopupService.ShowConfirmation(@Loc["Sure"], @Loc["Confirm"], OnDeleteConfirmed, type: ConfirmationType.Danger);
         selectedUser = user;
         showConfirm = true;
     }
@@ -201,7 +181,7 @@ new() { Field = "Action", DisplayName = Loc["Action"] ,IsSortable = false},
             if (result.Success)
             {
                 users.Remove(selectedUser);
-                initialUsers = initialUsers.Where(s => s.user.Id != selectedUser.user.Id).ToList(); // update initialsources
+                initialUsers = initialUsers.Where(s => s.user.Id != selectedUser.user.Id).ToList();
                 showConfirm = false;
                 StateHasChanged();
                 await ToastService.ShowToastAsync(Loc["Deleted successfully"], "success");
@@ -210,14 +190,19 @@ new() { Field = "Action", DisplayName = Loc["Action"] ,IsSortable = false},
         selectedUser = null;
 
     }
-    private void ViewUser(Guid Id)
+    private void LinkUser(Guid Id)
     {
-
+        PopupService.ShowNew(@<LinkUser Id="Id" OnSaved="ReloadAfterSave"></LinkUser>, headerText: @Loc["LinkUser"]);
     }
-    private void ViewPrivilege(Guid Id)
+    private async Task ReloadAfterSave()
     {
-
+        currentPage = 1;
+        PopupService.Hide();
+        await LoadUsers();
+        StateHasChanged();
     }
+    private void ViewPrivilege(Guid? Id) => navigationManager.NavigateTo($"/privilege?mode=view&id={Id}");
+
     private async Task SortBy(string columnName)
     {
         if (currentSortColumn == columnName)
@@ -233,18 +218,18 @@ new() { Field = "Action", DisplayName = Loc["Action"] ,IsSortable = false},
     }
 
     public List<SearchFieldUser> searchFields = new List<SearchFieldUser>() {
-SearchFieldUser.NameEnglish,
-SearchFieldUser.NameArabic,
-SearchFieldUser.Email,
-SearchFieldUser.IsManager,
-SearchFieldUser.Privilege,
-SearchFieldUser.Department,
-// SearchFieldUser.CreatedBy,
-SearchFieldUser.UpdatedBy,
-// SearchFieldUser.CreateDate,
-SearchFieldUser.UpdateDate,
-SearchFieldUser.ActiveStatus
-};
+            SearchFieldUser.NameEnglish,
+            SearchFieldUser.NameArabic,
+            SearchFieldUser.Email,
+            SearchFieldUser.IsManager,
+            SearchFieldUser.Privilege,
+            SearchFieldUser.Department,
+            // SearchFieldUser.CreatedBy,
+            SearchFieldUser.UpdatedBy,
+            // SearchFieldUser.CreateDate,
+            SearchFieldUser.UpdateDate,
+            SearchFieldUser.ActiveStatus
+    };
 
     public async Task Search(string searchTerm)
     {
@@ -260,15 +245,12 @@ SearchFieldUser.ActiveStatus
     {
         currentSortColumn = sortInfo.Column;
         sortAscending = sortInfo.Ascending;
-
-
         if (sortAscending == null)
         {
             // third click → reset to default sorting
             currentSortColumn = "Name"; // or whatever your default column is
             sortAscending = true;
         }
-
         await LoadUsers();
     }
 }

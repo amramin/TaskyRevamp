@@ -161,8 +161,15 @@ else
     }
     private void Add()
     {
-        PopupService.ShowNew(@<AddDepartment OnValidSubmit="OnInitializedAsync"></AddDepartment>,Loc["AddDepartment"]);
+        PopupService.ShowNew(@<AddDepartment OnValidSubmit="OnInitializedAsync" OnSaved="ReloadAfterSave"></AddDepartment>,Loc["AddDepartment"]);
 
+    }
+    private async Task ReloadAfterSave()
+    {
+        currentPage = 1;
+        PopupService.Hide();
+        await LoadDepartmentsAsync();
+        StateHasChanged();
     }
     private async Task ClearSearch()
     {
@@ -175,7 +182,7 @@ else
     }
     private void Edit(Guid id)
     {
-        PopupService.ShowNew(@<UpdateDepartment Id="id" OnValidSubmit="OnInitializedAsync"></UpdateDepartment>, headerText:
+        PopupService.ShowNew(@<UpdateDepartment Id="id" OnValidSubmit="OnInitializedAsync" OnSaved="ReloadAfterSave"></UpdateDepartment>, headerText:
         @Loc["EditDepartment"]);
 
     }

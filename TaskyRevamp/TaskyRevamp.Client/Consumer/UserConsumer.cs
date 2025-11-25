@@ -61,6 +61,13 @@ namespace TaskyRevamp.Client.Consumer
 
 			return res;
 		}
+		public async Task<CommonApiResponse<List<UserDto>>> GetUnAssignedUsersToPrivilege()
+		{
+			var url = $"api/User/GetUnAssignedUsersToPrivilege";
+			var res = await _taskyService.GetFromJsonAsync<CommonApiResponse<List<UserDto>>>(url);
+
+			return res;
+		}
 		public async Task<CommonApiResponse<SearchableDropDownDto<DdlDto>>> GetUsersBySearchValue(string searchValue, int pageSize, int offset)
 		{
 			var culture = Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName;
@@ -82,6 +89,20 @@ namespace TaskyRevamp.Client.Consumer
 		{
 			var url = $"api/User/CreateAssignedUser";
 			var res = await _taskyService.PostJsonAsync<CommonApiResponse<bool>>(url, UserDto);
+
+			return res.Data;
+		}
+		public async Task<CommonApiResponse<bool>> LinkUser(UserDto userDto, Guid departmentId, Guid privilegeId)
+		{
+			var url = $"api/User/LinkUser/{departmentId}/{privilegeId}";
+			var res = await _taskyService.PostJsonAsync<CommonApiResponse<bool>>(url, userDto);
+
+			return res.Data;
+		}
+		public async Task<CommonApiResponse<bool>> AssignUsersToPrivilege(List<UserDto> usersDto, Guid id)
+		{
+			var url = $"api/User/AssignUsersToPrivilege/{id}";
+			var res = await _taskyService.PostJsonAsync<CommonApiResponse<bool>>(url, usersDto);
 
 			return res.Data;
 		}

@@ -40,7 +40,7 @@ public class GetUsersByDepartmentHandler : IRequestHandler<GetUsersByDepartmentQ
                 userNameAR = usr.NameArabic,
                 userNameEN = usr.NameEnglish,
                 Email = usr.Email,
-                PrivilegName = usr.Privilege?.NameEnglish
+                PrivilegeName = usr.Privilege?.NameEnglish
             };
 
             returned.AssignedUsers.Add(userDto);

@@ -10,10 +10,7 @@
 @inject NavigationManager navigationManager
 @inject IStringLocalizer<SharedResources> Loc
 @inject ToastService ToastService
-
 @inject PopupService PopupService
-
-
 
 <div class="page-header">
     <div class="title-block">
@@ -30,7 +27,7 @@
             <span class="icon">
                 <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Pluse"></SVGCrud>
             </span>
-            @Loc["Add_user"]
+            @Loc["LinkUser"]
         </button>
     </div>
 </div>
@@ -92,7 +89,7 @@ else if (initialUsers != null && initialUsers.Any())
 else
 {
     <NoDataAvailable MessageTitle="@Loc["NoUsers"]"
-                     ButtonText="@Loc["Add_user"]"
+                     ButtonText="@Loc["LinkUser"]"
                      OnButtonClick="Add" />
 }
 
@@ -163,7 +160,14 @@ else
     }
     private void Add()
     {
-        PopupService.ShowNew(@<LinkUserDepartment Id="Id"></LinkUserDepartment>,Loc["Addusers"]);
+        PopupService.ShowNew(@<LinkUserDepartment Id="Id" OnSaved="ReloadAfterSave"></LinkUserDepartment>,Loc["Addusers"]);
+        StateHasChanged();
+    }
+    private async Task ReloadAfterSave()
+    {
+        currentPage = 1;
+        PopupService.Hide();
+        await LoadUsers();
         StateHasChanged();
     }
     private void ViewPrivilege(Guid? id)

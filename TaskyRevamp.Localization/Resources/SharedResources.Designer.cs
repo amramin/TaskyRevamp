@@ -1132,7 +1132,7 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Link a user to department and privilege.
+        ///   Looks up a localized string similar to link user.
         /// </summary>
         public static string LinkUser {
             get {

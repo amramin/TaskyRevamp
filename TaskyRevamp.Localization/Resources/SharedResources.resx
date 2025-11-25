@@ -848,7 +848,7 @@ Add a new department to get started</value>
     <value>View Privilege</value>
   </data>
   <data name="LinkUser" xml:space="preserve">
-    <value>Link a user to department and privilege</value>
+    <value>link user</value>
   </data>
   <data name="Usethisoption" xml:space="preserve">
     <value>Use this option to enable system notifications that will be automatically sent when the specified action is triggered.</value>
@@ -876,9 +876,6 @@ Add a new department to get started</value>
   </data>
   <data name="SystemNotifications" xml:space="preserve">
     <value>System notifications</value>
-  </data>
-  <data name="Types of system notification Messages" xml:space="preserve">
-    <value>Types of system notification Messages</value>
   </data>
   <data name="ViewUserPrivilege" xml:space="preserve">
     <value>View user privilege</value>
