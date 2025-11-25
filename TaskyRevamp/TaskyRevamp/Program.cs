@@ -33,7 +33,7 @@ builder.Services.AddScoped<CustomAuthenticationService>();
 builder.Services.AddScoped<PopupService>();
 builder.Services.AddScoped<ToastService>();
 builder.Services.AddSingleton<LoaderService>();
-builder.Services.AddAuthorizationCore();
+//builder.Services.AddAuthorizationCore();
 //Consumers
 builder.Services.AddTransient<AccountConsumer>();
 

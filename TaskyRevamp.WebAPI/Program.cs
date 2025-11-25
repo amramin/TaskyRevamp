@@ -22,7 +22,6 @@ using TaskyRevamp.Infrastructure;
 using TaskyRevamp.Infrastructure.Hubs;
 using TaskyRevamp.Infrastructure.Repositories;
 using TaskyRevamp.Infrastructure.Seeders;
-using TaskyRevamp.Infrastructure.Services.Notification;
 using TaskyRevamp.Services;
 using TaskyRevamp.Services.Account.Commands;
 using TaskyRevamp.WebAPI;
@@ -140,7 +139,7 @@ builder.Services.AddAuthentication(options =>
 
 
 builder.Services.AddAuthorization();
-builder.Services.AddAuthorizationCore();
+//builder.Services.AddAuthorizationCore();
 builder.Services.AddSignalR();
 
 // Add Response Compression
@@ -186,7 +185,7 @@ app.UseCors(x =>
 //app.UseRequestLocalization();
 app.UseMiddleware<LocalizedExceptionMiddleware>();
 app.UseMiddleware<ExtractCustomHeaderMiddleware>();
-app.UseResponseCompression();
+//app.UseResponseCompression();
 //app.MapHub<ChatHub>("chathub");
 app.MapHub<NotificationHub>("/notification-hub");
 
