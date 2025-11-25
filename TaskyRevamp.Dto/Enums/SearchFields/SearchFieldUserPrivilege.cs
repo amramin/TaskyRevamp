@@ -6,13 +6,14 @@ using System.Threading.Tasks;
 
 namespace TaskyRevamp.Dto.Enums.SearchFields
 {
-
-    public enum SearchFieldUserDepartment
-    {
-        NameEnglish,
-        NameArabic,
-        Email,
-        Privilage,
-        IsManager
-    }
+	public enum SearchFieldUserPrivilege
+	{
+		NameEnglish,
+		NameArabic,
+		Email,
+		PrivilegeArabic,
+		DepartmentArabic,
+		PrivilegeEnglish,
+		DepartmentEnglish,
+	}
 }

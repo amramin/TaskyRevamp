@@ -18,8 +18,8 @@
 
 
 @code {
-    [Parameter]
-    public Guid? ParentId { set; get; } = new Guid();
+    [Parameter] public Guid? ParentId { set; get; } = new Guid(); 
+    [Parameter] public EventCallback OnSaved { get; set; }
     private DepartmentDto _newDepartment = new DepartmentDto();
     public List<DepartmentDto> departmentDtos = new List<DepartmentDto>();
     [Parameter] public EventCallback<DepartmentDto> OnValidSubmit { get; set; }
@@ -29,7 +29,7 @@
 
     protected async override Task OnInitializedAsync()
     {
-       
+
         var res = await _departmentConsumer.GetDepartmentsForDDL();
         if (ParentId != null || ParentId != Guid.Empty)
         {
@@ -45,8 +45,7 @@
         {
             await OnValidSubmit.InvokeAsync(_newDepartment);
             await ToastService.ShowToastAsync(Loc["Addedsuccessfully"], "success");
-
-            navigationManager.NavigateTo("/Departments");
+            await OnSaved.InvokeAsync();
         }
         else
         {

@@ -153,9 +153,6 @@
   <data name="RetentionPeriodOptions" xml:space="preserve">
     <value>Retention Period Options</value>
   </data>
-  <data name="SystemNotifications" xml:space="preserve">
-    <value>System notifications</value>
-  </data>
   <data name="Cancel" xml:space="preserve">
     <value>Cancel</value>
   </data>
@@ -641,7 +638,7 @@ Add a new department to get started</value>
     <value>General Modules </value>
   </data>
   <data name="Privilege" xml:space="preserve">
-    <value>Privilege </value>
+    <value>privilege </value>
   </data>
   <data name="TaskModule" xml:space="preserve">
     <value>Task Module</value>
@@ -851,7 +848,7 @@ Add a new department to get started</value>
     <value>View Privilege</value>
   </data>
   <data name="LinkUser" xml:space="preserve">
-    <value>Link a user to department and privilege</value>
+    <value>link user</value>
   </data>
   <data name="Usethisoption" xml:space="preserve">
     <value>Use this option to enable system notifications that will be automatically sent when the specified action is triggered.</value>
@@ -871,11 +868,32 @@ Add a new department to get started</value>
   <data name="KanbanView" xml:space="preserve">
     <value>Kanban view</value>
   </data>
+  <data name="Sure" xml:space="preserve">
+    <value>Are you sure you want to delete this ?</value>
+  </data>
   <data name="EditPrivilege" xml:space="preserve">
     <value>Edit Privilege</value>
   </data>
-  <data name="Sure" xml:space="preserve">
-    <value>Are you sure you want to delete this ?</value>
+  <data name="SystemNotifications" xml:space="preserve">
+    <value>System notifications</value>
+  </data>
+  <data name="ViewUserPrivilege" xml:space="preserve">
+    <value>View user privilege</value>
+  </data>
+  <data name="Email_user" xml:space="preserve">
+    <value>Email</value>
+  </data>
+  <data name="NoUsers" xml:space="preserve">
+    <value>No users assigned to this department</value>
+  </data>
+  <data name="username" xml:space="preserve">
+    <value>User Name</value>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>Yes</value>
   </data>
   <data name="priorityHint2" xml:space="preserve">
     <value>Note: Priority order follows this order — 1 (highest/most critical), 2, 3 (lowest). The parent will always take the highest priority number (the most critical) from its sub-tasks.</value>

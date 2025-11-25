@@ -853,6 +853,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Email.
+        /// </summary>
+        public static string Email_user {
+            get {
+                return ResourceManager.GetString("Email_user", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Employee&apos;s Tasks.
         /// </summary>
         public static string EmployeesTasks {
@@ -1141,7 +1150,7 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Link a user to department and privilege.
+        ///   Looks up a localized string similar to link user.
         /// </summary>
         public static string LinkUser {
             get {
@@ -1357,6 +1366,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No.
+        /// </summary>
+        public static string No {
+            get {
+                return ResourceManager.GetString("No", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No Delegations available.
         /// </summary>
         public static string NoDelegationvailable {
@@ -1417,6 +1435,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string NotificationTypeTemplateConfiguration {
             get {
                 return ResourceManager.GetString("NotificationTypeTemplateConfiguration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No users assigned to this department.
+        /// </summary>
+        public static string NoUsers {
+            get {
+                return ResourceManager.GetString("NoUsers", resourceCulture);
             }
         }
         
@@ -1583,7 +1610,7 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Privilege .
+        ///   Looks up a localized string similar to privilege .
         /// </summary>
         public static string Privilege {
             get {
@@ -2249,6 +2276,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to User Name.
+        /// </summary>
+        public static string username {
+            get {
+                return ResourceManager.GetString("username", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Users .
         /// </summary>
         public static string users {
@@ -2321,6 +2357,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to View user privilege.
+        /// </summary>
+        public static string ViewUserPrivilege {
+            get {
+                return ResourceManager.GetString("ViewUserPrivilege", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Users.
         /// </summary>
         public static string ViewUsers {
@@ -2389,6 +2434,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string workingDaysHint {
             get {
                 return ResourceManager.GetString("workingDaysHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Yes.
+        /// </summary>
+        public static string Yes {
+            get {
+                return ResourceManager.GetString("Yes", resourceCulture);
             }
         }
     }

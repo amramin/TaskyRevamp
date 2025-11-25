@@ -24,27 +24,15 @@
         </button>
     </div>
 </div>
-@* <div class="bg-light rounded-3 p-3">
-    <div class="row fw-semibold text-secondary border-bottom pb-2 mb-2">
-        <div class="col-6">@Loc["Name"]</div>
-        <div class="col-6">@Loc["Privilege"]</div>
-    </div>
 
-    <div class="row py-2 border-bottom">
-        <div class="col-6 fw-medium text-dark">Admin</div>
-        <div class="col-6 text-muted">Full system access(default)</div>
-    </div>
-</div> *@
 @if (Privilegs != null && Privilegs.Any())
 {
     <div class="page-body">
         <div class="table-responsive">
             @if (Privilegs != null && Privilegs.Any())
             {
-
                 <SortableTable TItem="PrivilegeDtoWithName" Columns="@tableColumns" Items="@Privilegs"
                                SortColumn="@currentSortColumn" SortAscending="@sortAscending" OnSortRequested="HandleSort">
-
                     <RowTemplate>
                         @foreach (var item in Privilegs)
                         {
@@ -71,7 +59,7 @@
                                                 </button>
                                             </li>
                                             <li>
-                                                <button class="dropdown-item" @onclick="@(() => ViewUsers(item.PrivilegeDto.Id))">
+                                                <button class="dropdown-item" @onclick="@(() => ViewUsers(item.PrivilegeDto.Id, item.PrivilegeDto.Name))">
                                                     <span class="icon">
                                                         <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Users"></SVGCrud>
                                                     </span>
@@ -187,6 +175,7 @@ else
     private void AddPrivilege() => navigationManager.NavigateTo("/privilege?mode=add");
     private void EditPrivilege(Guid id) => navigationManager.NavigateTo($"/privilege?mode=edit&id={id}");
     private void ViewPermission(Guid id) => navigationManager.NavigateTo($"/privilege?mode=view&id={id}");
+    private void ViewUsers(Guid id, string PrivilegeName) => navigationManager.NavigateTo($"/UsersPrivilege/{id}/{PrivilegeName}");
 
     private void DeletePrivilege(PrivilegeDtoWithName privilege)
     {
@@ -210,10 +199,7 @@ else
         }
         selectedPrivilege = null;
     }
-    private void ViewUsers(Guid id)
-    {
-
-    }
+   
     private async Task SortBy(string columnName)
     {
         if (currentSortColumn == columnName)

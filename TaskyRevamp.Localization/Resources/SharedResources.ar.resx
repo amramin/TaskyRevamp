@@ -153,9 +153,6 @@
   <data name="RetentionPeriodOptions" xml:space="preserve">
     <value>خيارات فترة الإحتفاظ</value>
   </data>
-  <data name="SystemNotifications" xml:space="preserve">
-    <value>إشعارات النظام</value>
-  </data>
   <data name="Cancel" xml:space="preserve">
     <value>إلغاء</value>
   </data>
@@ -641,7 +638,7 @@
     <value>الوحدات العامة</value>
   </data>
   <data name="Privilege" xml:space="preserve">
-    <value>صلاحية</value>
+    <value>صلاحيات</value>
   </data>
   <data name="TaskModule" xml:space="preserve">
     <value>وحدة المهام</value>
@@ -851,7 +848,7 @@
     <value>عرض الصلاحية</value>
   </data>
   <data name="LinkUser" xml:space="preserve">
-    <value>Link a user to department and privilege</value>
+    <value>ربط المستخدم</value>
   </data>
   <data name="Usethisoption" xml:space="preserve">
     <value>استخدم هذا الخيار لتفعيل إشعارات النظام التي سيتم إرسالها تلقائيًا عند تنفيذ الإجراء المحدد</value>
@@ -871,11 +868,32 @@
   <data name="KanbanView" xml:space="preserve">
     <value>عرض اللوحة</value>
   </data>
+  <data name="Sure" xml:space="preserve">
+    <value>هل أنت متأكد أنك تريد الحذف؟ </value>
+  </data>
   <data name="EditPrivilege" xml:space="preserve">
     <value>تعديل الصلاحية</value>
   </data>
-  <data name="Sure" xml:space="preserve">
-    <value>هل أنت متأكد أنك تريد الحذف؟ </value>
+  <data name="SystemNotifications" xml:space="preserve">
+    <value>إشعارات النظام</value>
+  </data>
+  <data name="ViewUserPrivilege" xml:space="preserve">
+    <value>عرض الصلاحيات</value>
+  </data>
+  <data name="Email_user" xml:space="preserve">
+    <value>البريد اللإلكتروني</value>
+  </data>
+  <data name="NoUsers" xml:space="preserve">
+    <value>لا يوجد مستخدمون مرتبطون بهذا القسم</value>
+  </data>
+  <data name="username" xml:space="preserve">
+    <value>إسم المستخدم</value>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>لا</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>نعم</value>
   </data>
   <data name="priorityHint2" xml:space="preserve">
     <value>ملاحظة: ترتيب الأولويات هو كالتالي — 1 (أعلى/أكثر أهمية)، 2، 3 (أقل أهمية).      ستأخذ المهمة الرئيسية دائمًا أعلى ترتيب أولوية من بين المهام الفرعية، أي الأكثر أهمية.</value>

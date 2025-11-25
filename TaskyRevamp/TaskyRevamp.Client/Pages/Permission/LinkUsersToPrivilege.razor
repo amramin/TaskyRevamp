@@ -1,4 +1,4 @@
-﻿@page "/LinkDepartmentUser/{Id:guid}"
+﻿@page "/LinkPrivilegeUsers/{Id:guid}"
 
 @using Stingray.Components.MultiSelectComponent
 @using TaskyRevamp.Client.Consumer
@@ -6,7 +6,7 @@
 @using TaskyRevamp.Client.Shared.Popups
 @using TaskyRevamp.Dto.Account
 @using TaskyRevamp.Dto.Department
-@inject UserConsumer  _userConsumer
+@inject UserConsumer _userConsumer
 @inject NavigationManager navigationManager
 @inject IStringLocalizer<SharedResources> Loc
 @inject ToastService ToastService
@@ -14,11 +14,11 @@
 <div class="offcanvas-body">
     <div class="mb-3">
         <label class="form-label">
-            @Loc["usersList"]
+            @Loc["users"]
             <span class="text-danger">*</span>
         </label>
         <SearchableMultiDropdownOffline TInput=UserDto TOutput="Guid" Datasource=availableUsers
-            TextSelector=@(x=>x.UserName) OutputSelector="x=> x.Id" @bind-SelectedOptions=assignedUserDto.UsrIds />
+                                        TextSelector=@(x=>x.UserName) OutputSelector="x=> x.Id" @bind-SelectedOptions=SelectedUsers />
     </div>
 </div>
 <div class="offcanvas-footer">
@@ -41,25 +41,39 @@
     [Parameter] public Guid Id { get; set; }
     [Parameter] public EventCallback OnSaved { get; set; }
     public List<UserDto> availableUsers { get; set; } = new();
-    public AssignedUserDto assignedUserDto = new AssignedUserDto();
+    public List<Guid> SelectedUsers { get; set; } = new();
     protected async override Task OnInitializedAsync()
     {
-        assignedUserDto.DepartmentId = Id;
-        var res = await _userConsumer.GetAllUNassignedUsers();
-        availableUsers = res.Data.ToList();
-
-        StateHasChanged();
+        var res = await _userConsumer.GetUnAssignedUsersToPrivilege();
+        if (res.Success && res.Data != null)
+        {
+            availableUsers = res.Data.ToList();
+        }
     }
     private async Task SaveClick()
     {
-        await _userConsumer.CreateAssignedUser(assignedUserDto);
-        await OnSaved.InvokeAsync();
-        StateHasChanged();
+        if (SelectedUsers == null || SelectedUsers.Count == 0)
+            return;
+
+        var selectedUserDtos = availableUsers.Where(u => SelectedUsers.Contains(u.Id)).ToList();
+        var res = await _userConsumer.AssignUsersToPrivilege(selectedUserDtos, Id);
+        if (res.Success)
+        {
+            var result = await _userConsumer.GetUnAssignedUsersToPrivilege();
+            if(result.Success && result.Data != null)
+            {
+                availableUsers = result.Data.ToList();
+                SelectedUsers = new();
+            }
+            await OnSaved.InvokeAsync();
+            await ToastService.ShowToastAsync(Loc["Added successfully"], "success");
+        }
+       
     }
 
-    private async Task OnCancelClick()
+    private void OnCancelClick()
     {
-        StateHasChanged();
+
     }
 
 }

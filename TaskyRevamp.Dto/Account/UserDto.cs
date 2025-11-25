@@ -19,7 +19,7 @@ namespace TaskyRevamp.Dto.Account
         public bool IsActive { get; set; }
         public bool IsManager { get; set; }
         public Guid? PrivilegeId { get; set; }
-        public string? PrivilegName { get; set; }
+        public string? PrivilegeName { get; set; }
         public Guid? DepartmentId { get; set; }
         public Guid? UpdatedById { get; set; }
         public DateTime? UpdateDate { get; set; }
