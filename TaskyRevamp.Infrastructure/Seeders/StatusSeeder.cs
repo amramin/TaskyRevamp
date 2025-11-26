@@ -16,21 +16,21 @@ namespace TaskyRevamp.Infrastructure.Seeders
 			{
 				new StatusSettings
 				{
-					NameEnglish = "Not Started",
+					NameEnglish = "Not started",
 					NameArabic = "لم تبدأ",
 					NameColor = "#CCCCCC",
 					BackgroundColor = "#FAFAFA"
 				},
 				new StatusSettings
 				{
-					NameEnglish = "To Do",
+					NameEnglish = "To do",
 					NameArabic = "قيد الإنتظار",
 					NameColor = "#007BFF",
 					BackgroundColor = "#E5F2FF"
 				},
 				new StatusSettings
 				{
-					NameEnglish = "In Progress",
+					NameEnglish = "In progress",
 					NameArabic = "قيد التنفيذ",
 					NameColor = "#FFC107",
 					BackgroundColor = "#FFF9E6"
@@ -44,7 +44,7 @@ namespace TaskyRevamp.Infrastructure.Seeders
 				},
 				new StatusSettings
 				{
-					NameEnglish = "Pending Review",
+					NameEnglish = "Pending review",
 					NameArabic = "في انتظار المراجعة",
 					NameColor = "#6F42C1",
 					BackgroundColor = "#F1ECF9"

@@ -28,8 +28,10 @@ namespace TaskyRevamp.Infrastructure.Seeders
 				},
 				new GeneralModule
 				{
+
 					NameEnglish = "Privileges ",
 					NameArabic = "الصلاحيات",
+
 					HasView = true,
 					HasEdit = true,
 					HasDelete = true,
@@ -64,8 +66,10 @@ namespace TaskyRevamp.Infrastructure.Seeders
 				},
 				new GeneralModule
 				{
-					NameEnglish = "Add Task fields",
+
+					NameEnglish = "Add task fields",
 					NameArabic = "حقول إضافة المهام",
+
 					HasView = true,
 					HasEdit = true,
 					HasDelete = false,
@@ -109,8 +113,10 @@ namespace TaskyRevamp.Infrastructure.Seeders
 				},
 				new GeneralModule
 				{
+
 					NameEnglish = "Task history log",
 					NameArabic = "سجل تاريخ المهام",
+
 					HasView = true,
 					HasEdit = true,
 					HasDelete = false,

@@ -1415,16 +1415,18 @@ html[dir=rtl] .end-0 {
   font-weight: 500;
   padding-block: 0.719rem;
 }
-.btn.btn-delete {
+
+.btn-delete {
   color: rgb(var(--bs-danger-rgb));
 }
-.btn.btn-delete:hover, .btn.btn-delete:focus, .btn.btn-delete:first-child:active, .btn.btn-delete:active {
+.btn-delete:hover, .btn-delete:focus, .btn-delete:first-child:active, .btn-delete:active {
   background-color: rgba(var(--bs-danger-rgb), 0.2);
 }
-.btn.btn-edit {
+
+.btn-edit {
   color: rgb(var(--bs-success-rgb));
 }
-.btn.btn-edit:hover, .btn.btn-edit:focus, .btn.btn-edit:first-child:active, .btn.btn-edit:active {
+.btn-edit:hover, .btn-edit:focus, .btn-edit:first-child:active, .btn-edit:active {
   background-color: rgba(var(--bs-success-rgb), 0.2);
 }
 
@@ -1696,10 +1698,6 @@ fieldset:disabled .btn {
   font-size: 0.875rem;
   padding: 0.65rem 0.5rem;
   font-weight: 500;
-  text-transform: lowercase;
-}
-.badge::first-letter {
-  text-transform: uppercase;
 }
 
 /* strat alert*/

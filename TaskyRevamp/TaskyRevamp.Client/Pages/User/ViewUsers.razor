@@ -47,7 +47,7 @@
                                         </label>
                                     </div>
                                 </td>
-                                <td>
+                                @* <td>
                                     <div class="form-check form-switch custom">
                                         <InputCheckbox id="@checkboxId" @bind-Value="item.user.IsActive" class="form-check-input"
                                                        disabled />
@@ -55,8 +55,12 @@
                                             <span class="toggler-icon"></span>
                                         </label>
                                     </div>
-                                </td>
+
+                                </td>*@
                                 <td>@(item.user.UpdateDate?.ToLocalTime().ToString("dd-MM-yyyy"))</td>
+
+                               
+                              
                                 <td>@item.user.UserName</td>
                                 <td>
                                     <div class="dropdown actions">
@@ -82,11 +86,11 @@
                                                 </button>
                                             </li>
                                             <li>
-                                                <button class="dropdown-item" @onclick="@(() => DeleteUser(item))">
+                                                <button class="dropdown-item btn-delete" @onclick="@(() => DeleteUser(item))">
                                                     <span class="icon">
                                                         <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Delete"></SVGCrud>
                                                     </span>
-                                                    <span class="text-danger">@Loc["Delete"]</span>
+                                                    <span>@Loc["Delete"]</span>
                                                 </button>
                                             </li>
                                         </ul>
@@ -146,7 +150,12 @@ else
             new() { Field = "Privileges", DisplayName = Loc["Privileges"] },
             new() { Field = "Department", DisplayName = Loc["Department"] },
             new() { Field = "Set as Manager", DisplayName = Loc["setAsManager"] },
-            new() { Field = "IsActive", DisplayName = Loc["active"] },
+
+
+@* new() { Field = "IsActive", DisplayName = Loc["active"] }, *@
+// new() { Field = "CreateDate", DisplayName = Loc["CreationDate"] },
+// new() { Field = "CreatedBy", DisplayName = Loc["CreatedBy"] },
+
             new() { Field = "UpdateDate", DisplayName = Loc["UpdateDate"] },
             new() { Field = "UpdatedBy", DisplayName = Loc["UpdatedBy"] },
             new() { Field = "Action", DisplayName = Loc["Action"] ,IsSortable = false},

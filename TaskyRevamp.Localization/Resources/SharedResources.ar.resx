@@ -153,6 +153,15 @@
   <data name="RetentionPeriodOptions" xml:space="preserve">
     <value>خيارات فترة الإحتفاظ</value>
   </data>
+
+
+    <data name="SystemNotifications" xml:space="preserve">
+    <value>إشعارات النظام</value>
+  </data>
+     <data name="EmailNotification" xml:space="preserve">
+    <value>إشعارات البريد الالكترونى</value>
+  </data>
+
   <data name="Cancel" xml:space="preserve">
     <value>إلغاء</value>
   </data>
