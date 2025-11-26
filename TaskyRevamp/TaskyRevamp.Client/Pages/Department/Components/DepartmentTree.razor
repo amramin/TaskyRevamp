@@ -31,7 +31,7 @@
                     {
                         <li>
                             <DepartmentTree Departments="new List<DepartmentDto> { child }" OnAdd="OnAdd" OnShowUsers="OnShowUsers"
-                                            OnEdit="OnEdit" OnAddDepartment="OnAdd" OnDelete="OnDelete" />
+                                OnEdit="OnEdit" OnAddDepartment="OnAdd" OnDelete="OnDelete" />
                         </li>
                     }
                 </ul>
@@ -50,7 +50,7 @@
     [Parameter] public EventCallback<Guid> OnDelete { get; set; }
     [Parameter] public EventCallback<Guid> OnAdd { get; set; }
 
-   
+
 
     private void ToggleChildren(DepartmentDto dept)
     {
@@ -66,6 +66,14 @@
     {
         if (!hasChildren) return "";
         return isExpanded ? "btn-expanded" : "btn-collapsed";
+    }
+    protected override void OnParametersSet()
+    {
+        if (Departments != null && Departments.Count > 0)
+        {
+
+            Departments[0].IsExpanded = true;
+        }
     }
 
 

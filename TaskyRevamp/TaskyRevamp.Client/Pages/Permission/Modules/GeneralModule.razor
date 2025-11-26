@@ -37,7 +37,9 @@
                         <td>@module.Name</td>
                         <td>
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" @onchange="e => SetAll(permission, e.Value!)" />
+                                <input class="form-check-input" type="checkbox" disabled="@IsViewMode" 
+                                       checked="@(permission.IsView && permission.IsEdit && permission.IsAdd && permission.IsDelete)"
+                                       @onchange="e => SetAll(permission, e.Value!)" />
                             </div>
                         </td>
 
@@ -45,7 +47,7 @@
                             @if (module.HasView)
                             {
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" @bind="permission.IsView" />
+                                    <input class="form-check-input" type="checkbox" disabled="@IsViewMode" @bind="permission.IsView" @bind:event="onchange"/>
                                 </div>
 
                             }
@@ -55,7 +57,7 @@
                             @if (module.HasEdit)
                             {
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" @bind="permission.IsEdit" />
+                                    <input class="form-check-input" type="checkbox" disabled="@IsViewMode" @bind="permission.IsEdit" @bind:event="onchange" />
                                 </div>
 
                             }
@@ -65,7 +67,7 @@
                             @if (module.HasAdd)
                             {
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" checked="@permission.IsAdd"
+                                    <input class="form-check-input" type="checkbox" disabled="@IsViewMode" checked="@permission.IsAdd"
                                         @onchange="e => OnAddChanged(permission, e)" />
                                 </div>
 
@@ -76,7 +78,7 @@
                             @if (module.HasDelete)
                             {
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" @bind="permission.IsDelete" />
+                                    <input class="form-check-input" type="checkbox" disabled="@IsViewMode" @bind="permission.IsDelete" @bind:event="onchange" />
                                 </div>
                             }
                         </td>
@@ -103,7 +105,7 @@
                             {
                                 var id = $"fromUser_{value}";
                                 <div class="form-check form-switch custom">
-                                    <input type="checkbox" id="@id" class="form-check-input"
+                                    <input type="checkbox" id="@id" disabled="@IsViewMode" class="form-check-input"
                                         checked="@delegationPermission!.DelegationFromUser!.Contains((int)value)"
                                         @onchange="e => OnDelegationFromUserChanged((int)value, e.Value!, delegationPermission)" />
                                     <label class="form-check-label ms-2" for="@id">
@@ -120,7 +122,7 @@
                             @if (delegationPermission?.DelegationFromUser != null &&
                                                     delegationPermission.DelegationFromUser.Contains((int)DelegationFromUser.DifferentDepartment))
                             {
-                                <DelegationDepartmentSelector DepartmentList="departmentDtos"
+                                <DelegationDepartmentSelector DepartmentList="departmentDtos" IsViewMode="@IsViewMode"
                                     SelectedDepartments="@delegationPermission.DelegationFromUserDepartments"
                                     SelectedDepartmentsChanged="@((List<Guid> ids) => delegationPermission.DelegationFromUserDepartments = ids)"
                                     LoadUsersByDepartment="@LoadUsersForDepartment" />
@@ -137,7 +139,7 @@
                                 bool isChecked = delegationPermission!.DelegationToUser == value;
 
                                 <div class="form-check form-switch custom">
-                                    <input type="radio" id="@id" class="form-check-input" name="toUserRadio"
+                                    <input type="radio" id="@id" disabled="@IsViewMode" class="form-check-input" name="toUserRadio"
                                         checked="@isChecked"
                                         @onclick="@(() => OnDelegationToUserClicked(value, delegationPermission))" />
                                     <label class="form-check-label ms-2" for="@id">
@@ -147,7 +149,7 @@
                             }
                             @if (delegationPermission!.DelegationToUser == DelegationToUser.DifferentDepartment)
                             {
-                                <DelegationDepartmentSelector DepartmentList="departmentDtos"
+                                <DelegationDepartmentSelector DepartmentList="departmentDtos" IsViewMode="@IsViewMode"
                                     SelectedDepartments="@delegationPermission.DelegationToUserDepartments"
                                     SelectedDepartmentsChanged="@((List<Guid> ids) => delegationPermission.DelegationToUserDepartments = ids)"
                                     LoadUsersByDepartment="@LoadUsersForDepartment" />
@@ -165,6 +167,8 @@
 @code {
     [Parameter] public PrivilegeDto PrivilegeDto { get; set; } = new PrivilegeDto();
     [Parameter] public EventCallback<bool> OnValidationStateChanged { get; set; }
+    [Parameter] public string Mode { get; set; }
+    [Parameter] public bool IsViewMode { get; set; }
     List<GeneralModuleDto> generalModules = new();
     List<DepartmentDto> departmentDtos = new();
     private bool showDelegationFromUserError = false;
@@ -175,19 +179,46 @@
         if (res.Success && res != null && res.Data != null)
         {
             generalModules = res.Data.ToList();
-            PrivilegeDto.GeneralModulePermissions = generalModules
-            .Select(m => new GeneralModulePermissionDto
+            // Only initialize if GeneralModulePermissions is null or empty
+            if (PrivilegeDto.GeneralModulePermissions == null || !PrivilegeDto.GeneralModulePermissions.Any())
             {
-                GeneralModuleId = m.Id,
-                IsView = false,
-                IsEdit = false,
-                IsAdd = false,
-                IsDelete = false,
-                DelegationFromUser = new List<int>(),
-                DelegationFromUserDepartments = new List<Guid>(),
-                DelegationToUserDepartments = new List<Guid>()
-            })
-            .ToList();
+                PrivilegeDto.GeneralModulePermissions = generalModules
+                    .Select(m => new GeneralModulePermissionDto
+                    {
+                        GeneralModuleId = m.Id,
+                        IsView = false,
+                        IsEdit = false,
+                        IsAdd = false,
+                        IsDelete = false,
+                        DelegationFromUser = new List<int>(),
+                        DelegationFromUserDepartments = new List<Guid>(),
+                        DelegationToUserDepartments = new List<Guid>()
+                    })
+                    .ToList();
+            }
+            else
+            {
+                // Ensure all modules have a permission entry (add missing ones)
+                var existingModuleIds = PrivilegeDto.GeneralModulePermissions
+                    .Select(p => p.GeneralModuleId)
+                    .ToHashSet();
+
+                var missingPermissions = generalModules
+                    .Where(m => !existingModuleIds.Contains(m.Id))
+                    .Select(m => new GeneralModulePermissionDto
+                    {
+                        GeneralModuleId = m.Id,
+                        IsView = false,
+                        IsEdit = false,
+                        IsAdd = false,
+                        IsDelete = false,
+                        DelegationFromUser = new List<int>(),
+                        DelegationFromUserDepartments = new List<Guid>(),
+                        DelegationToUserDepartments = new List<Guid>()
+                    });
+
+                PrivilegeDto.GeneralModulePermissions.AddRange(missingPermissions);
+            }
             var departmentsRes = await _departmentConsumer.GetDepartmentsNoPagnation();
             if (departmentsRes.Success && departmentsRes != null && departmentsRes.Data != null)
             {

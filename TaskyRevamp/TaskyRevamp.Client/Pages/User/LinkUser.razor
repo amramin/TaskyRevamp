@@ -1,0 +1,198 @@
+﻿@page "/LinkUser/{Id:guid}"
+
+@using Stingray.Components.MultiSelectComponent
+@using TaskyRevamp.Client.Consumer
+@using TaskyRevamp.Client.Services
+@using TaskyRevamp.Client.Shared.Popups
+@using TaskyRevamp.Dto.Account
+@using TaskyRevamp.Dto.Department
+@using TaskyRevamp.Dto.Permissions
+@inject PrivilegeConsumer _privilegeConsumer
+@inject DepartmentConsumer _departmentConsumer
+@inject UserConsumer _userConsumer
+@inject TaskConsumer _taskConsumer
+@inject NavigationManager navigationManager
+@inject IStringLocalizer<SharedResources> Loc
+@inject ToastService ToastService
+
+@if (SelectedUser != null)
+{
+    <div class="offcanvas-body">
+        <div class="mb-3">
+            <label class="form-label">
+                @Loc["Privilege"]
+                <span class="text-danger">*</span>
+            </label>
+            <SearchableSingleDropdownOffline TInput=PrivilegeDto TOutput=Guid TextSelector="@(p => p.Name)"
+                                             OutputSelector="x => x.Id" Datasource="allPrivileges" MinCharacterCount="1"
+                                             @bind-SelectedOption="@SelectedPrivilegeId" PlaceHolder="@($"{Loc["Select"]}")" />
+            @if (privilegeRequired)
+            {
+                <div class="text-danger small">@Loc["Required"]</div>
+            }
+        </div>
+        <div class="mb-3">
+            <label class="form-label">
+                @Loc["Department"]
+                <span class="text-danger">*</span>
+            </label>
+            <SearchableSingleDropdownOffline TInput=DepartmentDto TOutput=Guid TextSelector="@(x => x.Name)"
+                                             OutputSelector="x => x.Id" Datasource="allDepartments" MinCharacterCount="1"
+                                             @bind-SelectedOption="@SelectedDepartmentId" PlaceHolder="@($"{Loc["Select"]}")" />
+            @if (departmentRequired)
+            {
+                <div class="text-danger small">@Loc["Required"]</div>
+            }
+        </div>
+        <div class="mb-3">
+            <div class="form-check form-switch custom">
+                    <label class="form-label">@Loc["Status"]</label>
+                <InputCheckbox id="checkboxId" @bind-Value="SelectedUser.IsActive" class="form-check-input"/>
+                <label for="checkboxId" class="form-check-label">
+                    <span class="toggler-icon"></span>
+                </label>
+            </div>
+        </div>
+    </div>
+    @if (showDepartmentWarning)
+    {
+        <div class="modal fade show d-block" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="btn-close" @onclick="CloseWarning"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>@departmentWarningMessage</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" @onclick="CancelChange">@Loc["Cancel"]</button>
+                        <button class="btn btn-primary" @onclick="ConfirmChange">@Loc["ChangeDepartment"]</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-backdrop fade show"></div>
+    }
+    <div class="offcanvas-footer">
+        <div class="row g-2">
+            <div class="col-6">
+                <div class="d-grid">
+                    <button type="button" class="btn btn-lg btn-light" @onclick="OnCancelClick">@Loc["Cancel"]</button>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="d-grid">
+                    <button type="button" @onclick="SaveClick" class="btn btn-lg btn-primary">@Loc["Save"]</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+}
+@code {
+    [Parameter] public Guid Id { get; set; }
+    [Parameter] public EventCallback OnSaved { get; set; }
+    private List<PrivilegeDto> allPrivileges { get; set; } = new();
+    private List<DepartmentDto> allDepartments { get; set; } = new();
+    private Guid SelectedPrivilegeId { get; set; }
+    private Guid SelectedDepartmentId { get; set; }
+    private UserDto SelectedUser { get; set; } = new UserDto();
+    private bool privilegeRequired = false;
+    private bool departmentRequired = false;
+    private bool showDepartmentWarning = false;
+    private string departmentWarningMessage = "";
+    private Guid pendingDepartmentId;
+
+    protected async override Task OnInitializedAsync()
+    {
+        var departmentRes = await _departmentConsumer.GetDepartmentsNoPagnation();
+        if (departmentRes.Success && departmentRes.Data != null)
+        {
+            allDepartments = departmentRes.Data.ToList();
+        }
+
+        var privilegeRes = await _privilegeConsumer.GetPrivilegesWithoutPagination();
+        if (privilegeRes.Success && privilegeRes.Data != null)
+        {
+            allPrivileges = privilegeRes.Data.ToList();
+        }
+
+        var userRes = await _userConsumer.GetUserById(Id);
+        if(userRes.Success && userRes.Data != null)
+        {
+            SelectedUser = userRes.Data;
+            if (SelectedUser.PrivilegeId.HasValue)
+                SelectedPrivilegeId = SelectedUser.PrivilegeId.Value;
+
+            if (SelectedUser.DepartmentId.HasValue)
+                SelectedDepartmentId = SelectedUser.DepartmentId.Value;
+        }
+    }
+    private async Task SaveClick()
+    {
+        privilegeRequired = false;
+        departmentRequired = false;
+        bool hasError = false;
+
+        if (SelectedPrivilegeId == Guid.Empty)
+        {
+            privilegeRequired = true;
+            hasError = true;
+        }
+        if (SelectedDepartmentId == Guid.Empty)
+        {
+            departmentRequired = true;
+            hasError = true;
+        }
+        if (hasError)
+            return;
+
+        if (SelectedUser.DepartmentId.HasValue && SelectedDepartmentId != SelectedUser.DepartmentId.Value)
+        {
+            DepartmentDto departmentDto = new DepartmentDto();
+            var dept = await _departmentConsumer.GetDepartmentById(SelectedUser.DepartmentId.Value);
+            if (dept.Success && dept.Data != null)
+            {
+                departmentDto = dept.Data;
+            }
+            var openTasks = await _userConsumer.CheckUserHasOpenTask(SelectedUser.DepartmentId.Value, SelectedUser.Id);
+            if (openTasks.Data)
+            {
+                pendingDepartmentId = SelectedDepartmentId;
+                departmentWarningMessage = $"{Loc["validationDepartmentPart1"]} [{departmentDto.Name}]. {Loc["validationDepartmentPart2"]}";
+                showDepartmentWarning = true;
+                StateHasChanged();
+                return;
+            }
+        }
+        await ApplyChanges(SelectedDepartmentId);
+    }
+    private async Task ConfirmChange()
+    {
+        showDepartmentWarning = false;
+        await ApplyChanges(pendingDepartmentId);
+        await _taskConsumer.UpdateTasksDepartment(SelectedUser.DepartmentId.Value, pendingDepartmentId);
+    }
+
+    private void CancelChange()
+    {
+        showDepartmentWarning = false;
+    }
+
+    private async Task ApplyChanges(Guid departmentId)
+    {
+        await _userConsumer.LinkUser(SelectedUser, departmentId, SelectedPrivilegeId);
+        await OnSaved.InvokeAsync();
+        await ToastService.ShowToastAsync(Loc["Added successfully"], "success");
+    }
+    private void OnCancelClick()
+    {
+
+    }
+    private void CloseWarning(MouseEventArgs args)
+    {
+        showDepartmentWarning = false;
+    }
+}

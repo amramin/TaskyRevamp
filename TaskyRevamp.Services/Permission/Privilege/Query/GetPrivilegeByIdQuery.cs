@@ -16,10 +16,11 @@ namespace TaskyRevamp.Services.Permission.Privilege.Query
 		public async Task<PrivilegeDto> Handle(GetPrivilegeByIdQuery request, CancellationToken cancellationToken)
 		{
 			PrivilegeDto _privilegeDto = new PrivilegeDto();
-			var res = await _privilegesRepository.FindByKey(request.Id);
+			var res = await _privilegesRepository.FindBy(p => p.Id == request.Id, 
+				includeProperties: $"{nameof(Privileges.GeneralModulePermissions)},{nameof(Privileges.ReportModulePermissions)},{nameof(Privileges.TaskModuleUserDepartmentPermissions)},{nameof(Privileges.TaskModuleExternalDepartmentPermissions)}");
 			if (res.Success && res.Value != null && res != null)
 			{
-				_privilegeDto = res.Value.CopyToDto();
+				_privilegeDto = res.Value.FirstOrDefault()!.CopyToDto();
 			}
 			return _privilegeDto;
 		}

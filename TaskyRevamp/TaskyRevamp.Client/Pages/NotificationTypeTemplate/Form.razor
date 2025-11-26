@@ -83,18 +83,21 @@
             </div>
         </div>
         <div class="col-lg-6">
-            <div class="mb-6">
-
-
-                <RichTextEditorComponent EditorId="RTE_EnglishTemplateArabic" @ref="RichTextEditorComponentRefTemplateArabic"
-                                         Content="@NotificationTypeTamplate.TemplateArabic" ContentChanged="OnDescriptionArabicChanged">
+         <label class="form-label">
+                          Email body in Arabic
+                    <span class="text-danger">*</span>
+                </label>
+                <RichTextEditorComponent EditorId="RTE_EnglishTemplateArabic"
+                    @ref="RichTextEditorComponentRefTemplateArabic" Content="@NotificationTypeTamplate.TemplateArabic"
+                    ContentChanged="OnDescriptionArabicChanged">
                 </RichTextEditorComponent>
                @*  <small id="templateCounterAr" class="form-text x-small  text-end ms-auto">
                @arabiccount/ 1000
                 </small> *@
                 <div class="d-flex align-items-center justify-content-between">
                     <div class="d-flex gap-2">
-                        <ValidationMessage class="small text-danger" For="@(() => NotificationTypeTamplate.TemplateArabic)" />
+                        <ValidationMessage class="small text-danger"
+                            For="@(() => NotificationTypeTamplate.TemplateArabic)" />
                     </div>
                     @if (isEmptyArabicTemplate)
                     {
@@ -108,18 +111,22 @@
         </div>
     </div>
     
-    <div class="offcanvas-footer">
-        <div class="row g-2">
-            <div class="col-3">
-                <div class="d-grid">  <button type="button" class="btn btn-lg btn-light" @onclick="OnCancelClick">@Loc["Cancel"]</button></div>
+     <div class="card-footer">
+                <div class="row justify-content-center">
+                    <div class="col-xxl-12 col-xl-12 col-lg-12 col-md-12">
+                        <div class="action-buttons">
+                           <button type="button" class="btn btn-lg btn-light"
+                        @onclick="OnCancelClick">@Loc["Cancel"]</button>
+                            <button type="submit"
+                        class="btn btn-lg btn-primary">@Loc[@SubmitButtonText]</button>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="col-3">
-                <div class="d-grid">    <button type="submit" class="btn btn-lg btn-primary">@Loc[@SubmitButtonText]</button></div>
-            </div>
-        </div>
-    </div>
+       
 </EditForm>
-
+</div>
+</div>
 
 @code {
 

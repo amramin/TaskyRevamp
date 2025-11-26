@@ -153,6 +153,15 @@
   <data name="RetentionPeriodOptions" xml:space="preserve">
     <value>خيارات فترة الإحتفاظ</value>
   </data>
+
+
+    <data name="SystemNotifications" xml:space="preserve">
+    <value>إشعارات النظام</value>
+  </data>
+     <data name="EmailNotification" xml:space="preserve">
+    <value>إشعارات البريد الالكترونى</value>
+  </data>
+
   <data name="Cancel" xml:space="preserve">
     <value>إلغاء</value>
   </data>
@@ -163,7 +172,7 @@
     <value>تم التعديل بنجاح</value>
   </data>
   <data name="Hours24" xml:space="preserve">
-    <value>ساعة 24 </value>
+    <value>24 ساعة</value>
   </data>
   <data name="ListWeek" xml:space="preserve">
     <value>أسبوع</value>
@@ -202,7 +211,7 @@
     <value>تعديل أولوية</value>
   </data>
   <data name="AddPriority" xml:space="preserve">
-    <value>إضافة أولوية جديدة</value>
+    <value>إضافة أولوية </value>
   </data>
   <data name="Delete" xml:space="preserve">
     <value>حذف</value>
@@ -263,6 +272,9 @@
   </data>
   <data name="Subtask_Level" xml:space="preserve">
     <value>مستوى المهمة الفرعية</value>
+  </data>
+  <data name="Types of system notification Messages" xml:space="preserve">
+    <value>أنواع رسائل إشعارات النظام</value>
   </data>
   <data name="subtask_hint" xml:space="preserve">
     <value>حدد الحد الأقصى لمستويات المهام الفرعية المسموح بها عند إنشاء مهمة. هذا الخيار يتحكم في عمق تداخل المهام</value>
@@ -340,7 +352,7 @@
     <value>أسبوع</value>
   </data>
   <data name="priorityHint" xml:space="preserve">
-    <value>يتم تعيين أولوية المهمة الرئيسية تلقائيًا لتتطابق مع أعلى أولوية بين المهام الفرعية.</value>
+    <value>يتم تعيين أولوية المهمة الرئيسية تلقائيًا لتتطابق مع أعلى أولوية بين المهام الفرعية. </value>
   </data>
   <data name="recycleHint" xml:space="preserve">
     <value>تعيين فترة الحذف التلقائي من النظام للمهام المحذوفة داخل سلة المحذوفات</value>
@@ -635,7 +647,7 @@
     <value>الوحدات العامة</value>
   </data>
   <data name="Privilege" xml:space="preserve">
-    <value>صلاحية</value>
+    <value>صلاحيات</value>
   </data>
   <data name="TaskModule" xml:space="preserve">
     <value>وحدة المهام</value>
@@ -644,7 +656,7 @@
     <value>وحدة التقارير</value>
   </data>
   <data name="AddNewPrivilege" xml:space="preserve">
-    <value>إضافة صلاحية جديدة</value>
+    <value>إضافة صلاحية </value>
   </data>
   <data name="SelectReportOptions" xml:space="preserve">
     <value>اختر خيارات التقرير</value>
@@ -842,7 +854,7 @@
     <value>عرض الصلاحية</value>
   </data>
   <data name="LinkUser" xml:space="preserve">
-    <value>Link a user to department and privilege</value>
+    <value>ربط المستخدم</value>
   </data>
   <data name="Usethisoption" xml:space="preserve">
     <value>استخدم هذا الخيار لتفعيل إشعارات النظام التي سيتم إرسالها تلقائيًا عند تنفيذ الإجراء المحدد</value>
@@ -850,6 +862,71 @@
   <data name="NotificationTypeTemplateConfiguration" xml:space="preserve">
     <value>اعداد التنبيهات</value>
   </data>
+  <data name="NoResultsFound" xml:space="preserve">
+    <value>لم يتم العثور على نتائج</value>
+  </data>
+  <data name="TryAjustingYourSearch" xml:space="preserve">
+    <value>حاول تعديل بحثك</value>
+  </data>
+  <data name="ClearSearch" xml:space="preserve">
+    <value>مسح البحث</value>
+  </data>
+  <data name="KanbanView" xml:space="preserve">
+    <value>عرض اللوحة</value>
+  </data>
+  <data name="Sure" xml:space="preserve">
+    <value>هل أنت متأكد أنك تريد الحذف؟ </value>
+  </data>
+  <data name="EditPrivilege" xml:space="preserve">
+    <value>تعديل الصلاحية</value>
+  </data>
+  <data name="SystemNotifications" xml:space="preserve">
+    <value>إشعارات النظام</value>
+  </data>
+  <data name="ViewUserPrivilege" xml:space="preserve">
+    <value>عرض الصلاحيات</value>
+  </data>
+  <data name="Email_user" xml:space="preserve">
+    <value>البريد اللإلكتروني</value>
+  </data>
+  <data name="NoUsers" xml:space="preserve">
+    <value>لا يوجد مستخدمون مرتبطون بهذا القسم</value>
+  </data>
+  <data name="username" xml:space="preserve">
+    <value>إسم المستخدم</value>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>لا</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>نعم</value>
+  </data>
+  <data name="priorityHint2" xml:space="preserve">
+    <value>ملاحظة: ترتيب الأولويات هو كالتالي — 1 (أعلى/أكثر أهمية)، 2، 3 (أقل أهمية).      ستأخذ المهمة الرئيسية دائمًا أعلى ترتيب أولوية من بين المهام الفرعية، أي الأكثر أهمية.</value>
+  </data>
+  <data name="ChangeDepartment" xml:space="preserve">
+    <value>تعديل الإدارة</value>
+  </data>
+  <data name="validationDepartmentPart1" xml:space="preserve">
+    <value>هذا المستخدم مُكلَّف حاليًا بمهام نشطة ضمن قسمه السابق</value>
+  </data>
+  <data name="validationDepartmentPart2" xml:space="preserve">
+    <value>يُرجى تعيين هذه المهام قبل التغيير</value>
+  </data>
+  <data name="user_is_active" xml:space="preserve">
+    <value>هذا المستخدم موجود في Active Directory ولا يمكن حذفه</value>
+  </data>
+  <data name="userHasTasksValidation" xml:space="preserve">
+    <value>لا يمكن الحذف، لدى المستخدم مهمة مفتوحة مرتبطه به.</value>
+  </data>
+      <data name="Of" xml:space="preserve">
+    <value>من</value>
+  </data>
+    <data name="Items per page" xml:space="preserve">
+    <value>العناصر لكل صفحة</value>
+  </data>
+  
+
   <data name="Sure" xml:space="preserve">
     <value>هل أنت متأكد أنك تريد حذف هذه الأولوية؟</value>
   </data>

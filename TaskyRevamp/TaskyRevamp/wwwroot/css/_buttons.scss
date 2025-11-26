@@ -21,24 +21,23 @@
     font-weight: 500;
     padding-block: 0.719rem;
   }
-
-  &.btn-delete {
-    color: rgb(var(--bs-danger-rgb));
-    &:hover,
-    &:focus,
-    &:first-child:active,
-    &:active {
-      background-color: rgba(var(--bs-danger-rgb), 0.2);
-    }
+}
+.btn-delete {
+  color: rgb(var(--bs-danger-rgb));
+  &:hover,
+  &:focus,
+  &:first-child:active,
+  &:active {
+    background-color: rgba(var(--bs-danger-rgb), 0.2);
   }
-  &.btn-edit {
-    color: rgb(var(--bs-success-rgb));
-    &:hover,
-    &:focus,
-    &:first-child:active,
-    &:active {
-      background-color: rgba(var(--bs-success-rgb), 0.2);
-    }
+}
+.btn-edit {
+  color: rgb(var(--bs-success-rgb));
+  &:hover,
+  &:focus,
+  &:first-child:active,
+  &:active {
+    background-color: rgba(var(--bs-success-rgb), 0.2);
   }
 }
 .btn-primary {

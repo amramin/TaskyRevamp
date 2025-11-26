@@ -1,6 +1,7 @@
 ﻿@using TaskyRevamp.Client.Services
 @using TaskyRevamp.Dto.Enums
 @inject PopupService PopupService
+@inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResources> Loc;
 
 @if (isVisible)
 {
@@ -55,7 +56,7 @@
                                 </span>
                                 @if (confirmParams.Type == ConfirmationType.Danger)
                                 {
-                                    <h6 class="modal-title headline-6">Sure to Delete ?</h6>
+                                    @* <h6 class="modal-title headline-6">Sure to Delete ?</h6> *@
                                 }
                                 else
                                 {
@@ -66,7 +67,7 @@
                                     <button class="btn btn-lg @(buttonClass)" @onclick="() => Confirm(true, confirmParams.OnConfirm)">
                                         @confirmParams.ButtonText
                                     </button>
-                                    <button class="btn btn-lg" @onclick="() => Confirm(false, confirmParams.OnConfirm)">Cancel</button>
+                                    <button class="btn btn-lg" @onclick="() => Confirm(false, confirmParams.OnConfirm)">@Loc["Cancel"]</button>
                                 </div>
                             </div>
                         </div>

@@ -33,6 +33,7 @@ public class CreateUserDelegationCommandHandler : IRequestHandler<CreateUserDele
             FromDate = request.UserDelegation.FromDate,
             FromUserId = request.UserDelegation.FromUserId,
             ToUserId = request.UserDelegation.ToUserId,
+            DelegationOption = request.UserDelegation.DelegationOption,
         };
 
         await _UserDelegationRepository.Insert(newUserDelegation);

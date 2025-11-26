@@ -7,8 +7,11 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<Compile Remove="Permission\GeneralModulePrivilege\**" />
 		<Compile Remove="Permission\GeneralModule\Command\**" />
+		<EmbeddedResource Remove="Permission\GeneralModulePrivilege\**" />
 		<EmbeddedResource Remove="Permission\GeneralModule\Command\**" />
+		<None Remove="Permission\GeneralModulePrivilege\**" />
 		<None Remove="Permission\GeneralModule\Command\**" />
 	</ItemGroup>
 
@@ -31,7 +34,6 @@
 
 	<ItemGroup>
 		<Folder Include="Account\Query\" />
-		<Folder Include="Permission\GeneralModulePrivilege\Command\" />
 		<Folder Include="SystemConfiguration\RecycleBinSettings\Command\" />
 	</ItemGroup>
 

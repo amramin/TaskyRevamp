@@ -77,6 +77,20 @@ namespace TaskyRevamp.Client.Consumer
 
             return res.Data;
         }
+        public async Task<CommonApiResponse<bool>> UpdateTasksDepartment(Guid oldId, Guid newId)
+        {
+            var url = $"api/Task/UpdateTasksDepartment/{oldId}/{newId}";
+            var res = await _taskyService.GetFromJsonAsync<CommonApiResponse<bool>>(url);
+
+            return res;
+        }
+        public async Task<CommonApiResponse<bool>> CheckOpenedTaskForUser(Guid userId)
+        {
+            var url = $"api/Task/CheckOpenedTaskForUser/{userId}";
+            var res = await _taskyService.GetFromJsonAsync<CommonApiResponse<bool>>(url);
+
+            return res;
+        }
 
 
         public async Task<CommonApiResponse<bool>> DeleteTask(Guid id)

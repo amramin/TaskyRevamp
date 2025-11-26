@@ -842,6 +842,10 @@ html[dir=rtl] .btn-change-lang .icon-text .en-text {
 html[dir=rtl] input[type=number] {
   direction: rtl;
 }
+html[dir=rtl] .end-0 {
+  right: auto !important;
+  left: 0 !important;
+}
 
 /* end rtl*/
 /* start inputs */
@@ -1152,7 +1156,6 @@ html[dir=rtl] input[type=number] {
   margin-top: 0;
 }
 .form-check .form-check-input + label {
-  text-transform: capitalize;
   color: var(--dark-600);
 }
 .form-check .form-check-input:checked {
@@ -1177,8 +1180,6 @@ html[dir=rtl] input[type=number] {
 .form-check-card {
   position: relative;
   width: 100%;
-}
-.form-check-card:not(:last-child) {
   margin-bottom: 0.5rem;
 }
 .form-check-card > input {
@@ -1211,6 +1212,21 @@ html[dir=rtl] input[type=number] {
   border-color: var(--primary-color);
   background-color: var(--light-200);
   color: var(--dark-900);
+}
+.form-check-card .actions {
+  -webkit-padding-start: 0.75rem;
+          padding-inline-start: 0.75rem;
+  -webkit-margin-start: 0.75rem;
+          margin-inline-start: 0.75rem;
+  -webkit-border-start: 1px solid var(--light-200);
+          border-inline-start: 1px solid var(--light-200);
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  gap: 0.5rem;
 }
 .form-check-card input[type=radio] + label {
   -webkit-padding-start: 2.5rem;
@@ -1313,7 +1329,6 @@ html[dir=rtl] input[type=number] {
   margin-top: 0;
 }
 .custom-select-item .form-check-input + label {
-  text-transform: capitalize;
   color: var(--dark-600);
 }
 .custom-select-item .form-check-input:checked {
@@ -1394,16 +1409,18 @@ html[dir=rtl] input[type=number] {
   font-weight: 500;
   padding-block: 0.719rem;
 }
-.btn.btn-delete {
+
+.btn-delete {
   color: rgb(var(--bs-danger-rgb));
 }
-.btn.btn-delete:hover, .btn.btn-delete:focus, .btn.btn-delete:first-child:active, .btn.btn-delete:active {
+.btn-delete:hover, .btn-delete:focus, .btn-delete:first-child:active, .btn-delete:active {
   background-color: rgba(var(--bs-danger-rgb), 0.2);
 }
-.btn.btn-edit {
+
+.btn-edit {
   color: rgb(var(--bs-success-rgb));
 }
-.btn.btn-edit:hover, .btn.btn-edit:focus, .btn.btn-edit:first-child:active, .btn.btn-edit:active {
+.btn-edit:hover, .btn-edit:focus, .btn-edit:first-child:active, .btn-edit:active {
   background-color: rgba(var(--bs-success-rgb), 0.2);
 }
 
@@ -1632,23 +1649,39 @@ fieldset:disabled .btn {
   font-size: 1.25rem;
   font-weight: 600;
   color: var(--dark-800);
+  text-transform: lowercase;
+}
+.headline-5::first-letter {
+  text-transform: uppercase;
 }
 
 .headline-6 {
   font-size: 1rem;
   font-weight: 600;
   color: var(--dark-800);
+  text-transform: lowercase;
+}
+.headline-6::first-letter {
+  text-transform: uppercase;
 }
 
 .headline-7 {
   font-size: 0.875rem;
   font-weight: 600;
+  text-transform: lowercase;
+}
+.headline-7::first-letter {
+  text-transform: uppercase;
 }
 
 .small-medium-text {
   font-size: 0.875rem;
   color: var(--dark-600);
   font-weight: 500;
+  text-transform: lowercase;
+}
+.small-medium-text::first-letter {
+  text-transform: uppercase;
 }
 
 .badge {
@@ -2054,6 +2087,9 @@ fieldset:disabled .btn {
   cursor: -webkit-grab;
   cursor: grab;
 }
+.card.card-order-control:has(.btn-group-vertical) .card-body {
+  max-width: calc(100% - 2.5rem);
+}
 .card.card-order-control:hover {
   -webkit-box-shadow: var(--bs-shadow);
           box-shadow: var(--bs-shadow);
@@ -2061,26 +2097,27 @@ fieldset:disabled .btn {
 .card.card-order-control .card-body {
   padding: 0.5rem 0.75rem;
   font-size: 0.875rem;
+  max-width: 100%;
+}
+.card.card-order-control .status-name {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  overflow: hidden;
+  max-width: calc(100% - 156px);
+}
+.card.card-order-control .status-name span {
+  overflow: hidden;
+  display: inline-block;
+  -webkit-box-flex: 1;
+      -ms-flex-positive: 1;
+          flex-grow: 1;
+  text-overflow: ellipsis;
 }
 .card.card-order-control .cl-preview {
   width: 1.5rem;
   height: 1.5rem;
   border: 1px solid var(--light-300);
-}
-.card.card-order-control .actions {
-  -webkit-padding-start: 0.75rem;
-          padding-inline-start: 0.75rem;
-  -webkit-margin-start: 0.75rem;
-          margin-inline-start: 0.75rem;
-  -webkit-border-start: 1px solid var(--light-200);
-          border-inline-start: 1px solid var(--light-200);
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  gap: 0.5rem;
 }
 .card.card-order-control .toggle {
   padding: 0 1rem;
@@ -2331,6 +2368,21 @@ fieldset:disabled .btn {
 }
 .card.collapse-card .card-body {
   border-top: 1px solid var(--light-300);
+}
+.card .actions {
+  -webkit-padding-start: 0.75rem;
+          padding-inline-start: 0.75rem;
+  -webkit-margin-start: 0.75rem;
+          margin-inline-start: 0.75rem;
+  -webkit-border-start: 1px solid var(--light-200);
+          border-inline-start: 1px solid var(--light-200);
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  gap: 0.5rem;
 }
 
 /* Connecting each child up to the horizontal line */
@@ -2844,6 +2896,7 @@ fieldset:disabled .btn {
 
 .ar-text {
   font-family: "Almarai", sans-serif;
+  direction: rtl;
 }
 
 /* start Global */

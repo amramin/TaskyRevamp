@@ -1,11 +1,13 @@
 ﻿@using TaskyRevamp.Dto.Department
 @using TaskyRevamp.Dto.Account
 @using Stingray.Components.MultiSelectComponent
+@inject IStringLocalizer<SharedResources> Loc
 
 <div>
     <!-- Department Selector -->
     <SearchableMultiDropdownOffline TInput="DepartmentDto"
                                     TOutput="Guid"
+                                    IsDisabled="IsViewMode"
                                     Datasource="DepartmentList"
                                     TextSelector="(d => d.Name)"
                                     OutputSelector="(d => d.Id)"
@@ -37,7 +39,7 @@
                         }
                         else if (!dept.Value.Any())
                         {
-                            <div class="text-muted small px-2">No users assigned to this department.</div>
+                            <div class="text-muted small px-2">@Loc["NoUsers"]</div>
                         }
                         else
                         {
@@ -63,7 +65,7 @@
     [Parameter] public List<Guid> SelectedDepartments { get; set; } = new();
     [Parameter] public EventCallback<List<Guid>> SelectedDepartmentsChanged { get; set; }
     [Parameter] public Func<Guid, Task<List<UserDto>>> LoadUsersByDepartment { get; set; } = default!;
-
+    [Parameter] public bool IsViewMode { get; set; }
     private Dictionary<DepartmentDto, List<UserDto>?> DepartmentsWithUsers { get; set; } = new();
     private HashSet<Guid> ExpandedDepartments { get; set; } = new();
 

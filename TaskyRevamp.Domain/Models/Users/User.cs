@@ -25,6 +25,7 @@ public class User : Entity, IHasUpdateMetaData
 	public Guid? UpdatedById { get; set; }
 	public DateTime? UpdateDate { get; set; }
 	public User? UpdatedBy { get; set; }
+	public bool IsDeleted { get; set; } = false;
 
 	public User()
 	{
@@ -59,7 +60,8 @@ public class User : Entity, IHasUpdateMetaData
 			UpdatedById = UpdatedById,
 			DepartmentId = DepartmentId,
 			PrivilegeId = PrivilegeId,
-			CreateDate = CreateDate
+			CreateDate = CreateDate,
+			IsDeleted = IsDeleted
 		};
 
 		return dto;

@@ -30,15 +30,40 @@ namespace TaskyRevamp.Client.Consumer
 
 			return res;
 		}
+		public async Task<CommonApiResponse<PagedResult<UserDtoWithName>>> GetUsersByPrivilegeIdWithPagination(Guid PrivilegeId, int pageNumber, int pageSize, string sortByColumnName, bool sortAscending, List<SearchFieldUserPrivilege> searchFields = null, string searchText = null)
+		{
+			var queryString = _taskyService.PreparePaginatedSearchQueryString(pageNumber, pageSize, sortByColumnName, sortAscending, searchFields, searchText);
+
+			var url = $"api/User/GetUsersByPrivilegeWithPaginationQuery/{PrivilegeId}{queryString}";
+			var res = await _taskyService.GetFromJsonAsync<CommonApiResponse<PagedResult<UserDtoWithName>>>(url);
+
+			return res;
+		}
 		public async Task<CommonApiResponse<DepartmentDto>> GetUsersByDepartment(Guid DepartmentId)
 		{
 			var ret = await _taskyService.GetFromJsonAsync<CommonApiResponse<DepartmentDto>>($"api/User/GetUsersByDepartment/{DepartmentId.ToString()}");
 
 			return ret;
 		}
+		public async Task<CommonApiResponse<PagedResult<DepartmentDto>>> GetAllUsersByDepartmentWithPagination(Guid DepartmentId, int pageNumber, int pageSize, string sortByColumnName, bool sortAscending, List<SearchFieldUserDepartment> searchFields = null, string searchText = null)
+		{
+			var queryString = _taskyService.PreparePaginatedSearchQueryString(pageNumber, pageSize, sortByColumnName, sortAscending, searchFields, searchText);
+
+			var url = $"api/User/GetAllUsersByDepartmentWithPaginationQuery/{DepartmentId}{queryString}";
+			var res = await _taskyService.GetFromJsonAsync<CommonApiResponse<PagedResult<DepartmentDto>>>(url);
+
+			return res;
+		}
 		public async Task<CommonApiResponse<List<UserDto>>> GetAllUNassignedUsers()
 		{
 			var url = $"api/User/GetAllUsers";
+			var res = await _taskyService.GetFromJsonAsync<CommonApiResponse<List<UserDto>>>(url);
+
+			return res;
+		}
+		public async Task<CommonApiResponse<List<UserDto>>> GetUnAssignedUsersToPrivilege()
+		{
+			var url = $"api/User/GetUnAssignedUsersToPrivilege";
 			var res = await _taskyService.GetFromJsonAsync<CommonApiResponse<List<UserDto>>>(url);
 
 			return res;
@@ -67,6 +92,27 @@ namespace TaskyRevamp.Client.Consumer
 
 			return res.Data;
 		}
+		public async Task<CommonApiResponse<bool>> LinkUser(UserDto userDto, Guid departmentId, Guid privilegeId)
+		{
+			var url = $"api/User/LinkUser/{departmentId}/{privilegeId}";
+			var res = await _taskyService.PostJsonAsync<CommonApiResponse<bool>>(url, userDto);
+
+			return res.Data;
+		}
+		public async Task<CommonApiResponse<bool>> CheckUserHasOpenTask(Guid departmentId, Guid userId)
+		{
+			var url = $"api/User/CheckUserHasOpenTask/{departmentId}/{userId}";
+			var res = await _taskyService.GetFromJsonAsync<CommonApiResponse<bool>>(url);
+
+			return res;
+		}
+		public async Task<CommonApiResponse<bool>> AssignUsersToPrivilege(List<UserDto> usersDto, Guid id)
+		{
+			var url = $"api/User/AssignUsersToPrivilege/{id}";
+			var res = await _taskyService.PostJsonAsync<CommonApiResponse<bool>>(url, usersDto);
+
+			return res.Data;
+		}
 
 		public async Task<CommonApiResponse<bool>> UpdateUser(UserDto UserDto)
 		{
@@ -79,7 +125,7 @@ namespace TaskyRevamp.Client.Consumer
 
 		public async Task<CommonApiResponse<bool>> DeleteUser(Guid id)
 		{
-			var url = $"api/User/{id}";
+			var url = $"api/User/DeleteUser/{id}";
 			var res = await _taskyService.DeleteFromJsonAsync<CommonApiResponse<bool>>(url);
 
 			return res;

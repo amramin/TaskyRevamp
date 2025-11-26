@@ -24,36 +24,24 @@
         </button>
     </div>
 </div>
-@* <div class="bg-light rounded-3 p-3">
-    <div class="row fw-semibold text-secondary border-bottom pb-2 mb-2">
-        <div class="col-6">@Loc["Name"]</div>
-        <div class="col-6">@Loc["Privilege"]</div>
-    </div>
 
-    <div class="row py-2 border-bottom">
-        <div class="col-6 fw-medium text-dark">Admin</div>
-        <div class="col-6 text-muted">Full system access(default)</div>
-    </div>
-</div> *@
 @if (Privilegs != null && Privilegs.Any())
 {
     <div class="page-body">
         <div class="table-responsive">
             @if (Privilegs != null && Privilegs.Any())
             {
-
                 <SortableTable TItem="PrivilegeDtoWithName" Columns="@tableColumns" Items="@Privilegs"
                                SortColumn="@currentSortColumn" SortAscending="@sortAscending" OnSortRequested="HandleSort">
-
                     <RowTemplate>
                         @foreach (var item in Privilegs)
                         {
                             var checkboxId = $"source-active-{item.PrivilegeDto.Id}";
                             <tr>
                                 <td>@item.PrivilegeDto.Name</td>
-                                <td>@item.PrivilegeDto.CreateDate.ToLocalTime().ToString("dd/MM/yyyy")</td>
+                                <td>@item.PrivilegeDto.CreateDate.ToLocalTime().ToString("dd-MM-yyyy")</td>
                                 <td>@item.CreatedByName</td>
-                                <td>@(item.PrivilegeDto.UpdateDate?.ToLocalTime().ToString("dd/MM/yyyy"))</td>
+                                <td>@(item.PrivilegeDto.UpdateDate?.ToLocalTime().ToString("dd-MM-yyyy"))</td>
                                 <td>@item.UpdatedByName</td>
                                 <td>
                                     <div class="dropdown actions">
@@ -71,7 +59,7 @@
                                                 </button>
                                             </li>
                                             <li>
-                                                <button class="dropdown-item" @onclick="@(() => ViewUsers(item.PrivilegeDto.Id))">
+                                                <button class="dropdown-item" @onclick="@(() => ViewUsers(item.PrivilegeDto.Id, item.PrivilegeDto.Name))">
                                                     <span class="icon">
                                                         <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Users"></SVGCrud>
                                                     </span>
@@ -87,7 +75,7 @@
                                                 </button>
                                             </li>
                                             <li>
-                                                <button class="dropdown-item" @onclick="@(() => DeletePrivilege(item))">
+                                                <button class="dropdown-item text-danger" @onclick="@(() => DeletePrivilege(item))">
                                                     <span class="icon">
                                                         <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Delete"></SVGCrud>
                                                     </span>
@@ -135,6 +123,8 @@ else
     private bool? sortAscending = true;
     private List<SortableColumn> tableColumns = new();
     private Search? searchComponent;
+    private string? lastSearchTerm = null;
+    private bool isSearchMode = false;
 
     private async Task ChangePage(int page)
     {
@@ -165,6 +155,12 @@ else
     }
     private async Task LoadPrivilegs(bool isSearch = false, string searchTerm = null)
     {
+        if (isSearchMode && !isSearch)
+        {
+            isSearch = true;
+            searchTerm = lastSearchTerm;
+        }
+        var encodedTerm = searchTerm != null ? Uri.EscapeDataString(searchTerm) : null;
         var resp = await _privilegeConsumer.GetPrivileges(currentPage, pageSize, currentSortColumn, sortAscending.Value,
         isSearch ? searchFields : null, isSearch ? searchTerm : null);
 
@@ -176,15 +172,14 @@ else
         totalPages = data.TotalPages;
         totalCount = data.TotalCount;
     }
-    private void AddPrivilege() => navigationManager.NavigateTo("/add-privilege");
+    private void AddPrivilege() => navigationManager.NavigateTo("/privilege?mode=add");
+    private void EditPrivilege(Guid id) => navigationManager.NavigateTo($"/privilege?mode=edit&id={id}");
+    private void ViewPermission(Guid id) => navigationManager.NavigateTo($"/privilege?mode=view&id={id}");
+    private void ViewUsers(Guid id, string PrivilegeName) => navigationManager.NavigateTo($"/UsersPrivilege/{id}/{PrivilegeName}");
 
-    private void EditPrivilege(Guid id)
-    {
-       
-    }
     private void DeletePrivilege(PrivilegeDtoWithName privilege)
     {
-        PopupService.ShowConfirmation(@Loc["SourceSure"], @Loc["Confirm"], OnDeleteConfirmed, type: ConfirmationType.Danger);
+        PopupService.ShowConfirmation(@Loc["Sure"], @Loc["Confirm"], OnDeleteConfirmed, type: ConfirmationType.Danger);
         selectedPrivilege = privilege;
         showConfirm = true;
     }
@@ -192,26 +187,19 @@ else
     {
         if (confirmed && selectedPrivilege != null)
         {
-            // var result = await _sourceSettingConsumer.DeleteSource(selectedPrivilege.PrivilegeDto.Id);
-            // if (result.Success)
-            // {
-            //     Privilegs.Remove(selectedPrivilege);
-            //     initialPrivilegs = initialPrivilegs.Where(s => s.PrivilegeDto.Id != selectedPrivilege.PrivilegeDto.Id).ToList();
-            //     showConfirm = false;
-            //     StateHasChanged();
-            //     await ToastService.ShowToastAsync(Loc["Deleted successfully"], "success");
-            // }
+            var result = await _privilegeConsumer.DeletePrivilege(selectedPrivilege.PrivilegeDto.Id);
+            if (result.Success)
+            {
+                Privilegs.Remove(selectedPrivilege);
+                initialPrivilegs = initialPrivilegs.Where(s => s.PrivilegeDto.Id != selectedPrivilege.PrivilegeDto.Id).ToList();
+                showConfirm = false;
+                StateHasChanged();
+                await ToastService.ShowToastAsync(Loc["Deleted successfully"], "success");
+            }
         }
         selectedPrivilege = null;
     }
-    private void ViewUsers(Guid id)
-    {
-
-    }
-    private void ViewPermission(Guid id)
-    {
-
-    }
+   
     private async Task SortBy(string columnName)
     {
         if (currentSortColumn == columnName)
@@ -237,11 +225,15 @@ else
 
     public async Task Search(string searchTerm)
     {
+        lastSearchTerm = searchTerm;
+        isSearchMode = true;
         await LoadPrivilegs(true, searchTerm);
     }
     private async Task ClearSearch()
     {
         currentPage = 1;
+        lastSearchTerm = null;
+        isSearchMode = false;
         searchComponent?.ClearSearchText();
         await LoadPrivilegs(isSearch: false);
     }

@@ -5,18 +5,16 @@
 @using TaskyRevamp.Client.Shared.Popups
 @using TaskyRevamp.Dto.Account
 @using TaskyRevamp.Dto.Department
+@using TaskyRevamp.Dto.Enums.SearchFields
 @inject UserConsumer _userConsumer
 @inject NavigationManager navigationManager
 @inject IStringLocalizer<SharedResources> Loc
 @inject ToastService ToastService
-
 @inject PopupService PopupService
-
-
 
 <div class="page-header">
     <div class="title-block">
-        <button class="btn btn-action-24">
+        <button class="btn btn-action-24" @onclick="ReturnBack">
             <span class="icon">
                 <SVGCrud SVGType="SVGCrud.SVGTypeEnum.BackArrow"></SVGCrud>
             </span>
@@ -24,155 +22,205 @@
         <h1 class="page-headline">@selectedDepartment?.Name</h1>
     </div>
     <div class="action-btn-list">
-
+        <Search @ref="searchComponent" SearchSubmit="Search" CssClass="form-control"></Search>
         <button class="btn btn-primary" @onclick="Add">
             <span class="icon">
                 <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Pluse"></SVGCrud>
             </span>
-            @Loc["AddUser"]
+            @Loc["LinkUser"]
         </button>
     </div>
 </div>
 
+@if (Users != null && Users.Any())
+{
+    <div class="page-body">
+        <div class="table-responsive">
+            @if (Users != null && Users.Any())
+            {
+
+                <SortableTable TItem="UserDto" Columns="@tableColumns" Items="@Users"
+                               SortColumn="@currentSortColumn" SortAscending="@sortAscending" OnSortRequested="HandleSort">
+
+                    <RowTemplate>
+                        @foreach (var user in Users)
+                        {
+                            var checkboxId = $"source-active-{user.Id}";
+                            <tr>
+                                <td>@user.DisplayedName</td>
+                                <td>@user.Email</td>
+                                <td>@user.PrivilegeName</td>
+                                <td>@(user.IsManager? @Loc["Yes"]: @Loc["No"] )</td>
+                                <td>
+                                    <div class="dropdown actions">
+                                        <button class="btn btn-action-24" type="button" data-bs-toggle="dropdown"
+                                                aria-expanded="false">
+                                            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.EllipseVertical"></SVGCrud>
+                                        </button>
+                                        <ul class="dropdown-menu">
+                                            <li>
+                                                <button class="dropdown-item" @onclick="@(() => ViewPrivilege(@user.PrivilegeId))">
+                                                    <span class="icon">
+                                                        <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Edit"></SVGCrud>
+                                                    </span>
+                                                    @Loc["ViewUserPrivilege"]
+                                                </button>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </RowTemplate>
+                </SortableTable>
 
 
-
-<div class="page-body">
-
-
-    <div class="table-responsive  sticky-header-custom">
-        <table class="table custom-table">
-            <thead>
-                <tr>
-                    <th>@Loc["UserName"]</th>
-                    <th>@Loc["Email"]</th>
-                    <th>@Loc["Privilage"]</th>
-                    <th>@Loc["Action"]</th>
-
-                </tr>
-            </thead>
-            <tbody>
-                @if (selectedDepartment != null)
-                {
-                    @foreach (var usr in selectedDepartment.AssignedUsers)
-                    {
-
-                        <tr>
-                            <td>@usr.UserName</td>
-                            <td>@usr.Email</td>
-                            <td></td>
-                            <td class="sticky-end-action">
-                                <div class="dropdown actions">
-                                    <button class="btn btn-action-24" type="button" data-bs-toggle="dropdown"
-                                        aria-expanded="false">
-                                        <SVGCrud SVGType="SVGCrud.SVGTypeEnum.EllipseVertical"></SVGCrud>
-                                    </button>
-                                    <ul class="dropdown-menu">
-                                        <li>
-                                            <button class="dropdown-item" @onclick="@(() => Edit(usr.Id))">
-                                                <span class="icon">
-                                                    <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Edit"></SVGCrud>
-                                                </span>
-                                                @Loc["Edit"]
-                                            </button>
-                                        </li>
-                                        <li>
-                                            <button class="dropdown-item" @onclick="@(() => ShowDeleteConfirm(usr))">
-                                                <span class="icon">
-                                                    <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Delete"></SVGCrud>
-                                                </span>
-                                                @Loc["Delete"]
-                                            </button>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </td>
-                        </tr>
-                    }
-                }
-            </tbody>
-        </table>
-        <ConfirmationPopup ButtonText="@Loc["Delete"]" IsVisible="@showConfirm" OnConfirm="OnDeleteConfirmed"
-            Message="@confirmMessage" />
+            }
+        </div>
+        <Pagination CurrentPage="@currentPage" TotalPages="@totalPages" TotalCount="@totalCount" PageSize="@pageSize"
+                    PageChanged="ChangePage" PageSizeChangedCallback="ChangePageSize" />
     </div>
-</div>
+
+}
+else if (initialUsers != null && initialUsers.Any())
+{
+    <NoSearchResults OnResetClick="ClearSearch"></NoSearchResults>
+}
+else
+{
+    <NoDataAvailable MessageTitle="@Loc["NoUsers"]"
+                     ButtonText="@Loc["LinkUser"]"
+                     OnButtonClick="Add" />
+}
 
 @code {
     [Parameter] public Guid Id { get; set; }
-    public List<DepartmentDto> departmentDtos = new List<DepartmentDto>();
-
-    private Guid selectedDepartmentId { get; set; }
-    private string confirmMessage = "";
+    public List<UserDto> Users = new List<UserDto>();
+    public List<UserDto> initialUsers = new List<UserDto>();
     private DepartmentDto? selectedDepartment;
-    private bool showConfirm;
     private bool isOrdered = false;
-
+    string searchdata { set; get; }
+    private Search? searchComponent;
+    private string? lastSearchTerm = null;
+    private bool isSearchMode = false;
     List<DepartmentDto>? originalDeptes;
+    private int currentPage = 1;
+    private int totalPages = 1;
+    private int totalCount = 0;
+    private int pageSize = 10;
+    private string currentSortColumn = "IsManager";
+    private bool? sortAscending = true;
+    private List<SortableColumn> tableColumns = new();
 
-    protected async override Task OnInitializedAsync()
+
+    protected override async Task OnInitializedAsync()
     {
-        var res = await _userConsumer.GetUsersByDepartment(Id);
-
-        selectedDepartment = res.Data;
-        await InvokeAsync(StateHasChanged);
+        tableColumns = new()
+        {
+            new() { Field = "DisplayedName", DisplayName = Loc["username"] },
+            new() { Field = "Email", DisplayName = Loc["Email_user"] },
+            new() { Field = "PrivilegeName", DisplayName = Loc["Privilege"] },
+            new() { Field = "IsManager", DisplayName = Loc["IsManager"] },
+            new() { Field = "Action", DisplayName = Loc["Action"] ,IsSortable = false}
+        };
+        await LoadUsers();
+        initialUsers = Users;
     }
 
+    private async Task LoadUsers(bool isSearch = false, string searchTerm = null)
+    {
+        if (isSearchMode && !isSearch)
+        {
+            isSearch = true;
+            searchTerm = lastSearchTerm;
+        }
+        var encodedTerm = searchTerm != null ? Uri.EscapeDataString(searchTerm) : null;
+        var resp = await _userConsumer.GetAllUsersByDepartmentWithPagination(Id, currentPage, pageSize, currentSortColumn, sortAscending.Value,
+                         isSearch ? searchFields : null, isSearch ? encodedTerm : null);
+
+        if (!(resp?.Success ?? false) || resp.Data is null)
+            return;
+
+        selectedDepartment = resp.Data.Items.FirstOrDefault();
+        Users = selectedDepartment.AssignedUsers ?? new List<UserDto>();
+        totalPages = resp.Data.TotalPages;
+        totalCount = resp.Data.TotalCount;
+    }
+    private async Task ChangePage(int page)
+    {
+        currentPage = page;
+        await LoadUsers();
+    }
+
+    private async Task ChangePageSize(int newSize)
+    {
+        pageSize = newSize;
+        currentPage = 1;
+        await LoadUsers();
+    }
     private void Add()
     {
-
-        PopupService.ShowNew(@<LinkUserDepartment Id="Id"></LinkUserDepartment>,Loc["Addusers"]);
-
+        PopupService.ShowNew(@<LinkUserDepartment Id="Id" OnSaved="ReloadAfterSave"></LinkUserDepartment>,Loc["Addusers"]);
+        StateHasChanged();
     }
-    private void Edit(Guid id)
+    private async Task ReloadAfterSave()
     {
-
-        // navigationManager.NavigateTo($"/Update-Department/{id}");
+        currentPage = 1;
+        PopupService.Hide();
+        await LoadUsers();
+        StateHasChanged();
     }
-    private void ShowDeleteConfirm(UserDto p)
+    private void ViewPrivilege(Guid? id)
     {
-        confirmMessage = @Loc["SureDeleteDepartment"];
-        // selectedDepartment = p;
-        showConfirm = true;
+        navigationManager.NavigateTo($"/privilege?mode=view&id={id}");
     }
-    private async Task OnDeleteConfirmed(bool confirmed)
+    private async Task SortBy(string columnName)
     {
-        if (confirmed && selectedDepartment != null)
+        if (currentSortColumn == columnName)
         {
-            // var result = await _departmentConsumer.DeleteDepartment(selectedDepartment.Id);
-            // if (result.Success)
-            // {
-            // departmentDtos.Remove(selectedDepartment);
-            // showConfirm = false;
-            // StateHasChanged();
-            // await ToastService.ShowToastAsync(Loc["Deleted successfully"], "success");
-            // }
+            sortAscending = !sortAscending;
         }
-        selectedDepartment = null;
-        StateHasChanged();
-    }
-
-
-    private void Cancel(MouseEventArgs args)
-    {
-        departmentDtos = originalDeptes!.Select(p => new DepartmentDto
+        else
         {
-            Id = p.Id,
-            NameEnglish = p.NameEnglish,
-            NameArabic = p.NameArabic,
-
-        }).ToList();
-        isOrdered = false;
-        StateHasChanged();
+            currentSortColumn = columnName;
+            sortAscending = true;
+        }
+        await LoadUsers();
     }
-    private List<DepartmentDto> CopyPriorites()
+
+    public List<SearchFieldUserDepartment> searchFields = new List<SearchFieldUserDepartment>() {
+            SearchFieldUserDepartment.NameEnglish,
+            SearchFieldUserDepartment.NameArabic,
+            SearchFieldUserDepartment.Email,
+            SearchFieldUserDepartment.Privilage
+    };
+
+    public async Task Search(string searchTerm)
     {
-        return departmentDtos.Select(p => new DepartmentDto
-        {
-            Id = p.Id,
-            NameEnglish = p.NameEnglish,
-            NameArabic = p.NameArabic,
-
-        }).ToList();
+        lastSearchTerm = searchTerm;
+        isSearchMode = true;
+        await LoadUsers(true, searchTerm);
     }
+    private async Task ClearSearch()
+    {
+        currentPage = 1;
+        lastSearchTerm = null;
+        isSearchMode = false;
+        searchComponent?.ClearSearchText();
+        await LoadUsers(isSearch: false);
+    }
+    private async Task HandleSort((string Column, bool? Ascending) sortInfo)
+    {
+        currentSortColumn = sortInfo.Column;
+        sortAscending = sortInfo.Ascending;
+        if (sortAscending == null)
+        {
+            // third click → reset to default sorting
+            currentSortColumn = "DisplayedName"; // or whatever your default column is
+            sortAscending = true;
+        }
+        await LoadUsers();
+    }
+    private void ReturnBack() => navigationManager.NavigateTo("/Departments");
 
 }

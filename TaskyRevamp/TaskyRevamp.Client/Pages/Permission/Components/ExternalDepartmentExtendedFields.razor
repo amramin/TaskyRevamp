@@ -8,7 +8,7 @@
 
 <div class="card collapse-card mb-3">
     <div class="card-header">
-        <button class="btn colapse-btn @(IsExpanded ? "active" : "")" @onclick="ToggleExpand">
+        <button type="button" class="btn colapse-btn @(IsExpanded ? "active" : "")" @onclick="ToggleExpand">
             <span>@DepartmentName</span>
             @if (IsExpanded)
             {
@@ -19,7 +19,7 @@
                 <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Pluse"></SVGCrud>
             }
         </button>
-        <button class="btn btn-delete btn-action-24" @onclick="RemoveClicked">
+        <button type="button" class="btn btn-delete btn-action-24" @onclick="RemoveClicked" disabled="@IsViewMode">
             <span class="icon">
                 <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Delete"></SVGCrud>
             </span>
@@ -30,7 +30,7 @@
     {
         <div class="card-body">
             <div class="form-check mb-2">
-                <input class="form-check-input" type="checkbox" @bind="Item.IsIncludeSubDepartment" />
+                <input class="form-check-input" type="checkbox" @bind="Item.IsIncludeSubDepartment" disabled="@IsViewMode" />
                 <label class="form-check-label">@Loc["IncludingSubDepartment"]</label>
             </div>
             @if (Item.IsIncludeSubDepartment)
@@ -38,7 +38,7 @@
                 <div class="mb-3">
                     <label class="form-label fw-bold">@Loc["DirectionLevel"] <span class="text-danger">*</span></label>
                     <input type="number" class="form-control @(Item.DirectionLevel < 1 ? "border-danger" : "")" min="1"
-                        @oninput="ValidateDirectionLevel" @bind="Item.DirectionLevel" />
+                           @oninput="ValidateDirectionLevel" @bind="Item.DirectionLevel" disabled="@IsViewMode" />
                     @if (Item.DirectionLevel == null)
                     {
                         <div class="text-danger small mt-1">@Loc["Required"]</div>
@@ -46,12 +46,12 @@
                 </div>
             }
             <div class="form-check mb-2">
-                <input class="form-check-input" type="checkbox" @bind="Item.IsManagerTasks" />
+                <input class="form-check-input" type="checkbox" @bind="Item.IsManagerTasks" disabled="@IsViewMode" />
                 <label class="form-check-label">@Loc["ManagersTasks"]</label>
             </div>
 
             <div class="form-check mb-3">
-                <input class="form-check-input" type="checkbox" @bind="Item.IsEmployeeTasks" />
+                <input class="form-check-input" type="checkbox" @bind="Item.IsEmployeeTasks" disabled="@IsViewMode" />
                 <label class="form-check-label">@Loc["EmployeesTasks"]</label>
             </div>
 
@@ -59,7 +59,7 @@
                 <label class="form-label fw-bold">@Loc["Permissions"] <span class="text-danger">*</span></label>
                 <SearchableMultiDropdownOffline TInput="Permission" TOutput="int" Datasource="PermissionList"
                     TextSelector="(p => Loc[p.ToString()])" OutputSelector="(p => (int)p)"
-                    SelectedOptions="Item.PermissionId" SelectedOptionsChanged="OnPermissionsChanged" />
+                    SelectedOptions="Item.PermissionId" SelectedOptionsChanged="OnPermissionsChanged" IsDisabled="IsViewMode"/>
                 @if (Item.PermissionId == null || !Item.PermissionId.Any())
                 {
                     <div class="text-danger small mt-1">@Loc["Required"]</div>
@@ -70,22 +70,22 @@
                 <label class="form-label">@Loc["Status"]<span class="text-danger">*</span></label>
                 <SearchableMultiDropdownOffline TInput="StatusSettingsDto" TOutput="Guid" Datasource="StatusList"
                     TextSelector="(s => s.Name)" OutputSelector="(s => s.Id)" SelectedOptions="Item.Status"
-                    SelectedOptionsChanged="OnStatusChanged" />
-                @* @if (Item.Status == null || !Item.Status.Any())
+                    SelectedOptionsChanged="OnStatusChanged"  IsDisabled="IsViewMode"/>
+                @if (Item.Status == null || !Item.Status.Any())
                 {
                     <div class="text-danger small mt-1">@Loc["Required"]</div>
-                } *@
+                }
             </div>
 
             <div class="mb-3">
                 <label class="form-label">@Loc["Source"]<span class="text-danger">*</span></label>
                 <SearchableMultiDropdownOffline TInput="SourceDto" TOutput="Guid" Datasource="SourceList"
                     TextSelector="(s => s.DisplayedName)" OutputSelector="(s => s.Id)" SelectedOptions="Item.Source"
-                    SelectedOptionsChanged="OnSourceChanged" />
-                @* @if (Item.Source == null || !Item.Source.Any())
+                    SelectedOptionsChanged="OnSourceChanged" IsDisabled="IsViewMode"/>
+                @if (Item.Source == null || !Item.Source.Any())
                 {
                     <div class="text-danger small mt-1">@Loc["Required"]</div>
-                } *@
+                }
             </div>
         </div>
     }
@@ -97,6 +97,7 @@
     [Parameter] public EventCallback<TaskModuleExternalDepartmentDto> OnRemove { get; set; }
     [Parameter] public List<StatusSettingsDto> StatusList { get; set; } = new();
     [Parameter] public List<SourceDto> SourceList { get; set; } = new();
+    [Parameter] public bool IsViewMode { get; set; }
     private bool IsExpanded { get; set; } = false;
     private List<Permission> PermissionList = Enum.GetValues(typeof(Permission)).Cast<Permission>().ToList();
     private void OnPermissionsChanged(List<int> selectedPermissions)

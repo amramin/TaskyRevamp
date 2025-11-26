@@ -1,7 +1,6 @@
 ﻿using TaskyRevamp.Dto.Enums.SearchFields;
 using TaskyRevamp.Dto.GeneralDto;
 using TaskyRevamp.Dto.Permissions;
-using TaskyRevamp.Dto.SystemConfiguration;
 
 namespace TaskyRevamp.Client.Consumer
 {
@@ -24,6 +23,12 @@ namespace TaskyRevamp.Client.Consumer
 			return res;
 		}
 
+		public async Task<CommonApiResponse<List<PrivilegeDto>>> GetPrivilegesWithoutPagination()
+		{
+			var url = $"api/Privilege/GetPrivilegesWithoutPagination";
+			var res = await _taskyService.GetFromJsonAsync<CommonApiResponse<List<PrivilegeDto>>>(url);
+			return res;
+		}
 		public async Task<CommonApiResponse<PrivilegeDto>> GetPrivilegeById(Guid id)
 		{
 			var url = $"api/Privilege/GetPrivilegeById/{id}";
@@ -45,5 +50,12 @@ namespace TaskyRevamp.Client.Consumer
 
             return res;
         }
-    }
+		public async Task<CommonApiResponse<bool>> DeletePrivilege(Guid id)
+		{
+			var url = $"api/Privilege/DeletePrivilege/{id}";
+			var res = await _taskyService.DeleteFromJsonAsync<CommonApiResponse<bool>>(url);
+
+			return res;
+		}
+	}
 }
