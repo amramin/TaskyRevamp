@@ -412,6 +412,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Change department .
+        /// </summary>
+        public static string ChangeDepartment {
+            get {
+                return ResourceManager.GetString("ChangeDepartment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Clear search.
         /// </summary>
         public static string ClearSearch {
@@ -2267,11 +2276,29 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to This user exists in the Active Directory and cannot be deleted.
+        /// </summary>
+        public static string user_is_active {
+            get {
+                return ResourceManager.GetString("user_is_active", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to User Department.
         /// </summary>
         public static string UserDepartment {
             get {
                 return ResourceManager.GetString("UserDepartment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Can&apos;t delete, the user has an open task on him..
+        /// </summary>
+        public static string userHasTasksValidation {
+            get {
+                return ResourceManager.GetString("userHasTasksValidation", resourceCulture);
             }
         }
         
@@ -2308,6 +2335,24 @@ namespace TaskyRevamp.Localization.Resources {
         public static string Usethisoption {
             get {
                 return ResourceManager.GetString("Usethisoption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This user is currently assigned to active tasks under his previous department.
+        /// </summary>
+        public static string validationDepartmentPart1 {
+            get {
+                return ResourceManager.GetString("validationDepartmentPart1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please reassign these tasks before the change..
+        /// </summary>
+        public static string validationDepartmentPart2 {
+            get {
+                return ResourceManager.GetString("validationDepartmentPart2", resourceCulture);
             }
         }
         

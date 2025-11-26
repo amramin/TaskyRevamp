@@ -907,4 +907,19 @@
   <data name="priorityHint2" xml:space="preserve">
     <value>ملاحظة: ترتيب الأولويات هو كالتالي — 1 (أعلى/أكثر أهمية)، 2، 3 (أقل أهمية).      ستأخذ المهمة الرئيسية دائمًا أعلى ترتيب أولوية من بين المهام الفرعية، أي الأكثر أهمية.</value>
   </data>
+  <data name="ChangeDepartment" xml:space="preserve">
+    <value>تعديل الإدارة</value>
+  </data>
+  <data name="validationDepartmentPart1" xml:space="preserve">
+    <value>هذا المستخدم مُكلَّف حاليًا بمهام نشطة ضمن قسمه السابق</value>
+  </data>
+  <data name="validationDepartmentPart2" xml:space="preserve">
+    <value>يُرجى تعيين هذه المهام قبل التغيير</value>
+  </data>
+  <data name="user_is_active" xml:space="preserve">
+    <value>هذا المستخدم موجود في Active Directory ولا يمكن حذفه</value>
+  </data>
+  <data name="userHasTasksValidation" xml:space="preserve">
+    <value>لا يمكن الحذف، لدى المستخدم مهمة مفتوحة مرتبطه به.</value>
+  </data>
 </root>

@@ -24,8 +24,9 @@ namespace TaskyRevamp.Dto.Account
         public Guid? UpdatedById { get; set; }
         public DateTime? UpdateDate { get; set; }
         public DateTime? CreateDate { get; set; }
+        public bool IsDeleted { get; set; } = false;
 
-    }
+	}
     public class UserDtoWithName
     {
         public UserDto user { get; set; }

@@ -133,7 +133,7 @@ public class TaskItem : Entity, IHasCreationMetaData, IHasUpdateMetaData
     public DateTime? UpdateDate { get; set; }
     public User? UpdatedBy { get; set; }
 
-    TaskItem() { }
+    public TaskItem() { }
     public TaskItem(Guid id, string titleEnglish, string titleArabic, string descEN, string descAR, Guid type, Guid source, DateTime start, DateTime end, Guid priority, Weight plannedWeight, Guid creatorid, List<Department> assgndep, List<Guid> assigids, DateTime? rmind, int actualprocess, int wight, List<Guid> dependcy)
     {
         if (end < start) throw new ArgumentException("End date must be after start date.");
@@ -214,8 +214,12 @@ public class TaskItem : Entity, IHasCreationMetaData, IHasUpdateMetaData
             Priority = PriorityId,
             CreatedByName = CreatedBy?.Username,
             UpdatedBy = UpdatedBy?.Username,
-            ReminderDate = Reminder?.Date
-        };
+            ReminderDate = Reminder?.Date,
+            TaskStatusName = status?.NameEnglish,
+            TaskStatus = status?.Id,
+			AssignedIds = AssignedIds?.ToList() ?? new List<Guid>(),
+			AssignedDepartmentIds = AssignedDepartmentIds?.ToList() ?? new List<Guid>()
+		};
     }
     public void UpdateDescription(string descEN, string descAR, User by)
     {

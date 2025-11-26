@@ -910,4 +910,19 @@
   <data name="priorityHint2" xml:space="preserve">
     <value>Note: Priority order follows this order — 1 (highest/most critical), 2, 3 (lowest). The parent will always take the highest priority number (the most critical) from its sub-tasks.</value>
   </data>
+  <data name="ChangeDepartment" xml:space="preserve">
+    <value>Change department </value>
+  </data>
+  <data name="validationDepartmentPart1" xml:space="preserve">
+    <value>This user is currently assigned to active tasks under his previous department</value>
+  </data>
+  <data name="validationDepartmentPart2" xml:space="preserve">
+    <value>Please reassign these tasks before the change.</value>
+  </data>
+  <data name="user_is_active" xml:space="preserve">
+    <value>This user exists in the Active Directory and cannot be deleted</value>
+  </data>
+  <data name="userHasTasksValidation" xml:space="preserve">
+    <value>Can't delete, the user has an open task on him.</value>
+  </data>
 </root>

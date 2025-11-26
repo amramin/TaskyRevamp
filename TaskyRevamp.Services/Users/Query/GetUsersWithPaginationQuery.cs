@@ -33,7 +33,7 @@ namespace TaskyRevamp.Services.Users.Query
 			var res = await _userRepository.GetPagedAsync(
 								request.pageNumber,
 								request.pageSize,
-								null,
+								u => u.IsDeleted == false,
 								searchExpression,
 								orderBy: orderBy,
 								includeProperties: $"{nameof(User.UpdatedBy)},{nameof(User.Privilege)},{nameof(User.Department)}");

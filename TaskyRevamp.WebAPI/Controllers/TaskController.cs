@@ -30,13 +30,24 @@ public class TaskController : ControllerBase
 
         return Ok(res);
     }
-
-
     [HttpPut]
     public async Task<IActionResult> UpdateTask([FromBody] CreateTaskDto Task)
     {
         return Ok(await _mediator.Send(new UpdateTaskCommand(Task)));
     }
+
+    [HttpGet("UpdateTasksDepartment/{oldId}/{newId}")]
+    public async Task<IActionResult> UpdateTasksDepartment(Guid oldId, Guid newId)
+    {
+        return Ok(await _mediator.Send(new UpdateTasksDepartmentCommand(oldId, newId)));
+    }
+
+    [HttpGet("CheckOpenedTaskForUser/{userId}")]
+    public async Task<IActionResult> CheckOpenedTaskForUser(Guid userId)
+    {
+        return Ok(await _mediator.Send(new CheckOpenedTaskForUserCommand(userId)));
+    }
+
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(string id)
     {
