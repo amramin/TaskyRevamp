@@ -1,4 +1,7 @@
-﻿@if (TotalPages > 1 || ShowPageSize)
+﻿@using Microsoft.Extensions.Localization
+@using TaskyRevamp.Localization.Resources
+@inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResources> Loc;
+@if (TotalPages > 1 || ShowPageSize)
 {
     <div class="pagination-container">
         <!-- Left: Page size dropdown -->
@@ -6,7 +9,7 @@
             @if (ShowPageSize)
             {
                 <div>
-                    <label>Items per page: </label>
+                    <label>  @Loc["Items per page"]: </label>
                     <select class="form-select d-inline-block w-auto ms-2" @onchange="PageSizeChanged">
                         @foreach (var size in PageSizeOptions)
                         {
@@ -26,7 +29,7 @@
                     <span>
                         @((CurrentPage - 1) * PageSize + 1) -
                         @(Math.Min(CurrentPage * PageSize, TotalCount))
-                        of @TotalCount
+                         @Loc["Of"] @TotalCount
 
                     </span>
                 }

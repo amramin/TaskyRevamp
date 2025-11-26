@@ -925,4 +925,10 @@
   <data name="userHasTasksValidation" xml:space="preserve">
     <value>Can't delete, the user has an open task on him.</value>
   </data>
+    <data name="Of" xml:space="preserve">
+    <value>Of</value>
+  </data>
+   <data name="Items per page" xml:space="preserve">
+    <value>Items per page</value>
+  </data>
 </root>

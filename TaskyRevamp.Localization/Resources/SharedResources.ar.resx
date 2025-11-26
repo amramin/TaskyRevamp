@@ -922,4 +922,12 @@
   <data name="userHasTasksValidation" xml:space="preserve">
     <value>لا يمكن الحذف، لدى المستخدم مهمة مفتوحة مرتبطه به.</value>
   </data>
+      <data name="Of" xml:space="preserve">
+    <value>من</value>
+  </data>
+    <data name="Items per page" xml:space="preserve">
+    <value>العناصر لكل صفحة</value>
+  </data>
+  
+
 </root>

@@ -231,10 +231,7 @@
   .text-danger {
     margin-inline-start: 0.25rem;
   }
-  text-transform: lowercase;
-  &::first-letter {
-    text-transform: uppercase;
-  }
+ 
 }
 .form-check {
   padding-left: 0;
@@ -262,7 +259,7 @@
     margin-top: 0;
 
     & + label {
-      text-transform: capitalize;
+  
       color: var(--dark-600);
     }
 
@@ -431,7 +428,7 @@
     margin-top: 0;
 
     & + label {
-      text-transform: capitalize;
+    
       color: var(--dark-600);
     }
 
