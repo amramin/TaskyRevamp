@@ -826,6 +826,24 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Email Notification.
+        /// </summary>
+        public static string EmailNotification {
+            get {
+                return ResourceManager.GetString("EmailNotification", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Email Notification Content.
+        /// </summary>
+        public static string EmailNotificationContent {
+            get {
+                return ResourceManager.GetString("EmailNotificationContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Employee&apos;s Tasks.
         /// </summary>
         public static string EmployeesTasks {
@@ -1376,6 +1394,24 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Maximum character limit reached..
+        /// </summary>
+        public static string notvald1000 {
+            get {
+                return ResourceManager.GetString("notvald1000", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Maximum character limit reached..
+        /// </summary>
+        public static string notvald250 {
+            get {
+                return ResourceManager.GetString("notvald250", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No users available.
         /// </summary>
         public static string NoUsersAvailable {
@@ -1871,6 +1907,24 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Subject Arabic.
+        /// </summary>
+        public static string SubjectArabic {
+            get {
+                return ResourceManager.GetString("SubjectArabic", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Subject English.
+        /// </summary>
+        public static string SubjectEnglish {
+            get {
+                return ResourceManager.GetString("SubjectEnglish", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Set the maximum number of subtask levels allowed when creating a task. This controls how deeply tasks can be nested..
         /// </summary>
         public static string subtask_hint {
@@ -1952,6 +2006,24 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to System Notification.
+        /// </summary>
+        public static string SystemNotification {
+            get {
+                return ResourceManager.GetString("SystemNotification", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to System Notification Content.
+        /// </summary>
+        public static string SystemNotificationContent {
+            get {
+                return ResourceManager.GetString("SystemNotificationContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Select which fields to display in any task filter.
         /// </summary>
         public static string TaskFilterHint {
@@ -1993,6 +2065,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string TaskTypeConfiguration {
             get {
                 return ResourceManager.GetString("TaskTypeConfiguration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The message content cannot be empty.
+        /// </summary>
+        public static string Themessagecontentcannotbeempty {
+            get {
+                return ResourceManager.GetString("Themessagecontentcannotbeempty", resourceCulture);
             }
         }
         
