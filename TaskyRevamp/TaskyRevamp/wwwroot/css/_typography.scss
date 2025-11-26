@@ -17,10 +17,7 @@
   line-height: 1.5rem;
   color: var(--dark-900);
   margin-bottom: 0;
-  text-transform: lowercase;
-  &::first-letter {
-    text-transform: uppercase;
-  }
+ 
   .parent-page-link {
     text-decoration: none;
     color: var(--dark-900);
