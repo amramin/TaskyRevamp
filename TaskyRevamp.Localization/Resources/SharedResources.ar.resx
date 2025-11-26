@@ -153,15 +153,12 @@
   <data name="RetentionPeriodOptions" xml:space="preserve">
     <value>خيارات فترة الإحتفاظ</value>
   </data>
-
-
-    <data name="SystemNotifications" xml:space="preserve">
+  <data name="SystemNotifications" xml:space="preserve">
     <value>إشعارات النظام</value>
   </data>
-     <data name="EmailNotification" xml:space="preserve">
+  <data name="EmailNotification" xml:space="preserve">
     <value>إشعارات البريد الالكترونى</value>
   </data>
-
   <data name="Cancel" xml:space="preserve">
     <value>إلغاء</value>
   </data>
@@ -883,9 +880,6 @@
   <data name="EditPrivilege" xml:space="preserve">
     <value>تعديل الصلاحية</value>
   </data>
-  <data name="SystemNotifications" xml:space="preserve">
-    <value>إشعارات النظام</value>
-  </data>
   <data name="ViewUserPrivilege" xml:space="preserve">
     <value>عرض الصلاحيات</value>
   </data>
@@ -922,12 +916,16 @@
   <data name="userHasTasksValidation" xml:space="preserve">
     <value>لا يمكن الحذف، لدى المستخدم مهمة مفتوحة مرتبطه به.</value>
   </data>
-      <data name="Of" xml:space="preserve">
+  <data name="Of" xml:space="preserve">
     <value>من</value>
   </data>
-    <data name="Items per page" xml:space="preserve">
+  <data name="Items per page" xml:space="preserve">
     <value>العناصر لكل صفحة</value>
   </data>
-  
-
+  <data name="CannotDeletePrivilege" xml:space="preserve">
+    <value>لا يمكنك حذف هذا الامتياز، فهو مرتبط بمستخدم</value>
+  </data>
+  <data name="PrivilegeTilte" xml:space="preserve">
+    <value>صلاحيات</value>
+  </data>
 </root>
