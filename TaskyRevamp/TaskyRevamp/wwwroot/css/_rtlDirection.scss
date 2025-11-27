@@ -1,10 +1,11 @@
 /* start rtl*/
 html[dir="rtl"] {
+  font-size: 15px;
   .arrow {
     transform: rotate(180deg);
   }
 
-  *:not(i):not(.fa):not(mat-icon):not(.e-icons) {
+  *:not(i):not(.fa):not(mat-icon):not(.e-icons):not(.btn-change-lang span) {
     font-family: "Almarai", sans-serif;
   }
 
@@ -38,6 +39,12 @@ html[dir="rtl"] {
     right: auto !important;
     left: 0 !important;
   }
+  .badge {
+    line-height: 125%;
+  }
+ 
+
+ 
 }
 
 /* end rtl*/
