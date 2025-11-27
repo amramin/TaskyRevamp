@@ -61,8 +61,9 @@
         {
             case DepartmentViewType.Grid:
                 <DepartmentGrid Departments="departmentDtos" OnEdit="Edit" OnDelete="OnDeleteDepartment" OnShowUsers="ShowUser"
-                                OnAdd="AddDept" OnAddDepartment="AddDept" CurrentPage="currentPage"
-                                PageChanged="ChangePage" PageSizeChanged="ChangePageSize" PageSize="pageSize" TotalPages="totalPages" TotalCount="totalCount" />
+                                OnAdd="AddDept" OnAddDepartment="AddDept" CurrentPage="currentPage" SortChanged="HandleSort"
+                                SortColumn="@currentSortColumn" SortAscending="@sortAscending" PageChanged="ChangePage" 
+                                PageSizeChanged="ChangePageSize" PageSize="pageSize" TotalPages="totalPages" TotalCount="totalCount" />
                 break;
 
             case DepartmentViewType.Tree:
@@ -88,7 +89,7 @@
                 break;
         }
     </div>
-    }
+}
 else if (intialDepartmentDtos != null && intialDepartmentDtos.Any())
 {
     <NoSearchResults OnResetClick="ClearSearch"></NoSearchResults>
@@ -108,7 +109,6 @@ else
 @code {
     private List<DepartmentDto> departmentDtos = new();
     private List<DepartmentDto> intialDepartmentDtos = new();
-
     private List<DepartmentDto> rootDepartments = new();
     private DepartmentDto? selectedDepartment;
     private int currentPage = 1;
@@ -138,10 +138,9 @@ else
 
         tableColumns = new()
         {
-            new() { Field = "NameEnglish", DisplayName = Loc["NameEnglish"] },
-            new() { Field = "NameArabic", DisplayName = Loc["NameArabic"] },
-            new() { Field = "DepartmentParent", DisplayName = Loc["ParentdepartmentName"] },
-
+            new() { Field = "DisplayedName", DisplayName = Loc["Name"] },
+            // new() { Field = "Level", DisplayName = Loc["Level"] },
+            new() { Field = "DepartmentParent", DisplayName = Loc["DepartmentParent"] },
             new() { Field = "CreateDate", DisplayName = Loc["CreationDate"] },
             new() { Field = "CreatedBy", DisplayName = Loc["CreatedBy"] },
             new() { Field = "UpdateDate", DisplayName = Loc["UpdateDate"] },
@@ -298,7 +297,7 @@ else
         var data = resp.Data;
 
         // Paginated or full list (depends on view)
-        departmentDtos = data.Items.OrderBy(k => k.CreateDate).ToList();
+        departmentDtos = data.Items;
         totalPages = data.TotalPages;
         totalCount = data.TotalCount;
 
@@ -322,7 +321,19 @@ else
 
         RootDepartments = rootDepartments; // alias for hierarchy view
     }
-
+    private async Task HandleSort((string Column, bool? Ascending) sortInfo)
+    {
+        currentSortColumn = sortInfo.Column;
+        sortAscending = sortInfo.Ascending;
+        // Third click → reset to default sorting
+        if (sortAscending == null)
+        {
+            currentSortColumn = "DisplayedName";
+            sortAscending = true;
+        }
+        await LoadDepartmentsAsync();
+        StateHasChanged();
+    }   
 
     private enum DepartmentViewType
     {

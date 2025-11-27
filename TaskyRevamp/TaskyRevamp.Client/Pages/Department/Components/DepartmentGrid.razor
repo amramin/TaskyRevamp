@@ -18,8 +18,8 @@
     <SortableTable TItem="DepartmentDto"
                    Columns="@tableColumns"
                    Items="@Departments"
-                   SortColumn="@currentSortColumn"
-                   SortAscending="@sortAscending"
+                   SortColumn="@SortColumn"
+                   SortAscending="@SortAscending"
                    OnSortRequested="HandleSort">
 
         <RowTemplate>
@@ -28,8 +28,8 @@
             @foreach (var p in Departments)
             {
                 <tr>
-                    <td>@p.NameEnglish</td>
-                    <td>@p.NameArabic</td>
+                    <td>@p.Name</td>
+                    @* <td>@p.Level</td> *@
                     <td>@p.ParentdepartmentName</td>
                     <td>@p.CreatedByName</td>
                     <td>@p.CreateDate?.ToString("yyyy-MM-dd")</td>
@@ -104,17 +104,17 @@
     [Parameter] public EventCallback<Guid> OnShowUsers { get; set; }
     [Parameter] public EventCallback<Guid> OnAdd { get; set; }
     [Parameter] public EventCallback<Guid> OnAddDepartment { get; set; }
-
     [Parameter] public int CurrentPage { get; set; }
     [Parameter] public int TotalPages { get; set; }
     [Parameter] public int TotalCount { get; set; }
     [Parameter] public int PageSize { get; set; }
     [Parameter] public EventCallback<int> PageChanged { get; set; }
     [Parameter] public EventCallback<int> PageSizeChanged { get; set; }
-
-    private string currentSortColumn = "CreateDate";
-    private bool? sortAscending = true;
+    [Parameter] public EventCallback<(string Column, bool? Ascending)> SortChanged { get; set; }
+    [Parameter] public string SortColumn { get; set; } = "CreateDate";
+    [Parameter] public bool? SortAscending { get; set; } = true;
     private List<SortableColumn> tableColumns = new();
+
     private void HandleDepartmentSelection(Guid departmentId) 
     {
         OnAddDepartment.InvokeAsync(departmentId);
@@ -164,14 +164,12 @@
     {
         tableColumns = new()
         {
-            new() { Field = "NameEnglish", DisplayName = Loc["NameEnglish"] },
-            new() { Field = "NameArabic", DisplayName = Loc["NameArabic"] },
-            new() { Field = "DepartmentParent", DisplayName = Loc["ParentdepartmentName"] },
+            new() { Field = "DisplayedName", DisplayName = Loc["name"] },
+            // new() { Field = "Level", DisplayName = Loc["Level"] },
+            new() { Field = "DepartmentParent", DisplayName = Loc["DepartmentParent"] },
             new() { Field = "CreatedBy", DisplayName = Loc["CreatedBy"] },
-
             new() { Field = "CreateDate", DisplayName = Loc["CreationDate"] },
             new() { Field = "UpdatedBy", DisplayName = Loc["UpdatedBy"] },
-
             new() { Field = "UpdateDate", DisplayName = Loc["UpdateDate"] },
             new() { Field = "Action", DisplayName = Loc["Action"] ,IsSortable = false},
         };
@@ -179,28 +177,17 @@
     }
 
     public List<SearchFieldDepartment> searchFields = new List<SearchFieldDepartment>() {
-    SearchFieldDepartment.NameEnglish,
-    SearchFieldDepartment.NameArabic,
-    SearchFieldDepartment.CreatedBy,
-    SearchFieldDepartment.UpdatedBy,
-    SearchFieldDepartment.CreateDate,
-    SearchFieldDepartment.UpdateDate,
-    SearchFieldDepartment.ParentNameAR,
-    SearchFieldDepartment.ParentNameEN
+        SearchFieldDepartment.NameEnglish,
+        SearchFieldDepartment.NameArabic,
+        SearchFieldDepartment.CreatedBy,
+        SearchFieldDepartment.UpdatedBy,
+        SearchFieldDepartment.CreateDate,
+        SearchFieldDepartment.UpdateDate,
+        SearchFieldDepartment.ParentNameAR,
+        SearchFieldDepartment.ParentNameEN
     };
-
     private async Task HandleSort((string Column, bool? Ascending) sortInfo)
     {
-        currentSortColumn = sortInfo.Column;
-        sortAscending = sortInfo.Ascending;
-
-
-        if (sortAscending == null)
-        {
-            // third click → reset to default sorting
-            currentSortColumn = "CreateDate"; // or whatever your default column is
-            sortAscending = true;
-        }
-
+        await SortChanged.InvokeAsync(sortInfo);
     }
 }

@@ -153,15 +153,12 @@
   <data name="RetentionPeriodOptions" xml:space="preserve">
     <value>Retention period Options</value>
   </data>
-
   <data name="SystemNotifications" xml:space="preserve">
     <value>System notifications</value>
   </data>
   <data name="EmailNotification" xml:space="preserve">
     <value>Email notifications</value>
   </data>
-
-  
   <data name="Cancel" xml:space="preserve">
     <value>Cancel</value>
   </data>
@@ -856,11 +853,7 @@
     <value>View privilege</value>
   </data>
   <data name="LinkUser" xml:space="preserve">
-
     <value>link user</value>
-
-
-
   </data>
   <data name="Usethisoption" xml:space="preserve">
     <value>Use this option to enable system notifications that will be automatically sent when the specified action is triggered.</value>
@@ -885,9 +878,6 @@
   </data>
   <data name="EditPrivilege" xml:space="preserve">
     <value>Edit privilege</value>
-  </data>
-  <data name="SystemNotifications" xml:space="preserve">
-    <value>System notifications</value>
   </data>
   <data name="ViewUserPrivilege" xml:space="preserve">
     <value>View user privilege</value>
@@ -925,10 +915,13 @@
   <data name="userHasTasksValidation" xml:space="preserve">
     <value>Can't delete, the user has an open task on him.</value>
   </data>
-    <data name="Of" xml:space="preserve">
+  <data name="Of" xml:space="preserve">
     <value>Of</value>
   </data>
-   <data name="Items per page" xml:space="preserve">
+  <data name="Items per page" xml:space="preserve">
     <value>Items per page</value>
+  </data>
+  <data name="EditDepartment" xml:space="preserve">
+    <value>Edit Department</value>
   </data>
 </root>
