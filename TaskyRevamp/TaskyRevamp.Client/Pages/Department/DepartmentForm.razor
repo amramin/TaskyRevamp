@@ -37,7 +37,7 @@
             <div class="filter-single">
                 <SearchableSingleDropdownOffline TInput=DepartmentDto TOutput=Guid TextSelector="(DepartmentDto x) => x.Name"
                     OutputSelector="x => x.Id" Datasource="allDepartments" MinCharacterCount="1"
-                    @bind-SelectedOption="@department.ParentdepartmentId" PlaceHolder="@($"--{Loc["SelectParent"]}--")" />
+                    @bind-SelectedOption="@department.ParentdepartmentId" PlaceHolder="@($"{Loc["Select"]}")" />
 
                 @if (ParentdepartmentRequired)
                 {
@@ -78,10 +78,10 @@
     public List<DepartmentDto> allDepartments = new List<DepartmentDto>();
     private EditContext editContext;
     private ValidationMessageStore messageStore;
+
     public async Task savedep(Guid id, Guid parnt)
     {
         department.ParentdepartmentId = id;
-
         await InvokeAsync(StateHasChanged);
     }
     bool isFrist;
@@ -101,8 +101,6 @@
         }
         StateHasChanged();
     }
-
-
 
     bool ParentdepartmentRequired;
     private async Task OnSubmitHandler(EditContext context)
@@ -132,11 +130,9 @@
     public void AddErrorsToEditContext(IReadOnlyDictionary<string, List<string>> errors)
     {
         messageStore.Clear();
-
         foreach (var error in errors)
         {
             var property = typeof(DepartmentDto).GetProperty(error.Key);
-
             if (property != null)
             {
                 var fieldIdentifier = new FieldIdentifier(department, property.Name);
@@ -147,8 +143,8 @@
                 }
             }
         }
-
         editContext.NotifyValidationStateChanged();
+        InvokeAsync(StateHasChanged);
     }
 
     public void ClearValidationMessages()

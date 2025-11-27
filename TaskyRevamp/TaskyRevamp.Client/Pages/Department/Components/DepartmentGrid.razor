@@ -29,7 +29,7 @@
             {
                 <tr>
                     <td>@p.Name</td>
-                    @* <td>@p.Level</td> *@
+                    <td>@p.Level</td>
                     <td>@p.ParentdepartmentName</td>
                     <td>@p.CreatedByName</td>
                     <td>@p.CreateDate?.ToString("yyyy-MM-dd")</td>
@@ -68,12 +68,14 @@
                                     </button>
                                 </li>
                                 <li>
-                                    <button class="dropdown-item text-danger" @onclick="@(() => OnDelete.InvokeAsync(p.Id))">
-                                        <span class="icon">
-                                            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Delete"></SVGCrud>
-                                        </span>
-                                        @Loc["Delete"]
-                                    </button>
+                                    @if(p.Level > 1 && p.ParentdepartmentId != Guid.Empty){
+                                        <button class="dropdown-item text-danger" @onclick="@(() => OnDelete.InvokeAsync(p.Id))">
+                                            <span class="icon">
+                                                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Delete"></SVGCrud>
+                                            </span>
+                                            @Loc["Delete"]
+                                        </button>
+                                    }
                                 </li>
                             </ul>
 
@@ -165,7 +167,7 @@
         tableColumns = new()
         {
             new() { Field = "DisplayedName", DisplayName = Loc["name"] },
-            // new() { Field = "Level", DisplayName = Loc["Level"] },
+            new() { Field = "Level", DisplayName = Loc["Level"] },
             new() { Field = "DepartmentParent", DisplayName = Loc["DepartmentParent"] },
             new() { Field = "CreatedBy", DisplayName = Loc["CreatedBy"] },
             new() { Field = "CreateDate", DisplayName = Loc["CreationDate"] },
@@ -184,7 +186,8 @@
         SearchFieldDepartment.CreateDate,
         SearchFieldDepartment.UpdateDate,
         SearchFieldDepartment.ParentNameAR,
-        SearchFieldDepartment.ParentNameEN
+        SearchFieldDepartment.ParentNameEN,
+        SearchFieldDepartment.Level
     };
     private async Task HandleSort((string Column, bool? Ascending) sortInfo)
     {

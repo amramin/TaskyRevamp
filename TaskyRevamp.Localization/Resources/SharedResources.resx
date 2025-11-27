@@ -924,4 +924,13 @@
   <data name="EditDepartment" xml:space="preserve">
     <value>Edit Department</value>
   </data>
+  <data name="AddADepartmentToGetStarted" xml:space="preserve">
+    <value>Add a department to get started</value>
+  </data>
+  <data name="Level" xml:space="preserve">
+    <value>Level</value>
+  </data>
+  <data name="DepartmentHasUsersCannotDelete" xml:space="preserve">
+    <value>Can't delete, the department has an active users</value>
+  </data>
 </root>

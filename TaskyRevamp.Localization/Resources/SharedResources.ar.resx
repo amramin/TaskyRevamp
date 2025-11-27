@@ -925,4 +925,13 @@
   <data name="EditDepartment" xml:space="preserve">
     <value>تعديل الإدارة</value>
   </data>
+  <data name="AddADepartmentToGetStarted" xml:space="preserve">
+    <value>أضف إدارة جديدة للبدء</value>
+  </data>
+  <data name="Level" xml:space="preserve">
+    <value>المستوى</value>
+  </data>
+  <data name="DepartmentHasUsersCannotDelete" xml:space="preserve">
+    <value>لا يمكن الحذف، لدى القسم مستخدمين متاحين</value>
+  </data>
 </root>

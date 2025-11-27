@@ -14,16 +14,16 @@ namespace TaskyRevamp.Dto.Department
     public  class DepartmentDto
     {
         public Guid Id { get; set; }
-        [Required]
-        public string NameEnglish { get; set; }
-        [Required]
-        public string NameArabic { get; set; }
+		[Required(ErrorMessageResourceType = typeof(SharedResources), ErrorMessageResourceName = "Required")]
+		public string NameEnglish { get; set; }
+		[Required(ErrorMessageResourceType = typeof(SharedResources), ErrorMessageResourceName = "Required")]
+		public string NameArabic { get; set; }
 
         public List<DepartmentDto> Children { get; set; } = new(); 
         public bool IsExpanded { get; set; } = false;
 
         public string Name => Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName.Equals("ar") ? NameArabic : NameEnglish;
-
+        public int Level { get; set; }
         public Guid? CreatedBy { get; set; }
         public string? CreatedByName { get; set; }
         public string? UpdatedByName { get; set; }

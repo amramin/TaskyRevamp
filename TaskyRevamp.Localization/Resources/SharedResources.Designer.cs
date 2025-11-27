@@ -133,6 +133,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add a department to get started.
+        /// </summary>
+        public static string AddADepartmentToGetStarted {
+            get {
+                return ResourceManager.GetString("AddADepartmentToGetStarted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add a new privilege to get started.
         /// </summary>
         public static string AddANewPrivilegeToGetStarted {
@@ -682,6 +691,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Can&apos;t delete, the department has an active users.
+        /// </summary>
+        public static string DepartmentHasUsersCannotDelete {
+            get {
+                return ResourceManager.GetString("DepartmentHasUsersCannotDelete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Parent department.
         /// </summary>
         public static string DepartmentParent {
@@ -1164,6 +1182,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string languageHint {
             get {
                 return ResourceManager.GetString("languageHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Level.
+        /// </summary>
+        public static string Level {
+            get {
+                return ResourceManager.GetString("Level", resourceCulture);
             }
         }
         

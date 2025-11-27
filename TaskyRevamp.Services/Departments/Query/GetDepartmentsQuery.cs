@@ -117,7 +117,11 @@ public class GetDepartmentsHandler : IRequestHandler<GetDepartmentsQuery, PagedR
 
                 }
 
-            default:
+			case "Level":
+				return sortAscending
+					? q => q.OrderBy(u => u.Level)
+					: q => q.OrderByDescending(u => u.Level);
+			default:
                 return q => q.OrderBy(u => u.CreateDate);
         }
     }
