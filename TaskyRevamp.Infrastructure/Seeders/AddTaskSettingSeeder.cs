@@ -28,7 +28,7 @@ namespace TaskyRevamp.Infrastructure.Seeders
                 new AddTaskSettings { Id = Guid.NewGuid(), NameEnglish = "Dependency", NameArabic = "تبعية المهمة", IsActive = true, IsMandatory = false, Order = 12 },
 
                 new AddTaskSettings { Id = Guid.NewGuid(), NameEnglish = "File upload", NameArabic = "تحميل ملف", IsActive = true, IsMandatory = false, Order = 13 },
-                new AddTaskSettings { Id = Guid.NewGuid(), NameEnglish = "Check list", NameArabic = "قائمة المهام", IsActive = true, IsMandatory = false, Order = 14 },
+                new AddTaskSettings { Id = Guid.NewGuid(), NameEnglish = "Checklist", NameArabic = "قائمة المهام", IsActive = true, IsMandatory = false, Order = 14 },
                 new AddTaskSettings { Id = Guid.NewGuid(), NameEnglish = "Comments", NameArabic = "التعليقات", IsActive = true, IsMandatory = false, Order = 15 },
                 new AddTaskSettings { Id = Guid.NewGuid(), NameEnglish = "Actual progress", NameArabic = "التقدم الفعلي", IsActive = true, IsMandatory = true, Order = 16 },
 
