@@ -114,7 +114,7 @@
         input = new string(input.Where(char.IsDigit).ToArray());
         if (input.Length > 10)
             input = input.Substring(0, 10);
-        if (int.TryParse(input, out var number) && number > 0)
+        if (long.TryParse(input, out var number) && number > 0)
         {
             RecycleBinSetting.CustomDays = number;
         }
