@@ -133,7 +133,10 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+
         ///   Looks up a localized string similar to Add a department to get started.
+
+
         /// </summary>
         public static string AddADepartmentToGetStarted {
             get {
@@ -399,6 +402,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string Cancel {
             get {
                 return ResourceManager.GetString("Cancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You can&apos;t delete this privilege, it&apos;s linked to a user.
+        /// </summary>
+        public static string CannotDeletePrivilege {
+            get {
+                return ResourceManager.GetString("CannotDeletePrivilege", resourceCulture);
             }
         }
         
@@ -689,10 +701,6 @@ namespace TaskyRevamp.Localization.Resources {
                 return ResourceManager.GetString("DepartmentDuplicateValidation", resourceCulture);
             }
         }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Can&apos;t delete, the department has an active users.
-        /// </summary>
         public static string DepartmentHasUsersCannotDelete {
             get {
                 return ResourceManager.GetString("DepartmentHasUsersCannotDelete", resourceCulture);
@@ -799,7 +807,9 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+
         ///   Looks up a localized string similar to Edit Department.
+
         /// </summary>
         public static string EditDepartment {
             get {
@@ -880,13 +890,16 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+
         ///   Looks up a localized string similar to Email notifications.
+
         /// </summary>
         public static string EmailNotification {
             get {
                 return ResourceManager.GetString("EmailNotification", resourceCulture);
             }
         }
+        
         
         /// <summary>
         ///   Looks up a localized string similar to Employee&apos;s tasks.
@@ -1690,7 +1703,18 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Privilege .
+        /// </summary>
+        public static string PrivilegeTilte {
+            get {
+                return ResourceManager.GetString("PrivilegeTilte", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+
         ///   Looks up a localized string similar to Recycle bin configuration.
+
         /// </summary>
         public static string RecycleBinConfiguration {
             get {

@@ -177,8 +177,14 @@ else
     private void ViewPermission(Guid id) => navigationManager.NavigateTo($"/privilege?mode=view&id={id}");
     private void ViewUsers(Guid id, string PrivilegeName) => navigationManager.NavigateTo($"/UsersPrivilege/{id}/{PrivilegeName}");
 
-    private void DeletePrivilege(PrivilegeDtoWithName privilege)
+    private async Task DeletePrivilege(PrivilegeDtoWithName privilege)
     {
+        var res = await _privilegeConsumer.CheckPrivilegeIsLinkedWithUsers(privilege.PrivilegeDto.Id);
+        if(res.Success && !res.Data)
+        {
+            await ToastService.ShowToastAsync(Loc["CannotDeletePrivilege"], "error");
+            return;
+        }
         PopupService.ShowConfirmation(@Loc["Sure"], @Loc["Confirm"], OnDeleteConfirmed, type: ConfirmationType.Danger);
         selectedPrivilege = privilege;
         showConfirm = true;

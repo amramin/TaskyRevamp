@@ -59,6 +59,12 @@ namespace TaskyRevamp.WebAPI.Controllers
             return Ok(await _mediator.Send(new UpdatePrivilegeCommand(privilegeDto)));
         }
 
+		[HttpGet("CheckPrivilegeIsLinkedWithUsers/{id}")]
+		public async Task<IActionResult> CheckPrivilegeIsLinkedWithUsers(Guid id)
+		{
+			return Ok(await _mediator.Send(new CheckPrivilegeIsLinkedWithUsersCommand(id)));
+		}
+
 		[HttpDelete("DeletePrivilege/{id}")]
 		public async Task<IActionResult> DeletePrivilege(Guid id)
 		{

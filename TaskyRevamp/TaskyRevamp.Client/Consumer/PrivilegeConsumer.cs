@@ -50,6 +50,13 @@ namespace TaskyRevamp.Client.Consumer
 
             return res;
         }
+		public async Task<CommonApiResponse<bool>> CheckPrivilegeIsLinkedWithUsers(Guid id)
+		{
+			var url = $"api/Privilege/CheckPrivilegeIsLinkedWithUsers/{id}";
+			var res = await _taskyService.GetFromJsonAsync<CommonApiResponse<bool>>(url);
+
+			return res;
+		}
 		public async Task<CommonApiResponse<bool>> DeletePrivilege(Guid id)
 		{
 			var url = $"api/Privilege/DeletePrivilege/{id}";
