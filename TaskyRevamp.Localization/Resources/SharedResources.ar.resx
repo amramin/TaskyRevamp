@@ -935,13 +935,10 @@
   <data name="DepartmentHasUsersCannotDelete" xml:space="preserve">
     <value>لا يمكن الحذف، لدى القسم مستخدمين متاحين</value>
   </data>
-</root>
-
-  <data name="CannotDeletePrivilege" xml:space="preserve">
+	<data name="CannotDeletePrivilege" xml:space="preserve">
     <value>لا يمكنك حذف هذا الامتياز، فهو مرتبط بمستخدم</value>
   </data>
-  <data name="PrivilegeTilte" xml:space="preserve">
+	<data name="PrivilegeTilte" xml:space="preserve">
     <value>صلاحيات</value>
   </data>
-
 </root>
