@@ -421,6 +421,9 @@
         {
             Priorities = ress.Data;
         }
+        taskdto.StartDate = taskdto.StartDate == default ? DateTime.Now : taskdto.StartDate;
+        taskdto.EndDate = taskdto.EndDate == default ? DateTime.Now : taskdto.EndDate;
+        taskdto.ReminderDate = taskdto.ReminderDate == default ? DateTime.Now : taskdto.ReminderDate;
         StateHasChanged();
 
     }
