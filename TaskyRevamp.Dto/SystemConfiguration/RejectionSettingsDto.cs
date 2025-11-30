@@ -11,6 +11,6 @@ namespace TaskyRevamp.Dto.SystemConfiguration
 	{
 		public Guid Id { get; set; }
 		public RejectionPeriodType PeriodType { get; set; }
-		public int? CustomDays { get; set; }
+		public long? CustomDays { get; set; }
 	}
 }
