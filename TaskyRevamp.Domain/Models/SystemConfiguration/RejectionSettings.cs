@@ -11,14 +11,14 @@ namespace TaskyRevamp.Domain.Models.SystemConfiguration
 	public class RejectionSettings : Entity
 	{
 		public RejectionPeriodType PeriodType { get; private set; }
-		public int? CustomDays { get; private set; }
+		public long? CustomDays { get; private set; }
 		public RejectionSettings() { }
-		public RejectionSettings(RejectionPeriodType periodType, int? customDays)
+		public RejectionSettings(RejectionPeriodType periodType, long? customDays)
 		{
 			PeriodType = periodType;
 			CustomDays = customDays;
 		}
-		public void Update(RejectionPeriodType periodType, int? customDays)
+		public void Update(RejectionPeriodType periodType, long? customDays)
 		{
 			PeriodType = periodType;
 			CustomDays = customDays;

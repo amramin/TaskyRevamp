@@ -13,19 +13,19 @@ namespace TaskyRevamp.Domain.Models.SystemConfiguration
     public class RecycleBinSettings : Entity
     {
         public PeriodType PeriodType { get; private set; }
-        public int? CustomDays { get; private set; }
+        public long? CustomDays { get; private set; }
 
         public RecycleBinSettings()
         {
         }
 
-        public RecycleBinSettings(PeriodType periodType, int? customDays)
+        public RecycleBinSettings(PeriodType periodType, long? customDays)
         {
             PeriodType = periodType;
             CustomDays = customDays;
         }
 
-        public void Update(PeriodType periodType, int? customDays)
+        public void Update(PeriodType periodType, long? customDays)
         {
             PeriodType = periodType;
             CustomDays = customDays;

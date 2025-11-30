@@ -11,6 +11,6 @@ namespace TaskyRevamp.Dto.SystemConfiguration
     {
         public Guid Id { get; set; }
         public PeriodType PeriodType { get; set; }
-        public int? CustomDays { get; set; }
+        public long? CustomDays { get; set; }
     }
 }
