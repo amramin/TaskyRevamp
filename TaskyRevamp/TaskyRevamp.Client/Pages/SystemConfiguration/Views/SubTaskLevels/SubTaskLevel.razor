@@ -25,7 +25,7 @@
                @Loc["Maximum_Subtask_Level"]
                <span class="text-danger">*</span>
             </label>
-            <input type="number" min="1" class="form-control" @bind="ViewSetting.SubTaskLevels" @oninput="OnCustomDaysChange" />
+            <input type="text" maxlength="10" class="form-control" @bind="ViewSetting.SubTaskLevels" @oninput="OnCustomDaysChange" />
         </div>
 
         @if (ViewSetting.SubTaskLevels > 3)

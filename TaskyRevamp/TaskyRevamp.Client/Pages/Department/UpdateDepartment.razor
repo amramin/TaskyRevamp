@@ -1,11 +1,13 @@
 ﻿@page "/Update-Department/{Id:guid}"
 
+@using Blazored.LocalStorage
 @using TaskyRevamp.Client.Consumer
 @using TaskyRevamp.Client.Services
 @using TaskyRevamp.Dto.Department
 @using TaskyRevamp.Dto.SystemConfiguration
 @using Newtonsoft.Json.Linq;
 @using Newtonsoft.Json;
+@inject ILocalStorageService LocalStorageService
 
 
 @inject IStringLocalizer<SharedResources> Loc
@@ -43,6 +45,8 @@
 
     private async Task Save(EditContext editContext)
     {
+        var current = await LocalStorageService.GetItemAsStringAsync("Id");
+        department.UpdatedBy = Guid.Parse(current);
         var res = await _DepartmentConsumer.UpdateDepartment(department);
        if (res.Success)
         {

@@ -898,4 +898,7 @@
   <data name="priorityHint2" xml:space="preserve">
     <value>ملاحظة: ترتيب الأولويات هو كالتالي — 1 (أعلى/أكثر أهمية)، 2، 3 (أقل أهمية).      ستأخذ المهمة الرئيسية دائمًا أعلى ترتيب أولوية من بين المهام الفرعية، أي الأكثر أهمية.</value>
   </data>
+  <data name="NoMatchingResults" xml:space="preserve">
+    <value>لا توجد نتائج</value>
+  </data>
 </root>

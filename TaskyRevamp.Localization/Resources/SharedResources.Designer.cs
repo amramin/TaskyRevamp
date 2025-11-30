@@ -259,7 +259,7 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Add Source.
+        ///   Looks up a localized string similar to Add Task Source.
         /// </summary>
         public static string AddTaskSource {
             get {
@@ -300,15 +300,6 @@ namespace TaskyRevamp.Localization.Resources {
         public static string AllrightsKSA {
             get {
                 return ResourceManager.GetString("AllrightsKSA", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to All user privileges and tasks will be transferred to the delegated user.
-        /// </summary>
-        public static string Alluserprivileges {
-            get {
-                return ResourceManager.GetString("Alluserprivileges", resourceCulture);
             }
         }
         
@@ -628,15 +619,6 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Delegation Options.
-        /// </summary>
-        public static string DelegationOptions {
-            get {
-                return ResourceManager.GetString("DelegationOptions", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Delete.
         /// </summary>
         public static string Delete {
@@ -736,7 +718,7 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Different departments.
+        ///   Looks up a localized string similar to Different Department.
         /// </summary>
         public static string DifferentDepartment {
             get {
@@ -826,7 +808,7 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Edit Source.
+        ///   Looks up a localized string similar to Edit Task Source.
         /// </summary>
         public static string EditTaskSource {
             get {
@@ -1087,7 +1069,7 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to General modules .
+        ///   Looks up a localized string similar to General Modules .
         /// </summary>
         public static string GeneralModule {
             get {
@@ -1394,6 +1376,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to  No results.
+        /// </summary>
+        public static string NoMatchingResults {
+            get {
+                return ResourceManager.GetString("NoMatchingResults", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No Privilege Available.
         /// </summary>
         public static string NoPrivilegeAvailable {
@@ -1412,7 +1403,7 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No Task Sources Available.
+        ///   Looks up a localized string similar to No task sources available.
         /// </summary>
         public static string NoTaskSourcesAvailable {
             get {
@@ -1421,7 +1412,7 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No Task Type Available.
+        ///   Looks up a localized string similar to No task type available.
         /// </summary>
         public static string NoTaskTypeAvailable {
             get {
@@ -1453,15 +1444,6 @@ namespace TaskyRevamp.Localization.Resources {
         public static string NoUsersAvailable {
             get {
                 return ResourceManager.GetString("NoUsersAvailable", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Only the tasks that the user is a creator or assigned to will be visible to the delegated user.
-        /// </summary>
-        public static string Onlythetasksthattheuser {
-            get {
-                return ResourceManager.GetString("Onlythetasksthattheuser", resourceCulture);
             }
         }
         
@@ -1646,15 +1628,6 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Privileges and User Tasks.
-        /// </summary>
-        public static string Privilegesandusertasks {
-            get {
-                return ResourceManager.GetString("Privilegesandusertasks", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Recycle Bin Configuration.
         /// </summary>
         public static string RecycleBinConfiguration {
@@ -1718,7 +1691,7 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Report module.
+        ///   Looks up a localized string similar to Report Module.
         /// </summary>
         public static string ReportModule {
             get {
@@ -1754,7 +1727,7 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Same department.
+        ///   Looks up a localized string similar to Same Department.
         /// </summary>
         public static string SameDepartment {
             get {
@@ -1772,7 +1745,7 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Same user.
+        ///   Looks up a localized string similar to Same User.
         /// </summary>
         public static string SameUser {
             get {
@@ -2051,7 +2024,7 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Task module.
+        ///   Looks up a localized string similar to Task Module.
         /// </summary>
         public static string TaskModule {
             get {
@@ -2290,15 +2263,6 @@ namespace TaskyRevamp.Localization.Resources {
         public static string users {
             get {
                 return ResourceManager.GetString("users", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to User Tasks.
-        /// </summary>
-        public static string UserTasks {
-            get {
-                return ResourceManager.GetString("UserTasks", resourceCulture);
             }
         }
         

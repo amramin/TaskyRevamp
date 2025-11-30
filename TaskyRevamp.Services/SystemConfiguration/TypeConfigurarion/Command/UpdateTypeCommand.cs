@@ -31,7 +31,7 @@ namespace TaskyRevamp.Services.SystemConfiguration.TypeConfigurarion.Command
 				typeData.NameEnglish = newData.NameEnglish;
 				typeData.NameArabic = newData.NameArabic;
 				typeData.IsActive = newData.IsActive;
-
+				typeData.UpdatedById = newData.UpdatedById;
 				await _typeRepository.Update(typeData);
 				//await _typeRepository.SaveChangesAsync();
 			}

@@ -32,7 +32,8 @@ namespace TaskyRevamp.Services.SystemConfiguration.SourceConfiguration.Command
 				sourceData.NameEnglish = newData.NameEnglish;
 				sourceData.NameArabic = newData.NameArabic;
 				sourceData.IsActive = newData.IsActive;
-
+				sourceData.UpdatedById = newData.UpdatedById;
+				sourceData.CreatedById = newData.CreatedById;
 				await _sourceRepository.Update(sourceData);
 				//await _sourceRepository.SaveChangesAsync();
 			}

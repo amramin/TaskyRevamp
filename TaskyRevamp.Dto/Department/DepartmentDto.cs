@@ -14,9 +14,9 @@ namespace TaskyRevamp.Dto.Department
     public  class DepartmentDto
     {
         public Guid Id { get; set; }
-        [Required]
+        [Required(ErrorMessageResourceType = typeof(SharedResources), ErrorMessageResourceName = "Required")]
         public string NameEnglish { get; set; }
-        [Required]
+        [Required(ErrorMessageResourceType = typeof(SharedResources), ErrorMessageResourceName = "Required")]
         public string NameArabic { get; set; }
 
         public List<DepartmentDto> Children { get; set; } = new(); 
