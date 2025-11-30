@@ -74,15 +74,20 @@ public class GetDepartmentsHandler : IRequestHandler<GetDepartmentsQuery, PagedR
                 return sortAscending
                     ? q => q.OrderBy(u => u.CreateDate)
                     : q => q.OrderByDescending(u => u.CreateDate);
-            case "NameArabic":
-                return sortAscending
-                    ? q => q.OrderBy(u => u.NameArabic)
-                    : q => q.OrderByDescending(u => u.NameArabic);
-            case "NameEnglish":
-                return sortAscending
-                    ? q => q.OrderBy(u => u.NameEnglish)
-                    : q => q.OrderByDescending(u => u.NameEnglish);
-            case "UpdateDate":
+			case "DisplayedName":
+				if (currentCulture == "ar")
+				{
+					return sortAscending
+						? q => q.OrderBy(u => u.NameArabic)
+						: q => q.OrderByDescending(u => u.NameArabic);
+				}
+				else
+				{
+					return sortAscending
+						? q => q.OrderBy(u => u.NameEnglish)
+						: q => q.OrderByDescending(u => u.NameEnglish);
+				}
+			case "UpdateDate":
                 return sortAscending
                     ? q => q.OrderBy(u => u.UpdateDate)
                     : q => q.OrderByDescending(u => u.UpdateDate);
@@ -112,7 +117,11 @@ public class GetDepartmentsHandler : IRequestHandler<GetDepartmentsQuery, PagedR
 
                 }
 
-            default:
+			case "Level":
+				return sortAscending
+					? q => q.OrderBy(u => u.Level)
+					: q => q.OrderByDescending(u => u.Level);
+			default:
                 return q => q.OrderBy(u => u.CreateDate);
         }
     }

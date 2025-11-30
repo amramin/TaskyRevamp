@@ -8,7 +8,7 @@
 
     <ul class="dropdown-menu">
         <li>
-            <button class="dropdown-item" @onclick="@(() => ShowUsers.InvokeAsync(DepartmentId))">
+            <button class="dropdown-item" @onclick="@(() => ShowUsers.InvokeAsync(Department.Id))">
                 <span class="icon">
                     <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Users"></SVGCrud>
                 </span>
@@ -16,7 +16,7 @@
             </button>
         </li>
         <li>
-            <button class="dropdown-item" @onclick="@(() => OnAdd.InvokeAsync(DepartmentId))">
+            <button class="dropdown-item" @onclick="@(() => OnAdd.InvokeAsync(Department.Id))">
                 <span class="icon">
                     <SVGCrud SVGType="SVGCrud.SVGTypeEnum.AddColumn"></SVGCrud>
                 </span>
@@ -24,7 +24,7 @@
             </button>
         </li>
         <li>
-            <button class="dropdown-item" @onclick="@(() => Edit.InvokeAsync(DepartmentId))">
+            <button class="dropdown-item" @onclick="@(() => Edit.InvokeAsync(Department.Id))">
                 <span class="icon">
                     <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Edit"></SVGCrud>
                 </span>
@@ -32,22 +32,23 @@
             </button>
         </li>
         <li>
-            <button class="dropdown-item" @onclick="@(() => Delete.InvokeAsync(DepartmentId))">
-                <span class="icon">
+            @if (Department.Level > 1 && Department.ParentdepartmentId != Guid.Empty)
+            {
+                <button class="dropdown-item text-danger" @onclick="@(() => Delete.InvokeAsync(Department.Id))">
+                    <span class="icon">
                     <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Delete"></SVGCrud>
                 </span>
                 @Loc["Delete"]
             </button>
+            }
         </li>
     </ul>
 </div>
 
 @code {
-    [Parameter] public Guid DepartmentId { get; set; }
+    [Parameter] public DepartmentDto Department { get; set; }
     [Parameter] public EventCallback<Guid> ShowUsers { get; set; }
     [Parameter] public EventCallback<Guid> Edit { get; set; }
     [Parameter] public EventCallback<Guid> Delete { get; set; }
-
     [Parameter] public EventCallback<Guid> OnAdd { get; set; }
-
 }

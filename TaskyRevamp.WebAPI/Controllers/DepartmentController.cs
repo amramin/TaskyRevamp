@@ -96,5 +96,10 @@ public class DepartmentController : ControllerBase
         return Ok(Task);
     }
 
+    [HttpGet("CheckDeparmentHasUsers/{id}")]
+    public async Task<IActionResult> CheckDeparmentHasUsers(Guid id)
+    {
+        return Ok(await _mediator.Send(new CheckDeparmentHasUsersCommand(id)));
 
+    }
 }

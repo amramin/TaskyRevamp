@@ -17,9 +17,9 @@ namespace TaskyRevamp.Services.SearchMappings
         {
             { SearchFieldDepartment.NameEnglish, x => x.NameEnglish },
             { SearchFieldDepartment.NameArabic, x => x.NameArabic },
-             { SearchFieldDepartment.ParentNameEN, x => x.Parentdepartment.NameEnglish },
-                          { SearchFieldDepartment.ParentNameAR, x => x.Parentdepartment.NameArabic },
-
+            { SearchFieldDepartment.ParentNameEN, x => x.Parentdepartment.NameEnglish },
+            { SearchFieldDepartment.ParentNameAR, x => x.Parentdepartment.NameArabic },
+            { SearchFieldDepartment.Level, x => x.Level },
             { SearchFieldDepartment.CreateDate, x => x.CreateDate },
             { SearchFieldDepartment.CreatedBy, x => x.CreatedBy.NameEnglish },
             { SearchFieldDepartment.UpdateDate, x => x.UpdateDate },

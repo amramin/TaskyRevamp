@@ -61,8 +61,9 @@
         {
             case DepartmentViewType.Grid:
                 <DepartmentGrid Departments="departmentDtos" OnEdit="Edit" OnDelete="OnDeleteDepartment" OnShowUsers="ShowUser"
-                                OnAdd="AddDept" OnAddDepartment="AddDept" CurrentPage="currentPage"
-                                PageChanged="ChangePage" PageSizeChanged="ChangePageSize" PageSize="pageSize" TotalPages="totalPages" TotalCount="totalCount" />
+                                OnAdd="AddDept" OnAddDepartment="AddDept" CurrentPage="currentPage" SortChanged="HandleSort"
+                                SortColumn="@currentSortColumn" SortAscending="@sortAscending" PageChanged="ChangePage" 
+                                PageSizeChanged="ChangePageSize" PageSize="pageSize" TotalPages="totalPages" TotalCount="totalCount" />
                 break;
 
             case DepartmentViewType.Tree:
@@ -88,27 +89,22 @@
                 break;
         }
     </div>
-    }
+}
 else if (intialDepartmentDtos != null && intialDepartmentDtos.Any())
 {
     <NoSearchResults OnResetClick="ClearSearch"></NoSearchResults>
 
 }
-
 else
 {
-    <NoDataAvailable MessageTitle="@Loc["Nodepartmentavailable"]" MessageSubtitle="@Loc["Add department to get started"]"
+    <NoDataAvailable MessageTitle="@Loc["Nodepartmentavailable"]" MessageSubtitle="@Loc["AddADepartmentToGetStarted"]"
                      ButtonText="@Loc["AddDepartment"]" OnButtonClick="Add" />
-
-
 }
-
 
 
 @code {
     private List<DepartmentDto> departmentDtos = new();
     private List<DepartmentDto> intialDepartmentDtos = new();
-
     private List<DepartmentDto> rootDepartments = new();
     private DepartmentDto? selectedDepartment;
     private int currentPage = 1;
@@ -132,16 +128,14 @@ else
         currentPage = 1;
         await LoadDepartmentsAsync();
     }
-
     protected override async Task OnInitializedAsync()
     {
 
         tableColumns = new()
         {
-            new() { Field = "NameEnglish", DisplayName = Loc["NameEnglish"] },
-            new() { Field = "NameArabic", DisplayName = Loc["NameArabic"] },
-            new() { Field = "DepartmentParent", DisplayName = Loc["ParentdepartmentName"] },
-
+            new() { Field = "DisplayedName", DisplayName = Loc["Name"] },
+            new() { Field = "Level", DisplayName = Loc["Level"] },
+            new() { Field = "DepartmentParent", DisplayName = Loc["DepartmentParent"] },
             new() { Field = "CreateDate", DisplayName = Loc["CreationDate"] },
             new() { Field = "CreatedBy", DisplayName = Loc["CreatedBy"] },
             new() { Field = "UpdateDate", DisplayName = Loc["UpdateDate"] },
@@ -161,7 +155,7 @@ else
     }
     private void Add()
     {
-        PopupService.ShowNew(@<AddDepartment OnValidSubmit="OnInitializedAsync" OnSaved="ReloadAfterSave"></AddDepartment>,Loc["AddDepartment"]);
+        PopupService.ShowNew(@<AddDepartment OnSaved="ReloadAfterSave"></AddDepartment>,Loc["AddDepartment"]);
 
     }
     private async Task ReloadAfterSave()
@@ -182,7 +176,7 @@ else
     }
     private void Edit(Guid id)
     {
-        PopupService.ShowNew(@<UpdateDepartment Id="id" OnValidSubmit="OnInitializedAsync" OnSaved="ReloadAfterSave"></UpdateDepartment>, headerText:
+        PopupService.ShowNew(@<UpdateDepartment Id="id"  OnSaved="ReloadAfterSave"></UpdateDepartment>, headerText:
         @Loc["EditDepartment"]);
 
     }
@@ -193,7 +187,7 @@ else
     }
     private void AddDept(Guid id)
     {
-        PopupService.ShowNew(@<AddDepartment ParentId="id"></AddDepartment>,Loc["AddDepartment"]);
+        PopupService.ShowNew(@<AddDepartment ParentId="id" OnSaved="ReloadAfterSave"></AddDepartment>,Loc["AddDepartment"]);
 
     }
     private async Task ChangeView(DepartmentViewType view)
@@ -212,31 +206,21 @@ else
 
         await LoadDepartmentsAsync(isSearch: !string.IsNullOrEmpty(searchdata), searchdata);
     }
-
-
-    private void OnDeleteDepartment(Guid departmentId)
+    private async Task OnDeleteDepartment(Guid departmentId)
     {
-        PopupService.ShowConfirmation(
-        @Loc["SureDeleteDepartment"],
-        @Loc["Confirm"],
+        var res = await _departmentConsumer.CheckDeparmentHasUsers(departmentId);
+        if(res.Success && res.Data)
+        {
+            await ToastService.ShowToastAsync(Loc["DepartmentHasUsersCannotDelete"], "error");
+            return;
+        }
+        PopupService.ShowConfirmation(@Loc["SureDeleteDepartment"], @Loc["Confirm"],
         async (confirmed) =>
         {
             if (confirmed)
                 await DeleteConfirmed(departmentId);
-        },
-        ConfirmationType.Danger
-        );
+        },ConfirmationType.Danger);
     }
-    public List<SearchFieldDepartment> searchFields = new List<SearchFieldDepartment>() {
-                SearchFieldDepartment.NameEnglish,
-                SearchFieldDepartment.NameArabic,
-                SearchFieldDepartment.CreatedBy,
-                SearchFieldDepartment.UpdatedBy,
-                SearchFieldDepartment.CreateDate,
-                SearchFieldDepartment.UpdateDate,
-                SearchFieldDepartment.ParentNameAR,
-                SearchFieldDepartment.ParentNameEN
-                                                  };
     private async Task DeleteConfirmed(Guid departmentId)
     {
         var result = await _departmentConsumer.DeleteDepartment(departmentId);
@@ -255,12 +239,19 @@ else
         {
             await ToastService.ShowToastAsync(Loc["DeleteFailed"], "danger");
         }
-
         StateHasChanged();
     }
-
-
-
+    public List<SearchFieldDepartment> searchFields = new List<SearchFieldDepartment>() {
+                SearchFieldDepartment.NameEnglish,
+                SearchFieldDepartment.NameArabic,
+                SearchFieldDepartment.CreatedBy,
+                SearchFieldDepartment.UpdatedBy,
+                SearchFieldDepartment.CreateDate,
+                SearchFieldDepartment.UpdateDate,
+                SearchFieldDepartment.ParentNameAR,
+                SearchFieldDepartment.ParentNameEN,
+                SearchFieldDepartment.Level
+    };
     private void HandleAddDepartment(string parentId)
     {
         navigationManager.NavigateTo($"/Add-Department?parentId={parentId}");
@@ -270,7 +261,6 @@ else
         searchdata = searchTerm;
         await LoadDepartmentsAsync(true, searchTerm);
     }
-
     private async Task LoadDepartmentsAsync(bool isSearch = false, string searchTerm = null)
     {
         // Determine page size dynamically
@@ -298,7 +288,7 @@ else
         var data = resp.Data;
 
         // Paginated or full list (depends on view)
-        departmentDtos = data.Items.OrderBy(k => k.CreateDate).ToList();
+        departmentDtos = data.Items;
         totalPages = data.TotalPages;
         totalCount = data.TotalCount;
 
@@ -322,8 +312,19 @@ else
 
         RootDepartments = rootDepartments; // alias for hierarchy view
     }
-
-
+    private async Task HandleSort((string Column, bool? Ascending) sortInfo)
+    {
+        currentSortColumn = sortInfo.Column;
+        sortAscending = sortInfo.Ascending;
+        // Third click → reset to default sorting
+        if (sortAscending == null)
+        {
+            currentSortColumn = "DisplayedName";
+            sortAscending = true;
+        }
+        await LoadDepartmentsAsync();
+        StateHasChanged();
+    }   
     private enum DepartmentViewType
     {
         Grid,
