@@ -1955,6 +1955,7 @@ fieldset:disabled .btn {
 /* end offcabvas popup */
 /* start confirmation-popup*/
 .modal .modal-content.confirmation-popup {
+  margin: auto;
   border-radius: 1rem;
 }
 .modal .modal-content.confirmation-popup .modal-body {
