@@ -19,21 +19,33 @@ public class CreateDepartmentHandler : IRequestHandler<CreateDepartmentCommand, 
     private readonly IRepository<Department> _departmentRepository;
     private readonly IStringLocalizer<SharedResources> _localizer;
 
-    public CreateDepartmentHandler(IRepository<Department> departmentRepository) { _departmentRepository = departmentRepository; }
+	public CreateDepartmentHandler(IRepository<Department> departmentRepository, IStringLocalizer<SharedResources> localizer)
+	{
+		_departmentRepository = departmentRepository;
+		_localizer = localizer;
+	}
 
-    public async Task<Guid> Handle(CreateDepartmentCommand request, CancellationToken cancellationToken)
+	public async Task<Guid> Handle(CreateDepartmentCommand request, CancellationToken cancellationToken)
     {
 
         await ValidateDepartment(request.departmentDto);
         Department department = new Department();
         department.SetData(request.departmentDto);
-       
-       
-        await _departmentRepository.Insert(department);
+		department.Level = await CalculateLevelAsync(request.departmentDto.ParentdepartmentId);
+		await _departmentRepository.Insert(department);
         await _departmentRepository.SaveChangesAsync();
         return department.Id;
     }
-    private async Task ValidateDepartment(DepartmentDto departmentDto)
+	private async Task<int> CalculateLevelAsync(Guid? parentId)
+	{
+		if (parentId == null || parentId == Guid.Empty)
+			return 1; // Root level
+		var parent = await _departmentRepository.FindByKey(parentId.Value);
+        if(parent.Success && parent.Value != null)
+			return parent != null ? parent.Value.Level + 1 : 1;
+        return 1;
+	}
+	private async Task ValidateDepartment(DepartmentDto departmentDto)
     {
         var exists = await _departmentRepository.FindBy(p => p.Id != departmentDto.Id && (p.NameEnglish.ToLower() == departmentDto.NameEnglish.ToLower() || p.NameArabic.ToLower() == departmentDto.NameArabic.ToLower()));
         if (exists?.Value?.Count > 0)
@@ -41,9 +53,9 @@ public class CreateDepartmentHandler : IRequestHandler<CreateDepartmentCommand, 
             var departs = exists.Value;
             var errors = new Dictionary<string, List<string>>();
             if (departs.Any(x => string.Equals(x.NameEnglish, departmentDto.NameEnglish, StringComparison.OrdinalIgnoreCase)))
-                errors.Add(nameof(PriorityDto.NameEnglish), new List<string> { _localizer["DepartmentDuplicateValidation"] });
+                errors.Add(nameof(DepartmentDto.NameEnglish), new List<string> { _localizer["DepartmentDuplicateValidation"] });
             if (departs.Any(x => string.Equals(x.NameArabic, departmentDto.NameArabic, StringComparison.OrdinalIgnoreCase)))
-                errors.Add(nameof(PriorityDto.NameArabic), new List<string> { _localizer["DepartmentDuplicateValidation"] });
+                errors.Add(nameof(DepartmentDto.NameArabic), new List<string> { _localizer["DepartmentDuplicateValidation"] });
 
             throw new ValidationException(errors);
         }

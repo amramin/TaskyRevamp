@@ -13,8 +13,8 @@
                     <span class="text">@dept.Name</span>
                 </button>
 
-                <DepartmentActions DepartmentId="@dept.Id" ShowUsers="OnShowUsers" OnAdd="OnAdd" Edit="OnEdit"
-                    Delete="OnDelete" />
+                <DepartmentActions Department="@dept" ShowUsers="OnShowUsers" OnAdd="@(() => OnAdd.InvokeAsync(dept.Id))" 
+                    Edit="@(() => OnEdit.InvokeAsync(dept.Id))" Delete="@(() => OnDelete.InvokeAsync(dept.Id))" />
 
                 <button class="btn btn-outline-light-primary btn-32" type="button"
                     @onclick="() => HandleDepartmentSelection(dept.Id)">

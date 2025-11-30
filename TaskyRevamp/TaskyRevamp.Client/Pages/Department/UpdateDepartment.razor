@@ -9,17 +9,16 @@
 
 
 @inject IStringLocalizer<SharedResources> Loc
-@inject DepartmentConsumer  _DepartmentConsumer
+@inject DepartmentConsumer _DepartmentConsumer
 @inject ToastService ToastService
 @inject NavigationManager navigationManager
 
 
-    <DepartmentForm 
-        @ref="form"
-        Department="@department"
-        OnValidSubmit="@Save"
-        SubmitButtonText="@Loc["Update"]"
-        OnCancel="@Cancel"/>
+<DepartmentForm @ref="form"
+                Department="@department"
+                OnValidSubmit="@Save"
+                SubmitButtonText="@Loc["Update"]"
+                OnCancel="@Cancel" />
 
 
 @code {
@@ -44,18 +43,16 @@
     private async Task Save(EditContext editContext)
     {
         var res = await _DepartmentConsumer.UpdateDepartment(department);
-       if (res.Success)
+        if (res.Errors != null && res.Errors.Count > 0){
+            form.AddErrorsToEditContext(res.Errors);
+            return;
+        }
+        else
         {
             await OnValidSubmit.InvokeAsync(department);
             await ToastService.ShowToastAsync(Loc["EditSuccess"], "success");
             await OnSaved.InvokeAsync();
-       }
-        else
-        {
-            if(res.Errors != null && res.Errors.Count > 0)
-                form.AddErrorsToEditContext(res.Errors);
         }
-
     }
 
 
