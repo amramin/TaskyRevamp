@@ -816,11 +816,14 @@
 }
 
 /* start rtl*/
+html[dir=rtl] {
+  font-size: 15px;
+}
 html[dir=rtl] .arrow {
   -webkit-transform: rotate(180deg);
           transform: rotate(180deg);
 }
-html[dir=rtl] *:not(i):not(.fa):not(mat-icon):not(.e-icons) {
+html[dir=rtl] *:not(i):not(.fa):not(mat-icon):not(.e-icons):not(.btn-change-lang span) {
   font-family: "Almarai", sans-serif;
 }
 html[dir=rtl] .btn-change-lang span.en {
@@ -845,6 +848,9 @@ html[dir=rtl] input[type=number] {
 html[dir=rtl] .end-0 {
   right: auto !important;
   left: 0 !important;
+}
+html[dir=rtl] .badge {
+  line-height: 125%;
 }
 
 /* end rtl*/
@@ -1502,7 +1508,8 @@ html[dir=rtl] .end-0 {
 
 .btn-change-lang {
   border: 1px solid var(--light-300);
-  padding: 0.25rem;
+  padding: 0 0.25rem;
+  height: 2.2rem;
 }
 .btn-change-lang:hover {
   border: 1px solid var(--light-300);
@@ -2881,14 +2888,10 @@ fieldset:disabled .btn {
 /* end table*/
 @font-face {
   font-family: "Almarai";
-  src: url(../fonts/Almarai/Almarai-Regular.ttf);
-}
-@font-face {
-  font-family: "Indivisible";
-  src: url("../fonts/Indivisible/Indivisible-Regular.eot");
-  src: local("../fonts/Indivisible/Indivisible Regular"), local("Indivisible-Regular"), url("../fonts/Indivisible/Indivisible-Regular.eot?#iefix") format("embedded-opentype"), url("../fonts/Indivisible/Indivisible-Regular.woff2") format("woff2"), url("../fonts/Indivisible/Indivisible-Regular.woff") format("woff"), url("../fonts/Indivisible/Indivisible-Regular.ttf") format("truetype");
+  src: url("../fonts/Almarai/Almarai-Regular.woff2") format("woff2"), url("../fonts/Almarai/Almarai-Regular.woff") format("woff");
   font-weight: normal;
   font-style: normal;
+  font-display: swap;
 }
 *:not(i):not(.fa):not(mat-icon):not(.ar-text):not(.e-icons) {
   font-family: "Indivisible";
@@ -2916,12 +2919,14 @@ ul {
   list-style: none;
 }
 
-html {
-  font-size: 13px;
-}
-@media (min-width: 1200px) {
+@media (max-width: 992px) {
   html {
-    font-size: 16px;
+    font-size: 14px;
+  }
+}
+@media (max-width: 768px) {
+  html {
+    font-size: 13px;
   }
 }
 

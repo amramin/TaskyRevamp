@@ -118,13 +118,17 @@
 }
 .btn-change-lang {
   border: 1px solid var(--light-300);
-  padding: 0.25rem;
+  padding: 0 0.25rem;
+  height: 2.2rem;
+ 
   &:hover {
     border: 1px solid var(--light-300);
   }
   span {
     padding: 0.25rem;
     border-radius: 0.25rem;
+   
+
     &.en {
       background: var(--primary-color);
       color: var(--bs-white);
