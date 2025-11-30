@@ -1,5 +1,6 @@
 ﻿@page "/EditType/{Id:guid}"
 
+@using Blazored.LocalStorage
 @using TaskyRevamp.Client.Consumer
 @using TaskyRevamp.Client.Services
 @using TaskyRevamp.Dto.SystemConfiguration
@@ -8,6 +9,7 @@
 @inject ToastService ToastService
 @inject TypeSettingConsumer _typeSettingConsumer
 @inject PopupService PopupService
+@inject ILocalStorageService LocalStorageService
 
 
     <TypeForm @ref="form"
@@ -35,7 +37,8 @@
 
     private async Task Save(EditContext editContext)
     {
-
+        var current = await LocalStorageService.GetItemAsStringAsync("Id");
+        type.UpdatedById = Guid.Parse(current);
         var res = await _typeSettingConsumer.UpdateType(type);
         if (res.Success)
         {
