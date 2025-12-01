@@ -10,7 +10,7 @@
                     <span class="icon ">
                         <SVGCrud SVGType="SVGCrud.SVGTypeEnum.ChevronEnd"></SVGCrud>
                     </span>
-                    <span class="text">@dept.Name</span>
+                    <span class="text">@dept.Name (@dept.Level)</span>
                 </button>
 
                 <DepartmentActions Department="@dept" ShowUsers="OnShowUsers" OnAdd="@(() => OnAdd.InvokeAsync(dept.Id))" 
