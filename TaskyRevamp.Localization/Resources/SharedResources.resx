@@ -358,7 +358,7 @@
     <value>Task source configuration</value>
   </data>
   <data name="AddTaskSource" xml:space="preserve">
-    <value>Add task source</value>
+    <value>Add Source</value>
   </data>
   <data name="EditTaskSource" xml:space="preserve">
     <value>Edit task source</value>

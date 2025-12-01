@@ -268,7 +268,7 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Add task source.
+        ///   Looks up a localized string similar to Add Source.
         /// </summary>
         public static string AddTaskSource {
             get {

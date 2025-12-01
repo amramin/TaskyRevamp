@@ -358,7 +358,7 @@
     <value>إعدادات مصادر المهام</value>
   </data>
   <data name="AddTaskSource" xml:space="preserve">
-    <value>إضافة مصدر المهمة</value>
+    <value>إضافة مصدر</value>
   </data>
   <data name="EditTaskSource" xml:space="preserve">
     <value>تعديل مصدر المهمة</value>
