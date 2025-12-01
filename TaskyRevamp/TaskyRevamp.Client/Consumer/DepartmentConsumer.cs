@@ -42,6 +42,12 @@ namespace TaskyRevamp.Client.Consumer
 			var res = await _taskyService.GetFromJsonAsync<CommonApiResponse<DepartmentDto>>(url);
 			return res;
 		}
+		public async Task<CommonApiResponse<List<string>>> GetDepartmentNames()
+		{
+			var url = $"api/Department/GetDepartmentNames";
+			var res = await _taskyService.GetFromJsonAsync<CommonApiResponse<List<string>>>(url);
+			return res;
+		}
 
 		public async Task<CommonApiResponse<bool>> AddDepartment(DepartmentDto DepartmentDto)
 		{

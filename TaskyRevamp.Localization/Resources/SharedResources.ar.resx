@@ -922,7 +922,6 @@
   <data name="Items per page" xml:space="preserve">
     <value>العناصر لكل صفحة</value>
   </data>
-
   <data name="EditDepartment" xml:space="preserve">
     <value>تعديل الإدارة</value>
   </data>
@@ -935,12 +934,34 @@
   <data name="DepartmentHasUsersCannotDelete" xml:space="preserve">
     <value>لا يمكن الحذف، لدى القسم مستخدمين متاحين</value>
   </data>
-
   <data name="CannotDeletePrivilege" xml:space="preserve">
     <value>لا يمكنك حذف هذا الامتياز، فهو مرتبط بمستخدم</value>
   </data>
   <data name="PrivilegeTilte" xml:space="preserve">
     <value>صلاحيات</value>
   </data>
-
+  <data name="Download" xml:space="preserve">
+    <value>تحميل ملف إكسل</value>
+  </data>
+  <data name="Upload" xml:space="preserve">
+    <value>إرفع ملف إكسل</value>
+  </data>
+  <data name="Link" xml:space="preserve">
+    <value>ربط المستخدم بالقسم والامتياز</value>
+  </data>
+  <data name="EmailMandatory" xml:space="preserve">
+    <value>بريد المستخدم الإلكتروني (إلزامي)</value>
+  </data>
+  <data name="PrivilegeMandatory" xml:space="preserve">
+    <value>اسم الامتياز (إلزامي)</value>
+  </data>
+  <data name="DepartmentMandatory" xml:space="preserve">
+    <value>اسم الإدارة (إلزامي)</value>
+  </data>
+  <data name="ValidationError" xml:space="preserve">
+    <value>الملف يحتوي على ادارة, صلاحية أو بريد الكتروني مكرر أو مفقود أو غير مطابق، قم بإعادة فحص الملف ثم قم بتحميله مرة أخرى.</value>
+  </data>
+  <data name="filesSuccess" xml:space="preserve">
+    <value>تم إضافة الملف بنجاح</value>
+  </data>
 </root>

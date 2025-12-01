@@ -10,7 +10,10 @@
 @inject ToastService ToastService
 @inject UserConsumer _userConsumer
 @inject TaskConsumer _taskConsumer
+@inject PrivilegeConsumer _privilegeConsumer
+@inject DepartmentConsumer _deparmentConsumer
 @inject PopupService PopupService
+@inject TaskyService taskyService
 
 <div class="page-header">
     <div class="title-block">
@@ -20,7 +23,34 @@
     <div class="action-btn-list">
         <Search @ref="searchComponent" SearchSubmit="Search" CssClass="form-control"></Search>
     </div>
+   
 </div>
+<div class="d-flex align-items-center justify-content-between p-3 m-3 border rounded bg-light">
+    <div class="d-flex align-items-center">
+        <label class="btn btn-action-24 me-3">
+                <span class="icon">
+                    <SVGCrud SVGType="SVGCrud.SVGTypeEnum.ArrowUp"></SVGCrud>
+                </span>
+            <InputFile OnChange="OnFileSelected" style="display:none" />
+        </label>
+        <div>
+            <div class="fw-bold">@Loc["Upload"]</div>
+            <div class="text-muted small">@Loc["Link"]</div>
+            <div class="text-danger small">@Loc["EmailMandatory"]</div>
+            <div class="text-danger small">@Loc["PrivilegeMandatory"]</div>
+            <div class="text-danger small">@Loc["DepartmentMandatory"]</div>
+        </div>
+    </div>
+    <div>
+        <button class="btn btn-outline-primary" @onclick="DownloadExcel">
+            <span class="icon">
+                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.ArrowDown"></SVGCrud> @Loc["Download"]
+            </span>
+            
+        </button>
+    </div>
+</div>
+
 
 @if (users != null && users.Any())
 {
@@ -60,9 +90,6 @@
 
                                 </td>*@
                                 <td>@(item.user.UpdateDate?.ToLocalTime().ToString("dd-MM-yyyy"))</td>
-
-                               
-                              
                                 <td>@item.user.UserName</td>
                                 <td>
                                     <div class="dropdown actions">
@@ -134,13 +161,17 @@ else
     private bool? sortAscending = true;
     private List<SortableColumn> tableColumns = new();
     private Search? searchComponent;
+    private IBrowserFile? fileInput;
+    private HashSet<string> systemDepartments = new();
+    private HashSet<string> systemPrivileges = new();
+    private HashSet<string> systemEmails = new();
+    private List<UserLinkDto> userLinkDtos = new();
 
     private async Task ChangePage(int page)
     {
         currentPage = page;
         await LoadUsers();
     }
-
     private async Task ChangePageSize(int newSize)
     {
         pageSize = newSize;
@@ -156,12 +187,6 @@ else
             new() { Field = "Privileges", DisplayName = Loc["Privileges"] },
             new() { Field = "Department", DisplayName = Loc["Department"] },
             new() { Field = "Set as Manager", DisplayName = Loc["setAsManager"] },
-
-
-@* new() { Field = "IsActive", DisplayName = Loc["active"] }, *@
-// new() { Field = "CreateDate", DisplayName = Loc["CreationDate"] },
-// new() { Field = "CreatedBy", DisplayName = Loc["CreatedBy"] },
-
             new() { Field = "UpdateDate", DisplayName = Loc["UpdateDate"] },
             new() { Field = "UpdatedBy", DisplayName = Loc["UpdatedBy"] },
             new() { Field = "Action", DisplayName = Loc["Action"] ,IsSortable = false},
@@ -231,7 +256,6 @@ else
         StateHasChanged();
     }
     private void ViewPrivilege(Guid? Id) => navigationManager.NavigateTo($"/privilege?mode=view&id={Id}");
-
     private async Task SortBy(string columnName)
     {
         if (currentSortColumn == columnName)
@@ -245,7 +269,6 @@ else
         }
         await LoadUsers();
     }
-
     public List<SearchFieldUser> searchFields = new List<SearchFieldUser>() {
             SearchFieldUser.NameEnglish,
             SearchFieldUser.NameArabic,
@@ -253,13 +276,10 @@ else
             SearchFieldUser.IsManager,
             SearchFieldUser.Privilege,
             SearchFieldUser.Department,
-            // SearchFieldUser.CreatedBy,
             SearchFieldUser.UpdatedBy,
-            // SearchFieldUser.CreateDate,
             SearchFieldUser.UpdateDate,
             SearchFieldUser.ActiveStatus
     };
-
     public async Task Search(string searchTerm)
     {
         await LoadUsers(true, searchTerm);
@@ -281,5 +301,108 @@ else
             sortAscending = true;
         }
         await LoadUsers();
+    }
+    private async Task DownloadExcel(MouseEventArgs args)
+    {
+        await taskyService.DownloadUsersTemplateAsync();
+    }
+    private async Task OnFileSelected(InputFileChangeEventArgs e)
+    {
+        fileInput = e.File;
+        if (fileInput != null)
+        {
+            var (bytes, name, type) = await taskyService.ReadFileAsync(fileInput);
+            if(bytes == null)
+            {
+                return;
+            }
+            var rows = taskyService.ReadExcelRows(bytes);
+            Console.WriteLine($"Total Rows: {rows.Count}");
+            if (rows.Count <= 1)
+            {
+                await ToastService.ShowToastAsync(Loc["ValidationError"], "error");
+                return;
+            }
+            var res = await _userConsumer.GetUsers();
+            if (res.Success && res.Data != null)
+            {
+                systemEmails = res.Data.Select(u => u.Email.Trim().ToLower()).ToHashSet();
+                Console.WriteLine($"System Emails: {string.Join(", ", systemEmails)}");
+            }
+            var allDepartmnets = await _deparmentConsumer.GetDepartmentNames();
+            if(allDepartmnets.Success && allDepartmnets.Data != null){
+                var Departmnets = allDepartmnets.Data;
+                systemDepartments = Departmnets.Select(d => d.Trim().ToLower()).ToHashSet();
+                Console.WriteLine($"All Departments: {string.Join(", ", systemDepartments)}");
+            }
+            var allPrivileges = await _privilegeConsumer.GetPrivilegeNames();
+            if (allPrivileges.Success && allPrivileges.Data != null) {
+                var Privileges = allPrivileges.Data;
+                systemPrivileges = Privileges.Select(p => p.Trim().ToLower()).ToHashSet();
+                Console.WriteLine($"All Privileges: {string.Join(", ", systemPrivileges)}");
+            }
+            var uploadedEmails = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            userLinkDtos.Clear();
+            for (int i = 1; i < rows.Count; i++)
+            {
+                Console.WriteLine($"Processing Row {i + 1}");
+                var isValid = Validate(rows[i], uploadedEmails);
+                if (!isValid)
+                {
+                    await ToastService.ShowToastAsync(Loc["ValidationError"], "error");
+                    return;
+                }
+                userLinkDtos.Add(new UserLinkDto
+                {
+                    email = rows[i][0].Trim(),
+                    departmentName = rows[i][1].Trim(),
+                    privilegeName = rows[i][2].Trim()
+                });
+            }
+            foreach (var user in userLinkDtos)
+            {
+                await _userConsumer.LinkUserWithDepartmentAndPrivilege(user);
+            }
+            await ToastService.ShowToastAsync(Loc["filesSuccess"], "success");
+            await LoadUsers();
+        }
+    }
+
+    private bool Validate(string[] row, HashSet<string> uploadedEmails)
+    {
+        if (row.Length != 3)
+            return false;
+
+        var email = row[0].Trim().ToLower();
+        var departmentName = row[1].Trim().ToLower();
+        var privilegeName = row[2].Trim().ToLower();
+        Console.WriteLine($"Email: {email}, Department: {departmentName}, Privilege: {privilegeName}");
+        if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(departmentName) || string.IsNullOrWhiteSpace(privilegeName))
+        {
+            Console.WriteLine("case1");
+            return false;
+        }
+        if (!systemEmails.Contains(email))
+        {
+            Console.WriteLine("case2");
+            return false;
+        }
+        if (!systemDepartments.Contains(departmentName))
+        {
+            Console.WriteLine("case3");
+            return false;
+        }
+        if (!systemPrivileges.Contains(privilegeName))
+        {
+            Console.WriteLine("case4");
+            return false;
+        }
+        if (!uploadedEmails.Add(email))
+        {
+            Console.WriteLine("case5");
+            return false;
+        }
+
+        return true;
     }
 }
