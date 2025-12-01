@@ -358,7 +358,7 @@
     <value>إعدادات مصادر المهام</value>
   </data>
   <data name="AddTaskSource" xml:space="preserve">
-    <value>إضافة مصدر المهمة</value>
+    <value>إضافة مصدر</value>
   </data>
   <data name="EditTaskSource" xml:space="preserve">
     <value>تعديل مصدر المهمة</value>
@@ -939,6 +939,12 @@
   </data>
   <data name="PrivilegeTilte" xml:space="preserve">
     <value>صلاحيات</value>
+  </data>
+  <data name="NoTasks" xml:space="preserve">
+    <value>لم يتم العثور على أي مهام</value>
+  </data>
+  <data name="AddTaskToStart" xml:space="preserve">
+    <value>ستظهر البيانات بعد إضافة المهمة الأولى</value>
   </data>
   <data name="Download" xml:space="preserve">
     <value>تحميل ملف إكسل</value>

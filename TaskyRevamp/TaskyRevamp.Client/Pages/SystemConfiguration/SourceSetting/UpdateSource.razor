@@ -1,5 +1,6 @@
 ﻿@page "/EditSource/{Id:guid}"
 
+@using Blazored.LocalStorage
 @using TaskyRevamp.Client.Consumer
 @using TaskyRevamp.Client.Services
 @using TaskyRevamp.Dto.SystemConfiguration
@@ -8,6 +9,7 @@
 @inject ToastService ToastService
 @inject PopupService PopupService
 @inject SourceSettingConsumer _sourceSettingConsumer
+@inject ILocalStorageService LocalStorageService
 
 
     <SourceForm @ref="form"
@@ -35,7 +37,8 @@
 
     private async Task Save(EditContext editContext)
     {
-
+         var current = await LocalStorageService.GetItemAsStringAsync("Id");
+        source.UpdatedById = Guid.Parse(current);
         var res = await _sourceSettingConsumer.UpdateSource(source);
         if (res.Success)
         {

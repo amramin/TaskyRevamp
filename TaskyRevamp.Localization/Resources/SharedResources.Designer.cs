@@ -268,11 +268,20 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Add task source.
+        ///   Looks up a localized string similar to Add Source.
         /// </summary>
         public static string AddTaskSource {
             get {
                 return ResourceManager.GetString("AddTaskSource", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Data will appear after adding the first task.
+        /// </summary>
+        public static string AddTaskToStart {
+            get {
+                return ResourceManager.GetString("AddTaskToStart", resourceCulture);
             }
         }
         
@@ -1510,6 +1519,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No Tasks Found.
+        /// </summary>
+        public static string NoTasks {
+            get {
+                return ResourceManager.GetString("NoTasks", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No task sources available.
         /// </summary>
         public static string NoTaskSourcesAvailable {
@@ -1555,7 +1573,7 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Of.
+        ///   Looks up a localized string similar to of.
         /// </summary>
         public static string Of {
             get {
