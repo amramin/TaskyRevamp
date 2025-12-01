@@ -154,7 +154,7 @@ public class GetTasksHandler : IRequestHandler<GetTasksQuery, PagedResult<Create
                     ? q => q.OrderBy(u => u.UpdatedBy!.NameEnglish)
                     : q => q.OrderByDescending(u => u.UpdatedBy!.NameEnglish);
 
-            case "TaskStatus":
+            case "Status":
 
                 return sortAscending
                     ? q => q.OrderBy(u => u.status!.NameEnglish)
@@ -167,10 +167,10 @@ public class GetTasksHandler : IRequestHandler<GetTasksQuery, PagedResult<Create
                 return sortAscending
                     ? q => q.OrderBy(u => u.EndDate)
                     : q => q.OrderByDescending(u => u.EndDate);
-            case "weight":
-                return sortAscending
-                    ? q => q.OrderBy(u => u.ActualWeight)
-                    : q => q.OrderByDescending(u => u.ActualWeight);
+            //case "weight":
+            //    return sortAscending
+            //        ? q => q.OrderBy(u => u.ActualWeight)
+            //        : q => q.OrderByDescending(u => u.ActualWeight);
             case "Type":
                 return sortAscending
                     ? q => q.OrderBy(u => u.Type)
