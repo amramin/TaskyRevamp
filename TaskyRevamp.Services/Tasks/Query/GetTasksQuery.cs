@@ -131,12 +131,20 @@ public class GetTasksHandler : IRequestHandler<GetTasksQuery, PagedResult<Create
                 return sortAscending
                     ? q => q.OrderBy(u => u.Priority)
                     : q => q.OrderByDescending(u => u.Priority);
+            case "Planned Progress":
+                return sortAscending
+                    ? q => q.OrderBy(u => u.Priority)
+                    : q => q.OrderByDescending(u => u.Priority);
+            case "Source":
+                return sortAscending
+                    ? q => q.OrderBy(u => u.Source)
+                    : q => q.OrderByDescending(u => u.Source);
             case "UpdateDate":
                 return sortAscending
                     ? q => q.OrderBy(u => u.UpdateDate)
                     : q => q.OrderByDescending(u => u.UpdateDate);
 
-            case "CreatedBy":
+            case "Created By":
                 return sortAscending
                     ? q => q.OrderBy(u => u.CreatedBy!.NameEnglish)
                     : q => q.OrderByDescending(u => u.CreatedBy!.NameEnglish);
@@ -146,23 +154,27 @@ public class GetTasksHandler : IRequestHandler<GetTasksQuery, PagedResult<Create
                     ? q => q.OrderBy(u => u.UpdatedBy!.NameEnglish)
                     : q => q.OrderByDescending(u => u.UpdatedBy!.NameEnglish);
 
-            case "TaskStatus":
+            case "Status":
 
                 return sortAscending
                     ? q => q.OrderBy(u => u.status!.NameEnglish)
                     : q => q.OrderByDescending(u => u.status!.NameEnglish);
-            case "StartDate":
+            case "Start Date":
                 return sortAscending
                     ? q => q.OrderBy(u => u.StartDate)
                     : q => q.OrderByDescending(u => u.StartDate);
-            case "EndDate":
+            case "End Date":
                 return sortAscending
                     ? q => q.OrderBy(u => u.EndDate)
                     : q => q.OrderByDescending(u => u.EndDate);
-            case "weight":
+            //case "weight":
+            //    return sortAscending
+            //        ? q => q.OrderBy(u => u.ActualWeight)
+            //        : q => q.OrderByDescending(u => u.ActualWeight);
+            case "Type":
                 return sortAscending
-                    ? q => q.OrderBy(u => u.ActualWeight)
-                    : q => q.OrderByDescending(u => u.ActualWeight);
+                    ? q => q.OrderBy(u => u.Type)
+                    : q => q.OrderByDescending(u => u.Type);
 
             default:
                 return q => q.OrderBy(u => u.CreateDate);

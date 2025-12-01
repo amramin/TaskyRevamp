@@ -358,7 +358,7 @@
     <value>إعدادات مصادر المهام</value>
   </data>
   <data name="AddTaskSource" xml:space="preserve">
-    <value>إضافة مصدر المهمة</value>
+    <value>إضافة مصدر</value>
   </data>
   <data name="EditTaskSource" xml:space="preserve">
     <value>تعديل مصدر المهمة</value>
@@ -922,7 +922,6 @@
   <data name="Items per page" xml:space="preserve">
     <value>العناصر لكل صفحة</value>
   </data>
-
   <data name="EditDepartment" xml:space="preserve">
     <value>تعديل الإدارة</value>
   </data>
@@ -935,10 +934,16 @@
   <data name="DepartmentHasUsersCannotDelete" xml:space="preserve">
     <value>لا يمكن الحذف، لدى القسم مستخدمين متاحين</value>
   </data>
-	<data name="CannotDeletePrivilege" xml:space="preserve">
+  <data name="CannotDeletePrivilege" xml:space="preserve">
     <value>لا يمكنك حذف هذا الامتياز، فهو مرتبط بمستخدم</value>
   </data>
-	<data name="PrivilegeTilte" xml:space="preserve">
+  <data name="PrivilegeTilte" xml:space="preserve">
     <value>صلاحيات</value>
+  </data>
+  <data name="NoTasks" xml:space="preserve">
+    <value>لم يتم العثور على أي مهام</value>
+  </data>
+  <data name="AddTaskToStart" xml:space="preserve">
+    <value>ستظهر البيانات بعد إضافة المهمة الأولى</value>
   </data>
 </root>

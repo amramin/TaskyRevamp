@@ -358,7 +358,7 @@
     <value>Task source configuration</value>
   </data>
   <data name="AddTaskSource" xml:space="preserve">
-    <value>Add task source</value>
+    <value>Add Source</value>
   </data>
   <data name="EditTaskSource" xml:space="preserve">
     <value>Edit task source</value>
@@ -900,7 +900,6 @@
   <data name="priorityHint2" xml:space="preserve">
     <value>Note: Priority order follows this order — 1 (highest/most critical), 2, 3 (lowest). The parent will always take the highest priority number (the most critical) from its sub-tasks.</value>
   </data>
-
   <data name="ChangeDepartment" xml:space="preserve">
     <value>Change department </value>
   </data>
@@ -922,7 +921,6 @@
   <data name="Items per page" xml:space="preserve">
     <value>Items per page</value>
   </data>
-
   <data name="EditDepartment" xml:space="preserve">
     <value>Edit Department</value>
   </data>
@@ -935,14 +933,16 @@
   <data name="DepartmentHasUsersCannotDelete" xml:space="preserve">
     <value>Can't delete, the department has an active users</value>
   </data>
-
   <data name="CannotDeletePrivilege" xml:space="preserve">
     <value>You can't delete this privilege, it's linked to a user</value>
   </data>
   <data name="PrivilegeTilte" xml:space="preserve">
     <value>Privilege </value>
   </data>
-  <data name="NoMatchingResults" xml:space="preserve">
-    <value> No results</value>
+  <data name="NoTasks" xml:space="preserve">
+    <value>No Tasks Found</value>
+  </data>
+  <data name="AddTaskToStart" xml:space="preserve">
+    <value>Data will appear after adding the first task</value>
   </data>
 </root>
