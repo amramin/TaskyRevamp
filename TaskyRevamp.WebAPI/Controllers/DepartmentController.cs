@@ -96,6 +96,12 @@ public class DepartmentController : ControllerBase
         return Ok(Task);
     }
 
+    [HttpGet("GetDepartmentNames")]
+    public async Task<IActionResult> GetDepartmentNames()
+    {
+        return Ok(await _mediator.Send(new GetDepartmentNamesQuery()));
+    }
+
     [HttpGet("CheckDeparmentHasUsers/{id}")]
     public async Task<IActionResult> CheckDeparmentHasUsers(Guid id)
     {

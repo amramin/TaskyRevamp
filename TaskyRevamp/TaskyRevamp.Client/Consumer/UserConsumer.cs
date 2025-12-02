@@ -1,5 +1,6 @@
 ﻿using Stingray.Components.MultiSelectComponent.Dtos;
 using System.Net.Http.Json;
+using TaskyRevamp.Client.Pages.User;
 using TaskyRevamp.Dto.Account;
 using TaskyRevamp.Dto.Department;
 using TaskyRevamp.Dto.Enums.SearchFields;
@@ -97,6 +98,13 @@ namespace TaskyRevamp.Client.Consumer
 			var url = $"api/User/LinkUser/{departmentId}/{privilegeId}";
 			var res = await _taskyService.PostJsonAsync<CommonApiResponse<bool>>(url, userDto);
 
+			return res.Data;
+		}
+
+		public async Task<CommonApiResponse<bool>> LinkUserWithDepartmentAndPrivilege(UserLinkDto userLinkDto)
+		{
+			var url = $"api/User/LinkUserWithDepartmentAndPrivilege";
+			var res = await _taskyService.PostJsonAsync<CommonApiResponse<bool>>(url, userLinkDto);
 			return res.Data;
 		}
 		public async Task<CommonApiResponse<bool>> CheckUserHasOpenTask(Guid departmentId, Guid userId)
