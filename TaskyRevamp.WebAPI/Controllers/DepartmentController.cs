@@ -33,7 +33,11 @@ public class DepartmentController : ControllerBase
         return Ok(res);
     }
 
-
+    [HttpPost("CreateDepartmentsBulk")]
+    public async Task<IActionResult> CreateDepartmentsBulk([FromBody] List<DepartmentDto> DepartmentDtos)
+    {
+        return Ok(await _mediator.Send(new CreateDepartmentsBulkCommand(DepartmentDtos)));
+    }
     [HttpPost("UpdateDepartment")]
     public async Task<IActionResult> UpdateDepartment([FromBody] DepartmentDto Department)
     {
@@ -44,8 +48,8 @@ public class DepartmentController : ControllerBase
     {
         return Ok(await _mediator.Send(new DeleteDepartmentCommand(Guid.Parse(id))));
     }
-    
-        [HttpGet("GetDepartmentsForDDL")]
+
+    [HttpGet("GetDepartmentsForDDL")]
     public async Task<IActionResult> GetDepartmentsForDDL()
     {
 
@@ -73,12 +77,12 @@ public class DepartmentController : ControllerBase
 
 
     //
-    
-         [HttpGet("GetDepartmentsNoPagnation")]
+
+    [HttpGet("GetDepartmentsNoPagnation")]
     public async Task<IActionResult> GetDepartmentsNoPagnation(
-           
-            [FromQuery] List<SearchFieldDepartment> searchFields = null,
-            [FromQuery] string searchText = null)
+
+       [FromQuery] List<SearchFieldDepartment> searchFields = null,
+       [FromQuery] string searchText = null)
     {
 
         var all = await _mediator.Send(new GetDepartmentsNoPagnationQuery(searchFields, searchText));

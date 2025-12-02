@@ -900,7 +900,6 @@
   <data name="priorityHint2" xml:space="preserve">
     <value>Note: Priority order follows this order — 1 (highest/most critical), 2, 3 (lowest). The parent will always take the highest priority number (the most critical) from its sub-tasks.</value>
   </data>
-
   <data name="ChangeDepartment" xml:space="preserve">
     <value>Change department </value>
   </data>
@@ -922,7 +921,6 @@
   <data name="Items per page" xml:space="preserve">
     <value>Items per page</value>
   </data>
-
   <data name="EditDepartment" xml:space="preserve">
     <value>Edit Department</value>
   </data>
@@ -935,7 +933,6 @@
   <data name="DepartmentHasUsersCannotDelete" xml:space="preserve">
     <value>Can't delete, the department has an active users</value>
   </data>
-
   <data name="CannotDeletePrivilege" xml:space="preserve">
     <value>You can't delete this privilege, it's linked to a user</value>
   </data>
@@ -944,5 +941,23 @@
   </data>
   <data name="NoMatchingResults" xml:space="preserve">
     <value> No results</value>
+  </data>
+  <data name="UploadExcelFile" xml:space="preserve">
+    <value>Upload Excel file</value>
+  </data>
+  <data name="DepartmentLevelMandatory" xml:space="preserve">
+    <value> Department Level (Mandatory)</value>
+  </data>
+  <data name="DownloadExcelTemplate" xml:space="preserve">
+    <value>Download Excel template</value>
+  </data>
+  <data name="FileNotValid" xml:space="preserve">
+    <value>File Not Valid</value>
+  </data>
+  <data name="ThevalidRowsuploadedsuccessfully" xml:space="preserve">
+    <value>The file is adding successfully </value>
+  </data>
+  <data name="SomeInvalidRowsSkipped" xml:space="preserve">
+    <value>The file has in duplicate, missing or not matched departement, recheck the file and import it again.</value>
   </data>
 </root>
