@@ -101,10 +101,10 @@ namespace TaskyRevamp.Client.Consumer
 			return res.Data;
 		}
 
-		public async Task<CommonApiResponse<bool>> LinkUserWithDepartmentAndPrivilege(UserLinkDto userLinkDto)
+		public async Task<CommonApiResponse<bool>> LinkUserWithDepartmentAndPrivilege(List<UserLinkDto> userLinkDtos)
 		{
 			var url = $"api/User/LinkUserWithDepartmentAndPrivilege";
-			var res = await _taskyService.PostJsonAsync<CommonApiResponse<bool>>(url, userLinkDto);
+			var res = await _taskyService.PostJsonAsync<CommonApiResponse<bool>>(url, userLinkDtos);
 			return res.Data;
 		}
 		public async Task<CommonApiResponse<bool>> CheckUserHasOpenTask(Guid departmentId, Guid userId)
