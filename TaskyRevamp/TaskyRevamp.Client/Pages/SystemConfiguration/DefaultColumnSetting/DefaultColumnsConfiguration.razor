@@ -80,7 +80,7 @@
             <div class="row justify-content-center">
                 <div class="col-xxl-7 col-xl-8 col-lg-9 col-md-11">
                     <div class="action-buttons">
-                        <button class="btn btn-lg btn-light" @onclick="CancelSettings">@Loc["Cancel"]</button>
+
                         <button class="btn btn-lg  btn-primary" @onclick="SaveSettings">@Loc["Save"]</button>
                     </div>
                 </div>
@@ -143,10 +143,6 @@
         }
     }
 
-    private void CancelSettings()
-    {
-
-    }
 
     public async Task SortSettingsList((int oldIndex, int newIndex) indices)
     {
