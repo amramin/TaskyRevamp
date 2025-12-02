@@ -43,7 +43,7 @@
                 <div class="col-xxl-7 col-xl-8 col-lg-9 col-md-11">
                     <div class="action-buttons">
                         <button class="btn btn-lg btn-light" @onclick="Cancel">@Loc["Cancel"]</button>
-                        <button class="btn btn-lg  btn-primary" @onclick="Save" disabled="@(ViewSetting.SubTaskLevels <= 0)">@Loc["Save"]</button>
+                        <button class="btn btn-lg  btn-primary" @onclick="Save" disabled="@(ViewSetting.SubTaskLevels < 0)">@Loc["Save"]</button>
                     </div>
                 </div>
             </div>
@@ -67,7 +67,7 @@
     }
     private async Task Save(MouseEventArgs args)
     {
-        if (ViewSetting.SubTaskLevels <= 0)
+        if (ViewSetting.SubTaskLevels < 0)
         {
             return;
         }

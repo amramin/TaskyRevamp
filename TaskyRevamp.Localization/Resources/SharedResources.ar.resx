@@ -515,7 +515,7 @@
     <value>الإدارات</value>
   </data>
   <data name="AddDepartment" xml:space="preserve">
-    <value>أضف إدارة</value>
+    <value>إضافة إدارة</value>
   </data>
   <data name="DepartmentParent" xml:space="preserve">
     <value>الإدارة الرئيسية </value>
