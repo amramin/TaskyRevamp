@@ -26,7 +26,8 @@ namespace TaskyRevamp.Services.SearchMappings
             { SearchFieldTask.CreateDate, x => x.CreateDate },
             { SearchFieldTask.CreatedBy, x => x.CreatedBy.NameEnglish },
             { SearchFieldTask.UpdateDate, x => x.UpdateDate },
-            { SearchFieldTask.UpdatedBy, x => x.UpdatedBy.NameEnglish }
+            { SearchFieldTask.UpdatedBy, x => x.UpdatedBy.NameEnglish },
+            {SearchFieldTask.PlannedProgress,x=>x.PlannedProgress }
         };
     }
 }

@@ -35,6 +35,12 @@ namespace TaskyRevamp.Client.Consumer
 			var res = await _taskyService.GetFromJsonAsync<CommonApiResponse<PrivilegeDto>>(url);
 			return res;
 		}
+		public async Task<CommonApiResponse<List<string>>> GetPrivilegeNames()
+		{
+			var url = $"api/Privilege/GetPrivilegeNames";
+			var res = await _taskyService.GetFromJsonAsync<CommonApiResponse<List<string>>>(url);
+			return res;
+		}
 		public async Task<CommonApiResponse<bool>> CreatePrivilege(PrivilegeDto privilegeDto)
         {
             var url = $"api/Privilege/CreatePrivilege";

@@ -36,6 +36,25 @@ namespace TaskyRevamp.Client.Consumer
             return res;
         }
 
+		public async Task<CommonApiResponse<DepartmentDto>> GetDepartmentById(Guid id)
+		{
+			var url = $"api/Department/GetDepartmentById/{id}";
+			var res = await _taskyService.GetFromJsonAsync<CommonApiResponse<DepartmentDto>>(url);
+			return res;
+		}
+		public async Task<CommonApiResponse<List<string>>> GetDepartmentNames()
+		{
+			var url = $"api/Department/GetDepartmentNames";
+			var res = await _taskyService.GetFromJsonAsync<CommonApiResponse<List<string>>>(url);
+			return res;
+		}
+
+		public async Task<CommonApiResponse<bool>> AddDepartment(DepartmentDto DepartmentDto)
+		{
+			var url = $"api/Department/CreateDepartment";
+			var res = await _taskyService.PostJsonAsync<bool>(url, DepartmentDto);
+			return res;
+		}
         public async Task<CommonApiResponse<DepartmentDto>> GetDepartmentById(Guid id)
         {
             var url = $"api/Department/GetDepartmentById/{id}";

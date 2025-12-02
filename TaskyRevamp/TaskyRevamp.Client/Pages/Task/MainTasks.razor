@@ -98,9 +98,11 @@
                 </div>
             </div>
             <div class="page-body">
-                <div class="table-responsive sticky-header-custom">
+    
 
-
+                    @if (allTaks != null && allTaks.Any())
+{
+                    <div class="table-responsive sticky-header-custom">
                     <SortableTable TItem="CreateTaskDto" Columns="@tableColumns" Items="@allTaks"
                         SortColumn="@currentSortColumn" SortAscending="@sortAscending" OnSortRequested="HandleSort">
 
@@ -118,11 +120,15 @@
                             }
                         </RowTemplate>
                     </SortableTable>
-
-
-                </div>
+                                    </div>
                 <Pagination CurrentPage="@currentPage" TotalPages="@totalPages" TotalCount="@totalCount"
                     PageSize="@pageSize" PageChanged="ChangePage" PageSizeChangedCallback="ChangePageSize" />
+                    }
+                    else
+                    {
+                        <NoDataAvailable MessageTitle="@Loc["NoTasks"]" MessageSubtitle="@Loc["AddTaskToStart"]"
+                                         ButtonText="@Loc["AddTask"]" OnButtonClick="Add" />
+                    }
 
             </div>
         </div>

@@ -150,3 +150,14 @@ window.setFavicon = (dataUrl) => {
 window.setThemeColor = (variable, value) => {
     document.documentElement.style.setProperty(variable, value);
 };
+
+window.downloadFileFromStream = async (fileName, contentStreamReference) => {
+    const buffer = await contentStreamReference.arrayBuffer();
+    const blob = new Blob([buffer], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
+    const url = URL.createObjectURL(blob);
+    const anchor = document.createElement("a");
+    anchor.href = url;
+    anchor.download = fileName ?? "file.xlsx";
+    anchor.click();
+    URL.revokeObjectURL(url);
+};
