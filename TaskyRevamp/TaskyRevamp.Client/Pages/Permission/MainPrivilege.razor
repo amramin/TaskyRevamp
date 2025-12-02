@@ -205,7 +205,7 @@ else
         }
         selectedPrivilege = null;
     }
-   
+
     private async Task SortBy(string columnName)
     {
         if (currentSortColumn == columnName)
@@ -233,6 +233,7 @@ else
     {
         lastSearchTerm = searchTerm;
         isSearchMode = true;
+        currentPage = 1;
         await LoadPrivilegs(true, searchTerm);
     }
     private async Task ClearSearch()

@@ -31,11 +31,10 @@
                     <td>@p.Name</td>
                     <td>@p.Level</td>
                     <td>@p.ParentdepartmentName</td>
-                    <td>@p.CreatedByName</td>
                     <td>@p.CreateDate?.ToString("yyyy-MM-dd")</td>
-                    <td>@p.UpdatedByName</td>
+                    <td>@p.CreatedByName</td>
                     <td>@p.UpdateDate?.ToString("yyyy-MM-dd")</td>
-
+                    <td>@p.UpdatedByName</td>
                     <td class="sticky-end-action">
                         <div class="dropdown actions">
                             <button class="btn btn-action-24" type="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -169,10 +168,10 @@
             new() { Field = "DisplayedName", DisplayName = Loc["name"] },
             new() { Field = "Level", DisplayName = Loc["Level"] },
             new() { Field = "DepartmentParent", DisplayName = Loc["DepartmentParent"] },
-            new() { Field = "CreatedBy", DisplayName = Loc["CreatedBy"] },
             new() { Field = "CreateDate", DisplayName = Loc["CreationDate"] },
-            new() { Field = "UpdatedBy", DisplayName = Loc["UpdatedBy"] },
+            new() { Field = "CreatedBy", DisplayName = Loc["CreatedBy"] },
             new() { Field = "UpdateDate", DisplayName = Loc["UpdateDate"] },
+            new() { Field = "UpdatedBy", DisplayName = Loc["UpdatedBy"] },
             new() { Field = "Action", DisplayName = Loc["Action"] ,IsSortable = false},
         };
         StateHasChanged();

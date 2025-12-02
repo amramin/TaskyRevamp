@@ -361,7 +361,7 @@
     <value>Add Source</value>
   </data>
   <data name="EditTaskSource" xml:space="preserve">
-    <value>Edit task source</value>
+    <value>Edit source</value>
   </data>
   <data name="DeleteTaskSource" xml:space="preserve">
     <value>Delete task source</value>
@@ -944,5 +944,14 @@
   </data>
   <data name="AddTaskToStart" xml:space="preserve">
     <value>Data will appear after adding the first task</value>
+  </data>
+  <data name="Hierarchy" xml:space="preserve">
+    <value>Hierarchy</value>
+  </data>
+  <data name="Tree" xml:space="preserve">
+    <value>Tree</value>
+  </data>
+  <data name="Grid" xml:space="preserve">
+    <value>Grid</value>
   </data>
 </root>

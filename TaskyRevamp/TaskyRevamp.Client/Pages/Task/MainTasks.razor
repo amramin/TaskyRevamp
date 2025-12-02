@@ -275,6 +275,7 @@ new() { Field = "Action", DisplayName = Loc["Action"] ,IsSortable = false},
     }
     public async Task Search(string searchTerm)
     {
+        currentPage = 1;
         await GetTasks(true, searchTerm);
         // await LoadSources(true, searchTerm);
     }

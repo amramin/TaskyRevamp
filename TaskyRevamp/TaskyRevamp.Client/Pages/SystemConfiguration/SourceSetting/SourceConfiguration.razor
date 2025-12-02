@@ -114,7 +114,7 @@ else
     private Search? searchComponent;
     private string? lastSearchTerm = null;
     private bool isSearchMode = false;
-
+    public List<SearchField> searchFields = new List<SearchField>();
     private async Task ChangePage(int page)
     {
         currentPage = page;
@@ -139,7 +139,7 @@ else
             new() { Field = "IsActive", DisplayName = Loc["active"] },
             new() { Field = "Action", DisplayName = Loc["Action"] ,IsSortable = false},
         };
-
+        searchFields = GetFileds();
         await LoadSources();
         initialSources = sources;
     }
@@ -213,21 +213,30 @@ else
         }
         await LoadSources();
     }
-
-    public List<SearchField> searchFields = new List<SearchField>() {
-            SearchField.NameEnglish,
-            SearchField.NameArabic,
-            SearchField.CreatedBy,
-            SearchField.UpdatedBy,
-            SearchField.CreateDate,
-            SearchField.UpdateDate,
-            SearchField.ActiveStatus
+    public List<SearchField> GetFileds()
+    {
+        var fileds = new List<SearchField>() {
+        SearchField.CreatedBy,
+        SearchField.UpdatedBy,
+        SearchField.CreateDate,
+        SearchField.UpdateDate,
+        SearchField.ActiveStatus
     };
-
+        if (Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName == "ar")
+        {
+            fileds.Add(SearchField.NameArabic);
+        }
+        else
+        {
+            fileds.Add(SearchField.NameEnglish);
+        }
+        return fileds;
+    }
     public async Task Search(string searchTerm)
     {
         lastSearchTerm = searchTerm;
         isSearchMode = true;
+        currentPage = 1;
         await LoadSources(true, searchTerm);
     }
     private async Task ClearSearch()

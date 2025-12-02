@@ -262,6 +262,7 @@ else
 
     public async Task Search(string searchTerm)
     {
+        currentPage = 1;
         await LoadUsers(true, searchTerm);
     }
     private async Task ClearSearch()

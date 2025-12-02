@@ -202,6 +202,7 @@ new() { Field = "Action", DisplayName = Loc["Action"] ,IsSortable = false},
         // if Tree or Hierarchy → fetch all departments at once
         if (currentView == DepartmentViewType.Tree || currentView == DepartmentViewType.Hierarchy)
         {
+            currentPage = 1;
             pageSize = 10000;
         }
         else
@@ -269,6 +270,7 @@ SearchFieldDepartment.Level
     public async Task Search(string searchTerm)
     {
         searchdata = searchTerm;
+        currentPage = 1;
         await LoadDepartmentsAsync(true, searchTerm);
     }
     private async Task LoadDepartmentsAsync(bool isSearch = false, string searchTerm = null)

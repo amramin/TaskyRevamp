@@ -180,6 +180,7 @@ new() { Field = "Action", DisplayName = Loc["Action"] ,IsSortable = false},
     }
     public async Task Search(string searchTerm)
     {
+        currentPage = 1;
         await GetDelegations(true, searchTerm);
         // await LoadSources(true, searchTerm);
     }
