@@ -165,7 +165,7 @@ new() { Field = "Action", DisplayName = Loc["Action"] ,IsSortable = false},
     }
     private async Task ReloadAfterSave()
     {
-        currentPage = 1;
+        //currentPage = page;
         PopupService.Hide();
         await LoadDepartmentsAsync();
         StateHasChanged();
