@@ -28,58 +28,71 @@ namespace TaskyRevamp.Services.Users.Command
 
 		public async Task<bool> Handle(LinkUserWithDepartmentAndPrivilegeCommand request, CancellationToken cancellationToken)
 		{
-			foreach(var UserLinkDto in request.UserLinkDtos)
+			if (request.UserLinkDtos == null || !request.UserLinkDtos.Any())
+				return false;
+			var dtos = request.UserLinkDtos;
+
+			//extract data
+			var emails = dtos.Select(x => x.email.Trim().ToLower()).ToList();
+			var departmnets = dtos.Select(x => x.departmentName.Trim().ToLower()).ToList();
+			var privileges = dtos.Select(x => x.privilegeName.Trim().ToLower()).ToList();
+
+			// batch load (one query for each)
+			var departmentsRes = await _departmentRepository.FindBy(d => departmnets.Contains(d.NameArabic.ToLower()) || departmnets.Contains(d.NameEnglish.ToLower()));
+			if (!departmentsRes.Success || departmentsRes.Value == null)
+				return false;
+			var privilegeRes = await _privilegeRepository.FindBy(d => privileges.Contains(d.NameArabic.ToLower()) || departmnets.Contains(d.NameEnglish.ToLower()));
+			if (!privilegeRes.Success || privilegeRes.Value == null)
+				return false;
+			var emailRes = await _userRepository.FindBy(d => emails.Contains(d.Email!.ToLower()));
+			if (!emailRes.Success || emailRes.Value == null)
+				return false;
+
+			var departmentLookup = departmentsRes.Value.SelectMany(d => new[]
+			{
+				new { Key = d.NameEnglish.ToLower(), Value = d },
+				new { Key = d.NameArabic.ToLower(), Value = d }
+			}).GroupBy(x => x.Key).ToDictionary(g => g.Key, g => g.First().Value);
+
+			var privilegeLookup = privilegeRes.Value.SelectMany(p => new[]
+			{
+				new { Key = p.NameEnglish.ToLower(), Value = p },
+				new { Key = p.NameArabic.ToLower(), Value = p }
+			}).GroupBy(x => x.Key).ToDictionary(g => g.Key, g => g.First().Value);
+
+			var userLookup = emailRes.Value.ToDictionary(u => u.Email!.ToLower(), u => u);
+
+			var processedUsers = new HashSet<string>();
+			var usersToUpdate = new List<User>();
+
+			foreach (var UserLinkDto in request.UserLinkDtos)
 			{
 				var email = UserLinkDto.email.Trim().ToLower();
 				var _departmentName = UserLinkDto.departmentName.Trim().ToLower();
 				var _privilegeName = UserLinkDto.privilegeName.Trim().ToLower();
 
-				var deptRes = await _departmentRepository.FindBy(d => d.NameEnglish.ToLower() == _departmentName || d.NameArabic.ToLower() == _departmentName);
-				var department = deptRes.Value?.FirstOrDefault();
-				if (!deptRes.Success || department == null)
-					return false;
-
-				var privRes = await _privilegeRepository.FindBy(p => p.NameEnglish.ToLower() == _privilegeName || p.NameArabic.ToLower() == _privilegeName);
-				var privilege = privRes.Value?.FirstOrDefault();
-				if (!privRes.Success || privilege == null)
-					return false;
-
-				var userRes = await _userRepository.FindBy(u => u.Email!.ToLower() == email);
-				var user = userRes.Value?.FirstOrDefault();
-				if (!userRes.Success || user == null)
-				{
-					return false;
-				}
-
-				bool hasDepartment = user.DepartmentId != null;
-				bool hasPrivilege = user.PrivilegeId != null;
-
-				if (hasDepartment && hasPrivilege)
+				if (processedUsers.Contains(email))
 					continue;
 
-				if (hasDepartment && !hasPrivilege)
-				{
-					user.PrivilegeId = privilege.Id;
-					await _userRepository.Update(user);
-					continue;
-				}
+				if (!departmentLookup.TryGetValue(_departmentName, out var department))
+					return false;
 
-				if (!hasDepartment && hasPrivilege)
-				{
+				if (!privilegeLookup.TryGetValue(_privilegeName, out var privilege))
+					return false;
+
+				if (!userLookup.TryGetValue(email, out var user))
+					return false;
+
+				if (user.DepartmentId == null)
 					user.DepartmentId = department.Id;
-					await _userRepository.Update(user);
-					continue;
-				}
 
-				if (!hasDepartment && !hasPrivilege)
-				{
-					user.DepartmentId = department.Id;
+				if (user.PrivilegeId == null)
 					user.PrivilegeId = privilege.Id;
-					await _userRepository.Update(user);
-					continue;
-				}
+
+				usersToUpdate.Add(user);
+				processedUsers.Add(email);
 			}
-			await _userRepository.SaveChangesAsync();
+			await _userRepository.UpdateRange(usersToUpdate);
 			return true;
 		}
 	}
