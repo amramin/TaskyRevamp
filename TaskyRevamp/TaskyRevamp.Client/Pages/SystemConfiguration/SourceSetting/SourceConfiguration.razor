@@ -188,7 +188,7 @@ else
                 sources.Remove(selectedSource);
                 if (sources.Count() <= 0)
                 {
-                    currentPage -= 1;
+                    currentPage = currentPage == 1 ? 1 : currentPage - 1;
                 }
                 await LoadSources();
                 initialSources = initialSources.Where(s => s.Source.Id != selectedSource.Source.Id).ToList(); // update initialsources
@@ -256,7 +256,7 @@ else
         if (sortAscending == null)
         {
             // third click → reset to default sorting
-            currentSortColumn = "DisplayedName"; // or whatever your default column is
+            currentSortColumn = ""; // or whatever your default column is
             sortAscending = true;
         }
 

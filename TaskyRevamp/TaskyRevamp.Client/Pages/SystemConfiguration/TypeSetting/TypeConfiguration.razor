@@ -182,7 +182,7 @@ else
                 types.Remove(selectedType);
                 if (types.Count()<=0)
                 {
-                    currentPage -= 1;
+                    currentPage = currentPage == 1 ? 1 : currentPage - 1;
                 }
                 await LoadTypes();
 
