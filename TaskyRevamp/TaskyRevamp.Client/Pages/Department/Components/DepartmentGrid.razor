@@ -31,9 +31,9 @@
                     <td>@p.Name</td>
                     <td>@p.Level</td>
                     <td>@p.ParentdepartmentName</td>
-                    <td>@p.CreateDate?.ToString("yyyy-MM-dd")</td>
+                    <td>@p.CreateDate?.ToString(Loc["LocalizeDate"])</td>
                     <td>@p.CreatedByName</td>
-                    <td>@p.UpdateDate?.ToString("yyyy-MM-dd")</td>
+                    <td>@p.UpdateDate?.ToString(Loc["LocalizeDate"])</td>
                     <td>@p.UpdatedByName</td>
                     <td class="sticky-end-action">
                         <div class="dropdown actions">

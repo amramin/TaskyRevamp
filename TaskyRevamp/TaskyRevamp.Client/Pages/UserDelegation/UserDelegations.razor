@@ -64,13 +64,13 @@ else
                         <tr>
                             <td>@p.FromUser</td>
                             <td>@p.ToUserAr</td>
-                            <td>@p.FromDate.ToString("yyyy-MM-dd")</td>
-                            <td>@p.ToDate.ToString("yyyy-MM-dd")</td>
+                            <td>@p.FromDate.ToString(Loc["LocalizeDate"])</td>
+                            <td>@p.ToDate.ToString(Loc["LocalizeDate"])</td>
 
                             <td>@p.CreatedByName</td>
-                            <td>@p.CreateDate?.ToString("yyyy-MM-dd")</td>
+                            <td>@p.CreateDate?.ToString(Loc["LocalizeDate"])</td>
                             <td>@p.UpdatedByName</td>
-                            <td>@p.UpdateDate?.ToString("yyyy-MM-dd")</td>
+                            <td>@p.UpdateDate?.ToString(Loc["LocalizeDate"])</td>
 
                             <td class="sticky-end-action">
                                 <div class="dropdown actions">
@@ -137,7 +137,7 @@ else
     public int PageSize { get; set; }
     public int TotalItemsCount { get; set; }
     private List<SortableColumn> tableColumns = new();
-    private string currentSortColumn = "CreateDate";
+    private string currentSortColumn = "";
     private bool? sortAscending = true;
     public Guid currentUserId { set; get; }
     public bool IsShowCreateDialog { get; set; } = false;
@@ -320,7 +320,7 @@ SearchFieldDelegation.UpdateDate
         if (sortAscending == null)
         {
             // third click → reset to default sorting
-            currentSortColumn = "CreateDate"; // or whatever your default column is
+            currentSortColumn = ""; // or whatever your default column is
             sortAscending = true;
         }
         await GetDelegations();

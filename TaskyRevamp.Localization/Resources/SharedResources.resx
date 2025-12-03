@@ -954,4 +954,7 @@
   <data name="Grid" xml:space="preserve">
     <value>Grid</value>
   </data>
+  <data name="LocalizeDate" xml:space="preserve">
+    <value>dd-MM-yyyy</value>
+  </data>
 </root>

@@ -43,11 +43,11 @@
                             var checkboxId = $"type-active-{item.Type.Id}";
                             <tr>
                                 <td>@item.Type.DisplayedName</td>
-                                <td>@item.Type.CreateDate.ToLocalTime().ToString("dd-MM-yyyy")</td>
-                                <td>@item.CreatedByName</td>
-                                <td>
-                                    @(item.Type.UpdateDate.HasValue? item.Type.UpdateDate.Value.ToLocalTime().ToString("dd-MM-yyyy") : "")
-                                </td>
+                                <td>@item.Type.CreateDate.ToLocalTime().ToString(Loc["LocalizeDate"])</td>
+                                    <td>@item.CreatedByName</td>
+                                    <td>
+                                    @(item.Type.UpdateDate.HasValue? item.Type.UpdateDate.Value.ToLocalTime().ToString(Loc["LocalizeDate"]) : "")
+                                    </td>
                                 <td>@item.UpdatedByName</td>
                                 <td>
                                     <div class="form-check form-switch custom">
