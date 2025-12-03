@@ -1,5 +1,5 @@
 ﻿@page "/Departments"
-
+@using OfficeOpenXml
 @using TaskyRevamp.Client.Consumer
 @using TaskyRevamp.Client.Pages.Department.Components
 @using TaskyRevamp.Client.Services
@@ -7,13 +7,12 @@
 @using TaskyRevamp.Client.Shared.Popups
 @using TaskyRevamp.Dto.Enums.SearchFields
 @using TaskyRevamp.Dto.SystemConfiguration
-@using OfficeOpenXml
 @inject DepartmentConsumer _departmentConsumer
 @inject NavigationManager navigationManager
 @inject IStringLocalizer<SharedResources> Loc
 @inject ToastService ToastService
 @inject PopupService PopupService
-
+@inject TaskyService taskyService
 
 <div class="file-qustom button-end mb-3">
     <label for="DepartmentFileUpload">
@@ -148,146 +147,255 @@ else
     List<DepartmentDto> allDepartments = new List<DepartmentDto>();
     [Parameter] public bool IsRoot { get; set; } = false;
     private Search? searchComponent;
-    private readonly string[] _validExtensions = new[] { ".xlsx" };
+    private IBrowserFile? fileInput;
 
+    private readonly string[] _validExtensions = new[] { ".xlsx" };
     private async Task HandleFileSelected(InputFileChangeEventArgs e)
     {
-        var file = e.File;
-        if (file != null)
+        List<DepartmentDto> DepartmentsList = new List<DepartmentDto>();
+        fileInput = e.File;
+        if (fileInput != null)
         {
-
-
-            var extensions = Path.GetExtension(file.Name).ToLower();
-            if (!_validExtensions.Contains(extensions))
+            var (bytes, name, type) = await taskyService.ReadFileAsync(fileInput);
+            if (bytes == null)
             {
-                await ToastService.ShowToastAsync(Loc["FileNotValid"], "danger");
-
                 return;
             }
-            var DepartmentDto = await ReadDepartmentsFromExcel(file);
-            if (DepartmentDto.Count > 0)
+            var rows = taskyService.ReadExcelRows(bytes);
+            Console.WriteLine($"Total Rows: {rows.Count}");
+            if (rows.Count <= 1)
             {
-                // var current = await LocalStorageService.GetItemAsStringAsync("Id");
-                // DepartmentDto.ForEach(k => k.CreatedById = Guid.Parse(current));
-                await _departmentConsumer.CreateDeprtmentsBulk(DepartmentDto);
+                await ToastService.ShowToastAsync(Loc["ValidationError"], "error");
+                return;
+            }
+            for (int i = 1; i < rows.Count; i++)
+            {
+                Console.WriteLine($"Processing Row {i + 1}");
+                var isValid = await Validate(rows[i]);
+                if (!isValid)
+                {
+                    await ToastService.ShowToastAsync(Loc["ValidationError"], "error");
+                    return;
+                }
+                if (Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName == "ar")
+                {
+                    DepartmentsList.Add(new DepartmentDto
+                        {
+                            Level = int.Parse(rows[i][0].Trim()),
+                            NameEnglish = rows[i][1].Trim(),
+                            NameArabic = rows[i][2].Trim(),
+                            ParentdepartmentArabic = rows[i][3].Trim(),
+                        ParentdepartmentId = allDepartments.Where(k => k.NameArabic == rows[i][3].Trim()).First().Id,
 
-                await ToastService.ShowToastAsync(Loc["ThevalidRowsuploadedsuccessfully"], "success");
+                        });
+                }
 
+                else
+                {
+                    DepartmentsList.Add(new DepartmentDto
+                        {
+                            Level = int.Parse(rows[i][0].Trim()),
+                            NameEnglish = rows[i][1].Trim(),
+                            NameArabic = rows[i][2].Trim(),
+                            ParentdepartmentEnglish = rows[i][3].Trim(),
+                        ParentdepartmentId = allDepartments.Where(k => k.NameEnglish == rows[i][3].Trim()).First().Id,
+
+                        });
+                }
+                await _departmentConsumer.CreateDeprtmentsBulk(DepartmentsList);
+
+                 await LoadDepartmentsAsync(); 
             }
         }
     }
-    public async Task<List<DepartmentDto>> ReadDepartmentsFromExcel(IBrowserFile file)
+    private async Task<bool> Validate(string[] row)
     {
-        var DepartmentsList = new List<DepartmentDto>();
-        var duplicateCheck = new HashSet<string>();
-        bool hasDuplicates = false;
-        // Limit file size to a reasonable value (e.g., 10 MB)
-        var maxSize = 10 * 1024 * 1024;
-        using (var stream = new MemoryStream())
+        
+        var level = row[0].Trim().ToLower();
+        var departmentNameEN = row[1].Trim().ToLower();
+        var departmentNameAR = row[2].Trim().ToLower();
+        var parentName = row[3].Trim().ToLower();
+        if (string.IsNullOrEmpty(parentName) && allDepartments.Count() > 0)
         {
-            await file.OpenReadStream(maxSize).CopyToAsync(stream);
-            stream.Position = 0; // Reset stream position to read
+            await ToastService.ShowToastAsync(Loc["Somerequiredvaluesaremissing"], "danger");
 
-            ExcelPackage.LicenseContext = LicenseContext.NonCommercial; // Non-commercial use
-            using (var package = new ExcelPackage(stream))
-            {
-                var worksheet = package.Workbook.Worksheets[0]; // Assuming the first sheet
-                var rowCount = worksheet.Dimension.Rows;
-
-                if (string.IsNullOrEmpty(worksheet.Cells[1, 1].Text) || string.IsNullOrEmpty(worksheet.Cells[1, 2].Text) ||
-                    string.IsNullOrEmpty(worksheet.Cells[1, 3].Text) || string.IsNullOrEmpty(worksheet.Cells[1, 4].Text) || string.IsNullOrEmpty(worksheet.Cells[1, 5].Text))
-                {
-                    await ToastService.ShowToastAsync(Loc["SomeInvalidRowsSkipped"], "danger");
-
-                    return new List<DepartmentDto>();
-                }
-
-                // Start from row 2 to skip the header
-                for (int row = 2; row <= rowCount; row++)
-                {
-                    if (IsRowEmpty(worksheet, row))
-                    {
-                        continue; // Skip this row if it's empty
-                    }
-
-                    var choiceKey = $"{worksheet.Cells[row, 1].Text}-{worksheet.Cells[row, 2].Text}-{worksheet.Cells[row, 3].Text}";
-                    if (duplicateCheck.Contains(choiceKey))
-                    {
-                        await ToastService.ShowToastAsync(Loc["Somerequiredvaluesaremissing"], "danger");
-
-                        return new List<DepartmentDto>();
-                    }
-                    duplicateCheck.Add(choiceKey);
-
-
-                    if (string.IsNullOrEmpty(worksheet.Cells[row, 1].Text) ||
-                        string.IsNullOrEmpty(worksheet.Cells[row, 2].Text) ||
-                        string.IsNullOrEmpty(worksheet.Cells[row, 3].Text) ||
-
-                        string.IsNullOrEmpty(worksheet.Cells[row, 4].Text))
-                    {
-                        await ToastService.ShowToastAsync(Loc["SomeInvalidRowsSkipped"], "danger");
-
-                        return new List<DepartmentDto>();
-                    }
-                    else
-                    {
-                        var DepartmentDto = new DepartmentDto();
-                        if (string.IsNullOrEmpty(worksheet.Cells[row, 4]?.Text) && RootDepartments.Count() > 0)
-                        {
-                            await ToastService.ShowToastAsync(Loc["Somerequiredvaluesaremissing"], "danger");
-
-                            return new List<DepartmentDto>();
-                        }
-                        
-                        if (Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName == "ar")
-
-                        {
-
-                            if (string.IsNullOrEmpty(worksheet.Cells[row, 4]?.Text) || RootDepartments.Where(k => k.NameArabic == worksheet.Cells[row, 3].Text).Count()==0)
-                            {
-                                await ToastService.ShowToastAsync(Loc["Somerequiredvaluesaremissing"], "danger");
-
-                                return new List<DepartmentDto>();
-                            }
-                            DepartmentDto = new DepartmentDto()
-                                {
-
-                                    Level = int.Parse(worksheet.Cells[row, 1].Text),
-                                    NameEnglish = worksheet.Cells[row, 2].Text,
-                                    NameArabic = worksheet.Cells[row, 3].Text,
-                                    ParentdepartmentArabic = worksheet.Cells[row, 4]?.Text,
-                                    ParentdepartmentId = RootDepartments.Where(k => k.NameArabic == worksheet.Cells[row, 3].Text).First().Id,
-
-                                };
-                        }
-                        else
-                        {
-                            if (string.IsNullOrEmpty(worksheet.Cells[row, 4]?.Text) || RootDepartments.Where(k => k.NameEnglish == worksheet.Cells[row, 3].Text).Count() == 0)
-                            {
-                                await ToastService.ShowToastAsync(Loc["Somerequiredvaluesaremissing"], "danger");
-
-                                return new List<DepartmentDto>();
-                            }
-                            DepartmentDto = new DepartmentDto
-                            {
-                                Level = int.Parse(worksheet.Cells[row, 1].Text),
-                                NameEnglish = worksheet.Cells[row, 2].Text,
-                                NameArabic = worksheet.Cells[row, 3].Text,
-                                ParentdepartmentEnglish = worksheet.Cells[row, 4]?.Text,
-                                ParentdepartmentId = RootDepartments.Where(k => k.NameEnglish == worksheet.Cells[row, 3].Text).First().Id,
-
-                            };
-                        }
-                        DepartmentsList.Add(DepartmentDto);
-                    }
-
-                }
-            }
+            return false;
         }
 
-        return DepartmentsList;
+        if (string.IsNullOrEmpty(level) ||
+            string.IsNullOrEmpty(departmentNameEN) ||
+            string.IsNullOrEmpty(departmentNameAR))
+        {
+            await ToastService.ShowToastAsync(Loc["SomeInvalidRowsSkipped"], "danger");
+
+            return false;
+        }
+        if (Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName == "ar")
+
+        {
+
+            if (string.IsNullOrEmpty(parentName) || allDepartments.Where(k => k.NameArabic == parentName).Count() == 0)
+            {
+                await ToastService.ShowToastAsync(Loc["Somerequiredvaluesaremissing"], "danger");
+
+                return false;
+            }
+        }
+        else
+        {
+            if (string.IsNullOrEmpty(parentName) || allDepartments.Where(k => k.NameEnglish == parentName).Count() == 0)
+            {
+                await ToastService.ShowToastAsync(Loc["Somerequiredvaluesaremissing"], "danger");
+
+                return false;
+            }
+        }
+        
+        
+        
+
+        return true;
     }
+    // private async Task HandleFileSelected(InputFileChangeEventArgs e)
+    // {
+    //     var file = e.File;
+    //     if (file != null)
+    //     {
+
+
+    //         var extensions = Path.GetExtension(file.Name).ToLower();
+    //         if (!_validExtensions.Contains(extensions))
+    //         {
+    //             await ToastService.ShowToastAsync(Loc["FileNotValid"], "danger");
+
+    //             return;
+    //         }
+    //         var DepartmentDto = await ReadDepartmentsFromExcel(file);
+    //         if (DepartmentDto.Count > 0)
+    //         {
+    //             // var current = await LocalStorageService.GetItemAsStringAsync("Id");
+    //             // DepartmentDto.ForEach(k => k.CreatedById = Guid.Parse(current));
+    //             await _departmentConsumer.CreateDeprtmentsBulk(DepartmentDto);
+
+    //             await ToastService.ShowToastAsync(Loc["ThevalidRowsuploadedsuccessfully"], "success");
+
+    //         }
+    //     }
+    // }
+    // public async Task<List<DepartmentDto>> ReadDepartmentsFromExcel(IBrowserFile file)
+    // {
+    //     var DepartmentsList = new List<DepartmentDto>();
+    //     var duplicateCheck = new HashSet<string>();
+    //     bool hasDuplicates = false;
+    //     // Limit file size to a reasonable value (e.g., 10 MB)
+    //     var maxSize = 10 * 1024 * 1024;
+    //     using (var stream = new MemoryStream())
+    //     {
+    //         await file.OpenReadStream(maxSize).CopyToAsync(stream);
+    //         stream.Position = 0; // Reset stream position to read
+    //        // ExcelPackage.LicenseContext = new OfficeOpenXml.LicenseContext;//.ExcelLicense
+    //         // {
+    //         //     LicenseType = OfficeOpenXml.License.eLicenseType.NonCommercial
+    //         // };            // Non-commercial use
+    //         using (var package = new ExcelPackage(stream))
+    //         {
+    //             var worksheet = package.Workbook.Worksheets[0]; // Assuming the first sheet
+    //             var rowCount = worksheet.Dimension.Rows;
+
+    //             if (string.IsNullOrEmpty(worksheet.Cells[1, 1].Text) || string.IsNullOrEmpty(worksheet.Cells[1, 2].Text) ||
+    //                 string.IsNullOrEmpty(worksheet.Cells[1, 3].Text) || string.IsNullOrEmpty(worksheet.Cells[1, 4].Text) || string.IsNullOrEmpty(worksheet.Cells[1, 5].Text))
+    //             {
+    //                 await ToastService.ShowToastAsync(Loc["SomeInvalidRowsSkipped"], "danger");
+
+    //                 return new List<DepartmentDto>();
+    //             }
+
+    //             // Start from row 2 to skip the header
+    //             for (int row = 2; row <= rowCount; row++)
+    //             {
+    //                 if (IsRowEmpty(worksheet, row))
+    //                 {
+    //                     continue; // Skip this row if it's empty
+    //                 }
+
+    //                 var choiceKey = $"{worksheet.Cells[row, 1].Text}-{worksheet.Cells[row, 2].Text}-{worksheet.Cells[row, 3].Text}";
+    //                 if (duplicateCheck.Contains(choiceKey))
+    //                 {
+    //                     await ToastService.ShowToastAsync(Loc["Somerequiredvaluesaremissing"], "danger");
+
+    //                     return new List<DepartmentDto>();
+    //                 }
+    //                 duplicateCheck.Add(choiceKey);
+
+
+    //                 if (string.IsNullOrEmpty(worksheet.Cells[row, 1].Text) ||
+    //                     string.IsNullOrEmpty(worksheet.Cells[row, 2].Text) ||
+    //                     string.IsNullOrEmpty(worksheet.Cells[row, 3].Text) ||
+
+    //                     string.IsNullOrEmpty(worksheet.Cells[row, 4].Text))
+    //                 {
+    //                     await ToastService.ShowToastAsync(Loc["SomeInvalidRowsSkipped"], "danger");
+
+    //                     return new List<DepartmentDto>();
+    //                 }
+    //                 else
+    //                 {
+    //                     var DepartmentDto = new DepartmentDto();
+    //                     if (string.IsNullOrEmpty(worksheet.Cells[row, 4]?.Text) && RootDepartments.Count() > 0)
+    //                     {
+    //                         await ToastService.ShowToastAsync(Loc["Somerequiredvaluesaremissing"], "danger");
+
+    //                         return new List<DepartmentDto>();
+    //                     }
+                        
+    //                     if (Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName == "ar")
+
+    //                     {
+
+    //                         if (string.IsNullOrEmpty(worksheet.Cells[row, 4]?.Text) || RootDepartments.Where(k => k.NameArabic == worksheet.Cells[row, 3].Text).Count()==0)
+    //                         {
+    //                             await ToastService.ShowToastAsync(Loc["Somerequiredvaluesaremissing"], "danger");
+
+    //                             return new List<DepartmentDto>();
+    //                         }
+    //                         DepartmentDto = new DepartmentDto()
+    //                             {
+
+    //                                 Level = int.Parse(worksheet.Cells[row, 1].Text),
+    //                                 NameEnglish = worksheet.Cells[row, 2].Text,
+    //                                 NameArabic = worksheet.Cells[row, 3].Text,
+    //                                 ParentdepartmentArabic = worksheet.Cells[row, 4]?.Text,
+    //                                 ParentdepartmentId = RootDepartments.Where(k => k.NameArabic == worksheet.Cells[row, 3].Text).First().Id,
+
+    //                             };
+    //                     }
+    //                     else
+    //                     {
+    //                         if (string.IsNullOrEmpty(worksheet.Cells[row, 4]?.Text) || RootDepartments.Where(k => k.NameEnglish == worksheet.Cells[row, 3].Text).Count() == 0)
+    //                         {
+    //                             await ToastService.ShowToastAsync(Loc["Somerequiredvaluesaremissing"], "danger");
+
+    //                             return new List<DepartmentDto>();
+    //                         }
+    //                         DepartmentDto = new DepartmentDto
+    //                         {
+    //                             Level = int.Parse(worksheet.Cells[row, 1].Text),
+    //                             NameEnglish = worksheet.Cells[row, 2].Text,
+    //                             NameArabic = worksheet.Cells[row, 3].Text,
+    //                             ParentdepartmentEnglish = worksheet.Cells[row, 4]?.Text,
+    //                             ParentdepartmentId = RootDepartments.Where(k => k.NameEnglish == worksheet.Cells[row, 3].Text).First().Id,
+
+    //                         };
+    //                     }
+    //                     DepartmentsList.Add(DepartmentDto);
+    //                 }
+
+    //             }
+    //         }
+    //     }
+
+    //     return DepartmentsList;
+    // }
 
     private bool IsRowEmpty(ExcelWorksheet worksheet, int row)
     {

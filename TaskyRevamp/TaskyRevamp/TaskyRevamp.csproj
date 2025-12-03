@@ -21,7 +21,7 @@
 	<ItemGroup>
 		<ProjectReference Include="..\TaskyRevamp.Client\TaskyRevamp.Client.csproj" />
 		<PackageReference Include="Blazored.LocalStorage" Version="4.5.0" />
-		<PackageReference Include="EPPlus" Version="8.3.1" />
+		<PackageReference Include="EPPlus" Version="8.1.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.8" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="9.0.7" />
 		<PackageReference Include="Microsoft.Extensions.Localization" Version="9.0.8" />
