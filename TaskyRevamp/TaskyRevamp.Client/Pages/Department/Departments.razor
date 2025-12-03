@@ -198,7 +198,7 @@ new() { Field = "Action", DisplayName = Loc["Action"] ,IsSortable = false},
     private async Task ChangeView(DepartmentViewType view)
     {
         currentView = view;
-
+        currentPage = 1;
         // if Tree or Hierarchy → fetch all departments at once
         if (currentView == DepartmentViewType.Tree || currentView == DepartmentViewType.Hierarchy)
         {

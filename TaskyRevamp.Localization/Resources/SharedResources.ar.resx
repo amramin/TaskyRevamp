@@ -970,4 +970,16 @@
   <data name="filesSuccess" xml:space="preserve">
     <value>تم إضافة الملف بنجاح</value>
   </data>
+  <data name="linkUsers" xml:space="preserve">
+    <value>ربط مستخدمين</value>
+  </data>
+  <data name="Hierarchy" xml:space="preserve">
+    <value>التسلسل الهرمي</value>
+  </data>
+  <data name="Grid" xml:space="preserve">
+    <value>الشبكة</value>
+  </data>
+  <data name="Tree" xml:space="preserve">
+    <value>الشجرة</value>
+  </data>
 </root>

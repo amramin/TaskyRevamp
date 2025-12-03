@@ -1177,6 +1177,24 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Grid.
+        /// </summary>
+        public static string Grid {
+            get {
+                return ResourceManager.GetString("Grid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hierarchy.
+        /// </summary>
+        public static string Hierarchy {
+            get {
+                return ResourceManager.GetString("Hierarchy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 24 hours.
         /// </summary>
         public static string Hours24 {
@@ -1263,6 +1281,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string LinkUser {
             get {
                 return ResourceManager.GetString("LinkUser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Link users.
+        /// </summary>
+        public static string linkUsers {
+            get {
+                return ResourceManager.GetString("linkUsers", resourceCulture);
             }
         }
         
@@ -2307,6 +2334,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string ToUser {
             get {
                 return ResourceManager.GetString("ToUser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tree.
+        /// </summary>
+        public static string Tree {
+            get {
+                return ResourceManager.GetString("Tree", resourceCulture);
             }
         }
         

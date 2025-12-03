@@ -31,17 +31,64 @@ public class UpdateDepartmentCommandHandler : IRequestHandler<UpdateDepartmentCo
 			// Check if parent changed
 			bool parentChanged = department.ParentdepartmentId !=
 				(request.department.ParentdepartmentId == Guid.Empty ? null : request.department.ParentdepartmentId);
-			department.SetData(request.department);
+
 			if (parentChanged)
 			{
+				// Store the old parent before changing
+				var oldParentId = department.ParentdepartmentId;
+				await BreakCircularReferenceIfExists(request.department.Id, request.department.ParentdepartmentId, oldParentId);
 				department.Level = await CalculateLevelAsync(request.department.ParentdepartmentId);
+				department.SetData(request.department);
 				await UpdateChildrenLevelsAsync(department.Id, department.Level);
+				await _departmentRepository.Update(department);
 			}
-			department.SetData(request.department);
-			await _departmentRepository.Update(department);
+			else
+			{
+				department.SetData(request.department);
+				await _departmentRepository.Update(department);
+			}
 		}
         return true;
     }
+	private async Task BreakCircularReferenceIfExists(Guid departmentId, Guid? newParentId, Guid? oldParentId)
+	{
+		if (newParentId == null || newParentId == Guid.Empty)
+			return;
+		// Check if the new parent is a descendant of this department
+		var descendants = await GetAllDescendants(departmentId);
+		if (descendants.Any(d => d.Id == newParentId))
+		{
+			// The new parent is currently a descendant
+			// Move it to the current department's parent (swap positions)
+			var newParentDept = descendants.First(d => d.Id == newParentId);
+			// Set the new parent to have the same parent as the current department
+			// This maintains the hierarchy structure
+			newParentDept.ParentdepartmentId = oldParentId;
+			newParentDept.Level = await CalculateLevelAsync(oldParentId);
+			await _departmentRepository.Update(newParentDept);
+			await UpdateChildrenLevelsAsync(newParentDept.Id, newParentDept.Level); // update childern level
+		}
+	}
+
+	private async Task<List<Department>> GetAllDescendants(Guid departmentId)
+	{
+		var allDescendants = new List<Department>();
+		await CollectDescendants(departmentId, allDescendants);
+		return allDescendants;
+	}
+
+	private async Task CollectDescendants(Guid departmentId, List<Department> descendants) // -->  all childern of selected department 
+	{
+		var children = await _departmentRepository.FindBy(d => d.ParentdepartmentId == departmentId);
+		if (children?.Value != null && children.Value.Count > 0)
+		{
+			descendants.AddRange(children.Value);
+			foreach (var child in children.Value)
+			{
+				await CollectDescendants(child.Id, descendants);
+			}
+		}
+	}
 	private async Task<int> CalculateLevelAsync(Guid? parentId)
 	{
 		if (parentId == null || parentId == Guid.Empty)

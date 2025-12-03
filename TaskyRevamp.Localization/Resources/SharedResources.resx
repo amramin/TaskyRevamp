@@ -969,4 +969,16 @@
   <data name="filesSuccess" xml:space="preserve">
     <value>The file is adding successfully </value>
   </data>
+  <data name="linkUsers" xml:space="preserve">
+    <value>Link users</value>
+  </data>
+  <data name="Hierarchy" xml:space="preserve">
+    <value>Hierarchy</value>
+  </data>
+  <data name="Grid" xml:space="preserve">
+    <value>Grid</value>
+  </data>
+  <data name="Tree" xml:space="preserve">
+    <value>Tree</value>
+  </data>
 </root>

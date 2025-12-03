@@ -42,15 +42,6 @@
                                 <SVGCrud SVGType="SVGCrud.SVGTypeEnum.EllipseVertical"></SVGCrud>
                             </button>
                             <ul class="dropdown-menu">
-
-                                <li>
-                                    <button class="dropdown-item" @onclick="@(() => OnShowUsers.InvokeAsync(p.Id))">
-                                        <span class="icon">
-                                            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Users"></SVGCrud>
-                                        </span>
-                                        @Loc["ViewUsers"]
-                                    </button>
-                                </li>
                                 <li>
                                     <button class="dropdown-item" @onclick="@(() => OnAdd.InvokeAsync(p.Id))">
                                         <span class="icon">
@@ -65,6 +56,22 @@
                                             <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Edit"></SVGCrud>
                                         </span>
                                         @Loc["Edit"]
+                                    </button>
+                                </li>
+                                <li>
+                                    <button class="dropdown-item" @onclick="@(() => OnShowUsers.InvokeAsync(p.Id))">
+                                        <span class="icon">
+                                            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Users"></SVGCrud>
+                                        </span>
+                                        @Loc["ViewUsers"]
+                                    </button>
+                                </li>
+                                <li>
+                                    <button class="dropdown-item" @onclick="@(() => LinkUser(p.Id))">
+                                        <span class="icon">
+                                            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Users"></SVGCrud>
+                                        </span>
+                                        @Loc["linkUsers"]
                                     </button>
                                 </li>
                                 <li>
@@ -177,7 +184,16 @@
         };
         StateHasChanged();
     }
-
+    private void LinkUser(Guid id)
+    {
+        PopupService.ShowNew(@<LinkUserDepartment Id="id" OnSaved="ReloadAfterSave"></LinkUserDepartment>,Loc["Addusers"]);
+        StateHasChanged();
+    }
+    private async Task ReloadAfterSave()
+    {
+        PopupService.Hide();
+        StateHasChanged();
+    }
     public List<SearchFieldDepartment> searchFields = new List<SearchFieldDepartment>() {
         SearchFieldDepartment.NameEnglish,
         SearchFieldDepartment.NameArabic,

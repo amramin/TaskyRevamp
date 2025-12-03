@@ -65,33 +65,58 @@ namespace TaskyRevamp.Services.Helpers
             // Handle DateTime and DateTime?
             if (propertyType == typeof(DateTime) || propertyType == typeof(DateTime?))
             {
-                // Try to parse the date using multiple common formats and cultures
-                var acceptedFormats = new[] { "dd/MM/yyyy", "MM/dd/yyyy", "yyyy-MM-dd", "dd-MM-yyyy", "M/d/yyyy", "d/M/yyyy" };
+				Expression dateValue = member;
+				if (member.Type == typeof(DateTime?))
+					dateValue = Expression.Property(member, "Value");
+				var dayProp = Expression.Property(dateValue, nameof(DateTime.Day));
+				var monthProp = Expression.Property(dateValue, nameof(DateTime.Month));
+				var yearProp = Expression.Property(dateValue, nameof(DateTime.Year));
+				// Normalize input
+				var cleaned = searchText.Trim().Replace(" ", "");
 
-                DateTime searchDate;
+				// Year-only search (4 digits)
+				if (cleaned.Length == 4 && int.TryParse(cleaned, out int year))
+					return Expression.Equal(yearProp, Expression.Constant(year));
 
-                bool parsed = DateTime.TryParseExact(searchText,acceptedFormats,CultureInfo.InvariantCulture,DateTimeStyles.None, out searchDate)
-                            ||
-                            DateTime.TryParse(searchText, CultureInfo.CurrentCulture, DateTimeStyles.None, out searchDate);
+				// Day or Month-only search (1–2 digits)
+				if (cleaned.Length <= 2 && int.TryParse(cleaned, out int num))
+				{
+					Expression dayMatch = Expression.Equal(dayProp, Expression.Constant(num));
+					Expression monthMatch = Expression.Equal(monthProp, Expression.Constant(num));
+					return Expression.OrElse(dayMatch, monthMatch);
+				}
 
-                if (parsed)
-                {
-                    // If property is nullable, access its Value
-                    Expression dateValue = member;
-                    if (member.Type == typeof(DateTime?))
-                    {
-                        dateValue = Expression.Property(member, "Value");
-                    }
+				// Month + Year (e.g. 11-2025 or 11/2025)
+				var parts = cleaned.Split('/', '-', '.');
+				if (parts.Length == 2 &&
+					parts[0].Length <= 2 && parts[1].Length <= 2 &&
+					int.TryParse(parts[0], out int d) &&
+					int.TryParse(parts[1], out int mm))
+				{
+					Expression dayMatch = Expression.Equal(dayProp, Expression.Constant(d));
+					Expression monthMatch = Expression.Equal(monthProp, Expression.Constant(mm));
+					return Expression.AndAlso(dayMatch, monthMatch);
+				}
+                // day + month (03/11 or 15-06)
+				if (parts.Length == 2 &&
+					int.TryParse(parts[0], out int m) &&
+					int.TryParse(parts[1], out int y))
+				{
+					var monthMatch = Expression.Equal(monthProp, Expression.Constant(m));
+					var yearMatch = Expression.Equal(yearProp, Expression.Constant(y));
+					return Expression.AndAlso(monthMatch, yearMatch);
+				}
 
-                    // Compare by date only (ignore time)
-                    var dateProperty = Expression.Property(dateValue, nameof(DateTime.Date));
-                    var constant = Expression.Constant(searchDate.Date, typeof(DateTime));
-
-                    return Expression.Equal(dateProperty, constant);
-                }
-
-                return null;
-            }
+                // full date 
+				var acceptedFormats = new[] { "dd/MM/yyyy", "MM/dd/yyyy", "yyyy-MM-dd", "dd-MM-yyyy", "M/d/yyyy", "d/M/yyyy" };
+				if (DateTime.TryParseExact(searchText, acceptedFormats, CultureInfo.InvariantCulture,
+						DateTimeStyles.None, out var fullDate))
+				{
+					var dateProp = Expression.Property(dateValue, nameof(DateTime.Date));
+					return Expression.Equal(dateProp, Expression.Constant(fullDate.Date));
+				}
+				return null;
+			}
 
             // Handle Boolean
             if (propertyType == typeof(bool))
