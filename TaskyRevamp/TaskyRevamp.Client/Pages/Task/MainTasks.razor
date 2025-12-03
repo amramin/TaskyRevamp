@@ -195,7 +195,7 @@
     public int PageSize { get; set; }
     public int TotalItemsCount { get; set; }
     private List<SortableColumn> tableColumns = new();
-    private string currentSortColumn = "CreateDate";
+    private string currentSortColumn = "";
     private bool? sortAscending = true;
     public Guid currentUserId { set; get; }
     public bool IsShowCreateDialog { get; set; } = false;
@@ -477,7 +477,7 @@ SearchFieldTask.PlannedProgress
         if (sortAscending == null)
         {
             // third click → reset to default sorting
-            currentSortColumn = "CreateDate"; // or whatever your default column is
+            currentSortColumn = ""; // or whatever your default column is
             sortAscending = true;
         }
         await GetTasks();
