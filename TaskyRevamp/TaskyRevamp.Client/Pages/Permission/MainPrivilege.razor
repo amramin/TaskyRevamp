@@ -28,7 +28,7 @@
 @if (Privilegs != null && Privilegs.Any())
 {
     <div class="page-body">
-        <div class="table-responsive">
+        <div class="table-responsive sticky-header-custom">
             @if (Privilegs != null && Privilegs.Any())
             {
                 <SortableTable TItem="PrivilegeDtoWithName" Columns="@tableColumns" Items="@Privilegs"
