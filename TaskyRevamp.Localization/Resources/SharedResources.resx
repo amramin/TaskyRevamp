@@ -268,7 +268,7 @@
     <value>Default view</value>
   </data>
   <data name="Subtask_Level" xml:space="preserve">
-    <value>subtask level</value>
+    <value>Subtask level</value>
   </data>
   <data name="Types of system notification Messages" xml:space="preserve">
     <value>Types of system notification messages</value>
@@ -643,7 +643,7 @@
     <value>General modules </value>
   </data>
   <data name="Privilege" xml:space="preserve">
-    <value>privilege </value>
+    <value>Privilege </value>
   </data>
   <data name="TaskModule" xml:space="preserve">
     <value>Task module</value>
@@ -969,4 +969,18 @@
   <data name="filesSuccess" xml:space="preserve">
     <value>The file is adding successfully </value>
   </data>
+  <data name="System name english" xml:space="preserve">
+    <value>System name english</value>
+  </data>
+  <data name="Enter system name english" xml:space="preserve">
+    <value>Enter system name english</value>
+  </data>
+   <data name="System name arabic" xml:space="preserve">
+    <value>System name arabic</value>
+  </data>
+  <data name="Enter system name arabic" xml:space="preserve">
+    <value>Enter system name arabic</value>
+  </data>
+  
+
 </root>

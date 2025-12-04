@@ -49,13 +49,14 @@
                         </div> *@
                         <div class="row g-2">
                             <div class="col-md-6">
-                                <label class="form-label">System Name English</label>
-                                <InputText class="form-control" placeholder="Enter system name English"
+                                <label class="form-label"> @Loc["System name english"] </label>
+                                <InputText class="form-control" placeholder="@Loc["Enter system name english"]"
                                     @bind-Value="_systemIdentity.NameEnglish" />
                             </div>
                             <div class="col-lg-6">
-                                <label class="form-label">System Name Arabic</label>
-                                <InputText id="arabic-text" class="form-control" placeholder="Enter system name Arabic"
+                                <label class="form-label"> @Loc["System name arabic"] </label>
+                                <InputText id="arabic-text" class="form-control"
+                                    placeholder="@Loc["Enter system name arabic"]"
                                     @bind-Value="_systemIdentity.NameArabic" />
                             </div>
                             <div class="col-md-6">
