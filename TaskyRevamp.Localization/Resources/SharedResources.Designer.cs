@@ -988,6 +988,24 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Enter system name arabic.
+        /// </summary>
+        public static string Enter_system_name_arabic {
+            get {
+                return ResourceManager.GetString("Enter system name arabic", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter system name english.
+        /// </summary>
+        public static string Enter_system_name_english {
+            get {
+                return ResourceManager.GetString("Enter system name english", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Enter task type name arabic.
         /// </summary>
         public static string Enter_Task_Type_Name_Arabic {
@@ -1753,7 +1771,7 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to privilege .
+        ///   Looks up a localized string similar to Privilege .
         /// </summary>
         public static string Privilege {
             get {
@@ -2113,7 +2131,7 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to subtask level.
+        ///   Looks up a localized string similar to Subtask level.
         /// </summary>
         public static string Subtask_Level {
             get {
@@ -2181,6 +2199,24 @@ namespace TaskyRevamp.Localization.Resources {
         public static string System_Identity_Configuration {
             get {
                 return ResourceManager.GetString("System Identity Configuration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to System name arabic.
+        /// </summary>
+        public static string System_name_arabic {
+            get {
+                return ResourceManager.GetString("System name arabic", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to System name english.
+        /// </summary>
+        public static string System_name_english {
+            get {
+                return ResourceManager.GetString("System name english", resourceCulture);
             }
         }
         
