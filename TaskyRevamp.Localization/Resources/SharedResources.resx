@@ -361,7 +361,7 @@
     <value>Add Source</value>
   </data>
   <data name="EditTaskSource" xml:space="preserve">
-    <value>Edit task source</value>
+    <value>Edit source</value>
   </data>
   <data name="DeleteTaskSource" xml:space="preserve">
     <value>Delete task source</value>
@@ -975,12 +975,22 @@
   <data name="Enter system name english" xml:space="preserve">
     <value>Enter system name english</value>
   </data>
-   <data name="System name arabic" xml:space="preserve">
+  <data name="System name arabic" xml:space="preserve">
     <value>System name arabic</value>
   </data>
   <data name="Enter system name arabic" xml:space="preserve">
     <value>Enter system name arabic</value>
   </data>
-  
-
+  <data name="LocalizeDate" xml:space="preserve">
+    <value>dd-MM-yyyy</value>
+  </data>
+  <data name="Hierarchy" xml:space="preserve">
+    <value>Hierarchy</value>
+  </data>
+  <data name="Tree" xml:space="preserve">
+    <value>Tree</value>
+  </data>
+  <data name="Grid" xml:space="preserve">
+    <value>Grid</value>
+  </data>
 </root>
