@@ -1267,6 +1267,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Username or password is incorrect.
+        /// </summary>
+        public static string InvaildUserNameOrPassWord {
+            get {
+                return ResourceManager.GetString("InvaildUserNameOrPassWord", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Items per page.
         /// </summary>
         public static string Items_per_page {
@@ -1672,6 +1681,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Password is required.
+        /// </summary>
+        public static string passRequired {
+            get {
+                return ResourceManager.GetString("passRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Peer&apos;s level.
         /// </summary>
         public static string PeersLevel {
@@ -1938,6 +1956,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string Required {
             get {
                 return ResourceManager.GetString("Required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User name is required.
+        /// </summary>
+        public static string Requiredd {
+            get {
+                return ResourceManager.GetString("Requiredd", resourceCulture);
             }
         }
         
