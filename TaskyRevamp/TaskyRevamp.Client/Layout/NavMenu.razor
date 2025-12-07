@@ -261,17 +261,17 @@ new ChildItem { Text = "TaskHistory", Url = "/TaskHistory", Icon = SVGCrud.SVGTy
     {
         SetMenu();
 
-        var firstMenu = MenuItems.FirstOrDefault();
-        if (firstMenu != null)
-        {
-            firstMenu.IsOpen = true;
-            var firstChild = firstMenu.Children.FirstOrDefault();
-            if (firstChild != null)
-            {
-                SetActiveItem(firstMenu, firstChild);
-                NavigationManager.NavigateTo(firstChild.Url);
-            }
-        }
+        // var firstMenu = MenuItems.FirstOrDefault();
+        // if (firstMenu != null)
+        // {
+        //     firstMenu.IsOpen = true;
+        //     var firstChild = firstMenu.Children.FirstOrDefault();
+        //     if (firstChild != null)
+        //     {
+        //         SetActiveItem(firstMenu, firstChild);
+        //         NavigationManager.NavigateTo(firstChild.Url);
+        //     }
+        // }
     }
 
     void ToggleMenu(MenuItem clicked)

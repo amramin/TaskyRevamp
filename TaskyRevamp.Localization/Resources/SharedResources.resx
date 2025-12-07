@@ -969,6 +969,24 @@
   <data name="filesSuccess" xml:space="preserve">
     <value>The file is adding successfully </value>
   </data>
+  <data name="UploadExcelFile" xml:space="preserve">
+    <value>Upload Excel file</value>
+  </data>
+  <data name="DepartmentLevelMandatory" xml:space="preserve">
+    <value> Department Level (Mandatory)</value>
+  </data>
+  <data name="DownloadExcelTemplate" xml:space="preserve">
+    <value>Download Excel template</value>
+  </data>
+  <data name="FileNotValid" xml:space="preserve">
+    <value>File Not Valid</value>
+  </data>
+  <data name="ThevalidRowsuploadedsuccessfully" xml:space="preserve">
+    <value>The file is adding successfully </value>
+  </data>
+  <data name="SomeInvalidRowsSkipped" xml:space="preserve">
+    <value>The file has in duplicate, missing or not matched departement, recheck the file and import it again.</value>
+  </data>
 
   <data name="System name english" xml:space="preserve">
     <value>System name english</value>
@@ -993,6 +1011,18 @@
   </data>
   <data name="Grid" xml:space="preserve">
     <value>Grid</value>
+  </data>
+  <data name="Welcome" xml:space="preserve">
+    <value>Welcome</value>
+  </data>
+  <data name="Requiredd" xml:space="preserve">
+    <value>User name is required</value>
+  </data>
+  <data name="passRequired" xml:space="preserve">
+    <value>Password is required</value>
+  </data>
+  <data name="InvaildUserNameOrPassWord" xml:space="preserve">
+    <value>Username or password is incorrect</value>
   </data>
 
   <data name="linkUsers" xml:space="preserve">

@@ -1,4 +1,6 @@
-﻿@using TaskyRevamp.Dto.Department
+﻿@using TaskyRevamp.Client.Shared
+@using TaskyRevamp.Client.Shared
+@using TaskyRevamp.Dto.Department
 @inject IStringLocalizer<SharedResources> Loc
 @using TaskyRevamp.Client.Consumer
 @using TaskyRevamp.Client.Pages.Department.Components
@@ -23,8 +25,7 @@
                    OnSortRequested="HandleSort">
 
         <RowTemplate>
-
-
+              
             @foreach (var p in Departments)
             {
                 <tr>
@@ -59,8 +60,7 @@
                                         @Loc["Edit"]
                                     </button>
                                 </li>
-                                
-
+                             
                                 
                                 <li>
                                     @if(p.Level > 1 && p.ParentdepartmentId != Guid.Empty&&!p.Children.Any()){
@@ -71,6 +71,7 @@
                                         </span>
                                         @Loc["ViewUsers"]
                                     </button>
+}
                                 </li>
                                 <li>
                                     <button class="dropdown-item" @onclick="@(() => LinkUser(p.Id))">
@@ -81,7 +82,8 @@
                                     </button>
                                 </li>
                                 <li>
-                                    @if(p.Level > 1 && p.ParentdepartmentId != Guid.Empty){
+                                    @if(p.Level > 1 && p.ParentdepartmentId != Guid.Empty)
+                                    {
 
                                         <button class="dropdown-item text-danger" @onclick="@(() => OnDelete.InvokeAsync(p.Id))">
                                             <span class="icon">
@@ -97,8 +99,6 @@
                     </td>
                 </tr>
             }
-
-
 
         </RowTemplate>
     </SortableTable>
@@ -218,3 +218,4 @@
         await SortChanged.InvokeAsync(sortInfo);
     }
 }
+

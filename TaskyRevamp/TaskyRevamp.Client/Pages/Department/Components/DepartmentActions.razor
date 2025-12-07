@@ -43,14 +43,15 @@
             </button>
         </li>
         <li>
-            @if (Department.Level > 1 && Department.ParentdepartmentId != Guid.Empty&&!Department.Children.Any())
-
-            <button class="dropdown-item" @onclick="@(() => ShowUsers.InvokeAsync(Department.Id))">
-                <span class="icon">
+            @if (Department.Level > 1 && Department.ParentdepartmentId != Guid.Empty && !Department.Children.Any())
+            {
+                <button class="dropdown-item" @onclick="@(() => ShowUsers.InvokeAsync(Department.Id))">
+                    <span class="icon">
                     <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Users"></SVGCrud>
                 </span>
                 @Loc["ViewUsers"]
             </button>
+            }
         </li>
         <li>
             <button class="dropdown-item" @onclick="@(() => LinkUser(Department.Id))">

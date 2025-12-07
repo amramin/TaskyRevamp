@@ -718,6 +718,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to  Department Level (Mandatory).
+        /// </summary>
+        public static string DepartmentLevelMandatory {
+            get {
+                return ResourceManager.GetString("DepartmentLevelMandatory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Department Name (Mandatory).
         /// </summary>
         public static string DepartmentMandatory {
@@ -804,6 +813,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string Download {
             get {
                 return ResourceManager.GetString("Download", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Download Excel template.
+        /// </summary>
+        public static string DownloadExcelTemplate {
+            get {
+                return ResourceManager.GetString("DownloadExcelTemplate", resourceCulture);
             }
         }
         
@@ -1096,6 +1114,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to File Not Valid.
+        /// </summary>
+        public static string FileNotValid {
+            get {
+                return ResourceManager.GetString("FileNotValid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The file is adding successfully .
         /// </summary>
         public static string filesSuccess {
@@ -1236,6 +1263,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string IncludingSubDepartment {
             get {
                 return ResourceManager.GetString("IncludingSubDepartment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Username or password is incorrect.
+        /// </summary>
+        public static string InvaildUserNameOrPassWord {
+            get {
+                return ResourceManager.GetString("InvaildUserNameOrPassWord", resourceCulture);
             }
         }
         
@@ -1654,6 +1690,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Password is required.
+        /// </summary>
+        public static string passRequired {
+            get {
+                return ResourceManager.GetString("passRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Peer&apos;s level.
         /// </summary>
         public static string PeersLevel {
@@ -1924,6 +1969,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to User name is required.
+        /// </summary>
+        public static string Requiredd {
+            get {
+                return ResourceManager.GetString("Requiredd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Retention period Options.
         /// </summary>
         public static string RetentionPeriodOptions {
@@ -2055,6 +2109,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string setAsManager {
             get {
                 return ResourceManager.GetString("setAsManager", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The file has in duplicate, missing or not matched departement, recheck the file and import it again..
+        /// </summary>
+        public static string SomeInvalidRowsSkipped {
+            get {
+                return ResourceManager.GetString("SomeInvalidRowsSkipped", resourceCulture);
             }
         }
         
@@ -2284,6 +2347,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The file is adding successfully .
+        /// </summary>
+        public static string ThevalidRowsuploadedsuccessfully {
+            get {
+                return ResourceManager.GetString("ThevalidRowsuploadedsuccessfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Thursday.
         /// </summary>
         public static string Thursday {
@@ -2482,6 +2554,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Upload Excel file.
+        /// </summary>
+        public static string UploadExcelFile {
+            get {
+                return ResourceManager.GetString("UploadExcelFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to This user exists in the Active Directory and cannot be deleted.
         /// </summary>
         public static string user_is_active {
@@ -2667,6 +2748,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string weight {
             get {
                 return ResourceManager.GetString("weight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Welcome.
+        /// </summary>
+        public static string Welcome {
+            get {
+                return ResourceManager.GetString("Welcome", resourceCulture);
             }
         }
         

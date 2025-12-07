@@ -10,6 +10,10 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<Compile Remove="Pages\NewFolder\**" />
+		<Content Remove="Pages\NewFolder\**" />
+		<EmbeddedResource Remove="Pages\NewFolder\**" />
+		<None Remove="Pages\NewFolder\**" />
 	  <Compile Remove="Consumer\css\**" />
 	  <Compile Remove="Pages\NewFolder\**" />
 	  <Content Remove="Consumer\css\**" />
@@ -22,6 +26,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="Blazored.LocalStorage" Version="4.5.0" />
+		<PackageReference Include="EPPlus" Version="8.1.0" />
 		<PackageReference Include="Stingray.Components.MultiSelectComponent" Version="1.0.32" />
 
 		<PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="9.0.8" />
