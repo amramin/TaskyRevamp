@@ -718,20 +718,20 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Department Name (Mandatory).
-        /// </summary>
-        public static string DepartmentMandatory {
-            get {
-                return ResourceManager.GetString("DepartmentMandatory", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to  Department Level (Mandatory).
         /// </summary>
         public static string DepartmentLevelMandatory {
             get {
                 return ResourceManager.GetString("DepartmentLevelMandatory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Department Name (Mandatory).
+        /// </summary>
+        public static string DepartmentMandatory {
+            get {
+                return ResourceManager.GetString("DepartmentMandatory", resourceCulture);
             }
         }
         
@@ -934,6 +934,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to User Email (Mandatory).
+        /// </summary>
+        public static string EmailMandatory {
+            get {
+                return ResourceManager.GetString("EmailMandatory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Email notifications.
         /// </summary>
         public static string EmailNotification {
@@ -1105,20 +1114,20 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The file is adding successfully .
-        /// </summary>
-        public static string filesSuccess {
-            get {
-                return ResourceManager.GetString("filesSuccess", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to File Not Valid.
         /// </summary>
         public static string FileNotValid {
             get {
                 return ResourceManager.GetString("FileNotValid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The file is adding successfully .
+        /// </summary>
+        public static string filesSuccess {
+            get {
+                return ResourceManager.GetString("filesSuccess", resourceCulture);
             }
         }
         
@@ -1560,15 +1569,6 @@ namespace TaskyRevamp.Localization.Resources {
         public static string Nodepartmentavailable {
             get {
                 return ResourceManager.GetString("Nodepartmentavailable", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to  No results.
-        /// </summary>
-        public static string NoMatchingResults {
-            get {
-                return ResourceManager.GetString("NoMatchingResults", resourceCulture);
             }
         }
         
@@ -2712,6 +2712,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string weight {
             get {
                 return ResourceManager.GetString("weight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Welcome.
+        /// </summary>
+        public static string Welcome {
+            get {
+                return ResourceManager.GetString("Welcome", resourceCulture);
             }
         }
         
