@@ -12,7 +12,7 @@
                 <span class="icon">
                     <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Users"></SVGCrud>
                 </span>
-                @Loc["ShowUser"]
+                @Loc["ViewUsers"]
             </button>
         </li>
         <li>
@@ -36,10 +36,10 @@
             {
                 <button class="dropdown-item text-danger" @onclick="@(() => Delete.InvokeAsync(Department.Id))">
                     <span class="icon">
-                    <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Delete"></SVGCrud>
-                </span>
-                @Loc["Delete"]
-            </button>
+                        <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Delete"></SVGCrud>
+                    </span>
+                    @Loc["Delete"]
+                </button>
             }
         </li>
     </ul>

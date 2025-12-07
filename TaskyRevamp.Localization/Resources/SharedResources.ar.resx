@@ -970,4 +970,16 @@
   <data name="filesSuccess" xml:space="preserve">
     <value>تم إضافة الملف بنجاح</value>
   </data>
+   <data name="System name english" xml:space="preserve">
+    <value>اسم النظام بالانجليزية</value>
+  </data>
+  <data name="Enter system name english" xml:space="preserve">
+    <value>ادخل اسم النظام بالانجليزية</value>
+  </data>
+   <data name="System name arabic" xml:space="preserve">
+    <value>اسم النظام بالعربية</value>
+  </data>
+  <data name="Enter system name arabic" xml:space="preserve">
+    <value>ادخل اسم النظام بالعربية</value>
+  </data>
 </root>

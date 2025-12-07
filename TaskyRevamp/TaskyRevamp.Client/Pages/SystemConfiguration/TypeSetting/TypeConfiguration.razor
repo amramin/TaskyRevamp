@@ -31,7 +31,7 @@
 @if (types != null && types.Any())
 {
     <div class="page-body">
-        <div class="table-responsive">
+        <div class="table-responsive sticky-header-custom">
             @if (types != null && types.Any())
             {
                 <SortableTable TItem="TypeDtoWithName" Columns="@tableColumns" Items="@types"
