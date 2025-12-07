@@ -359,12 +359,14 @@ else
                     privilegeName = rows[i][2].Trim()
                 });
             }
-            foreach (var user in userLinkDtos)
+
+            var resp = await _userConsumer.LinkUserWithDepartmentAndPrivilege(userLinkDtos);
+            if (resp.Success)
             {
-                await _userConsumer.LinkUserWithDepartmentAndPrivilege(user);
+                await ToastService.ShowToastAsync(Loc["filesSuccess"], "success");
+                await LoadUsers();
             }
-            await ToastService.ShowToastAsync(Loc["filesSuccess"], "success");
-            await LoadUsers();
+            
         }
     }
 
