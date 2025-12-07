@@ -880,7 +880,7 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Edit task source.
+        ///   Looks up a localized string similar to Edit source.
         /// </summary>
         public static string EditTaskSource {
             get {
@@ -1177,6 +1177,24 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Grid.
+        /// </summary>
+        public static string Grid {
+            get {
+                return ResourceManager.GetString("Grid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hierarchy.
+        /// </summary>
+        public static string Hierarchy {
+            get {
+                return ResourceManager.GetString("Hierarchy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 24 hours.
         /// </summary>
         public static string Hours24 {
@@ -1326,6 +1344,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string Loading {
             get {
                 return ResourceManager.GetString("Loading", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to dd-MM-yyyy.
+        /// </summary>
+        public static string LocalizeDate {
+            get {
+                return ResourceManager.GetString("LocalizeDate", resourceCulture);
             }
         }
         
@@ -2307,6 +2334,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string ToUser {
             get {
                 return ResourceManager.GetString("ToUser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tree.
+        /// </summary>
+        public static string Tree {
+            get {
+                return ResourceManager.GetString("Tree", resourceCulture);
             }
         }
         
