@@ -67,11 +67,11 @@
                                                 </button>
                                             </li>
                                             <li>
-                                                <button class="dropdown-item" @onclick="@(() => ViewPermission(item.PrivilegeDto.Id))">
+                                                <button class="dropdown-item" @onclick="@(() => LinkUser(item.PrivilegeDto.Id))">
                                                     <span class="icon">
-                                                        <SVGCrud SVGType="SVGCrud.SVGTypeEnum.PrivilegeConfig"></SVGCrud>
+                                                        <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Users"></SVGCrud>
                                                     </span>
-                                                    @Loc["ViewPermission"]
+                                                    @Loc["LinkUser"]
                                                 </button>
                                             </li>
                                             <li>
@@ -80,6 +80,14 @@
                                                         <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Delete"></SVGCrud>
                                                     </span>
                                                     @Loc["Delete"]
+                                                </button>
+                                            </li>
+                                            <li>
+                                                <button class="dropdown-item" @onclick="@(() => ViewPermission(item.PrivilegeDto.Id))">
+                                                    <span class="icon">
+                                                        <SVGCrud SVGType="SVGCrud.SVGTypeEnum.PrivilegeConfig"></SVGCrud>
+                                                    </span>
+                                                    @Loc["ViewPermission"]
                                                 </button>
                                             </li>
                                         </ul>
@@ -258,5 +266,15 @@ else
         }
 
         await LoadPrivilegs();
+    }
+    private void LinkUser(Guid id)
+    {
+        PopupService.ShowNew(@<LinkUsersToPrivilege Id="id" OnSaved="ReloadAfterSave"></LinkUsersToPrivilege>,Loc["LinkUser"]);
+    } 
+    private async Task ReloadAfterSave()
+    {
+        currentPage = 1;
+        PopupService.Hide();
+        StateHasChanged();
     }
 }

@@ -1303,6 +1303,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Link users.
+        /// </summary>
+        public static string linkUsers {
+            get {
+                return ResourceManager.GetString("linkUsers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to List view.
         /// </summary>
         public static string List {
