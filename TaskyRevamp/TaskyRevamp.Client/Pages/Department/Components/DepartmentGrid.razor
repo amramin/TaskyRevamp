@@ -41,15 +41,6 @@
                                 <SVGCrud SVGType="SVGCrud.SVGTypeEnum.EllipseVertical"></SVGCrud>
                             </button>
                             <ul class="dropdown-menu">
-
-                                <li>
-                                    <button class="dropdown-item" @onclick="@(() => OnShowUsers.InvokeAsync(p.Id))">
-                                        <span class="icon">
-                                            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Users"></SVGCrud>
-                                        </span>
-                                        @Loc["ViewUsers"]
-                                    </button>
-                                </li>
                                 <li>
                                     <button class="dropdown-item" @onclick="@(() => OnAdd.InvokeAsync(p.Id))">
                                         <span class="icon">
@@ -67,7 +58,24 @@
                                     </button>
                                 </li>
                                 <li>
-                                    @if(p.Level > 1 && p.ParentdepartmentId != Guid.Empty){
+                                    <button class="dropdown-item" @onclick="@(() => OnShowUsers.InvokeAsync(p.Id))">
+                                        <span class="icon">
+                                            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Users"></SVGCrud>
+                                        </span>
+                                        @Loc["ViewUsers"]
+                                    </button>
+                                </li>
+
+                                <li>
+                                    <button class="dropdown-item" @onclick="@(() => OnLinkUsers.InvokeAsync(p.Id))">
+                                        <span class="icon">
+                                            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.AddColumn"></SVGCrud>
+                                        </span>
+                                        @Loc["LinkUser"]
+                                    </button>
+                                </li>
+                                <li>
+                                    @if(p.Level > 1 && p.ParentdepartmentId != Guid.Empty&&!p.Children.Any()){
                                         <button class="dropdown-item text-danger" @onclick="@(() => OnDelete.InvokeAsync(p.Id))">
                                             <span class="icon">
                                                 <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Delete"></SVGCrud>
@@ -103,6 +111,7 @@
     [Parameter] public EventCallback<Guid> OnEdit { get; set; }
     [Parameter] public EventCallback<Guid> OnDelete { get; set; }
     [Parameter] public EventCallback<Guid> OnShowUsers { get; set; }
+    [Parameter] public EventCallback<Guid> OnLinkUsers { get; set; }
     [Parameter] public EventCallback<Guid> OnAdd { get; set; }
     [Parameter] public EventCallback<Guid> OnAddDepartment { get; set; }
     [Parameter] public int CurrentPage { get; set; }

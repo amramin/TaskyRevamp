@@ -63,7 +63,7 @@
         @switch (currentView)
         {
             case DepartmentViewType.Grid:
-                <DepartmentGrid Departments="departmentDtos" OnEdit="Edit" OnDelete="OnDeleteDepartment" OnShowUsers="ShowUser"
+                <DepartmentGrid Departments="departmentDtos" OnEdit="Edit" OnDelete="OnDeleteDepartment" OnShowUsers="ShowUser" OnLinkUsers="AddLinkUser"
                     OnAdd="AddDept" OnAddDepartment="AddDept" CurrentPage="currentPage" SortChanged="HandleSort"
                     SortColumn="@currentSortColumn" SortAscending="@sortAscending" PageChanged="ChangePage"
                     PageSizeChanged="ChangePageSize" PageSize="pageSize" TotalPages="totalPages" TotalCount="totalCount" />
@@ -75,7 +75,7 @@
                         <div class="row">
                             <div class="col-lg-10 ">
                                 <DepartmentTree IsRoot="true" Departments="rootDepartments" OnEdit="Edit"
-                                    OnDelete="OnDeleteDepartment" OnAddDepartment="AddDept" OnShowUsers="ShowUser"
+                                                OnDelete="OnDeleteDepartment" OnAddDepartment="AddDept" OnShowUsers="ShowUser" OnLinkUsers="AddLinkUser"
                                     OnAdd="AddDept" />
                             </div>
                         </div>
@@ -87,7 +87,7 @@
                 <div class="card setting-card card-hierarchy">
                     <div class="card-body">
                         <DepartmentHierarchy Departments="RootDepartments" OnEdit="Edit" OnDelete="OnDeleteDepartment"
-                            OnAddDepartment="AddDept" OnShowUsers="ShowUser" OnAdd="AddDept" />
+                                             OnAddDepartment="AddDept" OnShowUsers="ShowUser" OnLinkUsers="AddLinkUser" OnAdd="AddDept" />
                     </div>
                 </div>
                 break;
@@ -189,6 +189,11 @@ new() { Field = "Action", DisplayName = Loc["Action"] ,IsSortable = false},
     {
         navigationManager.NavigateTo($"/UsersDepartment/{id}");
 
+    }
+    private void AddLinkUser(Guid Id)
+    {
+        PopupService.ShowNew(@<LinkUserDepartment Id="Id" OnSaved="ReloadAfterSave"></LinkUserDepartment>,Loc["Addusers"]);
+        StateHasChanged();
     }
     private void AddDept(Guid id)
     {

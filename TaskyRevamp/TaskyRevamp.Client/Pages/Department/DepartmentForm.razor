@@ -95,6 +95,7 @@
         }
         var departs = await _departmentConsumer.GetDepartmentsForDDL();
         allDepartments = departs.Data.ToList();
+            allDepartments.RemoveAll(d => d.Id == department.Id);
         if (department.Id != Guid.Empty && department.ParentdepartmentId == Guid.Empty)
         {
             isFrist = true;

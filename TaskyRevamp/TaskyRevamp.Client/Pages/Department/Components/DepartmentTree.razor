@@ -13,7 +13,7 @@
                     <span class="text">@dept.Name</span>
                 </button>
 
-                <DepartmentActions Department="@dept" ShowUsers="OnShowUsers" OnAdd="@(() => OnAdd.InvokeAsync(dept.Id))" 
+                <DepartmentActions Department="@dept" ShowUsers="OnShowUsers" OnAdd="@(() => OnAdd.InvokeAsync(dept.Id))" OnLinkUsers="@(()=>OnLinkUsers.InvokeAsync(dept.Id))"
                     Edit="@(() => OnEdit.InvokeAsync(dept.Id))" Delete="@(() => OnDelete.InvokeAsync(dept.Id))" />
 
                 <button class="btn btn-outline-light-primary btn-32" type="button"
@@ -31,6 +31,7 @@
                     {
                         <li>
                             <DepartmentTree  IsRoot="false" Departments="new List<DepartmentDto> { child }" OnAdd="OnAdd" OnShowUsers="OnShowUsers"
+                                OnLinkUsers="OnLinkUsers"
                                 OnEdit="OnEdit" OnAddDepartment="OnAdd" OnDelete="OnDelete" />
                         </li>
                     }
@@ -46,6 +47,7 @@
     [Parameter] public List<DepartmentDto> Departments { get; set; } = new();
     [Parameter] public EventCallback<Guid> OnAddDepartment { get; set; }
     [Parameter] public EventCallback<Guid> OnShowUsers { get; set; }
+    [Parameter] public EventCallback<Guid> OnLinkUsers { get; set; }
     [Parameter] public EventCallback<Guid> OnEdit { get; set; }
     [Parameter] public EventCallback<Guid> OnDelete { get; set; }
     [Parameter] public EventCallback<Guid> OnAdd { get; set; }

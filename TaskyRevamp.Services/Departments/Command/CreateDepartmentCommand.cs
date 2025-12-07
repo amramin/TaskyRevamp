@@ -47,14 +47,14 @@ public class CreateDepartmentHandler : IRequestHandler<CreateDepartmentCommand, 
 	}
 	private async Task ValidateDepartment(DepartmentDto departmentDto)
     {
-        var exists = await _departmentRepository.FindBy(p => p.Id != departmentDto.Id && (p.NameEnglish.ToLower() == departmentDto.NameEnglish.ToLower() || p.NameArabic.ToLower() == departmentDto.NameArabic.ToLower()));
+        var exists = await _departmentRepository.FindBy(p => p.Id != departmentDto.Id && (p.NameEnglish.ToLower() == departmentDto.NameEnglish.Trim().ToLower() || p.NameArabic.ToLower() == departmentDto.NameArabic.Trim().ToLower()));
         if (exists?.Value?.Count > 0)
         {
             var departs = exists.Value;
             var errors = new Dictionary<string, List<string>>();
-            if (departs.Any(x => string.Equals(x.NameEnglish, departmentDto.NameEnglish, StringComparison.OrdinalIgnoreCase)))
+            if (departs.Any(x => string.Equals(x.NameEnglish, departmentDto.NameEnglish.Trim(), StringComparison.OrdinalIgnoreCase)))
                 errors.Add(nameof(DepartmentDto.NameEnglish), new List<string> { _localizer["DepartmentDuplicateValidation"] });
-            if (departs.Any(x => string.Equals(x.NameArabic, departmentDto.NameArabic, StringComparison.OrdinalIgnoreCase)))
+            if (departs.Any(x => string.Equals(x.NameArabic, departmentDto.NameArabic.Trim(), StringComparison.OrdinalIgnoreCase)))
                 errors.Add(nameof(DepartmentDto.NameArabic), new List<string> { _localizer["DepartmentDuplicateValidation"] });
 
             throw new ValidationException(errors);

@@ -9,7 +9,7 @@
             @if (ShowPageSize)
             {
                 <div>
-                    <label>  @Loc["Items per page"]: </label>
+                    <label>  @Loc["Items per page"] </label>
                     <select class="form-select d-inline-block w-auto ms-2" @onchange="PageSizeChanged">
                         @foreach (var size in PageSizeOptions)
                         {

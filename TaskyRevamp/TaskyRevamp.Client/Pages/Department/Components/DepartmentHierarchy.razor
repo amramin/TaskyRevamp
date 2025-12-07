@@ -7,7 +7,7 @@
             <div class="node-box-container">
                 <div class="node-box">
                     <span>@dept.Name</span>
-                    <DepartmentActions Department="@dept" ShowUsers="OnShowUsers" OnAdd="OnAdd" Edit="OnEdit"
+                    <DepartmentActions Department="@dept" ShowUsers="OnShowUsers" OnLinkUsers="OnLinkUsers" OnAdd="OnAdd" Edit="OnEdit"
                         Delete="OnDelete" />
                    
                 </div>
@@ -17,7 +17,7 @@
             @if (dept.Children?.Any() == true)
             {
                 <div class="children">
-                    <DepartmentHierarchy Departments="dept.Children" OnShowUsers="OnShowUsers" OnAdd="OnAdd" OnEdit="OnEdit"
+                    <DepartmentHierarchy Departments="dept.Children" OnShowUsers="OnShowUsers" OnLinkUsers="OnLinkUsers" OnAdd="OnAdd" OnEdit="OnEdit"
                      OnDelete="OnDelete" />
                  
                 </div>
@@ -29,6 +29,7 @@
 @code {
     [Parameter] public List<DepartmentDto> Departments { get; set; } = new();
     [Parameter] public EventCallback<Guid> OnShowUsers { get; set; }
+    [Parameter] public EventCallback<Guid> OnLinkUsers { get; set; }
     [Parameter] public EventCallback<Guid> OnEdit { get; set; }
     [Parameter] public EventCallback<Guid> OnDelete { get; set; }
     [Parameter] public EventCallback<Guid> OnAdd { get; set; }
