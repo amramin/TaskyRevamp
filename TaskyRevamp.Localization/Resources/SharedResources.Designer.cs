@@ -898,7 +898,7 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Edit task source.
+        ///   Looks up a localized string similar to Edit source.
         /// </summary>
         public static string EditTaskSource {
             get {
@@ -993,6 +993,24 @@ namespace TaskyRevamp.Localization.Resources {
         public static string Enter_Priority_Name_English {
             get {
                 return ResourceManager.GetString("Enter Priority Name English", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter system name arabic.
+        /// </summary>
+        public static string Enter_system_name_arabic {
+            get {
+                return ResourceManager.GetString("Enter system name arabic", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter system name english.
+        /// </summary>
+        public static string Enter_system_name_english {
+            get {
+                return ResourceManager.GetString("Enter system name english", resourceCulture);
             }
         }
         
@@ -1195,6 +1213,24 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Grid.
+        /// </summary>
+        public static string Grid {
+            get {
+                return ResourceManager.GetString("Grid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hierarchy.
+        /// </summary>
+        public static string Hierarchy {
+            get {
+                return ResourceManager.GetString("Hierarchy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 24 hours.
         /// </summary>
         public static string Hours24 {
@@ -1344,6 +1380,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string Loading {
             get {
                 return ResourceManager.GetString("Loading", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to dd-MM-yyyy.
+        /// </summary>
+        public static string LocalizeDate {
+            get {
+                return ResourceManager.GetString("LocalizeDate", resourceCulture);
             }
         }
         
@@ -1753,7 +1798,7 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to privilege .
+        ///   Looks up a localized string similar to Privilege .
         /// </summary>
         public static string Privilege {
             get {
@@ -2122,7 +2167,7 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to subtask level.
+        ///   Looks up a localized string similar to Subtask level.
         /// </summary>
         public static string Subtask_Level {
             get {
@@ -2190,6 +2235,24 @@ namespace TaskyRevamp.Localization.Resources {
         public static string System_Identity_Configuration {
             get {
                 return ResourceManager.GetString("System Identity Configuration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to System name arabic.
+        /// </summary>
+        public static string System_name_arabic {
+            get {
+                return ResourceManager.GetString("System name arabic", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to System name english.
+        /// </summary>
+        public static string System_name_english {
+            get {
+                return ResourceManager.GetString("System name english", resourceCulture);
             }
         }
         
@@ -2352,6 +2415,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string ToUser {
             get {
                 return ResourceManager.GetString("ToUser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tree.
+        /// </summary>
+        public static string Tree {
+            get {
+                return ResourceManager.GetString("Tree", resourceCulture);
             }
         }
         

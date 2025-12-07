@@ -84,7 +84,7 @@
         @switch (currentView)
         {
             case DepartmentViewType.Grid:
-                <DepartmentGrid Departments="departmentDtos" OnEdit="Edit" OnDelete="OnDeleteDepartment" OnShowUsers="ShowUser"
+                <DepartmentGrid Departments="departmentDtos" OnEdit="Edit" OnDelete="OnDeleteDepartment" OnShowUsers="ShowUser" OnLinkUsers="AddLinkUser"
                     OnAdd="AddDept" OnAddDepartment="AddDept" CurrentPage="currentPage" SortChanged="HandleSort"
                     SortColumn="@currentSortColumn" SortAscending="@sortAscending" PageChanged="ChangePage"
                     PageSizeChanged="ChangePageSize" PageSize="pageSize" TotalPages="totalPages" TotalCount="totalCount" />
@@ -96,7 +96,7 @@
                         <div class="row">
                             <div class="col-lg-10 ">
                                 <DepartmentTree IsRoot="true" Departments="rootDepartments" OnEdit="Edit"
-                                    OnDelete="OnDeleteDepartment" OnAddDepartment="AddDept" OnShowUsers="ShowUser"
+                                                OnDelete="OnDeleteDepartment" OnAddDepartment="AddDept" OnShowUsers="ShowUser" OnLinkUsers="AddLinkUser"
                                     OnAdd="AddDept" />
                             </div>
                         </div>
@@ -108,7 +108,7 @@
                 <div class="card setting-card card-hierarchy">
                     <div class="card-body">
                         <DepartmentHierarchy Departments="RootDepartments" OnEdit="Edit" OnDelete="OnDeleteDepartment"
-                            OnAddDepartment="AddDept" OnShowUsers="ShowUser" OnAdd="AddDept" />
+                                             OnAddDepartment="AddDept" OnShowUsers="ShowUser" OnLinkUsers="AddLinkUser" OnAdd="AddDept" />
                     </div>
                 </div>
                 break;
@@ -136,7 +136,7 @@ else
     private int totalPages = 1;
     private int totalCount = 0;
     private int pageSize = 10;
-    private string currentSortColumn = "CreateDate";
+    private string currentSortColumn = "";
     private bool? sortAscending = true;
     private DepartmentViewType currentView = DepartmentViewType.Grid;
     private List<SortableColumn> tableColumns = new();
@@ -447,7 +447,7 @@ new() { Field = "Action", DisplayName = Loc["Action"] ,IsSortable = false},
     }
     private async Task ReloadAfterSave()
     {
-        currentPage = 1;
+        //currentPage = page;
         PopupService.Hide();
         await LoadDepartmentsAsync();
         StateHasChanged();
@@ -472,6 +472,11 @@ new() { Field = "Action", DisplayName = Loc["Action"] ,IsSortable = false},
         navigationManager.NavigateTo($"/UsersDepartment/{id}");
 
     }
+    private void AddLinkUser(Guid Id)
+    {
+        PopupService.ShowNew(@<LinkUserDepartment Id="Id" OnSaved="ReloadAfterSave"></LinkUserDepartment>,Loc["Addusers"]);
+        StateHasChanged();
+    }
     private void AddDept(Guid id)
     {
         PopupService.ShowNew(@<AddDepartment ParentId="id" OnSaved="ReloadAfterSave"></AddDepartment>,Loc["AddDepartment"]);
@@ -484,6 +489,7 @@ new() { Field = "Action", DisplayName = Loc["Action"] ,IsSortable = false},
         // if Tree or Hierarchy → fetch all departments at once
         if (currentView == DepartmentViewType.Tree || currentView == DepartmentViewType.Hierarchy)
         {
+            currentPage = 1;
             pageSize = 10000;
         }
         else
@@ -551,6 +557,7 @@ SearchFieldDepartment.Level
     public async Task Search(string searchTerm)
     {
         searchdata = searchTerm;
+        currentPage = 1;
         await LoadDepartmentsAsync(true, searchTerm);
     }
     private async Task LoadDepartmentsAsync(bool isSearch = false, string searchTerm = null)
@@ -611,7 +618,7 @@ SearchFieldDepartment.Level
         // Third click → reset to default sorting
         if (sortAscending == null)
         {
-            currentSortColumn = "DisplayedName";
+            currentSortColumn = "";
             sortAscending = true;
         }
         await LoadDepartmentsAsync();

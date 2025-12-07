@@ -362,6 +362,8 @@
   </data>
 	<data name="EditTaskSource" xml:space="preserve">
     <value>تعديل مصدر المهمة</value>
+  <data name="EditTaskSource" xml:space="preserve">
+    <value>تعديل مصدر </value>
   </data>
 	<data name="DeleteTaskSource" xml:space="preserve">
     <value>حذف مصدر المهمة</value>
@@ -371,6 +373,8 @@
   </data>
 	<data name="inactive" xml:space="preserve">
     <value>غيرنشط</value>
+  <data name="inactive" xml:space="preserve">
+    <value>غير نشط</value>
   </data>
 	<data name="name" xml:space="preserve">
     <value>الاسم </value>
@@ -516,6 +520,8 @@
   </data>
 	<data name="AddDepartment" xml:space="preserve">
     <value>أضف إدارة</value>
+  <data name="AddDepartment" xml:space="preserve">
+    <value>إضافة إدارة</value>
   </data>
 	<data name="DepartmentParent" xml:space="preserve">
     <value>الإدارة الرئيسية </value>
@@ -992,5 +998,29 @@
   </data>
 	<data name="filesSuccess" xml:space="preserve">
     <value>تم إضافة الملف بنجاح</value>
+  </data>
+  <data name="System name english" xml:space="preserve">
+    <value>اسم النظام بالانجليزية</value>
+  </data>
+  <data name="Enter system name english" xml:space="preserve">
+    <value>ادخل اسم النظام بالانجليزية</value>
+  </data>
+  <data name="System name arabic" xml:space="preserve">
+    <value>اسم النظام بالعربية</value>
+  </data>
+  <data name="Enter system name arabic" xml:space="preserve">
+    <value>ادخل اسم النظام بالعربية</value>
+  </data>
+  <data name="LocalizeDate" xml:space="preserve">
+    <value>yyyy-MM-dd</value>
+  </data>
+  <data name="Hierarchy" xml:space="preserve">
+    <value>تسلسل هرمي</value>
+  </data>
+  <data name="Tree" xml:space="preserve">
+    <value>شجرة</value>
+  </data>
+  <data name="Grid" xml:space="preserve">
+    <value>جدول</value>
   </data>
 </root>

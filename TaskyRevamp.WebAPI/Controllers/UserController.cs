@@ -108,9 +108,9 @@ public class UserController : ControllerBase
 	}
 
 	[HttpPost("LinkUserWithDepartmentAndPrivilege")]
-	public async Task<ActionResult<bool>> LinkUser(UserLinkDto userLinkDto)
+	public async Task<ActionResult<bool>> LinkUser(List<UserLinkDto> userLinkDtos)
 	{
-		var res = await _mediator.Send(new LinkUserWithDepartmentAndPrivilegeCommand(userLinkDto));
+		var res = await _mediator.Send(new LinkUserWithDepartmentAndPrivilegeCommand(userLinkDtos));
 		return Ok(res);
 	}
 

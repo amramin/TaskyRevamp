@@ -268,7 +268,7 @@
     <value>Default view</value>
   </data>
   <data name="Subtask_Level" xml:space="preserve">
-    <value>subtask level</value>
+    <value>Subtask level</value>
   </data>
   <data name="Types of system notification Messages" xml:space="preserve">
     <value>Types of system notification messages</value>
@@ -361,7 +361,7 @@
     <value>Add Source</value>
   </data>
   <data name="EditTaskSource" xml:space="preserve">
-    <value>Edit task source</value>
+    <value>Edit source</value>
   </data>
   <data name="DeleteTaskSource" xml:space="preserve">
     <value>Delete task source</value>
@@ -643,7 +643,7 @@
     <value>General modules </value>
   </data>
   <data name="Privilege" xml:space="preserve">
-    <value>privilege </value>
+    <value>Privilege </value>
   </data>
   <data name="TaskModule" xml:space="preserve">
     <value>Task module</value>
@@ -986,5 +986,29 @@
   </data>
   <data name="SomeInvalidRowsSkipped" xml:space="preserve">
     <value>The file has in duplicate, missing or not matched departement, recheck the file and import it again.</value>
+  </data>
+  <data name="System name english" xml:space="preserve">
+    <value>System name english</value>
+  </data>
+  <data name="Enter system name english" xml:space="preserve">
+    <value>Enter system name english</value>
+  </data>
+  <data name="System name arabic" xml:space="preserve">
+    <value>System name arabic</value>
+  </data>
+  <data name="Enter system name arabic" xml:space="preserve">
+    <value>Enter system name arabic</value>
+  </data>
+  <data name="LocalizeDate" xml:space="preserve">
+    <value>dd-MM-yyyy</value>
+  </data>
+  <data name="Hierarchy" xml:space="preserve">
+    <value>Hierarchy</value>
+  </data>
+  <data name="Tree" xml:space="preserve">
+    <value>Tree</value>
+  </data>
+  <data name="Grid" xml:space="preserve">
+    <value>Grid</value>
   </data>
 </root>

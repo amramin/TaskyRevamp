@@ -31,7 +31,7 @@
 @if (types != null && types.Any())
 {
     <div class="page-body">
-        <div class="table-responsive">
+        <div class="table-responsive sticky-header-custom">
             @if (types != null && types.Any())
             {
                 <SortableTable TItem="TypeDtoWithName" Columns="@tableColumns" Items="@types"
@@ -43,11 +43,11 @@
                             var checkboxId = $"type-active-{item.Type.Id}";
                             <tr>
                                 <td>@item.Type.DisplayedName</td>
-                                <td>@item.Type.CreateDate.ToLocalTime().ToString("dd-MM-yyyy")</td>
-                                <td>@item.CreatedByName</td>
-                                <td>
-                                    @(item.Type.UpdateDate.HasValue? item.Type.UpdateDate.Value.ToLocalTime().ToString("dd-MM-yyyy") : "")
-                                </td>
+                                <td>@item.Type.CreateDate.ToLocalTime().ToString(Loc["LocalizeDate"])</td>
+                                    <td>@item.CreatedByName</td>
+                                    <td>
+                                    @(item.Type.UpdateDate.HasValue? item.Type.UpdateDate.Value.ToLocalTime().ToString(Loc["LocalizeDate"]) : "")
+                                    </td>
                                 <td>@item.UpdatedByName</td>
                                 <td>
                                     <div class="form-check form-switch custom">
@@ -102,13 +102,13 @@ else
     private int totalPages = 1;
     private int totalCount = 0;
     private int pageSize = 10;
-    private string currentSortColumn = "CreateDate";
+    private string currentSortColumn = "";
     private bool? sortAscending = true;
     private List<SortableColumn> tableColumns = new();
     private Search? searchComponent;
     private string? lastSearchTerm = null;
     private bool isSearchMode = false;
-
+    public List<SearchField> searchFields = new List<SearchField>();
     private async Task ChangePage(int page)
     {
         currentPage = page;
@@ -133,6 +133,7 @@ else
         new() { Field = "IsActive", DisplayName = Loc["active"] },
         new() { Field = "Action", DisplayName = Loc["Action"] ,IsSortable = false},
         };
+        searchFields = GetFileds();
         await LoadTypes();
         initialTypes = types;
     }
@@ -181,7 +182,7 @@ else
                 types.Remove(selectedType);
                 if (types.Count()<=0)
                 {
-                    currentPage -= 1;
+                    currentPage = currentPage == 1 ? 1 : currentPage - 1;
                 }
                 await LoadTypes();
 
@@ -216,26 +217,38 @@ else
         if (sortAscending == null)
         {
             // third click → reset to default sorting
-            currentSortColumn = "DisplayedName"; // or whatever your default column is
+            currentSortColumn = ""; // or whatever your default column is
             sortAscending = true;
         }
 
         await LoadTypes();
     }
 
-    public List<SearchField> searchFields = new List<SearchField>() {
-        SearchField.NameEnglish,
-        SearchField.NameArabic,
+
+    public List<SearchField> GetFileds()
+    {
+        var fileds = new List<SearchField>() {
         SearchField.CreatedBy,
         SearchField.UpdatedBy,
         SearchField.CreateDate,
         SearchField.UpdateDate,
         SearchField.ActiveStatus
     };
+        if (Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName == "ar")
+        {
+            fileds.Add(SearchField.NameArabic);
+        }
+        else
+        {
+            fileds.Add(SearchField.NameEnglish);
+        }
+        return fileds;
+    }
     public async Task Search(string searchTerm)
     {
         lastSearchTerm = searchTerm;
         isSearchMode = true;
+        currentPage = 1;
         await LoadTypes(true, searchTerm);
     }
     private async Task ClearSearch()
