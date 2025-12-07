@@ -1,5 +1,7 @@
-﻿@using TaskyRevamp.Dto.Department
+﻿@using TaskyRevamp.Dto.Department 
+@using TaskyRevamp.Client.Services
 @inject IStringLocalizer<SharedResources> Loc
+@inject PopupService PopupService
 
 <div class="dropdown actions">
     <button class="btn btn-action-24" type="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -24,6 +26,7 @@
             </button>
         </li>
         <li>
+
             <button class="dropdown-item" @onclick="@(() => ShowUsers.InvokeAsync(Department.Id))">
                 <span class="icon">
                     <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Users"></SVGCrud>
@@ -41,6 +44,25 @@
         </li>
         <li>
             @if (Department.Level > 1 && Department.ParentdepartmentId != Guid.Empty&&!Department.Children.Any())
+
+            <button class="dropdown-item" @onclick="@(() => ShowUsers.InvokeAsync(Department.Id))">
+                <span class="icon">
+                    <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Users"></SVGCrud>
+                </span>
+                @Loc["ViewUsers"]
+            </button>
+        </li>
+        <li>
+            <button class="dropdown-item" @onclick="@(() => LinkUser(Department.Id))">
+                <span class="icon">
+                    <SVGCrud SVGType="SVGCrud.SVGTypeEnum.User"></SVGCrud>
+                </span>
+                @Loc["linkUsers"]
+            </button>
+        </li>
+        <li>
+            @if (Department.Level > 1 && Department.ParentdepartmentId != Guid.Empty)
+
             {
                 <button class="dropdown-item text-danger" @onclick="@(() => Delete.InvokeAsync(Department.Id))">
                     <span class="icon">
@@ -59,6 +81,20 @@
     [Parameter] public EventCallback<Guid> Edit { get; set; }
     [Parameter] public EventCallback<Guid> Delete { get; set; }
     [Parameter] public EventCallback<Guid> OnAdd { get; set; }
+
     [Parameter] public EventCallback<Guid> OnLinkUsers { get; set; }
+
+
+
+    private void LinkUser(Guid departmentId)
+    {
+        PopupService.ShowNew(@<LinkUserDepartment Id="departmentId" OnSaved="ReloadAfterSave"></LinkUserDepartment>,Loc["LinkUser"]);
+    }
+
+    private async Task ReloadAfterSave()
+    {
+        PopupService.Hide();
+        StateHasChanged();
+    }
 
 }

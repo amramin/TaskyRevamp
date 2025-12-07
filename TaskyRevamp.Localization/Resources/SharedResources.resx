@@ -987,6 +987,7 @@
   <data name="SomeInvalidRowsSkipped" xml:space="preserve">
     <value>The file has in duplicate, missing or not matched departement, recheck the file and import it again.</value>
   </data>
+
   <data name="System name english" xml:space="preserve">
     <value>System name english</value>
   </data>
@@ -1023,4 +1024,18 @@
   <data name="InvaildUserNameOrPassWord" xml:space="preserve">
     <value>Username or password is incorrect</value>
   </data>
+
+  <data name="linkUsers" xml:space="preserve">
+    <value>Link users</value>
+  </data>
+  <data name="Hierarchy" xml:space="preserve">
+    <value>Hierarchy</value>
+  </data>
+  <data name="Grid" xml:space="preserve">
+    <value>Grid</value>
+  </data>
+  <data name="Tree" xml:space="preserve">
+    <value>Tree</value>
+  </data>
+
 </root>
