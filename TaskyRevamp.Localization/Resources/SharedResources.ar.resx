@@ -1043,4 +1043,49 @@
     <value>الشجرة</value>
   </data>
 
+  <data name="Sure" xml:space="preserve">
+    <value>هل أنت متأكد أنك تريد حذف هذه الأولوية؟</value>
+  </data>
+  <data name="SourceSure" xml:space="preserve">
+    <value>هل أنت متأكد من أنك تريد حذف مصدر المهمة؟</value>
+  </data>
+  <data name="TypeSure" xml:space="preserve">
+    <value>هل أنت متأكد من أنك تريد حذف نوع المهمة؟</value>
+  </data>
+  <data name="AddNewPriority" xml:space="preserve">
+    <value>إضافة أولوية جديدة</value>
+  </data>
+  <data name="SelectDay" xml:space="preserve">
+    <value>اختر اليوم</value>
+  </data>
+  <data name="SelectTime" xml:space="preserve">
+    <value>اختر الوقت</value>
+  </data>
+  <data name="EmailNotification" xml:space="preserve">
+    <value>اشعار البريد الالكترونى</value>
+  </data>
+  <data name="SystemNotification" xml:space="preserve">
+    <value>اشعار النظام</value>
+  </data>
+  <data name="SubjectEnglish" xml:space="preserve">
+    <value>الموضوع بالانجليزيه</value>
+  </data>
+  <data name="SubjectArabic" xml:space="preserve">
+    <value>الموضوع بالعربيه</value>
+  </data>
+  <data name="EmailNotificationContent" xml:space="preserve">
+    <value>محتوى الاشعار بالبريد الالكترونى</value>
+  </data>
+  <data name="SystemNotificationContent" xml:space="preserve">
+    <value>محتوى اشعار النظام</value>
+  </data>
+  <data name="Themessagecontentcannotbeempty" xml:space="preserve">
+    <value>لا يمكن أن يكون محتوى الرسالة فارغً</value>
+  </data>
+  <data name="notvald250" xml:space="preserve">
+    <value>تم الوصول إلى الحد الأقصى لعدد الأحرف</value>
+  </data>
+  <data name="notvald1000" xml:space="preserve">
+    <value>تم الوصول إلى الحد الأقصى لعدد الأحرف</value>
+  </data>
 </root>

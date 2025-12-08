@@ -186,7 +186,7 @@ namespace TaskyRevamp.Infrastructure.Seeders
                new NotificationTypeTemplate{
                    NameEnglish = "Change task progress",
                     IsEnable=true,
-                   NameArabic = "تغيير تططور المهمه",
+                   NameArabic = "تغيير تطور المهمه",
                 moduleType= Dto.Enums.ModuleType.Email,
 
 

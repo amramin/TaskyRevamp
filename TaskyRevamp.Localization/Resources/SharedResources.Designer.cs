@@ -216,6 +216,15 @@ namespace TaskyRevamp.Localization.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Add new privilege.
         /// </summary>
+        public static string AddNewPriority {
+            get {
+                return ResourceManager.GetString("AddNewPriority", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add new privilege.
+        /// </summary>
         public static string AddNewPrivilege {
             get {
                 return ResourceManager.GetString("AddNewPrivilege", resourceCulture);
@@ -268,7 +277,7 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Add Source.
+        ///   Looks up a localized string similar to Add task source.
         /// </summary>
         public static string AddTaskSource {
             get {
@@ -1645,6 +1654,24 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Maximum character limit reached..
+        /// </summary>
+        public static string notvald1000 {
+            get {
+                return ResourceManager.GetString("notvald1000", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Maximum character limit reached..
+        /// </summary>
+        public static string notvald250 {
+            get {
+                return ResourceManager.GetString("notvald250", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No users assigned to this department.
         /// </summary>
         public static string NoUsers {
@@ -2194,6 +2221,24 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Subject Arabic.
+        /// </summary>
+        public static string SubjectArabic {
+            get {
+                return ResourceManager.GetString("SubjectArabic", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Subject English.
+        /// </summary>
+        public static string SubjectEnglish {
+            get {
+                return ResourceManager.GetString("SubjectEnglish", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Set the maximum number of subtask levels allowed when creating a task. This controls how deeply tasks can be nested..
         /// </summary>
         public static string subtask_hint {
@@ -2230,7 +2275,7 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Are you sure you want to delete this ?.
+        ///   Looks up a localized string similar to Are you sure you want to delete this priority?.
         /// </summary>
         public static string Sure {
             get {
@@ -2514,6 +2559,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string Types_of_system_notification_Messages {
             get {
                 return ResourceManager.GetString("Types of system notification Messages", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to delete this task type?.
+        /// </summary>
+        public static string TypeSure {
+            get {
+                return ResourceManager.GetString("TypeSure", resourceCulture);
             }
         }
         

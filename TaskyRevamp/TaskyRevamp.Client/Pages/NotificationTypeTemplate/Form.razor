@@ -1,72 +1,86 @@
 ﻿@page "/EditTemplate/{Id:guid}"
+@using Microsoft.AspNetCore.Components
 @using TaskyRevamp.Client.Consumer
 @using TaskyRevamp.Dto.Notification
 @using TaskyRevamp.Dto.SystemConfiguration
+@inject NavigationManager navigationManager
 @inject IStringLocalizer<SharedResources> Loc
 @inject NotificationTypeTemplateConsumer _NotificationTypeTemplateConsumer
 
 <div class="page-header">
     <div class="title-block">
-        <button class="btn btn-action-24">
-            <span class="icon">
-                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.BackArrow"></SVGCrud>
-            </span>
-        </button>
-        <h1 class="page-headline">Configure system notification content</h1>
+        @if (NotificationTypeTamplate.moduleType == Dto.Enums.ModuleType.Email)
+        {
+            <h1 class="page-headline">@Loc["EmailNotificationContent"]</h1>
+        }
+        @if (NotificationTypeTamplate.moduleType == Dto.Enums.ModuleType.SystemNotification)
+        {
+            <h1 class="page-headline">@Loc["SystemNotificationContent"]</h1>
+        }
     </div>
 
 </div>
-<div class="page-body">
- <div class="card setting-card">
 <EditForm EditContext="@editContext" OnSubmit="@OnSubmitHandler">
     <DataAnnotationsValidator />
-    <div class="card-body">
-        <div class="row g-3">
-            <div class="col-lg-6">
-               
-                    <label class="form-label">
-                        @Loc["SubjectEnglish"]
-                        <span class="text-danger">*</span>
-                    </label>
-                    <InputText class="form-control" @bind-Value="NotificationTypeTamplate.SubjectEnglish" />
-                    <ValidationMessage class="small text-danger" For="@(() => NotificationTypeTamplate.SubjectEnglish)">
-                    </ValidationMessage>
-                
-            </div>
-            <div class="col-lg-6">
-
-                <label class="form-label">
-                    @Loc["SubjectArabic"]
-                    <span class="text-danger">*</span>
-                </label>
-
-                <div class="color-group">
-                    <InputText class="form-control" @bind-Value="NotificationTypeTamplate.SubjectArabic" />
-
-
-
-                </div>
-                <ValidationMessage class="small text-danger" For="@(() => NotificationTypeTamplate.SubjectEnglish)">
-                </ValidationMessage>
-            </div>
-       
+    <div class="body">
+        <div class="row g-2">
         <div class="col-lg-6">
-         <label class="form-label">
-                          Email body in English
-                    <span class="text-danger">*</span>
-                </label>
-                <RichTextEditorComponent EditorId="RTE_EnglishTemplateEnglish"
-                    @ref="RichTextEditorComponentRefTemplateEnglish" Content="@NotificationTypeTamplate.TemplateEnglish"
-                    ContentChanged="OnDescriptionEnglishChanged">
+        <div class="mb-6">
+            <label class="form-label">
+                @Loc["SubjectEnglish"]
+                <span class="text-danger">*</span>
+            </label>
+                    <InputText class="form-control" @oninput="@(e => UpdateCounter(e, "nameEnglishCounter", 250))" @bind-Value="NotificationTypeTamplate.SubjectEnglish" />
+
+                    <small id="nameArabicCounter" class="form-text x-small  text-end ms-auto">
+                        @Counters["nameEnglishCounter"]/250
+                    </small>
+                        <ValidationMessage class="small text-danger" For="@(() => NotificationTypeTamplate.SubjectEnglish)"></ValidationMessage>
+        </div>
+        </div>
+        <div class="col-lg-6">
+           
+            <label class="form-label">
+                @Loc["SubjectArabic"]
+                <span class="text-danger">*</span>
+            </label>
+
+            <div class="color-group">
+                    <InputText class="form-control" @oninput="@(e => UpdateCounter(e, "nameArabicCounter", 250))" @bind-Value="NotificationTypeTamplate.SubjectArabic" />
+
+                    <small id="nameArabicCounter" class="form-text x-small  text-end ms-auto">
+                        @Counters["nameArabicCounter"]/250
+                    </small>
+
+            </div>
+            <ValidationMessage class="small text-danger" For="@(() => NotificationTypeTamplate.SubjectEnglish)"></ValidationMessage>
+        </div>
+        </div>
+       </div>
+        <div class="row g-2">
+        <div class="col-lg-6">
+         <div class="mb-6">
+
+
+                <RichTextEditorComponent EditorId="RTE_EnglishTemplateEnglish" @ref="RichTextEditorComponentRefTemplateEnglish"
+                                         Content="@NotificationTypeTamplate.TemplateEnglish" ContentChanged="OnDescriptionEnglishChanged">
                 </RichTextEditorComponent>
+            @*     <small id="templateCounterEn" class="form-text x-small  text-end ms-auto">
+                    @englishcount/ 1000
+                </small> *@
 
                 <div class="d-flex align-items-center justify-content-between">
                     <div class="d-flex gap-2">
-                        <ValidationMessage class="small text-danger"
-                            For="@(() => NotificationTypeTamplate.TemplateEnglish)" />
+                        <ValidationMessage class="small text-danger" For="@(() => NotificationTypeTamplate.TemplateEnglish)" />
                     </div>
+                    @if (isEmptyEnglishTemplate)
+                    {
+                        <div md="3">
+                            <label class="small text-danger"> @Loc["Themessagecontentcannotbeempty"]</label>
+                        </div>
+                    }
                 </div>
-            
+            </div>
         </div>
         <div class="col-lg-6">
          <label class="form-label">
@@ -77,16 +91,25 @@
                     @ref="RichTextEditorComponentRefTemplateArabic" Content="@NotificationTypeTamplate.TemplateArabic"
                     ContentChanged="OnDescriptionArabicChanged">
                 </RichTextEditorComponent>
-
+               @*  <small id="templateCounterAr" class="form-text x-small  text-end ms-auto">
+               @arabiccount/ 1000
+                </small> *@
                 <div class="d-flex align-items-center justify-content-between">
                     <div class="d-flex gap-2">
                         <ValidationMessage class="small text-danger"
                             For="@(() => NotificationTypeTamplate.TemplateArabic)" />
                     </div>
+                    @if (isEmptyArabicTemplate)
+                    {
+                        <div md="3">
+                            <label class="small text-danger"> @Loc["Themessagecontentcannotbeempty"]</label>
+                        </div>
+                    }
                 </div>
+            </div>
+
         </div>
-    </div>
- </div>
+  
     
      <div class="card-footer">
                 <div class="row justify-content-center">
@@ -102,8 +125,7 @@
             </div>
        
 </EditForm>
-</div>
-</div>
+
 
 @code {
 
@@ -115,11 +137,43 @@
     [Parameter] public EventCallback OnCancel { get; set; }
     [Parameter] public string SubmitButtonText { get; set; } = "Save";
     private RichTextEditorComponent RichTextEditorComponentRefTemplateEnglish;
-
+    int englishcount = 0;
+    int arabiccount = 0;
     private RichTextEditorComponent RichTextEditorComponentRefTemplateArabic;
-
+    bool isEmptyEnglishTemplate = false;
+    bool isEmptyArabicTemplate = false;
     private EditContext editContext;
     private ValidationMessageStore messageStore;
+    protected override void OnParametersSet()
+    {
+        // Initialize counters for each input field
+        InitializeCounter("nameEnglishCounter", NotificationTypeTamplate?.SubjectEnglish);
+        InitializeCounter("nameArabicCounter", NotificationTypeTamplate?.SubjectArabic);
+    
+
+        englishcount = NotificationTypeTamplate?.TemplateEnglish?.Length ?? 0;
+        arabiccount = NotificationTypeTamplate?.TemplateArabic?.Length ?? 0;
+
+    }
+    private Dictionary<string, int> Counters { get; set; } = new();
+    private Dictionary<string, int> CounterTwo { get; set; } = new();
+
+    private void InitializeCounter(string fieldId, string? value)
+    {
+        Counters[fieldId] = value?.Length ?? 0; // Set the counter to the length of the initial value
+
+    }
+   
+    private void UpdateCounter(ChangeEventArgs e, string fieldId, int maxLength)
+    {
+        var input = e.Value?.ToString() ?? string.Empty;
+        Counters[fieldId] = Math.Min(input.Length, maxLength); // Update the counter dynamically
+    }
+    private void UpdateCounterTwo(ChangeEventArgs e, string fieldId, int maxLength)
+    {
+        var input = e.Value?.ToString() ?? string.Empty;
+        CounterTwo[fieldId] = Math.Min(input.Length, maxLength); // Update the counter dynamically
+    }
     protected override async Task OnParametersSetAsync()
 
     {
@@ -138,20 +192,45 @@
     private void OnDescriptionEnglishChanged(string html)
     {
         NotificationTypeTamplate.TemplateEnglish = html;
+        englishcount = html.Length;
     }
 
     private void OnDescriptionArabicChanged(string html)
     {
         NotificationTypeTamplate.TemplateArabic = html;
+        arabiccount = html.Length;
     }
     private async Task OnSubmitHandler(EditContext context)
     {
+        if (string.IsNullOrEmpty(NotificationTypeTamplate.TemplateEnglish)
+        || string.IsNullOrEmpty(NotificationTypeTamplate.TemplateArabic)
+        
+        )
+        {
+            if (string.IsNullOrEmpty(NotificationTypeTamplate.TemplateEnglish))
+        isEmptyEnglishTemplate = true;
+            if (string.IsNullOrEmpty(NotificationTypeTamplate.TemplateArabic))
+                isEmptyArabicTemplate = true;
+                return;
+        }
         ClearValidationMessages();
         if (!editContext.Validate())
             return; // client-side validation failed → stop
 
         await _NotificationTypeTemplateConsumer.AddNotificationTypeTemplate(NotificationTypeTamplate);
         await OnValidSubmit.InvokeAsync(context);
+
+        if (NotificationTypeTamplate.moduleType == Dto.Enums.ModuleType.Email)
+        {
+
+            navigationManager.NavigateTo($"/NotificationTypeTemplates/{(int)TaskyRevamp.Dto.Enums.ModuleType.Email}");
+        }
+
+        if (NotificationTypeTamplate.moduleType == Dto.Enums.ModuleType.SystemNotification)
+        {
+            navigationManager.NavigateTo($"/NotificationTypeTemplates/{(int)TaskyRevamp.Dto.Enums.ModuleType.SystemNotification}");
+
+        }
     }
 
     private async Task OnCancelClick()
