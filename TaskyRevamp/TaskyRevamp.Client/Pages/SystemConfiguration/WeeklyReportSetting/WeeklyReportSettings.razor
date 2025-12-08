@@ -17,69 +17,62 @@
 </div>
 <div class="page-body">
     <div class="card setting-card">
-            <div class="card-body">
-                <div class="row justify-content-center">
-                    <div class="col-xxl-7 col-xl-8 col-lg-9 col-md-11">
-                        <div class="text-content">
-                            <p class="small-medium-text hint">@Loc["weeklyReportHint"]</p>
-                        </div>
-                        <div class="mb-3">
-                            <label for="daylabel" class="form-label">
-                                @Loc["Day"]<span class="text-danger">*</span>
-                            </label>
-                            <SearchableSingleDropdownOffline TInput="WorkingDaysSettingsDto"
-                                                                TOutput="WeekDays"
-                                                                TextSelector="(w => Loc[w.Day.ToString()])"
-                                                                OutputSelector="(w => w.Day)"
-                                                                Datasource="workingDaysSettingsDtos!.Where(w => w.IsActive).ToList()"
-                                                                SelectedOption="settingsDto.Day"
-                                                                SelectedOptionChanged="OnDayChanged"
-                                                                PlaceHolder="@($"{Loc["Select"]}")" />
+        <div class="card-body">
+            <div class="row justify-content-center">
+                <div class="col-xxl-7 col-xl-8 col-lg-9 col-md-11">
+                    <div class="text-content">
+                        <p class="small-medium-text hint">@Loc["weeklyReportHint"]</p>
+                    </div>
+                    <div class="mb-3">
+                        <label for="daylabel" class="form-label">
+                            @Loc["Day"]<span class="text-danger">*</span>
+                        </label>
+                        <SearchableSingleDropdownOffline TInput="WorkingDaysSettingsDto" TOutput="WeekDays"
+                            TextSelector="(w => Loc[w.Day.ToString()])" OutputSelector="(w => w.Day)"
+                            Datasource="workingDaysSettingsDtos!.Where(w => w.IsActive).ToList()"
+                            SelectedOption="settingsDto.Day" SelectedOptionChanged="OnDayChanged"
+                            PlaceHolder="@($"{Loc["Select"]}")" />
                         <div class="text-danger small mt-1">@DayError</div>
-                        </div>
-                        <div class="mb-4">
-                            <label for="timelabel" class="form-label">
-                                @Loc["Time"]<span class="text-danger">*</span>
-                            </label>
-                        <SearchableSingleDropdownOffline TInput="(TimeSpan Value, string Text)"
-                                                         TOutput="string"
-                                                         TextSelector="t => t.Text"
-                                                         OutputSelector="t => t.Text"
-                                                         Datasource="TimeSlots"
-                                                         SelectedOption="SelectedTimeText"
-                                                         SelectedOptionChanged="OnTimeTextChanged"
-                                                         PlaceHolder="@($"{Loc["Select"]}")" />
+                    </div>
+                    <div class="mb-4">
+                        <label for="timelabel" class="form-label">
+                            @Loc["Time"]<span class="text-danger">*</span>
+                        </label>
+                        <SearchableSingleDropdownOffline TInput="(TimeSpan Value, string Text)" TOutput="string"
+                            TextSelector="t => t.Text" OutputSelector="t => t.Text" Datasource="TimeSlots"
+                            SelectedOption="SelectedTimeText" SelectedOptionChanged="OnTimeTextChanged"
+                            PlaceHolder="@($"{Loc["Select"]}")" />
                         <div class="text-danger small mt-1">@TimeError</div>
-                        </div>
-                        <div class="text-content mb-2">
-                            <h6 class="headline-6">@Loc["ReportLanguage"]</h6>
-                            <p class="small-medium-text hint">@Loc["languageHint"]</p>
-                        </div>
-                        <InputRadioGroup TValue="Language" Value="settingsDto.Language" ValueChanged="OnSettingChange"
-                            ValueExpression="() => settingsDto.Language">
-                            @foreach (var value in languages)
-                            {
-                                var radioId = $"Language_{value}";
-                                <div class="form-check-card">
-                                    <InputRadio id="@radioId" Value="@value" />
-                                    <label for="@radioId"> @value.GetDescription()</label>
-                                </div>
-                            }
-                        </InputRadioGroup>
-                        <div class="text-danger small mt-1">@LanguageError</div>
+                    </div>
+                    <div class="text-content mb-2">
+                        <h6 class="headline-6">@Loc["ReportLanguage"]</h6>
+                        <p class="small-medium-text hint">@Loc["languageHint"]</p>
+                    </div>
+                    <InputRadioGroup TValue="Language" Value="settingsDto.Language" ValueChanged="OnSettingChange"
+                        ValueExpression="() => settingsDto.Language">
+                        @foreach (var value in languages)
+                        {
+                            var radioId = $"Language_{value}";
+                            <div class="form-check-card">
+                                <InputRadio id="@radioId" Value="@value" />
+                                <label for="@radioId"> @value.GetDescription()</label>
+                            </div>
+                        }
+                    </InputRadioGroup>
+                    <div class="text-danger small mt-1">@LanguageError</div>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer">
+            <div class="row justify-content-center">
+                <div class="col-xxl-7 col-xl-8 col-lg-9 col-md-11">
+                    <div class="action-buttons">
+
+                        <button class="btn btn-lg btn-primary" @onclick="Save">@Loc["Save"]</button>
                     </div>
                 </div>
             </div>
-            <div class="card-footer">
-                <div class="row justify-content-center">
-                    <div class="col-xxl-7 col-xl-8 col-lg-9 col-md-11">
-                        <div class="action-buttons">
-                            <button class="btn btn-lg btn-light" @onclick="Cancel">@Loc["Cancel"]</button>
-                            <button class="btn btn-lg btn-primary" @onclick="Save">@Loc["Save"]</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        </div>
     </div>
 </div>
 
@@ -115,7 +108,7 @@
     private void OnTimeTextChanged(string newText)
     {
         SelectedTimeText = newText;
-        TimeError = ""; 
+        TimeError = "";
     }
     private void OnSettingChange(Language newValue)
     {
@@ -178,5 +171,5 @@
         }
         return times;
     }
-   
+
 }

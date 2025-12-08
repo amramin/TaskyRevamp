@@ -1,25 +1,27 @@
 ﻿@page "/Update-Department/{Id:guid}"
 
+@using Blazored.LocalStorage
 @using TaskyRevamp.Client.Consumer
 @using TaskyRevamp.Client.Services
 @using TaskyRevamp.Dto.Department
 @using TaskyRevamp.Dto.SystemConfiguration
 @using Newtonsoft.Json.Linq;
 @using Newtonsoft.Json;
+@inject ILocalStorageService LocalStorageService
+@inject PopupService PopupService
 
 
 @inject IStringLocalizer<SharedResources> Loc
-@inject DepartmentConsumer  _DepartmentConsumer
+@inject DepartmentConsumer _DepartmentConsumer
 @inject ToastService ToastService
 @inject NavigationManager navigationManager
 
 
-    <DepartmentForm 
-        @ref="form"
-        Department="@department"
-        OnValidSubmit="@Save"
-        SubmitButtonText="@Loc["Update"]"
-        OnCancel="@Cancel"/>
+<DepartmentForm @ref="form"
+                Department="@department"
+                OnValidSubmit="@Save"
+                SubmitButtonText="@Loc["Update"]"
+                OnCancel="@Cancel" />
 
 
 @code {
@@ -43,25 +45,26 @@
 
     private async Task Save(EditContext editContext)
     {
+        var current = await LocalStorageService.GetItemAsStringAsync("Id");
+        department.UpdatedBy = Guid.Parse(current);
         var res = await _DepartmentConsumer.UpdateDepartment(department);
-       if (res.Success)
+        if (res.Errors != null && res.Errors.Count > 0){
+            form.AddErrorsToEditContext(res.Errors);
+            return;
+        }
+        else
         {
             await OnValidSubmit.InvokeAsync(department);
             await ToastService.ShowToastAsync(Loc["EditSuccess"], "success");
             await OnSaved.InvokeAsync();
-       }
-        else
-        {
-            if(res.Errors != null && res.Errors.Count > 0)
-                form.AddErrorsToEditContext(res.Errors);
+            PopupService.Hide();
         }
-
     }
 
 
     private async Task Cancel()
     {
         //await OnCancel.InvokeAsync();
-        navigationManager.NavigateTo("/Departments");
+        PopupService.Hide();
     }
 }

@@ -10,11 +10,27 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<Compile Remove="Pages\NewFolder\**" />
+		<Content Remove="Pages\NewFolder\**" />
+		<EmbeddedResource Remove="Pages\NewFolder\**" />
+		<None Remove="Pages\NewFolder\**" />
+	  <Compile Remove="Consumer\css\**" />
+	  <Compile Remove="Pages\NewFolder\**" />
+	  <Content Remove="Consumer\css\**" />
+	  <Content Remove="Pages\NewFolder\**" />
+	  <EmbeddedResource Remove="Consumer\css\**" />
+	  <EmbeddedResource Remove="Pages\NewFolder\**" />
+	  <None Remove="Consumer\css\**" />
+	  <None Remove="Pages\NewFolder\**" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<PackageReference Include="Blazored.LocalStorage" Version="4.5.0" />
 		<PackageReference Include="MailKit" Version="4.14.1" />
 		<PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="10.0.0" />
 		<PackageReference Include="Microsoft.Identity.Client" Version="4.79.2" />
 		<PackageReference Include="MimeKit" Version="4.14.0" />
+		<PackageReference Include="EPPlus" Version="8.1.0" />
 		<PackageReference Include="Stingray.Components.MultiSelectComponent" Version="1.0.32" />
 
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="9.0.7" />
@@ -25,6 +41,7 @@
 		<PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="9.0.8" />
 
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+		<PackageReference Include="DocumentFormat.OpenXml" Version="2.21.0" />
 
 
 		<PackageReference Include="Syncfusion.Blazor.RichTextEditor" Version="31.1.21" />
@@ -42,10 +59,6 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\..\TaskyRevamp.Dto\TaskyRevamp.Dto.csproj" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<Folder Include="Pages\NewFolder\" />
 	</ItemGroup>
 	<ItemGroup>
 		<EmbeddedResource Update="SyncfusionLocalization\SfResources.resx">

@@ -7,6 +7,7 @@
 @inject IStringLocalizer<SharedResources> Loc
 @inject DepartmentConsumer _departmentConsumer
 @inject ToastService ToastService
+@inject PopupService PopupService
 
 
        <DepartmentForm
@@ -24,7 +25,6 @@
     public List<DepartmentDto> departmentDtos = new List<DepartmentDto>();
     [Parameter] public EventCallback<DepartmentDto> OnValidSubmit { get; set; }
     [Parameter] public EventCallback OnCancel { get; set; }
-
     private DepartmentForm form;
 
     protected async override Task OnInitializedAsync()
@@ -39,22 +39,22 @@
 
     private async Task Save(EditContext editContext)
     {
-
         var res = await _departmentConsumer.AddDepartment(_newDepartment);
-        if (res.Success)
+        if (res.Errors != null && res.Errors.Count > 0)
         {
-            await OnValidSubmit.InvokeAsync(_newDepartment);
-            await ToastService.ShowToastAsync(Loc["Addedsuccessfully"], "success");
-            await OnSaved.InvokeAsync();
+            form.AddErrorsToEditContext(res.Errors);
+            return;
         }
         else
         {
-            if (res.Errors != null && res.Errors.Count > 0)
-                form.AddErrorsToEditContext(res.Errors);
+            await ToastService.ShowToastAsync(Loc["Addedsuccessfully"], "success");
+            await OnValidSubmit.InvokeAsync(_newDepartment);
+            await OnSaved.InvokeAsync();
+            PopupService.Hide();
         }
     }
-    private async Task Cancel()
+    private void Cancel()
     {
-        navigationManager.NavigateTo("/Departments");
+        PopupService.Hide();
     }
 }

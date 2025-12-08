@@ -436,8 +436,8 @@ namespace TaskyRevamp.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int?>("CustomDays")
-                        .HasColumnType("int");
+                    b.Property<long?>("CustomDays")
+                        .HasColumnType("bigint");
 
                     b.Property<int>("PeriodType")
                         .HasColumnType("int");
@@ -453,8 +453,8 @@ namespace TaskyRevamp.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int?>("CustomDays")
-                        .HasColumnType("int");
+                    b.Property<long?>("CustomDays")
+                        .HasColumnType("bigint");
 
                     b.Property<int>("PeriodType")
                         .HasColumnType("int");
@@ -807,6 +807,9 @@ namespace TaskyRevamp.Infrastructure.Migrations
 
                     b.Property<Guid>("CreatedById")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Level")
+                        .HasColumnType("int");
 
                     b.Property<string>("NameArabic")
                         .IsRequired()

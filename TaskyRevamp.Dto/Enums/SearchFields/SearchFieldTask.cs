@@ -17,9 +17,7 @@ namespace TaskyRevamp.Dto.Enums.SearchFields
         weight,
         AssigneduserNames,
         PlannedProgress,
-
         UpdatedBy,
-
         CreateDate,
         CreatedBy,
         UpdateDate

@@ -46,6 +46,11 @@ namespace TaskyRevamp.WebAPI.Controllers
 		{
 			return Ok(await _mediator.Send(new GetPrivilegeByIdQuery(id)));
 		}
+		[HttpGet("GetPrivilegeNames")]
+		public async Task<IActionResult> GetPrivilegeNames()
+		{
+			return Ok(await _mediator.Send(new GetPrivilegeNamesQuery()));
+		}
 
 		[HttpPost("CreatePrivilege")]
         public async Task<IActionResult> CreatePrivilege([FromBody] PrivilegeDto privilegeDto)
@@ -58,6 +63,12 @@ namespace TaskyRevamp.WebAPI.Controllers
         {
             return Ok(await _mediator.Send(new UpdatePrivilegeCommand(privilegeDto)));
         }
+
+		[HttpGet("CheckPrivilegeIsLinkedWithUsers/{id}")]
+		public async Task<IActionResult> CheckPrivilegeIsLinkedWithUsers(Guid id)
+		{
+			return Ok(await _mediator.Send(new CheckPrivilegeIsLinkedWithUsersCommand(id)));
+		}
 
 		[HttpDelete("DeletePrivilege/{id}")]
 		public async Task<IActionResult> DeletePrivilege(Guid id)

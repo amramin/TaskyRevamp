@@ -1,4 +1,6 @@
-﻿@using TaskyRevamp.Dto.Department
+﻿@using TaskyRevamp.Client.Shared
+@using TaskyRevamp.Client.Shared
+@using TaskyRevamp.Dto.Department
 @inject IStringLocalizer<SharedResources> Loc
 @using TaskyRevamp.Client.Consumer
 @using TaskyRevamp.Client.Pages.Department.Components
@@ -18,24 +20,22 @@
     <SortableTable TItem="DepartmentDto"
                    Columns="@tableColumns"
                    Items="@Departments"
-                   SortColumn="@currentSortColumn"
-                   SortAscending="@sortAscending"
+                   SortColumn="@SortColumn"
+                   SortAscending="@SortAscending"
                    OnSortRequested="HandleSort">
 
         <RowTemplate>
-
-
+              
             @foreach (var p in Departments)
             {
                 <tr>
-                    <td>@p.NameEnglish</td>
-                    <td>@p.NameArabic</td>
+                    <td>@p.Name</td>
+                    <td>@p.Level</td>
                     <td>@p.ParentdepartmentName</td>
+                    <td>@p.CreateDate?.ToString(Loc["LocalizeDate"])</td>
                     <td>@p.CreatedByName</td>
-                    <td>@p.CreateDate?.ToString("yyyy-MM-dd")</td>
+                    <td>@p.UpdateDate?.ToString(Loc["LocalizeDate"])</td>
                     <td>@p.UpdatedByName</td>
-                    <td>@p.UpdateDate?.ToString("yyyy-MM-dd")</td>
-
                     <td class="sticky-end-action">
                         <div class="dropdown actions">
                             <button class="btn btn-action-24" type="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -44,14 +44,7 @@
                             <ul class="dropdown-menu">
 
                                 <li>
-                                    <button class="dropdown-item" @onclick="@(() => OnShowUsers.InvokeAsync(p.Id))">
-                                        <span class="icon">
-                                            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Users"></SVGCrud>
-                                        </span>
-                                        @Loc["ViewUsers"]
-                                    </button>
-                                </li>
-                                <li>
+
                                     <button class="dropdown-item" @onclick="@(() => OnAdd.InvokeAsync(p.Id))">
                                         <span class="icon">
                                             <SVGCrud SVGType="SVGCrud.SVGTypeEnum.AddColumn"></SVGCrud>
@@ -67,13 +60,38 @@
                                         @Loc["Edit"]
                                     </button>
                                 </li>
+                             
+                                
                                 <li>
-                                    <button class="dropdown-item text-danger" @onclick="@(() => OnDelete.InvokeAsync(p.Id))">
+                                    @if(p.Level > 1 && p.ParentdepartmentId != Guid.Empty&&!p.Children.Any()){
+
+                                    <button class="dropdown-item" @onclick="@(() => OnShowUsers.InvokeAsync(p.Id))">
                                         <span class="icon">
-                                            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Delete"></SVGCrud>
+                                            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Users"></SVGCrud>
                                         </span>
-                                        @Loc["Delete"]
+                                        @Loc["ViewUsers"]
                                     </button>
+}
+                                </li>
+                                <li>
+                                    <button class="dropdown-item" @onclick="@(() => LinkUser(p.Id))">
+                                        <span class="icon">
+                                            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Users"></SVGCrud>
+                                        </span>
+                                        @Loc["linkUsers"]
+                                    </button>
+                                </li>
+                                <li>
+                                    @if(p.Level > 1 && p.ParentdepartmentId != Guid.Empty)
+                                    {
+
+                                        <button class="dropdown-item text-danger" @onclick="@(() => OnDelete.InvokeAsync(p.Id))">
+                                            <span class="icon">
+                                                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Delete"></SVGCrud>
+                                            </span>
+                                            @Loc["Delete"]
+                                        </button>
+                                    }
                                 </li>
                             </ul>
 
@@ -81,8 +99,6 @@
                     </td>
                 </tr>
             }
-
-
 
         </RowTemplate>
     </SortableTable>
@@ -102,19 +118,20 @@
     [Parameter] public EventCallback<Guid> OnEdit { get; set; }
     [Parameter] public EventCallback<Guid> OnDelete { get; set; }
     [Parameter] public EventCallback<Guid> OnShowUsers { get; set; }
+    [Parameter] public EventCallback<Guid> OnLinkUsers { get; set; }
     [Parameter] public EventCallback<Guid> OnAdd { get; set; }
     [Parameter] public EventCallback<Guid> OnAddDepartment { get; set; }
-
     [Parameter] public int CurrentPage { get; set; }
     [Parameter] public int TotalPages { get; set; }
     [Parameter] public int TotalCount { get; set; }
     [Parameter] public int PageSize { get; set; }
     [Parameter] public EventCallback<int> PageChanged { get; set; }
     [Parameter] public EventCallback<int> PageSizeChanged { get; set; }
-
-    private string currentSortColumn = "CreateDate";
-    private bool? sortAscending = true;
+    [Parameter] public EventCallback<(string Column, bool? Ascending)> SortChanged { get; set; }
+    [Parameter] public string SortColumn { get; set; } = "CreateDate";
+    [Parameter] public bool? SortAscending { get; set; } = true;
     private List<SortableColumn> tableColumns = new();
+
     private void HandleDepartmentSelection(Guid departmentId) 
     {
         OnAddDepartment.InvokeAsync(departmentId);
@@ -164,43 +181,41 @@
     {
         tableColumns = new()
         {
-            new() { Field = "NameEnglish", DisplayName = Loc["NameEnglish"] },
-            new() { Field = "NameArabic", DisplayName = Loc["NameArabic"] },
-            new() { Field = "DepartmentParent", DisplayName = Loc["ParentdepartmentName"] },
-            new() { Field = "CreatedBy", DisplayName = Loc["CreatedBy"] },
-
+            new() { Field = "DisplayedName", DisplayName = Loc["name"] },
+            new() { Field = "Level", DisplayName = Loc["Level"] },
+            new() { Field = "DepartmentParent", DisplayName = Loc["DepartmentParent"] },
             new() { Field = "CreateDate", DisplayName = Loc["CreationDate"] },
-            new() { Field = "UpdatedBy", DisplayName = Loc["UpdatedBy"] },
-
+            new() { Field = "CreatedBy", DisplayName = Loc["CreatedBy"] },
             new() { Field = "UpdateDate", DisplayName = Loc["UpdateDate"] },
+            new() { Field = "UpdatedBy", DisplayName = Loc["UpdatedBy"] },
             new() { Field = "Action", DisplayName = Loc["Action"] ,IsSortable = false},
         };
         StateHasChanged();
     }
-
+    private void LinkUser(Guid id)
+    {
+        PopupService.ShowNew(@<LinkUserDepartment Id="id" OnSaved="ReloadAfterSave"></LinkUserDepartment>,Loc["Addusers"]);
+        StateHasChanged();
+    }
+    private async Task ReloadAfterSave()
+    {
+        PopupService.Hide();
+        StateHasChanged();
+    }
     public List<SearchFieldDepartment> searchFields = new List<SearchFieldDepartment>() {
-    SearchFieldDepartment.NameEnglish,
-    SearchFieldDepartment.NameArabic,
-    SearchFieldDepartment.CreatedBy,
-    SearchFieldDepartment.UpdatedBy,
-    SearchFieldDepartment.CreateDate,
-    SearchFieldDepartment.UpdateDate,
-    SearchFieldDepartment.ParentNameAR,
-    SearchFieldDepartment.ParentNameEN
+        SearchFieldDepartment.NameEnglish,
+        SearchFieldDepartment.NameArabic,
+        SearchFieldDepartment.CreatedBy,
+        SearchFieldDepartment.UpdatedBy,
+        SearchFieldDepartment.CreateDate,
+        SearchFieldDepartment.UpdateDate,
+        SearchFieldDepartment.ParentNameAR,
+        SearchFieldDepartment.ParentNameEN,
+        SearchFieldDepartment.Level
     };
-
     private async Task HandleSort((string Column, bool? Ascending) sortInfo)
     {
-        currentSortColumn = sortInfo.Column;
-        sortAscending = sortInfo.Ascending;
-
-
-        if (sortAscending == null)
-        {
-            // third click → reset to default sorting
-            currentSortColumn = "CreateDate"; // or whatever your default column is
-            sortAscending = true;
-        }
-
+        await SortChanged.InvokeAsync(sortInfo);
     }
 }
+

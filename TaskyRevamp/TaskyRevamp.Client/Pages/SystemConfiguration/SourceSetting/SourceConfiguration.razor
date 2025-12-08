@@ -32,7 +32,7 @@
 @if (sources != null && sources.Any())
 {
     <div class="page-body">
-        <div class="table-responsive">
+        <div class="table-responsive sticky-header-custom">
             @if (sources != null && sources.Any())
             {
 
@@ -45,9 +45,9 @@
                             var checkboxId = $"source-active-{item.Source.Id}";
                             <tr>
                                 <td>@item.Source.DisplayedName</td>
-                                <td>@item.Source.CreateDate.ToLocalTime().ToString("dd-MM-yyyy")</td>
+                                <td>@item.Source.CreateDate.ToLocalTime().ToString(Loc["LocalizeDate"])</td>
                                 <td>@item.CreatedByName</td>
-                                <td>@(item.Source.UpdateDate?.ToLocalTime().ToString("dd-MM-yyyy"))</td>
+                                <td>@(item.Source.UpdateDate?.ToLocalTime().ToString(Loc["LocalizeDate"]))</td>
                                 <td>@item.UpdatedByName</td>
                                 <td>
                                     <div class="form-check form-switch custom">
@@ -108,13 +108,13 @@ else
     private int totalPages = 1;
     private int totalCount = 0;
     private int pageSize = 10;
-    private string currentSortColumn = "CreateDate";
+    private string currentSortColumn = "";
     private bool? sortAscending = true;
     private List<SortableColumn> tableColumns = new();
     private Search? searchComponent;
     private string? lastSearchTerm = null;
     private bool isSearchMode = false;
-
+    public List<SearchField> searchFields = new List<SearchField>();
     private async Task ChangePage(int page)
     {
         currentPage = page;
@@ -139,7 +139,7 @@ else
             new() { Field = "IsActive", DisplayName = Loc["active"] },
             new() { Field = "Action", DisplayName = Loc["Action"] ,IsSortable = false},
         };
-
+        searchFields = GetFileds();
         await LoadSources();
         initialSources = sources;
     }
@@ -186,6 +186,11 @@ else
             if (result.Success)
             {
                 sources.Remove(selectedSource);
+                if (sources.Count() <= 0)
+                {
+                    currentPage = currentPage == 1 ? 1 : currentPage - 1;
+                }
+                await LoadSources();
                 initialSources = initialSources.Where(s => s.Source.Id != selectedSource.Source.Id).ToList(); // update initialsources
                 showConfirm = false;
                 StateHasChanged();
@@ -208,21 +213,30 @@ else
         }
         await LoadSources();
     }
-
-    public List<SearchField> searchFields = new List<SearchField>() {
-            SearchField.NameEnglish,
-            SearchField.NameArabic,
-            SearchField.CreatedBy,
-            SearchField.UpdatedBy,
-            SearchField.CreateDate,
-            SearchField.UpdateDate,
-            SearchField.ActiveStatus
+    public List<SearchField> GetFileds()
+    {
+        var fileds = new List<SearchField>() {
+        SearchField.CreatedBy,
+        SearchField.UpdatedBy,
+        SearchField.CreateDate,
+        SearchField.UpdateDate,
+        SearchField.ActiveStatus
     };
-
+        if (Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName == "ar")
+        {
+            fileds.Add(SearchField.NameArabic);
+        }
+        else
+        {
+            fileds.Add(SearchField.NameEnglish);
+        }
+        return fileds;
+    }
     public async Task Search(string searchTerm)
     {
         lastSearchTerm = searchTerm;
         isSearchMode = true;
+        currentPage = 1;
         await LoadSources(true, searchTerm);
     }
     private async Task ClearSearch()
@@ -242,7 +256,7 @@ else
         if (sortAscending == null)
         {
             // third click → reset to default sorting
-            currentSortColumn = "DisplayedName"; // or whatever your default column is
+            currentSortColumn = ""; // or whatever your default column is
             sortAscending = true;
         }
 

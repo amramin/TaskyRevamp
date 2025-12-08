@@ -12,6 +12,7 @@
 @inject IJSRuntime JS
 @inject LoaderService LoaderService
 @inject IStringLocalizer<SharedResources> Loc
+@inject Blazored.LocalStorage.ILocalStorageService LocalStorage
 
 <main class="@SideMenuWrapperClass">
     <NavMenu />
@@ -58,39 +59,33 @@
                     </div>
                     <img class="logo" src="@(string.IsNullOrEmpty(systemLogoAsImgSrc) ? "" : systemLogoAsImgSrc)"
                         alt="system-logo" />
-                    <div class="dropdown dropdown-user">
-                        <button class="btn btn-user" data-bs-toggle="dropdown" aria-expanded="false">
-                            <span class="first-user-letter">AM</span>
-                        </button>
-                        <ul class="dropdown-menu" aria-labelledby="topDropdown">
-                            <li class="header">
-                                <span class="first-user-letter">AM</span>
-                                <div class="user-info">
-                                    <span class="user-name"> Ahmed Mostafa </span>
-                                    <span class="user-email">System Admin </span>
-                                </div>
-                            </li>
+                       
+                        <div class="dropdown dropdown-user">
+                            <button class="btn btn-user" data-bs-toggle="dropdown" aria-expanded="false">
+                                <span class="first-user-letter">@OfficalName</span>
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="topDropdown">
+                                <li class="header">
+                                    <span class="first-user-letter"> @OfficalName</span>
+                                    <div class="user-info">
+                                        <span class="user-name">
+                                            <span>@Loc["Welcome"],</span>
+                                            <span>@displayName </span>
+                                        </span>
+                                    </div>
+                                </li>
 
-                            <li class="dropdown-item">
-                                <a class="drop-link">
-                                    <span class="icon">
-                                        <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Lock"></SVGCrud>
-                                    </span>
-                                    Change Password
-                                </a>
-                            </li>
-
-                            <li class="dropdown-item">
-                                <a class="drop-link" @onclick="Logout">
-                                    <span class="icon">
-                                        <SVGCrud SVGType="SVGCrud.SVGTypeEnum.LogOut"></SVGCrud>
-                                    </span>
-                                    @Loc["Logout"]
-                                </a>
-                            </li>
-
-                        </ul>
-                    </div>
+                                <li class="dropdown-item">
+                                    <a class="drop-link" @onclick="Logout">
+                                        <span class="icon">
+                                            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.LogOut"></SVGCrud>
+                                        </span>
+                                        @Loc["Logout"]
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                  
                 </div>
             </div>
         </header>
@@ -115,7 +110,7 @@
                         <a href="#" class="primary-link-btn text-decoration-none">Stingray</a>
                     </span> *@
                 <span class="text-center  flex-grow-1">
-                    @Loc["All rights are safe"] - @Loc["Kingdom of Saudi Arabia"]
+                    @Loc["AllrightsKSA"]
                 </span>
             </footer>
         </section>
@@ -128,7 +123,8 @@
     private bool IsAuthChecked = false;
     private bool langInitialized = false;
     private bool isLoaderVisible;
-
+    string OfficalName = "";
+    private string? displayName;
     string HeaderName;
     RenderFragment Content { get; set; }
     bool IsShowDialog = false;
@@ -151,6 +147,8 @@
 
     protected async override Task OnInitializedAsync()
     {
+        displayName = await LocalStorage.GetItemAsStringAsync("NameEnglish");
+
         LoaderService.OnShow += () =>
         {
             isLoaderVisible = true;
@@ -172,6 +170,22 @@
             systemLogoAsImgSrc = taskyService.GetSystemLogoAsImgSrc(updatedIdentity.Logo);
             InvokeAsync(StateHasChanged);
         };
+
+        if (!string.IsNullOrEmpty(displayName))
+        {
+            string[] words = displayName.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+
+            if (words.Length > 0)
+            {
+                // Get the first character of the first word
+                char firstCharOfFirstWord = words[0][0];
+
+                // Get the first character of the last word
+                char firstCharOfLastWord = words[words.Length - 1][0];
+
+                OfficalName = firstCharOfFirstWord + "" + firstCharOfLastWord;
+            }
+        }
     }
 
     void SetRenderFragment(RenderFragment content, string headerName)

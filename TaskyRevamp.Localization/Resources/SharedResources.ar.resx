@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
-  <!-- 
+	<!-- 
     Microsoft ResX Schema 
     
     Version 2.0
@@ -59,873 +59,989 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
-    <xsd:element name="root" msdata:IsDataSet="true">
-      <xsd:complexType>
-        <xsd:choice maxOccurs="unbounded">
-          <xsd:element name="metadata">
-            <xsd:complexType>
-              <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" />
-              </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string" />
-              <xsd:attribute name="type" type="xsd:string" />
-              <xsd:attribute name="mimetype" type="xsd:string" />
-              <xsd:attribute ref="xml:space" />
-            </xsd:complexType>
-          </xsd:element>
-          <xsd:element name="assembly">
-            <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string" />
-              <xsd:attribute name="name" type="xsd:string" />
-            </xsd:complexType>
-          </xsd:element>
-          <xsd:element name="data">
-            <xsd:complexType>
-              <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
-              </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-              <xsd:attribute ref="xml:space" />
-            </xsd:complexType>
-          </xsd:element>
-          <xsd:element name="resheader">
-            <xsd:complexType>
-              <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-              </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" />
-            </xsd:complexType>
-          </xsd:element>
-        </xsd:choice>
-      </xsd:complexType>
-    </xsd:element>
-  </xsd:schema>
-  <resheader name="resmimetype">
-    <value>text/microsoft-resx</value>
-  </resheader>
-  <resheader name="version">
-    <value>2.0</value>
-  </resheader>
-  <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </resheader>
-  <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </resheader>
-  <data name="Custom" xml:space="preserve">
+	<xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+		<xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+		<xsd:element name="root" msdata:IsDataSet="true">
+			<xsd:complexType>
+				<xsd:choice maxOccurs="unbounded">
+					<xsd:element name="metadata">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="value" type="xsd:string" minOccurs="0" />
+							</xsd:sequence>
+							<xsd:attribute name="name" use="required" type="xsd:string" />
+							<xsd:attribute name="type" type="xsd:string" />
+							<xsd:attribute name="mimetype" type="xsd:string" />
+							<xsd:attribute ref="xml:space" />
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="assembly">
+						<xsd:complexType>
+							<xsd:attribute name="alias" type="xsd:string" />
+							<xsd:attribute name="name" type="xsd:string" />
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="data">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+								<xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+							</xsd:sequence>
+							<xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+							<xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+							<xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+							<xsd:attribute ref="xml:space" />
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="resheader">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+							</xsd:sequence>
+							<xsd:attribute name="name" type="xsd:string" use="required" />
+						</xsd:complexType>
+					</xsd:element>
+				</xsd:choice>
+			</xsd:complexType>
+		</xsd:element>
+	</xsd:schema>
+	<resheader name="resmimetype">
+		<value>text/microsoft-resx</value>
+	</resheader>
+	<resheader name="version">
+		<value>2.0</value>
+	</resheader>
+	<resheader name="reader">
+		<value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
+	<resheader name="writer">
+		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
+	<data name="Custom" xml:space="preserve">
     <value>مخصص</value>
   </data>
-  <data name="Days7" xml:space="preserve">
+	<data name="Days7" xml:space="preserve">
     <value>7 أيام</value>
   </data>
-  <data name="Days15" xml:space="preserve">
+	<data name="Days15" xml:space="preserve">
     <value>15 يوم</value>
   </data>
-  <data name="Days30" xml:space="preserve">
+	<data name="Days30" xml:space="preserve">
     <value>30 يوم</value>
   </data>
-  <data name="Days60" xml:space="preserve">
+	<data name="Days60" xml:space="preserve">
     <value>60 يوم</value>
   </data>
-  <data name="Login" xml:space="preserve">
+	<data name="Login" xml:space="preserve">
     <value>تسجيل الدخول</value>
   </data>
-  <data name="Never" xml:space="preserve">
+	<data name="Never" xml:space="preserve">
     <value>مطلقاََ</value>
   </data>
-  <data name="Required" xml:space="preserve">
+	<data name="Required" xml:space="preserve">
     <value>هذا الحقل مطلوب</value>
   </data>
-  <data name="DataSavedSuccessfully" xml:space="preserve">
+	<data name="DataSavedSuccessfully" xml:space="preserve">
     <value>تم حفظ البيانات بنجاح</value>
   </data>
-  <data name="ParentNotFound" xml:space="preserve">
+	<data name="ParentNotFound" xml:space="preserve">
     <value>لا يوجد اب</value>
   </data>
-  <data name="RecycleBinConfiguration" xml:space="preserve">
+	<data name="RecycleBinConfiguration" xml:space="preserve">
     <value>إعدادات سلة المحذوفات</value>
   </data>
-  <data name="RetentionPeriodOptions" xml:space="preserve">
+	<data name="RetentionPeriodOptions" xml:space="preserve">
     <value>خيارات فترة الإحتفاظ</value>
   </data>
-
-
-    <data name="SystemNotifications" xml:space="preserve">
+	<data name="SystemNotifications" xml:space="preserve">
     <value>إشعارات النظام</value>
   </data>
-     <data name="EmailNotification" xml:space="preserve">
+	<data name="EmailNotification" xml:space="preserve">
     <value>إشعارات البريد الالكترونى</value>
   </data>
-
-  <data name="Cancel" xml:space="preserve">
+	<data name="Cancel" xml:space="preserve">
     <value>إلغاء</value>
   </data>
-  <data name="Save" xml:space="preserve">
+	<data name="Save" xml:space="preserve">
     <value>حفظ</value>
   </data>
-  <data name="EditSuccess" xml:space="preserve">
+	<data name="EditSuccess" xml:space="preserve">
     <value>تم التعديل بنجاح</value>
   </data>
-  <data name="Hours24" xml:space="preserve">
+	<data name="Hours24" xml:space="preserve">
     <value>24 ساعة</value>
   </data>
-  <data name="ListWeek" xml:space="preserve">
+	<data name="ListWeek" xml:space="preserve">
     <value>أسبوع</value>
   </data>
-  <data name="Days3" xml:space="preserve">
+	<data name="Days3" xml:space="preserve">
     <value>3 أيام</value>
   </data>
-  <data name="RejectionConfiguration" xml:space="preserve">
+	<data name="RejectionConfiguration" xml:space="preserve">
     <value>إعدادات رفض المهمة</value>
   </data>
-  <data name="RejectionPeriodOptions" xml:space="preserve">
+	<data name="RejectionPeriodOptions" xml:space="preserve">
     <value>خيارات فترة الرفض</value>
   </data>
-  <data name="Priority" xml:space="preserve">
+	<data name="Priority" xml:space="preserve">
     <value>إعدادات أولوية المهام</value>
   </data>
-  <data name="Added successfully" xml:space="preserve">
+	<data name="Added successfully" xml:space="preserve">
     <value>تمت الإضافة بنجاح</value>
   </data>
-  <data name="Name English" xml:space="preserve">
+	<data name="Name English" xml:space="preserve">
     <value>الإسم بالإنجليزي</value>
   </data>
-  <data name="Name Arabic" xml:space="preserve">
+	<data name="Name Arabic" xml:space="preserve">
     <value>الإسم بالعربي</value>
   </data>
-  <data name="Background Color Indicator" xml:space="preserve">
+	<data name="Background Color Indicator" xml:space="preserve">
     <value>مؤشر لون الخلفية</value>
   </data>
-  <data name="Name Color Indicator" xml:space="preserve">
+	<data name="Name Color Indicator" xml:space="preserve">
     <value>مؤشر لون الاسم</value>
   </data>
-  <data name="Order" xml:space="preserve">
+	<data name="Order" xml:space="preserve">
     <value>ترتيب الأولوية</value>
   </data>
-  <data name="EditPriority" xml:space="preserve">
+	<data name="EditPriority" xml:space="preserve">
     <value>تعديل أولوية</value>
   </data>
-  <data name="AddPriority" xml:space="preserve">
+	<data name="AddPriority" xml:space="preserve">
     <value>إضافة أولوية </value>
   </data>
-  <data name="Delete" xml:space="preserve">
+	<data name="Delete" xml:space="preserve">
     <value>حذف</value>
   </data>
-  <data name="Deleted successfully" xml:space="preserve">
+	<data name="Deleted successfully" xml:space="preserve">
     <value>تم الحذف بنجاح</value>
   </data>
-  <data name="PriorityDuplicateValidation" xml:space="preserve">
+	<data name="PriorityDuplicateValidation" xml:space="preserve">
     <value>لا يمكنك تكرار اسم الأولوية</value>
   </data>
-  <data name="PriorityConfiguration" xml:space="preserve">
+	<data name="PriorityConfiguration" xml:space="preserve">
     <value>إعدادات أولوية المهام</value>
   </data>
-  <data name="PriorityOptions" xml:space="preserve">
+	<data name="PriorityOptions" xml:space="preserve">
     <value>خيارات الأولوية</value>
   </data>
-  <data name="StatusConfig" xml:space="preserve">
+	<data name="StatusConfig" xml:space="preserve">
     <value>إعدادات حالة المهام</value>
   </data>
-  <data name="StatusOptions" xml:space="preserve">
+	<data name="StatusOptions" xml:space="preserve">
     <value>خيارات المهام</value>
   </data>
-  <data name="List" xml:space="preserve">
+	<data name="List" xml:space="preserve">
     <value>عرض قائمة</value>
   </data>
-  <data name="Gantt" xml:space="preserve">
+	<data name="Gantt" xml:space="preserve">
     <value>عرض مخطط جانت</value>
   </data>
-  <data name="Kanban" xml:space="preserve">
+	<data name="Kanban" xml:space="preserve">
     <value>عرض كانبان</value>
   </data>
-  <data name="Card" xml:space="preserve">
+	<data name="Card" xml:space="preserve">
     <value>عرض البطاقة</value>
   </data>
-  <data name="List_Type" xml:space="preserve">
+	<data name="List_Type" xml:space="preserve">
     <value>عرض النوع</value>
   </data>
-  <data name="List_Source" xml:space="preserve">
+	<data name="List_Source" xml:space="preserve">
     <value>عرض المصدر</value>
   </data>
-  <data name="List_Timeline" xml:space="preserve">
+	<data name="List_Timeline" xml:space="preserve">
     <value>عرض الجدول الزمني</value>
   </data>
-  <data name="List_Overall" xml:space="preserve">
+	<data name="List_Overall" xml:space="preserve">
     <value>عرض عام</value>
   </data>
-  <data name="Dashboard" xml:space="preserve">
+	<data name="Dashboard" xml:space="preserve">
     <value>لوحة المعلومات</value>
   </data>
-  <data name="Tasksviews" xml:space="preserve">
+	<data name="Tasksviews" xml:space="preserve">
     <value>عرض المهام</value>
   </data>
-  <data name="Default View Error" xml:space="preserve">
+	<data name="Default View Error" xml:space="preserve">
     <value>الصفحة الافتراضية المحددة لم تعد مفعّلة</value>
   </data>
-  <data name="Default view" xml:space="preserve">
+	<data name="Default view" xml:space="preserve">
     <value>العرض الافتراضي</value>
   </data>
-  <data name="Subtask_Level" xml:space="preserve">
+	<data name="Subtask_Level" xml:space="preserve">
     <value>مستوى المهمة الفرعية</value>
   </data>
-  <data name="Types of system notification Messages" xml:space="preserve">
+	<data name="Types of system notification Messages" xml:space="preserve">
     <value>أنواع رسائل إشعارات النظام</value>
   </data>
-  <data name="subtask_hint" xml:space="preserve">
+	<data name="subtask_hint" xml:space="preserve">
     <value>حدد الحد الأقصى لمستويات المهام الفرعية المسموح بها عند إنشاء مهمة. هذا الخيار يتحكم في عمق تداخل المهام</value>
   </data>
-  <data name="Maximum_Subtask_Level" xml:space="preserve">
+	<data name="Maximum_Subtask_Level" xml:space="preserve">
     <value>أقصى مستوى للمهمة الفرعية</value>
   </data>
-  <data name="sub_task_warning" xml:space="preserve">
+	<data name="sub_task_warning" xml:space="preserve">
     <value> قد يؤثر عرض أكثر من 3 مستويات على أداء واجهة المستخدم وقابليتها للقراءة</value>
   </data>
-  <data name="ViewTaskSettingHint" xml:space="preserve">
+	<data name="ViewTaskSettingHint" xml:space="preserve">
     <value>استخدم هذا الخيار لتفعيل طرق عرض المهام المختلفة في نظامك لتحسين إدارة المهام وعرضها</value>
   </data>
-  <data name="DefaultViewHint" xml:space="preserve">
+	<data name="DefaultViewHint" xml:space="preserve">
     <value>حدد صفحتك الافتراضية بعد تسجيل الدخول</value>
   </data>
-  <data name="ViewOptions" xml:space="preserve">
+	<data name="ViewOptions" xml:space="preserve">
     <value>عرض الخيارات</value>
   </data>
-  <data name="WorkingDaysConfiguration" xml:space="preserve">
+	<data name="WorkingDaysConfiguration" xml:space="preserve">
     <value>إعدادات أيام العمل</value>
   </data>
-  <data name="workingDaysHint" xml:space="preserve">
+	<data name="workingDaysHint" xml:space="preserve">
     <value> حدد أيام العمل الرسمية لمؤسستك. سيتم استخدام هذا الإعداد في جدولة المهام، المواعيد النهائية، وحساب أعباء العمل</value>
   </data>
-  <data name="Saturday" xml:space="preserve">
+	<data name="Saturday" xml:space="preserve">
     <value>السبت</value>
   </data>
-  <data name="Friday" xml:space="preserve">
+	<data name="Friday" xml:space="preserve">
     <value>الجمعه</value>
   </data>
-  <data name="Thursday" xml:space="preserve">
+	<data name="Thursday" xml:space="preserve">
     <value>الخميس</value>
   </data>
-  <data name="Wednesday" xml:space="preserve">
+	<data name="Wednesday" xml:space="preserve">
     <value>الأربعاء</value>
   </data>
-  <data name="Tuesday" xml:space="preserve">
+	<data name="Tuesday" xml:space="preserve">
     <value>الثلاثاء</value>
   </data>
-  <data name="Monday" xml:space="preserve">
+	<data name="Monday" xml:space="preserve">
     <value>الإثنين</value>
   </data>
-  <data name="Sunday" xml:space="preserve">
+	<data name="Sunday" xml:space="preserve">
     <value>الأحد</value>
   </data>
-  <data name="WeeklyReport" xml:space="preserve">
+	<data name="WeeklyReport" xml:space="preserve">
     <value>التقرير الإسبوعي</value>
   </data>
-  <data name="English" xml:space="preserve">
+	<data name="English" xml:space="preserve">
     <value>اللغة الإنجليزية</value>
   </data>
-  <data name="Arabic" xml:space="preserve">
+	<data name="Arabic" xml:space="preserve">
     <value>اللغة العربية</value>
   </data>
-  <data name="weeklyReportHint" xml:space="preserve">
+	<data name="weeklyReportHint" xml:space="preserve">
     <value>حدد اليوم والوقت الذي سيتم فيه إرسال التقرير الأسبوعي</value>
   </data>
-  <data name="languageHint" xml:space="preserve">
+	<data name="languageHint" xml:space="preserve">
     <value>يمكنك إختيار لغة التقرير الذي سيرسل أسبوعياََ</value>
   </data>
-  <data name="ReportLanguage" xml:space="preserve">
+	<data name="ReportLanguage" xml:space="preserve">
     <value>لغة التقرير</value>
   </data>
-  <data name="Day" xml:space="preserve">
+	<data name="Day" xml:space="preserve">
     <value>يوم</value>
   </data>
-  <data name="Time" xml:space="preserve">
+	<data name="Time" xml:space="preserve">
     <value>الوقت</value>
   </data>
-  <data name="rejectionHint" xml:space="preserve">
+	<data name="rejectionHint" xml:space="preserve">
     <value>تعيين الحد الأقصى لفترة الرفض المسموح بها للمهمة من المسند إليه</value>
   </data>
-  <data name="Week" xml:space="preserve">
+	<data name="Week" xml:space="preserve">
     <value>أسبوع</value>
   </data>
-  <data name="priorityHint" xml:space="preserve">
+	<data name="priorityHint" xml:space="preserve">
     <value>يتم تعيين أولوية المهمة الرئيسية تلقائيًا لتتطابق مع أعلى أولوية بين المهام الفرعية. </value>
   </data>
-  <data name="recycleHint" xml:space="preserve">
+	<data name="recycleHint" xml:space="preserve">
     <value>تعيين فترة الحذف التلقائي من النظام للمهام المحذوفة داخل سلة المحذوفات</value>
   </data>
-  <data name="SourceConfiguration" xml:space="preserve">
+	<data name="SourceConfiguration" xml:space="preserve">
     <value>إعدادات مصادر المهام</value>
   </data>
-  <data name="AddTaskSource" xml:space="preserve">
-    <value>إضافة مصدر المهمة</value>
+	<data name="AddTaskSource" xml:space="preserve">
+    <value>إضافة مصدر</value>
   </data>
-  <data name="EditTaskSource" xml:space="preserve">
-    <value>تعديل مصدر المهمة</value>
+	<data name="EditTaskSource" xml:space="preserve">
+    <value>تعديل مصدر </value>
   </data>
-  <data name="DeleteTaskSource" xml:space="preserve">
+	<data name="DeleteTaskSource" xml:space="preserve">
     <value>حذف مصدر المهمة</value>
   </data>
-  <data name="active" xml:space="preserve">
+	<data name="active" xml:space="preserve">
     <value>نشط</value>
   </data>
-  <data name="inactive" xml:space="preserve">
-    <value>غيرنشط</value>
+	<data name="inactive" xml:space="preserve">
+    <value>غير نشط</value>
   </data>
-  <data name="name" xml:space="preserve">
+	<data name="name" xml:space="preserve">
     <value>الاسم </value>
   </data>
-  <data name="AllrightsKSA" xml:space="preserve">
+	<data name="AllrightsKSA" xml:space="preserve">
     <value>جميع الحقوق محفوظة - المملكة العربية السعودية</value>
   </data>
-  <data name="Title" xml:space="preserve">
+	<data name="Title" xml:space="preserve">
     <value>العنوان</value>
   </data>
-  <data name="ActualProgress" xml:space="preserve">
+	<data name="ActualProgress" xml:space="preserve">
     <value>التقدم الفعلي</value>
   </data>
-  <data name="Source" xml:space="preserve">
+	<data name="Source" xml:space="preserve">
     <value>المصدر</value>
   </data>
-  <data name="StartDate" xml:space="preserve">
+	<data name="StartDate" xml:space="preserve">
     <value>تاريخ البدء</value>
   </data>
-  <data name="EndDate" xml:space="preserve">
+	<data name="EndDate" xml:space="preserve">
     <value>تاريخ الإنتهاء</value>
   </data>
-  <data name="weight" xml:space="preserve">
+	<data name="weight" xml:space="preserve">
     <value>الوزن</value>
   </data>
-  <data name="AssignedTo" xml:space="preserve">
+	<data name="AssignedTo" xml:space="preserve">
     <value>المسند إليه</value>
   </data>
-  <data name="CreatorDepartment" xml:space="preserve">
+	<data name="CreatorDepartment" xml:space="preserve">
     <value>إدارة المنشئ</value>
   </data>
-  <data name="AssignedToDepartment" xml:space="preserve">
+	<data name="AssignedToDepartment" xml:space="preserve">
     <value>إدارة المسند إليه</value>
   </data>
-  <data name="Mandatory" xml:space="preserve">
+	<data name="Mandatory" xml:space="preserve">
     <value>إلزامي</value>
   </data>
-  <data name="Status" xml:space="preserve">
+	<data name="Status" xml:space="preserve">
     <value>الحالة</value>
   </data>
-  <data name="Dependency" xml:space="preserve">
+	<data name="Dependency" xml:space="preserve">
     <value>تبعية المهمة</value>
   </data>
-  <data name="CreatedBy" xml:space="preserve">
+	<data name="CreatedBy" xml:space="preserve">
     <value>المنشئ </value>
   </data>
-  <data name="CreatedByDepartment" xml:space="preserve">
+	<data name="CreatedByDepartment" xml:space="preserve">
     <value>إدارة المنشئ</value>
   </data>
-  <data name="Duration" xml:space="preserve">
+	<data name="Duration" xml:space="preserve">
     <value>المدة</value>
   </data>
-  <data name="PlannedProgress" xml:space="preserve">
+	<data name="PlannedProgress" xml:space="preserve">
     <value>التقدم المخطط</value>
   </data>
-  <data name="CreationDate" xml:space="preserve">
+	<data name="CreationDate" xml:space="preserve">
     <value>تاريخ الإنشاء</value>
   </data>
-  <data name="UpdateDate" xml:space="preserve">
+	<data name="UpdateDate" xml:space="preserve">
     <value>تاريخ التعديل</value>
   </data>
-  <data name="UpdatedBy" xml:space="preserve">
+	<data name="UpdatedBy" xml:space="preserve">
     <value>تم تعديله بواسطة</value>
   </data>
-  <data name="Action" xml:space="preserve">
+	<data name="Action" xml:space="preserve">
     <value>الإجراء</value>
   </data>
-  <data name="NoTaskSourcesAvailable" xml:space="preserve">
+	<data name="NoTaskSourcesAvailable" xml:space="preserve">
     <value>لا تتوفر مصادر مهام</value>
   </data>
-  <data name="AddANewTaskSourceToGetStarted" xml:space="preserve">
+	<data name="AddANewTaskSourceToGetStarted" xml:space="preserve">
     <value>أضف مصدر مهمة جديدًا للبدء</value>
   </data>
-  <data name="TaskTypeConfiguration" xml:space="preserve">
+	<data name="TaskTypeConfiguration" xml:space="preserve">
     <value>إعدادات أنواع المهام</value>
   </data>
-  <data name="AddTaskType" xml:space="preserve">
+	<data name="AddTaskType" xml:space="preserve">
     <value>إضافة نوع المهمة</value>
   </data>
-  <data name="NoTaskTypeAvailable" xml:space="preserve">
+	<data name="NoTaskTypeAvailable" xml:space="preserve">
     <value>لا تتوفر أنواع مهام</value>
   </data>
-  <data name="AddANewTaskTypeToGetStarted" xml:space="preserve">
+	<data name="AddANewTaskTypeToGetStarted" xml:space="preserve">
     <value>أضف نوع مهمة جديدًا للبدء</value>
   </data>
-  <data name="Type" xml:space="preserve">
+	<data name="Type" xml:space="preserve">
     <value>النوع</value>
   </data>
-  <data name="ActualWeight" xml:space="preserve">
+	<data name="ActualWeight" xml:space="preserve">
     <value>الوزن الفعلي</value>
   </data>
-  <data name="PlannedWeight" xml:space="preserve">
+	<data name="PlannedWeight" xml:space="preserve">
     <value>الوزن المخطط</value>
   </data>
-  <data name="FromStartDate" xml:space="preserve">
+	<data name="FromStartDate" xml:space="preserve">
     <value>من تاريخ البدء</value>
   </data>
-  <data name="ToStartDate" xml:space="preserve">
+	<data name="ToStartDate" xml:space="preserve">
     <value>إلى تاريخ البدء</value>
   </data>
-  <data name="FromEndDate" xml:space="preserve">
+	<data name="FromEndDate" xml:space="preserve">
     <value>من تاريخ الإنتهاء</value>
   </data>
-  <data name="ToEndDate" xml:space="preserve">
+	<data name="ToEndDate" xml:space="preserve">
     <value>إلى تاريخ الإنتهاء</value>
   </data>
-  <data name="FromCreationDate" xml:space="preserve">
+	<data name="FromCreationDate" xml:space="preserve">
     <value>من تاريخ الإنشاء</value>
   </data>
-  <data name="ToCreationDate" xml:space="preserve">
+	<data name="ToCreationDate" xml:space="preserve">
     <value>إلى تاريخ الإنشاء</value>
   </data>
-  <data name="DefaultColumnsConfiguration" xml:space="preserve">
+	<data name="DefaultColumnsConfiguration" xml:space="preserve">
     <value>إعدادات الأعمدة الافتراضية</value>
   </data>
-  <data name="FilterFields" xml:space="preserve">
+	<data name="FilterFields" xml:space="preserve">
     <value>حقول المرشح</value>
   </data>
-  <data name="AddTaskFieldsConfiguration" xml:space="preserve">
+	<data name="AddTaskFieldsConfiguration" xml:space="preserve">
     <value>إعدادات حقول إضافة المهمة</value>
   </data>
-  <data name="Nodepartmentavailable" xml:space="preserve">
+	<data name="Nodepartmentavailable" xml:space="preserve">
     <value> لا توجد إدارة متاحة
 أضف إدارة جديدة للبدء</value>
   </data>
-  <data name="DepartmentDuplicateValidation" xml:space="preserve">
+	<data name="DepartmentDuplicateValidation" xml:space="preserve">
     <value>يجب أن يكون اسم الإدارة فريدًا. يرجى كتابة اسم آخر</value>
   </data>
-  <data name="NameEnglish" xml:space="preserve">
-    <value>الاسم بالانجليزية</value>
+	<data name="NameEnglish" xml:space="preserve">
+    <value>الاسم بالإنجليزي</value>
   </data>
-  <data name="NameArabic" xml:space="preserve">
-    <value>الاسم بالعربية</value>
+	<data name="NameArabic" xml:space="preserve">
+    <value>الاسم بالعربي</value>
   </data>
-  <data name="SelectParent" xml:space="preserve">
+	<data name="SelectParent" xml:space="preserve">
     <value>الإدارة الرئيسية</value>
   </data>
-  <data name="Update" xml:space="preserve">
+	<data name="Update" xml:space="preserve">
     <value>تعديل</value>
   </data>
-  <data name="Departments" xml:space="preserve">
+	<data name="Departments" xml:space="preserve">
     <value>الإدارات</value>
   </data>
-  <data name="AddDepartment" xml:space="preserve">
-    <value>أضف إدارة</value>
+	<data name="AddDepartment" xml:space="preserve">
+    <value>إضافة إدارة</value>
   </data>
-  <data name="DepartmentParent" xml:space="preserve">
+	<data name="DepartmentParent" xml:space="preserve">
     <value>الإدارة الرئيسية </value>
   </data>
-  <data name="DefaultColumnsHint" xml:space="preserve">
+	<data name="DefaultColumnsHint" xml:space="preserve">
     <value>قم بتخصيص الأعمدة التي ترغب في عرضها، وحدد العرض الافتراضي للأعمدة الذي سيظهر عند تسجيل دخول المستخدم إلى النظام</value>
   </data>
-  <data name="TaskFilterHint" xml:space="preserve">
+	<data name="TaskFilterHint" xml:space="preserve">
     <value>حدد الحقول التي تريد عرضها في أي مرشح مهمة</value>
   </data>
-  <data name="AddTaskHint" xml:space="preserve">
+	<data name="AddTaskHint" xml:space="preserve">
     <value>استخدم هذا الخيار لتفعيل الحقول التي ستظهر في صفحة إنشاء/تعديل المهمة، ويمكنك أيضًا تحديد الحقول التي يجب أن تكون إلزامية.</value>
   </data>
-  <data name="Addedsuccessfully" xml:space="preserve">
+	<data name="Addedsuccessfully" xml:space="preserve">
     <value>تمت الإضافة بنجاح</value>
   </data>
-  <data name="SureDeleteDepartment" xml:space="preserve">
+	<data name="SureDeleteDepartment" xml:space="preserve">
     <value>هل أنت متأكد أنك تريد حذف هذه الإدارة؟</value>
   </data>
-  <data name="Confirm" xml:space="preserve">
+	<data name="Confirm" xml:space="preserve">
     <value>تأكيد</value>
   </data>
-  <data name="Search" xml:space="preserve">
+	<data name="Search" xml:space="preserve">
     <value>بحث</value>
   </data>
-  <data name="EnterDaysNumber" xml:space="preserve">
+	<data name="EnterDaysNumber" xml:space="preserve">
     <value>أدخل عدد الأيام</value>
   </data>
-  <data name="FieldNames" xml:space="preserve">
+	<data name="FieldNames" xml:space="preserve">
     <value>أسماء الحقول</value>
   </data>
-  <data name="AddTaskSettingNotFound" xml:space="preserve">
+	<data name="AddTaskSettingNotFound" xml:space="preserve">
     <value>لم يتم العثور على اعداد اضافة المهمة {id}</value>
   </data>
-  <data name="FilterFieldNotFound" xml:space="preserve">
+	<data name="FilterFieldNotFound" xml:space="preserve">
     <value>لم يتم العثور على حقل المرشح {id}</value>
   </data>
-  <data name="DefaultColumnNotFound" xml:space="preserve">
+	<data name="DefaultColumnNotFound" xml:space="preserve">
     <value>لم يتم العثور على العمود الافتراضي {id}</value>
   </data>
-  <data name="System Identity Configuration" xml:space="preserve">
+	<data name="System Identity Configuration" xml:space="preserve">
     <value>إعدادات هوية النظام</value>
   </data>
-  <data name="Primary Color" xml:space="preserve">
+	<data name="Primary Color" xml:space="preserve">
     <value>اللون الرئيسي</value>
   </data>
-  <data name="Primary Active Color" xml:space="preserve">
+	<data name="Primary Active Color" xml:space="preserve">
     <value>Primary Active Color</value>
   </data>
-  <data name="Main Title" xml:space="preserve">
+	<data name="Main Title" xml:space="preserve">
     <value>العناوين الرئيسية</value>
   </data>
-  <data name="Sub Title" xml:space="preserve">
+	<data name="Sub Title" xml:space="preserve">
     <value>العناوين الفرعية</value>
   </data>
-  <data name="Navigation Background" xml:space="preserve">
+	<data name="Navigation Background" xml:space="preserve">
     <value>خلفية التنقل</value>
   </data>
-  <data name="Border Color" xml:space="preserve">
+	<data name="Border Color" xml:space="preserve">
     <value>الوان الحدود</value>
   </data>
-  <data name="System Identity" xml:space="preserve">
+	<data name="System Identity" xml:space="preserve">
     <value>هوية النظام</value>
   </data>
-  <data name="EditStatus" xml:space="preserve">
+	<data name="EditStatus" xml:space="preserve">
     <value>تعديل الحالة</value>
   </data>
-  <data name="Type Source Name English" xml:space="preserve">
+	<data name="Type Source Name English" xml:space="preserve">
     <value>اسم مصدر المهمة بالإنجليزية </value>
   </data>
-  <data name="Type Source Name Arabic" xml:space="preserve">
+	<data name="Type Source Name Arabic" xml:space="preserve">
     <value>اسم مصدر المهمة بالعربي</value>
   </data>
-  <data name="Enter Task Type Name English" xml:space="preserve">
+	<data name="Enter Task Type Name English" xml:space="preserve">
     <value>اسم نوع المهمة بالإنجليزية</value>
   </data>
-  <data name="Enter Task Type Name Arabic" xml:space="preserve">
+	<data name="Enter Task Type Name Arabic" xml:space="preserve">
     <value>اسم نوع المهمة بالعربي</value>
   </data>
-  <data name="EditTaskType" xml:space="preserve">
+	<data name="EditTaskType" xml:space="preserve">
     <value>تعديل نوع المهمة</value>
   </data>
-  <data name="Enter Priority Name English" xml:space="preserve">
+	<data name="Enter Priority Name English" xml:space="preserve">
     <value>اسم الأولوية بالإنجليزية</value>
   </data>
-  <data name="Enter Priority Name Arabic" xml:space="preserve">
+	<data name="Enter Priority Name Arabic" xml:space="preserve">
     <value>اسم الأولوية بالعربي</value>
   </data>
-  <data name="Deletedsuccessfully" xml:space="preserve">
+	<data name="Deletedsuccessfully" xml:space="preserve">
     <value>تم الحذف بنجاح</value>
   </data>
-  <data name="Addusers" xml:space="preserve">
+	<data name="Addusers" xml:space="preserve">
     <value>اضافه مستخدمين</value>
   </data>
-  <data name="Errordatabase" xml:space="preserve">
+	<data name="Errordatabase" xml:space="preserve">
     <value>خطا</value>
   </data>
-  <data name="AddDelegation" xml:space="preserve">
+	<data name="AddDelegation" xml:space="preserve">
     <value>اضافه تفويض</value>
   </data>
-  <data name="EditDelegation" xml:space="preserve">
+	<data name="EditDelegation" xml:space="preserve">
     <value>تعديل تفويض</value>
   </data>
-  <data name="FromUser" xml:space="preserve">
+	<data name="FromUser" xml:space="preserve">
     <value>من المتسخدم</value>
   </data>
-  <data name="ToUser" xml:space="preserve">
+	<data name="ToUser" xml:space="preserve">
     <value>إلي المستخدم</value>
   </data>
-  <data name="FromDate" xml:space="preserve">
+	<data name="FromDate" xml:space="preserve">
     <value>تاريخ البدء </value>
   </data>
-  <data name="ToDate" xml:space="preserve">
+	<data name="ToDate" xml:space="preserve">
     <value>تاريخ الانتهاء</value>
   </data>
-  <data name="CreateDate" xml:space="preserve">
+	<data name="CreateDate" xml:space="preserve">
     <value>تاريخ الإنشاء</value>
   </data>
-  <data name="SureDeleteDelegation" xml:space="preserve">
+	<data name="SureDeleteDelegation" xml:space="preserve">
     <value>هل أنت متأكد أنك تريد إزالة هذا التفويض؟</value>
   </data>
-  <data name="NoDelegationvailable" xml:space="preserve">
+	<data name="NoDelegationvailable" xml:space="preserve">
     <value>لا يوجد تفويضات متاحه</value>
   </data>
-  <data name="GeneralModule" xml:space="preserve">
+	<data name="GeneralModule" xml:space="preserve">
     <value>الوحدات العامة</value>
   </data>
-  <data name="Privilege" xml:space="preserve">
+	<data name="Privilege" xml:space="preserve">
     <value>صلاحيات</value>
   </data>
-  <data name="TaskModule" xml:space="preserve">
+	<data name="TaskModule" xml:space="preserve">
     <value>وحدة المهام</value>
   </data>
-  <data name="ReportModule" xml:space="preserve">
+	<data name="ReportModule" xml:space="preserve">
     <value>وحدة التقارير</value>
   </data>
-  <data name="AddNewPrivilege" xml:space="preserve">
+	<data name="AddNewPrivilege" xml:space="preserve">
     <value>إضافة صلاحية </value>
   </data>
-  <data name="SelectReportOptions" xml:space="preserve">
+	<data name="SelectReportOptions" xml:space="preserve">
     <value>اختر خيارات التقرير</value>
   </data>
-  <data name="ReportModuleHint" xml:space="preserve">
+	<data name="ReportModuleHint" xml:space="preserve">
     <value>جميع الخيارات أدناه اختيارية. إذا لم يتم تحديد أي خيار، فلن يتم إرسال أي تقرير من النظام إلى المستخدمين.</value>
   </data>
-  <data name="Loading" xml:space="preserve">
+	<data name="Loading" xml:space="preserve">
     <value>جاري التحميل</value>
   </data>
-  <data name="PrivilegeNotFound" xml:space="preserve">
+	<data name="PrivilegeNotFound" xml:space="preserve">
     <value>لم يتم العثور على الصلاحية  {id}</value>
   </data>
-  <data name="EnterPrivilegeName" xml:space="preserve">
+	<data name="EnterPrivilegeName" xml:space="preserve">
     <value>اسم الصلاحية عربي</value>
   </data>
-  <data name="ArabicName" xml:space="preserve">
-    <value>الاسم بالعربية</value>
+	<data name="ArabicName" xml:space="preserve">
+    <value>الاسم بالعربي</value>
   </data>
-  <data name="EnglishName" xml:space="preserve">
-    <value>الاسم بالانجليزية</value>
+	<data name="EnglishName" xml:space="preserve">
+    <value>الاسم بالانجليزي</value>
   </data>
-  <data name="EnterPrivilegeArabicName" xml:space="preserve">
+	<data name="EnterPrivilegeArabicName" xml:space="preserve">
     <value>اسم الصلاحية بالعربي</value>
   </data>
-  <data name="EnterPrivilegeEnglishName" xml:space="preserve">
+	<data name="EnterPrivilegeEnglishName" xml:space="preserve">
     <value>اسم الصلاحية بالإنجليزية</value>
   </data>
-  <data name="SelectAtLeastOneValue" xml:space="preserve">
+	<data name="SelectAtLeastOneValue" xml:space="preserve">
     <value>حدد قيمة واحدة على الأقل.</value>
   </data>
-  <data name="Add" xml:space="preserve">
+	<data name="Add" xml:space="preserve">
     <value>إضافة</value>
   </data>
-  <data name="Edit" xml:space="preserve">
+	<data name="Edit" xml:space="preserve">
     <value>تعديل</value>
   </data>
-  <data name="View" xml:space="preserve">
+	<data name="View" xml:space="preserve">
     <value>عرض</value>
   </data>
-  <data name="All" xml:space="preserve">
+	<data name="All" xml:space="preserve">
     <value>الجميع</value>
   </data>
-  <data name="DifferentDepartment" xml:space="preserve">
+	<data name="DifferentDepartment" xml:space="preserve">
     <value>إدارات مختلفة</value>
   </data>
-  <data name="SameDepartment" xml:space="preserve">
+	<data name="SameDepartment" xml:space="preserve">
     <value>نفس الإدارة</value>
   </data>
-  <data name="SameUser" xml:space="preserve">
+	<data name="SameUser" xml:space="preserve">
     <value>نفس المستخدم</value>
   </data>
-  <data name="Module" xml:space="preserve">
+	<data name="Module" xml:space="preserve">
     <value>وحدة</value>
   </data>
-  <data name="ViewPermission" xml:space="preserve">
+	<data name="ViewPermission" xml:space="preserve">
     <value>عرض الأذونات</value>
   </data>
-  <data name="ViewUsers" xml:space="preserve">
+	<data name="ViewUsers" xml:space="preserve">
     <value>المستخدمين</value>
   </data>
-  <data name="AddANewPrivilegeToGetStarted" xml:space="preserve">
+	<data name="AddANewPrivilegeToGetStarted" xml:space="preserve">
     <value>أضف صلاحية جديدة للبدء</value>
   </data>
-  <data name="NoPrivilegeAvailable" xml:space="preserve">
+	<data name="NoPrivilegeAvailable" xml:space="preserve">
     <value>لا تتوفر صلاحيات</value>
   </data>
-  <data name="Priority2" xml:space="preserve">
+	<data name="Priority2" xml:space="preserve">
     <value>الأولوية </value>
   </data>
-  <data name="Logout" xml:space="preserve">
+	<data name="Logout" xml:space="preserve">
     <value>تسجيل الخروج</value>
   </data>
-  <data name="Titlee" xml:space="preserve">
+	<data name="Titlee" xml:space="preserve">
     <value>العنوان</value>
   </data>
-  <data name="TaskStatus" xml:space="preserve">
+	<data name="TaskStatus" xml:space="preserve">
     <value>حاله المهمه</value>
   </data>
-  <data name="AssigneduserNames" xml:space="preserve">
+	<data name="AssigneduserNames" xml:space="preserve">
     <value>المسند إليه</value>
   </data>
-  <data name="AddTask" xml:space="preserve">
+	<data name="AddTask" xml:space="preserve">
     <value>إضافة مهمة</value>
   </data>
-  <data name="TitleEnglish" xml:space="preserve">
+	<data name="TitleEnglish" xml:space="preserve">
     <value>العنوان الإنجليزية</value>
   </data>
-  <data name="TitleArabic" xml:space="preserve">
+	<data name="TitleArabic" xml:space="preserve">
     <value>العنوان بالعربيه</value>
   </data>
-  <data name="DescriptionEnglish" xml:space="preserve">
+	<data name="DescriptionEnglish" xml:space="preserve">
     <value>الوصف بالانجليزيه </value>
   </data>
-  <data name="DescriptionArabic" xml:space="preserve">
+	<data name="DescriptionArabic" xml:space="preserve">
     <value>الوصف بالعربيه</value>
   </data>
-  <data name="SelectType" xml:space="preserve">
+	<data name="SelectType" xml:space="preserve">
     <value>اختر النوع</value>
   </data>
-  <data name="SelectSource" xml:space="preserve">
+	<data name="SelectSource" xml:space="preserve">
     <value>اختر المصدر</value>
   </data>
-  <data name="ReminderDate" xml:space="preserve">
+	<data name="ReminderDate" xml:space="preserve">
     <value>تاريخ التذكير</value>
   </data>
-  <data name="SelectPriority" xml:space="preserve">
+	<data name="SelectPriority" xml:space="preserve">
     <value>اختر الاوليه</value>
   </data>
-  <data name="AboveUserDepartmentLevel" xml:space="preserve">
+	<data name="AboveUserDepartmentLevel" xml:space="preserve">
     <value>مستوى أعلى من إدارة المستخدم</value>
   </data>
-  <data name="BelowUserDepartmentLevel" xml:space="preserve">
+	<data name="BelowUserDepartmentLevel" xml:space="preserve">
     <value>مستوى أسفل من إدارة المستخدم</value>
   </data>
-  <data name="PeersLevel" xml:space="preserve">
+	<data name="PeersLevel" xml:space="preserve">
     <value>النظائر</value>
   </data>
-  <data name="CreateTaskOnHim" xml:space="preserve">
+	<data name="CreateTaskOnHim" xml:space="preserve">
     <value>مهام المستخدم</value>
   </data>
-  <data name="CreateTaskOnHimHint" xml:space="preserve">
+	<data name="CreateTaskOnHimHint" xml:space="preserve">
     <value>يتيح هذا للمستخدم إنشاء مهام لنفسه ورؤية مهامه فقط كمنشئ أو مسند إليه</value>
   </data>
-  <data name="SameDepartmentHint" xml:space="preserve">
+	<data name="SameDepartmentHint" xml:space="preserve">
     <value>سيقوم هذا الخيار بتحديد إدارة المستخدم تلقائيًا لتطبيق الإذن عليه</value>
   </data>
-  <data name="PeersLevelHint" xml:space="preserve">
+	<data name="PeersLevelHint" xml:space="preserve">
     <value>إدارات على نفس المستوى: سيقوم هذا الخيار تلقائيًا باختيار الإدارات النظيرة التي تقع على نفس مستوى إدارة المستخدم. سيتم اختيار فقط الإدارات التي تشترك مع إدارة المستخدم في نفس الإدارة الرئيسية لتطبيق الصلاحية عليها</value>
   </data>
-  <data name="BelowUserDepartmentLevelHint" xml:space="preserve">
+	<data name="BelowUserDepartmentLevelHint" xml:space="preserve">
     <value>يتيح لك هذا الخيار تطبيق الصلاحية على الإدارات التي تقع في مستوى أدنى من إدارة المستخدم. سيستخدم النظام تلقائيًا التسلسل الهرمي العمودي المرتبط بإدارة المستخدم</value>
   </data>
-  <data name="AboveUserDepartmentLevelHint" xml:space="preserve">
+	<data name="AboveUserDepartmentLevelHint" xml:space="preserve">
     <value>يتيح لك هذا الخيار تطبيق الصلاحية على الإدارات التي تقع في مستوى أعلى من إدارة المستخدم. سيستخدم النظام تلقائيًا التسلسل الهرمي العمودي المرتبط بإدارة المستخدم الرئيسية</value>
   </data>
-  <data name="ExternalDepartmentHint" xml:space="preserve">
+	<data name="ExternalDepartmentHint" xml:space="preserve">
     <value>يمكنك استخدام إدارة خارجية غير مرتبطة بإدارة المستخدم لتطبيق الأذونات عليها</value>
   </data>
-  <data name="UserDepartment" xml:space="preserve">
+	<data name="UserDepartment" xml:space="preserve">
     <value>إدارة المستخدم</value>
   </data>
-  <data name="ExternalDepartment" xml:space="preserve">
+	<data name="ExternalDepartment" xml:space="preserve">
     <value>إدارة خارجية</value>
   </data>
-  <data name="Department" xml:space="preserve">
+	<data name="Department" xml:space="preserve">
     <value>الإدارة </value>
   </data>
-  <data name="Permissions" xml:space="preserve">
+	<data name="Permissions" xml:space="preserve">
     <value>الصلاحيات</value>
   </data>
-  <data name="EmployeesTasks" xml:space="preserve">
+	<data name="EmployeesTasks" xml:space="preserve">
     <value>مهام الموظف</value>
   </data>
-  <data name="ManagersTasks" xml:space="preserve">
+	<data name="ManagersTasks" xml:space="preserve">
     <value>مهمة المدير</value>
   </data>
-  <data name="DirectionLevel" xml:space="preserve">
+	<data name="DirectionLevel" xml:space="preserve">
     <value>مستوي الاتجاه</value>
   </data>
-  <data name="DirectionType" xml:space="preserve">
+	<data name="DirectionType" xml:space="preserve">
     <value>نوع الاتجاه</value>
   </data>
-  <data name="IncludingSubDepartment" xml:space="preserve">
+	<data name="IncludingSubDepartment" xml:space="preserve">
     <value>لها إدارات فرعية</value>
   </data>
-  <data name="PrivilegeDuplicateValidation" xml:space="preserve">
+	<data name="PrivilegeDuplicateValidation" xml:space="preserve">
     <value>لا يمكنك تكرار اسم الصلاحية</value>
   </data>
-  <data name="Subtask_Levels" xml:space="preserve">
+	<data name="Subtask_Levels" xml:space="preserve">
     <value>مستويات المهمة الفرعية</value>
   </data>
-  <data name="users" xml:space="preserve">
+	<data name="Select" xml:space="preserve">
+    <value>اختر </value>
+  </data>
+	<data name="users" xml:space="preserve">
     <value>المستخدمين</value>
   </data>
-  <data name="email" xml:space="preserve">
+	<data name="email" xml:space="preserve">
     <value>البريد اللإلكتروني</value>
   </data>
-  <data name="Add_user" xml:space="preserve">
+	<data name="Add_user" xml:space="preserve">
     <value>إضافة مستخدم</value>
   </data>
-  <data name="NoUsersAvailable" xml:space="preserve">
+	<data name="NoUsersAvailable" xml:space="preserve">
     <value>لا يوجد مستخدمون متاحون</value>
   </data>
-  <data name="AddANewUserToGetStarted" xml:space="preserve">
+	<data name="AddANewUserToGetStarted" xml:space="preserve">
     <value>أضف مستخدمًا جديدًا للبدء</value>
   </data>
-  <data name="setAsManager" xml:space="preserve">
+	<data name="setAsManager" xml:space="preserve">
     <value>التعيين كمدير</value>
   </data>
-  <data name="Privileges" xml:space="preserve">
+	<data name="Privileges" xml:space="preserve">
     <value>صلاحيات</value>
   </data>
-  <data name="ViewPrivilege" xml:space="preserve">
+	<data name="ViewPrivilege" xml:space="preserve">
     <value>عرض الصلاحية</value>
   </data>
-  <data name="LinkUser" xml:space="preserve">
+	<data name="LinkUser" xml:space="preserve">
     <value>ربط المستخدم</value>
   </data>
-  <data name="Usethisoption" xml:space="preserve">
+	<data name="Usethisoption" xml:space="preserve">
     <value>استخدم هذا الخيار لتفعيل إشعارات النظام التي سيتم إرسالها تلقائيًا عند تنفيذ الإجراء المحدد</value>
   </data>
-  <data name="NotificationTypeTemplateConfiguration" xml:space="preserve">
+	<data name="NotificationTypeTemplateConfiguration" xml:space="preserve">
     <value>اعداد التنبيهات</value>
   </data>
-  <data name="NoResultsFound" xml:space="preserve">
+	<data name="NoResultsFound" xml:space="preserve">
     <value>لم يتم العثور على نتائج</value>
   </data>
-  <data name="TryAjustingYourSearch" xml:space="preserve">
+	<data name="TryAjustingYourSearch" xml:space="preserve">
     <value>حاول تعديل بحثك</value>
   </data>
-  <data name="ClearSearch" xml:space="preserve">
+	<data name="ClearSearch" xml:space="preserve">
     <value>مسح البحث</value>
   </data>
-  <data name="KanbanView" xml:space="preserve">
+	<data name="KanbanView" xml:space="preserve">
     <value>عرض اللوحة</value>
   </data>
-  <data name="Sure" xml:space="preserve">
+	<data name="Sure" xml:space="preserve">
     <value>هل أنت متأكد أنك تريد الحذف؟ </value>
   </data>
-  <data name="EditPrivilege" xml:space="preserve">
+	<data name="EditPrivilege" xml:space="preserve">
     <value>تعديل الصلاحية</value>
   </data>
-  <data name="SystemNotifications" xml:space="preserve">
-    <value>إشعارات النظام</value>
-  </data>
-  <data name="ViewUserPrivilege" xml:space="preserve">
+	<data name="ViewUserPrivilege" xml:space="preserve">
     <value>عرض الصلاحيات</value>
   </data>
-  <data name="Email_user" xml:space="preserve">
+	<data name="Email_user" xml:space="preserve">
     <value>البريد اللإلكتروني</value>
   </data>
-  <data name="NoUsers" xml:space="preserve">
+	<data name="NoUsers" xml:space="preserve">
     <value>لا يوجد مستخدمون مرتبطون بهذا القسم</value>
   </data>
-  <data name="username" xml:space="preserve">
+	<data name="username" xml:space="preserve">
     <value>إسم المستخدم</value>
   </data>
-  <data name="No" xml:space="preserve">
+	<data name="No" xml:space="preserve">
     <value>لا</value>
   </data>
-  <data name="Yes" xml:space="preserve">
+	<data name="Yes" xml:space="preserve">
     <value>نعم</value>
   </data>
-  <data name="priorityHint2" xml:space="preserve">
+	<data name="priorityHint2" xml:space="preserve">
     <value>ملاحظة: ترتيب الأولويات هو كالتالي — 1 (أعلى/أكثر أهمية)، 2، 3 (أقل أهمية).      ستأخذ المهمة الرئيسية دائمًا أعلى ترتيب أولوية من بين المهام الفرعية، أي الأكثر أهمية.</value>
   </data>
-  <data name="ChangeDepartment" xml:space="preserve">
+	<data name="ChangeDepartment" xml:space="preserve">
     <value>تعديل الإدارة</value>
   </data>
-  <data name="validationDepartmentPart1" xml:space="preserve">
+	<data name="validationDepartmentPart1" xml:space="preserve">
     <value>هذا المستخدم مُكلَّف حاليًا بمهام نشطة ضمن قسمه السابق</value>
   </data>
-  <data name="validationDepartmentPart2" xml:space="preserve">
+	<data name="validationDepartmentPart2" xml:space="preserve">
     <value>يُرجى تعيين هذه المهام قبل التغيير</value>
   </data>
-  <data name="user_is_active" xml:space="preserve">
+	<data name="user_is_active" xml:space="preserve">
     <value>هذا المستخدم موجود في Active Directory ولا يمكن حذفه</value>
   </data>
-  <data name="userHasTasksValidation" xml:space="preserve">
+	<data name="userHasTasksValidation" xml:space="preserve">
     <value>لا يمكن الحذف، لدى المستخدم مهمة مفتوحة مرتبطه به.</value>
   </data>
-      <data name="Of" xml:space="preserve">
+	<data name="Of" xml:space="preserve">
     <value>من</value>
   </data>
-    <data name="Items per page" xml:space="preserve">
+	<data name="Items per page" xml:space="preserve">
     <value>العناصر لكل صفحة</value>
   </data>
-  
+	<data name="EditDepartment" xml:space="preserve">
+    <value>تعديل الإدارة</value>
+  </data>
+	<data name="AddADepartmentToGetStarted" xml:space="preserve">
+    <value>أضف إدارة جديدة للبدء</value>
+  </data>
+	<data name="Level" xml:space="preserve">
+    <value>المستوى</value>
+  </data>
+	<data name="DepartmentHasUsersCannotDelete" xml:space="preserve">
+    <value>لا يمكن الحذف، لدى القسم مستخدمين متاحين</value>
+  </data>
+	<data name="CannotDeletePrivilege" xml:space="preserve">
+    <value>لا يمكنك حذف هذا الامتياز، فهو مرتبط بمستخدم</value>
+  </data>
+	<data name="PrivilegeTilte" xml:space="preserve">
+    <value>صلاحيات</value>
+  </data>
+	<data name="NoTasks" xml:space="preserve">
+    <value>لم يتم العثور على أي مهام</value>
+  </data>
+	<data name="AddTaskToStart" xml:space="preserve">
+    <value>ستظهر البيانات بعد إضافة المهمة الأولى</value>
+  </data>
+	<data name="Download" xml:space="preserve">
+    <value>تحميل ملف إكسل</value>
+  </data>
+	<data name="Upload" xml:space="preserve">
+    <value>إرفع ملف إكسل</value>
+  </data>
+	<data name="Link" xml:space="preserve">
+    <value>ربط المستخدم بالقسم والامتياز</value>
+  </data>
+	<data name="EmailMandatory" xml:space="preserve">
+    <value>بريد المستخدم الإلكتروني (إلزامي)</value>
+  </data>
+	<data name="PrivilegeMandatory" xml:space="preserve">
+    <value>اسم الامتياز (إلزامي)</value>
+  </data>
+	<data name="DepartmentMandatory" xml:space="preserve">
+    <value>اسم الإدارة (إلزامي)</value>
+  </data>
+	<data name="ValidationError" xml:space="preserve">
+    <value>الملف يحتوي على ادارة, صلاحية أو بريد الكتروني مكرر أو مفقود أو غير مطابق، قم بإعادة فحص الملف ثم قم بتحميله مرة أخرى.</value>
+  </data>
+	<data name="filesSuccess" xml:space="preserve">
+    <value>تم إضافة الملف بنجاح</value>
+  </data>
+	<data name="UploadExcelFile" xml:space="preserve">
+    <value>إرفع ملف إكسل</value>
+  </data>
+	<data name="DepartmentLevelMandatory" xml:space="preserve">
+    <value>مستوى الإدارة (إلزامي)
+اسم الإدارة (إلزامي)
+الإدارة الرئيسية (إلزامي)</value>
+  </data>
+	<data name="DownloadExcelTemplate" xml:space="preserve">
+    <value>تحميل ملف إكسل</value>
+  </data>
+	<data name="FileNotValid" xml:space="preserve">
+    <value>الملف غير صالح</value>
+  </data>
+	<data name="ThevalidRowsuploadedsuccessfully" xml:space="preserve">
+    <value>تم إضافة الملف بنجاح</value>
+  </data>
+	<data name="SomeInvalidRowsSkipped" xml:space="preserve">
+    <value>الملف يحتوي على ادارة مكرره أو مفقودة أو غير مطابقه، قم بإعادة فحص الملف ثم قم بتحميله مرة أخرى.
+
+</value>
+  </data>
+
+	<data name="System name english" xml:space="preserve">
+    <value>اسم النظام بالانجليزية</value>
+  </data>
+	<data name="Enter system name english" xml:space="preserve">
+    <value>ادخل اسم النظام بالانجليزية</value>
+  </data>
+	<data name="System name arabic" xml:space="preserve">
+    <value>اسم النظام بالعربية</value>
+  </data>
+	<data name="Enter system name arabic" xml:space="preserve">
+    <value>ادخل اسم النظام بالعربية</value>
+  </data>
+	<data name="LocalizeDate" xml:space="preserve">
+    <value>yyyy-MM-dd</value>
+  </data>
+	<data name="Hierarchy" xml:space="preserve">
+    <value>تسلسل هرمي</value>
+  </data>
+	<data name="Tree" xml:space="preserve">
+    <value>شجرة</value>
+  </data>
+	<data name="Grid" xml:space="preserve">
+    <value>جدول</value>
+  </data>
+	<data name="Welcome" xml:space="preserve">
+    <value>مرحبا</value>
+  </data>
+	<data name="Requiredd" xml:space="preserve">
+    <value>اسم المستخدم مطلوب</value>
+  </data>
+	<data name="passRequired" xml:space="preserve">
+    <value>كلمة المرور مطلوبة</value>
+  </data>
+	<data name="InvaildUserNameOrPassWord" xml:space="preserve">
+    <value>اسم المستخدم او كلمة المرور غير صحيحه</value>
+  </data>
+
+	<data name="linkUsers" xml:space="preserve">
+    <value>ربط مستخدمين</value>
+  </data>
+	<data name="Hierarchy" xml:space="preserve">
+    <value>التسلسل الهرمي</value>
+  </data>
+	<data name="Grid" xml:space="preserve">
+    <value>الشبكة</value>
+  </data>
+	<data name="Tree" xml:space="preserve">
+    <value>الشجرة</value>
+  </data>
 
   <data name="Sure" xml:space="preserve">
     <value>هل أنت متأكد أنك تريد حذف هذه الأولوية؟</value>

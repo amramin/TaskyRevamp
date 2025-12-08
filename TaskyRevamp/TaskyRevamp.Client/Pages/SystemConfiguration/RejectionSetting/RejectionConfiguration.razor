@@ -54,7 +54,7 @@
             <div class="row justify-content-center">
                 <div class="col-xxl-6 col-xl-7 col-lg-8 col-md-10">
                     <div class="action-buttons">
-                        <button class="btn btn-lg btn-light" @onclick="CancelSettings">@Loc["Cancel"]</button>
+                    
                         <button class="btn btn-lg  btn-primary" @onclick="SaveSettings"
                                 disabled="@(RejectionSetting.PeriodType == RejectionPeriodType.Custom && (RejectionSetting.CustomDays is null))">
                             @Loc["Save"]
@@ -97,10 +97,6 @@
         }
     }
 
-    private void CancelSettings()
-    {
-
-    }
 
     private void OnSettingChange(RejectionPeriodType newValue)
     {
@@ -116,7 +112,7 @@
         input = new string(input.Where(char.IsDigit).ToArray());
         if (input.Length > 10)
             input = input.Substring(0, 10);
-        if (int.TryParse(input, out var number) && number > 0)
+        if (long.TryParse(input, out var number) && number > 0)
         {
             RejectionSetting.CustomDays = number;
         }

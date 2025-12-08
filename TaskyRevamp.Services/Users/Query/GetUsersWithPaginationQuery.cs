@@ -76,7 +76,7 @@ namespace TaskyRevamp.Services.Users.Query
 						? q => q.OrderBy(u => u.UpdatedBy!.NameEnglish)
 						: q => q.OrderByDescending(u => u.UpdatedBy!.NameEnglish);
 
-				case "DisplayedName":
+				case "Name":
 					if (currentCulture == "ar")
 					{
 						return sortAscending

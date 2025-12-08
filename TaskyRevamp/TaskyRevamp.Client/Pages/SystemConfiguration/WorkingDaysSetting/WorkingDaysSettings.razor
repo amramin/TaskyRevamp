@@ -22,34 +22,33 @@
                         <p class="small-medium-text hint">@Loc["workingDaysHint"]</p>
                     </div>
                     @if (workingDaysSettingsDtos != null)
-        {
-            foreach (var daySetting in workingDaysSettingsDtos)
-            {
-                 var inputId = $"day-{daySetting.Day}";
+                    {
+                        foreach (var daySetting in workingDaysSettingsDtos)
+                        {
+                            var inputId = $"day-{daySetting.Day}";
                             <div class="form-check-card switch">
-                        <InputCheckbox id="@inputId" @bind-Value="daySetting.IsActive" 
-                        class="form-check-input" />
-                        <label for="@inputId">@Loc[daySetting.Day.ToString()]
-                        <span class="toggler-icon"></span>
-                        </label>
-                    </div>
-                
-            }
-        }
+                                <InputCheckbox id="@inputId" @bind-Value="daySetting.IsActive" class="form-check-input" />
+                                <label for="@inputId">@Loc[daySetting.Day.ToString()]
+                                    <span class="toggler-icon"></span>
+                                </label>
+                            </div>
+
+                        }
+                    }
                 </div>
             </div>
         </div>
-<div class="card-footer">
+        <div class="card-footer">
             <div class="row justify-content-center">
                 <div class="col-xxl-7 col-xl-8 col-lg-9 col-md-11">
                     <div class="action-buttons">
-                        <button class="btn btn-lg btn-light"  @onclick="Cancel">@Loc["Cancel"]</button>
-                        <button class="btn btn-lg  btn-primary"  @onclick="Save">@Loc["Save"]</button>
+
+                        <button class="btn btn-lg  btn-primary" @onclick="Save">@Loc["Save"]</button>
                     </div>
                 </div>
             </div>
         </div>
-        
+
     </div>
 </div>
 

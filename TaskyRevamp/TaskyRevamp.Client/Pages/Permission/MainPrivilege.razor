@@ -28,7 +28,7 @@
 @if (Privilegs != null && Privilegs.Any())
 {
     <div class="page-body">
-        <div class="table-responsive">
+        <div class="table-responsive sticky-header-custom">
             @if (Privilegs != null && Privilegs.Any())
             {
                 <SortableTable TItem="PrivilegeDtoWithName" Columns="@tableColumns" Items="@Privilegs"
@@ -39,9 +39,9 @@
                             var checkboxId = $"source-active-{item.PrivilegeDto.Id}";
                             <tr>
                                 <td>@item.PrivilegeDto.Name</td>
-                                <td>@item.PrivilegeDto.CreateDate.ToLocalTime().ToString("dd-MM-yyyy")</td>
+                                <td>@item.PrivilegeDto.CreateDate.ToLocalTime().ToString(Loc["LocalizeDate"])</td>
                                 <td>@item.CreatedByName</td>
-                                <td>@(item.PrivilegeDto.UpdateDate?.ToLocalTime().ToString("dd-MM-yyyy"))</td>
+                                <td>@(item.PrivilegeDto.UpdateDate?.ToLocalTime().ToString(Loc["LocalizeDate"]))</td>
                                 <td>@item.UpdatedByName</td>
                                 <td>
                                     <div class="dropdown actions">
@@ -67,11 +67,11 @@
                                                 </button>
                                             </li>
                                             <li>
-                                                <button class="dropdown-item" @onclick="@(() => ViewPermission(item.PrivilegeDto.Id))">
+                                                <button class="dropdown-item" @onclick="@(() => LinkUser(item.PrivilegeDto.Id))">
                                                     <span class="icon">
-                                                        <SVGCrud SVGType="SVGCrud.SVGTypeEnum.PrivilegeConfig"></SVGCrud>
+                                                        <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Users"></SVGCrud>
                                                     </span>
-                                                    @Loc["ViewPermission"]
+                                                    @Loc["LinkUser"]
                                                 </button>
                                             </li>
                                             <li>
@@ -80,6 +80,14 @@
                                                         <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Delete"></SVGCrud>
                                                     </span>
                                                     @Loc["Delete"]
+                                                </button>
+                                            </li>
+                                            <li>
+                                                <button class="dropdown-item" @onclick="@(() => ViewPermission(item.PrivilegeDto.Id))">
+                                                    <span class="icon">
+                                                        <SVGCrud SVGType="SVGCrud.SVGTypeEnum.PrivilegeConfig"></SVGCrud>
+                                                    </span>
+                                                    @Loc["ViewPermission"]
                                                 </button>
                                             </li>
                                         </ul>
@@ -119,7 +127,7 @@ else
     private int totalPages = 1;
     private int totalCount = 0;
     private int pageSize = 10;
-    private string currentSortColumn = "CreateDate";
+    private string currentSortColumn = "";
     private bool? sortAscending = true;
     private List<SortableColumn> tableColumns = new();
     private Search? searchComponent;
@@ -177,8 +185,14 @@ else
     private void ViewPermission(Guid id) => navigationManager.NavigateTo($"/privilege?mode=view&id={id}");
     private void ViewUsers(Guid id, string PrivilegeName) => navigationManager.NavigateTo($"/UsersPrivilege/{id}/{PrivilegeName}");
 
-    private void DeletePrivilege(PrivilegeDtoWithName privilege)
+    private async Task DeletePrivilege(PrivilegeDtoWithName privilege)
     {
+        var res = await _privilegeConsumer.CheckPrivilegeIsLinkedWithUsers(privilege.PrivilegeDto.Id);
+        if(res.Success && !res.Data)
+        {
+            await ToastService.ShowToastAsync(Loc["CannotDeletePrivilege"], "error");
+            return;
+        }
         PopupService.ShowConfirmation(@Loc["Sure"], @Loc["Confirm"], OnDeleteConfirmed, type: ConfirmationType.Danger);
         selectedPrivilege = privilege;
         showConfirm = true;
@@ -199,7 +213,7 @@ else
         }
         selectedPrivilege = null;
     }
-   
+
     private async Task SortBy(string columnName)
     {
         if (currentSortColumn == columnName)
@@ -227,6 +241,7 @@ else
     {
         lastSearchTerm = searchTerm;
         isSearchMode = true;
+        currentPage = 1;
         await LoadPrivilegs(true, searchTerm);
     }
     private async Task ClearSearch()
@@ -246,10 +261,20 @@ else
         if (sortAscending == null)
         {
             // third click → reset to default sorting
-            currentSortColumn = "DisplayedName"; // or whatever your default column is
+            currentSortColumn = ""; // or whatever your default column is
             sortAscending = true;
         }
 
         await LoadPrivilegs();
+    }
+    private void LinkUser(Guid id)
+    {
+        PopupService.ShowNew(@<LinkUsersToPrivilege Id="id" OnSaved="ReloadAfterSave"></LinkUsersToPrivilege>,Loc["LinkUser"]);
+    } 
+    private async Task ReloadAfterSave()
+    {
+        currentPage = 1;
+        PopupService.Hide();
+        StateHasChanged();
     }
 }

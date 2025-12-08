@@ -35,4 +35,11 @@ namespace TaskyRevamp.Dto.Account
         public string DepartmentName { get; set; }
 
     }
+
+    public class UserLinkDto
+    {
+        public string email { get; set; }
+        public string departmentName { get; set; }
+        public string privilegeName { get; set; }
+	}
 }

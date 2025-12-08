@@ -1,5 +1,9 @@
-using Blazored.LocalStorage;
+﻿using Blazored.LocalStorage;
+using DocumentFormat.OpenXml;
+using DocumentFormat.OpenXml.Packaging;
+using DocumentFormat.OpenXml.Spreadsheet;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.JSInterop;
 using Newtonsoft.Json;
 using System.IdentityModel.Tokens.Jwt;
@@ -9,7 +13,6 @@ using TaskyRevamp.Client.Extensions;
 using TaskyRevamp.Client.Services;
 using TaskyRevamp.Dto.GeneralDto;
 using TaskyRevamp.Dto.SystemConfiguration;
-
 namespace TaskyRevamp.Client;
 
 public class TaskyService
@@ -152,26 +155,159 @@ public class TaskyService
         return systemLogoBase64;
     }
 
-	public event Action<SystemIdentityDto> OnSystemIdentityChanged;
-	public void NotifySystemIdentityChanged(SystemIdentityDto identity)
-	{
-		OnSystemIdentityChanged?.Invoke(identity);
-	}
-	public async Task ChangeTheme(SystemIdentityDto systemIdentity)
+    public event Action<SystemIdentityDto> OnSystemIdentityChanged;
+    public void NotifySystemIdentityChanged(SystemIdentityDto identity)
+    {
+        OnSystemIdentityChanged?.Invoke(identity);
+    }
+    public async Task ChangeTheme(SystemIdentityDto systemIdentity)
     {
         await JS.InvokeVoidAsync("setThemeColor", "--primary-color", systemIdentity.PrimaryColor);
         await JS.InvokeVoidAsync("setThemeColor", "--secondary-color", systemIdentity.PrimaryColor);
 
         await JS.InvokeVoidAsync("setThemeColor", "--active-primary", systemIdentity.PrimaryActiveColor);
-    
+
         await JS.InvokeVoidAsync("setThemeColor", "--light-200", systemIdentity.NavigationBackground);
         await JS.InvokeVoidAsync("setThemeColor", "--light-300", systemIdentity.BorderColor);
 
         await JS.InvokeVoidAsync("setThemeColor", "--dark-900", systemIdentity.MainTitle);
         await JS.InvokeVoidAsync("setThemeColor", "--dark-800", systemIdentity.SubTitle);
 
-	}
+    }
+    public async Task DownloadUsersTemplateAsync()
+    {
+        var culture = await _localStorage.GetItemAsStringAsync("BlazorCulture") ?? "en";
+        string[] headers;
+        string fileName;
+        string sheetName;
+        if (culture.StartsWith("ar"))
+        {
+            headers = new string[] { "البريد الإلكتروني للمستخدم", "اسم الإدارة", "اسم الصلاحية" };
+            fileName = "قالب ربط المستخدمين.xlsx";
+            sheetName = "قالب ربط المستخدمين";
+        }
+        else
+        {
+            headers = new string[] { "User Email", "Department Name", "Privilege Name" };
+            fileName = "Link Users Template.xlsx";
+            sheetName = "Link users Template";
+        }
+        using var memStream = new MemoryStream();
+        using (var spreadsheet = SpreadsheetDocument.Create(memStream, SpreadsheetDocumentType.Workbook))
+        {
+            var workbookPart = spreadsheet.AddWorkbookPart();
+            workbookPart.Workbook = new Workbook();
+            var worksheetPart = workbookPart.AddNewPart<WorksheetPart>();
+            var sheetData = new SheetData();
+            worksheetPart.Worksheet = new Worksheet(sheetData);
+            var headerRow = new Row();
+            foreach (var header in headers)
+            {
+                var cell = new Cell
+                {
+                    DataType = CellValues.String,
+                    CellValue = new CellValue(header)
+                };
+                headerRow.AppendChild(cell);
+            }
+            sheetData.AppendChild(headerRow);
+            var sheets = spreadsheet.WorkbookPart.Workbook.AppendChild(new Sheets());
+            var sheet = new Sheet
+            {
+                Id = spreadsheet.WorkbookPart.GetIdOfPart(worksheetPart),
+                SheetId = 1,
+                Name = sheetName
+            };
+            sheets.Append(sheet);
+            spreadsheet.WorkbookPart.Workbook.Save();
+        }
 
+        memStream.Position = 0;
+        using var streamRef = new DotNetStreamReference(stream: memStream);
+        await JS.InvokeVoidAsync("downloadFileFromStream", fileName, streamRef);
+    }
+    public async Task<(byte[] Bytes, string FileName, string ContentType)> ReadFileAsync(IBrowserFile file)
+    {
+        using var stream = file.OpenReadStream(long.MaxValue);
+        using var ms = new MemoryStream();
+        await stream.CopyToAsync(ms);
+
+        return (ms.ToArray(), file.Name, file.ContentType);
+    }
+    public List<string[]> ReadExcelRows(byte[] fileBytes)
+    {
+        var rowsList = new List<string[]>();
+
+        using var ms = new MemoryStream(fileBytes);
+        using var doc = SpreadsheetDocument.Open(ms, false);
+
+        var sheet = doc.WorkbookPart!.Workbook.Sheets!.GetFirstChild<Sheet>();
+        var worksheetPart = (WorksheetPart)doc.WorkbookPart.GetPartById(sheet.Id!);
+        var sheetData = worksheetPart.Worksheet.Elements<SheetData>().First();
+        foreach (var row in sheetData.Elements<Row>())
+        {
+            var cells = row.Elements<Cell>().Select(c => GetCellValue(c, doc)).ToArray();
+            rowsList.Add(cells);
+        }
+        return rowsList;
+    }
+    private string GetCellValue(Cell cell, SpreadsheetDocument doc)
+    {
+        if (cell.CellValue == null) return "";
+        var value = cell.CellValue.Text;
+        if (cell.DataType != null && cell.DataType.Value == CellValues.SharedString)
+        {
+            var stringTable = doc.WorkbookPart.SharedStringTablePart?.SharedStringTable;
+            if (stringTable != null)
+            {
+                return stringTable.ElementAt(int.Parse(value)).InnerText;
+            }
+        }
+        return value;
+    }
+    private async Task<bool> CheckForToken2()
+    {
+        try
+        {
+
+            bearerCulture = await _localStorage.GetItemAsStringAsync("BlazorCulture");
+
+            if (!httpClient.DefaultRequestHeaders.TryGetValues("BlazorCulture", out var values)
+                || !values.Contains(bearerCulture))
+            {
+                httpClient.DefaultRequestHeaders.Remove("BlazorCulture");
+                httpClient.DefaultRequestHeaders.Add("BlazorCulture", bearerCulture);
+            }
+
+
+            bearerToken = await _localStorage.GetItemAsStringAsync("bearerToken");
+
+
+            if (IsTokenExpired(bearerToken))
+            {
+                NavigateToLogin();
+                return false;
+            }
+
+            httpClient.DefaultRequestHeaders.Accept.Clear();
+            //   Console.WriteLine($"BearerToken localstoreage: {bearerToken}");
+            httpClient.Timeout = TimeSpan.FromSeconds(1000);
+
+
+            httpClient.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue("Bearer", bearerToken);
+
+
+            return true;
+        }
+        catch (Exception e)
+        {
+            return true;
+            Console.WriteLine($"Error in CheckForToken: {e.Message}");
+            NavigateToLogin();
+            return false;
+        }
+    }
     private async Task<bool> CheckForToken()
     {
         try
@@ -185,6 +321,7 @@ public class TaskyService
                 httpClient.DefaultRequestHeaders.Remove("BlazorCulture");
                 httpClient.DefaultRequestHeaders.Add("BlazorCulture", bearerCulture);
             }
+
 
 
             bearerToken = await _localStorage.GetItemAsStringAsync("bearerToken");

@@ -10,11 +10,11 @@
                     <span class="icon ">
                         <SVGCrud SVGType="SVGCrud.SVGTypeEnum.ChevronEnd"></SVGCrud>
                     </span>
-                    <span class="text">@dept.Name</span>
+                    <span class="text">@dept.Name (@dept.Level)</span>
                 </button>
 
-                <DepartmentActions DepartmentId="@dept.Id" ShowUsers="OnShowUsers" OnAdd="OnAdd" Edit="OnEdit"
-                    Delete="OnDelete" />
+                <DepartmentActions Department="@dept" ShowUsers="OnShowUsers" OnAdd="@(() => OnAdd.InvokeAsync(dept.Id))" OnLinkUsers="@(()=>OnLinkUsers.InvokeAsync(dept.Id))"
+                    Edit="@(() => OnEdit.InvokeAsync(dept.Id))" Delete="@(() => OnDelete.InvokeAsync(dept.Id))" />
 
                 <button class="btn btn-outline-light-primary btn-32" type="button"
                     @onclick="() => HandleDepartmentSelection(dept.Id)">
@@ -30,7 +30,8 @@
                     @foreach (var child in dept.Children)
                     {
                         <li>
-                            <DepartmentTree Departments="new List<DepartmentDto> { child }" OnAdd="OnAdd" OnShowUsers="OnShowUsers"
+                            <DepartmentTree  IsRoot="false" Departments="new List<DepartmentDto> { child }" OnAdd="OnAdd" OnShowUsers="OnShowUsers"
+                                OnLinkUsers="OnLinkUsers"
                                 OnEdit="OnEdit" OnAddDepartment="OnAdd" OnDelete="OnDelete" />
                         </li>
                     }
@@ -46,11 +47,12 @@
     [Parameter] public List<DepartmentDto> Departments { get; set; } = new();
     [Parameter] public EventCallback<Guid> OnAddDepartment { get; set; }
     [Parameter] public EventCallback<Guid> OnShowUsers { get; set; }
+    [Parameter] public EventCallback<Guid> OnLinkUsers { get; set; }
     [Parameter] public EventCallback<Guid> OnEdit { get; set; }
     [Parameter] public EventCallback<Guid> OnDelete { get; set; }
     [Parameter] public EventCallback<Guid> OnAdd { get; set; }
 
-
+[Parameter] public bool IsRoot { get; set; } = false;
 
     private void ToggleChildren(DepartmentDto dept)
     {
@@ -69,9 +71,8 @@
     }
     protected override void OnParametersSet()
     {
-        if (Departments != null && Departments.Count > 0)
+        if (IsRoot && Departments != null && Departments.Count > 0)
         {
-
             Departments[0].IsExpanded = true;
         }
     }

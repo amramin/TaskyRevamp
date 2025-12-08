@@ -98,9 +98,11 @@
                 </div>
             </div>
             <div class="page-body">
-                <div class="table-responsive sticky-header-custom">
+    
 
-
+                    @if (allTaks != null && allTaks.Any())
+{
+                    <div class="table-responsive sticky-header-custom">
                     <SortableTable TItem="CreateTaskDto" Columns="@tableColumns" Items="@allTaks"
                         SortColumn="@currentSortColumn" SortAscending="@sortAscending" OnSortRequested="HandleSort">
 
@@ -118,11 +120,15 @@
                             }
                         </RowTemplate>
                     </SortableTable>
-
-
-                </div>
+                                    </div>
                 <Pagination CurrentPage="@currentPage" TotalPages="@totalPages" TotalCount="@totalCount"
                     PageSize="@pageSize" PageChanged="ChangePage" PageSizeChangedCallback="ChangePageSize" />
+                    }
+                    else
+                    {
+                        <NoDataAvailable MessageTitle="@Loc["NoTasks"]" MessageSubtitle="@Loc["AddTaskToStart"]"
+                                         ButtonText="@Loc["AddTask"]" OnButtonClick="Add" />
+                    }
 
             </div>
         </div>
@@ -189,7 +195,7 @@
     public int PageSize { get; set; }
     public int TotalItemsCount { get; set; }
     private List<SortableColumn> tableColumns = new();
-    private string currentSortColumn = "CreateDate";
+    private string currentSortColumn = "";
     private bool? sortAscending = true;
     public Guid currentUserId { set; get; }
     public bool IsShowCreateDialog { get; set; } = false;
@@ -269,6 +275,7 @@ new() { Field = "Action", DisplayName = Loc["Action"] ,IsSortable = false},
     }
     public async Task Search(string searchTerm)
     {
+        currentPage = 1;
         await GetTasks(true, searchTerm);
         // await LoadSources(true, searchTerm);
     }
@@ -412,10 +419,10 @@ SearchFieldTask.PlannedProgress
                 builder.AddContent(0, (task.TaskStatusName)?.ToString());
                 break;
             case "Start Date":
-                builder.AddContent(0, task.StartDate.ToString("yyyy-MM-dd"));
+                builder.AddContent(0, task.StartDate.ToString(Loc["LocalizeDate"]));
                 break;
             case "End Date":
-                builder.AddContent(0, task.EndDate.ToString("yyyy-MM-dd"));
+                builder.AddContent(0, task.EndDate.ToString(Loc["LocalizeDate"]));
                 break;
             case "weight":
                 builder.AddContent(0, task.weight);
@@ -427,13 +434,13 @@ SearchFieldTask.PlannedProgress
                 builder.AddContent(0, task.CreatedByName);
                 break;
             case "Creation Date":
-                builder.AddContent(0, task.CreateDate?.ToString("yyyy-MM-dd"));
+                builder.AddContent(0, task.CreateDate?.ToString(Loc["LocalizeDate"]));
                 break;
             case "UpdatedBy":
                 builder.AddContent(0, task.UpdatedBy);
                 break;
             case "UpdateDate":
-                builder.AddContent(0, task.UpdateDate?.ToString("yyyy-MM-dd"));
+                builder.AddContent(0, task.UpdateDate?.ToString(Loc["LocalizeDate"]));
                 break;
 
             case "Assigned To Department":
@@ -470,7 +477,7 @@ SearchFieldTask.PlannedProgress
         if (sortAscending == null)
         {
             // third click → reset to default sorting
-            currentSortColumn = "CreateDate"; // or whatever your default column is
+            currentSortColumn = ""; // or whatever your default column is
             sortAscending = true;
         }
         await GetTasks();

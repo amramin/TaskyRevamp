@@ -234,7 +234,7 @@ Children = new List<ChildItem> {
 new ChildItem { Text = "users", Url = "/Users", Icon = SVGCrud.SVGTypeEnum.UsersEdit, DataId = "users-config" },
 new ChildItem { Text = "Departments", Url = "/Departments", Icon = SVGCrud.SVGTypeEnum.DataFlow, DataId =
 "departments-config" },
-new ChildItem { Text = @Loc["Privilege"], Url = "/Privileges", Icon = SVGCrud.SVGTypeEnum.PrivilegeConfig, DataId =
+new ChildItem { Text = @Loc["PrivilegeTilte"], Url = "/Privileges", Icon = SVGCrud.SVGTypeEnum.PrivilegeConfig, DataId =
 "Privilege-config" }
 }
 },
@@ -261,17 +261,17 @@ new ChildItem { Text = "TaskHistory", Url = "/TaskHistory", Icon = SVGCrud.SVGTy
     {
         SetMenu();
 
-        var firstMenu = MenuItems.FirstOrDefault();
-        if (firstMenu != null)
-        {
-            firstMenu.IsOpen = true;
-            var firstChild = firstMenu.Children.FirstOrDefault();
-            if (firstChild != null)
-            {
-                SetActiveItem(firstMenu, firstChild);
-                NavigationManager.NavigateTo(firstChild.Url);
-            }
-        }
+        // var firstMenu = MenuItems.FirstOrDefault();
+        // if (firstMenu != null)
+        // {
+        //     firstMenu.IsOpen = true;
+        //     var firstChild = firstMenu.Children.FirstOrDefault();
+        //     if (firstChild != null)
+        //     {
+        //         SetActiveItem(firstMenu, firstChild);
+        //         NavigationManager.NavigateTo(firstChild.Url);
+        //     }
+        // }
     }
 
     void ToggleMenu(MenuItem clicked)

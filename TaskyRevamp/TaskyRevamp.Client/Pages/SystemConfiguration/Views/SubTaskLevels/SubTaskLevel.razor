@@ -25,7 +25,7 @@
                @Loc["Maximum_Subtask_Level"]
                <span class="text-danger">*</span>
             </label>
-            <input type="number" min="1" class="form-control" @bind="ViewSetting.SubTaskLevels" @oninput="OnCustomDaysChange" />
+            <input type="text" maxlength="10" class="form-control" @bind="ViewSetting.SubTaskLevels" @oninput="OnCustomDaysChange" />
         </div>
 
         @if (ViewSetting.SubTaskLevels > 3)
@@ -43,7 +43,7 @@
                 <div class="col-xxl-7 col-xl-8 col-lg-9 col-md-11">
                     <div class="action-buttons">
                         <button class="btn btn-lg btn-light" @onclick="Cancel">@Loc["Cancel"]</button>
-                        <button class="btn btn-lg  btn-primary" @onclick="Save" disabled="@(ViewSetting.SubTaskLevels <= 0)">@Loc["Save"]</button>
+                        <button class="btn btn-lg  btn-primary" @onclick="Save" disabled="@(ViewSetting.SubTaskLevels < 0)">@Loc["Save"]</button>
                     </div>
                 </div>
             </div>
@@ -67,7 +67,7 @@
     }
     private async Task Save(MouseEventArgs args)
     {
-        if (ViewSetting.SubTaskLevels <= 0)
+        if (ViewSetting.SubTaskLevels < 0)
         {
             return;
         }
@@ -82,13 +82,15 @@
     }
     private void OnCustomDaysChange(ChangeEventArgs e)
     {
-        var input = e.Value?.ToString()?.Trim();
-        if (string.IsNullOrEmpty(input) || !int.TryParse(input, out var number) || number <= 0)
+        var input = e.Value?.ToString() ?? "";
+        input = new string(input.Where(char.IsDigit).ToArray());
+        if (input.Length > 10)
+            input = input.Substring(0, 10);
+        if (int.TryParse(input, out var number) && number > 0)
         {
-            ViewSetting.SubTaskLevels = 0;
-            return;
+            ViewSetting.SubTaskLevels = number;
         }
-        ViewSetting.SubTaskLevels = number;
+
     }
     private void Cancel(MouseEventArgs args)
     {
