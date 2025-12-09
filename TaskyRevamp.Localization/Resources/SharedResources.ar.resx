@@ -369,6 +369,9 @@
 	<data name="active" xml:space="preserve">
     <value>نشط</value>
   </data>
+	<data name="SystemNotifications" xml:space="preserve">
+    <value>إشعارات النظام</value>
+  </data>
 	<data name="inactive" xml:space="preserve">
     <value>غير نشط</value>
   </data>

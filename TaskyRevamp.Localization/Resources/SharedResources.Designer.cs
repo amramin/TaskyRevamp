@@ -19,7 +19,7 @@ namespace TaskyRevamp.Localization.Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "18.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class SharedResources {
@@ -214,7 +214,7 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Add new privilege.
+        ///   Looks up a localized string similar to Add New Priority.
         /// </summary>
         public static string AddNewPriority {
             get {
@@ -277,7 +277,7 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Add task source.
+        ///   Looks up a localized string similar to Add Source.
         /// </summary>
         public static string AddTaskSource {
             get {
@@ -952,11 +952,20 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Email notifications.
+        ///   Looks up a localized string similar to Email Notification.
         /// </summary>
         public static string EmailNotification {
             get {
                 return ResourceManager.GetString("EmailNotification", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Email Notification Content.
+        /// </summary>
+        public static string EmailNotificationContent {
+            get {
+                return ResourceManager.GetString("EmailNotificationContent", resourceCulture);
             }
         }
         
@@ -2086,6 +2095,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Select Day.
+        /// </summary>
+        public static string SelectDay {
+            get {
+                return ResourceManager.GetString("SelectDay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Parent department .
         /// </summary>
         public static string SelectParent {
@@ -2118,6 +2136,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string SelectSource {
             get {
                 return ResourceManager.GetString("SelectSource", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select Time.
+        /// </summary>
+        public static string SelectTime {
+            get {
+                return ResourceManager.GetString("SelectTime", resourceCulture);
             }
         }
         
@@ -2163,6 +2190,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string SourceConfiguration {
             get {
                 return ResourceManager.GetString("SourceConfiguration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to delete this task source?.
+        /// </summary>
+        public static string SourceSure {
+            get {
+                return ResourceManager.GetString("SourceSure", resourceCulture);
             }
         }
         
@@ -2338,6 +2374,24 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to System Notification.
+        /// </summary>
+        public static string SystemNotification {
+            get {
+                return ResourceManager.GetString("SystemNotification", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to System Notification Content.
+        /// </summary>
+        public static string SystemNotificationContent {
+            get {
+                return ResourceManager.GetString("SystemNotificationContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to System notifications.
         /// </summary>
         public static string SystemNotifications {
@@ -2388,6 +2442,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string TaskTypeConfiguration {
             get {
                 return ResourceManager.GetString("TaskTypeConfiguration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The message content cannot be empty.
+        /// </summary>
+        public static string Themessagecontentcannotbeempty {
+            get {
+                return ResourceManager.GetString("Themessagecontentcannotbeempty", resourceCulture);
             }
         }
         
