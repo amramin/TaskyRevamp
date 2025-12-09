@@ -19,7 +19,7 @@
                 <SVGCrud SVGType="SVGCrud.SVGTypeEnum.BackArrow"></SVGCrud>
             </span>
         </button>
-        <h1 class="page-headline">@selectedDepartment?.Name</h1>
+        <h1 class="page-headline">@Loc["Usersin"] @selectedDepartment?.Name</h1>
     </div>
     <div class="action-btn-list">
         <Search @ref="searchComponent" SearchSubmit="Search" CssClass="form-control"></Search>
@@ -89,6 +89,7 @@ else if (initialUsers != null && initialUsers.Any())
 else
 {
     <NoDataAvailable MessageTitle="@Loc["NoUsers"]"
+                     MessageSubtitle="@Loc["NoUsersAddNew"]"
                      ButtonText="@Loc["LinkUser"]"
                      OnButtonClick="Add" />
 }
@@ -108,7 +109,7 @@ else
     private int totalPages = 1;
     private int totalCount = 0;
     private int pageSize = 10;
-    private string currentSortColumn = "IsManager";
+    private string currentSortColumn = "";
     private bool? sortAscending = true;
     private List<SortableColumn> tableColumns = new();
 
@@ -119,7 +120,7 @@ else
         {
             new() { Field = "DisplayedName", DisplayName = Loc["username"] },
             new() { Field = "Email", DisplayName = Loc["Email_user"] },
-            new() { Field = "PrivilegeName", DisplayName = Loc["Privilege"] },
+            new() { Field = "PrivilegeName", DisplayName = Loc["UserPrivilege"] },
             new() { Field = "IsManager", DisplayName = Loc["IsManager"] },
             new() { Field = "Action", DisplayName = Loc["Action"] ,IsSortable = false}
         };
@@ -192,7 +193,8 @@ else
             SearchFieldUserDepartment.NameEnglish,
             SearchFieldUserDepartment.NameArabic,
             SearchFieldUserDepartment.Email,
-            SearchFieldUserDepartment.Privilage
+            SearchFieldUserDepartment.Privilage,
+            SearchFieldUserDepartment.IsManager
     };
 
     public async Task Search(string searchTerm)
@@ -216,7 +218,7 @@ else
         if (sortAscending == null)
         {
             // third click → reset to default sorting
-            currentSortColumn = "DisplayedName"; // or whatever your default column is
+            currentSortColumn = ""; // or whatever your default column is
             sortAscending = true;
         }
         await LoadUsers();

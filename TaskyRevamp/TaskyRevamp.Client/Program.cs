@@ -1,6 +1,7 @@
 using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Components.Authorization;
+
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -24,6 +25,7 @@ builder.Configuration.AddJsonStream(stream);
 
 builder.Services.AddBlazoredLocalStorage();
 builder.Services.AddLocalization();
+//builder.Services.AddAuthorizationCore();
 Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("Ngo9BigBOggjHTQxAR8/V1NNaF5cXmBCf1FpRmJGdld5fUVHYVZUTXxaS00DNHVRdkdmWXtdcHVTRGBeVkBzWkNWYE4=");
 
 builder.Services.Configure<RequestLocalizationOptions>(options =>
@@ -51,6 +53,7 @@ builder.Services.AddTransient<RecycleBinSettingConsumer>();
 builder.Services.AddTransient<RejectionSettingConsumer>();
 builder.Services.AddTransient<PrioritySettingConsumer>();
 builder.Services.AddTransient<NotificationTypeTemplateConsumer>();
+builder.Services.AddTransient<SendEmailConsumer>();
 
 builder.Services.AddTransient<DepartmentConsumer>();
 builder.Services.AddTransient<TaskConsumer>();

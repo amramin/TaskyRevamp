@@ -46,10 +46,10 @@ public class TaskyService
         var returnUrl = NavigationManager.ToBaseRelativePath(NavigationManager.Uri);
         var loginUrl = string.IsNullOrEmpty(returnUrl) ? "/login" : $"/login?returnUrl={returnUrl}";
 
+        ClearLocalStorage();
 
 
         NavigationManager.NavigateTo(loginUrl, true);
-        ClearLocalStorage();
     }
 
 

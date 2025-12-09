@@ -231,8 +231,8 @@
     <data name="StatusOptions" xml:space="preserve">
     <value>خيارات المهام</value>
   </data>
-    <data name="List" xml:space="preserve">
-    <value>عرض قائمة</value>
+	<data name="List" xml:space="preserve">
+    <value>قائمة العرض</value>
   </data>
     <data name="Gantt" xml:space="preserve">
     <value>عرض مخطط جانت</value>
@@ -369,7 +369,10 @@
     <data name="active" xml:space="preserve">
     <value>نشط</value>
   </data>
-    <data name="inactive" xml:space="preserve">
+	<data name="SystemNotifications" xml:space="preserve">
+    <value>إشعارات النظام</value>
+  </data>
+	<data name="inactive" xml:space="preserve">
     <value>غير نشط</value>
   </data>
     <data name="name" xml:space="preserve">
@@ -447,8 +450,8 @@
     <data name="TaskTypeConfiguration" xml:space="preserve">
     <value>إعدادات أنواع المهام</value>
   </data>
-    <data name="AddTaskType" xml:space="preserve">
-    <value>إضافة نوع المهمة</value>
+	<data name="AddTaskType" xml:space="preserve">
+    <value>إضافة نوع </value>
   </data>
     <data name="NoTaskTypeAvailable" xml:space="preserve">
     <value>لا تتوفر أنواع مهام</value>
@@ -595,8 +598,8 @@
     <data name="Enter Task Type Name Arabic" xml:space="preserve">
     <value>اسم نوع المهمة بالعربي</value>
   </data>
-    <data name="EditTaskType" xml:space="preserve">
-    <value>تعديل نوع المهمة</value>
+	<data name="EditTaskType" xml:space="preserve">
+    <value>تعديل نوع </value>
   </data>
     <data name="Enter Priority Name English" xml:space="preserve">
     <value>اسم الأولوية بالإنجليزية</value>
@@ -853,8 +856,8 @@
     <data name="ViewPrivilege" xml:space="preserve">
     <value>عرض الصلاحية</value>
   </data>
-    <data name="LinkUser" xml:space="preserve">
-    <value>ربط المستخدم</value>
+	<data name="LinkUser" xml:space="preserve">
+    <value>ربط مستخدمين</value>
   </data>
     <data name="Usethisoption" xml:space="preserve">
     <value>استخدم هذا الخيار لتفعيل إشعارات النظام التي سيتم إرسالها تلقائيًا عند تنفيذ الإجراء المحدد</value>
@@ -886,8 +889,8 @@
     <data name="Email_user" xml:space="preserve">
     <value>البريد اللإلكتروني</value>
   </data>
-    <data name="NoUsers" xml:space="preserve">
-    <value>لا يوجد مستخدمون مرتبطون بهذا القسم</value>
+	<data name="NoUsers" xml:space="preserve">
+    <value>لم يتم تعيين أي مستخدم لهذه الإدارة</value>
   </data>
     <data name="username" xml:space="preserve">
     <value>إسم المستخدم</value>
@@ -1045,5 +1048,66 @@
   </data>
     <data name="Themessagecontentcannotbeempty" xml:space="preserve">
     <value>محتوى الرساله لا يمكن ان يكون فراغا</value>
+  </data>
+
+  <data name="Sure" xml:space="preserve">
+    <value>هل أنت متأكد أنك تريد حذف هذه الأولوية؟</value>
+  </data>
+  <data name="SourceSure" xml:space="preserve">
+    <value>هل أنت متأكد من أنك تريد حذف مصدر المهمة؟</value>
+  </data>
+  <data name="TypeSure" xml:space="preserve">
+    <value>هل أنت متأكد من أنك تريد حذف نوع المهمة؟</value>
+  </data>
+  <data name="AddNewPriority" xml:space="preserve">
+    <value>إضافة أولوية جديدة</value>
+  </data>
+  <data name="SelectDay" xml:space="preserve">
+    <value>اختر اليوم</value>
+  </data>
+  <data name="SelectTime" xml:space="preserve">
+    <value>اختر الوقت</value>
+  </data>
+  <data name="EmailNotification" xml:space="preserve">
+    <value>اشعار البريد الالكترونى</value>
+  </data>
+  <data name="SystemNotification" xml:space="preserve">
+    <value>اشعار النظام</value>
+  </data>
+  <data name="SubjectEnglish" xml:space="preserve">
+    <value>الموضوع بالانجليزيه</value>
+  </data>
+  <data name="SubjectArabic" xml:space="preserve">
+    <value>الموضوع بالعربيه</value>
+  </data>
+  <data name="EmailNotificationContent" xml:space="preserve">
+    <value>محتوى الاشعار بالبريد الالكترونى</value>
+  </data>
+  <data name="SystemNotificationContent" xml:space="preserve">
+    <value>محتوى اشعار النظام</value>
+  </data>
+  <data name="Themessagecontentcannotbeempty" xml:space="preserve">
+    <value>لا يمكن أن يكون محتوى الرسالة فارغً</value>
+  </data>
+  <data name="notvald250" xml:space="preserve">
+    <value>تم الوصول إلى الحد الأقصى لعدد الأحرف</value>
+  </data>
+  <data name="notvald1000" xml:space="preserve">
+    <value>تم الوصول إلى الحد الأقصى لعدد الأحرف</value>
+  </data>
+  <data name="LevelValue" xml:space="preserve">
+    <value>يجب أن تكون القيمة أكبر من أو تساوي 0</value>
+  </data>
+  <data name="Usersin" xml:space="preserve">
+    <value>المستخدمين في</value>
+  </data>
+  <data name="NoUsersAddNew" xml:space="preserve">
+    <value>أضف مستخدم جديد للبدء</value>
+  </data>
+  <data name="IsManager" xml:space="preserve">
+    <value>مدير</value>
+  </data>
+  <data name="UserPrivilege" xml:space="preserve">
+    <value>الصلاحية</value>
   </data>
 </root>

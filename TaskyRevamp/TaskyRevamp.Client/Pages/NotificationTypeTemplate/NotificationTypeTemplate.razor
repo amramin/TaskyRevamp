@@ -13,7 +13,14 @@
 
 <div class="page-header">
     <div class="title-block">
-        <h1 class="page-headline">@Loc["SystemNotifications"]</h1>
+        @if (ModuleType == (int)Dto.Enums.ModuleType.Email)
+     {
+            <h1 class="page-headline">@Loc["EmailNotification"]</h1>
+     }
+        @if (ModuleType == (int)Dto.Enums.ModuleType.SystemNotification)
+        {
+            <h1 class="page-headline">@Loc["SystemNotification"]</h1>
+        }
     </div>
 
 </div>
