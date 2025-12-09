@@ -889,7 +889,7 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Edit task type.
+        ///   Looks up a localized string similar to Edit  type.
         /// </summary>
         public static string EditTaskType {
             get {
@@ -1240,6 +1240,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Is a manager.
+        /// </summary>
+        public static string IsManager {
+            get {
+                return ResourceManager.GetString("IsManager", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Items per page.
         /// </summary>
         public static string Items_per_page {
@@ -1285,6 +1294,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Value must be greater than or equal to 0.
+        /// </summary>
+        public static string LevelValue {
+            get {
+                return ResourceManager.GetString("LevelValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Link the user with a department and privilege.
         /// </summary>
         public static string Link {
@@ -1294,7 +1312,7 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to link user.
+        ///   Looks up a localized string similar to Link users.
         /// </summary>
         public static string LinkUser {
             get {
@@ -1605,6 +1623,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string NoUsers {
             get {
                 return ResourceManager.GetString("NoUsers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add a user to get started.
+        /// </summary>
+        public static string NoUsersAddNew {
+            get {
+                return ResourceManager.GetString("NoUsersAddNew", resourceCulture);
             }
         }
         
@@ -2509,11 +2536,29 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Privilege.
+        /// </summary>
+        public static string UserPrivilege {
+            get {
+                return ResourceManager.GetString("UserPrivilege", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Users.
         /// </summary>
         public static string users {
             get {
                 return ResourceManager.GetString("users", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Users in .
+        /// </summary>
+        public static string Usersin {
+            get {
+                return ResourceManager.GetString("Usersin", resourceCulture);
             }
         }
         

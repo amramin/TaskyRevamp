@@ -232,7 +232,7 @@
     <value>خيارات المهام</value>
   </data>
   <data name="List" xml:space="preserve">
-    <value>عرض قائمة</value>
+    <value>قائمة العرض</value>
   </data>
   <data name="Gantt" xml:space="preserve">
     <value>عرض مخطط جانت</value>
@@ -448,7 +448,7 @@
     <value>إعدادات أنواع المهام</value>
   </data>
   <data name="AddTaskType" xml:space="preserve">
-    <value>إضافة نوع المهمة</value>
+    <value>إضافة نوع </value>
   </data>
   <data name="NoTaskTypeAvailable" xml:space="preserve">
     <value>لا تتوفر أنواع مهام</value>
@@ -596,7 +596,7 @@
     <value>اسم نوع المهمة بالعربي</value>
   </data>
   <data name="EditTaskType" xml:space="preserve">
-    <value>تعديل نوع المهمة</value>
+    <value>تعديل نوع </value>
   </data>
   <data name="Enter Priority Name English" xml:space="preserve">
     <value>اسم الأولوية بالإنجليزية</value>
@@ -854,7 +854,7 @@
     <value>عرض الصلاحية</value>
   </data>
   <data name="LinkUser" xml:space="preserve">
-    <value>ربط المستخدم</value>
+    <value>ربط مستخدمين</value>
   </data>
   <data name="Usethisoption" xml:space="preserve">
     <value>استخدم هذا الخيار لتفعيل إشعارات النظام التي سيتم إرسالها تلقائيًا عند تنفيذ الإجراء المحدد</value>
@@ -887,7 +887,7 @@
     <value>البريد اللإلكتروني</value>
   </data>
   <data name="NoUsers" xml:space="preserve">
-    <value>لا يوجد مستخدمون مرتبطون بهذا القسم</value>
+    <value>لم يتم تعيين أي مستخدم لهذه الإدارة</value>
   </data>
   <data name="username" xml:space="preserve">
     <value>إسم المستخدم</value>
@@ -993,5 +993,20 @@
   </data>
   <data name="Grid" xml:space="preserve">
     <value>جدول</value>
+  </data>
+  <data name="LevelValue" xml:space="preserve">
+    <value>يجب أن تكون القيمة أكبر من أو تساوي 0</value>
+  </data>
+  <data name="Usersin" xml:space="preserve">
+    <value>المستخدمين في</value>
+  </data>
+  <data name="NoUsersAddNew" xml:space="preserve">
+    <value>أضف مستخدم جديد للبدء</value>
+  </data>
+  <data name="IsManager" xml:space="preserve">
+    <value>مدير</value>
+  </data>
+  <data name="UserPrivilege" xml:space="preserve">
+    <value>الصلاحية</value>
   </data>
 </root>

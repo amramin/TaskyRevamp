@@ -31,7 +31,7 @@ namespace TaskyRevamp.Services.SystemConfiguration.DefaultViewSetting.Command
 				{
 					if(newViewSetting.SubTaskLevels != originalSettingData!.SubTaskLevels)
 					{
-						originalSettingData.SubTaskLevels = newViewSetting.SubTaskLevels;
+						originalSettingData.SubTaskLevels = newViewSetting.SubTaskLevels??0;
 						await _viewSettingsRepository.Update(originalSettingData);
 					}
 				}

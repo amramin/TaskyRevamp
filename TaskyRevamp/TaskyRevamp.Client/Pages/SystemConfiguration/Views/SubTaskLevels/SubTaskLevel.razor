@@ -1,5 +1,6 @@
 ﻿@page "/sub_task"
 
+@using System.Globalization
 @using TaskyRevamp.Client.Consumer
 @using TaskyRevamp.Client.Services
 @using TaskyRevamp.Dto.SystemConfiguration
@@ -26,6 +27,7 @@
                <span class="text-danger">*</span>
             </label>
             <input type="text" maxlength="10" class="form-control" @bind="ViewSetting.SubTaskLevels" @oninput="OnCustomDaysChange" />
+            <span class="small text-danger">@Error</span>
         </div>
 
         @if (ViewSetting.SubTaskLevels > 3)
@@ -43,7 +45,7 @@
                 <div class="col-xxl-7 col-xl-8 col-lg-9 col-md-11">
                     <div class="action-buttons">
                         <button class="btn btn-lg btn-light" @onclick="Cancel">@Loc["Cancel"]</button>
-                        <button class="btn btn-lg  btn-primary" @onclick="Save" disabled="@(ViewSetting.SubTaskLevels < 0)">@Loc["Save"]</button>
+                        <button class="btn btn-lg  btn-primary" @onclick="Save" disabled="@(ViewSetting.SubTaskLevels < 0 || ViewSetting.SubTaskLevels is null)">@Loc["Save"]</button>
                     </div>
                 </div>
             </div>
@@ -53,6 +55,8 @@
 </div>
 @code {
     private DefaultViewSettingsDto ViewSetting { get; set; } = new DefaultViewSettingsDto();
+    string Error = "";
+    int? OldLevel;
     protected override async Task OnInitializedAsync()
     {
         var res = await _defaultViewSettingConsumer.GetDefaultViewSetting();
@@ -62,12 +66,13 @@
             if(resData != null)
             {
                 ViewSetting = resData;
+                OldLevel = ViewSetting.SubTaskLevels;
             }
         }
     }
     private async Task Save(MouseEventArgs args)
     {
-        if (ViewSetting.SubTaskLevels < 0)
+        if (ViewSetting.SubTaskLevels < 0 || ViewSetting.SubTaskLevels==null)
         {
             return;
         }
@@ -83,17 +88,29 @@
     private void OnCustomDaysChange(ChangeEventArgs e)
     {
         var input = e.Value?.ToString() ?? "";
-        input = new string(input.Where(char.IsDigit).ToArray());
+        //input = new string(input.Where(char.IsDigit).ToArray());
         if (input.Length > 10)
             input = input.Substring(0, 10);
-        if (int.TryParse(input, out var number) && number > 0)
+        if (int.TryParse(input, NumberStyles.AllowLeadingSign, CultureInfo.InvariantCulture, out var number) && number >= 0)
         {
             ViewSetting.SubTaskLevels = number;
+            Error = "";
+        }
+        else if(number < 0)
+        {
+            ViewSetting.SubTaskLevels = number;
+            Error = Loc["LevelValue"];
+        }
+        else 
+        {
+            // ViewSetting.SubTaskLevels = null;
+            Error = Loc["Required"];
         }
 
     }
     private void Cancel(MouseEventArgs args)
     {
-        
+        ViewSetting.SubTaskLevels = OldLevel;
+        Error = "";
     }
 }

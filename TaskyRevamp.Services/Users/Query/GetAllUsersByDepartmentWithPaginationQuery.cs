@@ -38,7 +38,7 @@ namespace TaskyRevamp.Services.Users.Query
 			Expression<Func<User, bool>> filter = u => u.DepartmentId == request.departmentId;
 			if (request.SearchFields != null && request.SearchFields.Any() && !string.IsNullOrWhiteSpace(request.SearchText))
 			{
-				var predicates = request.SearchFields.Select(f => UserDepartmentSearchFieldMap.Map[f]).ToList();
+			var predicates = request.SearchFields.Select(f => UserDepartmentSearchFieldMap.Map[f]).ToList();
 				var searchExpression = ExpressionBuilder.BuildLikeExpression(predicates, request.SearchText);
 				filter = filter.AndAlso(searchExpression);
 			}
