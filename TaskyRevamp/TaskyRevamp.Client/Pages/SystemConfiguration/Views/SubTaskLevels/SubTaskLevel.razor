@@ -56,7 +56,7 @@
 @code {
     private DefaultViewSettingsDto ViewSetting { get; set; } = new DefaultViewSettingsDto();
     string Error = "";
-    int? OldLevel;
+    long? OldLevel;
     protected override async Task OnInitializedAsync()
     {
         var res = await _defaultViewSettingConsumer.GetDefaultViewSetting();
