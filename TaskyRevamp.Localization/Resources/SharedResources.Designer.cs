@@ -133,6 +133,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add a department to get started.
+        /// </summary>
+        public static string AddADepartmentToGetStarted {
+            get {
+                return ResourceManager.GetString("AddADepartmentToGetStarted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add a new privilege to get started.
         /// </summary>
         public static string AddANewPrivilegeToGetStarted {
@@ -268,11 +277,20 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Add task source.
+        ///   Looks up a localized string similar to Add Source.
         /// </summary>
         public static string AddTaskSource {
             get {
                 return ResourceManager.GetString("AddTaskSource", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Data will appear after adding the first task.
+        /// </summary>
+        public static string AddTaskToStart {
+            get {
+                return ResourceManager.GetString("AddTaskToStart", resourceCulture);
             }
         }
         
@@ -399,6 +417,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string Cancel {
             get {
                 return ResourceManager.GetString("Cancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You can&apos;t delete this privilege, it&apos;s linked to a user.
+        /// </summary>
+        public static string CannotDeletePrivilege {
+            get {
+                return ResourceManager.GetString("CannotDeletePrivilege", resourceCulture);
             }
         }
         
@@ -691,6 +718,33 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Can&apos;t delete, the department has an active users.
+        /// </summary>
+        public static string DepartmentHasUsersCannotDelete {
+            get {
+                return ResourceManager.GetString("DepartmentHasUsersCannotDelete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to  Department Level (Mandatory).
+        /// </summary>
+        public static string DepartmentLevelMandatory {
+            get {
+                return ResourceManager.GetString("DepartmentLevelMandatory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Department Name (Mandatory).
+        /// </summary>
+        public static string DepartmentMandatory {
+            get {
+                return ResourceManager.GetString("DepartmentMandatory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Parent department.
         /// </summary>
         public static string DepartmentParent {
@@ -763,6 +817,24 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Download Excel template.
+        /// </summary>
+        public static string Download {
+            get {
+                return ResourceManager.GetString("Download", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Download Excel template.
+        /// </summary>
+        public static string DownloadExcelTemplate {
+            get {
+                return ResourceManager.GetString("DownloadExcelTemplate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Duration.
         /// </summary>
         public static string Duration {
@@ -786,6 +858,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string EditDelegation {
             get {
                 return ResourceManager.GetString("EditDelegation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit Department.
+        /// </summary>
+        public static string EditDepartment {
+            get {
+                return ResourceManager.GetString("EditDepartment", resourceCulture);
             }
         }
         
@@ -826,7 +907,7 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Edit task source.
+        ///   Looks up a localized string similar to Edit source.
         /// </summary>
         public static string EditTaskSource {
             get {
@@ -858,6 +939,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string Email_user {
             get {
                 return ResourceManager.GetString("Email_user", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User Email (Mandatory).
+        /// </summary>
+        public static string EmailMandatory {
+            get {
+                return ResourceManager.GetString("EmailMandatory", resourceCulture);
             }
         }
         
@@ -930,6 +1020,24 @@ namespace TaskyRevamp.Localization.Resources {
         public static string Enter_Priority_Name_English {
             get {
                 return ResourceManager.GetString("Enter Priority Name English", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter system name arabic.
+        /// </summary>
+        public static string Enter_system_name_arabic {
+            get {
+                return ResourceManager.GetString("Enter system name arabic", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter system name english.
+        /// </summary>
+        public static string Enter_system_name_english {
+            get {
+                return ResourceManager.GetString("Enter system name english", resourceCulture);
             }
         }
         
@@ -1024,6 +1132,24 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to File Not Valid.
+        /// </summary>
+        public static string FileNotValid {
+            get {
+                return ResourceManager.GetString("FileNotValid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The file is adding successfully .
+        /// </summary>
+        public static string filesSuccess {
+            get {
+                return ResourceManager.GetString("filesSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Filter field with Id {id} not found..
         /// </summary>
         public static string FilterFieldNotFound {
@@ -1114,6 +1240,24 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Grid.
+        /// </summary>
+        public static string Grid {
+            get {
+                return ResourceManager.GetString("Grid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hierarchy.
+        /// </summary>
+        public static string Hierarchy {
+            get {
+                return ResourceManager.GetString("Hierarchy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 24 hours.
         /// </summary>
         public static string Hours24 {
@@ -1137,6 +1281,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string IncludingSubDepartment {
             get {
                 return ResourceManager.GetString("IncludingSubDepartment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Username or password is incorrect.
+        /// </summary>
+        public static string InvaildUserNameOrPassWord {
+            get {
+                return ResourceManager.GetString("InvaildUserNameOrPassWord", resourceCulture);
             }
         }
         
@@ -1177,11 +1330,38 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Level.
+        /// </summary>
+        public static string Level {
+            get {
+                return ResourceManager.GetString("Level", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Link the user with a department and privilege.
+        /// </summary>
+        public static string Link {
+            get {
+                return ResourceManager.GetString("Link", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to link user.
         /// </summary>
         public static string LinkUser {
             get {
                 return ResourceManager.GetString("LinkUser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Link users.
+        /// </summary>
+        public static string linkUsers {
+            get {
+                return ResourceManager.GetString("linkUsers", resourceCulture);
             }
         }
         
@@ -1245,6 +1425,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string Loading {
             get {
                 return ResourceManager.GetString("Loading", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to dd-MM-yyyy.
+        /// </summary>
+        public static string LocalizeDate {
+            get {
+                return ResourceManager.GetString("LocalizeDate", resourceCulture);
             }
         }
         
@@ -1438,6 +1627,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No Tasks Found.
+        /// </summary>
+        public static string NoTasks {
+            get {
+                return ResourceManager.GetString("NoTasks", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No task sources available.
         /// </summary>
         public static string NoTaskSourcesAvailable {
@@ -1501,7 +1699,7 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Of.
+        ///   Looks up a localized string similar to of.
         /// </summary>
         public static string Of {
             get {
@@ -1524,6 +1722,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string ParentNotFound {
             get {
                 return ResourceManager.GetString("ParentNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Password is required.
+        /// </summary>
+        public static string passRequired {
+            get {
+                return ResourceManager.GetString("passRequired", resourceCulture);
             }
         }
         
@@ -1654,7 +1861,7 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to privilege .
+        ///   Looks up a localized string similar to Privilege .
         /// </summary>
         public static string Privilege {
             get {
@@ -1668,6 +1875,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string PrivilegeDuplicateValidation {
             get {
                 return ResourceManager.GetString("PrivilegeDuplicateValidation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Privilege Name (Mandatory).
+        /// </summary>
+        public static string PrivilegeMandatory {
+            get {
+                return ResourceManager.GetString("PrivilegeMandatory", resourceCulture);
             }
         }
         
@@ -1686,6 +1902,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string Privileges {
             get {
                 return ResourceManager.GetString("Privileges", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Privilege .
+        /// </summary>
+        public static string PrivilegeTilte {
+            get {
+                return ResourceManager.GetString("PrivilegeTilte", resourceCulture);
             }
         }
         
@@ -1776,6 +2001,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string Required {
             get {
                 return ResourceManager.GetString("Required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User name is required.
+        /// </summary>
+        public static string Requiredd {
+            get {
+                return ResourceManager.GetString("Requiredd", resourceCulture);
             }
         }
         
@@ -1933,6 +2167,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The file has in duplicate, missing or not matched departement, recheck the file and import it again..
+        /// </summary>
+        public static string SomeInvalidRowsSkipped {
+            get {
+                return ResourceManager.GetString("SomeInvalidRowsSkipped", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Source.
         /// </summary>
         public static string Source {
@@ -2041,7 +2284,7 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to subtask level.
+        ///   Looks up a localized string similar to Subtask level.
         /// </summary>
         public static string Subtask_Level {
             get {
@@ -2109,6 +2352,24 @@ namespace TaskyRevamp.Localization.Resources {
         public static string System_Identity_Configuration {
             get {
                 return ResourceManager.GetString("System Identity Configuration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to System name arabic.
+        /// </summary>
+        public static string System_name_arabic {
+            get {
+                return ResourceManager.GetString("System name arabic", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to System name english.
+        /// </summary>
+        public static string System_name_english {
+            get {
+                return ResourceManager.GetString("System name english", resourceCulture);
             }
         }
         
@@ -2190,6 +2451,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string Themessagecontentcannotbeempty {
             get {
                 return ResourceManager.GetString("Themessagecontentcannotbeempty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The file is adding successfully .
+        /// </summary>
+        public static string ThevalidRowsuploadedsuccessfully {
+            get {
+                return ResourceManager.GetString("ThevalidRowsuploadedsuccessfully", resourceCulture);
             }
         }
         
@@ -2293,6 +2563,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Tree.
+        /// </summary>
+        public static string Tree {
+            get {
+                return ResourceManager.GetString("Tree", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Try adjusting your search..
         /// </summary>
         public static string TryAjustingYourSearch {
@@ -2383,6 +2662,24 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Upload Excel file.
+        /// </summary>
+        public static string Upload {
+            get {
+                return ResourceManager.GetString("Upload", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Upload Excel file.
+        /// </summary>
+        public static string UploadExcelFile {
+            get {
+                return ResourceManager.GetString("UploadExcelFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to This user exists in the Active Directory and cannot be deleted.
         /// </summary>
         public static string user_is_active {
@@ -2451,6 +2748,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string validationDepartmentPart2 {
             get {
                 return ResourceManager.GetString("validationDepartmentPart2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The file has duplicate, missing or not matched department, privilege or email, recheck the file and import it again..
+        /// </summary>
+        public static string ValidationError {
+            get {
+                return ResourceManager.GetString("ValidationError", resourceCulture);
             }
         }
         
@@ -2559,6 +2865,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string weight {
             get {
                 return ResourceManager.GetString("weight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Welcome.
+        /// </summary>
+        public static string Welcome {
+            get {
+                return ResourceManager.GetString("Welcome", resourceCulture);
             }
         }
         
