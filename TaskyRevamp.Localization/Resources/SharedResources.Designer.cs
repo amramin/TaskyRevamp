@@ -934,6 +934,24 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Email body in Arabic.
+        /// </summary>
+        public static string EmailbodyinArabic {
+            get {
+                return ResourceManager.GetString("EmailbodyinArabic", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Email body in English.
+        /// </summary>
+        public static string EmailbodyinEnglish {
+            get {
+                return ResourceManager.GetString("EmailbodyinEnglish", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to User Email (Mandatory).
         /// </summary>
         public static string EmailMandatory {
@@ -2194,6 +2212,24 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Subject Arabic.
+        /// </summary>
+        public static string SubjectArabic {
+            get {
+                return ResourceManager.GetString("SubjectArabic", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Subject English.
+        /// </summary>
+        public static string SubjectEnglish {
+            get {
+                return ResourceManager.GetString("SubjectEnglish", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Set the maximum number of subtask levels allowed when creating a task. This controls how deeply tasks can be nested..
         /// </summary>
         public static string subtask_hint {
@@ -2343,6 +2379,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string TaskTypeConfiguration {
             get {
                 return ResourceManager.GetString("TaskTypeConfiguration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The message content cannot be empty.
+        /// </summary>
+        public static string Themessagecontentcannotbeempty {
+            get {
+                return ResourceManager.GetString("Themessagecontentcannotbeempty", resourceCulture);
             }
         }
         

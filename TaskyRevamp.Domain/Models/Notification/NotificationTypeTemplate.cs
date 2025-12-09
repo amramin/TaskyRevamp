@@ -29,6 +29,7 @@ public class NotificationTypeTemplate : Entity
         TemplateEnglish = typeTemplateDto.TemplateEnglish;
         IsEnable = typeTemplateDto.IsEnable;
         TemplateArabic = typeTemplateDto.TemplateArabic;
+        moduleType = typeTemplateDto.moduleType;
         return true;
 
     }
