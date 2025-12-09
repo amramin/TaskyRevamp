@@ -6,6 +6,7 @@
 @inject NavigationManager navigationManager
 @inject IStringLocalizer<SharedResources> Loc
 @inject NotificationTypeTemplateConsumer _NotificationTypeTemplateConsumer
+@inject NavigationManager navigationManager
 
 <div class="page-header">
     <div class="title-block">
@@ -59,11 +60,13 @@
        </div>
         <div class="row g-2">
         <div class="col-lg-6">
-         <div class="mb-6">
-
-
-                <RichTextEditorComponent EditorId="RTE_EnglishTemplateEnglish" @ref="RichTextEditorComponentRefTemplateEnglish"
-                                         Content="@NotificationTypeTamplate.TemplateEnglish" ContentChanged="OnDescriptionEnglishChanged">
+         <label class="form-label">
+                         @Loc["EmailbodyinEnglish"]
+                    <span class="text-danger">*</span>
+                </label>
+                <RichTextEditorComponent EditorId="RTE_EnglishTemplateEnglish"
+                    @ref="RichTextEditorComponentRefTemplateEnglish" Content="@NotificationTypeTamplate.TemplateEnglish"
+                    ContentChanged="OnDescriptionEnglishChanged">
                 </RichTextEditorComponent>
             @*     <small id="templateCounterEn" class="form-text x-small  text-end ms-auto">
                     @englishcount/ 1000
@@ -84,7 +87,7 @@
         </div>
         <div class="col-lg-6">
          <label class="form-label">
-                          Email body in Arabic
+                        @Loc["EmailbodyinArabic"]
                     <span class="text-danger">*</span>
                 </label>
                 <RichTextEditorComponent EditorId="RTE_EnglishTemplateArabic"
@@ -108,7 +111,7 @@
                 </div>
             </div>
 
-        </div>
+       
   
     
      <div class="card-footer">
@@ -135,7 +138,7 @@
     NotificationTypeTemplateDto NotificationTypeTamplate { get; set; } = new NotificationTypeTemplateDto();
     [Parameter] public EventCallback<EditContext> OnValidSubmit { get; set; }
     [Parameter] public EventCallback OnCancel { get; set; }
-    [Parameter] public string SubmitButtonText { get; set; } = "Save";
+    [Parameter] public string SubmitButtonText { get; set; } ="Save";
     private RichTextEditorComponent RichTextEditorComponentRefTemplateEnglish;
     int englishcount = 0;
     int arabiccount = 0;
@@ -218,19 +221,9 @@
             return; // client-side validation failed → stop
 
         await _NotificationTypeTemplateConsumer.AddNotificationTypeTemplate(NotificationTypeTamplate);
-        await OnValidSubmit.InvokeAsync(context);
+        navigationManager.NavigateTo($"NotificationTypeTemplates/{(int)NotificationTypeTamplate.moduleType}");
 
-        if (NotificationTypeTamplate.moduleType == Dto.Enums.ModuleType.Email)
-        {
-
-            navigationManager.NavigateTo($"/NotificationTypeTemplates/{(int)TaskyRevamp.Dto.Enums.ModuleType.Email}");
-        }
-
-        if (NotificationTypeTamplate.moduleType == Dto.Enums.ModuleType.SystemNotification)
-        {
-            navigationManager.NavigateTo($"/NotificationTypeTemplates/{(int)TaskyRevamp.Dto.Enums.ModuleType.SystemNotification}");
-
-        }
+   await OnValidSubmit.InvokeAsync(context);
     }
 
     private async Task OnCancelClick()
