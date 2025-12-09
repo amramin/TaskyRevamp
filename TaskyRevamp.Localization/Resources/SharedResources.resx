@@ -191,6 +191,9 @@
 	<data name="Added successfully" xml:space="preserve">
     <value>Added successfully</value>
   </data>
+	<data name="SystemNotifications" xml:space="preserve">
+    <value>System notifications</value>
+  </data>
 	<data name="Name English" xml:space="preserve">
     <value>Name english</value>
   </data>
@@ -927,5 +930,50 @@
   </data>
    <data name="Items per page" xml:space="preserve">
     <value>Items per page</value>
+  </data>
+	<data name="Sure" xml:space="preserve">
+    <value>Are you sure you want to delete this priority?</value>
+  </data>
+	<data name="SourceSure" xml:space="preserve">
+    <value>Are you sure you want to delete this task source?</value>
+  </data>
+	<data name="TypeSure" xml:space="preserve">
+    <value>Are you sure you want to delete this task type?</value>
+  </data>
+	<data name="AddNewPriority" xml:space="preserve">
+    <value>Add New Priority</value>
+  </data>
+	<data name="SelectDay" xml:space="preserve">
+    <value>Select Day</value>
+  </data>
+	<data name="SelectTime" xml:space="preserve">
+    <value>Select Time</value>
+  </data>
+	<data name="EmailNotification" xml:space="preserve">
+    <value>Email Notification</value>
+  </data>
+	<data name="SystemNotification" xml:space="preserve">
+    <value>System Notification</value>
+  </data>
+	<data name="SubjectEnglish" xml:space="preserve">
+    <value>Subject English</value>
+  </data>
+	<data name="SubjectArabic" xml:space="preserve">
+    <value>Subject Arabic</value>
+  </data>
+	<data name="EmailNotificationContent" xml:space="preserve">
+    <value>Email Notification Content</value>
+  </data>
+	<data name="SystemNotificationContent" xml:space="preserve">
+    <value>System Notification Content</value>
+  </data>
+	<data name="Themessagecontentcannotbeempty" xml:space="preserve">
+    <value>The message content cannot be empty</value>
+  </data>
+	<data name="notvald250" xml:space="preserve">
+    <value>Maximum character limit reached.</value>
+  </data>
+	<data name="notvald1000" xml:space="preserve">
+    <value>Maximum character limit reached.</value>
   </data>
 </root>
