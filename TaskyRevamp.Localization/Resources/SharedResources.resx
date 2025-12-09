@@ -598,7 +598,7 @@
     <value>Enter task type name arabic</value>
   </data>
 	<data name="EditTaskType" xml:space="preserve">
-    <value>Edit task type</value>
+    <value>Edit  type</value>
   </data>
 	<data name="Enter Priority Name English" xml:space="preserve">
     <value>Enter priority name english</value>
@@ -856,7 +856,7 @@
     <value>View privilege</value>
   </data>
 	<data name="LinkUser" xml:space="preserve">
-    <value>link user</value>
+    <value>Link users</value>
   </data>
 	<data name="Usethisoption" xml:space="preserve">
     <value>Use this option to enable system notifications that will be automatically sent when the specified action is triggered.</value>
@@ -1087,5 +1087,20 @@
   </data>
 	<data name="notvald1000" xml:space="preserve">
     <value>Maximum character limit reached.</value>
+  </data>
+  <data name="LevelValue" xml:space="preserve">
+    <value>Value must be greater than or equal to 0</value>
+  </data>
+  <data name="Usersin" xml:space="preserve">
+    <value>Users in </value>
+  </data>
+  <data name="NoUsersAddNew" xml:space="preserve">
+    <value>Add a user to get started</value>
+  </data>
+  <data name="IsManager" xml:space="preserve">
+    <value>Is a manager</value>
+  </data>
+  <data name="UserPrivilege" xml:space="preserve">
+    <value>Privilege</value>
   </data>
 </root>
