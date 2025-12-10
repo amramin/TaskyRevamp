@@ -10,6 +10,7 @@
 
 <div class="page-header">
     <div class="title-block">
+        @if(loading){
         @if (NotificationTypeTamplate.moduleType == Dto.Enums.ModuleType.Email)
         {
             <h1 class="page-headline">@Loc["EmailNotificationContent"]</h1>
@@ -17,6 +18,7 @@
         @if (NotificationTypeTamplate.moduleType == Dto.Enums.ModuleType.SystemNotification)
         {
             <h1 class="page-headline">@Loc["SystemNotificationContent"]</h1>
+        }
         }
     </div>
 
@@ -68,9 +70,9 @@
                     @ref="RichTextEditorComponentRefTemplateEnglish" Content="@NotificationTypeTamplate.TemplateEnglish"
                     ContentChanged="OnDescriptionEnglishChanged">
                 </RichTextEditorComponent>
-            @*     <small id="templateCounterEn" class="form-text x-small  text-end ms-auto">
-                    @englishcount/ 1000
-                </small> *@
+                <small id="templateCounterEn" class="form-text x-small  text-end ms-auto">
+                    @englishcount/ 10000
+                </small>
 
                 <div class="d-flex align-items-center justify-content-between">
                     <div class="d-flex gap-2">
@@ -94,9 +96,9 @@
                     @ref="RichTextEditorComponentRefTemplateArabic" Content="@NotificationTypeTamplate.TemplateArabic"
                     ContentChanged="OnDescriptionArabicChanged">
                 </RichTextEditorComponent>
-               @*  <small id="templateCounterAr" class="form-text x-small  text-end ms-auto">
-               @arabiccount/ 1000
-                </small> *@
+                <small id="templateCounterAr" class="form-text x-small  text-end ms-auto">
+               @arabiccount/ 10000
+                </small>
                 <div class="d-flex align-items-center justify-content-between">
                     <div class="d-flex gap-2">
                         <ValidationMessage class="small text-danger"
@@ -147,12 +149,13 @@
     bool isEmptyArabicTemplate = false;
     private EditContext editContext;
     private ValidationMessageStore messageStore;
+    bool loading = false;
     protected override void OnParametersSet()
     {
         // Initialize counters for each input field
         InitializeCounter("nameEnglishCounter", NotificationTypeTamplate?.SubjectEnglish);
         InitializeCounter("nameArabicCounter", NotificationTypeTamplate?.SubjectArabic);
-    
+
 
         englishcount = NotificationTypeTamplate?.TemplateEnglish?.Length ?? 0;
         arabiccount = NotificationTypeTamplate?.TemplateArabic?.Length ?? 0;
@@ -166,15 +169,14 @@
         Counters[fieldId] = value?.Length ?? 0; // Set the counter to the length of the initial value
 
     }
-   
+
     private void UpdateCounter(ChangeEventArgs e, string fieldId, int maxLength)
     {
         var input = e.Value?.ToString() ?? string.Empty;
         Counters[fieldId] = Math.Min(input.Length, maxLength); // Update the counter dynamically
     }
-    private void UpdateCounterTwo(ChangeEventArgs e, string fieldId, int maxLength)
+    private void UpdateCounterTwo(string input, string fieldId, int maxLength)
     {
-        var input = e.Value?.ToString() ?? string.Empty;
         CounterTwo[fieldId] = Math.Min(input.Length, maxLength); // Update the counter dynamically
     }
     protected override async Task OnParametersSetAsync()
@@ -190,18 +192,22 @@
     {
         var temp = await _NotificationTypeTemplateConsumer.GetNotificationTypeTemplateById(Id);
         NotificationTypeTamplate = temp.Data;
+        loading = true;
         StateHasChanged();
     }
     private void OnDescriptionEnglishChanged(string html)
     {
         NotificationTypeTamplate.TemplateEnglish = html;
         englishcount = html.Length;
+        UpdateCounterTwo(html, "RTE_EnglishTemplateEnglish", 10000);
+
     }
 
     private void OnDescriptionArabicChanged(string html)
     {
         NotificationTypeTamplate.TemplateArabic = html;
         arabiccount = html.Length;
+        UpdateCounterTwo(html, "RTE_EnglishTemplateEnglish", 10000);
     }
     private async Task OnSubmitHandler(EditContext context)
     {

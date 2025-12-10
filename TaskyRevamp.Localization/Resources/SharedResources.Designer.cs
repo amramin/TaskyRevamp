@@ -1701,6 +1701,15 @@ namespace TaskyRevamp.Localization.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Maximum character limit reached..
         /// </summary>
+        public static string notvald {
+            get {
+                return ResourceManager.GetString("notvald", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Maximum character limit reached..
+        /// </summary>
         public static string notvald1000 {
             get {
                 return ResourceManager.GetString("notvald1000", resourceCulture);
