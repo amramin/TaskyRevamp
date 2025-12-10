@@ -6,9 +6,11 @@
 @inject NavigationManager navigationManager
 @inject IStringLocalizer<SharedResources> Loc
 @inject NotificationTypeTemplateConsumer _NotificationTypeTemplateConsumer
+@inject NavigationManager navigationManager
 
 <div class="page-header">
     <div class="title-block">
+        @if(loading){
         @if (NotificationTypeTamplate.moduleType == Dto.Enums.ModuleType.Email)
         {
             <h1 class="page-headline">@Loc["EmailNotificationContent"]</h1>
@@ -16,6 +18,7 @@
         @if (NotificationTypeTamplate.moduleType == Dto.Enums.ModuleType.SystemNotification)
         {
             <h1 class="page-headline">@Loc["SystemNotificationContent"]</h1>
+        }
         }
     </div>
 
@@ -59,15 +62,17 @@
        </div>
         <div class="row g-2">
         <div class="col-lg-6">
-         <div class="mb-6">
-
-
-                <RichTextEditorComponent EditorId="RTE_EnglishTemplateEnglish" @ref="RichTextEditorComponentRefTemplateEnglish"
-                                         Content="@NotificationTypeTamplate.TemplateEnglish" ContentChanged="OnDescriptionEnglishChanged">
+         <label class="form-label">
+                         @Loc["EmailbodyinEnglish"]
+                    <span class="text-danger">*</span>
+                </label>
+                <RichTextEditorComponent EditorId="RTE_EnglishTemplateEnglish"
+                    @ref="RichTextEditorComponentRefTemplateEnglish" Content="@NotificationTypeTamplate.TemplateEnglish"
+                    ContentChanged="OnDescriptionEnglishChanged">
                 </RichTextEditorComponent>
-            @*     <small id="templateCounterEn" class="form-text x-small  text-end ms-auto">
-                    @englishcount/ 1000
-                </small> *@
+                <small id="templateCounterEn" class="form-text x-small  text-end ms-auto">
+                    @englishcount/ 10000
+                </small>
 
                 <div class="d-flex align-items-center justify-content-between">
                     <div class="d-flex gap-2">
@@ -84,16 +89,16 @@
         </div>
         <div class="col-lg-6">
          <label class="form-label">
-                          Email body in Arabic
+                        @Loc["EmailbodyinArabic"]
                     <span class="text-danger">*</span>
                 </label>
                 <RichTextEditorComponent EditorId="RTE_EnglishTemplateArabic"
                     @ref="RichTextEditorComponentRefTemplateArabic" Content="@NotificationTypeTamplate.TemplateArabic"
                     ContentChanged="OnDescriptionArabicChanged">
                 </RichTextEditorComponent>
-               @*  <small id="templateCounterAr" class="form-text x-small  text-end ms-auto">
-               @arabiccount/ 1000
-                </small> *@
+                <small id="templateCounterAr" class="form-text x-small  text-end ms-auto">
+               @arabiccount/ 10000
+                </small>
                 <div class="d-flex align-items-center justify-content-between">
                     <div class="d-flex gap-2">
                         <ValidationMessage class="small text-danger"
@@ -108,7 +113,7 @@
                 </div>
             </div>
 
-        </div>
+       
   
     
      <div class="card-footer">
@@ -135,7 +140,7 @@
     NotificationTypeTemplateDto NotificationTypeTamplate { get; set; } = new NotificationTypeTemplateDto();
     [Parameter] public EventCallback<EditContext> OnValidSubmit { get; set; }
     [Parameter] public EventCallback OnCancel { get; set; }
-    [Parameter] public string SubmitButtonText { get; set; } = "Save";
+    [Parameter] public string SubmitButtonText { get; set; } ="Save";
     private RichTextEditorComponent RichTextEditorComponentRefTemplateEnglish;
     int englishcount = 0;
     int arabiccount = 0;
@@ -144,12 +149,13 @@
     bool isEmptyArabicTemplate = false;
     private EditContext editContext;
     private ValidationMessageStore messageStore;
+    bool loading = false;
     protected override void OnParametersSet()
     {
         // Initialize counters for each input field
         InitializeCounter("nameEnglishCounter", NotificationTypeTamplate?.SubjectEnglish);
         InitializeCounter("nameArabicCounter", NotificationTypeTamplate?.SubjectArabic);
-    
+
 
         englishcount = NotificationTypeTamplate?.TemplateEnglish?.Length ?? 0;
         arabiccount = NotificationTypeTamplate?.TemplateArabic?.Length ?? 0;
@@ -163,15 +169,14 @@
         Counters[fieldId] = value?.Length ?? 0; // Set the counter to the length of the initial value
 
     }
-   
+
     private void UpdateCounter(ChangeEventArgs e, string fieldId, int maxLength)
     {
         var input = e.Value?.ToString() ?? string.Empty;
         Counters[fieldId] = Math.Min(input.Length, maxLength); // Update the counter dynamically
     }
-    private void UpdateCounterTwo(ChangeEventArgs e, string fieldId, int maxLength)
+    private void UpdateCounterTwo(string input, string fieldId, int maxLength)
     {
-        var input = e.Value?.ToString() ?? string.Empty;
         CounterTwo[fieldId] = Math.Min(input.Length, maxLength); // Update the counter dynamically
     }
     protected override async Task OnParametersSetAsync()
@@ -187,18 +192,22 @@
     {
         var temp = await _NotificationTypeTemplateConsumer.GetNotificationTypeTemplateById(Id);
         NotificationTypeTamplate = temp.Data;
+        loading = true;
         StateHasChanged();
     }
     private void OnDescriptionEnglishChanged(string html)
     {
         NotificationTypeTamplate.TemplateEnglish = html;
         englishcount = html.Length;
+        UpdateCounterTwo(html, "RTE_EnglishTemplateEnglish", 10000);
+
     }
 
     private void OnDescriptionArabicChanged(string html)
     {
         NotificationTypeTamplate.TemplateArabic = html;
         arabiccount = html.Length;
+        UpdateCounterTwo(html, "RTE_EnglishTemplateEnglish", 10000);
     }
     private async Task OnSubmitHandler(EditContext context)
     {
@@ -218,19 +227,9 @@
             return; // client-side validation failed → stop
 
         await _NotificationTypeTemplateConsumer.AddNotificationTypeTemplate(NotificationTypeTamplate);
-        await OnValidSubmit.InvokeAsync(context);
+        navigationManager.NavigateTo($"NotificationTypeTemplates/{(int)NotificationTypeTamplate.moduleType}");
 
-        if (NotificationTypeTamplate.moduleType == Dto.Enums.ModuleType.Email)
-        {
-
-            navigationManager.NavigateTo($"/NotificationTypeTemplates/{(int)TaskyRevamp.Dto.Enums.ModuleType.Email}");
-        }
-
-        if (NotificationTypeTamplate.moduleType == Dto.Enums.ModuleType.SystemNotification)
-        {
-            navigationManager.NavigateTo($"/NotificationTypeTemplates/{(int)TaskyRevamp.Dto.Enums.ModuleType.SystemNotification}");
-
-        }
+   await OnValidSubmit.InvokeAsync(context);
     }
 
     private async Task OnCancelClick()

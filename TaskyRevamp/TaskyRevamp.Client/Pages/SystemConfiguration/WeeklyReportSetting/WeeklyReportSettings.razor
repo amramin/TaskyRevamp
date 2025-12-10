@@ -109,6 +109,10 @@
     {
         SelectedTimeText = newText;
         TimeError = "";
+        if (string.IsNullOrEmpty(SelectedTimeText))
+        {
+            TimeError = Loc["Required"];
+        }
     }
     private void OnSettingChange(Language newValue)
     {
@@ -119,6 +123,11 @@
     {
         settingsDto.Day = newDay;
         DayError = "";
+        if (settingsDto.Day == 0)
+        {
+            DayError = Loc["Required"];
+        }
+     
     }
 
     private void Cancel(MouseEventArgs args)

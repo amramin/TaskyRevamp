@@ -10,6 +10,6 @@ namespace TaskyRevamp.Dto.SystemConfiguration
 	{
 		public Guid Id { get; set; }
 		public int DefaultSelected {  get; set; }
-		public long SubTaskLevels { get; set; }
+		public long? SubTaskLevels { get; set; }
 	}
 }

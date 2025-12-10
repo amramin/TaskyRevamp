@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TaskyRevamp.Dto.Enums;
+using TaskyRevamp.Localization.Resources;
 
 namespace TaskyRevamp.Dto.Notification
 {
@@ -12,12 +14,22 @@ namespace TaskyRevamp.Dto.Notification
         public Guid Id { get; set; }
         public string NameEnglish { get; set; }
         public string NameArabic { get; set; }
+        [MaxLength(10000, ErrorMessageResourceType = typeof(SharedResources), ErrorMessageResourceName = "notvald")]
+
         public string? TemplateEnglish { get; set; }
+        [MaxLength(10000, ErrorMessageResourceType = typeof(SharedResources), ErrorMessageResourceName = "notvald")]
+
         public string? TemplateArabic { get; set; }
         public bool IsEnable { get; set; }
         public ModuleType moduleType { get; set; }
-        public string? SubjectEnglish { get; set; }
-        public string? SubjectArabic { get; set; }
+        [Required(ErrorMessageResourceType = typeof(SharedResources), ErrorMessageResourceName = "Themessagecontentcannotbeempty")]
+        [MaxLength(250, ErrorMessageResourceType = typeof(SharedResources), ErrorMessageResourceName = "notvald")]
+
+        public string SubjectEnglish { get; set; }
+        [Required(ErrorMessageResourceType = typeof(SharedResources), ErrorMessageResourceName = "Themessagecontentcannotbempty")]
+        [MaxLength(250, ErrorMessageResourceType = typeof(SharedResources), ErrorMessageResourceName = "notvald")]
+
+        public string SubjectArabic { get; set; }
 
     }
 }
