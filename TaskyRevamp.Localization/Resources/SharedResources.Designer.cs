@@ -1915,15 +1915,6 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Privilege .
-        /// </summary>
-        public static string Privilege {
-            get {
-                return ResourceManager.GetString("Privilege", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to You can&apos;t duplicate the privilege name.
         /// </summary>
         public static string PrivilegeDuplicateValidation {
