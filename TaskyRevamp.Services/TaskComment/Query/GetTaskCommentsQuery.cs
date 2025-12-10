@@ -1,42 +1,43 @@
 ﻿using MediatR;
+using TaskyRevamp.Domain.Models.Task;
 using TaskyRevamp.Domain.Repositeries;
-using TaskyRevamp.Dto.GeneralDto;
 using TaskyRevamp.Dto.TaskComment;
+using TaskComments = TaskyRevamp.Domain.Models.Task.TaskComment;
 
 namespace TaskyRevamp.Services.TaskComment.Query;
 
-public record GetTaskCommentsQuery(QueryModel? Query) : IRequest<List<TaskCommentDto>>;
+public record GetTaskCommentsQuery(Guid id) : IRequest<List<TaskCommentWithNameDto>>;
 
-public class GetTaskCommentsHandler : IRequestHandler<GetTaskCommentsQuery, List<TaskCommentDto>>
+public class GetTaskCommentsHandler : IRequestHandler<GetTaskCommentsQuery, List<TaskCommentWithNameDto>>
 {
-    private readonly IRepository<Domain.Models.Task.TaskComment> _taskCommentRepository;
-
-
-    public GetTaskCommentsHandler(IRepository<Domain.Models.Task.TaskComment> taskCommentRepository)
+    private readonly IRepository<TaskComments> _taskCommentRepository;
+    public GetTaskCommentsHandler(IRepository<TaskComments> taskCommentRepository)
     {
         _taskCommentRepository = taskCommentRepository;
       
     }
-
-    public async Task<List<TaskCommentDto>> Handle(GetTaskCommentsQuery request, CancellationToken cancellationToken)
+    public async Task<List<TaskCommentWithNameDto>> Handle(GetTaskCommentsQuery request, CancellationToken cancellationToken)
     {
-        var taskCommentss = new List<TaskCommentDto>();
-       
+        var taskComments = new List<TaskCommentWithNameDto>();
+        var res = await _taskCommentRepository.FindBy(k => k.TaskItemId == request.id, includeProperties: $"{nameof(TaskComments.CreatedBy)},{nameof(TaskComments.UpdatedBy)}");
 
-        var data = await _taskCommentRepository.All();
-
-
-
-        foreach (var taskComment in data.Value)
+		if(res.Success && res.Value != null && res.Value.Any())
         {
-        ;
-            taskCommentss.Add(taskComment.CopyToDto());
-        }
-
-       // return TaskComments.ToList();
-
-        return  taskCommentss;
+            foreach (var comment in res.Value)
+            {
+                var commentDto = new TaskCommentWithNameDto
+                {
+                    TaskComment = comment.CopyToDto(),
+                    CreatedByName = Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName == "ar"
+                        ? comment.CreatedBy?.NameArabic
+                        : comment.CreatedBy?.NameEnglish,
+                    UpdatedByName = Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName == "ar"
+                        ? comment.UpdatedBy?.NameArabic
+                        : comment.UpdatedBy?.NameEnglish
+				};
+                taskComments.Add(commentDto);
+			}
+		}
+		return  taskComments;
     }
-
-   
 }

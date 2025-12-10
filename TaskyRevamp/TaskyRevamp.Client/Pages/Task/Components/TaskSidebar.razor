@@ -1,0 +1,137 @@
+﻿@using TaskyRevamp.Dto.TaskDto
+
+<!-- Progress -->
+<div class="card mb-3">
+    <div class="card-body">
+        <small class="text-muted fw-semibold d-block mb-3">Progress</small>
+
+        <!-- Actual Progress -->
+        <div class="mb-3">
+            <div class="d-flex justify-content-between mb-2">
+                <small class="text-muted">Actual Progress</small>
+                <span class="fw-semibold">@Task?.ActualProcess%</span>
+            </div>
+            <div class="progress" style="height: 10px;">
+                <div class="progress-bar bg-primary"
+                     role="progressbar"
+                     style="width: @Task?.ActualProcess%"
+                     aria-valuenow="@Task?.ActualProcess"
+                     aria-valuemin="0"
+                     aria-valuemax="100"></div>
+            </div>
+        </div>
+   
+        <small class="text-muted fw-semibold d-block mb-3">Add to card</small>
+        <button class="btn btn-light w-100 text-start mb-2" @* @onclick="OnEditTask" *@>
+            @* <span class="icon">
+                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Menu"></SVGCrud>
+            </span> *@ Checklist
+        </button>
+        <button class="btn btn-light w-100 text-start mb-2" @* @onclick="OnCompleteTask *@">
+            @* <span class="icon">
+                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.ArrowsUp"></SVGCrud>
+            </span> *@ Done
+        </button>
+        <button class="btn btn-light w-100 text-start mb-2" @* @onclick="OnReOpenTask" *@>
+            @* <span class="icon">
+                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Edit"></SVGCrud>
+            </span> *@Edit a task
+        </button>
+        <button class="btn btn-light w-100 text-start mb-2" @* @onclick="OnRejectTask" *@>
+            @* <span class="icon">
+                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Reject"></SVGCrud>
+            </span> *@ Reject task
+        </button>
+        <button class="btn btn-light w-100 text-start mb-2" @* @onclick="OnDeleteTask" *@>
+            @* <span class="icon">
+                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Delete"></SVGCrud>
+            </span> *@Delete task
+        </button>
+        <button class="btn btn-light w-100 text-start mb-2" @* @onclick="OnDeleteTask" *@>
+            @* <span class="icon">
+                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.CompletedList"></SVGCrud>
+            </span> *@Complete
+        </button>
+        <button class="btn btn-light w-100 text-start" @* @onclick="OnDeleteTask" *@>
+            @* <span class="icon">
+                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Repeat"></SVGCrud>
+            </span> *@Re Open
+        </button>
+
+    </div>
+</div>
+
+@* <!-- Add to card -->
+<div class="card mb-3">
+    <div class="card-body">
+        <small class="text-muted text-uppercase fw-semibold d-block mb-3">Quick Actions</small>
+        <button class="btn btn-light w-100 text-start mb-2" @onclick="ToggleChecklist">
+            <i class="bi bi-check-square me-2"></i> Checklist
+        </button>
+        <button class="btn btn-light w-100 text-start mb-2" @onclick="SetReminder">
+            <i class="bi bi-alarm me-2"></i> Set Reminder
+        </button>
+        <button class="btn btn-light w-100 text-start" @onclick="RequestEndDateChange">
+            <i class="bi bi-calendar-event me-2"></i> Request End Date Change
+        </button>
+    </div>
+</div> *@
+
+
+<!-- Checklist Section -->
+@if (showChecklist)
+{
+    <div class="card mb-3 border-primary">
+        <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h6 class="mb-0"><i class="bi bi-check-square me-2"></i>Checklist</h6>
+                <button class="btn btn-sm btn-link text-danger" @onclick="() => showChecklist = false">
+                    <i class="bi bi-x-lg"></i>
+                </button>
+            </div>
+
+            <div class="text-center text-muted py-3">
+                <i class="bi bi-list-check fs-3 d-block mb-2"></i>
+                Checklist feature coming soon
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter]
+    public CreateTaskDto? Task { get; set; }
+
+    // [Parameter]
+    // public EventCallback OnEditTask { get; set; }
+
+    // [Parameter]
+    // public EventCallback OnRejectTask { get; set; }
+
+    // [Parameter]
+    // public EventCallback OnDeleteTask { get; set; }
+
+    // [Parameter]
+    // public EventCallback OnCompleteTask { get; set; }
+
+    // [Parameter]
+    // public EventCallback OnReOpenTask { get; set; }
+
+    private bool showChecklist = false;
+
+    private void ToggleChecklist()
+    {
+        showChecklist = !showChecklist;
+        // TODO: Load checklist items when API is ready
+    }
+
+    private void SetReminder()
+    {
+        // TODO: Implement reminder dialog
+    }
+
+    private void RequestEndDateChange()
+    {
+        // TODO: Implement end date change request dialog
+    }
+}

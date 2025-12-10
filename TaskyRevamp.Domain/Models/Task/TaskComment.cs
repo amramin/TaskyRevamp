@@ -38,6 +38,11 @@ public class TaskComment : Entity, IHasCreationMetaData, IHasUpdateMetaData
         CreateDate= DateTime.UtcNow;
         CreatedById= createdid;
     }
+    public TaskComment(Guid taskid,string content)
+    {
+        TaskItemId= taskid;
+        Content = content;
+    }
     public void Add(Guid taskid, string content, User by)
     {
         var comment = new TaskComment(taskid, content,by.Id);

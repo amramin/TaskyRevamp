@@ -11,8 +11,11 @@
 
 	<ItemGroup>
 		<Compile Remove="Pages\NewFolder\**" />
+		<Compile Remove="Pages\Task\TaskDetails\**" />
 		<Content Remove="Pages\NewFolder\**" />
+		<Content Remove="Pages\Task\TaskDetails\**" />
 		<EmbeddedResource Remove="Pages\NewFolder\**" />
+		<EmbeddedResource Remove="Pages\Task\TaskDetails\**" />
 		<None Remove="Pages\NewFolder\**" />
 	  <Compile Remove="Consumer\css\**" />
 	  <Compile Remove="Pages\NewFolder\**" />
@@ -22,6 +25,7 @@
 	  <EmbeddedResource Remove="Pages\NewFolder\**" />
 	  <None Remove="Consumer\css\**" />
 	  <None Remove="Pages\NewFolder\**" />
+	  <None Remove="Pages\Task\TaskDetails\**" />
 	</ItemGroup>
 
 	<ItemGroup>

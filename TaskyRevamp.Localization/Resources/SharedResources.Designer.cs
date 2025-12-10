@@ -700,6 +700,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Delivery date .
+        /// </summary>
+        public static string DeliveryDate {
+            get {
+                return ResourceManager.GetString("DeliveryDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Department.
         /// </summary>
         public static string Department {
@@ -916,7 +925,7 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Edit  type.
+        ///   Looks up a localized string similar to Edit task type.
         /// </summary>
         public static string EditTaskType {
             get {
@@ -970,7 +979,7 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Email Notification.
+        ///   Looks up a localized string similar to Email notifications.
         /// </summary>
         public static string EmailNotification {
             get {
@@ -2365,7 +2374,7 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Are you sure you want to delete this priority?.
+        ///   Looks up a localized string similar to Are you sure you want to delete this ?.
         /// </summary>
         public static string Sure {
             get {
