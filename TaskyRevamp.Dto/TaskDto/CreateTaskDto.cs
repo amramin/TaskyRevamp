@@ -34,7 +34,11 @@ public class CreateTaskDto
     public Guid TypeId { get; set; }
     public Guid SourceId { get; set; }
     public Guid Priority { get; set; }
+    public Guid Photo { get; set; }
+    public string? Extention { get; set; }
 
+    public string PhotoName { get; set; }
+    public string? PhotoBase64 { get; set; }
     public int weight { get; set; } = 0;
     public int ActualProcess { get; set; }
     public int Duration => (EndDate.Date - StartDate.Date).Days + 1;

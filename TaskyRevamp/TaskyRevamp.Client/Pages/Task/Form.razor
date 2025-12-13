@@ -21,7 +21,7 @@
 @inject AddTaskSettingConsumer _addTaskSettingConsumer
 @inject PrioritySettingConsumer _prioritySettingConsumer
 @inject SourceSettingConsumer _sourceSettingConsumer
-
+@inject TaskyService taskyService
 @inject UserConsumer _userConsumer
 <EditForm Model="@taskdto" EditContext="@editContext" OnValidSubmit="HandleValidSubmit"
     OnInvalidSubmit="HandleInvalidSubmit">
@@ -33,6 +33,32 @@
         {
             switch (column.NameEnglish)
             {
+
+               case "File upload":
+                    <div class="mb-3">
+                        <label class="form-label">
+                            @Loc["file"]
+                            @if (column.IsMandatory)
+                            {
+                                <span class="text-danger"> *</span>
+                            }
+                        </label>
+                        <InputFile class="form-control" accept="image/*" OnChange="@LoadFile" @ref="inputFile"></InputFile>
+                        @if (!string.IsNullOrEmpty(taskdto.PhotoBase64))
+                        {
+                            <img class="img-48" src="data:image/png;base64,@taskdto.PhotoBase64" />
+                        }
+                        @* @if (PhotoIsRequired)
+                        {
+                            <div md="3">
+                                <label class="small text-danger"> @PhotoErroMessage</label>
+                            </div>
+                        } *@
+                    </div>
+
+                    break;
+
+
                 case "Title":
 
                     <div class="mb-3">
@@ -378,8 +404,57 @@
     private RichTextEditorComponent RichTextEditorComponentRefDescriptionEnglish;
 
     private RichTextEditorComponent RichTextEditorComponentRefDescriptionArabic;
-
+    long maxFileSize;
+    bool notvald;
     List<UserDto> userDtos = new List<UserDto>();
+    string ErroMessage;
+    string PhotoErroMessage;
+    string fileErroMessage;
+    private InputFile? inputFile;
+
+    private async Task LoadFile(InputFileChangeEventArgs args)
+    {
+
+        string base64String = "";
+
+        try
+        {
+
+            var file = args.GetMultipleFiles()[0];
+            //   const long maxSize = 25 * 1024 * 1024; // 25MB
+            var fileExtension = Path.GetExtension(file.Name).ToLower();
+
+            var validRes =  taskyService.ValidateUploadedFile(file, fileExtension, (int)UploadedFileType.Image);
+            notvald = validRes.NotValid;
+            if (notvald)
+            {
+                fileErroMessage = validRes.ValidationMessage;
+                StateHasChanged();
+                return;
+            }
+            taskdto.PhotoName = file.Name;
+            await using MemoryStream fs = new MemoryStream();
+            await file.OpenReadStream(maxFileSize).CopyToAsync(fs);
+            byte[] somBytes = GetBytes(fs);
+            base64String = Convert.ToBase64String(somBytes, 0, somBytes.Length);
+            taskdto.PhotoBase64 = base64String;
+            taskdto.Extention = fileExtension;
+        }
+
+        catch (Exception e)
+        {
+        }
+        //  string newFileName=Path.ChangeExtension
+    }
+
+    public static byte[] GetBytes(Stream stream)
+    {
+        var bytes = new byte[stream.Length];
+        stream.Seek(0, SeekOrigin.Begin);
+        stream.ReadAsync(bytes, 0, bytes.Length);
+        stream.Dispose();
+        return bytes;
+    }
     private void OnContentChanged(string html)
     {
         taskdto.Content = html;
