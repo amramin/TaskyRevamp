@@ -47,17 +47,19 @@
                 <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Delete"></SVGCrud>
             </span> *@Delete task
         </button>
-        <button class="btn btn-light w-100 text-start mb-2" @* @onclick="OnDeleteTask" *@>
-            @* <span class="icon">
+        @if (Task?.TaskStatusName == "Pending Review")
+        {
+            <button class="btn btn-light w-100 text-start mb-2" @* @onclick="OnDeleteTask" *@>
+                @* <span class="icon">
                 <SVGCrud SVGType="SVGCrud.SVGTypeEnum.CompletedList"></SVGCrud>
             </span> *@Complete
-        </button>
-        <button class="btn btn-light w-100 text-start" @* @onclick="OnDeleteTask" *@>
-            @* <span class="icon">
+            </button>
+            <button class="btn btn-light w-100 text-start" @* @onclick="OnDeleteTask" *@>
+                @* <span class="icon">
                 <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Repeat"></SVGCrud>
             </span> *@Re Open
-        </button>
-
+            </button>
+        }
     </div>
 </div>
 
@@ -122,16 +124,6 @@
     private void ToggleChecklist()
     {
         showChecklist = !showChecklist;
-        // TODO: Load checklist items when API is ready
     }
 
-    private void SetReminder()
-    {
-        // TODO: Implement reminder dialog
-    }
-
-    private void RequestEndDateChange()
-    {
-        // TODO: Implement end date change request dialog
-    }
 }

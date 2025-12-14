@@ -75,6 +75,7 @@ builder.Services.AddTransient<ReportModuleConsumer>();
 builder.Services.AddTransient<PrivilegeConsumer>();
 builder.Services.AddTransient<SystemIdentityConsumer>();
 builder.Services.AddTransient<TaskCommentConsumer>();
+builder.Services.AddTransient<TaskAttachmentConsumer>();
 
 var configuration = builder.Configuration;
 
