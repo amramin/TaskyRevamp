@@ -37,7 +37,7 @@ public class CreateTaskDto
     public Guid Photo { get; set; }
     public string? Extention { get; set; }
 
-    public string PhotoName { get; set; }
+    public string? PhotoName { get; set; }
     public string? PhotoBase64 { get; set; }
     public int weight { get; set; } = 0;
     public int ActualProcess { get; set; }
