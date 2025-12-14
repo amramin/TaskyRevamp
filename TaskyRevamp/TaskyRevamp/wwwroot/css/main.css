@@ -1385,6 +1385,120 @@ html[dir=rtl] .badge {
 }
 
 /* end  text-editor */
+.file-qustom input {
+  display: none;
+  cursor: pointer;
+}
+.file-qustom label {
+  cursor: pointer;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  width: 100%;
+  padding: 0.5rem 1rem;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  gap: 0.5rem;
+  border: 1px solid var(--light-300);
+  border-radius: var(--bs-border-radius);
+  margin-bottom: 0.75rem;
+}
+.file-qustom label .custom-tool-tip {
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+}
+.file-qustom label .custom-tool-tip .text {
+  width: 400px;
+  inset-inline-end: auto;
+  inset-inline-start: 0;
+  white-space: normal;
+  top: 1rem;
+}
+.file-qustom label .custom-tool-tip .text .text-header {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--dark-800);
+  margin-bottom: 0.75rem;
+  display: block;
+}
+.file-qustom label .custom-tool-tip .text .text-header::first-letter {
+  text-transform: uppercase;
+}
+.file-qustom label .custom-tool-tip .text .order-list li {
+  margin-bottom: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+.file-qustom label .custom-tool-tip .text .order-list li::first-letter {
+  text-transform: uppercase;
+}
+.file-qustom label .icon {
+  width: 2.5rem;
+  height: 2.5rem;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  color: var(--dark-800);
+  background-color: var(--light-200);
+  border: 3px solid var(--light-100);
+  border-radius: 50%;
+}
+.file-qustom label .icon svg {
+  width: 1rem;
+  height: 1rem;
+}
+.file-qustom label .file-type {
+  font-size: 0.75rem;
+  color: var(--dark-600);
+}
+.file-qustom .selcted-item .item {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  margin-bottom: 0.75rem;
+}
+.file-qustom .text {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--dark-800);
+  display: block;
+}
+.file-qustom.button-end {
+  border: 1px solid var(--light-300);
+  -webkit-padding-end: 0.5rem;
+          padding-inline-end: 0.5rem;
+  border-radius: var(--bs-border-radius);
+  text-wrap: nowrap;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+.file-qustom.button-end label {
+  border: none;
+  margin-bottom: 0;
+  padding-inline: 0.5rem;
+}
+
 /* end inputs */
 /* strat button*/
 .btn {
