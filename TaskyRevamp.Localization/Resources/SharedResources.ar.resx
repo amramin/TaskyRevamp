@@ -973,10 +973,18 @@
     <data name="UploadExcelFile" xml:space="preserve">
     <value>إرفع ملف إكسل</value>
   </data>
-    <data name="DepartmentLevelMandatory" xml:space="preserve">
-    <value>مستوى الإدارة (إلزامي)
-اسم الإدارة (إلزامي)
-الإدارة الرئيسية (إلزامي)</value>
+    <data name="Add the department's structure" xml:space="preserve">
+    <value>أضف هيكل الإدارات</value>
+  </data>
+  
+  <data name="DepartmentLevelMandatory" xml:space="preserve">
+    <value> مستوى الإدارة (إلزامي)</value>
+  </data>
+    <data name="DepartmentNameMandatory" xml:space="preserve">
+    <value>اسم الإدارة (إلزامي)</value>
+  </data>
+    <data name="ParentDepartmentNameMandatory" xml:space="preserve">
+    <value> الإدارة الرئيسية (إلزامي)</value>
   </data>
     <data name="DownloadExcelTemplate" xml:space="preserve">
     <value>تحميل ملف إكسل</value>

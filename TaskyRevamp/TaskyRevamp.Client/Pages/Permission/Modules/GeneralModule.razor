@@ -38,8 +38,8 @@
                         <td>
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" disabled="@IsViewMode" 
-                                       checked="@(permission.IsView && permission.IsEdit && permission.IsAdd && permission.IsDelete)"
-                                       @onchange="e => SetAll(permission, e.Value!)" />
+                                    checked="@(permission.IsView && permission.IsEdit && permission.IsAdd && permission.IsDelete)"
+                                    @onchange="e => SetAll(permission, e.Value!)" />
                             </div>
                         </td>
 

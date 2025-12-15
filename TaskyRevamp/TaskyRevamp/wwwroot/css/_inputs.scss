@@ -528,7 +528,7 @@
       justify-content: center;
       color: var(--dark-800);
       background-color: var(--light-200);
-      border: 3px solid var(--light-100);
+      border: 3px solid var(--light-300);
       border-radius: 50%;
 
       svg {
@@ -576,5 +576,17 @@
     justify-content: space-between;
   }
 }
-
+.dropdown-toggle-custom{
+  &:has(.clear-all-selection){
+    .selected-Items-preview{
+      width:calc(100% - 1rem);
+      margin-inline-end:0.25rem;
+      label{
+        width:100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+  }
+}
 /* end inputs */
