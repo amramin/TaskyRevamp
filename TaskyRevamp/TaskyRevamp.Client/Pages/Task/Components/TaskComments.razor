@@ -1,0 +1,133 @@
+﻿@using TaskyRevamp.Client.Consumer
+@using TaskyRevamp.Dto.TaskComment
+@using TaskyRevamp.Dto.TaskDto
+@inject TaskCommentConsumer _taskCommentConsumer
+@inject IStringLocalizer<SharedResources> Loc
+
+<div class="card mb-3">
+    <div class="card-header bg-white d-flex justify-content-between align-items-center"
+         style="cursor: pointer;"
+         @onclick="ToggleSection">
+        <h5 class="mb-0">Comments</h5>
+        <span>@(ShowSection ? "▼" : "▲")</span>
+    </div>
+    @if (ShowSection)
+    {
+        <div class="card-body">
+            <div class="d-flex gap-3 mb-3">
+                <div class="rounded-circle bg-light border d-flex align-items-center justify-content-center"
+                     style="width:48px;height:48px;">
+                    <span class="fw-bold text-primary">
+                        @GetInitials("You")
+                    </span>
+                </div>
+                <textarea class="form-control"
+                      placeholder="Type comment here..."
+                      @bind="newComment"
+                      rows="3"></textarea>
+            </div>
+            <div class="d-flex justify-content-end">
+                <button class="btn btn-primary" @onclick="AddComment" disabled="@string.IsNullOrWhiteSpace(newComment)">
+                    Add comment <i class="bi bi-arrow-right"></i>
+                </button>
+            </div>
+
+            @if (comments != null && comments.Any())
+            {
+                <div class="mt-4">
+                    @foreach (var comment in comments)
+                    {
+                        <div class="d-flex gap-3 mb-3 pb-3">
+                            <div class="rounded-circle bg-light border d-flex align-items-center justify-content-center"
+                                 style="width:48px;height:48px;">
+                                <span class="fw-bold text-primary">
+                                    @GetInitials(comment.CreatedByName)
+                                </span>
+                            </div>
+                            <div class="flex-grow-1">
+                                <div class="d-flex justify-content-between mb-2">
+                                    <strong>@comment.CreatedByName</strong>
+                                    <small class="text-muted">@comment.TaskComment.CreateDate.ToString(Loc["LocalizeDate"])</small>
+                                </div>
+                                <div class="p-3 bg-light rounded-3 border">
+                                    <p class="mb-0">@comment.TaskComment.Content</p>
+                                </div>
+                                <div class="mt-2">
+                                    <button class="btn btn-link text-primary p-0 m-0 text-decoration-none small me-1" @onclick="EditTask">Edit</button>
+                                    <button class="btn btn-link text-danger p-0 m-0 text-decoration-none small" @onclick="DeleteTask">Delete</button>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+            else
+            {
+                <div class="text-center text-muted mt-4">
+                    <i class="bi bi-chat-dots fs-3 d-block mb-2"></i>
+                    No comments yet. Be the first to comment!
+                </div>
+            }
+           
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter] public bool ShowSection { get; set; } = true;
+    [Parameter] public EventCallback<bool> ShowSectionChanged { get; set; }
+    [Parameter] public Guid TaskId { get; set; }
+    private string newComment = string.Empty;
+    private List<TaskCommentWithNameDto>? comments;
+
+    private async Task ToggleSection()
+    {
+        ShowSection = !ShowSection;
+        await ShowSectionChanged.InvokeAsync(ShowSection);
+    }
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadComments();
+    }
+
+    private async Task AddComment()
+    {
+        if (string.IsNullOrWhiteSpace(newComment))
+            return;
+
+        await _taskCommentConsumer.AddTaskComment(new TaskCommentDto
+        {
+            TaskItemId = TaskId,
+            Content = newComment
+        });
+        newComment = string.Empty;
+        await LoadComments();
+    }
+    private async Task LoadComments()
+    {
+        var res = await _taskCommentConsumer.GetTaskCommentsById(TaskId);
+        if (res.Success && res.Data != null)
+        {
+            comments = res.Data;
+        }
+    }
+    private string GetInitials(string? fullName)
+    {
+        if (string.IsNullOrWhiteSpace(fullName))
+            return "";
+        var parts = fullName.Trim().Split(' ', StringSplitOptions.RemoveEmptyEntries);
+        if (parts.Length == 1)
+            return parts[0][0].ToString().ToUpper();
+        var first = parts[0][0];
+        var last = parts[^1][0];
+        return $"{char.ToUpper(first)}{char.ToUpper(last)}";
+    }
+    private void DeleteTask(MouseEventArgs args)
+    {
+        throw new NotImplementedException();
+    }
+    private void EditTask(MouseEventArgs args)
+    {
+        throw new NotImplementedException();
+    }
+}
