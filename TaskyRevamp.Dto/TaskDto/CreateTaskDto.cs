@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TaskyRevamp.Dto.GeneralDto;
+using TaskyRevamp.Dto.TaskViews;
 using TaskyRevamp.Localization.Resources;
 
 namespace TaskyRevamp.Dto.TaskDto;
@@ -61,7 +62,7 @@ public class CreateTaskDto
     public string? PriorityColor { get; set; }
     public string? PriorityBackgroundColor { get; set; }
     public string? AssigneduserNames { get; set; }
-    public string? ViewdByNames { get; set; }
+    public List<TaskViewsDto>? ViewdByNames { get; set; }
     public string? CreatorDepartment { get; set; }
 
 }
