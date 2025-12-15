@@ -23,15 +23,22 @@
 @inject SourceSettingConsumer _sourceSettingConsumer
 @inject TaskyService taskyService
 @inject UserConsumer _userConsumer
-<EditForm Model="@taskdto" EditContext="@editContext" OnValidSubmit="HandleValidSubmit"
-    OnInvalidSubmit="HandleInvalidSubmit">
+@if(x){
+@* <EditForm Model="@taskdto" EditContext="@editContext" OnValidSubmit="HandleValidSubmit"
+    OnInvalidSubmit="HandleInvalidSubmit"> *@
+
+
+    <EditForm EditContext="@editContext"
+              OnValidSubmit="HandleValidSubmit"
+              OnInvalidSubmit="HandleInvalidSubmit">
     <DataAnnotationsValidator />
     <ValidationSummary />
 
-    <div class="offcanvas-body">
+        <div class="offcanvas-body overflow-hidden">
         @foreach (var column in AddTaskSettings.Where(c => c.IsActive).OrderBy(c => c.Order))
-        {
-            switch (column.NameEnglish)
+    {
+                <div @key="column.Id">
+            @switch (column.NameEnglish)
             {
 
                case "File upload":
@@ -128,7 +135,7 @@
                             <div class="mb-2">
 
 
-                                <RichTextEditorComponent EditorId="RTE_English3" @ref="RichTextEditorComponentRefDescriptionEnglish"
+                                <RichTextEditorComponent EditorId="RTE_English3" @ref="RichTextEditorComponentRefDescriptionArabic"
                                     Content="@taskdto.DescriptionArabic" ContentChanged="OnContentDescriptionArabicChanged">
                                 </RichTextEditorComponent>
 
@@ -153,7 +160,7 @@
                             }
                         </label>
                         <SearchableSingleDropdownOffline TInput=TypeDto TOutput=Guid TextSelector="(TypeDto x) => x.DisplayedName"
-                            OutputSelector="x => x.Id" Datasource="taskTypeDtos" MinCharacterCount="1"
+                            OutputSelector="x => x.Id" @ref="typeref" Datasource="taskTypeDtos" MinCharacterCount="1"
                             @bind-SelectedOption="@taskdto.TypeId" PlaceHolder="@($"--{Loc["SelectType"]}--")" />
 
                     </div>
@@ -167,7 +174,7 @@
                         }
                     </label>
                     <div class="mb-3">
-                        <SearchableSingleDropdownOffline TInput=SourceDto TOutput=Guid
+                        <SearchableSingleDropdownOffline @ref="sourceref" TInput=SourceDto TOutput=Guid
                             TextSelector="(SourceDto x)=> x.DisplayedName" OutputSelector="x => x.Id" Datasource="taskSourceDtos"
                             MinCharacterCount="1" @bind-SelectedOption="@taskdto.SourceId"
                             PlaceHolder="@($"--{Loc["SelectSource"]}--")" />
@@ -234,7 +241,7 @@
                                 <span class="text-danger">*</span>
                             }
                         </label>
-                        <SearchableMultiDropdownOffline TInput=DepartmentDto TOutput="Guid" Datasource=departmentDtos
+                        <SearchableMultiDropdownOffline @ref="departRef" TInput=DepartmentDto TOutput="Guid" Datasource=departmentDtos
                             TextSelector=@(x=>x.NameEnglish) OutputSelector="x=> x.Id"
                             @bind-SelectedOptions=taskdto.AssignedDepartmentIds />
                     </div>
@@ -248,7 +255,7 @@
                                 <span class="text-danger">*</span>
                             }
                         </label>
-                        <SearchableMultiDropdownOffline TInput=CreateTaskDto TOutput="Guid" Datasource=allTaskDtos
+                        <SearchableMultiDropdownOffline  TInput=CreateTaskDto TOutput="Guid" Datasource=allTaskDtos
                             TextSelector=@(x=>x.Title) OutputSelector="x=> x.Id" @bind-SelectedOptions=taskdto.Dependencies />
                     </div>
                     break;
@@ -367,7 +374,7 @@
                     break;
 
             }
-
+</div>
         }
     </div>
     <div class="offcanvas-footer">
@@ -382,7 +389,7 @@
     </div>
 
 </EditForm>
-
+}
 @code {
     [Parameter] public CreateTaskDto taskdto { set; get; }
 
@@ -392,6 +399,10 @@
     [Parameter] public string ButtonText { get; set; }
     public List<AddTaskSettingDto> AddTaskSettings { get; set; } = new List<AddTaskSettingDto>();
     private EditContext editContext;
+    SearchableSingleDropdownOffline<TypeDto, Guid> typeref{ set; get; }
+    SearchableSingleDropdownOffline<SourceDto, Guid> sourceref { set; get; }
+    
+    SearchableMultiDropdownOffline<DepartmentDto,Guid> departRef { set; get; }
     private ValidationMessageStore messageStore;
     private Dictionary<string, object?> formData = new();
     public List<PriorityDto> Priorities = new List<PriorityDto>();
@@ -402,7 +413,7 @@
     List<CreateTaskDto> allTaskDtos = new List<CreateTaskDto>();
     private RichTextEditorComponent RichTextEditorComponentRefComment;
     private RichTextEditorComponent RichTextEditorComponentRefDescriptionEnglish;
-
+    bool x;
     private RichTextEditorComponent RichTextEditorComponentRefDescriptionArabic;
     long maxFileSize;
     bool notvald;
@@ -469,7 +480,7 @@
     }
     protected async override Task OnInitializedAsync()
     {
-
+        editContext = new EditContext(taskdto);
         var res = await _addTaskSettingConsumer.GetAddTaskSettings();
         if (res.Success)
         {
@@ -499,6 +510,7 @@
         taskdto.StartDate = taskdto.StartDate == default ? DateTime.Now : taskdto.StartDate;
         taskdto.EndDate = taskdto.EndDate == default ? DateTime.Now : taskdto.EndDate;
         taskdto.ReminderDate = taskdto.ReminderDate == default ? DateTime.Now : taskdto.ReminderDate;
+        x = true;
         StateHasChanged();
 
     }
