@@ -1505,7 +1505,6 @@ html[dir=rtl] .badge {
           margin-inline-end: 0.25rem;
 }
 .dropdown-toggle-custom:has(.clear-all-selection) .selected-Items-preview label {
-  width: 100%;
   overflow: hidden;
   text-overflow: ellipsis;
 }

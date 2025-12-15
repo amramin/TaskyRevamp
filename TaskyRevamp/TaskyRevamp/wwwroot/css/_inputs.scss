@@ -576,13 +576,12 @@
     justify-content: space-between;
   }
 }
-.dropdown-toggle-custom{
-  &:has(.clear-all-selection){
-    .selected-Items-preview{
-      width:calc(100% - 1rem);
-      margin-inline-end:0.25rem;
-      label{
-        width:100%;
+.dropdown-toggle-custom {
+  &:has(.clear-all-selection) {
+    .selected-Items-preview {
+      width: calc(100% - 1rem);
+      margin-inline-end: 0.25rem;
+      label {
         overflow: hidden;
         text-overflow: ellipsis;
       }
