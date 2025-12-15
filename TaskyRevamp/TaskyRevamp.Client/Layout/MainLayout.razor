@@ -21,7 +21,7 @@
             <div class="main-header-body">
                 <div class="start">
                     <button class="btn btn-action-40 btn-outline-light d-none d-lg-flex" @onclick="ToggleSideMenu">
-                        <span class="icon">
+                        <span class="icon arrow">
                             <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Menu"></SVGCrud>
                         </span>
                     </button>
@@ -59,33 +59,33 @@
                     </div>
                     <img class="logo" src="@(string.IsNullOrEmpty(systemLogoAsImgSrc) ? "" : systemLogoAsImgSrc)"
                         alt="system-logo" />
-                       
-                        <div class="dropdown dropdown-user">
-                            <button class="btn btn-user" data-bs-toggle="dropdown" aria-expanded="false">
-                                <span class="first-user-letter">@OfficalName</span>
-                            </button>
-                            <ul class="dropdown-menu" aria-labelledby="topDropdown">
-                                <li class="header">
-                                    <span class="first-user-letter"> @OfficalName</span>
-                                    <div class="user-info">
-                                        <span class="user-name">
-                                            <span>@Loc["Welcome"],</span>
-                                            <span>@displayName </span>
-                                        </span>
-                                    </div>
-                                </li>
 
-                                <li class="dropdown-item">
-                                    <a class="drop-link" @onclick="Logout">
-                                        <span class="icon">
-                                            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.LogOut"></SVGCrud>
-                                        </span>
-                                        @Loc["Logout"]
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                  
+                    <div class="dropdown dropdown-user">
+                        <button class="btn btn-user" data-bs-toggle="dropdown" aria-expanded="false">
+                            <span class="first-user-letter">@OfficalName</span>
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="topDropdown">
+                            <li class="header">
+                                <span class="first-user-letter"> @OfficalName</span>
+                                <div class="user-info">
+                                    <span class="user-name">
+                                        <span>@Loc["Welcome"],</span>
+                                        <span>@displayName </span>
+                                    </span>
+                                </div>
+                            </li>
+
+                            <li class="dropdown-item">
+                                <a class="drop-link" @onclick="Logout">
+                                    <span class="icon">
+                                        <SVGCrud SVGType="SVGCrud.SVGTypeEnum.LogOut"></SVGCrud>
+                                    </span>
+                                    @Loc["Logout"]
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+
                 </div>
             </div>
         </header>

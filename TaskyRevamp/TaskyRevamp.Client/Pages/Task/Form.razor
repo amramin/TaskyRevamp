@@ -28,7 +28,7 @@
     <DataAnnotationsValidator />
     <ValidationSummary />
 
-    <div class="offcanvas-body">
+    <div class="offcanvas-body overflow-hidden">
         @foreach (var column in AddTaskSettings.Where(c => c.IsActive).OrderBy(c => c.Order))
         {
             switch (column.NameEnglish)

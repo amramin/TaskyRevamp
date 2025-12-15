@@ -493,7 +493,7 @@
     <value>Add task fields configuration</value>
   </data>
   <data name="Nodepartmentavailable" xml:space="preserve">
-    <value> No department available add a new department to get started</value>
+    <value> No department available </value>
   </data>
   <data name="DepartmentDuplicateValidation" xml:space="preserve">
     <value>Department name must be unique. Please type a different name</value>
@@ -972,8 +972,17 @@
   <data name="DepartmentLevelMandatory" xml:space="preserve">
     <value> Department Level (Mandatory)</value>
   </data>
+    <data name="DepartmentNameMandatory" xml:space="preserve">
+    <value> Department Name (Mandatory)</value>
+  </data>
+    <data name="ParentDepartmentNameMandatory" xml:space="preserve">
+    <value> Parent Department Name (Mandatory)</value>
+  </data>
   <data name="DownloadExcelTemplate" xml:space="preserve">
     <value>Download Excel template</value>
+  </data>
+   <data name="Add the department's structure" xml:space="preserve">
+    <value>Add the department's structure</value>
   </data>
   <data name="FileNotValid" xml:space="preserve">
     <value>File Not Valid</value>

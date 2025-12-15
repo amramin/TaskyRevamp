@@ -51,6 +51,42 @@ html {
     font-size: 13px;
   }
 }
+.more-info {
+  .info-icon {
+    svg {
+      width: 0.875rem;
+      height: 0.875rem;
+      color: var(--primary-color);
+    }
+  }
+  .content {
+    display: none;
+    position: absolute;
+    background-color: var(--dark-800);
+
+    border-radius: var(--bs-border-radius);
+    z-index: 1009;
+    color: var(--bs-white);
+    padding-top: 0.75rem;
+    padding: 0.75rem;
+    ul {
+      padding-right: 0;
+      padding-left: 0;
+      margin-bottom: 0;
+      li {
+        font-size: 0.75rem;
+        &:not(:last-child) {
+          margin-bottom: 0.5rem;
+        }
+      }
+    }
+  }
+  &:hover {
+    .content {
+      display: block;
+    }
+  }
+}
 /* end Global */
 /* start .auth */
 .auth {
@@ -288,7 +324,7 @@ html {
 * {
   ::-webkit-scrollbar {
     width: 0.5rem;
-    height:0.5rem;
+    height: 0.5rem;
   }
   /* Track */
   ::-webkit-scrollbar-track {

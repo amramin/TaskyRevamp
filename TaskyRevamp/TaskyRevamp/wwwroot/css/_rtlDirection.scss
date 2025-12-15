@@ -2,7 +2,7 @@
 html[dir="rtl"] {
   font-size: 15px;
   .arrow {
-    transform: rotate(180deg);
+    transform: rotateY(180deg);
   }
 
   *:not(i):not(.fa):not(mat-icon):not(.e-icons):not(.btn-change-lang span) {
@@ -42,9 +42,6 @@ html[dir="rtl"] {
   .badge {
     line-height: 125%;
   }
- 
-
- 
 }
 
 /* end rtl*/

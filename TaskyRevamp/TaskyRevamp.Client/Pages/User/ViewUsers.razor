@@ -23,44 +23,139 @@
     <div class="action-btn-list">
         <Search @ref="searchComponent" SearchSubmit="Search" CssClass="form-control"></Search>
     </div>
-   
+
 </div>
-<div class="d-flex align-items-center justify-content-between p-3 m-3 border rounded bg-light">
-    <div class="d-flex align-items-center">
-        <label class="btn btn-action-24 me-3">
-                <span class="icon">
-                    <SVGCrud SVGType="SVGCrud.SVGTypeEnum.ArrowUp"></SVGCrud>
-                </span>
-            <InputFile OnChange="OnFileSelected" style="display:none" />
-        </label>
-        <div>
-            <div class="fw-bold">@Loc["Upload"]</div>
-            <div class="text-muted small">@Loc["Link"]</div>
-            <div class="text-danger small">@Loc["EmailMandatory"]</div>
-            <div class="text-danger small">@Loc["PrivilegeMandatory"]</div>
-            <div class="text-danger small">@Loc["DepartmentMandatory"]</div>
+
+
+<div class="page-body">
+    <div class="row g-2 mb-2">
+        <div class="col-md-4 col-sm-6">
+            <div class="card statistic-card">
+                <div class="card-body">
+                    <div class="icon">
+                        <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Users"></SVGCrud>
+                        <span class="status"></span>
+                    </div>
+                    <div class="text-content">
+                        <h6 class="card-title">Total users added to the system</h6>
+                        <p class="card-text">9405</p>
+                    </div>
+                </div>
+            </div>
         </div>
+        <div class="col-md-4 col-sm-6">
+            <div class="card statistic-card">
+                <div class="card-body">
+                    <div class="icon">
+                        <SVGCrud SVGType="SVGCrud.SVGTypeEnum.ActiveUsers"></SVGCrud>
+                        <span class="status active"></span>
+                    </div>
+                    <div class="text-content">
+                        <h6 class="card-title">Active users</h6>
+                        <p class="card-text">8400</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 col-sm-6">
+            <div class="card statistic-card">
+                <div class="card-body">
+                    <div class="icon">
+                        <SVGCrud SVGType="SVGCrud.SVGTypeEnum.NonActiveUsers"></SVGCrud>
+                        <span class="status non-active"></span>
+                    </div>
+                    <div class="text-content">
+                        <h6 class="card-title">Non-active users</h6>
+                        <p class="card-text">8400</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 col-sm-6">
+            <div class="card statistic-card">
+                <div class="card-body">
+                    <div class="icon">
+                        <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Link"></SVGCrud>
+                        <span class="status"></span>
+                    </div>
+                    <div class="text-content">
+                        <h6 class="card-title">Users linked to tasks</h6>
+                        <p class="card-text">124</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 col-sm-6">
+            <div class="card statistic-card">
+                <div class="card-body">
+                    <div class="icon">
+                        <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Login"></SVGCrud>
+                        <span class="status "></span>
+                    </div>
+                    <div class="text-content">
+                        <h6 class="card-title">Total Users with Successful Login</h6>
+                        <p class="card-text">124</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 col-sm-6">
+            <div class="card statistic-card">
+                <div class="card-body">
+                    <div class="icon">
+                        <SVGCrud SVGType="SVGCrud.SVGTypeEnum.PrivilegeConfig"></SVGCrud>
+                        <span class="status"></span>
+                    </div>
+                    <div class="text-content">
+                        <h6 class="card-title">Total Users linked to privileges</h6>
+                        <p class="card-text">124</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
     </div>
-    <div>
-        <button class="btn btn-outline-primary" @onclick="DownloadExcel">
+
+    <div class="file-qustom button-end mb-2">
+        <label for="userFileUpload">
             <span class="icon">
-                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.ArrowDown"></SVGCrud> @Loc["Download"]
+                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.FileUpload"></SVGCrud>
             </span>
-            
-        </button>
+            <div>
+                <div class="d-flex gap-2 align-items-center">
+                    <span class="text"> @Loc["UploadExcelFile"]</span>
+                    <div class="more-info">
+                        <span class="info-icon">
+                            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Info"></SVGCrud>
+                        </span>
+                        <div class="content">
+                            <ul>
+                                <li>@Loc["EmailMandatory"]</li>
+                                <li>@Loc["PrivilegeMandatory"]</li>
+                                <li>@Loc["DepartmentMandatory"]</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <span class="file-type"> @Loc["Link"]</span>
+            </div>
+        </label>
+        <InputFile id="userFileUpload" OnChange="OnFileSelected" accept=".xlsx" />
+        <a class="btn btn-lg btn-light text-nowrap" @onclick="DownloadExcel">
+            @Loc["DownloadExcelTemplate"]
+        </a>
     </div>
-</div>
+    @if (users != null && users.Any())
+    {
 
 
-@if (users != null && users.Any())
-{
-    <div class="page-body">
-        <div class="table-responsive sticky-header-custom">
+        <div class="table-responsive sticky-header-custom users-grid">
             @if (users != null && users.Any())
             {
 
                 <SortableTable TItem="UserDtoWithName" Columns="@tableColumns" Items="@users" SortColumn="@currentSortColumn"
-                               SortAscending="@sortAscending" OnSortRequested="HandleSort">
+                    SortAscending="@sortAscending" OnSortRequested="HandleSort">
                     <RowTemplate>
                         @foreach (var item in users)
                         {
@@ -73,7 +168,7 @@
                                 <td>
                                     <div class="form-check form-switch custom">
                                         <InputCheckbox id="@checkboxId" @bind-Value="item.user.IsManager" class="form-check-input"
-                                                       disabled />
+                                            disabled />
                                         <label for="@checkboxId" class="form-check-label">
                                             <span class="toggler-icon"></span>
                                         </label>
@@ -94,12 +189,13 @@
                                 <td>
                                     <div class="dropdown actions">
                                         <button class="btn btn-action-24" type="button" data-bs-toggle="dropdown"
-                                                aria-expanded="false">
+                                            aria-expanded="false">
                                             <SVGCrud SVGType="SVGCrud.SVGTypeEnum.EllipseVertical"></SVGCrud>
                                         </button>
                                         <ul class="dropdown-menu">
                                             <li>
-                                                <button class="dropdown-item" @onclick="@(() => ViewPrivilege(item.user.PrivilegeId))">
+                                                <button class="dropdown-item"
+                                                    @onclick="@(() => ViewPrivilege(item.user.PrivilegeId))">
                                                     <span class="icon">
                                                         <SVGCrud SVGType="SVGCrud.SVGTypeEnum.PrivilegeConfig"></SVGCrud>
                                                     </span>
@@ -134,20 +230,22 @@
             }
         </div>
         <Pagination CurrentPage="@currentPage" TotalPages="@totalPages" TotalCount="@totalCount" PageSize="@pageSize"
-                    PageChanged="ChangePage" PageSizeChangedCallback="ChangePageSize" />
-    </div>
-
-}
-else if (initialUsers != null && initialUsers.Any())
-{
-    <NoSearchResults OnResetClick="ClearSearch"></NoSearchResults>
-}
-else
-{
-    <NoDataAvailable MessageTitle="@Loc["NoUsersAvailable"]"/>
-}
+            PageChanged="ChangePage" PageSizeChangedCallback="ChangePageSize" />
 
 
+    }
+
+    else if (initialUsers != null && initialUsers.Any())
+    {
+        <NoSearchResults OnResetClick="ClearSearch"></NoSearchResults>
+    }
+    else
+    {
+
+        <NoDataAvailable MessageTitle="@Loc["NoUsersAvailable"]" />
+    }
+
+</div>
 @code {
     List<UserDtoWithName> users = new();
     List<UserDtoWithName> initialUsers = new();
@@ -181,16 +279,16 @@ else
     protected override async Task OnInitializedAsync()
     {
         tableColumns = new()
-        {
-            new() { Field = "Name", DisplayName = Loc["name"] },
-            new() { Field = "Email", DisplayName = Loc["email"] },
-            new() { Field = "Privileges", DisplayName = Loc["Privileges"] },
-            new() { Field = "Department", DisplayName = Loc["Department"] },
-            new() { Field = "Set as Manager", DisplayName = Loc["setAsManager"] },
-            new() { Field = "UpdateDate", DisplayName = Loc["UpdateDate"] },
-            new() { Field = "UpdatedBy", DisplayName = Loc["UpdatedBy"] },
-            new() { Field = "Action", DisplayName = Loc["Action"] ,IsSortable = false},
-        };
+{
+new() { Field = "Name", DisplayName = Loc["name"] },
+new() { Field = "Email", DisplayName = Loc["email"] },
+new() { Field = "Privileges", DisplayName = Loc["Privileges"] },
+new() { Field = "Department", DisplayName = Loc["Department"] },
+new() { Field = "Set as Manager", DisplayName = Loc["setAsManager"] },
+new() { Field = "UpdateDate", DisplayName = Loc["UpdateDate"] },
+new() { Field = "UpdatedBy", DisplayName = Loc["UpdatedBy"] },
+new() { Field = "Action", DisplayName = Loc["Action"] ,IsSortable = false},
+};
         await LoadUsers();
         initialUsers = users;
     }
@@ -270,16 +368,16 @@ else
         await LoadUsers();
     }
     public List<SearchFieldUser> searchFields = new List<SearchFieldUser>() {
-            SearchFieldUser.NameEnglish,
-            SearchFieldUser.NameArabic,
-            SearchFieldUser.Email,
-            SearchFieldUser.IsManager,
-            SearchFieldUser.Privilege,
-            SearchFieldUser.Department,
-            SearchFieldUser.UpdatedBy,
-            SearchFieldUser.UpdateDate,
-            SearchFieldUser.ActiveStatus
-    };
+SearchFieldUser.NameEnglish,
+SearchFieldUser.NameArabic,
+SearchFieldUser.Email,
+SearchFieldUser.IsManager,
+SearchFieldUser.Privilege,
+SearchFieldUser.Department,
+SearchFieldUser.UpdatedBy,
+SearchFieldUser.UpdateDate,
+SearchFieldUser.ActiveStatus
+};
     public async Task Search(string searchTerm)
     {
         await LoadUsers(true, searchTerm);
@@ -312,7 +410,7 @@ else
         if (fileInput != null)
         {
             var (bytes, name, type) = await taskyService.ReadFileAsync(fileInput);
-            if(bytes == null)
+            if (bytes == null)
             {
                 return;
             }
@@ -330,13 +428,15 @@ else
                 Console.WriteLine($"System Emails: {string.Join(", ", systemEmails)}");
             }
             var allDepartmnets = await _deparmentConsumer.GetDepartmentNames();
-            if(allDepartmnets.Success && allDepartmnets.Data != null){
+            if (allDepartmnets.Success && allDepartmnets.Data != null)
+            {
                 var Departmnets = allDepartmnets.Data;
                 systemDepartments = Departmnets.Select(d => d.Trim().ToLower()).ToHashSet();
                 Console.WriteLine($"All Departments: {string.Join(", ", systemDepartments)}");
             }
             var allPrivileges = await _privilegeConsumer.GetPrivilegeNames();
-            if (allPrivileges.Success && allPrivileges.Data != null) {
+            if (allPrivileges.Success && allPrivileges.Data != null)
+            {
                 var Privileges = allPrivileges.Data;
                 systemPrivileges = Privileges.Select(p => p.Trim().ToLower()).ToHashSet();
                 Console.WriteLine($"All Privileges: {string.Join(", ", systemPrivileges)}");
@@ -366,7 +466,7 @@ else
                 await ToastService.ShowToastAsync(Loc["filesSuccess"], "success");
                 await LoadUsers();
             }
-            
+
         }
     }
 
@@ -379,7 +479,8 @@ else
         var departmentName = row[1].Trim().ToLower();
         var privilegeName = row[2].Trim().ToLower();
         Console.WriteLine($"Email: {email}, Department: {departmentName}, Privilege: {privilegeName}");
-        if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(departmentName) || string.IsNullOrWhiteSpace(privilegeName))
+        if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(departmentName) ||
+        string.IsNullOrWhiteSpace(privilegeName))
         {
             Console.WriteLine("case1");
             return false;
