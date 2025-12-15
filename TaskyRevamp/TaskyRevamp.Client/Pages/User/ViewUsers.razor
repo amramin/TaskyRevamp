@@ -255,7 +255,12 @@ else
         await LoadUsers();
         StateHasChanged();
     }
-    private void ViewPrivilege(Guid? Id) => navigationManager.NavigateTo($"/privilege?mode=view&id={Id}");
+    private void ViewPrivilege(Guid? Id)
+    {
+        var currentUrl = navigationManager.Uri;
+        navigationManager.NavigateTo($"/privilege?mode=view&id={Id}&returnUrl={Uri.EscapeDataString(currentUrl)}");
+    }
+
     private async Task SortBy(string columnName)
     {
         if (currentSortColumn == columnName)

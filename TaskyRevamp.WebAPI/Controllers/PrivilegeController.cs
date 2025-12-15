@@ -52,6 +52,12 @@ namespace TaskyRevamp.WebAPI.Controllers
 			return Ok(await _mediator.Send(new GetPrivilegeNamesQuery()));
 		}
 
+		[HttpGet("GetPrivilegeNameById/{id}")]
+		public async Task<IActionResult> GetPrivilegeNameById(Guid id)
+		{
+			return Ok(await _mediator.Send(new GetPrivilegeNameByIdQuery(id)));
+		}
+
 		[HttpPost("CreatePrivilege")]
         public async Task<IActionResult> CreatePrivilege([FromBody] PrivilegeDto privilegeDto)
         {

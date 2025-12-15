@@ -112,6 +112,7 @@
 @code {
     [Parameter][SupplyParameterFromQuery] public string Mode { get; set; } = "add";
     [Parameter][SupplyParameterFromQuery] public Guid? Id { get; set; }
+    [Parameter, SupplyParameterFromQuery] public string? ReturnUrl { get; set; }
     public PrivilegeDto PrivilegeDto { get; set; } = new PrivilegeDto();
     private string SelectedTab { get; set; } = "General";
     private EditContext? editContext;
@@ -155,6 +156,7 @@
         PrivilegeDto = new PrivilegeDto();
         editContext = new EditContext(PrivilegeDto);
         SelectedTab = "General";
+        navigationManager.NavigateTo("/Privileges");
     }
 
     private void ClearValidationMessages()
@@ -268,5 +270,11 @@
         navigationManager.NavigateTo("/Privileges");
 
     }
-    private void Return() => navigationManager.NavigateTo("/Privileges");
+    private void Return()
+    {
+        if (!string.IsNullOrWhiteSpace(ReturnUrl))
+            navigationManager.NavigateTo(Uri.UnescapeDataString(ReturnUrl));
+        else
+            navigationManager.NavigateTo("/Privileges");
+    }
 }

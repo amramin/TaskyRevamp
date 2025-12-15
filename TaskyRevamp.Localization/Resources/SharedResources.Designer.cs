@@ -1753,6 +1753,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No users assigned to this privilege.
+        /// </summary>
+        public static string NoUsersPrivilege {
+            get {
+                return ResourceManager.GetString("NoUsersPrivilege", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to of.
         /// </summary>
         public static string Of {
@@ -2212,7 +2221,7 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Set as Manager.
+        ///   Looks up a localized string similar to Set as manager.
         /// </summary>
         public static string setAsManager {
             get {
