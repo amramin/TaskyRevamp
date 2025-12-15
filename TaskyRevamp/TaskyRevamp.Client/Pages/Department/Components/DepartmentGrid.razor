@@ -63,15 +63,13 @@
                              
                                 
                                 <li>
-                                    @if(p.Level > 1 && p.ParentdepartmentId != Guid.Empty&&!p.Children.Any()){
-
                                     <button class="dropdown-item" @onclick="@(() => OnShowUsers.InvokeAsync(p.Id))">
                                         <span class="icon">
                                             <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Users"></SVGCrud>
                                         </span>
                                         @Loc["ViewUsers"]
                                     </button>
-}
+
                                 </li>
                                 <li>
                                     <button class="dropdown-item" @onclick="@(() => LinkUser(p.Id))">

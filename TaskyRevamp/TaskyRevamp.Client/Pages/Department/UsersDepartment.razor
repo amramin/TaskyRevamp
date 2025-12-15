@@ -173,7 +173,8 @@ else
     }
     private void ViewPrivilege(Guid? id)
     {
-        navigationManager.NavigateTo($"/privilege?mode=view&id={id}");
+        var currentUrl = navigationManager.Uri;
+        navigationManager.NavigateTo($"/privilege?mode=view&id={id}&returnUrl={Uri.EscapeDataString(currentUrl)}");
     }
     private async Task SortBy(string columnName)
     {
@@ -193,7 +194,8 @@ else
             SearchFieldUserDepartment.NameEnglish,
             SearchFieldUserDepartment.NameArabic,
             SearchFieldUserDepartment.Email,
-            SearchFieldUserDepartment.Privilage,
+            SearchFieldUserDepartment.PrivilageNameEnglish,
+            SearchFieldUserDepartment.PrivilageNameArabic,
             SearchFieldUserDepartment.IsManager
     };
 

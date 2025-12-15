@@ -841,7 +841,7 @@
     <value>Add a new user to get started</value>
   </data>
   <data name="setAsManager" xml:space="preserve">
-    <value>Set as Manager</value>
+    <value>Set as manager</value>
   </data>
   <data name="Privileges" xml:space="preserve">
     <value>Privileges</value>
@@ -1097,5 +1097,8 @@
   </data>
   <data name="DeliveryDate" xml:space="preserve">
     <value>Delivery date </value>
+  </data>
+  <data name="NoUsersPrivilege" xml:space="preserve">
+    <value>No users assigned to this privilege</value>
   </data>
 </root>

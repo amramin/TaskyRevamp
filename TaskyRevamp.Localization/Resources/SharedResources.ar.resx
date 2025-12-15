@@ -890,7 +890,7 @@
     <value>لم يتم تعيين أي مستخدم لهذه الإدارة</value>
   </data>
   <data name="username" xml:space="preserve">
-    <value>إسم المستخدم</value>
+    <value>اسم المستخدم</value>
   </data>
   <data name="No" xml:space="preserve">
     <value>لا</value>
@@ -1088,7 +1088,7 @@
     <value>يجب أن تكون القيمة أكبر من أو تساوي 0</value>
   </data>
   <data name="Usersin" xml:space="preserve">
-    <value>المستخدمين في</value>
+    <value>المستخدمين في </value>
   </data>
   <data name="NoUsersAddNew" xml:space="preserve">
     <value>أضف مستخدم جديد للبدء</value>
@@ -1104,5 +1104,8 @@
   </data>
    <data name="DeliveryDate" xml:space="preserve">
     <value>تاريخ التسليم</value>
+  </data>
+  <data name="NoUsersPrivilege" xml:space="preserve">
+    <value>لا يوجد مستخدمون مرتبطون بهذه الصلاحية</value>
   </data>
 </root>
