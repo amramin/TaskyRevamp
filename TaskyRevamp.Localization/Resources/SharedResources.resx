@@ -642,9 +642,6 @@
   <data name="GeneralModule" xml:space="preserve">
     <value>General modules </value>
   </data>
-  <data name="Privilege" xml:space="preserve">
-    <value>Privilege </value>
-  </data>
   <data name="TaskModule" xml:space="preserve">
     <value>Task module</value>
   </data>
