@@ -1,0 +1,32 @@
+﻿@using TaskyRevamp.Dto.TaskDto
+<div class="card mb-3">
+    <div class="card-header bg-white d-flex justify-content-between align-items-center"
+         style="cursor: pointer;"
+         @onclick="ToggleSection">
+        <h5 class="mb-0">Description</h5>
+        <span>@(ShowSection ? "▼" : "▲")</span>
+    </div>
+    @if (ShowSection)
+    {
+        <div class="card-body">
+            <div>@((MarkupString)(Task?.Description ?? ""))</div>
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter]
+    public bool ShowSection { get; set; } = true;
+
+    [Parameter]
+    public EventCallback<bool> ShowSectionChanged { get; set; }
+
+    [Parameter]
+    public CreateTaskDto? Task { get; set; }
+
+    private async Task ToggleSection()
+    {
+        ShowSection = !ShowSection;
+        await ShowSectionChanged.InvokeAsync(ShowSection);
+    }
+}

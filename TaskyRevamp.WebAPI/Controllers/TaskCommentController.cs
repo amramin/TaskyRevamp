@@ -22,43 +22,31 @@ public class TaskCommentController : ControllerBase
     public async Task<ActionResult<string>> CreateTaskComment([FromBody] TaskCommentDto TaskCommentDto)
     {
         var res = await _mediator.Send(new CreateTaskCommentCommand(TaskCommentDto));
-
-
-
         return Ok(res);
     }
-
 
     [HttpPut]
     public async Task<IActionResult> UpdateTaskComment([FromBody] TaskCommentDto TaskComment)
     {
         return Ok(await _mediator.Send(new UpdateTaskCommentCommand(TaskComment)));
     }
+
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(string id)
     {
         return Ok(await _mediator.Send(new DeleteTaskCommentCommand(Guid.Parse(id))));
     }
-    [HttpPost("GetAllTaskComments")]
-    public async Task<IActionResult> AllTask([FromBody] QueryModel? query = null)
+
+    [HttpGet("GetAllTaskComments/{Id}")]
+    public async Task<IActionResult> AllTask(Guid Id)
     {
-
-
-        var all = await _mediator.Send(new GetTaskCommentsQuery(query));
-
-        return Ok(all);
+        return Ok(await _mediator.Send(new GetTaskCommentsQuery(Id)));
     }
-
-
-
 
     [HttpGet("{id}")]
     public async Task<IActionResult> GetOne(string id)
     {
-
         var Task = await _mediator.Send(new GetTaskCommentQuery(new Guid(id)));
-
-
         return Ok(Task);
     }
 

@@ -1094,6 +1094,9 @@
   <data name="notvald" xml:space="preserve">
     <value>تم الوصول إلى الحد الأقصى لعدد الأحرف.</value>
   </data>
+  <data name="DeliveryDate" xml:space="preserve">
+    <value>تاريخ التسليم</value>
+  </data>
   <data name="NoUsersPrivilege" xml:space="preserve">
     <value>لا يوجد مستخدمون مرتبطون بهذه الصلاحية</value>
   </data>

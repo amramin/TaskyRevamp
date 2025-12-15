@@ -1,36 +1,32 @@
 using System.Collections.Generic;
 using System.Linq;
 using TaskyRevamp.Domain.Models.Users;
+using TaskyRevamp.Dto.TaskAttachment;
 
 namespace TaskyRevamp.Domain.Models.Task;
 
 public class TaskAttachments : Entity
 {
-    private readonly TaskItem _task;
-    private readonly List<Attachment> _items = new();
-    public IReadOnlyCollection<Attachment> Items => _items.AsReadOnly();
-
-    internal TaskAttachments(TaskItem task)
-    {
-        _task = task;
+    public Guid TaskItemId { get; set; }
+	public TaskItem TaskItem { get; set; }
+    private List<Attachment> _items = new();
+    public IReadOnlyCollection<Attachment> Items {
+        get => _items;
+        set => _items = value.ToList();
     }
 
     public TaskAttachments()
     {
+        _items = new List<Attachment>();
     }
 
-    public void Add(string fileName, byte[] content, User by)
+    public TaskAttachmentDto CopyToDto()
     {
-        var attach = new Attachment(Guid.NewGuid(), fileName, content, by);
-        _items.Add(attach);
-        _task.AddHistoryEntry(by, $"added attachment '{fileName}'");
-    }
-
-    public void Delete(Guid attachmentId, User by)
-    {
-        var a = _items.FirstOrDefault(x => x.Id == attachmentId) ?? throw new KeyNotFoundException();
-        if (a.UploadedBy != by && _task.CreatedBy != by) throw new InvalidOperationException("Cannot delete this attachment.");
-        _items.Remove(a);
-        _task.AddHistoryEntry(by, $"deleted attachment '{a.FileName}'");
-    }
+        return new TaskAttachmentDto()
+        {
+            Id = Id,
+            TaskItemId = TaskItemId,
+        };
+	}
+    
 }

@@ -11,7 +11,7 @@
 
 <div class="page-header">
     <div class="title-block">
-        <h1 class="page-headline">@Loc["Privilege"]</h1>
+        <h1 class="page-headline">@Loc["Privileges"]</h1>
 
     </div>
     <div class="action-btn-list">
@@ -64,14 +64,6 @@
                                                         <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Users"></SVGCrud>
                                                     </span>
                                                     @Loc["ViewUsers"]
-                                                </button>
-                                            </li>
-                                            <li>
-                                                <button class="dropdown-item" @onclick="@(() => LinkUser(item.PrivilegeDto.Id))">
-                                                    <span class="icon">
-                                                        <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Users"></SVGCrud>
-                                                    </span>
-                                                    @Loc["LinkUser"]
                                                 </button>
                                             </li>
                                             <li>
@@ -266,15 +258,5 @@ else
         }
 
         await LoadPrivilegs();
-    }
-    private void LinkUser(Guid id)
-    {
-        PopupService.ShowNew(@<LinkUsersToPrivilege Id="id" OnSaved="ReloadAfterSave"></LinkUsersToPrivilege>,Loc["LinkUser"]);
-    } 
-    private async Task ReloadAfterSave()
-    {
-        currentPage = 1;
-        PopupService.Hide();
-        StateHasChanged();
     }
 }

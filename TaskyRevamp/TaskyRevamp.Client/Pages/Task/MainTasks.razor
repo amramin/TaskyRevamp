@@ -116,6 +116,24 @@
                                             @RenderColumnValue(task, column.Field)
                                         </td>
                                     }
+                                    <td>
+                                        <div class="dropdown actions">
+                                            <button class="btn btn-action-24" type="button" data-bs-toggle="dropdown"
+                                                    aria-expanded="false">
+                                                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.EllipseVertical"></SVGCrud>
+                                            </button>
+                                            <ul class="dropdown-menu">
+                                                <li>
+                                                    <button class="dropdown-item" @onclick="@(() => ViewTaskDetails(task.Id))">
+                                                        <span class="icon">
+                                                            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.OpenEye"></SVGCrud>
+                                                        </span>
+                                                        @Loc["Task details"]
+                                                    </button>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </td>
                                 </tr>
                             }
                         </RowTemplate>
@@ -347,7 +365,8 @@ new() { Field = "Action", DisplayName = Loc["Action"] ,IsSortable = false},
     public void ShowEditPopup(Guid id)
     {
         PopupService.ShowNew(@<Edit UserDelegationId="@id.ToString()" IsAdmine="@IsAdmine" OnValidSubmit="OnInitializedAsync">
-        </Edit>, headerText:
+        </Edit>
+    , headerText:
         @Loc["EditDelegation"]);
     }
     private async Task OnConfirmDelete(bool confirmed)
@@ -483,7 +502,10 @@ SearchFieldTask.PlannedProgress
         await GetTasks();
     }
 
-
+    private void ViewTaskDetails(Guid id)
+    {
+        navigationManager.NavigateTo($"/task/details/{id}");
+    }
 
     private async Task GetTasks(bool isSearch = false, string searchTerm = null)
     {

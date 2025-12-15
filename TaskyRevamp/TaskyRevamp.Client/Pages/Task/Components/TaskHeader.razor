@@ -1,0 +1,28 @@
+﻿@using TaskyRevamp.Dto.TaskDto
+<div class="card mb-3">
+    <div class="card-body d-flex align-items-center gap-3">
+        <button class="btn btn-link text-dark p-0" @onclick="OnGoBack">
+            <span class="icon">
+                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.BackArrow"></SVGCrud>
+            </span>
+        </button>
+        <h1 class="flex-grow-1 mb-0 fs-5 fw-bold">@Task?.Title</h1>
+        <div class="d-flex">
+            @* @if (Task?.AssigneduserNames != null)
+            {
+                @foreach (var avatar in Task.AssigneduserNames)
+                {
+                   <p>@avatar</p>
+                }
+            } *@
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public CreateTaskDto? Task { get; set; }
+
+    [Parameter]
+    public EventCallback OnGoBack { get; set; }
+}

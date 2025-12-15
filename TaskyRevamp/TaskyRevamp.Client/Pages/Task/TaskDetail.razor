@@ -1,0 +1,55 @@
+﻿@page "/task/details/{TaskId:guid}"
+
+@using TaskyRevamp.Client.Consumer
+@using TaskyRevamp.Client.Pages.Task.Components
+@using TaskyRevamp.Dto.TaskDto
+@inject NavigationManager navigationManager
+@inject TaskConsumer _taskConsumer
+
+<div class="container-fluid min-vh-100 py-3">
+    <TaskHeader Task="task" OnGoBack="GoBack" />
+    <TaskMeta Task="task" />
+    <TaskTabs @bind-ActiveTab="activeTab" Task="task" />
+
+    <div class="row">
+        <div class="col-lg-7">
+            @if(activeTab == "attachment")
+            {
+                <TaskAttachments TaskId="TaskId" />
+            }
+            else if(activeTab == "details")
+            {
+                <TaskDescription @bind-ShowSection="showDescription" Task="task" />
+                <TaskDetails @bind-ShowSection="showDetails" Task="task" />
+                <TaskComments @bind-ShowSection="showComments" TaskId="TaskId" />
+            }
+        </div>
+
+        <div class="col-lg-5">
+            <TaskSidebar Task="task" />
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter] public Guid TaskId { get; set; }
+    private string activeTab = "details";
+    private CreateTaskDto task = new CreateTaskDto();
+    private bool showDescription = true;
+    private bool showDetails = false;
+    private bool showComments = true;
+
+
+    override protected async Task OnInitializedAsync()
+    {
+        var res = await _taskConsumer.GetTaskById(TaskId);
+        if(res.Success && res.Data != null)
+        {
+            task = res.Data;
+        }
+    }
+    private void GoBack()
+    {
+        navigationManager.NavigateTo("/MainTasks");
+    }
+}
