@@ -21,105 +21,113 @@
 
 </div>
 <div class="page-body">
-     @if (editContext != null)
+    @if (editContext != null)
     {
-    <!-- Tabs -->
-    <div class="line-tabs-nav">
-        @foreach (var tab in new[] { "General", "Task", "Report" })
-        {
-            <button class="btn-tab @(SelectedTab == tab ? "active" : "")" @onclick='() => SelectTab(tab)'>
-                <span class="icon">
-                    @switch (tab)
-                    {
-                        case "General":
-                            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.PrivilegePluse"></SVGCrud>
-                            break;
+        <!-- Tabs -->
+        <div class="line-tabs-nav">
+            @foreach (var tab in new[] { "General", "Task", "Report" })
+            {
+                <button class="btn-tab @(SelectedTab == tab ? "active" : "")" @onclick='() => SelectTab(tab)'>
+                    <span class="icon">
+                        @switch (tab)
+                        {
+                            case "General":
+                                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.PrivilegePluse"></SVGCrud>
+                                break;
 
-                        case "Task":
-                            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.File"></SVGCrud>
-                            break;
+                            case "Task":
+                                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.File"></SVGCrud>
+                                break;
 
-                        case "Report":
-                            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.User"></SVGCrud>
-                            break;
+                            case "Report":
+                                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.User"></SVGCrud>
+                                break;
 
-                        default:
-                            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Pluse"></SVGCrud>
-                            break;
-                    }
-                </span>
-                <span class="text"> @Loc[$"{tab}Module"]</span>
-            </button>
-        }
-    </div>
-    <div class="card setting-card">
-        <!-- Form -->
-        <EditForm class="d-flex flex-column flex-1" EditContext="editContext" OnValidSubmit="SaveSettings">
-            <DataAnnotationsValidator />
+                            default:
+                                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Pluse"></SVGCrud>
+                                break;
+                        }
+                    </span>
+                    <span class="text"> @Loc[$"{tab}Module"]</span>
+                </button>
+            }
+        </div>
+        <div class="card setting-card">
+            <!-- Form -->
+            <EditForm class="d-flex flex-column flex-1" EditContext="editContext" OnValidSubmit="SaveSettings">
+                <DataAnnotationsValidator />
 
-            <div class="card-body">
-                <div class="row justify-content-center">
-                    <div class="col-xxl-7 col-xl-8 col-lg-9 col-md-11">
-                        <div style="display:@(SelectedTab == "General" ? "block" : "none")">
+                <div class="card-body">
+                    <div class="row justify-content-center">
+                        <div class="col-xxl-7 col-xl-8 col-lg-9 col-md-11">
                             <div class="border-bottom mb-4 pb-3">
                                 <div class="row ">
-                                    <div class="col-md-6">
-                                        <label class="form-label">
-                                            @Loc["ArabicName"] <span class="text-danger">*</span>
-                                        </label>
-                                        <InputText class="form-control" @bind-Value="PrivilegeDto.NameArabic" placeholder=@Loc["EnterPrivilegeArabicName"] />
-                                        <ValidationMessage For="@(() => PrivilegeDto.NameArabic)" class="small text-danger" />
-                                    </div>
+
                                     <div class="col-md-6">
                                         <label class="form-label">
                                             @Loc["EnglishName"] <span class="text-danger">*</span>
                                         </label>
-                                        <InputText class="form-control" @bind-Value="PrivilegeDto.NameEnglish" placeholder=@Loc["EnterPrivilegeEnglishName"] />
-                                        <ValidationMessage For="@(() => PrivilegeDto.NameEnglish)" class="small text-danger" />
+                                        <InputText class="form-control" @bind-Value="PrivilegeDto.NameEnglish"
+                                            placeholder=@Loc["EnterPrivilegeEnglishName"] />
+                                        <ValidationMessage For="@(() => PrivilegeDto.NameEnglish)"
+                                            class="small text-danger" />
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">
+                                            @Loc["ArabicName"] <span class="text-danger">*</span>
+                                        </label>
+                                        <InputText class="form-control" @bind-Value="PrivilegeDto.NameArabic"
+                                            placeholder=@Loc["EnterPrivilegeArabicName"] />
+                                        <ValidationMessage For="@(() => PrivilegeDto.NameArabic)"
+                                            class="small text-danger" />
                                     </div>
                                 </div>
                             </div>
-                            <!-- GeneralModule child component -->
+                            <div style="display:@(SelectedTab == "General" ? "block" : "none")">
+
+                                <!-- GeneralModule child component -->
                                 <GeneralModule PrivilegeDto="PrivilegeDto" Mode="Mode" IsViewMode="IsViewMode"
-                                           OnValidationStateChanged="@OnGeneralModuleValidationChanged" />
-                        </div>
-                        <div style="display:@(SelectedTab == "Task" ? "block" : "none")">
-                            <TaskModule PrivilegeDto="PrivilegeDto" Mode="Mode" IsViewMode="IsViewMode"/>
-                        </div>
-                        <div style="display:@(SelectedTab == "Report" ? "block" : "none")">
-                            <ReportModule PrivilegeDto="PrivilegeDto" Mode="Mode" IsViewMode="IsViewMode"/>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Shared Footer -->
-            <div class="card-footer">
-                <div class="row justify-content-center">
-                    <div class="col-xxl-7 col-xl-8 col-lg-9 col-md-11">
-                        <div class="action-buttons">
-                            <button type="button" class="btn btn-lg btn-light" @onclick="CancelSettings">
-                                @Loc["Cancel"]
-                            </button>
-                            <button type="submit" disabled="@IsViewMode" class="btn btn-lg btn-primary">@Loc["Save"]</button>
+                                    OnValidationStateChanged="@OnGeneralModuleValidationChanged" />
+                            </div>
+                            <div style="display:@(SelectedTab == "Task" ? "block" : "none")">
+                                <TaskModule PrivilegeDto="PrivilegeDto" Mode="Mode" IsViewMode="IsViewMode" />
+                            </div>
+                            <div style="display:@(SelectedTab == "Report" ? "block" : "none")">
+                                <ReportModule PrivilegeDto="PrivilegeDto" Mode="Mode" IsViewMode="IsViewMode" />
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </EditForm>
-    </div>
+                <!-- Shared Footer -->
+                <div class="card-footer">
+                    <div class="row justify-content-center">
+                        <div class="col-xxl-7 col-xl-8 col-lg-9 col-md-11">
+                            <div class="action-buttons">
+                                <button type="button" class="btn btn-lg btn-light" @onclick="CancelSettings">
+                                    @Loc["Cancel"]
+                                </button>
+                                <button type="submit" disabled="@IsViewMode"
+                                    class="btn btn-lg btn-primary">@Loc["Save"]</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </EditForm>
+        </div>
     }
 </div>
 @code {
     [Parameter][SupplyParameterFromQuery] public string Mode { get; set; } = "add";
     [Parameter][SupplyParameterFromQuery] public Guid? Id { get; set; }
+    [Parameter, SupplyParameterFromQuery] public string? ReturnUrl { get; set; }
     public PrivilegeDto PrivilegeDto { get; set; } = new PrivilegeDto();
     private string SelectedTab { get; set; } = "General";
     private EditContext? editContext;
     private ValidationMessageStore? messageStore;
     private bool isGeneralModuleValid = true;
     private string PageTitle =>
-                Mode == "add" ? "AddNewPrivilege" :
-                Mode == "edit" ? "EditPrivilege" : "ViewPermission";
+    Mode == "add" ? "AddNewPrivilege" :
+    Mode == "edit" ? "EditPrivilege" : "ViewPermission";
     public bool IsViewMode => Mode == "view";
 
     protected override async Task OnInitializedAsync()
@@ -155,6 +163,7 @@
         PrivilegeDto = new PrivilegeDto();
         editContext = new EditContext(PrivilegeDto);
         SelectedTab = "General";
+        navigationManager.NavigateTo("/Privileges");
     }
 
     private void ClearValidationMessages()
@@ -241,7 +250,7 @@
         }
         // var json = System.Text.Json.JsonSerializer.Serialize(PrivilegeDto, new System.Text.Json.JsonSerializerOptions
         // {
-        //     WriteIndented = true
+        // WriteIndented = true
         // });
         // Console.WriteLine(json);
         ClearValidationMessages();
@@ -268,5 +277,11 @@
         navigationManager.NavigateTo("/Privileges");
 
     }
-    private void Return() => navigationManager.NavigateTo("/Privileges");
+    private void Return()
+    {
+        if (!string.IsNullOrWhiteSpace(ReturnUrl))
+            navigationManager.NavigateTo(Uri.UnescapeDataString(ReturnUrl));
+        else
+            navigationManager.NavigateTo("/Privileges");
+    }
 }

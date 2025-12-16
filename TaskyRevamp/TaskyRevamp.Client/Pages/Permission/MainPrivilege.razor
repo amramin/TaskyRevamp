@@ -11,7 +11,7 @@
 
 <div class="page-header">
     <div class="title-block">
-        <h1 class="page-headline">@Loc["Privilege"]</h1>
+        <h1 class="page-headline">@Loc["Privileges"]</h1>
 
     </div>
     <div class="action-btn-list">
@@ -59,19 +59,11 @@
                                                 </button>
                                             </li>
                                             <li>
-                                                <button class="dropdown-item" @onclick="@(() => ViewUsers(item.PrivilegeDto.Id, item.PrivilegeDto.Name))">
+                                                <button class="dropdown-item" @onclick="@(() => ViewUsers(item.PrivilegeDto.Id))">
                                                     <span class="icon">
                                                         <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Users"></SVGCrud>
                                                     </span>
                                                     @Loc["ViewUsers"]
-                                                </button>
-                                            </li>
-                                            <li>
-                                                <button class="dropdown-item" @onclick="@(() => LinkUser(item.PrivilegeDto.Id))">
-                                                    <span class="icon">
-                                                        <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Users"></SVGCrud>
-                                                    </span>
-                                                    @Loc["LinkUser"]
                                                 </button>
                                             </li>
                                             <li>
@@ -183,7 +175,7 @@ else
     private void AddPrivilege() => navigationManager.NavigateTo("/privilege?mode=add");
     private void EditPrivilege(Guid id) => navigationManager.NavigateTo($"/privilege?mode=edit&id={id}");
     private void ViewPermission(Guid id) => navigationManager.NavigateTo($"/privilege?mode=view&id={id}");
-    private void ViewUsers(Guid id, string PrivilegeName) => navigationManager.NavigateTo($"/UsersPrivilege/{id}/{PrivilegeName}");
+    private void ViewUsers(Guid id) => navigationManager.NavigateTo($"/UsersPrivilege/{id}");
 
     private async Task DeletePrivilege(PrivilegeDtoWithName privilege)
     {
@@ -266,15 +258,5 @@ else
         }
 
         await LoadPrivilegs();
-    }
-    private void LinkUser(Guid id)
-    {
-        PopupService.ShowNew(@<LinkUsersToPrivilege Id="id" OnSaved="ReloadAfterSave"></LinkUsersToPrivilege>,Loc["LinkUser"]);
-    } 
-    private async Task ReloadAfterSave()
-    {
-        currentPage = 1;
-        PopupService.Hide();
-        StateHasChanged();
     }
 }

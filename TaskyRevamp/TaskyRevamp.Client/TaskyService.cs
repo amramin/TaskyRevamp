@@ -217,8 +217,15 @@ public class TaskyService
 
         return result;
     }
-
-    public async Task DownloadUsersTemplateAsync()
+	public async Task DownloadFile(byte[] bytes, string fileName)
+    {
+        if(bytes != null)
+        {
+			var base64 = Convert.ToBase64String(bytes);
+			await JS.InvokeVoidAsync("saveFileFromBytes", fileName, base64);
+		}
+    }
+	public async Task DownloadUsersTemplateAsync()
     {
         var culture = await _localStorage.GetItemAsStringAsync("BlazorCulture") ?? "en";
         string[] headers;

@@ -14,27 +14,7 @@
 @inject PopupService PopupService
 @inject TaskyService taskyService
 
-<div class="file-qustom button-end mb-3">
-    <label for="DepartmentFileUpload">
-        <span class="icon">
-            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.FileUpload"></SVGCrud>
 
-        </span>
-        <div class="text-content">
-            <div class="text-content">
-                <p class="small-medium-text hint"> @Loc["DepartmentLevelMandatory"]</p>
-            </div>
-        </div>
-        <div>
-            <span class="text"> @Loc["UploadExcelFile"]</span>
-            <span class="file-type">.xlsx</span>
-        </div>
-    </label>
-    <InputFile id="DepartmentFileUpload" OnChange="HandleFileSelected" accept=".xlsx" />
-    <a class="btn btn-lg btn-light text-nowrap" href=@(Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName == "ar" ? "إضافة إدارات.xlsx" : "Add departements.xlsx") download="DepartmentsTemplate.xlsx">
-        @Loc["DownloadExcelTemplate"]
-    </a>
-</div>
 
 <div class="page-header">
     <h1 class="page-headline">@Loc["Departments"]</h1>
@@ -78,9 +58,41 @@
         </button>
     </div>
 </div>
+ <div class="page-body">
+      <div class="file-qustom button-end mb-2">
+    <label for="DepartmentFileUpload">
+        <span class="icon">
+            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.FileUpload"></SVGCrud>
+        </span>
+        <div>
+            <div class="d-flex gap-2 align-items-center">
+                    <span class="text"> @Loc["UploadExcelFile"]</span>
+                    <div class="more-info">
+                            <span class="info-icon">
+                                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Info"></SVGCrud>
+                            </span>
+                            <div class="content">
+                                <ul>
+                                    <li>@Loc["DepartmentLevelMandatory"]</li>
+                                    <li>@Loc["DepartmentNameMandatory"]</li>
+                                    <li>@Loc["ParentDepartmentNameMandatory"]</li>
+                                </ul>
+                            </div>
+                    </div>
+            </div>
+            <span class="file-type"> @Loc["Add the department's structure"]</span>
+        </div>
+    </label>
+    <InputFile id="DepartmentFileUpload" OnChange="HandleFileSelected" accept=".xlsx" />
+    <a class="btn btn-lg btn-light text-nowrap" href=@(Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName ==
+                                                        "ar" ? "إضافة إدارات.xlsx" : "Add departements.xlsx") download="DepartmentsTemplate.xlsx">
+        @Loc["DownloadExcelTemplate"]
+    </a>
+</div>
 @if (departmentDtos != null && departmentDtos.Any())
 {
-    <div class="page-body">
+   
+      
         @switch (currentView)
         {
             case DepartmentViewType.Grid:
@@ -91,7 +103,7 @@
                 break;
 
             case DepartmentViewType.Tree:
-                <div class="card setting-card">
+                <div class="card setting-card card-hierarchy">
                     <div class="card-body">
                         <div class="row">
                             <div class="col-lg-10 ">
@@ -113,7 +125,7 @@
                 </div>
                 break;
         }
-    </div>
+  
 }
 else if (intialDepartmentDtos != null && intialDepartmentDtos.Any())
 {
@@ -122,10 +134,11 @@ else if (intialDepartmentDtos != null && intialDepartmentDtos.Any())
 }
 else
 {
+    
     <NoDataAvailable MessageTitle="@Loc["Nodepartmentavailable"]" MessageSubtitle="@Loc["AddADepartmentToGetStarted"]"
         ButtonText="@Loc["AddDepartment"]" OnButtonClick="Add" />
 }
-
+  </div>
 
 @code {
     private List<DepartmentDto> departmentDtos = new();

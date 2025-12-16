@@ -8,20 +8,34 @@ using TaskyRevamp.Localization.Resources;
 
 namespace TaskyRevamp.Dto.SystemConfiguration
 {
-	public class StatusSettingsDto
-	{
-		public Guid Id { get; set; }
-		
-		[Required(ErrorMessageResourceType = typeof(SharedResources), ErrorMessageResourceName = "Required")]
-		public string NameEnglish { get; set; }
-		
-		[Required(ErrorMessageResourceType = typeof(SharedResources), ErrorMessageResourceName = "Required")]
-		public string NameArabic { get; set; }
-		public string Name => Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName == "ar" ? NameArabic : NameEnglish;
+    public class StatusSettingsDto
+    {
+        public Guid Id { get; set; }
 
-		[Required(ErrorMessageResourceType = typeof(SharedResources), ErrorMessageResourceName = "Required")]
-		public string NameColor { get; set; }
-		[Required(ErrorMessageResourceType = typeof(SharedResources), ErrorMessageResourceName = "Required")]
-		public string BackgroundColor { get; set; }
-	}
+        [Required(ErrorMessageResourceType = typeof(SharedResources), ErrorMessageResourceName = "Required")]
+        public string NameEnglish { get; set; }
+
+        [Required(ErrorMessageResourceType = typeof(SharedResources), ErrorMessageResourceName = "Required")]
+        public string NameArabic { get; set; }
+        public string Name
+        {
+            get
+            {
+                var name = Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName == "ar"
+                    ? NameArabic
+                    : NameEnglish;
+
+                return string.IsNullOrWhiteSpace(name)
+                    ? string.Empty
+                    : name.Length > 50
+                        ? name.Substring(0, 50) + "..."
+                        : name;
+            }
+        }
+
+        [Required(ErrorMessageResourceType = typeof(SharedResources), ErrorMessageResourceName = "Required")]
+        public string NameColor { get; set; }
+        [Required(ErrorMessageResourceType = typeof(SharedResources), ErrorMessageResourceName = "Required")]
+        public string BackgroundColor { get; set; }
+    }
 }

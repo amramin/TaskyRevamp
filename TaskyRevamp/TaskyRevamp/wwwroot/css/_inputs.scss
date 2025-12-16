@@ -129,9 +129,7 @@
   font-weight: 500;
   &::placeholder {
     color: var(--dark-500);
-    
   }
-
 }
 .form-switch {
   &.custom {
@@ -231,7 +229,6 @@
   .text-danger {
     margin-inline-start: 0.25rem;
   }
- 
 }
 .form-check {
   padding-left: 0;
@@ -259,7 +256,6 @@
     margin-top: 0;
 
     & + label {
-  
       color: var(--dark-600);
     }
 
@@ -293,7 +289,7 @@
       border: 1px solid var(--light-300);
       border-radius: var(--bs-border-radius);
       padding: 1rem 0.75rem;
-     
+
       cursor: pointer;
       width: 100%;
       font-size: 0.875rem;
@@ -313,16 +309,15 @@
       background-color: var(--light-200);
       color: var(--dark-900);
     }
-   
   }
-   .actions {
-      padding-inline-start: 0.75rem;
-      margin-inline-start: 0.75rem;
-      border-inline-start: 1px solid var(--light-200);
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
+  .actions {
+    padding-inline-start: 0.75rem;
+    margin-inline-start: 0.75rem;
+    border-inline-start: 1px solid var(--light-200);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
   input[type="radio"] {
     & + label {
       padding-inline-start: 2.5rem;
@@ -428,7 +423,6 @@
     margin-top: 0;
 
     & + label {
-    
       color: var(--dark-600);
     }
 
@@ -480,5 +474,118 @@
   border-radius: var(--bs-border-radius);
 }
 /* end  text-editor */
+.file-qustom {
+  input {
+    display: none;
+    cursor: pointer;
+  }
 
+  label {
+    cursor: pointer;
+    display: flex;
+    width: 100%;
+    padding: 0.5rem 1rem;
+    align-items: center;
+    gap: 0.5rem;
+    border: 1px solid var(--light-300);
+    border-radius: var(--bs-border-radius);
+    margin-bottom: 0.75rem;
+    .custom-tool-tip {
+      display: inline-flex;
+      .text {
+        width: 400px;
+        inset-inline-end: auto;
+        inset-inline-start: 0;
+        white-space: normal;
+        top: 1rem;
+        .text-header {
+          font-size: 0.875rem;
+          font-weight: 600;
+          color: var(--dark-800);
+          margin-bottom: 0.75rem;
+          display: block;
+          &::first-letter {
+            text-transform: uppercase;
+          }
+        }
+        .order-list {
+          li {
+            margin-bottom: 0.5rem;
+            font-size: 0.75rem;
+            font-weight: 500;
+            &::first-letter {
+              text-transform: uppercase;
+            }
+          }
+        }
+      }
+    }
+    .icon {
+      width: 2.5rem;
+      height: 2.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--dark-800);
+      background-color: var(--light-200);
+      border: 3px solid var(--light-300);
+      border-radius: 50%;
+
+      svg {
+        width: 1rem;
+        height: 1rem;
+      }
+    }
+
+    .file-type {
+      font-size: 0.75rem;
+      color: var(--dark-600);
+    }
+  }
+
+  .selcted-item {
+    .item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.75rem;
+    }
+  }
+
+  .text {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--dark-800);
+    display: block;
+  }
+
+  &.button-end {
+    border: 1px solid var(--light-300);
+    padding-inline-end: 0.5rem;
+    border-radius: var(--bs-border-radius);
+    text-wrap: nowrap;
+
+    label {
+      border: none;
+      margin-bottom: 0;
+      padding-inline: 0.5rem;
+    }
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+.dropdown-toggle-custom {
+  &:has(.clear-all-selection) {
+    .selected-Items-preview {
+      width: calc(100% - 1rem);
+      margin-inline-end: 0.25rem;
+      label {
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+  }
+}
 /* end inputs */

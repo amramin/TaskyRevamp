@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TaskyRevamp.Dto.GeneralDto;
+using TaskyRevamp.Dto.TaskViews;
 using TaskyRevamp.Localization.Resources;
 
 namespace TaskyRevamp.Dto.TaskDto;
@@ -12,26 +13,21 @@ namespace TaskyRevamp.Dto.TaskDto;
 public class CreateTaskDto
 {
     public Guid Id { get; set; }
-
-    [Required(
-        ErrorMessageResourceType = typeof(SharedResources),
-        ErrorMessageResourceName = ValidationDto.Required
-    )]
+    [Required(ErrorMessageResourceType = typeof(SharedResources), ErrorMessageResourceName = ValidationDto.Required)]
     public string TitleEnglish { get; set; }
-
-    [Required(
-        ErrorMessageResourceType = typeof(SharedResources),
-        ErrorMessageResourceName = ValidationDto.Required
-    )]
+    [Required(ErrorMessageResourceType = typeof(SharedResources), ErrorMessageResourceName = ValidationDto.Required)]
     public string TitleArabic { get; set; }
-
     public string Title => Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName == "ar" ? TitleArabic : TitleEnglish;
-
     public string? DescriptionEnglish { get; set; }
     public string? DescriptionArabic { get; set; }
-    public DateTime? StartDate { get; set; }
-    public DateTime? EndDate { get; set; }
-    public Guid TypeId { get; set; }
+    public string? Description => Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName == "ar" ? DescriptionArabic : DescriptionEnglish;
+	
+    public DateTime StartDate { get; set; }
+    public DateTime EndDate { get; set; }
+	public DateTime? ReminderDate { get; set; }
+	public DateTime? DeliveryDate { get; set; }
+
+	public Guid TypeId { get; set; }
     public Guid SourceId { get; set; }
     public Guid Priority { get; set; }
     public Guid Photo { get; set; }
@@ -42,12 +38,20 @@ public class CreateTaskDto
     public int weight { get; set; } = 0;
     public int ActualProcess { get; set; } = 0;
     public int Duration = 0;//=> (EndDate.Date - StartDate.Date).Days + 1;
+    public int ActualWeight { get; set; } = 0;
+    public int Plannedweight { get; set; } = 0;
+    public int ActualProcess { get; set; }
+    public int PlannedProgress { get; set; }
+    public int Duration => (EndDate.Date - StartDate.Date).Days + 1;
+
     public Guid? TaskStatus { get; set; }
     public string? TaskStatusName { get; set; }
+    public string? TaskStatusColor { get; set; }
+    public string? TaskStatusBackgroundColor { get; set; }
+
     public List<Guid> AssignedDepartmentIds { set; get; }
     public string? AssignedDepartmentName { set; get; }
     public List<Guid>? AssignedIds { set; get; }
-
     public List<Guid>? Dependencies { set; get; }
 
     public Guid? CreatedBy { get; set; }
@@ -55,11 +59,15 @@ public class CreateTaskDto
     public DateTime? CreateDate { get; set; }
     public string? UpdatedBy { get; set; }
     public DateTime? UpdateDate { get; set; }
+
     public string? Content { get; set; }
     public string? SourceName { get; set; }
     public string? TypeName { get; set; }
     public string? PriorityName { get; set; }
-
-    public DateTime? ReminderDate { get; set; }
+    public string? PriorityColor { get; set; }
+    public string? PriorityBackgroundColor { get; set; }
     public string? AssigneduserNames { get; set; }
+    public List<TaskViewsDto>? ViewdByNames { get; set; }
+    public string? CreatorDepartment { get; set; }
+
 }

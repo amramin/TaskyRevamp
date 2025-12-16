@@ -15,11 +15,8 @@ namespace TaskyRevamp.Client.Consumer
 		public async Task<CommonApiResponse<PagedResult<PrivilegeDtoWithName>>> GetPrivileges(int pageNumber, int pageSize, string sortByColumnName, bool sortAscending, List<SearchFieldPrivileg> searchFields = null, string searchText = null)
 		{
 			var queryString = _taskyService.PreparePaginatedSearchQueryString(pageNumber, pageSize, sortByColumnName, sortAscending, searchFields, searchText);
-
 			var url = $"api/Privilege/GetPrivilleges{queryString}";
-
 			var res = await _taskyService.GetFromJsonAsync<CommonApiResponse<PagedResult<PrivilegeDtoWithName>>>(url);
-
 			return res;
 		}
 
@@ -39,6 +36,12 @@ namespace TaskyRevamp.Client.Consumer
 		{
 			var url = $"api/Privilege/GetPrivilegeNames";
 			var res = await _taskyService.GetFromJsonAsync<CommonApiResponse<List<string>>>(url);
+			return res;
+		}
+		public async Task<CommonApiResponse<string>> GetPrivilegeNameById(Guid id)
+		{
+			var url = $"api/Privilege/GetPrivilegeNameById/{id}";
+			var res = await _taskyService.GetFromJsonAsync<CommonApiResponse<string>>(url);
 			return res;
 		}
 		public async Task<CommonApiResponse<bool>> CreatePrivilege(PrivilegeDto privilegeDto)

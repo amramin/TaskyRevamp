@@ -1,4 +1,4 @@
-﻿@page "/UsersPrivilege/{Id:guid}/{PrivilegeName}"
+﻿@page "/UsersPrivilege/{Id:guid}"
 
 @using TaskyRevamp.Client.Consumer
 @using TaskyRevamp.Client.Services
@@ -8,6 +8,7 @@
 @using TaskyRevamp.Dto.Enums.SearchFields
 @using TaskyRevamp.Client.Pages.Department
 @inject UserConsumer _userConsumer
+@inject PrivilegeConsumer _privilegeConsumer
 @inject NavigationManager navigationManager
 @inject IStringLocalizer<SharedResources> Loc
 @inject ToastService ToastService
@@ -20,7 +21,7 @@
                 <SVGCrud SVGType="SVGCrud.SVGTypeEnum.BackArrow"></SVGCrud>
             </span>
         </button>
-        <h1 class="page-headline">@PrivilegeName</h1>
+        <h1 class="page-headline"> @Loc["Usersin"]@privilegeName </h1>
     </div>
     <div class="action-btn-list">
         <Search @ref="searchComponent" SearchSubmit="Search" CssClass="form-control"></Search>
@@ -68,14 +69,14 @@ else if (initialUsers != null && initialUsers.Any())
 }
 else
 {
-    <NoDataAvailable MessageTitle="@Loc["NoUsers"]"
+    <NoDataAvailable MessageTitle="@Loc["NoUsersPrivilege"]"
                      ButtonText="@Loc["LinkUser"]"
                      OnButtonClick="Add" />
 }
 
 @code {
     [Parameter] public Guid Id { get; set; }
-    [Parameter] public string PrivilegeName { get; set; }
+    [Parameter, SupplyParameterFromQuery] public string? ReturnUrl { get; set; }
     public List<UserDtoWithName> Users = new List<UserDtoWithName>();
     public List<UserDtoWithName> initialUsers = new List<UserDtoWithName>();
     private bool isOrdered = false;
@@ -90,7 +91,7 @@ else
     private string currentSortColumn = "";
     private bool? sortAscending = true;
     private List<SortableColumn> tableColumns = new();
-
+    private string privilegeName = string.Empty;
 
     protected override async Task OnInitializedAsync()
     {
@@ -99,8 +100,9 @@ else
             new() { Field = "DisplayedName", DisplayName = Loc["username"] },
             new() { Field = "Email", DisplayName = Loc["Email_user"] },
             new() { Field = "Department", DisplayName = Loc["Department"] },
-            new() { Field = "Privilege", DisplayName = Loc["Privilege"] },
+            new() { Field = "Privilege", DisplayName = Loc["UserPrivilege"] },
         };
+        await LoadPrivilegeName();
         await LoadUsers();
         initialUsers = Users;
     }
@@ -123,6 +125,14 @@ else
         Users = data.Items.ToList();
         totalPages = resp.Data.TotalPages;
         totalCount = resp.Data.TotalCount;
+    }
+    private async Task LoadPrivilegeName()
+    {
+        var res = await _privilegeConsumer.GetPrivilegeNameById(Id);
+        if(res.Success && res.Data != null)
+        {
+            privilegeName = res.Data;
+        }
     }
     private async Task ChangePage(int page)
     {
@@ -197,6 +207,12 @@ else
         }
         await LoadUsers();
     }
-    private void ReturnBack() => navigationManager.NavigateTo("/Privileges");
+    private void ReturnBack()
+    {
+        if (!string.IsNullOrWhiteSpace(ReturnUrl))
+            navigationManager.NavigateTo(Uri.UnescapeDataString(ReturnUrl));
+        else
+            navigationManager.NavigateTo("/Privileges");
+    }
 
 }

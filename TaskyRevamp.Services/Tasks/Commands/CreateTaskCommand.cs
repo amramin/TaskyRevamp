@@ -58,8 +58,9 @@ public class CreateTaskHandler : IRequestHandler<CreateTaskCommand, string>
          request.CreateTaskDto.Priority
             , new Weight(request.CreateTaskDto.weight), user.Value.Id, departments.Value.ToList(),
             request.CreateTaskDto.AssignedIds, request.CreateTaskDto.ReminderDate, request.CreateTaskDto.ActualProcess, request.CreateTaskDto.weight, request.CreateTaskDto.Dependencies);
+        task.StatusId = new Guid("d9db807d-46d4-4d7c-38a5-08de2a85300d");
 
-        await _taskRepository.Insert(task);
+		await _taskRepository.Insert(task);
         await _taskRepository.SaveChangesAsync();
         return task.Id.ToString();
     }

@@ -4,19 +4,17 @@ using TaskyRevamp.Domain.Models.Users;
 using TaskyRevamp.Dto.Enums;
 using TaskyRevamp.Dto.SystemConfiguration;
 using TaskyRevamp.Dto.TaskDto;
+using Type = TaskyRevamp.Domain.Models.SystemConfiguration.Type;
 
 namespace TaskyRevamp.Domain.Models.Task;
-
-
 public class TaskItem : Entity, IHasCreationMetaData, IHasUpdateMetaData
 {
     public string TitleEnglish { get; set; }
     public string TitleArabic { get; set; }
-
     public string? DescriptionEnglish { get; set; }
     public string? DescriptionArabic { get; set; }
     public Guid TaskTypeId { set; get; }
-    public TaskyRevamp.Domain.Models.SystemConfiguration.Type Type { get; set; }
+    public Type Type { get; set; }
     public Guid TaskSourceId { set; get; }
     public Guid PriorityId { set; get; }
     public Guid? StatusId { set; get; }
@@ -27,13 +25,15 @@ public class TaskItem : Entity, IHasCreationMetaData, IHasUpdateMetaData
     public int Duration => (EndDate.Date - StartDate.Date).Days + 1;
     public Reminder? Reminder { get; set; }
     public PrioritySettings Priority { get; set; }
-    Weight weight;
+    public int Weight { get; set; }
+
+	Weight _plannedWeight;
     public Weight PlannedWeight
     {
         get
         {
             if (!_subtasks.Any())
-                return weight;
+                return _plannedWeight;
 
             double averageWeight = _subtasks.Average(st => st.PlannedWeight.Value);
             int roundedWeight = (int)Math.Round(averageWeight, MidpointRounding.AwayFromZero);
@@ -41,7 +41,7 @@ public class TaskItem : Entity, IHasCreationMetaData, IHasUpdateMetaData
 
             return new Weight(finalWeight);
         }
-        set => weight = value;
+        set => _plannedWeight = value;
     }
     Weight _actualWeight;
     public Weight ActualWeight
@@ -101,20 +101,13 @@ public class TaskItem : Entity, IHasCreationMetaData, IHasUpdateMetaData
         set => _actualProgress = value;
     }
     public StatusSettings status { set; get; }
-
-
-
-
     public List<TaskAssignees> Assignees { get; set; }
     public List<Guid> AssignedDepartmentIds { set; get; }
     public List<Guid> AssignedIds { set; get; }
-
     public TaskDependencies? Dependencies { get; set; }
-
     public TaskItem? Parent { get; set; }
     readonly List<TaskItem> _subtasks = new();
     public IReadOnlyCollection<TaskItem> Subtasks => _subtasks.AsReadOnly();
-
     public TaskChecklist? Checklist { get; set; }
     public TaskComment? Comments { get; set; }
     public TaskAttachments? Attachments { get; set; }
@@ -125,7 +118,6 @@ public class TaskItem : Entity, IHasCreationMetaData, IHasUpdateMetaData
     readonly List<TaskEscalation> _escalations = new();
     public IReadOnlyCollection<TaskEscalation> Escalations => _escalations.AsReadOnly();
     public int Level => GetLevel();
-
     public Guid CreatedById { get; set; }
     public DateTime CreateDate { get; set; }
     public User CreatedBy { get; set; }
@@ -151,7 +143,8 @@ public class TaskItem : Entity, IHasCreationMetaData, IHasUpdateMetaData
         StartDate = start;
         EndDate = end;
         PriorityId = priority;
-        weight = plannedWeight;
+        Weight = wight;
+        _plannedWeight = plannedWeight;
         _actualProgress = new Progress(actualprocess);
 
         _actualWeight = new Weight(wight);
@@ -204,11 +197,16 @@ public class TaskItem : Entity, IHasCreationMetaData, IHasUpdateMetaData
         {
             Id = Id,
             DescriptionArabic = DescriptionArabic,
+            DescriptionEnglish = DescriptionEnglish,
             TitleEnglish = TitleEnglish,
             TitleArabic = TitleArabic,
-            weight = weight.Value,
-            //SourceId=Source.Id,
-            CreateDate = CreateDate,
+            Plannedweight = PlannedWeight.Value,
+            ActualWeight = ActualWeight.Value,
+            weight = Weight,
+            ActualProcess = ActualProgress.Percentage,
+            PlannedProgress = PlannedProgress.Percentage,
+			//SourceId=Source.Id,
+			CreateDate = CreateDate,
             UpdateDate = UpdateDate,
             StartDate = StartDate,
             EndDate = EndDate,
@@ -218,9 +216,9 @@ public class TaskItem : Entity, IHasCreationMetaData, IHasUpdateMetaData
             ReminderDate = Reminder?.Date,
             TaskStatusName = status?.NameEnglish,
             TaskStatus = status?.Id,
-            AssignedIds = AssignedIds?.ToList() ?? new List<Guid>(),
-            AssignedDepartmentIds = AssignedDepartmentIds?.ToList() ?? new List<Guid>()
-        };
+			AssignedIds = AssignedIds?.ToList() ?? new List<Guid>(),
+			AssignedDepartmentIds = AssignedDepartmentIds?.ToList() ?? new List<Guid>()
+		};
     }
     public void UpdateDescription(string descEN, string descAR, User by)
     {
@@ -249,8 +247,8 @@ public class TaskItem : Entity, IHasCreationMetaData, IHasUpdateMetaData
         {
             throw new InvalidOperationException("Cannot manually update planned weight for a parent task. Weight is calculated from its subtasks.");
         }
-        weight = new Weight(wght);
-        AddHistoryEntry(by, $"updated planned weight to {weight}");
+        _plannedWeight = new Weight(wght);
+        AddHistoryEntry(by, $"updated planned weight to {_plannedWeight}");
     }
 
     public void UpdateActualWeight(int weight, User by)

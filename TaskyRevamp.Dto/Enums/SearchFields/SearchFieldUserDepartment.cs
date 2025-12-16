@@ -12,7 +12,8 @@ namespace TaskyRevamp.Dto.Enums.SearchFields
         NameEnglish,
         NameArabic,
         Email,
-        Privilage,
+        PrivilageNameArabic,
+        PrivilageNameEnglish,
         IsManager
     }
 }

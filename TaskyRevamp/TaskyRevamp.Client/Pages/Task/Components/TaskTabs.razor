@@ -1,0 +1,56 @@
+﻿@using TaskyRevamp.Dto.TaskDto
+
+<div class="card mb-3">
+    <div class="card-body p-0">
+        <ul class="nav nav-tabs border-0 px-3">
+            <li class="nav-item">
+                <a class="nav-link @(ActiveTab == "details" ? "active" : "")"
+                   @onclick='() => OnTabClick("details")'
+                   style="cursor: pointer;">Details</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link @(ActiveTab == "attachment" ? "active" : "")"
+                   @onclick='() => OnTabClick("attachment")'
+                   style="cursor: pointer;">Attachment</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link @(ActiveTab == "subtasks" ? "active" : "")"
+                   @onclick='() => OnTabClick("subtasks")'
+                   style="cursor: pointer;">
+                    Sub Tasks 
+                    <span class="badge bg-primary ms-1"></span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link @(ActiveTab == "dependency" ? "active" : "")"
+                   @onclick='() => OnTabClick("dependency")'
+                   style="cursor: pointer;">
+                    Dependency 
+                    <span class="badge bg-primary ms-1"></span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link @(ActiveTab == "enddate" ? "active" : "")"
+                   @onclick='() => OnTabClick("enddate")'
+                   style="cursor: pointer;">End Date Request</a>
+            </li>
+            <li class="nav-item ms-auto">
+                <button class="btn btn-link nav-link"><i class="bi bi-clock-history"></i> History</button>
+            </li>
+            <li class="nav-item">
+                <button class="btn btn-link nav-link"><i class="bi bi-people"></i> Escalation</button>
+            </li>
+        </ul>
+    </div>
+</div>
+
+@code {
+    [Parameter] public string ActiveTab { get; set; } = "details";
+    [Parameter] public EventCallback<string> ActiveTabChanged { get; set; }
+    [Parameter] public CreateTaskDto? Task { get; set; }
+    private async Task OnTabClick(string tab)
+    {
+        ActiveTab = tab;
+        await ActiveTabChanged.InvokeAsync(tab);
+    }
+}
