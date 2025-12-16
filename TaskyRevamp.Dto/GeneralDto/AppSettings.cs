@@ -10,6 +10,11 @@ public class AppSettings
     public EmailSettings EmailSettings { get; set; }
     public int AuthenticationMode { get; set; }
 
+    public string NetworkUsername { get; set; }
+    public string NetworkPassword { get; set; }
+    public string NetworkDomain { get; set; }
+
+
 }
 public class EmailSettings
 {

@@ -8,6 +8,7 @@ using TaskyRevamp.Domain.Models.Permissions.ReportModule;
 using TaskyRevamp.Domain.Models.Permissions.TaskModule;
 using TaskyRevamp.Domain.Models.SystemConfiguration;
 using TaskyRevamp.Domain.Models.Task;
+using TaskyRevamp.Domain.Models.UploadFile;
 using TaskyRevamp.Domain.Models.Users;
 using UserDelegations;
 using Type = TaskyRevamp.Domain.Models.SystemConfiguration.Type;
@@ -19,6 +20,8 @@ public class EfDbContext : DbContext
     private readonly IHttpContextAccessor _httpContextAccessor;
     public DbSet<User> Users { get; set; }
     public DbSet<UserDelegation> UserDelegation { get; set; }
+    public DbSet<FileMapping> FileMapping { get; set; }
+
     public DbSet<TaskItem> TaskItem { get; set; }
     public DbSet<NotificationTypeTemplate> NotificationTypeTemplate { get; set; }
 

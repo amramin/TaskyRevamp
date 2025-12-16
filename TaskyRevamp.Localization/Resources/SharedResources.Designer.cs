@@ -2554,7 +2554,7 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Title aabic.
+        ///   Looks up a localized string similar to Title Arabic.
         /// </summary>
         public static string TitleArabic {
             get {

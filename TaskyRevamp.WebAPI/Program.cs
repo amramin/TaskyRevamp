@@ -12,9 +12,9 @@ using System.Configuration;
 using System.Globalization;
 using System.Reflection;
 using System.Text;
+using TaskyRevamp.Domain.Interfaces;
 using TaskyRevamp.Domain.Interfaces.Notification;
 using TaskyRevamp.Domain.Interfaces.Repositeries;
-using TaskyRevamp.Infrastructure.Services.Notification;
 using TaskyRevamp.Domain.Repositeries;
 using TaskyRevamp.Dto.Email;
 using TaskyRevamp.Dto.GeneralDto;
@@ -22,6 +22,7 @@ using TaskyRevamp.Infrastructure;
 using TaskyRevamp.Infrastructure.Hubs;
 using TaskyRevamp.Infrastructure.Repositories;
 using TaskyRevamp.Infrastructure.Seeders;
+using TaskyRevamp.Infrastructure.Services.Notification;
 using TaskyRevamp.Services;
 using TaskyRevamp.Services.Account.Commands;
 using TaskyRevamp.WebAPI;
@@ -67,6 +68,8 @@ builder.Services.AddScoped<ITaskRepository, TaskRepository>();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<HttpContextAccessor>();
 builder.Services.AddTransient<DbContext, EfDbContext>();
+builder.Services.AddTransient<IFileManagement, FileManagement>();
+
 builder.Services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
 builder.Services.AddScoped(typeof(IPipelineBehavior<,>), typeof(LoggingBehaviour<,>));
 builder.Services.AddScoped(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
@@ -76,6 +79,7 @@ builder.Services.AddScoped<ExceptionHandlingMiddleware>();
 builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("MailSettings"));
 
 builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("AppSettings"));
+
 builder.Services.Configure<LdapSettings>(builder.Configuration.GetSection("LDAP"));
 builder.Services.AddExceptionHandler<ApiExceptionHandler>();
 builder.Services.AddProblemDetails();

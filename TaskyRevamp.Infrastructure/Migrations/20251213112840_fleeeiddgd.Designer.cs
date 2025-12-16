@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TaskyRevamp.Infrastructure;
 
@@ -11,9 +12,11 @@ using TaskyRevamp.Infrastructure;
 namespace TaskyRevamp.Infrastructure.Migrations
 {
     [DbContext(typeof(EfDbContext))]
-    partial class EfDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251213112840_fleeeiddgd")]
+    partial class fleeeiddgd
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -678,24 +681,24 @@ namespace TaskyRevamp.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("varbinary(max)");
 
-                    b.Property<DateTime>("CreateDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("CreatedById")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("FileName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("TaskAttachmentId")
+                    b.Property<Guid?>("TaskAttachmentsId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("UploadedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("UploadedById")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CreatedById");
+                    b.HasIndex("TaskAttachmentsId");
 
-                    b.HasIndex("TaskAttachmentId");
+                    b.HasIndex("UploadedById");
 
                     b.ToTable("Attachment");
                 });
@@ -907,13 +910,7 @@ namespace TaskyRevamp.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("TaskItemId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("TaskItemId")
-                        .IsUnique();
 
                     b.ToTable("TaskAttachments");
                 });
@@ -1093,6 +1090,9 @@ namespace TaskyRevamp.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid?>("AttachmentsId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<Guid?>("CommentsId")
                         .HasColumnType("uniqueidentifier");
 
@@ -1149,10 +1149,9 @@ namespace TaskyRevamp.Infrastructure.Migrations
                     b.Property<Guid?>("UpdatedById")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("Weight")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
+
+                    b.HasIndex("AttachmentsId");
 
                     b.HasIndex("CommentsId");
 
@@ -1428,21 +1427,17 @@ namespace TaskyRevamp.Infrastructure.Migrations
 
             modelBuilder.Entity("TaskyRevamp.Domain.Models.Task.Attachment", b =>
                 {
-                    b.HasOne("TaskyRevamp.Domain.Models.Users.User", "CreatedBy")
+                    b.HasOne("TaskyRevamp.Domain.Models.Task.TaskAttachments", null)
+                        .WithMany("Items")
+                        .HasForeignKey("TaskAttachmentsId");
+
+                    b.HasOne("TaskyRevamp.Domain.Models.Users.User", "UploadedBy")
                         .WithMany()
-                        .HasForeignKey("CreatedById")
+                        .HasForeignKey("UploadedById")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("TaskyRevamp.Domain.Models.Task.TaskAttachments", "TaskAttachment")
-                        .WithMany("Items")
-                        .HasForeignKey("TaskAttachmentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("CreatedBy");
-
-                    b.Navigation("TaskAttachment");
+                    b.Navigation("UploadedBy");
                 });
 
             modelBuilder.Entity("TaskyRevamp.Domain.Models.Task.ChangeEndDateRequest", b =>
@@ -1574,17 +1569,6 @@ namespace TaskyRevamp.Infrastructure.Migrations
                     b.Navigation("task");
                 });
 
-            modelBuilder.Entity("TaskyRevamp.Domain.Models.Task.TaskAttachments", b =>
-                {
-                    b.HasOne("TaskyRevamp.Domain.Models.Task.TaskItem", "TaskItem")
-                        .WithOne("Attachments")
-                        .HasForeignKey("TaskyRevamp.Domain.Models.Task.TaskAttachments", "TaskItemId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("TaskItem");
-                });
-
             modelBuilder.Entity("TaskyRevamp.Domain.Models.Task.TaskChecklist", b =>
                 {
                     b.HasOne("TaskyRevamp.Domain.Models.Task.TaskItem", "taskItem")
@@ -1682,6 +1666,10 @@ namespace TaskyRevamp.Infrastructure.Migrations
 
             modelBuilder.Entity("TaskyRevamp.Domain.Models.Task.TaskItem", b =>
                 {
+                    b.HasOne("TaskyRevamp.Domain.Models.Task.TaskAttachments", "Attachments")
+                        .WithMany()
+                        .HasForeignKey("AttachmentsId");
+
                     b.HasOne("TaskyRevamp.Domain.Models.Task.TaskComment", "Comments")
                         .WithMany()
                         .HasForeignKey("CommentsId")
@@ -1786,6 +1774,8 @@ namespace TaskyRevamp.Infrastructure.Migrations
 
                     b.Navigation("ActualWeight")
                         .IsRequired();
+
+                    b.Navigation("Attachments");
 
                     b.Navigation("Comments");
 
@@ -1907,8 +1897,6 @@ namespace TaskyRevamp.Infrastructure.Migrations
             modelBuilder.Entity("TaskyRevamp.Domain.Models.Task.TaskItem", b =>
                 {
                     b.Navigation("Assignees");
-
-                    b.Navigation("Attachments");
 
                     b.Navigation("ChangeRequests");
 

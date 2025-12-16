@@ -4,6 +4,8 @@ using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Spreadsheet;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
+using Microsoft.Extensions.Localization;
+using Microsoft.Extensions.Options;
 using Microsoft.JSInterop;
 using Newtonsoft.Json;
 using System.IdentityModel.Tokens.Jwt;
@@ -13,6 +15,8 @@ using TaskyRevamp.Client.Extensions;
 using TaskyRevamp.Client.Services;
 using TaskyRevamp.Dto.GeneralDto;
 using TaskyRevamp.Dto.SystemConfiguration;
+using TaskyRevamp.Localization.Resources;
+
 namespace TaskyRevamp.Client;
 
 public class TaskyService
@@ -27,8 +31,10 @@ public class TaskyService
     private readonly ILocalStorageService _localStorage;
     private NavigationManager NavigationManager;
     private readonly LoaderService _loader;
+    IStringLocalizer<SharedResources> Loc;
+    private IOptions<MySettings> mySettings;
 
-    public TaskyService(HttpClient httpClient, IJSRuntime js, ILocalStorageService localStorage, NavigationManager navigationManager, LoaderService loader)
+    public TaskyService(HttpClient httpClient, IOptions<MySettings> mySettings, IJSRuntime js, ILocalStorageService localStorage, NavigationManager navigationManager, LoaderService loader, IStringLocalizer<SharedResources> loc)
     {
         this.httpClient = httpClient;
 
@@ -36,10 +42,13 @@ public class TaskyService
         _localStorage = localStorage;
         NavigationManager = navigationManager;
         _loader = loader;
+        this.mySettings = mySettings;
+        Loc = loc;
     }
 
     private readonly string[] _validImageExtensions = [".jpg", ".jpeg", ".png"];
     private readonly string[] _validVideoExtensions = [".mp4", ".avi", ".mov", ".mkv", ".webm", ".flv", ".wmv", ".mpeg", ".mpg"];
+    private readonly string[] _validFileExtensions = [".pdf", ".docx", ".xlsx", ".xls", ".xlsm", ".jpg", ".jpeg", ".png", ".mp4", ".avi", ".mov", ".mkv", ".webm", ".flv", ".wmv", ".mpeg", ".mpg"];
 
     public void NavigateToLogin()
     {
@@ -173,6 +182,40 @@ public class TaskyService
         await JS.InvokeVoidAsync("setThemeColor", "--dark-900", systemIdentity.MainTitle);
         await JS.InvokeVoidAsync("setThemeColor", "--dark-800", systemIdentity.SubTitle);
 
+    }
+    public ValidationResult ValidateUploadedFile(IBrowserFile file, string fileExt, int? fileType = null)
+    {
+        var result = new ValidationResult { NotValid = false, ValidationMessage = null };
+
+        long maxFileSize = mySettings.Value.MaxFileSize;
+
+
+        if (file.Size > maxFileSize)
+            result.ValidationMessage = Loc["notvald"] + (maxFileSize / (1024 * 1024)) + " " + Loc["MGB"];
+        else if (file.Size == 0)
+            result.ValidationMessage = Loc["FileInvalidEmpty"];
+        else if (string.IsNullOrEmpty(fileExt))
+            result.ValidationMessage = Loc["FileInvalidNoExt"];
+        else if (fileType != null && fileType.Value == (int)UploadedFileType.Image)
+        {
+            if (!_validImageExtensions.Contains(fileExt))
+                result.ValidationMessage = Loc["FileInvalidExtension"];
+        }
+        else if (fileType != null && fileType.Value == (int)UploadedFileType.Video)
+        {
+            if (!_validVideoExtensions.Contains(fileExt))
+                result.ValidationMessage = Loc["FileInvalidExtension"];
+        }
+        else
+        {
+            if (!_validFileExtensions.Contains(fileExt))
+                result.ValidationMessage = Loc["FileInvalidExtension"];
+        }
+
+        if (result.ValidationMessage != null)
+            result.NotValid = true;
+
+        return result;
     }
 	public async Task DownloadFile(byte[] bytes, string fileName)
     {

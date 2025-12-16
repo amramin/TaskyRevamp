@@ -38,17 +38,19 @@ namespace TaskyRevamp.Client.Consumer
             var res = await _taskyService.GetFromJsonAsync<CommonApiResponse<CreateTaskDto>>(url);
             return res;
         }
-        public async Task<CommonApiResponse<bool>> AddTask(CreateTaskDto CreateTaskDto)
+
+        public async Task<CommonApiResponse<string>> AddTask(CreateTaskDto CreateTaskDto)
         {
             var url = $"api/Task/CreateTask";
-            var res = await _taskyService.PostJsonAsync<CommonApiResponse<bool>>(url, CreateTaskDto);
+            var res = await _taskyService.PostJsonAsync<CommonApiResponse<string>>(url, CreateTaskDto);
 
             return res.Data;
         }
-        public async Task<CommonApiResponse<bool>> UpdateTask(CreateTaskDto CreateTaskDto)
+
+        public async Task<CommonApiResponse<Guid>> UpdateTask(CreateTaskDto CreateTaskDto)
         {
             var url = $"api/Task/UpdateTask";
-            var res = await _taskyService.PostJsonAsync<CommonApiResponse<bool>>(url, CreateTaskDto);
+            var res = await _taskyService.PostJsonAsync<CommonApiResponse<Guid>>(url, CreateTaskDto);
 
             return res.Data;
         }
