@@ -1,5 +1,7 @@
-﻿@inject IStringLocalizer<SharedResources> Loc
+﻿@using Blazored.LocalStorage
+@inject IStringLocalizer<SharedResources> Loc
 @inject NavigationManager NavigationManager
+@inject ILocalStorageService LocalStorageService
 
 <aside
     class="side-nav side-nav @(IsSettingOpen ? "setting-nav-open" : "")  @(isMobileNavOpen ? "side-nav-open-mobile" : "")">
@@ -126,38 +128,26 @@
 
 @code {
     private bool IsSettingOpen { get; set; } = false;
-
     private async Task SettingNav()
     {
         if (IsSettingOpen)
         {
             IsSettingOpen = false;
+            await LocalStorageService.SetItemAsStringAsync("IsSettingOpen", false.ToString());
             return;
         }
 
         // Step 1: Open settings panel
         IsSettingOpen = true;
+        await LocalStorageService.SetItemAsStringAsync("IsSettingOpen", true.ToString());
+
         StateHasChanged(); // Force UI update immediately
 
         // Step 2: Allow UI to render before expanding/clicking menu
         await Task.Yield(); // let render cycle complete
 
         // Step 3: Open first menu section and navigate
-        var firstMenu = MenuItems.FirstOrDefault();
-        if (firstMenu != null)
-        {
-            foreach (var item in MenuItems)
-                item.IsOpen = false;
-
-            firstMenu.IsOpen = true;
-
-            var firstChild = firstMenu.Children.FirstOrDefault();
-            if (firstChild != null)
-            {
-                SetActiveItem(firstMenu, firstChild);
-                NavigationManager.NavigateTo(firstChild.Url);
-            }
-        }
+        navigatesaved();
 
         StateHasChanged(); // Final UI update
     }
@@ -257,10 +247,18 @@ new ChildItem { Text = "TaskHistory", Url = "/TaskHistory", Icon = SVGCrud.SVGTy
 };
     }
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
-        SetMenu();
 
+        SetMenu();
+        var value = await LocalStorageService.GetItemAsStringAsync("IsSettingOpen");
+        IsSettingOpen = bool.TryParse(value, out var result) && result;
+        if (IsSettingOpen)
+        {
+            navigatesaved();
+
+            StateHasChanged(); // Final UI update
+        }
         // var firstMenu = MenuItems.FirstOrDefault();
         // if (firstMenu != null)
         // {
@@ -305,5 +303,30 @@ new ChildItem { Text = "TaskHistory", Url = "/TaskHistory", Icon = SVGCrud.SVGTy
     private void ToggleMobileNav()
     {
         isMobileNavOpen = !isMobileNavOpen;
+    }
+    private void navigatesaved()
+    {
+        var uri = new Uri(NavigationManager.Uri);
+        var pageName = uri.Segments.Last().Trim('/');
+        var firstMenu = MenuItems
+            .FirstOrDefault(p => p.Children.Any(c => c.Url == $"/{pageName}"));
+        if (firstMenu != null)
+        {
+            foreach (var item in MenuItems)
+                item.IsOpen = false;
+
+            firstMenu.IsOpen = true;
+
+            var firstChild = firstMenu.Children.FirstOrDefault(c => c.Url == $"/{pageName}");
+            if (firstChild != null)
+            {
+                SetActiveItem(firstMenu, firstChild);
+                NavigationManager.NavigateTo(firstChild.Url);
+            }
+        }
+        else
+        {
+            NavigationManager.NavigateTo(uri.ToString());
+        }
     }
 }

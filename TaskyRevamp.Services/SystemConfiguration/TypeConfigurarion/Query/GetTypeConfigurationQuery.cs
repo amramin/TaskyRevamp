@@ -20,10 +20,12 @@ namespace TaskyRevamp.Services.SystemConfiguration.TypeConfigurarion.Query
 	public class GetTypeConfigurationHandler : IRequestHandler<GetTypeConfigurationQuery, PagedResult<TypeDtoWithName>>
 	{
 		private readonly IRepository<Types> _typeRepository;
-		public GetTypeConfigurationHandler(IRepository<Types> typeRepository)
+		private readonly string currentLanguage; 
+        public GetTypeConfigurationHandler(IRepository<Types> typeRepository)
 		{
 			_typeRepository = typeRepository;
-		}
+            currentLanguage = Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName;
+        }
 		public async Task<PagedResult<TypeDtoWithName>> Handle(GetTypeConfigurationQuery request, CancellationToken cancellationToken)
 		{
 			var orderBy = GetOrderBy(request.sortByColumn, request.sortAscending);
@@ -46,9 +48,9 @@ namespace TaskyRevamp.Services.SystemConfiguration.TypeConfigurarion.Query
 			var items = res.Items.Select(u => new TypeDtoWithName
 			{
 				Type = u.CopyToDto(),
-				CreatedByName = u.CreatedBy != null ? u.CreatedBy.NameEnglish! : string.Empty,
-				UpdatedByName = u.UpdatedBy != null ? u.UpdatedBy.NameEnglish! : string.Empty
-			}).ToList();
+				CreatedByName = u.CreatedBy != null ? (currentLanguage == "ar" ? u.CreatedBy.NameArabic! : u.CreatedBy.NameEnglish!) : string.Empty,
+				UpdatedByName = u.UpdatedBy != null ? (currentLanguage == "ar" ? u.UpdatedBy.NameArabic! : u.UpdatedBy.NameEnglish!) : string.Empty,
+            }).ToList();
 
 			return new PagedResult<TypeDtoWithName>
 			{
@@ -60,7 +62,6 @@ namespace TaskyRevamp.Services.SystemConfiguration.TypeConfigurarion.Query
 		}
 		private Func<IQueryable<Types>, IOrderedQueryable<Types>> GetOrderBy(string sortByColumn, bool sortAscending)
 		{
-			string currentLanguage = Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName;
 			switch (sortByColumn)
 			{
 				case "CreateDate":
@@ -70,24 +71,38 @@ namespace TaskyRevamp.Services.SystemConfiguration.TypeConfigurarion.Query
 					return sortAscending? q => q.OrderBy(u => u.UpdateDate): q => q.OrderByDescending(u => u.UpdateDate);
 
 				case "CreatedBy":
-					return sortAscending? q => q.OrderBy(u => u.CreatedBy.NameEnglish) : q => q.OrderByDescending(u => u.CreatedBy.NameEnglish);
-
-				case "UpdatedBy":
-					return sortAscending? q => q.OrderBy(u => u.UpdatedBy!.NameEnglish): q => q.OrderByDescending(u => u.UpdatedBy!.NameEnglish);
-
-				case "DisplayedName":
-					if(currentLanguage == "ar")
+					if (currentLanguage == "ar")
 					{
-						return sortAscending? q => q.OrderBy(u => u.NameArabic): q => q.OrderByDescending(u => u.NameArabic);
+                        return sortAscending ? q => q.OrderBy(u => u.CreatedBy.NameArabic) : q => q.OrderByDescending(u => u.CreatedBy.NameArabic);
 					}
 					else
 					{
-						return sortAscending ? q => q.OrderBy(u => u.NameEnglish) : q => q.OrderByDescending(u => u.NameEnglish);
-					}
+                        return sortAscending ? q => q.OrderBy(u => u.CreatedBy.NameEnglish) : q => q.OrderByDescending(u => u.CreatedBy.NameEnglish);
+                    }
 
-				default:
-					return q => q.OrderBy(u => u.CreateDate);
-			}
+				case "UpdatedBy":
+					if (currentLanguage == "ar")
+					{
+                        return sortAscending ? q => q.OrderBy(u => u.UpdatedBy!.NameArabic) : q => q.OrderByDescending(u => u.UpdatedBy!.NameArabic);
+					}
+					else
+					{
+                        return sortAscending ? q => q.OrderBy(u => u.UpdatedBy!.NameEnglish) : q => q.OrderByDescending(u => u.UpdatedBy!.NameEnglish);
+                    }
+
+						case "DisplayedName":
+							if (currentLanguage == "ar")
+							{
+								return sortAscending ? q => q.OrderBy(u => u.NameArabic) : q => q.OrderByDescending(u => u.NameArabic);
+							}
+							else
+							{
+								return sortAscending ? q => q.OrderBy(u => u.NameEnglish) : q => q.OrderByDescending(u => u.NameEnglish);
+							}
+
+						default:
+							return q => q.OrderBy(u => u.CreateDate);
+						}
 
 		}
 	}

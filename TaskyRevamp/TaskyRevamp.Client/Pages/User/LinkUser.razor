@@ -1,5 +1,6 @@
 ﻿@page "/LinkUser/{Id:guid}"
 
+@using Blazored.LocalStorage
 @using Stingray.Components.MultiSelectComponent
 @using TaskyRevamp.Client.Consumer
 @using TaskyRevamp.Client.Services
@@ -15,6 +16,7 @@
 @inject IStringLocalizer<SharedResources> Loc
 @inject ToastService ToastService
 @inject PopupService PopupService
+@inject ILocalStorageService LocalStorageService
 
 @if (SelectedUser != null)
 {
@@ -184,6 +186,8 @@
 
     private async Task ApplyChanges(Guid departmentId)
     {
+        var current = await LocalStorageService.GetItemAsStringAsync("Id");
+        SelectedUser.UpdatedById = Guid.Parse(current);
         await _userConsumer.LinkUser(SelectedUser, departmentId, SelectedPrivilegeId);
         await OnSaved.InvokeAsync();
         await ToastService.ShowToastAsync(Loc["Added successfully"], "success");

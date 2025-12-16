@@ -25,7 +25,7 @@ public class TaskItem : Entity, IHasCreationMetaData, IHasUpdateMetaData
     public int Duration => (EndDate.Date - StartDate.Date).Days + 1;
     public Reminder? Reminder { get; set; }
     public PrioritySettings Priority { get; set; }
-    public int Weight { get; set; }
+    //public int Weight { get; set; }
 
 	Weight _plannedWeight;
     public Weight PlannedWeight
@@ -143,7 +143,7 @@ public class TaskItem : Entity, IHasCreationMetaData, IHasUpdateMetaData
         StartDate = start;
         EndDate = end;
         PriorityId = priority;
-        Weight = wight;
+        //Weight = wight;
         _plannedWeight = plannedWeight;
         _actualProgress = new Progress(actualprocess);
 
@@ -202,7 +202,7 @@ public class TaskItem : Entity, IHasCreationMetaData, IHasUpdateMetaData
             TitleArabic = TitleArabic,
             Plannedweight = PlannedWeight.Value,
             ActualWeight = ActualWeight.Value,
-            weight = Weight,
+            //weight = Weight,
             ActualProcess = ActualProgress.Percentage,
             PlannedProgress = PlannedProgress.Percentage,
 			//SourceId=Source.Id,

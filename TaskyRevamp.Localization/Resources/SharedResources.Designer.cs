@@ -2761,7 +2761,7 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to User Name.
+        ///   Looks up a localized string similar to User name.
         /// </summary>
         public static string username {
             get {
