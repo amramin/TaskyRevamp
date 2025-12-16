@@ -12,57 +12,53 @@
             <SearchableMultiDropdownOffline TInput="Permission" TOutput="int" Datasource="PermissionList"
                 TextSelector="(p => Loc[p.ToString()])" OutputSelector="(p => (int)p)" SelectedOptions="Item.PermissionId"
                 SelectedOptionsChanged="OnPermissionsChanged" IsDisabled="IsViewMode" />
-            @if (Item.IsActive && (Item.PermissionId == null || !Item.PermissionId.Any()))
+            @if (IsSaveClicked && Item.IsActive && (Item.PermissionId == null || !Item.PermissionId.Any()))
             {
                 <div class="text-danger small mt-1">@Loc["Required"]</div>
 
             }
         }
     </div>
+    @if(ShowToggleFields){
+        <!-- Manager / Employee toggles -->
+        <div class="d-flex flex-column gap-2 mb-3">
+            <div class="form-check form-switch custom">
+                <input class="form-check-input" type="checkbox" id="manager_@Item.SelectedOption"
+                       @bind="Item.IsManagerTasks" disabled="@IsViewMode" />
+                <label class="form-check-label" for="manager_@Item.SelectedOption">
+                    <span class="toggler-icon"></span>
+                    @Loc["ManagersTasks"]</label>
+            </div>
 
-    <!-- Manager / Employee toggles -->
-    <div class="d-flex flex-column gap-2 mb-3">
-        <div class="form-check form-switch custom">
-            <input class="form-check-input" type="checkbox" id="manager_@Item.SelectedOption"
-                   @bind="Item.IsManagerTasks" disabled="@IsViewMode" />
-            <label class="form-check-label" for="manager_@Item.SelectedOption">
-                <span class="toggler-icon"></span>
-                @Loc["ManagersTasks"]</label>
+            <div class="form-check form-switch custom">
+                <input class="form-check-input" type="checkbox" id="employee_@Item.SelectedOption"
+                       @bind="Item.IsEmployeeTasks" disabled="@IsViewMode" />
+                <label class="form-check-label" for="employee_@Item.SelectedOption">
+                    <span class="toggler-icon"></span>
+                    @Loc["EmployeesTasks"]</label>
+            </div>
+            @if (IsSaveClicked && Item.IsActive && Item.IsEmployeeTasks != true &&  Item.IsManagerTasks != true)
+            {
+                <div class="text-danger small mt-1">@Loc["SelectAtLeastOneToggleToProceed"]</div>
+            }
         </div>
-
-        <div class="form-check form-switch custom">
-            <input class="form-check-input" type="checkbox" id="employee_@Item.SelectedOption"
-                   @bind="Item.IsEmployeeTasks" disabled="@IsViewMode" />
-            <label class="form-check-label" for="employee_@Item.SelectedOption">
-                <span class="toggler-icon"></span>
-                @Loc["EmployeesTasks"]</label>
-        </div>
-    </div>
-
+    }
     <!-- Conditional Direction fields -->
     @if (ShowDirectionFields)
     {
         <div class="mb-3">
-            <label class="form-label ">@Loc["DirectionType"] <span class="text-danger">*</span></label>
-            <select class="form-select" @bind="Item.DirectionType" disabled="@IsViewMode">
-                <option value=""></option>
-                @foreach (var type in Enum.GetValues(typeof(DirectionType)).Cast<DirectionType>())
-                {
-                    <option value="@type">@Loc[type.ToString()]</option>
-                }
-            </select>
-        </div>
-
-        <div class="mb-3">
             <label class="form-label ">@Loc["DirectionLevel"] <span class="text-danger">*</span></label>
             <input type="number" class="form-control @(Item.DirectionLevel < 1 ? "border-danger" : "")" min="1"
                    @oninput="ValidateDirectionLevel" @bind="Item.DirectionLevel" disabled="@IsViewMode" />
-            @if (Item.DirectionLevel == null)
+            @if (IsSaveClicked && Item.IsActive && Item.DirectionLevel == null)
             {
                 <div class="text-danger small mt-1">@Loc["Required"]</div>
             }
+            else if (IsSaveClicked && Item.IsActive && Item.DirectionLevel < 1)
+            {
+                <div class="text-danger small mt-1">@Loc["ValueMustBeGreaterThanOrEqualTo1"]</div>
+            }
         </div>
-
     }
 </div>
 
@@ -70,7 +66,9 @@
     [Parameter] public TaskModuleUserDepartmentPermissionDto Item { get; set; } = new();
     [Parameter] public bool ShowDirectionFields { get; set; } = true;
     [Parameter] public bool ShowPermissionFields { get; set; } = true;
+    [Parameter] public bool ShowToggleFields { get; set; } = true;
     [Parameter] public bool IsViewMode { get; set; }
+    [Parameter] public bool IsSaveClicked { get; set; }
     private List<Permission> PermissionList = Enum.GetValues(typeof(Permission)).Cast<Permission>().ToList();
 
     private void OnPermissionsChanged(List<int> selectedPermissions)

@@ -20,7 +20,7 @@
         {
             <div class="form-check mb-3">
                 <input class="form-check-input" type="checkbox" disabled="@IsViewMode" id="@item.SelectedOption" checked="@item.IsActive"
-                    @onchange="(e) => ToggleSelection(item, e.Value as bool?)" />
+                       @onchange="(e) => ToggleSelection(item, e.Value as bool?)" />
                 <label class="form-check-label fw-bold" for="@item.SelectedOption">
                     <div>
                         <h6 class="headline-7 mb-2"> @Loc[item.SelectedOption.ToString()]</h6>
@@ -32,7 +32,8 @@
             @if (item.IsActive)
             {
                 <UserDepartmentExtendedFields Item="item" ShowDirectionFields="@ShouldShowDirection(item.SelectedOption)"
-                    ShowPermissionFields="@ShouldShowPermission(item.SelectedOption)" IsViewMode="@IsViewMode">
+                                              ShowPermissionFields="@ShouldShowPermission(item.SelectedOption)" IsViewMode="@IsViewMode"
+                                              ShowToggleFields="@ShouldShowPermission(item.SelectedOption)" IsSaveClicked="@IsSaveClicked">
                 </UserDepartmentExtendedFields>
             }
         }
@@ -50,13 +51,13 @@
 
             <div class="row g-2 align-self-stretch">
                 <div class="col-xl-10 col-lg-9 col-sm-9 col-8">
-                    <SearchableMultiDropdownOffline  TInput="DepartmentDto" TOutput="Guid" Datasource="Departments"
-                        TextSelector="(d => d.Name)" OutputSelector="(d => d.Id)" SelectedOptions="@SelectedDepartments"
-                        SelectedOptionsChanged="@OnDepartmentsChanged" IsDisabled="IsViewMode" />
+                    <SearchableMultiDropdownOffline @key="AvailableDepartments.Count" TInput="DepartmentDto" TOutput="Guid" Datasource="AvailableDepartments"
+                                                    TextSelector="(d => d.Name)" OutputSelector="(d => d.Id)" SelectedOptions="@SelectedDepartments"
+                                                    SelectedOptionsChanged="@OnDepartmentsChanged" IsDisabled="IsViewMode" />
                 </div>
                 <div class="col-xl-2 col-lg-3 col-sm-3 col-4 d-flex">
                     <button class=" btn btn-light-pimary flex-fill" @onclick="AddDepartments"
-                        disabled="@(!SelectedDepartments.Any() || IsViewMode)">
+                            disabled="@(!SelectedDepartments.Any() || IsViewMode)">
                         @Loc["Add"]
                     </button>
                 </div>
@@ -66,8 +67,8 @@
         @foreach (var dept in PrivilegeDto.TaskModuleExternalDepartmentDto ?? new
                 List<TaskModuleExternalDepartmentDto>())
         {
-            <ExternalDepartmentExtendedFields Item="dept" DepartmentName="@GetDepartmentName(dept.DepartmentId)"
-                OnRemove="RemoveDepartment" StatusList="@StatusList" SourceList="@SourceList" IsViewMode="@IsViewMode"/>
+            <ExternalDepartmentExtendedFields Item="dept" DepartmentName="@GetDepartmentName(dept.DepartmentId)" IsSaveClicked="@IsSaveClicked"
+                                              OnRemove="RemoveDepartment" StatusList="@StatusList" SourceList="@SourceList" IsViewMode="@IsViewMode" />
         }
     </div>
 </div>
@@ -75,10 +76,22 @@
     [Parameter] public PrivilegeDto PrivilegeDto { get; set; } = new PrivilegeDto();
     [Parameter] public string Mode { get; set; }
     [Parameter] public bool IsViewMode { get; set; }
+    [Parameter] public bool IsSaveClicked { get; set; }
     private List<DepartmentDto> Departments { get; set; } = new List<DepartmentDto>();
     private List<Guid> SelectedDepartments { get; set; } = new();
     private List<StatusSettingsDto> StatusList { get; set; } = new();
     private List<SourceDto> SourceList { get; set; } = new();
+    private List<DepartmentDto> AvailableDepartments
+    {
+        get
+        {
+            if (PrivilegeDto.TaskModuleExternalDepartmentDto == null || !PrivilegeDto.TaskModuleExternalDepartmentDto.Any())
+                return Departments;
+            var selectedDepartmentIds = PrivilegeDto.TaskModuleExternalDepartmentDto.Select(d => d.DepartmentId).ToHashSet();
+            return Departments.Where(d => !selectedDepartmentIds.Contains(d.Id)).ToList();
+        }
+    }
+
     protected override async Task OnInitializedAsync()
     {
         var res = await _departmentConsumer.GetDepartmentsNoPagnation();
@@ -96,7 +109,7 @@
         var sourceRes = await _sourceSettingConsumer.GetSourcesWithoutPagination();
         if (sourceRes.Success && sourceRes != null && sourceRes.Data != null)
         {
-            SourceList = sourceRes.Data;
+            SourceList = sourceRes.Data.Where(s => s.IsActive == true).ToList();
         }
 
         if (PrivilegeDto.TaskModuleUserDepartmentDto == null)
@@ -121,6 +134,7 @@
             }
         }
     }
+
     private void ToggleSelection(TaskModuleUserDepartmentPermissionDto item, bool? isChecked)
     {
         item.IsActive = isChecked == true;
@@ -131,6 +145,7 @@
 
         StateHasChanged();
     }
+
     private bool ShouldShowDirection(UserDepartmentOptions option)
     {
         return option == UserDepartmentOptions.BelowUserDepartmentLevel
@@ -169,7 +184,8 @@
                 Source = new()
             });
         }
-        SelectedDepartments.Clear();
+        SelectedDepartments = new();
+        StateHasChanged();
     }
 
 

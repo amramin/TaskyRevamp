@@ -643,9 +643,6 @@
   <data name="GeneralModule" xml:space="preserve">
     <value>الوحدات العامة</value>
   </data>
-  <data name="Privilege" xml:space="preserve">
-    <value>صلاحيات</value>
-  </data>
   <data name="TaskModule" xml:space="preserve">
     <value>وحدة المهام</value>
   </data>
@@ -803,13 +800,13 @@
     <value>الإدارة </value>
   </data>
   <data name="Permissions" xml:space="preserve">
-    <value>الصلاحيات</value>
+    <value>الأذونات</value>
   </data>
   <data name="EmployeesTasks" xml:space="preserve">
-    <value>مهام الموظف</value>
+    <value>مهام الموظفين</value>
   </data>
   <data name="ManagersTasks" xml:space="preserve">
-    <value>مهمة المدير</value>
+    <value>مهام المدراء</value>
   </data>
   <data name="DirectionLevel" xml:space="preserve">
     <value>مستوي الاتجاه</value>
@@ -973,21 +970,20 @@
   <data name="UploadExcelFile" xml:space="preserve">
     <value>إرفع ملف إكسل</value>
   </data>
-    <data name="Add the department's structure" xml:space="preserve">
-    <value>أضف هيكل الإدارات</value>
-  </data>
-  
   <data name="DepartmentLevelMandatory" xml:space="preserve">
     <value> مستوى الإدارة (إلزامي)</value>
   </data>
-    <data name="DepartmentNameMandatory" xml:space="preserve">
+  <data name="DepartmentNameMandatory" xml:space="preserve">
     <value>اسم الإدارة (إلزامي)</value>
   </data>
-    <data name="ParentDepartmentNameMandatory" xml:space="preserve">
+  <data name="ParentDepartmentNameMandatory" xml:space="preserve">
     <value> الإدارة الرئيسية (إلزامي)</value>
   </data>
   <data name="DownloadExcelTemplate" xml:space="preserve">
     <value>تحميل ملف إكسل</value>
+  </data>
+  <data name="Add the department's structure" xml:space="preserve">
+    <value>أضف هيكل الإدارات</value>
   </data>
   <data name="FileNotValid" xml:space="preserve">
     <value>الملف غير صالح</value>
@@ -1102,10 +1098,61 @@
   <data name="notvald" xml:space="preserve">
     <value>تم الوصول إلى الحد الأقصى لعدد الأحرف.</value>
   </data>
-   <data name="DeliveryDate" xml:space="preserve">
+  <data name="DeliveryDate" xml:space="preserve">
     <value>تاريخ التسليم</value>
   </data>
   <data name="NoUsersPrivilege" xml:space="preserve">
     <value>لا يوجد مستخدمون مرتبطون بهذه الصلاحية</value>
+  </data>
+  <data name="CreateTask" xml:space="preserve">
+    <value>إنشاء مهمة</value>
+  </data>
+  <data name="SubTask" xml:space="preserve">
+    <value>مهمة فرعيه</value>
+  </data>
+  <data name="Reject" xml:space="preserve">
+    <value>رفض</value>
+  </data>
+  <data name="ChangeEndDate" xml:space="preserve">
+    <value>تعديل تاريخ الإنتهاء</value>
+  </data>
+  <data name="RequestChangeEndDate" xml:space="preserve">
+    <value>طلب تعديل تاريخ الإنتهاء</value>
+  </data>
+  <data name="ApproveAndRejectTheRequestChangeEndDate" xml:space="preserve">
+    <value>الموافقة على طلب تغيير تاريخ الانتهاء أو رفضه</value>
+  </data>
+  <data name="ChangeProgress" xml:space="preserve">
+    <value>تعديل التقدم الفعلي</value>
+  </data>
+  <data name="ChecklistAdd" xml:space="preserve">
+    <value>إضافة قائمة تحقق</value>
+  </data>
+  <data name="ChecklistUpdate" xml:space="preserve">
+    <value>تعديل قائمة تحقق</value>
+  </data>
+  <data name="Complete" xml:space="preserve">
+    <value>إكمال</value>
+  </data>
+  <data name="ReOpen" xml:space="preserve">
+    <value>إعادة فتح</value>
+  </data>
+  <data name="Details" xml:space="preserve">
+    <value>التفاصيل </value>
+  </data>
+  <data name="AddAttachment" xml:space="preserve">
+    <value>إضافة ملف</value>
+  </data>
+  <data name="AddComment" xml:space="preserve">
+    <value>إضافة تعليق</value>
+  </data>
+  <data name="SelectAtLeastOneToggleToProceed" xml:space="preserve">
+    <value>اختر خيار واحد على الأقل</value>
+  </data>
+  <data name="Privilege" xml:space="preserve">
+    <value>صلاحيات</value>
+  </data>
+  <data name="ValueMustBeGreaterThanOrEqualTo1" xml:space="preserve">
+    <value>يجب أن تكون القيمة أكبر من أو تساوي 1.</value>
   </data>
 </root>

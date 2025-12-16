@@ -87,10 +87,10 @@
 
                                 <!-- GeneralModule child component -->
                                 <GeneralModule PrivilegeDto="PrivilegeDto" Mode="Mode" IsViewMode="IsViewMode"
-                                    OnValidationStateChanged="@OnGeneralModuleValidationChanged" />
+                                    OnValidationStateChanged="@OnGeneralModuleValidationChanged" IsSaveClicked="@IsSaveClicked"/>
                             </div>
                             <div style="display:@(SelectedTab == "Task" ? "block" : "none")">
-                                <TaskModule PrivilegeDto="PrivilegeDto" Mode="Mode" IsViewMode="IsViewMode" />
+                                <TaskModule PrivilegeDto="PrivilegeDto" Mode="Mode" IsViewMode="IsViewMode" IsSaveClicked="IsSaveClicked"/>
                             </div>
                             <div style="display:@(SelectedTab == "Report" ? "block" : "none")">
                                 <ReportModule PrivilegeDto="PrivilegeDto" Mode="Mode" IsViewMode="IsViewMode" />
@@ -125,6 +125,7 @@
     private EditContext? editContext;
     private ValidationMessageStore? messageStore;
     private bool isGeneralModuleValid = true;
+    private bool IsSaveClicked = false;
     private string PageTitle =>
     Mode == "add" ? "AddNewPrivilege" :
     Mode == "edit" ? "EditPrivilege" : "ViewPermission";
@@ -208,9 +209,14 @@
 
             if (shouldShowDirection && (item.DirectionLevel == null || item.DirectionLevel < 1))
                 return true;
+
+            if (shouldShowPermission && (item.IsManagerTasks != true && item.IsEmployeeTasks != true))
+                return true;
+
         }
         return false;
     }
+
     private bool HasInvalidExternalDepartments()
     {
         if (PrivilegeDto.TaskModuleExternalDepartmentDto == null ||
@@ -226,6 +232,9 @@
             // Permissions
             if (dept.PermissionId == null || !dept.PermissionId.Any())
                 return true;
+
+            if (dept.IsEmployeeTasks != true && dept.IsManagerTasks != true)
+                return true;
         }
 
         return false;
@@ -233,6 +242,8 @@
 
     private async Task SaveSettings()
     {
+        IsSaveClicked = true;
+
         if (IsViewMode)
             return;
 
