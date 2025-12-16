@@ -54,6 +54,7 @@ builder.Services.AddTransient<RejectionSettingConsumer>();
 builder.Services.AddTransient<PrioritySettingConsumer>();
 builder.Services.AddTransient<NotificationTypeTemplateConsumer>();
 builder.Services.AddTransient<SendEmailConsumer>();
+builder.Services.Configure<MySettings>(builder.Configuration.GetSection("MySettings"));
 
 builder.Services.AddTransient<DepartmentConsumer>();
 builder.Services.AddTransient<TaskConsumer>();

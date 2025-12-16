@@ -79,6 +79,7 @@ builder.Services.AddScoped<ExceptionHandlingMiddleware>();
 builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("MailSettings"));
 
 builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("AppSettings"));
+
 builder.Services.Configure<LdapSettings>(builder.Configuration.GetSection("LDAP"));
 builder.Services.AddExceptionHandler<ApiExceptionHandler>();
 builder.Services.AddProblemDetails();

@@ -13,9 +13,9 @@ using TaskyRevamp.Dto.TaskDto;
 
 namespace TaskyRevamp.Services.Tasks.Commands;
 
-public record CreateTaskCommand(CreateTaskDto CreateTaskDto) : IRequest<Guid>;
+public record CreateTaskCommand(CreateTaskDto CreateTaskDto) : IRequest<string>;
 
-public class CreateTaskHandler : IRequestHandler<CreateTaskCommand, Guid>
+public class CreateTaskHandler : IRequestHandler<CreateTaskCommand, string>
 {
     private readonly IRepository<TaskItem> _taskRepository;
 
@@ -32,9 +32,9 @@ public class CreateTaskHandler : IRequestHandler<CreateTaskCommand, Guid>
         _fileManagement = fileManagement;
     }
 
-    public async Task<Guid> Handle(CreateTaskCommand request, CancellationToken cancellationToken)
+    public async Task<string> Handle(CreateTaskCommand request, CancellationToken cancellationToken)
     {
-        var user = await _userRepository.FindByKey(request.CreateTaskDto.CreatedBy);
+        var user = await _userRepository.FindByKey(request.CreateTaskDto.CreatedBy.Value);
         if (user is null || user.IsFailure || user.Value is null)
             throw new Exception("User Not Found");
 
@@ -54,13 +54,13 @@ public class CreateTaskHandler : IRequestHandler<CreateTaskCommand, Guid>
         var task = new TaskItem(request.CreateTaskDto.Id, fileid, request.CreateTaskDto.TitleEnglish,
             request.CreateTaskDto.TitleArabic, request.CreateTaskDto.DescriptionEnglish,
             request.CreateTaskDto.DescriptionArabic, request.CreateTaskDto.TypeId, request.CreateTaskDto.SourceId,
-            request.CreateTaskDto.StartDate, request.CreateTaskDto.EndDate,
+            request.CreateTaskDto.StartDate.Value, request.CreateTaskDto.EndDate.Value,
          request.CreateTaskDto.Priority
             , new Weight(request.CreateTaskDto.weight), user.Value.Id, departments.Value.ToList(),
             request.CreateTaskDto.AssignedIds, request.CreateTaskDto.ReminderDate, request.CreateTaskDto.ActualProcess, request.CreateTaskDto.weight, request.CreateTaskDto.Dependencies);
 
         await _taskRepository.Insert(task);
         await _taskRepository.SaveChangesAsync();
-        return task.Id;
+        return task.Id.ToString();
     }
 }

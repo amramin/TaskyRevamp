@@ -16,6 +16,7 @@
 @inject ToastService ToastService
 @inject TaskConsumer _taskConsumer
 @inject TypeSettingConsumer _typeSettingConsumer
+@inject Microsoft.Extensions.Options.IOptions<MySettings> mySettings
 
 @inject DepartmentConsumer _departmentConsumer
 @inject AddTaskSettingConsumer _addTaskSettingConsumer
@@ -34,7 +35,7 @@
     <DataAnnotationsValidator />
     <ValidationSummary />
 
-        <div class="offcanvas-body overflow-hidden">
+        <div class="offcanvas-body ">
         @foreach (var column in AddTaskSettings.Where(c => c.IsActive).OrderBy(c => c.Order))
     {
                 <div @key="column.Id">
@@ -481,6 +482,8 @@
     protected async override Task OnInitializedAsync()
     {
         editContext = new EditContext(taskdto);
+        maxFileSize = mySettings.Value.MaxFileSize;
+
         var res = await _addTaskSettingConsumer.GetAddTaskSettings();
         if (res.Success)
         {
