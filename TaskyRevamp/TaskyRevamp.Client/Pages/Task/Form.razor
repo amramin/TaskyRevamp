@@ -484,32 +484,70 @@
         editContext = new EditContext(taskdto);
         maxFileSize = mySettings.Value.MaxFileSize;
 
-        var res = await _addTaskSettingConsumer.GetAddTaskSettings();
-        if (res.Success)
-        {
-            var settings = res.Data;
-            if (settings != null)
-            {
-                AddTaskSettings = settings;
-            }
+        // var res = await _addTaskSettingConsumer.GetAddTaskSettings();
+        // if (res.Success)
+        // {
+        //     var settings = res.Data;
+        //     if (settings != null)
+        //     {
+        //         AddTaskSettings = settings;
+        //     }
 
-        }
-        var typs = await _typeSettingConsumer.GetTaskTypesForDDL();
-        taskTypeDtos = typs.Data;
-        var sorce = await _sourceSettingConsumer.GetTaskSourcesForDDL();
-        taskSourceDtos = sorce.Data;
-        var users = await _userConsumer.GetUsers();
-        userDtos = users.Data;
-        var departs = await _departmentConsumer.GetDepartmentsForDDL();
-        departmentDtos = departs.Data;
-        var tsks = await _taskConsumer.GetTasksForDDL();
+        // }
+        // var typs = await _typeSettingConsumer.GetTaskTypesForDDL();
+        // taskTypeDtos = typs.Data;
+        // var sorce = await _sourceSettingConsumer.GetTaskSourcesForDDL();
+        // taskSourceDtos = sorce.Data;
+        // var users = await _userConsumer.GetUsers();
+        // userDtos = users.Data;
+        // var departs = await _departmentConsumer.GetDepartmentsForDDL();
+        // departmentDtos = departs.Data;
+        // var tsks = await _taskConsumer.GetTasksForDDL();
 
-        allTaskDtos = tsks.Data;
-        var ress = await _prioritySettingConsumer.GetPriorities();
-        if (ress.Success && ress.Data != null)
+        // allTaskDtos = tsks.Data;
+        // var ress = await _prioritySettingConsumer.GetPriorities();
+        // if (ress.Success && ress.Data != null)
+        // {
+        //     Priorities = ress.Data;
+        // }
+        var addTaskSettingsTask = _addTaskSettingConsumer.GetAddTaskSettings();
+        var taskTypesTask = _typeSettingConsumer.GetTaskTypesForDDL();
+        var taskSourcesTask = _sourceSettingConsumer.GetTaskSourcesForDDL();
+        var usersTask = _userConsumer.GetUsers();
+        var departmentsTask = _departmentConsumer.GetDepartmentsForDDL();
+        var tasksTask = _taskConsumer.GetTasksForDDL();
+        var prioritiesTask = _prioritySettingConsumer.GetPriorities();
+
+        // Run all in parallel
+        await Task.WhenAll(
+            addTaskSettingsTask,
+            taskTypesTask,
+            taskSourcesTask,
+            usersTask,
+            departmentsTask,
+            tasksTask,
+            prioritiesTask
+        );
+
+        // Read results safely
+        var addTaskSettingsRes = await addTaskSettingsTask;
+        if (addTaskSettingsRes.Success && addTaskSettingsRes.Data != null)
         {
-            Priorities = ress.Data;
+            AddTaskSettings = addTaskSettingsRes.Data;
         }
+
+        taskTypeDtos = (await taskTypesTask).Data;
+        taskSourceDtos = (await taskSourcesTask).Data;
+        userDtos = (await usersTask).Data;
+        departmentDtos = (await departmentsTask).Data;
+        allTaskDtos = (await tasksTask).Data;
+
+        var prioritiesRes = await prioritiesTask;
+        if (prioritiesRes.Success && prioritiesRes.Data != null)
+        {
+            Priorities = prioritiesRes.Data;
+        }
+
         taskdto.StartDate = taskdto.StartDate == default ? DateTime.Now : taskdto.StartDate;
         taskdto.EndDate = taskdto.EndDate == default ? DateTime.Now : taskdto.EndDate;
         taskdto.ReminderDate = taskdto.ReminderDate == default ? DateTime.Now : taskdto.ReminderDate;
