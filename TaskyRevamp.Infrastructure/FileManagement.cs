@@ -6,6 +6,7 @@ using TaskyRevamp.Domain.Interfaces;
 using TaskyRevamp.Domain.Models.UploadFile;
 using TaskyRevamp.Dto;
 using TaskyRevamp.Dto.Files;
+using TaskyRevamp.Dto.GeneralDto;
 
 namespace TaskyRevamp.Infrastructure;
 
