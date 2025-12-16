@@ -65,8 +65,11 @@ namespace TaskyRevamp.Services.Users.Query
 					return sortAscending
 						? q => q.OrderBy(u => u.CreateDate)
 						: q => q.OrderByDescending(u => u.CreateDate);
-
-				case "UpdateDate":
+                case "Set as Manager":
+                    return sortAscending
+                        ? q => q.OrderBy(u => u.IsManager)
+                        : q => q.OrderByDescending(u => u.IsManager);
+                case "UpdateDate":
 					return sortAscending
 						? q => q.OrderBy(u => u.UpdateDate)
 						: q => q.OrderByDescending(u => u.UpdateDate);
@@ -95,10 +98,10 @@ namespace TaskyRevamp.Services.Users.Query
 						? q => q.OrderBy(u => u.Email)
 						: q => q.OrderByDescending(u => u.Email);
 
-				case "IsManager":
-					return sortAscending
-						? q => q.OrderBy(u => u.IsManager)
-						: q => q.OrderByDescending(u => u.IsManager);
+				//case "IsManager":
+				//	return sortAscending
+				//		? q => q.OrderBy(u => u.IsManager)
+				//		: q => q.OrderByDescending(u => u.IsManager);
 
 				case "Privilege":
 					if (currentCulture == "ar")
@@ -119,16 +122,28 @@ namespace TaskyRevamp.Services.Users.Query
 					{
 						return sortAscending
 						? q => q.OrderBy(u => u.Department!.NameArabic)
-						: q => q.OrderByDescending(u => u.Privilege!.NameArabic);
+						: q => q.OrderByDescending(u => u.Department!.NameArabic);
 					}
-					else
+                    else
 					{
 						return sortAscending
 						? q => q.OrderBy(u => u.Department!.NameEnglish)
-						: q => q.OrderByDescending(u => u.Privilege!.NameEnglish);
+						: q => q.OrderByDescending(u => u.Department!.NameEnglish);
 					}
-
-				default:
+                case "Privileges":
+                    if (currentCulture == "ar")
+                    {
+                        return sortAscending
+                        ? q => q.OrderBy(u => u.Privilege!.NameArabic)
+                        : q => q.OrderByDescending(u => u.Privilege!.NameArabic);
+                    }
+                    else
+                    {
+                        return sortAscending
+                        ? q => q.OrderBy(u => u.Privilege!.NameEnglish)
+                        : q => q.OrderByDescending(u => u.Privilege!.NameEnglish);
+                    }
+                default:
 					return q => q.OrderBy(u => u.CreateDate);
 			}
 		}

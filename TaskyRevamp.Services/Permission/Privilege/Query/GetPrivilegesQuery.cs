@@ -14,12 +14,14 @@ namespace TaskyRevamp.Services.Permission.Privilege.Query
 	public class GetPrivilegesHandler : IRequestHandler<GetPrivilegesQuery, PagedResult<PrivilegeDtoWithName>>
 	{
 		private readonly IRepository<Privileges> _privilegesRepository;
-		public GetPrivilegesHandler(IRepository<Privileges> privilegesRepository)
+        private readonly string currentCulture;
+        public GetPrivilegesHandler(IRepository<Privileges> privilegesRepository)
 		{
 			_privilegesRepository = privilegesRepository;
-		}
+            currentCulture = System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
+        }
 
-		public async Task<PagedResult<PrivilegeDtoWithName>> Handle(GetPrivilegesQuery request, CancellationToken cancellationToken)
+        public async Task<PagedResult<PrivilegeDtoWithName>> Handle(GetPrivilegesQuery request, CancellationToken cancellationToken)
 		{
 			var orderBy = GetOrderBy(request.sortByColumnName, request.sortAscending);
 
@@ -41,9 +43,9 @@ namespace TaskyRevamp.Services.Permission.Privilege.Query
 			var items = res.Items.Select(u => new PrivilegeDtoWithName
 			{
 				PrivilegeDto = u.CopyToDto(),
-				CreatedByName = u.CreatedBy != null ? u.CreatedBy.NameEnglish : string.Empty,
-				UpdatedByName = u.UpdatedBy != null ? u.UpdatedBy.NameEnglish : string.Empty
-			}).ToList();
+				CreatedByName = u.CreatedBy != null ? (currentCulture=="ar"? u.CreatedBy.NameArabic:u.CreatedBy.NameEnglish) : string.Empty,
+				UpdatedByName = u.UpdatedBy != null ? (currentCulture == "ar" ? u.UpdatedBy.NameArabic : u.UpdatedBy.NameEnglish) : string.Empty
+            }).ToList();
 
 			return new PagedResult<PrivilegeDtoWithName>
 			{
@@ -55,7 +57,6 @@ namespace TaskyRevamp.Services.Permission.Privilege.Query
 		}
 		private Func<IQueryable<Privileges>, IOrderedQueryable<Privileges>> GetOrderBy(string sortByColumn, bool sortAscending)
 		{
-			string currentCulture = System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
 
 			switch (sortByColumn)
 			{
@@ -70,16 +71,26 @@ namespace TaskyRevamp.Services.Permission.Privilege.Query
 						: q => q.OrderByDescending(u => u.UpdateDate);
 
 				case "CreatedBy":
-					return sortAscending
-						? q => q.OrderBy(u => u.CreatedBy!.NameEnglish)
-						: q => q.OrderByDescending(u => u.CreatedBy!.NameEnglish);
+                    if (currentCulture == "ar")
+                    {
+                        return sortAscending ? q => q.OrderBy(u => u.CreatedBy.NameArabic) : q => q.OrderByDescending(u => u.CreatedBy.NameArabic);
+                    }
+                    else
+                    {
+                        return sortAscending ? q => q.OrderBy(u => u.CreatedBy.NameEnglish) : q => q.OrderByDescending(u => u.CreatedBy.NameEnglish);
+                    }
 
-				case "UpdatedBy":
-					return sortAscending
-						? q => q.OrderBy(u => u.UpdatedBy!.NameEnglish)
-						: q => q.OrderByDescending(u => u.UpdatedBy!.NameEnglish);
+                case "UpdatedBy":
+                    if (currentCulture == "ar")
+                    {
+                        return sortAscending ? q => q.OrderBy(u => u.UpdatedBy!.NameArabic) : q => q.OrderByDescending(u => u.UpdatedBy!.NameArabic);
+                    }
+                    else
+                    {
+                        return sortAscending ? q => q.OrderBy(u => u.UpdatedBy!.NameEnglish) : q => q.OrderByDescending(u => u.UpdatedBy!.NameEnglish);
+                    }
 
-				case "DisplayedName":
+                case "DisplayedName":
 					if (currentCulture == "ar")
 					{
 						return sortAscending
