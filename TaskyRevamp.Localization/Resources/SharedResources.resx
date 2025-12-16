@@ -820,7 +820,7 @@
     <value>You can't duplicate the privilege name</value>
   </data>
   <data name="Subtask_Levels" xml:space="preserve">
-    <value>Subtask levels</value>
+    <value>Subtask level</value>
   </data>
   <data name="Select" xml:space="preserve">
     <value>Select</value>
