@@ -18,7 +18,21 @@ namespace TaskyRevamp.Dto.SystemConfiguration
         public string NameArabic { get; set; }
 
 
-        public string Name => Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName == "ar" ? NameArabic : NameEnglish;
+        public string Name
+        {
+            get
+            {
+                var name = Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName == "ar"
+                    ? NameArabic
+                    : NameEnglish;
+
+                return string.IsNullOrWhiteSpace(name)
+                    ? string.Empty
+                    : name.Length > 50
+                        ? name.Substring(0, 50) + "..."
+                        : name;
+            }
+        }
 
         [Required(ErrorMessageResourceType = typeof(SharedResources), ErrorMessageResourceName = "Required")]
         public string NameColor { get; set; }
