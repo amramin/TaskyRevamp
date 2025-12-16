@@ -1,15 +1,17 @@
 ﻿using DocumentFormat.OpenXml.Vml.Office;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using TaskyRevamp.Domain.Interfaces.Repositeries;
 using TaskyRevamp.Domain.Models;
 using TaskyRevamp.Domain.Models.Task;
 using TaskyRevamp.Domain.Models.Users;
 using TaskyRevamp.Domain.Repositeries;
 using TaskyRevamp.Dto.TaskDto;
+using TaskyRevamp.Dto.TaskViews;
 
 namespace TaskyRevamp.Services.Tasks.Query;
 
-public record GetTaskQuery(Guid Id) : IRequest<CreateTaskDto>;
+public record GetTaskQuery(Guid Id, Guid currentUserId) : IRequest<CreateTaskDto>;
 
 public class GetTaskByIdHandler : IRequestHandler<GetTaskQuery, CreateTaskDto>
 {
@@ -17,12 +19,14 @@ public class GetTaskByIdHandler : IRequestHandler<GetTaskQuery, CreateTaskDto>
     private readonly ITaskRepository _taskRepository;
     private readonly IRepository<User> _userRepository;
     private readonly IRepository<Department> _departmentRepository;
+    private readonly IRepository<TaskViews> _taskViewsRepository;
 	private string currentCulture = System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
-	public GetTaskByIdHandler(ITaskRepository taskRepository, IRepository<User> userRepository, IRepository<Department> departmentRepository)
+	public GetTaskByIdHandler(ITaskRepository taskRepository, IRepository<User> userRepository, IRepository<Department> departmentRepository, IRepository<TaskViews> taskViewsRepository)
 	{
 		_taskRepository = taskRepository;
 		_userRepository = userRepository;
 		_departmentRepository = departmentRepository;
+		_taskViewsRepository = taskViewsRepository;
 	}
 
 	public async Task<CreateTaskDto> Handle(GetTaskQuery request, CancellationToken cancellationToken)
@@ -32,7 +36,11 @@ public class GetTaskByIdHandler : IRequestHandler<GetTaskQuery, CreateTaskDto>
         {
             throw new Exception("Task not found");
         }
-        var taskDto = res.CopyToDto();
+		if (request.currentUserId != Guid.Empty && request.currentUserId != res.CreatedById)
+		{
+			await TrackTaskView(request.Id, request.currentUserId);
+		}
+		var taskDto = res.CopyToDto();
 		taskDto.TypeName = currentCulture == "ar" ? res.Type?.NameArabic : res.Type?.NameEnglish;
 		taskDto.SourceName = currentCulture == "ar" ? res.Source?.NameArabic : res.Source?.NameEnglish;
 		taskDto.PriorityName = currentCulture == "ar" ? res.Priority?.NameArabic : res.Priority?.NameEnglish;
@@ -41,6 +49,7 @@ public class GetTaskByIdHandler : IRequestHandler<GetTaskQuery, CreateTaskDto>
 		taskDto.TaskStatusName = currentCulture == "ar" ? res.status?.NameArabic : res.status?.NameEnglish;
 		taskDto.TaskStatusColor = res.status?.NameColor;
 		taskDto.TaskStatusBackgroundColor = res.status?.BackgroundColor;
+		taskDto.CreatedBy = res.CreatedById;
 		taskDto.CreatedByName = currentCulture == "ar" ? res.CreatedBy?.NameArabic : res.CreatedBy?.NameEnglish;
 		taskDto.UpdatedBy = currentCulture == "ar" ? res.UpdatedBy?.NameArabic : res.UpdatedBy?.NameEnglish;
 		taskDto.CreatorDepartment = currentCulture == "ar" ? res.CreatedBy?.Department?.NameArabic : res.CreatedBy?.Department?.NameEnglish;
@@ -71,6 +80,41 @@ public class GetTaskByIdHandler : IRequestHandler<GetTaskQuery, CreateTaskDto>
 		if (res.Dependencies != null)
 			taskDto.Dependencies = res.Dependencies is TaskDependencies td? td.Items.Select(i => i.Id).ToList(): taskDto.Dependencies;
 
+		if (request.currentUserId != Guid.Empty && request.currentUserId == res.CreatedById)
+		{
+			var taskViews = await _taskViewsRepository.FindBy(tv => tv.TaskItemId == request.Id, $"{nameof(TaskViews.User)}");
+			if (taskViews.Success && taskViews.Value != null)
+			{
+				taskDto.ViewdByNames = taskViews.Value
+					.Select(tv => new TaskViewsDto
+					{
+						Id = tv.Id,
+						TaskItemId = tv.TaskItemId,
+						UserId = tv.UserId,
+						ViewdAt = tv.ViewedAt,
+						FullName = currentCulture == "ar"? (tv.User.NameArabic ?? tv.User.NameEnglish): (tv.User.NameEnglish ?? tv.User.NameArabic),
+						IsActive = tv.User.IsActive
+					}).OrderByDescending(v => v.ViewdAt).ToList();
+			}
+		}
 		return taskDto;
     }
+	private async Task TrackTaskView(Guid taskId, Guid userId)
+	{
+		var existingView = await _taskViewsRepository.FindBy(
+			tv => tv.TaskItemId == taskId && tv.UserId == userId
+		);
+
+		if (!existingView.Success || !existingView.Value!.Any())
+		{
+			var taskView = new TaskViews(taskId, userId);
+			await _taskViewsRepository.Insert(taskView);
+		}
+		else
+		{
+			var view = existingView.Value!.First();
+			view.ViewedAt = DateTime.UtcNow;
+			await _taskViewsRepository.Update(view);
+		}
+	}
 }

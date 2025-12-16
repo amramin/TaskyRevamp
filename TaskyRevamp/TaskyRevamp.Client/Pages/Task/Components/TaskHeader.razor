@@ -1,4 +1,6 @@
 ﻿@using TaskyRevamp.Dto.TaskDto
+@inject IStringLocalizer<SharedResources> Loc
+
 <div class="card mb-3">
     <div class="card-body d-flex align-items-center gap-3">
         <button class="btn btn-link text-dark p-0" @onclick="OnGoBack">
@@ -7,22 +9,111 @@
             </span>
         </button>
         <h1 class="flex-grow-1 mb-0 fs-5 fw-bold">@Task?.Title</h1>
-        <div class="d-flex">
-            @* @if (Task?.AssigneduserNames != null)
-            {
-                @foreach (var avatar in Task.AssigneduserNames)
-                {
-                   <p>@avatar</p>
-                }
-            } *@
-        </div>
+        @if (ShowViewedBy && Task?.ViewdByNames != null && Task.ViewdByNames.Any())
+        {
+            <div class="d-flex align-items-center gap-2">
+                <span class="text-muted small">@Loc["ViewedBy"]:</span>
+                <div class="d-flex align-items-center">
+                    @{
+                        var visibleViewers = Task.ViewdByNames.Take(2).ToList();
+                        var remainingCount = Task.ViewdByNames.Count - 2;
+                    }
+
+                    @foreach (var viewer in visibleViewers)
+                    {
+                        <div class="d-flex align-items-center justify-content-center rounded-circle bg-primary text-white fw-semibold position-relative @(viewer.IsActive ? "" : "bg-secondary opacity-75")"
+                             style="width: 32px; height: 32px; font-size: 12px; margin-left: -8px; border: 2px solid white; z-index: @(visibleViewers.IndexOf(viewer));"
+                             title="@viewer.FullName - @viewer.ViewdAt.ToLocalTime().ToString("g")"
+                             data-bs-toggle="tooltip">
+                            <span>@GetInitials(viewer.FullName)</span>
+                        </div>
+                    }
+
+                    @if (remainingCount > 0)
+                    {
+                        <button class="btn btn-sm d-flex align-items-center justify-content-center rounded-circle bg-light text-dark border-0 position-relative"
+                                style="width: 32px; height: 32px; font-size: 11px; margin-left: -8px; border: 2px solid white !important;"
+                                @onclick="ShowAllViewers"
+                                title="@Loc["ViewMore"]"
+                                data-bs-toggle="tooltip">
+                            <span class="fw-semibold">+@remainingCount</span>
+                        </button>
+                    }
+                </div>
+            </div>
+        }
     </div>
 </div>
 
-@code {
-    [Parameter]
-    public CreateTaskDto? Task { get; set; }
+@if (showViewersPopup && Task?.ViewdByNames != null)
+{
+    <div class="modal fade show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.5);" @onclick="CloseViewersPopup">
+        <div class="modal-dialog modal-dialog-centered" @onclick:stopPropagation="true">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">@Loc["ViewedBy"]</h5>
+                    <button type="button" class="btn-close" @onclick="CloseViewersPopup"></button>
+                </div>
+                <div class="modal-body p-0">
+                    <div class="list-group list-group-flush">
+                        @foreach (var viewer in Task.ViewdByNames.OrderByDescending(v => v.ViewdAt))
+                        {
+                            <div class="list-group-item d-flex align-items-center gap-3 @(viewer.IsActive ? "" : "text-muted bg-light")">
+                                <div class="d-flex align-items-center justify-content-center rounded-circle bg-primary text-white fw-semibold flex-shrink-0 @(viewer.IsActive ? "" : "bg-secondary opacity-75")"
+                                     style="width: 48px; height: 48px; font-size: 16px;">
+                                    <span>@GetInitials(viewer.FullName)</span>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <div class="fw-semibold mb-1">
+                                        @viewer.FullName
+                                        @if (!viewer.IsActive)
+                                        {
+                                            <span class="badge bg-secondary ms-2">@Loc["Inactive"]</span>
+                                        }
+                                    </div>
+                                    <small class="text-muted">
+                                        <i class="bi bi-clock me-1"></i>
+                                        @viewer.ViewdAt.ToLocalTime().ToString(Loc["LocalizeDate"])
+                                    </small>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" @onclick="CloseViewersPopup">
+                        @Loc["Close"]
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
 
-    [Parameter]
-    public EventCallback OnGoBack { get; set; }
+@code {
+    [Parameter] public CreateTaskDto? Task { get; set; }
+    [Parameter] public EventCallback OnGoBack { get; set; }
+    [Parameter] public bool ShowViewedBy { get; set; }
+    private bool showViewersPopup = false;
+
+    private string GetInitials(string fullName)
+    {
+        if (string.IsNullOrWhiteSpace(fullName))
+            return "?";
+
+        var parts = fullName.Trim().Split(' ', StringSplitOptions.RemoveEmptyEntries);
+        if (parts.Length == 1)
+            return parts[0].Substring(0, Math.Min(2, parts[0].Length)).ToUpper();
+
+        return (parts[0][0].ToString() + parts[^1][0].ToString()).ToUpper();
+    }
+    private void ShowAllViewers()
+    {
+        showViewersPopup = true;
+    }
+
+    private void CloseViewersPopup()
+    {
+        showViewersPopup = false;
+    }
 }

@@ -73,10 +73,10 @@ public class TaskController : ControllerBase
 
 
 
-    [HttpGet("GetTaskById/{id}")]
-    public async Task<IActionResult> GetTaskById(Guid id)
+    [HttpGet("GetTaskById/{id}/{currentUserId}")]
+    public async Task<IActionResult> GetTaskById(Guid id, Guid currentUserId)
     {
-       return Ok(await _mediator.Send(new GetTaskQuery(id)));
+       return Ok(await _mediator.Send(new GetTaskQuery(id, currentUserId)));
     }
 
     [HttpGet("GetTasksForDDL")]

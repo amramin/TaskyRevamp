@@ -5,9 +5,10 @@
 @using TaskyRevamp.Dto.TaskDto
 @inject NavigationManager navigationManager
 @inject TaskConsumer _taskConsumer
+@inject Blazored.LocalStorage.ILocalStorageService LocalStorage
 
 <div class="container-fluid min-vh-100 py-3">
-    <TaskHeader Task="task" OnGoBack="GoBack" />
+    <TaskHeader Task="task" @key="task.Id" OnGoBack="GoBack" ShowViewedBy="@isCreator" />
     <TaskMeta Task="task" />
     <TaskTabs @bind-ActiveTab="activeTab" Task="task" />
 
@@ -38,14 +39,32 @@
     private bool showDescription = true;
     private bool showDetails = false;
     private bool showComments = true;
-
+    private Guid currentUserId;
+    private bool isCreator = false;
 
     override protected async Task OnInitializedAsync()
     {
-        var res = await _taskConsumer.GetTaskById(TaskId);
-        if(res.Success && res.Data != null)
+        var userIdString = await LocalStorage.GetItemAsStringAsync("Id");
+
+        // Remove any quotes if present and parse to Guid
+        if (!string.IsNullOrEmpty(userIdString))
+        {
+            userIdString = userIdString.Trim('"'); // Remove quotes if any
+            if (Guid.TryParse(userIdString, out var userId))
+            {
+                currentUserId = userId;
+            }
+        }
+        await LoadTask();
+    }
+    private async Task LoadTask()
+    {
+        var res = await _taskConsumer.GetTaskById(TaskId, currentUserId);
+        if (res.Success && res.Data != null)
         {
             task = res.Data;
+            isCreator = task.CreatedBy == currentUserId;
+            StateHasChanged();
         }
     }
     private void GoBack()
