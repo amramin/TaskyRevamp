@@ -108,7 +108,7 @@ public class TaskItem : Entity, IHasCreationMetaData, IHasUpdateMetaData
     public TaskItem? Parent { get; set; }
     readonly List<TaskItem> _subtasks = new();
     public IReadOnlyCollection<TaskItem> Subtasks => _subtasks.AsReadOnly();
-    public TaskChecklist? Checklist { get; set; }
+    //public TaskChecklist? Checklist { get; set; }
     public TaskComment? Comments { get; set; }
     public TaskAttachments? Attachments { get; set; }
     readonly List<TaskHistoryEntry> _history = new();

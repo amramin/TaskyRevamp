@@ -11,29 +11,29 @@ namespace TaskyRevamp.Infrastructure.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_Attachment_TaskAttachments_TaskAttachmentsId",
-                table: "Attachment");
+            //migrationBuilder.DropForeignKey(
+            //    name: "FK_Attachment_TaskAttachments_TaskAttachmentsId",
+            //    table: "Attachment");
 
             migrationBuilder.DropForeignKey(
                 name: "FK_Attachment_Users_UploadedById",
                 table: "Attachment");
 
-            migrationBuilder.DropForeignKey(
-                name: "FK_TaskItem_TaskAttachments_AttachmentsId",
-                table: "TaskItem");
+            //migrationBuilder.DropForeignKey(
+            //    name: "FK_TaskItem_TaskAttachments_AttachmentsId",
+            //    table: "TaskItem");
 
-            migrationBuilder.DropIndex(
-                name: "IX_TaskItem_AttachmentsId",
-                table: "TaskItem");
+            //migrationBuilder.DropIndex(
+            //    name: "IX_TaskItem_AttachmentsId",
+            //    table: "TaskItem");
 
             migrationBuilder.DropIndex(
                 name: "IX_Attachment_TaskAttachmentsId",
                 table: "Attachment");
 
-            migrationBuilder.DropColumn(
-                name: "AttachmentsId",
-                table: "TaskItem");
+            //migrationBuilder.DropColumn(
+            //    name: "AttachmentsId",
+            //    table: "TaskItem");
 
             migrationBuilder.DropColumn(
                 name: "TaskAttachmentsId",
@@ -54,19 +54,19 @@ namespace TaskyRevamp.Infrastructure.Migrations
                 table: "Attachment",
                 newName: "IX_Attachment_TaskAttachmentId");
 
-            migrationBuilder.AddColumn<int>(
-                name: "Weight",
-                table: "TaskItem",
-                type: "int",
-                nullable: false,
-                defaultValue: 0);
+            //migrationBuilder.AddColumn<int>(
+            //    name: "Weight",
+            //    table: "TaskItem",
+            //    type: "int",
+            //    nullable: false,
+            //    defaultValue: 0);
 
-            migrationBuilder.AddColumn<Guid>(
-                name: "TaskItemId",
-                table: "TaskAttachments",
-                type: "uniqueidentifier",
-                nullable: false,
-                defaultValue: new Guid("00000000-0000-0000-0000-000000000000"));
+            //migrationBuilder.AddColumn<Guid>(
+            //    name: "TaskItemId",
+            //    table: "TaskAttachments",
+            //    type: "uniqueidentifier",
+            //    nullable: false,
+            //    defaultValue: new Guid("00000000-0000-0000-0000-000000000000"));
 
             migrationBuilder.AlterColumn<long>(
                 name: "SubTaskLevels",
@@ -142,13 +142,13 @@ namespace TaskyRevamp.Infrastructure.Migrations
                 name: "IX_Attachment_CreatedById",
                 table: "Attachment");
 
-            migrationBuilder.DropColumn(
-                name: "Weight",
-                table: "TaskItem");
+            //migrationBuilder.DropColumn(
+            //    name: "Weight",
+            //    table: "TaskItem");
 
-            migrationBuilder.DropColumn(
-                name: "TaskItemId",
-                table: "TaskAttachments");
+            //migrationBuilder.DropColumn(
+            //    name: "TaskItemId",
+            //    table: "TaskAttachments");
 
             migrationBuilder.DropColumn(
                 name: "CreatedById",
