@@ -26,11 +26,7 @@ namespace TaskyRevamp.Dto.SystemConfiguration
                     ? NameArabic
                     : NameEnglish;
 
-                return string.IsNullOrWhiteSpace(name)
-                    ? string.Empty
-                    : name.Length > 50
-                        ? name.Substring(0, 50) + "..."
-                        : name;
+                return name;
             }
         }
 

@@ -82,11 +82,12 @@
       display: flex;
 
       overflow: hidden;
-      max-width: calc(100% - 156px);
+      max-width: calc(100% - 1rem);
+      margin-inline-end:1rem;
       span {
         overflow: hidden;
         display: inline-block;
-        flex-grow: 1;
+
         text-overflow: ellipsis;
       }
     }
@@ -247,6 +248,7 @@
         flex-direction: column;
         justify-content: flex-start;
         align-items: flex-start;
+        padding-bottom: 1rem;
       }
     }
   }
