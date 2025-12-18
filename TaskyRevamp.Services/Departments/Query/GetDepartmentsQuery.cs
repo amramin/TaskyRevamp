@@ -16,11 +16,12 @@ public record GetDepartmentsQuery(int pageNumber, int pageSize, string sortByCol
 public class GetDepartmentsHandler : IRequestHandler<GetDepartmentsQuery, PagedResult<DepartmentDto>>
 {
     private readonly IRepository<Department> _departmentRepository;
-
+   private readonly string currentCulture; 
 
     public GetDepartmentsHandler(IRepository<Department> departmentRepository)
     {
         _departmentRepository = departmentRepository;
+        currentCulture = System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
     }
 
     public async Task<PagedResult<DepartmentDto>> Handle(GetDepartmentsQuery request, CancellationToken cancellationToken)
@@ -50,8 +51,8 @@ public class GetDepartmentsHandler : IRequestHandler<GetDepartmentsQuery, PagedR
         foreach (var Department in res.Items)
         {
             DepartmentDto dep = Department.CopyToDto();
-            dep.CreatedByName = Department.CreatedBy?.NameEnglish;
-            dep.UpdatedByName = Department.UpdatedBy?.NameEnglish;
+            dep.CreatedByName = currentCulture == "ar"? Department.CreatedBy?.NameArabic : Department.CreatedBy?.NameEnglish;
+            dep.UpdatedByName = currentCulture == "ar" ? Department.UpdatedBy?.NameArabic : Department.UpdatedBy?.NameEnglish;
             allDepartments.Add(dep);
 
         }
@@ -66,7 +67,6 @@ public class GetDepartmentsHandler : IRequestHandler<GetDepartmentsQuery, PagedR
     }
     private Func<IQueryable<Department>, IOrderedQueryable<Department>> GetOrderBy(string sortByColumn, bool sortAscending)
     {
-        string currentCulture = System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
 
         switch (sortByColumn)
         {
@@ -93,14 +93,24 @@ public class GetDepartmentsHandler : IRequestHandler<GetDepartmentsQuery, PagedR
                     : q => q.OrderByDescending(u => u.UpdateDate);
 
             case "CreatedBy":
-                return sortAscending
-                    ? q => q.OrderBy(u => u.CreatedBy!.NameEnglish)
-                    : q => q.OrderByDescending(u => u.CreatedBy!.NameEnglish);
+                if (currentCulture == "ar")
+                {
+                    return sortAscending ? q => q.OrderBy(u => u.CreatedBy.NameArabic) : q => q.OrderByDescending(u => u.CreatedBy.NameArabic);
+                }
+                else
+                {
+                    return sortAscending ? q => q.OrderBy(u => u.CreatedBy.NameEnglish) : q => q.OrderByDescending(u => u.CreatedBy.NameEnglish);
+                }
 
             case "UpdatedBy":
-                return sortAscending
-                    ? q => q.OrderBy(u => u.UpdatedBy!.NameEnglish)
-                    : q => q.OrderByDescending(u => u.UpdatedBy!.NameEnglish);
+                if (currentCulture == "ar")
+                {
+                    return sortAscending ? q => q.OrderBy(u => u.UpdatedBy!.NameArabic) : q => q.OrderByDescending(u => u.UpdatedBy!.NameArabic);
+                }
+                else
+                {
+                    return sortAscending ? q => q.OrderBy(u => u.UpdatedBy!.NameEnglish) : q => q.OrderByDescending(u => u.UpdatedBy!.NameEnglish);
+                }
 
             case "DepartmentParent":
                 if (currentCulture == "ar")

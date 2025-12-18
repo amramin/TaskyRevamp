@@ -91,7 +91,7 @@ namespace TaskyRevamp.Services.Users.Query
 					return sortAscending
 						? q => q.OrderBy(u => u.Email)
 						: q => q.OrderByDescending(u => u.Email);
-				case "Privilege":
+				case "PrivilegeName":
 					if (currentCulture == "ar")
 					{
 						return sortAscending
@@ -109,7 +109,7 @@ namespace TaskyRevamp.Services.Users.Query
 						? q => q.OrderBy(u => u.IsManager)
 						: q => q.OrderByDescending(u => u.IsManager);
 				default:
-					return q => q.OrderByDescending(u => u.IsManager);
+					return q => q.OrderBy(u => u.CreateDate);
 			}
 		}
 	}

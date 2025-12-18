@@ -33,6 +33,8 @@ builder.Services.AddScoped<CustomAuthenticationService>();
 builder.Services.AddScoped<PopupService>();
 builder.Services.AddScoped<ToastService>();
 builder.Services.AddSingleton<LoaderService>();
+builder.Services.Configure<MySettings>((builder.Configuration.GetSection("MySettings")));
+
 //builder.Services.AddAuthorizationCore();
 //Consumers
 builder.Services.AddTransient<AccountConsumer>();

@@ -34,4 +34,8 @@
 		<ProjectReference Include="..\TaskyRevamp.Services\TaskyRevamp.Services.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="Upload\" />
+	</ItemGroup>
+
 </Project>

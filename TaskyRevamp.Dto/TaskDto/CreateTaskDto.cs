@@ -21,20 +21,25 @@ public class CreateTaskDto
     public string? DescriptionEnglish { get; set; }
     public string? DescriptionArabic { get; set; }
     public string? Description => Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName == "ar" ? DescriptionArabic : DescriptionEnglish;
-	
+
     public DateTime StartDate { get; set; }
     public DateTime EndDate { get; set; }
-	public DateTime? ReminderDate { get; set; }
-	public DateTime? DeliveryDate { get; set; }
+    public DateTime? ReminderDate { get; set; }
+    public DateTime? DeliveryDate { get; set; }
 
-	public Guid TypeId { get; set; }
+    public Guid TypeId { get; set; }
     public Guid SourceId { get; set; }
     public Guid Priority { get; set; }
+    public Guid Photo { get; set; }
+    public string? Extention { get; set; }
 
+    public string? PhotoName { get; set; }
+    public string? PhotoBase64 { get; set; }
     public int weight { get; set; } = 0;
+    public int ActualProcess { get; set; } = 0;
+    //public int Duration = 0;//=> (EndDate.Date - StartDate.Date).Days + 1;
     public int ActualWeight { get; set; } = 0;
     public int Plannedweight { get; set; } = 0;
-    public int ActualProcess { get; set; }
     public int PlannedProgress { get; set; }
     public int Duration => (EndDate.Date - StartDate.Date).Days + 1;
 
@@ -45,11 +50,10 @@ public class CreateTaskDto
 
     public List<Guid> AssignedDepartmentIds { set; get; }
     public string? AssignedDepartmentName { set; get; }
-
-    public List<Guid> AssignedIds { set; get; }
+    public List<Guid>? AssignedIds { set; get; }
     public List<Guid>? Dependencies { set; get; }
 
-    public Guid CreatedBy { get; set; }
+    public Guid? CreatedBy { get; set; }
     public string? CreatedByName { get; set; }
     public DateTime? CreateDate { get; set; }
     public string? UpdatedBy { get; set; }

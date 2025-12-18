@@ -31,6 +31,7 @@ namespace TaskyRevamp.Services.Users.Command
 					user.PrivilegeId= request.PrivilegeId;
 					user.DepartmentId = request.DepartmentId;
 					user.IsActive = request.user.IsActive;
+					user.UpdatedById = request.user.UpdatedById;
 					await _userRepository.Update(user);
 					await _userRepository.SaveChangesAsync();
 				}

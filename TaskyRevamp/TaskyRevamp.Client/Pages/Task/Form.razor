@@ -16,23 +16,57 @@
 @inject ToastService ToastService
 @inject TaskConsumer _taskConsumer
 @inject TypeSettingConsumer _typeSettingConsumer
+@inject Microsoft.Extensions.Options.IOptions<MySettings> mySettings
 
 @inject DepartmentConsumer _departmentConsumer
 @inject AddTaskSettingConsumer _addTaskSettingConsumer
 @inject PrioritySettingConsumer _prioritySettingConsumer
 @inject SourceSettingConsumer _sourceSettingConsumer
-
+@inject TaskyService taskyService
 @inject UserConsumer _userConsumer
-<EditForm Model="@taskdto" EditContext="@editContext" OnValidSubmit="HandleValidSubmit"
-    OnInvalidSubmit="HandleInvalidSubmit">
+@if(x){
+@* <EditForm Model="@taskdto" EditContext="@editContext" OnValidSubmit="HandleValidSubmit"
+    OnInvalidSubmit="HandleInvalidSubmit"> *@
+
+
+    <EditForm EditContext="@editContext"
+              OnValidSubmit="HandleValidSubmit"
+              OnInvalidSubmit="HandleInvalidSubmit">
     <DataAnnotationsValidator />
     <ValidationSummary />
 
-    <div class="offcanvas-body overflow-hidden">
+        <div class="offcanvas-body ">
         @foreach (var column in AddTaskSettings.Where(c => c.IsActive).OrderBy(c => c.Order))
-        {
-            switch (column.NameEnglish)
+    {
+                <div @key="column.Id">
+            @switch (column.NameEnglish)
             {
+
+               case "File upload":
+                    <div class="mb-3">
+                        <label class="form-label">
+                            @Loc["file"]
+                            @if (column.IsMandatory)
+                            {
+                                <span class="text-danger"> *</span>
+                            }
+                        </label>
+                        <InputFile class="form-control" accept="image/*" OnChange="@LoadFile" @ref="inputFile"></InputFile>
+                        @if (!string.IsNullOrEmpty(taskdto.PhotoBase64))
+                        {
+                            <img class="img-48" src="data:image/png;base64,@taskdto.PhotoBase64" />
+                        }
+                        @* @if (PhotoIsRequired)
+                        {
+                            <div md="3">
+                                <label class="small text-danger"> @PhotoErroMessage</label>
+                            </div>
+                        } *@
+                    </div>
+
+                    break;
+
+
                 case "Title":
 
                     <div class="mb-3">
@@ -102,7 +136,7 @@
                             <div class="mb-2">
 
 
-                                <RichTextEditorComponent EditorId="RTE_English3" @ref="RichTextEditorComponentRefDescriptionEnglish"
+                                <RichTextEditorComponent EditorId="RTE_English3" @ref="RichTextEditorComponentRefDescriptionArabic"
                                     Content="@taskdto.DescriptionArabic" ContentChanged="OnContentDescriptionArabicChanged">
                                 </RichTextEditorComponent>
 
@@ -127,7 +161,7 @@
                             }
                         </label>
                         <SearchableSingleDropdownOffline TInput=TypeDto TOutput=Guid TextSelector="(TypeDto x) => x.DisplayedName"
-                            OutputSelector="x => x.Id" Datasource="taskTypeDtos" MinCharacterCount="1"
+                            OutputSelector="x => x.Id" @ref="typeref" Datasource="taskTypeDtos" MinCharacterCount="1"
                             @bind-SelectedOption="@taskdto.TypeId" PlaceHolder="@($"--{Loc["SelectType"]}--")" />
 
                     </div>
@@ -141,7 +175,7 @@
                         }
                     </label>
                     <div class="mb-3">
-                        <SearchableSingleDropdownOffline TInput=SourceDto TOutput=Guid
+                        <SearchableSingleDropdownOffline @ref="sourceref" TInput=SourceDto TOutput=Guid
                             TextSelector="(SourceDto x)=> x.DisplayedName" OutputSelector="x => x.Id" Datasource="taskSourceDtos"
                             MinCharacterCount="1" @bind-SelectedOption="@taskdto.SourceId"
                             PlaceHolder="@($"--{Loc["SelectSource"]}--")" />
@@ -208,7 +242,7 @@
                                 <span class="text-danger">*</span>
                             }
                         </label>
-                        <SearchableMultiDropdownOffline TInput=DepartmentDto TOutput="Guid" Datasource=departmentDtos
+                        <SearchableMultiDropdownOffline @ref="departRef" TInput=DepartmentDto TOutput="Guid" Datasource=departmentDtos
                             TextSelector=@(x=>x.NameEnglish) OutputSelector="x=> x.Id"
                             @bind-SelectedOptions=taskdto.AssignedDepartmentIds />
                     </div>
@@ -222,14 +256,14 @@
                                 <span class="text-danger">*</span>
                             }
                         </label>
-                        <SearchableMultiDropdownOffline TInput=CreateTaskDto TOutput="Guid" Datasource=allTaskDtos
+                        <SearchableMultiDropdownOffline  TInput=CreateTaskDto TOutput="Guid" Datasource=allTaskDtos
                             TextSelector=@(x=>x.Title) OutputSelector="x=> x.Id" @bind-SelectedOptions=taskdto.Dependencies />
                     </div>
                     break;
-                case "Assigned To":
+                        case "Assigned to":
                     <div class="mb-3">
                         <label class="form-label">
-                            @Loc["AssignedTo"]
+                            @Loc["AssignedTo"]vvv
                             @if (column.IsMandatory)
                             {
                                 <span class="text-danger">*</span>
@@ -341,7 +375,7 @@
                     break;
 
             }
-
+</div>
         }
     </div>
     <div class="offcanvas-footer">
@@ -356,7 +390,7 @@
     </div>
 
 </EditForm>
-
+}
 @code {
     [Parameter] public CreateTaskDto taskdto { set; get; }
 
@@ -366,6 +400,10 @@
     [Parameter] public string ButtonText { get; set; }
     public List<AddTaskSettingDto> AddTaskSettings { get; set; } = new List<AddTaskSettingDto>();
     private EditContext editContext;
+    SearchableSingleDropdownOffline<TypeDto, Guid> typeref{ set; get; }
+    SearchableSingleDropdownOffline<SourceDto, Guid> sourceref { set; get; }
+    
+    SearchableMultiDropdownOffline<DepartmentDto,Guid> departRef { set; get; }
     private ValidationMessageStore messageStore;
     private Dictionary<string, object?> formData = new();
     public List<PriorityDto> Priorities = new List<PriorityDto>();
@@ -376,10 +414,59 @@
     List<CreateTaskDto> allTaskDtos = new List<CreateTaskDto>();
     private RichTextEditorComponent RichTextEditorComponentRefComment;
     private RichTextEditorComponent RichTextEditorComponentRefDescriptionEnglish;
-
+    bool x;
     private RichTextEditorComponent RichTextEditorComponentRefDescriptionArabic;
-
+    long maxFileSize;
+    bool notvald;
     List<UserDto> userDtos = new List<UserDto>();
+    string ErroMessage;
+    string PhotoErroMessage;
+    string fileErroMessage;
+    private InputFile? inputFile;
+
+    private async Task LoadFile(InputFileChangeEventArgs args)
+    {
+
+        string base64String = "";
+
+        try
+        {
+
+            var file = args.GetMultipleFiles()[0];
+            //   const long maxSize = 25 * 1024 * 1024; // 25MB
+            var fileExtension = Path.GetExtension(file.Name).ToLower();
+
+            var validRes =  taskyService.ValidateUploadedFile(file, fileExtension, (int)UploadedFileType.Image);
+            notvald = validRes.NotValid;
+            if (notvald)
+            {
+                fileErroMessage = validRes.ValidationMessage;
+                StateHasChanged();
+                return;
+            }
+            taskdto.PhotoName = file.Name;
+            await using MemoryStream fs = new MemoryStream();
+            await file.OpenReadStream(maxFileSize).CopyToAsync(fs);
+            byte[] somBytes = GetBytes(fs);
+            base64String = Convert.ToBase64String(somBytes, 0, somBytes.Length);
+            taskdto.PhotoBase64 = base64String;
+            taskdto.Extention = fileExtension;
+        }
+
+        catch (Exception e)
+        {
+        }
+        //  string newFileName=Path.ChangeExtension
+    }
+
+    public static byte[] GetBytes(Stream stream)
+    {
+        var bytes = new byte[stream.Length];
+        stream.Seek(0, SeekOrigin.Begin);
+        stream.ReadAsync(bytes, 0, bytes.Length);
+        stream.Dispose();
+        return bytes;
+    }
     private void OnContentChanged(string html)
     {
         taskdto.Content = html;
@@ -394,36 +481,77 @@
     }
     protected async override Task OnInitializedAsync()
     {
+        editContext = new EditContext(taskdto);
+        maxFileSize = mySettings.Value.MaxFileSize;
 
-        var res = await _addTaskSettingConsumer.GetAddTaskSettings();
-        if (res.Success)
+        // var res = await _addTaskSettingConsumer.GetAddTaskSettings();
+        // if (res.Success)
+        // {
+        //     var settings = res.Data;
+        //     if (settings != null)
+        //     {
+        //         AddTaskSettings = settings;
+        //     }
+
+        // }
+        // var typs = await _typeSettingConsumer.GetTaskTypesForDDL();
+        // taskTypeDtos = typs.Data;
+        // var sorce = await _sourceSettingConsumer.GetTaskSourcesForDDL();
+        // taskSourceDtos = sorce.Data;
+        // var users = await _userConsumer.GetUsers();
+        // userDtos = users.Data;
+        // var departs = await _departmentConsumer.GetDepartmentsForDDL();
+        // departmentDtos = departs.Data;
+        // var tsks = await _taskConsumer.GetTasksForDDL();
+
+        // allTaskDtos = tsks.Data;
+        // var ress = await _prioritySettingConsumer.GetPriorities();
+        // if (ress.Success && ress.Data != null)
+        // {
+        //     Priorities = ress.Data;
+        // }
+        var addTaskSettingsTask = _addTaskSettingConsumer.GetAddTaskSettings();
+        var taskTypesTask = _typeSettingConsumer.GetTaskTypesForDDL();
+        var taskSourcesTask = _sourceSettingConsumer.GetTaskSourcesForDDL();
+        var usersTask = _userConsumer.GetUsers();
+        var departmentsTask = _departmentConsumer.GetDepartmentsForDDL();
+        var tasksTask = _taskConsumer.GetTasksForDDL();
+        var prioritiesTask = _prioritySettingConsumer.GetPriorities();
+
+        // Run all in parallel
+        await Task.WhenAll(
+            addTaskSettingsTask,
+            taskTypesTask,
+            taskSourcesTask,
+            usersTask,
+            departmentsTask,
+            tasksTask,
+            prioritiesTask
+        );
+
+        // Read results safely
+        var addTaskSettingsRes = await addTaskSettingsTask;
+        if (addTaskSettingsRes.Success && addTaskSettingsRes.Data != null)
         {
-            var settings = res.Data;
-            if (settings != null)
-            {
-                AddTaskSettings = settings;
-            }
-
+            AddTaskSettings = addTaskSettingsRes.Data;
         }
-        var typs = await _typeSettingConsumer.GetTaskTypesForDDL();
-        taskTypeDtos = typs.Data;
-        var sorce = await _sourceSettingConsumer.GetTaskSourcesForDDL();
-        taskSourceDtos = sorce.Data;
-        var users = await _userConsumer.GetUsers();
-        userDtos = users.Data;
-        var departs = await _departmentConsumer.GetDepartmentsForDDL();
-        departmentDtos = departs.Data;
-        var tsks = await _taskConsumer.GetTasksForDDL();
 
-        allTaskDtos = tsks.Data;
-        var ress = await _prioritySettingConsumer.GetPriorities();
-        if (ress.Success && ress.Data != null)
+        taskTypeDtos = (await taskTypesTask).Data;
+        taskSourceDtos = (await taskSourcesTask).Data;
+        userDtos = (await usersTask).Data;
+        departmentDtos = (await departmentsTask).Data;
+        allTaskDtos = (await tasksTask).Data;
+
+        var prioritiesRes = await prioritiesTask;
+        if (prioritiesRes.Success && prioritiesRes.Data != null)
         {
-            Priorities = ress.Data;
+            Priorities = prioritiesRes.Data;
         }
+
         taskdto.StartDate = taskdto.StartDate == default ? DateTime.Now : taskdto.StartDate;
         taskdto.EndDate = taskdto.EndDate == default ? DateTime.Now : taskdto.EndDate;
         taskdto.ReminderDate = taskdto.ReminderDate == default ? DateTime.Now : taskdto.ReminderDate;
+        x = true;
         StateHasChanged();
 
     }
