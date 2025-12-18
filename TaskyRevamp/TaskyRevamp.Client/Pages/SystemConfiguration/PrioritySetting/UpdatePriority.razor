@@ -15,32 +15,22 @@
 
     <PriorityForm 
         @ref="form"
-        Priority="@_priority"
+              Priority="@Priority"
         OnValidSubmit="@Save"
         SubmitButtonText="Save"
         OnCancel="@Cancel"/>
 
 
 @code {
-    [Parameter] public Guid Id { get; set; }
+    [Parameter] public PriorityDto Priority { get; set; }
     [Parameter] public EventCallback<PriorityDto> OnValidSubmit { get; set; }
     [Parameter] public EventCallback OnCancel { get; set; }
     private PriorityDto _priority = new PriorityDto();
     private PriorityForm form;
 
-    protected override async Task OnInitializedAsync()
-    {
-
-        var res = await _prioritySettingConsumer.GetPriorityById(Id);
-        if(res.Success && res != null && res.Data != null)
-        {
-            _priority = res.Data;
-        }
-
-    }
     private async Task Save(EditContext editContext)
     {
-        var res = await _prioritySettingConsumer.UpdatePriority(_priority);
+        var res = await _prioritySettingConsumer.UpdatePriority(Priority);
         if (res.Errors != null && res.Errors.Count > 0)
         {
             form.AddErrorsToEditContext(res.Errors);
@@ -49,18 +39,16 @@
         {
             if (res.Success)
             {
-                await OnValidSubmit.InvokeAsync(_priority);
                 await ToastService.ShowToastAsync(Loc["EditSuccess"], "success");
                 PopupService.Hide();
-
                 if (OnValidSubmit.HasDelegate)
-                    await OnValidSubmit.InvokeAsync(_priority);
+                    await OnValidSubmit.InvokeAsync(Priority);
             }
         }
     }
 
 
-    private async Task Cancel()
+    private void Cancel()
     {
         PopupService.Hide();
     }

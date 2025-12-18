@@ -133,10 +133,10 @@ namespace TaskyRevamp.Services.Helpers
                 //    searchText == "0")
                 //    return Expression.Equal(member, Expression.Constant(false));
 				var normalized = searchText.Replace(" ","").Trim().ToLower();
-				if (normalized == "yes" || normalized == "active" || normalized == "1" || normalized == "نشط")
+				if (normalized == "yes" || normalized == "active" || normalized == "1" || normalized == "نشط" || normalized == "نعم")
 					return Expression.Equal(member, Expression.Constant(true));
 
-				if (normalized == "no" || normalized == "inactive" || normalized == "0" || normalized == "غيرنشط")
+				if (normalized == "no" || normalized == "inactive" || normalized == "0" || normalized == "غيرنشط" || normalized == "لا")
 					return Expression.Equal(member, Expression.Constant(false));
 				return null;
             }

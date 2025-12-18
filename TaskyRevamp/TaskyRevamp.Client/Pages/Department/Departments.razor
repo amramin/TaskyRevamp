@@ -520,7 +520,7 @@ new() { Field = "Action", DisplayName = Loc["Action"] ,IsSortable = false},
             await ToastService.ShowToastAsync(Loc["DepartmentHasUsersCannotDelete"], "error");
             return;
         }
-        PopupService.ShowConfirmation(@Loc["SureDeleteDepartment"], @Loc["Confirm"],
+        PopupService.ShowConfirmation(@Loc["Sure"], @Loc["Confirm"],
         async (confirmed) =>
         {
             if (confirmed)
