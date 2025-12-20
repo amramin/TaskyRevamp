@@ -124,6 +124,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add the department&apos;s structure.
+        /// </summary>
+        public static string Add_the_department_s_structure {
+            get {
+                return ResourceManager.GetString("Add the department\'s structure", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add user.
         /// </summary>
         public static string Add_user {
@@ -174,6 +183,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string AddANewUserToGetStarted {
             get {
                 return ResourceManager.GetString("AddANewUserToGetStarted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add attachment.
+        /// </summary>
+        public static string AddAttachment {
+            get {
+                return ResourceManager.GetString("AddAttachment", resourceCulture);
             }
         }
         
@@ -372,6 +390,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string AssigneduserNames {
             get {
                 return ResourceManager.GetString("AssigneduserNames", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Attachments.
+        /// </summary>
+        public static string Attachments {
+            get {
+                return ResourceManager.GetString("Attachments", resourceCulture);
             }
         }
         
@@ -750,6 +777,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string DepartmentMandatory {
             get {
                 return ResourceManager.GetString("DepartmentMandatory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to  Department Name (Mandatory).
+        /// </summary>
+        public static string DepartmentNameMandatory {
+            get {
+                return ResourceManager.GetString("DepartmentNameMandatory", resourceCulture);
             }
         }
         
@@ -1168,6 +1204,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to File size exceeds the limit.
+        /// </summary>
+        public static string FileSizeExceedsLimit {
+            get {
+                return ResourceManager.GetString("FileSizeExceedsLimit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The file is adding successfully .
         /// </summary>
         public static string filesSuccess {
@@ -1537,6 +1582,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Max size.
+        /// </summary>
+        public static string MaxSize {
+            get {
+                return ResourceManager.GetString("MaxSize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Module.
         /// </summary>
         public static string Module {
@@ -1636,6 +1690,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No attachments have been added.
+        /// </summary>
+        public static string NoAttachmentsYet {
+            get {
+                return ResourceManager.GetString("NoAttachmentsYet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No delegations available.
         /// </summary>
         public static string NoDelegationvailable {
@@ -1645,7 +1708,7 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to  No department available add a new department to get started.
+        ///   Looks up a localized string similar to  No department available .
         /// </summary>
         public static string Nodepartmentavailable {
             get {
@@ -1785,6 +1848,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string Order {
             get {
                 return ResourceManager.GetString("Order", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to  Parent Department Name (Mandatory).
+        /// </summary>
+        public static string ParentDepartmentNameMandatory {
+            get {
+                return ResourceManager.GetString("ParentDepartmentNameMandatory", resourceCulture);
             }
         }
         
@@ -2356,7 +2428,7 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Subtask levels.
+        ///   Looks up a localized string similar to Subtask level.
         /// </summary>
         public static string Subtask_Levels {
             get {
@@ -2370,6 +2442,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string Sunday {
             get {
                 return ResourceManager.GetString("Sunday", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Supported files.
+        /// </summary>
+        public static string SupportedTypes {
+            get {
+                return ResourceManager.GetString("SupportedTypes", resourceCulture);
             }
         }
         
@@ -2694,6 +2775,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string TypeSure {
             get {
                 return ResourceManager.GetString("TypeSure", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File type is not supported.
+        /// </summary>
+        public static string UnsupportedFileType {
+            get {
+                return ResourceManager.GetString("UnsupportedFileType", resourceCulture);
             }
         }
         

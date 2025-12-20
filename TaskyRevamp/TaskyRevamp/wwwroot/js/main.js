@@ -170,3 +170,105 @@ window.saveFileFromBytes = (fileName, bytesBase64) => {
     link.click();
     document.body.removeChild(link);
 };
+
+window.previewFileFromBytes = (fileName, base64Content, contentType) => {
+    const byteCharacters = atob(base64Content);
+    const byteNumbers = new Array(byteCharacters.length);
+    for (let i = 0; i < byteCharacters.length; i++) {
+        byteNumbers[i] = byteCharacters.charCodeAt(i);
+    }
+    const byteArray = new Uint8Array(byteNumbers);
+    const blob = new Blob([byteArray], { type: contentType });
+    const blobUrl = URL.createObjectURL(blob);
+    const newWindow = window.open("", "_blank");
+    if (newWindow) {
+        newWindow.document.title = fileName;
+        newWindow.document.head.innerHTML = `
+            <style>
+                body { margin: 0; padding: 0; font-family: Arial, sans-serif; }
+                pre { padding: 20px; white-space: pre-wrap; word-wrap: break-word; }
+                embed, iframe { border: none; }
+            </style>
+        `;
+        if (contentType === "application/pdf") {
+            // PDF files
+            const embed = newWindow.document.createElement("embed");
+            embed.src = blobUrl;
+            embed.type = contentType;
+            embed.width = "100%";
+            embed.height = "100%";
+            newWindow.document.body.appendChild(embed);
+        } else if (contentType.startsWith("image/")) {
+            // Image files
+            newWindow.document.body.style.display = "flex";
+            newWindow.document.body.style.justifyContent = "center";
+            newWindow.document.body.style.alignItems = "center";
+            const img = newWindow.document.createElement("img");
+            img.src = blobUrl;
+            img.style.maxWidth = "100%";
+            img.style.maxHeight = "100vh";
+            img.style.objectFit = "contain";
+            newWindow.document.body.appendChild(img);
+        } else if (contentType.startsWith("text/") ||
+            contentType === "application/json" ||
+            contentType === "application/xml") {
+            const pre = newWindow.document.createElement("pre");
+            const reader = new FileReader();
+            reader.onload = () => {
+                pre.textContent = reader.result;
+            };
+            reader.readAsText(blob);
+            newWindow.document.body.appendChild(pre);
+        } else 
+            newWindow.document.body.innerHTML = `
+                <div style="padding: 40px; text-align: center;">
+                    <h2>Cannot preview this file type</h2>
+                    <p>${fileName}</p>
+                </div>
+            `;
+        }
+        newWindow.addEventListener('unload', () => {
+            URL.revokeObjectURL(blobUrl);
+        });
+};
+
+window.fileService = {
+    initDropZone: function (dropZoneId, inputFileId) {
+        const dropZone = document.getElementById(dropZoneId);
+        const inputFile = document.getElementById(inputFileId);
+        if (!dropZone || !inputFile) {
+            console.error('Drop zone or input file not found');
+            return;
+        }
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            dropZone.addEventListener(eventName, function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }, false);
+        });
+        dropZone.addEventListener('dragenter', function () {
+            dropZone.classList.add('border-primary', 'bg-light');
+        });
+        dropZone.addEventListener('dragover', function () {
+            dropZone.classList.add('border-primary', 'bg-light');
+        });
+        dropZone.addEventListener('dragleave', function (e) {
+            if (!dropZone.contains(e.relatedTarget)) {
+                dropZone.classList.remove('border-primary', 'bg-light');
+            }
+        });
+        dropZone.addEventListener('drop', function (e) {
+            dropZone.classList.remove('border-primary', 'bg-light');
+            const files = e.dataTransfer.files;
+            if (files && files.length > 0) {
+                const dataTransfer = new DataTransfer();
+                for (let i = 0; i < files.length; i++) {
+                    dataTransfer.items.add(files[i]);
+                }
+                inputFile.files = dataTransfer.files;
+                const event = new Event('change', { bubbles: true });
+                inputFile.dispatchEvent(event);
+            }
+        });
+    }
+};

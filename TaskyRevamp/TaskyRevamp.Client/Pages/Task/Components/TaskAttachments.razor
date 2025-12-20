@@ -1,7 +1,7 @@
 ﻿@using TaskyRevamp.Client.Consumer
 @using TaskyRevamp.Client.Services
 @using TaskyRevamp.Dto.TaskAttachment
-@inject TaskyService taskyService
+@inject FileManagementService _fileManagementService
 @inject TaskAttachmentConsumer _taskAttachmentConsumer
 @inject PopupService PopupService
 @inject ToastService ToastService
@@ -9,85 +9,91 @@
 
 <div class="card">
     <div class="card-body">
-        <h5 class="card-title mb-4">Attachments</h5>
+        <h5 class="card-title mb-4">@Loc["Attachments"]</h5>
 
-        <div class="border border-2 border-dashed rounded p-5 text-center mb-4" 
-             style="background-color: #f8f9fa;"
-             @ondrop="HandleDrop"
-             @ondragover="HandleDragOver"
-             @ondragenter="HandleDragEnter"
-             @ondragleave="HandleDragLeave">
-            <button class="btn btn-link text-secondary p-1">
-                <span class="icon">
-                    <SVGCrud SVGType="SVGCrud.SVGTypeEnum.ArrowUp"></SVGCrud>
-                </span>
-            </button>
-            <p class="mb-2">
-                Drag and drop files here, or 
+        <div id="dropZone" class="border border-2 border-dashed rounded p-5 text-center mb-4" style="background-color: #f8f9fa;">
+                <p class="mb-2">
+                Drag and Drop or,
                 <label for="fileInput" class="text-primary" style="cursor: pointer; text-decoration: underline;">
-                    Choose files
-                </label>
-            </p>
-            <InputFile id="fileInput" 
-                       OnChange="HandleFileSelected" 
-                       multiple 
-                       class="d-none" 
-                       accept="*/*" />
-            <small class="text-muted">Max size: 50MB</small>
+                    @Loc["AddAttachment"]
+                    </label>
+                </p>
+                <InputFile id="fileInput"
+                           OnChange="HandleFileSelected"
+                           multiple 
+                           class="d-none" 
+                           accept=".pdf,.docx,.doc,.ppt,.pptx,.jpeg,.jpg,.png,.txt,.csv,.json,.xml" />
+            <div class="mt-3">
+                <small class="text-muted d-block mb-1">
+                    <i class="bi bi-info-circle me-1"></i>
+                    @Loc["MaxSize"]: <strong>50 MB</strong>
+                </small>
+                <small class="text-muted">
+                    <i class="bi bi-file-earmark me-1"></i>
+                    @Loc["SupportedTypes"]: PDF, DOCX, DOC, PPT, PPTX, JPEG, PNG, TXT, CSV, JSON, XML
+                </small>
+            </div>
         </div>
 
         @if (isUploading)
         {
-            <div class="alert alert-info d-flex align-items-center mb-4" role="alert">
+            <div class="d-flex align-items-center mb-4" role="alert">
                 <div class="spinner-border spinner-border-sm me-2" role="status">
-                    <span class="visually-hidden">Uploading...</span>
                 </div>
-                <div>Uploading @uploadingFileName...</div>
             </div>
         }
-
-        <h6 class="mb-3">Uploads</h6>
-        
         @if (!attachmentsDto.Any())
         {
             <div class="text-center text-muted py-4">
-                <i class="bi bi-paperclip fs-3 d-block mb-2"></i>
-                <p class="mb-0">No attachments yet</p>
+                <p class="mb-0">@Loc["NoAttachmentsYet"]</p>
             </div>
         }
         else
         {
+            <h6 class="mb-3">@Loc["Uploads"]</h6>
             <div class="list-group">
                 @foreach (var attachment in attachmentsDto)
                 {
                     <div class="list-group-item d-flex align-items-center gap-3 py-3">
                         <!-- File Icon -->
                         <div class="flex-shrink-0">
-                            @attachment.AttachmentDto.FileName
+                             <i class="@GetFileIcon(attachment.AttachmentDto.FileName) fs-2"></i>
                         </div>
 
                         <!-- File Info -->
                         <div class="flex-grow-1">
-                            <h6 class="mb-1">@attachment.AttachmentDto.FileName</h6>
+                           <h6 class="mb-1">@attachment.AttachmentDto.FileName</h6>
                             <small class="text-muted">
-                                Add by: @attachment.CreatedByName
+                                @Loc["CreatedBy"]: @attachment.CreatedByName
                                 <span class="mx-1">•</span>
-                                @attachment.AttachmentDto.CreateDate.ToString("MM/dd/yyyy")
+                                @GetFileSize(attachment.AttachmentDto.Size)
+                                <span class="mx-1">•</span>
+                                @attachment.AttachmentDto.CreateDate.ToString(Loc["LocalizeDate"])
                             </small>
+
                         </div>
 
                         <!-- Actions -->
                         <div class="d-flex gap-2">
+                            @if(_fileManagementService.CanPreview(attachment.AttachmentDto.FileName)){
+                                <button class="btn btn-link text-primary p-1"
+                                        @onclick="() => PreviewFile(attachment.AttachmentDto)"
+                                        title="@Loc["Preview"]">
+                                    <span class="icon">
+                                        <SVGCrud SVGType="SVGCrud.SVGTypeEnum.OpenEye"></SVGCrud>
+                                    </span>
+                                </button>
+                            }
                             <button class="btn btn-link text-secondary p-1" 
                                     @onclick="() => DownloadFile(attachment.AttachmentDto)"
-                                    title="Download">
+                                    title="@Loc["Download"]">
                                 <span class="icon">
                                     <SVGCrud SVGType="SVGCrud.SVGTypeEnum.ArrowDown"></SVGCrud>
                                 </span>
                             </button>
                             <button class="btn btn-link text-danger p-1" 
                                     @onclick="() => DeleteFile(attachment)"
-                                    title="Delete">
+                                    title="@Loc["Delete"]">
                                 <span class="icon">
                                     <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Reject"></SVGCrud>
                                 </span>
@@ -103,54 +109,52 @@
 @code {
     [Parameter] public Guid TaskId { get; set; }
     [Parameter] public EventCallback OnAttachmentChanged { get; set; }
-    private IBrowserFile? fileInput;
     private List<AttachmentWithNameDto> attachmentsDto = new List<AttachmentWithNameDto>();
     private bool isUploading = false;
-    private string uploadingFileName = string.Empty;
     private const long MaxFileSize = 50 * 1024 * 1024; // 50MB
     private bool showConfirm;
     private AttachmentWithNameDto? selectedAttachment;
+    private bool isDragging = false;
 
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await _fileManagementService.InitDropZone("dropZone","fileInput");
+        }
+    }
     protected override async Task OnInitializedAsync()
     {
         await LoadAttachments();
     }
-
     private async Task LoadAttachments()
     {
         var res = await _taskAttachmentConsumer.GetTaskAttachments(TaskId);
         if(res.Success && res.Data != null)
         {
             attachmentsDto = res.Data;
+            StateHasChanged();
         }
-    }
-    private void HandleDrop(DragEventArgs args)
-    {
-        throw new NotImplementedException();
-    }
-    private void HandleDragOver(DragEventArgs args)
-    {
-        throw new NotImplementedException();
-    }
-    private void HandleDragEnter(DragEventArgs args)
-    {
-        throw new NotImplementedException();
-    }
-    private void HandleDragLeave(DragEventArgs args)
-    {
-        throw new NotImplementedException();
     }
     private async Task HandleFileSelected(InputFileChangeEventArgs args)
     {
         var files = args.GetMultipleFiles().ToList();
         await UploadFiles(files);
     }
-    private async Task UploadFiles(List<IBrowserFile> files)
+    private async Task UploadFiles(IEnumerable<IBrowserFile> files)
     {
         var attachmentDtos = new List<AttachmentDto>();
         foreach (var file in files)
         {
-            var (bytes, name, type) = await taskyService.ReadFileAsync(file);
+            isUploading = true;
+            var validationRes = _fileManagementService.ValidateAttachment(file, MaxFileSize);
+            if (validationRes.NotValid)
+            {
+                await ToastService.ShowToastAsync(validationRes.ValidationMessage, "error");
+                isUploading = false;
+                return;
+            }
+            var (bytes, name, type) = await _fileManagementService.ReadFileAsync(file);
             if (bytes != null)
             {
                 attachmentDtos.Add(new AttachmentDto
@@ -167,7 +171,6 @@
             if (OnAttachmentChanged.HasDelegate)
                 await OnAttachmentChanged.InvokeAsync(null);
         }
-
         isUploading = false;
         StateHasChanged();
     }
@@ -178,7 +181,18 @@
         {
             var content = res.Data;
             if (content != null) 
-                await taskyService.DownloadFile(content, attachment.FileName);
+                await _fileManagementService.DownloadFile(content, attachment.FileName);
+        }
+        
+    }
+    private async Task PreviewFile(AttachmentDto attachment)
+    {
+        if (!_fileManagementService.CanPreview(attachment.FileName)) return;
+        var res = await _taskAttachmentConsumer.GetAttachmentInfo(attachment.Id);
+        if (res.Success && res.Data != null)
+        {
+            var contentType = _fileManagementService.GetMimeType(attachment.FileName);
+            await _fileManagementService.PreviewFile(res.Data, attachment.FileName, contentType);
         }
         
     }
@@ -203,5 +217,6 @@
         }
         selectedAttachment = null;
     }
-
+    private string GetFileIcon(string fileName) => _fileManagementService.GetFileIcon(fileName);
+    private string GetFileSize(long bytes) => _fileManagementService.GetFileSize(bytes);
 }

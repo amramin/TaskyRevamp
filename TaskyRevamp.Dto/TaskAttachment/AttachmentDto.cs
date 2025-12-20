@@ -12,7 +12,7 @@ namespace TaskyRevamp.Dto.TaskAttachment
 		public Guid TaskAttachmentId { get; set; }
 		public string FileName { get; set; }
 		public byte[] Content { get; set; }
-		public long Size => Content?.LongLength ?? 0;
+		public long Size { get; set; }
 		public Guid CreatedById { get; set; }
 		public DateTime CreateDate { get; set; }
 

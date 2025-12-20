@@ -1,3 +1,4 @@
+using System.Drawing;
 using TaskyRevamp.Domain.Interfaces;
 using TaskyRevamp.Domain.Models.Users;
 using TaskyRevamp.Dto.TaskAttachment;
@@ -8,7 +9,7 @@ public class Attachment : Entity, IHasCreationMetaData
 {
     public string FileName { get; private set; }
     public byte[] Content { get; private set; }
-    public long Size => Content.LongLength;
+    public long Size { get; private set; }
 	public Guid TaskAttachmentId { get; set; }
 	public TaskAttachments TaskAttachment { get; set; }
 	public Guid CreatedById { get; set; }
@@ -22,7 +23,8 @@ public class Attachment : Entity, IHasCreationMetaData
         FileName = fileName;
         Content = content;
         TaskAttachmentId = taskAttachmentId;
-    }
+        Size = content?.LongLength ?? 0;
+	}
 
     public AttachmentDto CopyToDto()
     {
@@ -32,6 +34,7 @@ public class Attachment : Entity, IHasCreationMetaData
             TaskAttachmentId = TaskAttachmentId,
             FileName = FileName,
             Content = Content,
+            Size = Size,
             CreatedById = CreatedById,
             CreateDate = CreateDate
         };

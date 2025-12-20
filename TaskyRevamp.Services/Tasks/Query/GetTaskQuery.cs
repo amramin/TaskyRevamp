@@ -36,10 +36,10 @@ public class GetTaskByIdHandler : IRequestHandler<GetTaskQuery, CreateTaskDto>
         {
             throw new Exception("Task not found");
         }
-		if (request.currentUserId != Guid.Empty && request.currentUserId != res.CreatedById)
-		{
-			await TrackTaskView(request.Id, request.currentUserId);
-		}
+		//if (request.currentUserId != Guid.Empty && request.currentUserId != res.CreatedById)
+		//{
+		//	await TrackTaskView(request.Id, request.currentUserId);
+		//}
 		var taskDto = res.CopyToDto();
 		taskDto.TypeName = currentCulture == "ar" ? res.Type?.NameArabic : res.Type?.NameEnglish;
 		taskDto.SourceName = currentCulture == "ar" ? res.Source?.NameArabic : res.Source?.NameEnglish;
@@ -80,23 +80,23 @@ public class GetTaskByIdHandler : IRequestHandler<GetTaskQuery, CreateTaskDto>
 		if (res.Dependencies != null)
 			taskDto.Dependencies = res.Dependencies is TaskDependencies td? td.Items.Select(i => i.Id).ToList(): taskDto.Dependencies;
 
-		if (request.currentUserId != Guid.Empty && request.currentUserId == res.CreatedById)
-		{
-			var taskViews = await _taskViewsRepository.FindBy(tv => tv.TaskItemId == request.Id, $"{nameof(TaskViews.User)}");
-			if (taskViews.Success && taskViews.Value != null)
-			{
-				taskDto.ViewdByNames = taskViews.Value
-					.Select(tv => new TaskViewsDto
-					{
-						Id = tv.Id,
-						TaskItemId = tv.TaskItemId,
-						UserId = tv.UserId,
-						ViewdAt = tv.ViewedAt,
-						FullName = currentCulture == "ar"? (tv.User.NameArabic ?? tv.User.NameEnglish): (tv.User.NameEnglish ?? tv.User.NameArabic),
-						IsActive = tv.User.IsActive
-					}).OrderByDescending(v => v.ViewdAt).ToList();
-			}
-		}
+		//if (request.currentUserId != Guid.Empty && request.currentUserId == res.CreatedById)
+		//{
+		//	var taskViews = await _taskViewsRepository.FindBy(tv => tv.TaskItemId == request.Id, $"{nameof(TaskViews.User)}");
+		//	if (taskViews.Success && taskViews.Value != null)
+		//	{
+		//		taskDto.ViewdByNames = taskViews.Value
+		//			.Select(tv => new TaskViewsDto
+		//			{
+		//				Id = tv.Id,
+		//				TaskItemId = tv.TaskItemId,
+		//				UserId = tv.UserId,
+		//				ViewdAt = tv.ViewedAt,
+		//				FullName = currentCulture == "ar"? (tv.User.NameArabic ?? tv.User.NameEnglish): (tv.User.NameEnglish ?? tv.User.NameArabic),
+		//				IsActive = tv.User.IsActive
+		//			}).OrderByDescending(v => v.ViewdAt).ToList();
+		//	}
+		//}
 		return taskDto;
     }
 	private async Task TrackTaskView(Guid taskId, Guid userId)
