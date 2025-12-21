@@ -19,7 +19,7 @@ namespace TaskyRevamp.Domain.Models.Permissions.GeneralModule
 		public bool IsAdd { get; set; }
 		public bool IsDelete { get; set; }
 		public List<int>? DelegationFromUser { get; set; }
-		public DelegationToUser? DelegationToUser { get; set; }
+		public List<int>? DelegationToUser { get; set; }
 		public List<Guid>? DelegationFromUserDepartments { get; set; }
 		public List<Guid>? DelegationToUserDepartments { get; set; }
 
@@ -27,7 +27,7 @@ namespace TaskyRevamp.Domain.Models.Permissions.GeneralModule
 		{
 
 		}
-		public GeneralModulePermission(bool isView, bool isEdit,bool isAdd, bool isDelete, List<int> delegationFromUser, DelegationToUser delegationToUser, List<Guid>? delegationFromUserDepartments, List<Guid>? delegationToUserDepartments)
+		public GeneralModulePermission(bool isView, bool isEdit,bool isAdd, bool isDelete, List<int> delegationFromUser, List<int> delegationToUser, List<Guid>? delegationFromUserDepartments, List<Guid>? delegationToUserDepartments)
 		{
 			IsView = isView;
 			IsAdd = isAdd;

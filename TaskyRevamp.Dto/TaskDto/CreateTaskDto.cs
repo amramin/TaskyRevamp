@@ -26,7 +26,7 @@ public class CreateTaskDto
     public DateTime EndDate { get; set; }
     public DateTime? ReminderDate { get; set; }
     public DateTime? DeliveryDate { get; set; }
-
+    public string Createdbydepartment { get; set; } = string.Empty;
     public Guid TypeId { get; set; }
     public Guid SourceId { get; set; }
     public Guid Priority { get; set; }

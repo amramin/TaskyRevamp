@@ -5,10 +5,12 @@
 
 @using TaskyRevamp.Client.Services
 @using TaskyRevamp.Dto;
+@using TaskyRevamp.Dto.GeneralDto
 @using TaskyRevamp.Dto.TaskDto
 @inject IStringLocalizer<SharedResources> Loc
 @inject ToastService ToastService
 @inject TaskConsumer _taskonsumer
+@inject NavigationManager navigationManager
 
 @inject IStringLocalizer<SharedResources> Loc
 
@@ -34,8 +36,13 @@
         var current = await LocalStorageService.GetItemAsStringAsync("Id");
         Taskdto.CreatedBy = Guid.Parse(current);
         await _taskonsumer.AddTask(Taskdto);
+        //await ToastService.ShowToastAsync(Loc[MessagesMap.DataSavedSuccessfully], "success");
+      
+         ToastService.ShowToastAsync(Loc["DataSavedSuccessfully"], "success");
 
-        await OnValidSubmit.InvokeAsync(Taskdto);
+        navigationManager.NavigateTo($"/MainTasks",true);
+
+        //await OnValidSubmit.InvokeAsync(Taskdto);
      }
       
     }

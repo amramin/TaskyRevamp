@@ -183,7 +183,7 @@
                     </div>
                     break;
 
-                case "Start Date":
+                case "Start date":
                     <div class="mb-3">
                         <label class="form-label" for="fromDate">
                             @Loc["FromDate"]
@@ -201,7 +201,7 @@
                     break;
 
 
-                case " Reminder Date":
+                case "Reminder date":
                     <div class="mb-3">
                         <label class="form-label" for="fromDate">
                             @Loc["ReminderDate"]
@@ -217,7 +217,7 @@
                         <ValidationMessage class="small text-danger" For="@(() => taskdto.ReminderDate)" />
                     </div>
                     break;
-                case "End Date":
+                case "End date":
                     <div class="mb-3">
                         <label class="form-label" for="toDate">
                             @Loc["ToDate"]
@@ -247,7 +247,7 @@
                             @bind-SelectedOptions=taskdto.AssignedDepartmentIds />
                     </div>
                     break;
-                case "Dependency ":
+                case "Dependency":
                     <div class="mb-3">
                         <label class="form-label">
                             @Loc["Dependency"]
@@ -263,7 +263,7 @@
                         case "Assigned to":
                     <div class="mb-3">
                         <label class="form-label">
-                            @Loc["AssignedTo"]vvv
+                            @Loc["AssignedTo"]
                             @if (column.IsMandatory)
                             {
                                 <span class="text-danger">*</span>
@@ -349,7 +349,7 @@
 
 
 
-                case "Actual Progress":
+                case "Actual progress":
                     <div class="mb-3">
                         <label class="form-label" for="maxLength">
                             @Loc["ActualProgress"]
@@ -436,11 +436,13 @@
             //   const long maxSize = 25 * 1024 * 1024; // 25MB
             var fileExtension = Path.GetExtension(file.Name).ToLower();
 
-            var validRes =  taskyService.ValidateUploadedFile(file, fileExtension, (int)UploadedFileType.Image);
+            var validRes =  taskyService.ValidateUploadedFile(file, fileExtension);
             notvald = validRes.NotValid;
             if (notvald)
             {
                 fileErroMessage = validRes.ValidationMessage;
+                ToastService.ShowToastAsync(fileErroMessage, "error");
+
                 StateHasChanged();
                 return;
             }

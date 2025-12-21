@@ -1,4 +1,5 @@
-﻿using TaskyRevamp.Dto.Enums.SearchFields;
+﻿using DocumentFormat.OpenXml.Office2010.Excel;
+using TaskyRevamp.Dto.Enums.SearchFields;
 using TaskyRevamp.Dto.GeneralDto;
 using TaskyRevamp.Dto.SystemConfiguration;
 using TaskyRevamp.Dto.TaskDto;
@@ -53,6 +54,20 @@ namespace TaskyRevamp.Client.Consumer
             var res = await _taskyService.PostJsonAsync<CommonApiResponse<Guid>>(url, CreateTaskDto);
 
             return res.Data;
+        }
+        public async Task<CommonApiResponse<bool>> CompleteTask(Guid TaskId)
+        {
+            var url = $"api/Task/CompleteTask/{TaskId}";
+            var res = await _taskyService.GetFromJsonAsync<CommonApiResponse<bool>>(url);
+
+            return res;
+        }
+        public async Task<CommonApiResponse<bool>> ReopenTask(Guid TaskId)
+        {
+            var url = $"api/Task/ReopenTask/{TaskId}";
+            var res =await _taskyService.GetFromJsonAsync<CommonApiResponse<bool>>(url);
+
+            return res;
         }
         public async Task<CommonApiResponse<bool>> UpdateTasksDepartment(Guid oldId, Guid newId)
         {

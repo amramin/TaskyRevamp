@@ -60,7 +60,9 @@ public class GetTasksHandler : IRequestHandler<GetTasksQuery, PagedResult<Create
         foreach (var tsk in res.Items)
         {
             var assgnedusr = await _userRepository.FindBy(k => tsk.AssignedIds.Contains(k.Id));
-
+            var CreatorDepartment =  _departmenRepository.FirstOrDefaultAsNoTracking(k => k.Id == (tsk.CreatedBy.DepartmentId??Guid.Empty));
+            tsk.ActualWeight=new Weight(tsk.Weight);
+            tsk.PlannedWeight = new Weight(tsk.Weight);
             CreateTaskDto tasky = tsk.CopyToDto();
             tasky.TypeName = currentCulture == "ar" ? tsk.Type?.NameArabic : tsk.Type?.NameEnglish;
             tasky.SourceName = currentCulture == "ar" ? tsk.Source?.NameArabic : tsk.Source?.NameEnglish;
@@ -72,6 +74,7 @@ public class GetTasksHandler : IRequestHandler<GetTasksQuery, PagedResult<Create
 
             tasky.TaskStatusName = currentCulture == "ar" ? tsk.status?.NameArabic : tsk.status?.NameEnglish;
             tasky.CreatedByName = currentCulture == "ar" ? tsk.CreatedBy?.NameArabic : tsk.CreatedBy?.NameEnglish;
+            tasky.Createdbydepartment = currentCulture == "ar" ? CreatorDepartment.NameArabic : CreatorDepartment.NameEnglish;
             tasky.UpdatedBy = currentCulture == "ar" ? tsk.UpdatedBy?.NameArabic : tsk.UpdatedBy?.NameEnglish;
             tasky.AssigneduserNames = string.Join(",", assgnedusr.Value.Select(k => k.NameEnglish));// string.Join(", ", tsk.Assignees.Select(k => k.User.NameEnglish));
             if (tasky.AssigneduserNames.Count() > 0)

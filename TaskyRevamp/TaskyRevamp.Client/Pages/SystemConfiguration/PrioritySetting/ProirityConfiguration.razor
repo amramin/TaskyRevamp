@@ -127,9 +127,23 @@
     }
     private void Edit(Guid id)
     {
-        PopupService.ShowNew(@<UpdatePriority Id="id" OnValidSubmit="OnPriorityUpdated" />, headerText: @Loc["EditPriority"]);
+        var priorityToEdit = Priorities.FirstOrDefault(p => p.Id == id);
+        if (priorityToEdit != null)
+        {
+            // Create a copy to avoid direct binding issues
+            var priorityCopy = new PriorityDto
+                {
+                    Id = priorityToEdit.Id,
+                    NameEnglish = priorityToEdit.NameEnglish,
+                    NameArabic = priorityToEdit.NameArabic,
+                    NameColor = priorityToEdit.NameColor,
+                    BackgroundColor = priorityToEdit.BackgroundColor,
+                    Order = priorityToEdit.Order
+                };
+            PopupService.ShowNew(@<UpdatePriority Priority="@priorityCopy" OnValidSubmit="OnPriorityUpdated" />  , headerText: @Loc["EditPriority"]);
+        }
     }
-    private async Task OnPriorityUpdated(PriorityDto updatedPriority)
+    private void OnPriorityUpdated(PriorityDto updatedPriority)
     {
         var existing = Priorities.FirstOrDefault(p => p.Id == updatedPriority.Id);
         if (existing != null)

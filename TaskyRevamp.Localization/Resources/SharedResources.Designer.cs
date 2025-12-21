@@ -484,6 +484,33 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Complete.
+        /// </summary>
+        public static string Complete {
+            get {
+                return ResourceManager.GetString("Complete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Completed successfully.
+        /// </summary>
+        public static string Completedsuccessfully {
+            get {
+                return ResourceManager.GetString("Completedsuccessfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Complete Failed.
+        /// </summary>
+        public static string CompleteFailed {
+            get {
+                return ResourceManager.GetString("CompleteFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Confirm.
         /// </summary>
         public static string Confirm {
@@ -2095,6 +2122,33 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Reopen.
+        /// </summary>
+        public static string Reopen {
+            get {
+                return ResourceManager.GetString("Reopen", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reopened successfully.
+        /// </summary>
+        public static string Reopenedsuccessfully {
+            get {
+                return ResourceManager.GetString("Reopenedsuccessfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reopen Failed.
+        /// </summary>
+        public static string ReopenFailed {
+            get {
+                return ResourceManager.GetString("ReopenFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Report language.
         /// </summary>
         public static string ReportLanguage {
@@ -2446,6 +2500,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Are you sure to complete task.
+        /// </summary>
+        public static string SureCompleteTask {
+            get {
+                return ResourceManager.GetString("SureCompleteTask", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Are you sure you want to remove this delegation?.
         /// </summary>
         public static string SureDeleteDelegation {
@@ -2460,6 +2523,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string SureDeleteDepartment {
             get {
                 return ResourceManager.GetString("SureDeleteDepartment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are you sure to reopen task.
+        /// </summary>
+        public static string SureReopenTask {
+            get {
+                return ResourceManager.GetString("SureReopenTask", resourceCulture);
             }
         }
         

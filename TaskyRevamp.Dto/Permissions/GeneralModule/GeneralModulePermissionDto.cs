@@ -17,7 +17,7 @@ namespace TaskyRevamp.Dto.Permissions.GeneralModule
 		public bool IsAdd { get; set; }
 		public bool IsDelete { get; set; }
 		public List<int>? DelegationFromUser { get; set; }
-		public DelegationToUser? DelegationToUser { get; set; }
+		public List<int>? DelegationToUser { get; set; }
 		public List<Guid>? DelegationToUserDepartments { get; set; }
 		public List<Guid>? DelegationFromUserDepartments { get; set; }
 
