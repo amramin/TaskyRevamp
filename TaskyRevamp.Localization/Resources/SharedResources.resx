@@ -1101,4 +1101,52 @@
   <data name="NoUsersPrivilege" xml:space="preserve">
     <value>No users assigned to this privilege</value>
   </data>
+  <data name="CreateTask" xml:space="preserve">
+    <value>Create task</value>
+  </data>
+  <data name="SubTask" xml:space="preserve">
+    <value>Subtask</value>
+  </data>
+  <data name="Reject" xml:space="preserve">
+    <value>Reject </value>
+  </data>
+  <data name="ChangeEndDate" xml:space="preserve">
+    <value>Change end date</value>
+  </data>
+  <data name="RequestChangeEndDate" xml:space="preserve">
+    <value>Request change end date</value>
+  </data>
+  <data name="ApproveAndRejectTheRequestChangeEndDate" xml:space="preserve">
+    <value>Approve and reject the request change end date</value>
+  </data>
+  <data name="ChangeProgress" xml:space="preserve">
+    <value>Change progress</value>
+  </data>
+  <data name="ChecklistAdd" xml:space="preserve">
+    <value>Checklist add</value>
+  </data>
+  <data name="ChecklistUpdate" xml:space="preserve">
+    <value>Checklist update</value>
+  </data>
+  <data name="Complete" xml:space="preserve">
+    <value>Complete </value>
+  </data>
+  <data name="ReOpen" xml:space="preserve">
+    <value>Re-open</value>
+  </data>
+  <data name="Details" xml:space="preserve">
+    <value>Details</value>
+  </data>
+  <data name="AddAttachment" xml:space="preserve">
+    <value>Add attachment</value>
+  </data>
+  <data name="AddComment" xml:space="preserve">
+    <value>Add comment</value>
+  </data>
+  <data name="SelectAtLeastOneToggleToProceed" xml:space="preserve">
+    <value>Select at least one toggle to proceed.</value>
+  </data>
+  <data name="ValueMustBeGreaterThanOrEqualTo1" xml:space="preserve">
+    <value>Value must be greater than or equal to 1.</value>
+  </data>
 </root>
