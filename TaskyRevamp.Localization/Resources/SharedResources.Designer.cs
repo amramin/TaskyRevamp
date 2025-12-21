@@ -358,6 +358,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to delete this?.
+        /// </summary>
+        public static string Ares {
+            get {
+                return ResourceManager.GetString("Ares", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Are `you sure you want to discard this draft?.
         /// </summary>
         public static string Areyousureyouwan {

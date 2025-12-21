@@ -1116,4 +1116,7 @@
     <data name="Edited" xml:space="preserve">
     <value>تم تعديله</value>
   </data>
+    <data name="Ares" xml:space="preserve">
+    <value>هل أنت متأكد أنك تريد الحذف؟</value>
+  </data>
 </root>

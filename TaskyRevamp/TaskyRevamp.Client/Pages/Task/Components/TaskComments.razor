@@ -1,10 +1,13 @@
-﻿@using TaskyRevamp.Client.Consumer
+﻿@using Blazored.LocalStorage
+@using TaskyRevamp.Client.Consumer
 @using TaskyRevamp.Client.Services
 @using TaskyRevamp.Dto.TaskComment
 @using TaskyRevamp.Dto.TaskDto
 @inject TaskCommentConsumer _taskCommentConsumer
 @inject IStringLocalizer<SharedResources> Loc
 @inject ToastService ToastService
+@inject ILocalStorageService LocalStorageService
+
 @inject PopupService PopupService
 <div class="card mb-3">
     <div class="card-header bg-white d-flex justify-content-between align-items-center"
@@ -28,6 +31,7 @@
                       @bind="newComment"
                       rows="3"></textarea>
             </div>
+       
             <div class="d-flex justify-content-end">
                 <button class="btn btn-primary" @onclick="AddComment" disabled="@string.IsNullOrWhiteSpace(newComment)">
                    @buttonName  <i class="bi bi-arrow-right"></i>
@@ -68,10 +72,12 @@
                                 <div class="p-3 bg-light rounded-3 border">
                                     <p class="mb-0">@comment.TaskComment.Content</p>
                                 </div>
+                                @if (currentId==comment.TaskComment.CreatedById){
                                 <div class="mt-2">
                                     <button class="btn btn-link text-primary p-0 m-0 text-decoration-none small me-1" @onclick="(()=>EditTask(comment.TaskComment.Id))">@Loc["Edit"]</button>
-                                    <button class="btn btn-link text-danger p-0 m-0 text-decoration-none small" @onclick="DeleteTask">@Loc["Delete"]</button>
+                                        <button class="btn btn-link text-danger p-0 m-0 text-decoration-none small" @onclick="(() => OnDeleteComment(comment.TaskComment.Id))">@Loc["Delete"]</button>
                                 </div>
+                                }
                             </div>
                         </div>
                     }
@@ -102,10 +108,47 @@
         ShowSection = !ShowSection;
         await ShowSectionChanged.InvokeAsync(ShowSection);
     }
+    Guid currentId{ set; get; }
     protected override async Task OnInitializedAsync()
     {
+        var current = await LocalStorageService.GetItemAsStringAsync("Id");
+        currentId = Guid.Parse(current);
         await LoadComments();
     }
+
+    private void OnDeleteComment(Guid Id)
+    {
+        PopupService.ShowConfirmation(
+        @Loc["Ares"],
+        "Yes, Delete",
+        async (confirmed) =>
+        {
+            if (confirmed)
+                await DeleteConfirmed(Id);
+        },
+        ConfirmationType.Danger
+        );
+    }
+    private async Task DeleteConfirmed(Guid Id)
+    {
+        var result = await _taskCommentConsumer.DeleteTaskComment(Id);
+        if (result.Success)
+        {
+            var toRemove = comments.FirstOrDefault(d => d.TaskComment.Id == Id);
+            if (toRemove != null)
+            {
+              await  LoadComments();            }
+
+            await ToastService.ShowToastAsync(Loc["Deletedsuccessfully"], "success");
+        }
+        else
+        {
+            await ToastService.ShowToastAsync(Loc["DeleteFailed"], "danger");
+        }
+
+        StateHasChanged();
+    }
+
     private async Task CancelConfirmed()
     {
         newComment = string.Empty;
