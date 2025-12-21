@@ -25,8 +25,8 @@ public class TaskItem : Entity, IHasCreationMetaData, IHasUpdateMetaData
     public int Duration => (EndDate.Date - StartDate.Date).Days + 1;
     public Reminder? Reminder { get; set; }
     public PrioritySettings Priority { get; set; }
-    //public int Weight { get; set; }
-
+    public int Weight { get; set; }
+    public int Progress { get; set; }
 	Weight _plannedWeight;
     public Weight PlannedWeight
     {
@@ -41,7 +41,12 @@ public class TaskItem : Entity, IHasCreationMetaData, IHasUpdateMetaData
 
             return new Weight(finalWeight);
         }
-        set => _plannedWeight = value;
+                set
+        {
+            var CountWeight =(double) (PlannedProgress.Percentage * Weight) / 100;
+            var RoundedValue = (int)Math.Round(CountWeight, MidpointRounding.AwayFromZero);
+            _plannedWeight = new Weight(RoundedValue);
+        }
     }
     Weight _actualWeight;
     public Weight ActualWeight
@@ -57,7 +62,12 @@ public class TaskItem : Entity, IHasCreationMetaData, IHasUpdateMetaData
 
             return new Weight(finalWeight);
         }
-        set => _actualWeight = value;
+        set
+        {
+            var CountWeight =(double) (Progress * Weight) / 100;
+            var RoundedValue = (int)Math.Round(CountWeight, MidpointRounding.AwayFromZero);
+            _actualWeight = new Weight(RoundedValue);
+        }
     }
     public Progress PlannedProgress
     {
@@ -143,7 +153,8 @@ public class TaskItem : Entity, IHasCreationMetaData, IHasUpdateMetaData
         StartDate = start;
         EndDate = end;
         PriorityId = priority;
-        //Weight = wight;
+        Weight = wight;
+        Progress = actualprocess;
         _plannedWeight = plannedWeight;
         _actualProgress = new Progress(actualprocess);
 
@@ -202,8 +213,8 @@ public class TaskItem : Entity, IHasCreationMetaData, IHasUpdateMetaData
             TitleArabic = TitleArabic,
             Plannedweight = PlannedWeight.Value,
             ActualWeight = ActualWeight.Value,
-            //weight = Weight,
-            ActualProcess = ActualProgress.Percentage,
+            weight = Weight,
+            ActualProcess = Progress,
             PlannedProgress = PlannedProgress.Percentage,
 			//SourceId=Source.Id,
 			CreateDate = CreateDate,

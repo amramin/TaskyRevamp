@@ -10,6 +10,7 @@
 @inject NavigationManager navigationManager
 @inject IStringLocalizer<SharedResources> Loc
 @inject DefaultColumnsSettingConsumer _defaultColumnsSettingConsumer
+@inject StatusSettingConsumer _statusSettingConsumer
 
 
 <div class="tab-pills flex-grow-1">
@@ -112,7 +113,7 @@
                                 <tr>
                                     @foreach (var column in tableColumns)
                                     {
-                                        <td>
+                                            <td style="white-space: nowrap; overflow: visible; text-overflow: unset;">
                                             @RenderColumnValue(task, column.Field)
                                         </td>
                                     }
@@ -131,7 +132,30 @@
                                                         @Loc["Task details"]
                                                     </button>
                                                 </li>
-                                            </ul>
+
+                                                    @if (task.ActualProcess == 100 && task.TaskStatus == Statuses?.FirstOrDefault(st => st.NameEnglish == "Pending review")?.Id)
+                                                    {
+                                                        <li>
+                                                            <button class="dropdown-item" @onclick="@(() => CompleteTask(task.Id))">
+                                                                <span class="icon">
+                                                                    <SVGCrud SVGType="SVGCrud.SVGTypeEnum.OpenEye"></SVGCrud>
+                                                                </span>
+                                                                @Loc["Complete Task"]
+                                                            </button>
+                                                        </li>
+                                                    }
+                                                    @if (task.ActualProcess == 100 && task.TaskStatus == Statuses?.FirstOrDefault(st => st.NameEnglish == "Pending review")?.Id)
+                                                    {
+                                                        <li>
+                                                            <button class="dropdown-item" @onclick="@(() => ReopenTask(task.Id))">
+                                                                <span class="icon">
+                                                                    <SVGCrud SVGType="SVGCrud.SVGTypeEnum.OpenEye"></SVGCrud>
+                                                                </span>
+                                                                @Loc["ReopenTask Task"]
+                                                            </button>
+                                                        </li>
+                                                    }
+                                                </ul>
                                         </div>
                                     </td>
                                 </tr>
@@ -203,6 +227,7 @@
     [Parameter] public EventCallback<Guid> OnShowUsers { get; set; }
     [Parameter] public EventCallback<Guid> OnAdd { get; set; }
     CreateTaskDto taskdto = new CreateTaskDto();
+    private List<StatusSettingsDto> Statuses = new();
     List<CreateTaskDto> allTaks = new List<CreateTaskDto>();
     private bool isPopupVisible = false;
     public bool IsShowEditDialog { get; set; } = false;
@@ -225,31 +250,32 @@
 
     protected override async Task OnInitializedAsync()
     {
+        var statusres = await _statusSettingConsumer.GetStatusConfiguration();
+        if (statusres.Success && statusres != null && statusres.Data != null)
+        {
+            Statuses = statusres.Data;
+        }
         tableColumns = new()
 {
 new() { Field = "Title", DisplayName = Loc["Title"] },
 new() { Field = "Priority", DisplayName = Loc["Priority2"] },
-
 new() { Field = "Status", DisplayName = Loc["TaskStatus"] },
+new() { Field = "Actual Progress", DisplayName = Loc["ActualProgress"] },
 new() { Field = "Start Date", DisplayName = Loc["StartDate"] },
 new() { Field = "End Date", DisplayName = Loc["EndDate"] },
-new() { Field = "Planned Progress", DisplayName = Loc["PlannedProgress"] },
-
-new() { Field = "Source", DisplayName = Loc["Source"] },
-new() { Field = "Type", DisplayName = Loc["Type"] },
-
-
 new() { Field = "weight", DisplayName = Loc["weight"] },
 new() { Field = "Assigned To", DisplayName = Loc["AssigneduserNames"] },
 new() { Field = "Assigned To Department", DisplayName = Loc["AssignedToDepartment"] },
-
-
+new() { Field = "Source", DisplayName = Loc["Source"] },
+new() { Field = "Dependency", DisplayName = Loc["Dependency"] },
 new() { Field = "Created By", DisplayName = Loc["CreatedBy"] },
-
+new() { Field = "Created by department", DisplayName = Loc["Createdbydepartment"] },
+new() { Field = "Duration", DisplayName = Loc["Duration"] },
+new() { Field = "Planned Progress", DisplayName = Loc["PlannedProgress"] },
 new() { Field = "Creation Date", DisplayName = Loc["CreationDate"] },
-new() { Field = "UpdatedBy", DisplayName = Loc["UpdatedBy"] },
-
-new() { Field = "UpdateDate", DisplayName = Loc["UpdateDate"] },
+new() { Field = "Type", DisplayName = Loc["Type"] },
+new() { Field = "Actual Weight", DisplayName = Loc["ActualWeight"] },
+new() { Field = "Planned Weight", DisplayName = Loc["PlannedWeight"] },
 new() { Field = "Action", DisplayName = Loc["Action"] ,IsSortable = false},
 };
 
@@ -307,6 +333,64 @@ new() { Field = "Action", DisplayName = Loc["Action"] ,IsSortable = false},
         pageSize = newSize;
         currentPage = 1;
         await GetTasks();
+    }
+    private async Task CompleteConfirmed(Guid id)
+    {
+        var result = await _taskConsumer.CompleteTask(id);
+        if (result.Success &&result.Data)
+        {
+            await GetTasks();
+            await ToastService.ShowToastAsync(Loc["Completedsuccessfully"], "success");
+
+        }
+        else
+        {
+            await ToastService.ShowToastAsync(Loc["CompleteFailed"], "danger");
+        }
+
+        StateHasChanged();
+    }
+    private void CompleteTask(Guid id)
+    {
+        PopupService.ShowConfirmation(
+                @Loc["SureCompleteTask"],
+                "Yes, Complete",
+                async (confirmed) =>
+                {
+                    if (confirmed)
+                        await CompleteConfirmed(id);
+                },
+                ConfirmationType.Primary
+            );
+    }
+    private async Task ReopenConfirmed(Guid id)
+    {
+        var result = await _taskConsumer.ReopenTask(id);
+        if (result.Success && result.Data)
+        {
+            await GetTasks();
+            await ToastService.ShowToastAsync(Loc["Reopenedsuccessfully"], "success");
+
+        }
+        else
+        {
+            await ToastService.ShowToastAsync(Loc["ReopenFailed"], "danger");
+        }
+
+        StateHasChanged();
+    }
+    private void ReopenTask(Guid id)
+    {
+        PopupService.ShowConfirmation(
+                @Loc["SureReopenTask"],
+                "Yes, Reopen",
+                async (confirmed) =>
+                {
+                    if (confirmed)
+                        await ReopenConfirmed(id);
+                },
+                ConfirmationType.Primary
+            );
     }
     private async Task DeleteConfirmed(Guid Id)
     {
@@ -430,12 +514,11 @@ SearchFieldTask.PlannedProgress
             case "Priority":
                 builder.AddContent(0, task.PriorityName);
                 break;
-
-            case "Assigned To":
-                builder.AddContent(0, task.AssigneduserNames);
-                break;
             case "Status":
                 builder.AddContent(0, (task.TaskStatusName)?.ToString());
+                break;
+            case "Actual Progress":
+                builder.AddContent(0, task.ActualProcess);
                 break;
             case "Start Date":
                 builder.AddContent(0, task.StartDate.ToString(Loc["LocalizeDate"]));
@@ -446,34 +529,41 @@ SearchFieldTask.PlannedProgress
             case "weight":
                 builder.AddContent(0, task.weight);
                 break;
-            case "AssigneduserNames":
+            case "Assigned To":
                 builder.AddContent(0, task.AssigneduserNames);
                 break;
-            case "Created By":
-                builder.AddContent(0, task.CreatedByName);
-                break;
-            case "Creation Date":
-                builder.AddContent(0, task.CreateDate?.ToString(Loc["LocalizeDate"]));
-                break;
-            case "UpdatedBy":
-                builder.AddContent(0, task.UpdatedBy);
-                break;
-            case "UpdateDate":
-                builder.AddContent(0, task.UpdateDate?.ToString(Loc["LocalizeDate"]));
-                break;
-
             case "Assigned To Department":
                 builder.AddContent(0, task.AssignedDepartmentName);
                 break;
             case "Source":
                 builder.AddContent(0, task.SourceName);
                 break;
+            case "Dependency":
+                builder.AddContent(0, task.Dependencies);
+                break;
+            case "Created by department":
+                builder.AddContent(0, task.Createdbydepartment);
+                break;
+            case "Created By":
+                builder.AddContent(0, task.CreatedByName);
+                break;
+            case "Duration":
+                builder.AddContent(0, task.Duration);
+                break;
             case "Planned Progress":
-                builder.AddContent(0, task.ActualProcess);
+                builder.AddContent(0, task.PlannedProgress);
+                break;
+            case "Creation Date":
+                builder.AddContent(0, task.CreateDate?.ToString(Loc["LocalizeDate"]));
                 break;
             case "Type":
-
                 builder.AddContent(0, task.TypeName);
+                break;
+            case "Actual Weight":
+                builder.AddContent(0, task.ActualWeight);
+                break;
+            case "Planned Weight":
+                builder.AddContent(0, task.Plannedweight);
                 break;
             case "Action":
                 builder.AddContent(0, "...");
