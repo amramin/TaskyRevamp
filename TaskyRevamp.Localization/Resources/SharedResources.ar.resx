@@ -643,9 +643,6 @@
   <data name="GeneralModule" xml:space="preserve">
     <value>الوحدات العامة</value>
   </data>
-  <data name="Privilege" xml:space="preserve">
-    <value>صلاحيات</value>
-  </data>
   <data name="TaskModule" xml:space="preserve">
     <value>وحدة المهام</value>
   </data>
@@ -973,21 +970,20 @@
   <data name="UploadExcelFile" xml:space="preserve">
     <value>إرفع ملف إكسل</value>
   </data>
-    <data name="Add the department's structure" xml:space="preserve">
-    <value>أضف هيكل الإدارات</value>
-  </data>
-  
   <data name="DepartmentLevelMandatory" xml:space="preserve">
     <value> مستوى الإدارة (إلزامي)</value>
   </data>
-    <data name="DepartmentNameMandatory" xml:space="preserve">
+  <data name="DepartmentNameMandatory" xml:space="preserve">
     <value>اسم الإدارة (إلزامي)</value>
   </data>
-    <data name="ParentDepartmentNameMandatory" xml:space="preserve">
+  <data name="ParentDepartmentNameMandatory" xml:space="preserve">
     <value> الإدارة الرئيسية (إلزامي)</value>
   </data>
   <data name="DownloadExcelTemplate" xml:space="preserve">
     <value>تحميل ملف إكسل</value>
+  </data>
+  <data name="Add the department's structure" xml:space="preserve">
+    <value>أضف هيكل الإدارات</value>
   </data>
   <data name="FileNotValid" xml:space="preserve">
     <value>الملف غير صالح</value>
@@ -1102,10 +1098,37 @@
   <data name="notvald" xml:space="preserve">
     <value>تم الوصول إلى الحد الأقصى لعدد الأحرف.</value>
   </data>
-   <data name="DeliveryDate" xml:space="preserve">
+  <data name="DeliveryDate" xml:space="preserve">
     <value>تاريخ التسليم</value>
   </data>
   <data name="NoUsersPrivilege" xml:space="preserve">
     <value>لا يوجد مستخدمون مرتبطون بهذه الصلاحية</value>
+  </data>
+  <data name="Privilege" xml:space="preserve">
+    <value>صلاحيات</value>
+  </data>
+  <data name="SureCompleteTask" xml:space="preserve">
+    <value>هل تريد اكمال المهمة</value>
+  </data>
+  <data name="Complete" xml:space="preserve">
+    <value>اكمال</value>
+  </data>
+  <data name="Completedsuccessfully" xml:space="preserve">
+    <value>تم اكمال المهمة بنجاح</value>
+  </data>
+  <data name="CompleteFailed" xml:space="preserve">
+    <value>فشلت عملية اكمال المهمة</value>
+  </data>
+  <data name="SureReopenTask" xml:space="preserve">
+    <value>هل انت متاكد انك تريد اعادة المهمة</value>
+  </data>
+  <data name="Reopen" xml:space="preserve">
+    <value>ارجاع</value>
+  </data>
+  <data name="Reopenedsuccessfully" xml:space="preserve">
+    <value>تم ارجاع المهمة بنجاح</value>
+  </data>
+  <data name="ReopenFailed" xml:space="preserve">
+    <value>لم يتم ارجاع المهمة</value>
   </data>
 </root>

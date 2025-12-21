@@ -972,16 +972,16 @@
   <data name="DepartmentLevelMandatory" xml:space="preserve">
     <value> Department Level (Mandatory)</value>
   </data>
-    <data name="DepartmentNameMandatory" xml:space="preserve">
+  <data name="DepartmentNameMandatory" xml:space="preserve">
     <value> Department Name (Mandatory)</value>
   </data>
-    <data name="ParentDepartmentNameMandatory" xml:space="preserve">
+  <data name="ParentDepartmentNameMandatory" xml:space="preserve">
     <value> Parent Department Name (Mandatory)</value>
   </data>
   <data name="DownloadExcelTemplate" xml:space="preserve">
     <value>Download Excel template</value>
   </data>
-   <data name="Add the department's structure" xml:space="preserve">
+  <data name="Add the department's structure" xml:space="preserve">
     <value>Add the department's structure</value>
   </data>
   <data name="FileNotValid" xml:space="preserve">
@@ -1100,5 +1100,29 @@
   </data>
   <data name="NoUsersPrivilege" xml:space="preserve">
     <value>No users assigned to this privilege</value>
+  </data>
+  <data name="SureCompleteTask" xml:space="preserve">
+    <value>Are you sure to complete task</value>
+  </data>
+  <data name="Complete" xml:space="preserve">
+    <value>Complete</value>
+  </data>
+  <data name="Completedsuccessfully" xml:space="preserve">
+    <value>Completed successfully</value>
+  </data>
+  <data name="CompleteFailed" xml:space="preserve">
+    <value>Complete Failed</value>
+  </data>
+  <data name="SureReopenTask" xml:space="preserve">
+    <value>Are you sure to reopen task</value>
+  </data>
+  <data name="Reopen" xml:space="preserve">
+    <value>Reopen</value>
+  </data>
+  <data name="Reopenedsuccessfully" xml:space="preserve">
+    <value>Reopened successfully</value>
+  </data>
+  <data name="ReopenFailed" xml:space="preserve">
+    <value>Reopen Failed</value>
   </data>
 </root>

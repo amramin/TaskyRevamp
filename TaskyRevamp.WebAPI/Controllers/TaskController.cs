@@ -1,6 +1,7 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using System.Threading.Tasks;
 using TaskyRevamp.Dto.Enums.SearchFields;
 using TaskyRevamp.Dto.GeneralDto;
 using TaskyRevamp.Dto.TaskDto;
@@ -29,6 +30,16 @@ public class TaskController : ControllerBase
 
 
         return Ok(res);
+    }
+    [HttpGet("CompleteTask/{id}")]
+    public async Task<IActionResult> CompleteTask(Guid id)
+    {
+        return Ok(await _mediator.Send(new CompleteTaskCommand(id)));
+    }
+    [HttpGet("ReopenTask/{id}")]
+    public async Task<IActionResult> ReopenTask(Guid id)
+    {
+        return Ok(await _mediator.Send(new ReopenTaskCommand(id)));
     }
     [HttpPut]
     public async Task<IActionResult> UpdateTask([FromBody] CreateTaskDto Task)
