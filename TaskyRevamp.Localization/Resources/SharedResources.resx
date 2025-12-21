@@ -972,16 +972,16 @@
   <data name="DepartmentLevelMandatory" xml:space="preserve">
     <value> Department Level (Mandatory)</value>
   </data>
-    <data name="DepartmentNameMandatory" xml:space="preserve">
+  <data name="DepartmentNameMandatory" xml:space="preserve">
     <value> Department Name (Mandatory)</value>
   </data>
-    <data name="ParentDepartmentNameMandatory" xml:space="preserve">
+  <data name="ParentDepartmentNameMandatory" xml:space="preserve">
     <value> Parent Department Name (Mandatory)</value>
   </data>
   <data name="DownloadExcelTemplate" xml:space="preserve">
     <value>Download Excel template</value>
   </data>
-   <data name="Add the department's structure" xml:space="preserve">
+  <data name="Add the department's structure" xml:space="preserve">
     <value>Add the department's structure</value>
   </data>
   <data name="FileNotValid" xml:space="preserve">
@@ -1100,5 +1100,14 @@
   </data>
   <data name="NoUsersPrivilege" xml:space="preserve">
     <value>No users assigned to this privilege</value>
+  </data>
+  <data name="Editedsuccessfully" xml:space="preserve">
+    <value>Edited successfully</value>
+  </data>
+  <data name="Areyousureyouwan" xml:space="preserve">
+    <value>Are `you sure you want to discard this draft?</value>
+  </data>
+  <data name="Edited" xml:space="preserve">
+    <value>Edited</value>
   </data>
 </root>

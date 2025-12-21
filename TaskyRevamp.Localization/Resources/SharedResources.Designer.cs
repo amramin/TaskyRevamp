@@ -124,6 +124,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add the department&apos;s structure.
+        /// </summary>
+        public static string Add_the_department_s_structure {
+            get {
+                return ResourceManager.GetString("Add the department\'s structure", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add user.
         /// </summary>
         public static string Add_user {
@@ -345,6 +354,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string ArabicName {
             get {
                 return ResourceManager.GetString("ArabicName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are `you sure you want to discard this draft?.
+        /// </summary>
+        public static string Areyousureyouwan {
+            get {
+                return ResourceManager.GetString("Areyousureyouwan", resourceCulture);
             }
         }
         
@@ -754,6 +772,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to  Department Name (Mandatory).
+        /// </summary>
+        public static string DepartmentNameMandatory {
+            get {
+                return ResourceManager.GetString("DepartmentNameMandatory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Parent department.
         /// </summary>
         public static string DepartmentParent {
@@ -876,6 +903,24 @@ namespace TaskyRevamp.Localization.Resources {
         public static string EditDepartment {
             get {
                 return ResourceManager.GetString("EditDepartment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edited.
+        /// </summary>
+        public static string Edited {
+            get {
+                return ResourceManager.GetString("Edited", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edited successfully.
+        /// </summary>
+        public static string Editedsuccessfully {
+            get {
+                return ResourceManager.GetString("Editedsuccessfully", resourceCulture);
             }
         }
         
@@ -1645,7 +1690,7 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to  No department available add a new department to get started.
+        ///   Looks up a localized string similar to  No department available .
         /// </summary>
         public static string Nodepartmentavailable {
             get {
@@ -1785,6 +1830,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string Order {
             get {
                 return ResourceManager.GetString("Order", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to  Parent Department Name (Mandatory).
+        /// </summary>
+        public static string ParentDepartmentNameMandatory {
+            get {
+                return ResourceManager.GetString("ParentDepartmentNameMandatory", resourceCulture);
             }
         }
         
@@ -2356,7 +2410,7 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Subtask levels.
+        ///   Looks up a localized string similar to Subtask level.
         /// </summary>
         public static string Subtask_Levels {
             get {

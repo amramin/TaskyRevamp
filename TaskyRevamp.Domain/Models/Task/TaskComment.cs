@@ -11,9 +11,9 @@ namespace TaskyRevamp.Domain.Models.Task;
 public class TaskComment : Entity, IHasCreationMetaData, IHasUpdateMetaData
 {
     public Guid TaskItemId { get; set; }
-    public  TaskItem taskItem { get; set; }
-    public string Content { get;  set; }
-    public Guid CreatedById { get; set ; }
+    public TaskItem taskItem { get; set; }
+    public string Content { get; set; }
+    public Guid CreatedById { get; set; }
     public DateTime CreateDate { get; set; }
     public User CreatedBy { get; set; }
     public Guid? UpdatedById { get; set; }
@@ -31,22 +31,22 @@ public class TaskComment : Entity, IHasCreationMetaData, IHasUpdateMetaData
     public TaskComment()
     {
     }
-    public TaskComment(Guid taskid,string content,Guid createdid)
+    public TaskComment(Guid taskid, string content, Guid createdid)
     {
-        TaskItemId= taskid;
+        TaskItemId = taskid;
         Content = content;
-        CreateDate= DateTime.UtcNow;
-        CreatedById= createdid;
+        CreateDate = DateTime.UtcNow;
+        CreatedById = createdid;
     }
-    public TaskComment(Guid taskid,string content)
+    public TaskComment(Guid taskid, string content)
     {
-        TaskItemId= taskid;
+        TaskItemId = taskid;
         Content = content;
     }
     public void Add(Guid taskid, string content, User by)
     {
-        var comment = new TaskComment(taskid, content,by.Id);
-       // comment.Add(comment);
+        var comment = new TaskComment(taskid, content, by.Id);
+        // comment.Add(comment);
         taskItem.AddHistoryEntry(by, $"added a comment");
     }
     public bool SetData(TaskCommentDto taskCommentDto)
@@ -54,8 +54,8 @@ public class TaskComment : Entity, IHasCreationMetaData, IHasUpdateMetaData
         Id = Id;
         TaskItemId = taskCommentDto.TaskItemId;
         Content = taskCommentDto.Content;
-        CreatedById = taskCommentDto.CreatedById;
-        CreateDate = taskCommentDto.CreateDate;
+        //CreatedById = taskCommentDto.CreatedById;
+        //CreateDate = taskCommentDto.CreateDate;
         return true;
 
     }
@@ -67,8 +67,8 @@ public class TaskComment : Entity, IHasCreationMetaData, IHasUpdateMetaData
             TaskItemId = TaskItemId,
             Content = Content,
             CreateDate = CreateDate,
-            CreatedById= CreatedById,
-
+            CreatedById = CreatedById,
+            UpdateDate = UpdateDate,
 
 
 
