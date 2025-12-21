@@ -643,9 +643,6 @@
   <data name="GeneralModule" xml:space="preserve">
     <value>الوحدات العامة</value>
   </data>
-  <data name="Privilege" xml:space="preserve">
-    <value>صلاحيات</value>
-  </data>
   <data name="TaskModule" xml:space="preserve">
     <value>وحدة المهام</value>
   </data>
@@ -875,7 +872,7 @@
     <value>عرض اللوحة</value>
   </data>
   <data name="Sure" xml:space="preserve">
-    <value>هل أنت متأكد أنك تريد حذف هذه الأولوية؟</value>
+    <value>هل أنت متأكد أنك تريد الحذف؟</value>
   </data>
   <data name="EditPrivilege" xml:space="preserve">
     <value>تعديل الصلاحية</value>
@@ -973,21 +970,20 @@
   <data name="UploadExcelFile" xml:space="preserve">
     <value>إرفع ملف إكسل</value>
   </data>
-    <data name="Add the department's structure" xml:space="preserve">
-    <value>أضف هيكل الإدارات</value>
-  </data>
-  
   <data name="DepartmentLevelMandatory" xml:space="preserve">
     <value> مستوى الإدارة (إلزامي)</value>
   </data>
-    <data name="DepartmentNameMandatory" xml:space="preserve">
+  <data name="DepartmentNameMandatory" xml:space="preserve">
     <value>اسم الإدارة (إلزامي)</value>
   </data>
-    <data name="ParentDepartmentNameMandatory" xml:space="preserve">
+  <data name="ParentDepartmentNameMandatory" xml:space="preserve">
     <value> الإدارة الرئيسية (إلزامي)</value>
   </data>
   <data name="DownloadExcelTemplate" xml:space="preserve">
     <value>تحميل ملف إكسل</value>
+  </data>
+  <data name="Add the department's structure" xml:space="preserve">
+    <value>أضف هيكل الإدارات</value>
   </data>
   <data name="FileNotValid" xml:space="preserve">
     <value>الملف غير صالح</value>
@@ -1016,13 +1012,13 @@
     <value>yyyy-MM-dd</value>
   </data>
   <data name="Hierarchy" xml:space="preserve">
-    <value>التسلسل الهرمي</value>
+    <value>تسلسل هرمي</value>
   </data>
   <data name="Tree" xml:space="preserve">
-    <value>الشجرة</value>
+    <value>شجرة</value>
   </data>
   <data name="Grid" xml:space="preserve">
-    <value>الشبكة</value>
+    <value>شبكة</value>
   </data>
   <data name="Welcome" xml:space="preserve">
     <value>مرحبا</value>
@@ -1102,10 +1098,13 @@
   <data name="notvald" xml:space="preserve">
     <value>تم الوصول إلى الحد الأقصى لعدد الأحرف.</value>
   </data>
-   <data name="DeliveryDate" xml:space="preserve">
+  <data name="DeliveryDate" xml:space="preserve">
     <value>تاريخ التسليم</value>
   </data>
   <data name="NoUsersPrivilege" xml:space="preserve">
     <value>لا يوجد مستخدمون مرتبطون بهذه الصلاحية</value>
+  </data>
+  <data name="Privilege" xml:space="preserve">
+    <value>صلاحيات</value>
   </data>
 </root>
