@@ -263,7 +263,7 @@
                         case "Assigned to":
                     <div class="mb-3">
                         <label class="form-label">
-                            @Loc["AssignedTo"]vvv
+                            @Loc["AssignedTo"]
                             @if (column.IsMandatory)
                             {
                                 <span class="text-danger">*</span>
@@ -436,11 +436,13 @@
             //   const long maxSize = 25 * 1024 * 1024; // 25MB
             var fileExtension = Path.GetExtension(file.Name).ToLower();
 
-            var validRes =  taskyService.ValidateUploadedFile(file, fileExtension, (int)UploadedFileType.Image);
+            var validRes =  taskyService.ValidateUploadedFile(file, fileExtension);
             notvald = validRes.NotValid;
             if (notvald)
             {
                 fileErroMessage = validRes.ValidationMessage;
+                ToastService.ShowToastAsync(fileErroMessage, "error");
+
                 StateHasChanged();
                 return;
             }
