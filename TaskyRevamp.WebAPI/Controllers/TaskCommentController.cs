@@ -25,7 +25,7 @@ public class TaskCommentController : ControllerBase
         return Ok(res);
     }
 
-    [HttpPut]
+    [HttpPost("UpdateTaskComment")]
     public async Task<IActionResult> UpdateTaskComment([FromBody] TaskCommentDto TaskComment)
     {
         return Ok(await _mediator.Send(new UpdateTaskCommentCommand(TaskComment)));

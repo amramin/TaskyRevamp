@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TaskyRevamp.Infrastructure;
 
@@ -11,9 +12,11 @@ using TaskyRevamp.Infrastructure;
 namespace TaskyRevamp.Infrastructure.Migrations
 {
     [DbContext(typeof(EfDbContext))]
-    partial class EfDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251217113744_TaskViews")]
+    partial class TaskViews
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -927,6 +930,9 @@ namespace TaskyRevamp.Infrastructure.Migrations
                     b.Property<Guid>("TaskItemId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid?>("TaskItemId1")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("TitleArabic")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -938,6 +944,10 @@ namespace TaskyRevamp.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("TaskItemId");
+
+                    b.HasIndex("TaskItemId1")
+                        .IsUnique()
+                        .HasFilter("[TaskItemId1] IS NOT NULL");
 
                     b.ToTable("TaskChecklist");
                 });
@@ -1607,6 +1617,10 @@ namespace TaskyRevamp.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("TaskyRevamp.Domain.Models.Task.TaskItem", null)
+                        .WithOne("Checklist")
+                        .HasForeignKey("TaskyRevamp.Domain.Models.Task.TaskChecklist", "TaskItemId1");
+
                     b.Navigation("taskItem");
                 });
 
@@ -1940,6 +1954,8 @@ namespace TaskyRevamp.Infrastructure.Migrations
                     b.Navigation("Attachments");
 
                     b.Navigation("ChangeRequests");
+
+                    b.Navigation("Checklist");
 
                     b.Navigation("Escalations");
 

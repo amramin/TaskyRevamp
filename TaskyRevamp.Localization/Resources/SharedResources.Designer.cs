@@ -358,6 +358,24 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to delete this?.
+        /// </summary>
+        public static string Ares {
+            get {
+                return ResourceManager.GetString("Ares", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are `you sure you want to discard this draft?.
+        /// </summary>
+        public static string Areyousureyouwan {
+            get {
+                return ResourceManager.GetString("Areyousureyouwan", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Assigned to.
         /// </summary>
         public static string AssignedTo {
@@ -921,6 +939,24 @@ namespace TaskyRevamp.Localization.Resources {
         public static string EditDepartment {
             get {
                 return ResourceManager.GetString("EditDepartment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edited.
+        /// </summary>
+        public static string Edited {
+            get {
+                return ResourceManager.GetString("Edited", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edited successfully.
+        /// </summary>
+        public static string Editedsuccessfully {
+            get {
+                return ResourceManager.GetString("Editedsuccessfully", resourceCulture);
             }
         }
         
