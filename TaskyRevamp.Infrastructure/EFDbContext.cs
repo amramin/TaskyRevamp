@@ -21,10 +21,9 @@ public class EfDbContext : DbContext
     public DbSet<User> Users { get; set; }
     public DbSet<UserDelegation> UserDelegation { get; set; }
     public DbSet<FileMapping> FileMapping { get; set; }
-
     public DbSet<TaskItem> TaskItem { get; set; }
+    public DbSet<TaskViews> TaskViews { get; set; }
     public DbSet<NotificationTypeTemplate> NotificationTypeTemplate { get; set; }
-
     public DbSet<RecycleBinSettings> RecycleBinSettings { get; set; }
     public DbSet<RejectionSettings> RejectionSettings { get; set; }
     public DbSet<PrioritySettings> PrioritySettings { get; set; }

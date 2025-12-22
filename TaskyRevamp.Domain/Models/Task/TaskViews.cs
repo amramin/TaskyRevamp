@@ -10,13 +10,13 @@ namespace TaskyRevamp.Domain.Models.Task
 {
 	public class TaskViews : Entity
 	{
-		public Guid TaskItemId { get; set; }
+		public Guid TaskItemId { get; private set; }
 		public TaskItem TaskItem { get; set; }
-		public Guid UserId { get; set; }
+		public Guid UserId { get; private set; }
 		public User User { get; set; }
 		public DateTime ViewedAt { get; set; }
 
-		protected TaskViews() { }
+		public TaskViews() { }
 		public TaskViews(Guid taskItemId, Guid userId)
 		{
 			Id = Guid.NewGuid();

@@ -181,55 +181,27 @@ window.previewFileFromBytes = (fileName, base64Content, contentType) => {
     const blob = new Blob([byteArray], { type: contentType });
     const blobUrl = URL.createObjectURL(blob);
     const newWindow = window.open("", "_blank");
-    if (newWindow) {
-        newWindow.document.title = fileName;
-        newWindow.document.head.innerHTML = `
+    if (!newWindow) return;
+    newWindow.document.write(`
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <meta charset="UTF-8">
+            <title>${fileName}</title>
             <style>
-                body { margin: 0; padding: 0; font-family: Arial, sans-serif; }
-                pre { padding: 20px; white-space: pre-wrap; word-wrap: break-word; }
-                embed, iframe { border: none; }
+                body { margin: 0; padding: 0; overflow: hidden; }
+                iframe { width: 100%; height: 100vh; border: none; }
             </style>
-        `;
-        if (contentType === "application/pdf") {
-            // PDF files
-            const embed = newWindow.document.createElement("embed");
-            embed.src = blobUrl;
-            embed.type = contentType;
-            embed.width = "100%";
-            embed.height = "100%";
-            newWindow.document.body.appendChild(embed);
-        } else if (contentType.startsWith("image/")) {
-            // Image files
-            newWindow.document.body.style.display = "flex";
-            newWindow.document.body.style.justifyContent = "center";
-            newWindow.document.body.style.alignItems = "center";
-            const img = newWindow.document.createElement("img");
-            img.src = blobUrl;
-            img.style.maxWidth = "100%";
-            img.style.maxHeight = "100vh";
-            img.style.objectFit = "contain";
-            newWindow.document.body.appendChild(img);
-        } else if (contentType.startsWith("text/") ||
-            contentType === "application/json" ||
-            contentType === "application/xml") {
-            const pre = newWindow.document.createElement("pre");
-            const reader = new FileReader();
-            reader.onload = () => {
-                pre.textContent = reader.result;
-            };
-            reader.readAsText(blob);
-            newWindow.document.body.appendChild(pre);
-        } else 
-            newWindow.document.body.innerHTML = `
-                <div style="padding: 40px; text-align: center;">
-                    <h2>Cannot preview this file type</h2>
-                    <p>${fileName}</p>
-                </div>
-            `;
-        }
-        newWindow.addEventListener('unload', () => {
-            URL.revokeObjectURL(blobUrl);
-        });
+        </head>
+        <body>
+            <iframe src="${blobUrl}"></iframe>
+        </body>
+        </html>
+    `);
+    newWindow.document.close();
+    newWindow.addEventListener("unload", () => {
+        URL.revokeObjectURL(blobUrl);
+    });
 };
 
 window.fileService = {
