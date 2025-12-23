@@ -12,7 +12,7 @@ namespace TaskyRevamp.Client.Consumer
 		{
 			_taskyService = taskyService;
 		}
-		public async Task<CommonApiResponse<bool>> AddTaskAttachment(List<AttachmentDto> attachmentsDto, Guid taskItemDto)
+		public async Task<CommonApiResponse<bool>> AddTaskAttachment(List<UploadAttachmentDto> attachmentsDto, Guid taskItemDto)
 		{
 			var url = $"api/TaskAttachment/AddTaskAttachment/{taskItemDto}";
 			var res = await _taskyService.PostJsonAsync<CommonApiResponse<bool>>(url,attachmentsDto);
@@ -24,15 +24,15 @@ namespace TaskyRevamp.Client.Consumer
 			var res = await _taskyService.GetFromJsonAsync<CommonApiResponse<List<AttachmentWithNameDto>>>(url);
 			return res;
 		}
-		public async Task<CommonApiResponse<byte[]>> GetAttachmentInfo(Guid attachmentId)
+		public async Task<CommonApiResponse<byte[]>> GetAttachmentInfo(Guid fileId)
 		{
-			var url = $"api/TaskAttachment/GetAttachmentInfo/{attachmentId}";
+			var url = $"api/TaskAttachment/GetAttachmentInfo/{fileId}";
 			var res = await _taskyService.GetFromJsonAsync<CommonApiResponse<byte[]>>(url);
 			return res;
 		}
-		public async Task<CommonApiResponse<bool>> DeleteAttachment(Guid attachmentId)
+		public async Task<CommonApiResponse<bool>> DeleteAttachment(Guid attachmentId, Guid fileId)
 		{
-			var url = $"api/TaskAttachment/DeleteAttachment/{attachmentId}";
+			var url = $"api/TaskAttachment/DeleteAttachment/{attachmentId}/{fileId}";
 			var res = await _taskyService.DeleteFromJsonAsync<CommonApiResponse<bool>>(url);
 			return res;
 		}

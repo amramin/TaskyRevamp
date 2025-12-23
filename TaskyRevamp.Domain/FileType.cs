@@ -4,8 +4,7 @@ public enum FileType
 {
     Icons,
     Files,
-    Pictures,
+    Images,
     Videos,
-    SurveyLogo,
-    AdvertisementPhoto
+    Logos,
 }

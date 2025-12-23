@@ -8,8 +8,9 @@ namespace TaskyRevamp.Domain.Models.Task;
 public class Attachment : Entity, IHasCreationMetaData
 {
     public string FileName { get; private set; }
-    public byte[] Content { get; private set; }
-    public long Size { get; private set; }
+	public Guid FileId { get; private set; }
+	public long Size { get; private set; }
+    public FileType FileType { get; set; }
 	public Guid TaskAttachmentId { get; set; }
 	public TaskAttachments TaskAttachment { get; set; }
 	public Guid CreatedById { get; set; }
@@ -17,13 +18,14 @@ public class Attachment : Entity, IHasCreationMetaData
 	public User CreatedBy { get; set; }
 
 	private Attachment() { }
-	public Attachment(Guid id, string fileName, byte[] content, Guid taskAttachmentId)
+	public Attachment(Guid id, string fileName, Guid fileId, long size, Guid taskAttachmentId, FileType fileType)
     {
         Id = id;
         FileName = fileName;
-        Content = content;
-        TaskAttachmentId = taskAttachmentId;
-        Size = content?.LongLength ?? 0;
+        FileId = fileId;
+		TaskAttachmentId = taskAttachmentId;
+        Size = size;
+        FileType = fileType;
 	}
 
     public AttachmentDto CopyToDto()
@@ -33,8 +35,8 @@ public class Attachment : Entity, IHasCreationMetaData
             Id = Id,
             TaskAttachmentId = TaskAttachmentId,
             FileName = FileName,
-            Content = Content,
-            Size = Size,
+            FileId = FileId,
+			Size = Size,
             CreatedById = CreatedById,
             CreateDate = CreateDate
         };

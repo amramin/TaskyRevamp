@@ -20,13 +20,11 @@ namespace TaskyRevamp.Client
 		private IOptions<MySettings> _mySettings;
 		private readonly ILocalStorageService _localStorage;
 		private readonly HashSet<string> SupportedAttachmentExtensions = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
-		{
-			".pdf", ".docx", ".doc", ".ppt", ".pptx", ".jpeg", ".jpg", ".png", ".txt", ".csv", ".json", ".xml"
-		};
+		{ ".pdf", ".docx", ".doc", ".ppt", ".pptx", ".jpeg", ".jpg", ".png", ".txt", ".csv", ".json", ".xml"};
 		private readonly HashSet<string> PreviewableExtensions = new(StringComparer.OrdinalIgnoreCase)
-		{
-			".pdf", ".jpeg", ".jpg", ".png", ".txt", ".csv", ".json", ".xml"
-		};
+		{".pdf", ".jpeg", ".jpg", ".png", ".txt", ".csv", ".json", ".xml"};
+		private readonly HashSet<string> AllowedUploadedExtensions = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+		{ ".pdf", ".doc", ".docx", ".xls", ".xlsx", ".ppt", ".pptx", ".txt", ".csv", ".jpg", ".jpeg", ".png" };
 		public FileManagementService(IOptions<MySettings> mySettings, IJSRuntime js, ILocalStorageService localStorage, IStringLocalizer<SharedResources> loc)
 		{
 			JS = js;
@@ -55,6 +53,28 @@ namespace TaskyRevamp.Client
 			}
 			return new ValidationResult { NotValid = false };
 		}
+		public ValidationResult ValidateUploadedFile(IBrowserFile file, long maxSize)
+		{
+			var extension = Path.GetExtension(file.Name);
+			if (!AllowedUploadedExtensions.Contains(extension))
+			{
+				return new ValidationResult
+				{
+					NotValid = true,
+					ValidationMessage = Loc["UnsupportedFileTypeTask"]
+				};
+			}
+			if (file.Size > maxSize)
+			{
+				return new ValidationResult
+				{
+					NotValid = true,
+					ValidationMessage = Loc["FileSizeExceedsLimitTask", maxSize]
+				};
+			}
+			return new ValidationResult { NotValid = false };
+		}
+
 		public bool CanPreview(string fileName)
 		{
 			var ext = Path.GetExtension(fileName);

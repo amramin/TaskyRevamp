@@ -1213,6 +1213,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The selected file exceeds the maximum allowed size of  &quot;{0}&quot; MB. Please upload a smaller file..
+        /// </summary>
+        public static string FileSizeExceedsLimitTask {
+            get {
+                return ResourceManager.GetString("FileSizeExceedsLimitTask", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The file is adding successfully .
         /// </summary>
         public static string filesSuccess {
@@ -2784,6 +2793,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string UnsupportedFileType {
             get {
                 return ResourceManager.GetString("UnsupportedFileType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This file type is not supported. Allowed formats are: pdf, doc, docx, xls, xlsx, .ppt, .pptx, txt, csv, jpg, jpeg, and png.
+        /// </summary>
+        public static string UnsupportedFileTypeTask {
+            get {
+                return ResourceManager.GetString("UnsupportedFileTypeTask", resourceCulture);
             }
         }
         

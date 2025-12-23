@@ -21,7 +21,7 @@ namespace TaskyRevamp.WebAPI.Controllers
 		}
 
 		[HttpPost("AddTaskAttachment/{taskItemId}")]
-		public async Task<ActionResult<bool>> AddTaskAttachment([FromBody] List<AttachmentDto> attachmentsDto, Guid taskItemId)
+		public async Task<ActionResult<bool>> AddTaskAttachment([FromBody] List<UploadAttachmentDto> attachmentsDto, Guid taskItemId)
 		{
 			return Ok(await _mediator.Send(new AddTaskAttachmentCommand(attachmentsDto, taskItemId)));
 		}
@@ -32,16 +32,16 @@ namespace TaskyRevamp.WebAPI.Controllers
 			return Ok(await _mediator.Send(new GetTaskAttachmentsQuery(taskItemId)));
 		}
 
-		[HttpGet("GetAttachmentInfo/{attachmentId}")]
-		public async Task<ActionResult<bool>> GetAttachmentInfo(Guid attachmentId)
+		[HttpGet("GetAttachmentInfo/{fileId}")]
+		public async Task<ActionResult<bool>> GetAttachmentInfo(Guid fileId)
 		{
-			return Ok(await _mediator.Send(new GetFileInfoQuery(attachmentId)));
+			return Ok(await _mediator.Send(new GetFileInfoQuery(fileId)));
 		}
 
-		[HttpDelete("DeleteAttachment/{attachmentId}")]
-		public async Task<ActionResult<bool>> DeleteAttachment(Guid attachmentId)
+		[HttpDelete("DeleteAttachment/{attachmentId}/{fileId}")]
+		public async Task<ActionResult<bool>> DeleteAttachment(Guid attachmentId, Guid fileId)
 		{
-			return Ok(await _mediator.Send(new DeleteAttachmentCommand(attachmentId)));
+			return Ok(await _mediator.Send(new DeleteAttachmentCommand(attachmentId, fileId)));
 		}
 	}
 }

@@ -1110,9 +1110,6 @@
   <data name="AddAttachment" xml:space="preserve">
     <value>إضافة ملف</value>
   </data>
-  <data name="Privilege" xml:space="preserve">
-    <value>صلاحيات</value>
-  </data>
   <data name="Attachments" xml:space="preserve">
     <value>الملفات</value>
   </data>
@@ -1127,5 +1124,14 @@
   </data>
   <data name="SupportedTypes" xml:space="preserve">
     <value>الملفات المدعومة</value>
+  </data>
+  <data name="Privilege" xml:space="preserve">
+    <value>صلاحيات</value>
+  </data>
+  <data name="UnsupportedFileTypeTask" xml:space="preserve">
+    <value>نوع الملف غير مدعوم. الصيغ المسموح بها هي: pdf, doc, docx, xls, xlsx, .ppt, .pptx, txt, csv, jpg, jpeg, و png</value>
+  </data>
+  <data name="FileSizeExceedsLimitTask" xml:space="preserve">
+    <value>الملف المحدد يتجاوز الحد الأقصى المسموح به وهو "{0}" ميجابايت. يُرجى تحميل ملف أصغر حجمًا</value>
   </data>
 </root>

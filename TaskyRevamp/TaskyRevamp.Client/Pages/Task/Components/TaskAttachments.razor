@@ -161,7 +161,7 @@
             var validationRes = _fileManagementService.ValidateAttachment(file, MaxFileSize);
             if (validationRes.NotValid)
             {
-                await ToastService.ShowToastAsync($"<strong>{file.Name}:</strong> {validationRes.ValidationMessage}", "error");
+                await ToastService.ShowToastAsync($"{file.Name}: {validationRes.ValidationMessage}", "error");
                 hasErrors = true;
                 continue;
             }
@@ -174,7 +174,7 @@
         isUploading = true;
         StateHasChanged();
 
-        var attachmentDtos = new List<AttachmentDto>();
+        var attachmentDtos = new List<UploadAttachmentDto>();
         foreach (var file in validFiles)
         {
             uploadingFileName = file.Name;
@@ -182,11 +182,12 @@
             var (bytes, name, type) = await _fileManagementService.ReadFileAsync(file);
             if (bytes != null && bytes.Length > 0)
             {
-                attachmentDtos.Add(new AttachmentDto
-                {
-                    FileName = name,
-                    Content = bytes
-                });
+                attachmentDtos.Add(new UploadAttachmentDto
+                    {
+                        FileName = name,
+                        Bytes = bytes,
+                        Size = bytes.LongLength
+                    });
             }
         }
 
@@ -207,7 +208,7 @@
     }
     private async Task DownloadFile(AttachmentDto attachment)
     {
-        var res = await _taskAttachmentConsumer.GetAttachmentInfo(attachment.Id);
+        var res = await _taskAttachmentConsumer.GetAttachmentInfo(attachment.FileId);
         if (res.Success)
         {
             var content = res.Data;
@@ -219,7 +220,7 @@
     private async Task PreviewFile(AttachmentDto attachment)
     {
         if (!_fileManagementService.CanPreview(attachment.FileName)) return;
-        var res = await _taskAttachmentConsumer.GetAttachmentInfo(attachment.Id);
+        var res = await _taskAttachmentConsumer.GetAttachmentInfo(attachment.FileId);
         if (res.Success && res.Data != null)
         {
             var contentType = _fileManagementService.GetMimeType(attachment.FileName);
@@ -237,7 +238,7 @@
     {
         if (confirmed && selectedAttachment != null)
         {
-            var result = await _taskAttachmentConsumer.DeleteAttachment(selectedAttachment.AttachmentDto.Id);
+            var result = await _taskAttachmentConsumer.DeleteAttachment(selectedAttachment.AttachmentDto.Id, selectedAttachment.AttachmentDto.FileId);
             if (result.Success)
             {
                 attachmentsDto.Remove(selectedAttachment);
