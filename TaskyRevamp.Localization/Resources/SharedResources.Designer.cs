@@ -2905,6 +2905,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Link user.
+        /// </summary>
+        public static string userLink {
+            get {
+                return ResourceManager.GetString("userLink", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to User name.
         /// </summary>
         public static string username {

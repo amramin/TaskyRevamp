@@ -1137,4 +1137,7 @@
   <data name="ReopenFailed" xml:space="preserve">
     <value>Reopen Failed</value>
   </data>
+  <data name="userLink" xml:space="preserve">
+    <value>Link user</value>
+  </data>
 </root>
