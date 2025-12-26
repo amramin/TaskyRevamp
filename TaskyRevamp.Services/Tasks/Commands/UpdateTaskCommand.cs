@@ -38,33 +38,33 @@ public class UpdateTaskCommandHandler : IRequestHandler<UpdateTaskCommand, bool>
             {
                 if (request.Task.ActualProcess == 0 && (request.Task.StartDate > DateTime.Now))
                 {
-                    task.StatusId = TaskSatuses.Value.FirstOrDefault(s => s.NameEnglish == "Not started").Id;
+                    task.StatusId =Guid.Parse("547022EA-EF8C-4FBC-2236-08DE3318A61C");
                 }
                 else if (request.Task.ActualProcess == 0 && (request.Task.StartDate <= DateTime.Now))
                 {
                     if (request.Task.EndDate < DateTime.Now)
                     {
-                        task.StatusId = TaskSatuses.Value.FirstOrDefault(s => s.NameEnglish == "Delayed").Id;
+                        task.StatusId = Guid.Parse("270A78EB-C5CA-475D-2239-08DE3318A61C");
                     }
                     else
                     {
-                        task.StatusId = TaskSatuses.Value.FirstOrDefault(s => s.NameEnglish == "To do").Id;
+                        task.StatusId = Guid.Parse("9843AF9D-1389-4740-B428-08DE3D8A77AB");
                     }
                 }
                 else if (request.Task.ActualProcess > 0 && request.Task.ActualProcess < 100)
                 {
                     if(request.Task.EndDate < DateTime.Now)
                     {
-                        task.StatusId = TaskSatuses.Value.FirstOrDefault(s => s.NameEnglish == "Delayed").Id;
+                        task.StatusId = Guid.Parse("270A78EB-C5CA-475D-2239-08DE3318A61C");
                     }
                     else
                     {
-                        task.StatusId = TaskSatuses.Value.FirstOrDefault(s => s.NameEnglish == "In progress").Id;
+                        task.StatusId = Guid.Parse("753404A6-8B18-43F7-2238-08DE3318A61C");
                     }
                 }
                 else if (request.Task.ActualProcess == 100)
                 {
-                    task.StatusId = TaskSatuses.Value.FirstOrDefault(s => s.NameEnglish == "Pending review").Id;
+                    task.StatusId = Guid.Parse("6EE4574D-C439-45B4-223A-08DE3318A61C");
                 }
             }
         }

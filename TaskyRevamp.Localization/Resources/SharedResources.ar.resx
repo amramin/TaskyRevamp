@@ -737,13 +737,13 @@
     <value>إضافة مهمة</value>
   </data>
   <data name="TitleEnglish" xml:space="preserve">
-    <value>العنوان الإنجليزية</value>
+    <value>العنوان </value>
   </data>
   <data name="TitleArabic" xml:space="preserve">
     <value>العنوان بالعربيه</value>
   </data>
   <data name="DescriptionEnglish" xml:space="preserve">
-    <value>الوصف بالانجليزيه </value>
+    <value>الوصف </value>
   </data>
   <data name="DescriptionArabic" xml:space="preserve">
     <value>الوصف بالعربيه</value>
@@ -1104,9 +1104,6 @@
   <data name="NoUsersPrivilege" xml:space="preserve">
     <value>لا يوجد مستخدمون مرتبطون بهذه الصلاحية</value>
   </data>
-  <data name="Privilege" xml:space="preserve">
-    <value>صلاحيات</value>
-  </data>
   <data name="SureCompleteTask" xml:space="preserve">
     <value>هل تريد اكمال المهمة</value>
   </data>
@@ -1130,5 +1127,23 @@
   </data>
   <data name="ReopenFailed" xml:space="preserve">
     <value>لم يتم ارجاع المهمة</value>
+  </data>
+  <data name="Comments" xml:space="preserve">
+    <value>التعليقات</value>
+  </data>
+  <data name="file" xml:space="preserve">
+    <value>ارفاق ملف</value>
+  </data>
+  <data name="Privilege" xml:space="preserve">
+    <value>صلاحيات</value>
+  </data>
+  <data name="AddDescription" xml:space="preserve">
+    <value>اضافه وصف المهمة......</value>
+  </data>
+  <data name="AddComment" xml:space="preserve">
+    <value>اضافه تعليق ............</value>
+  </data>
+  <data name="LoadEditor" xml:space="preserve">
+    <value>تحميل محرر الكتابة .............</value>
   </data>
 </root>

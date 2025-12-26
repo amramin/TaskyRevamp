@@ -736,13 +736,13 @@
     <value>Add task</value>
   </data>
   <data name="TitleEnglish" xml:space="preserve">
-    <value>Title english</value>
+    <value>Title</value>
   </data>
   <data name="TitleArabic" xml:space="preserve">
     <value>Title Arabic</value>
   </data>
   <data name="DescriptionEnglish" xml:space="preserve">
-    <value>Description english</value>
+    <value>Description</value>
   </data>
   <data name="DescriptionArabic" xml:space="preserve">
     <value>Description arabic</value>
@@ -1124,5 +1124,20 @@
   </data>
   <data name="ReopenFailed" xml:space="preserve">
     <value>Reopen Failed</value>
+  </data>
+  <data name="Comments" xml:space="preserve">
+    <value>Comments</value>
+  </data>
+  <data name="file" xml:space="preserve">
+    <value>Upload file</value>
+  </data>
+  <data name="AddDescription" xml:space="preserve">
+    <value>Add description ........</value>
+  </data>
+  <data name="AddComment" xml:space="preserve">
+    <value>Add  Comment................</value>
+  </data>
+  <data name="LoadEditor" xml:space="preserve">
+    <value>Load editor..........</value>
   </data>
 </root>

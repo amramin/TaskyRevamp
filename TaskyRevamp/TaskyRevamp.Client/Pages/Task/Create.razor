@@ -11,12 +11,13 @@
 @inject ToastService ToastService
 @inject TaskConsumer _taskonsumer
 @inject NavigationManager navigationManager
+@inject PopupService PopupService
 
 @inject IStringLocalizer<SharedResources> Loc
 
 @if (IsLoaded)
 {
-    <Form ButtonText="@Loc["Add"]" taskdto="@Taskdto" OnValidSubmit="@Creat" />
+    <Form ButtonText="@Loc["Add"]" OnCancel="Cancel" taskdto="@Taskdto" OnValidSubmit="@Creat" />
 }
 
 
@@ -25,6 +26,7 @@
     [Parameter]
     public bool IsAdmine { set; get; }
     [Parameter] public EventCallback<CreateTaskDto> OnValidSubmit { get; set; }
+    [Parameter] public EventCallback OnCancel { get; set; }
 
     bool IsLoaded = false;
     protected override async Task OnInitializedAsync()
@@ -44,6 +46,9 @@
 
         //await OnValidSubmit.InvokeAsync(Taskdto);
      }
-      
+    private void Cancel()
+    {
+        PopupService.Hide();
+    }
     }
 

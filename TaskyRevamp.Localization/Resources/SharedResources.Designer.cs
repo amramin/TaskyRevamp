@@ -187,6 +187,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add  Comment.................
+        /// </summary>
+        public static string AddComment {
+            get {
+                return ResourceManager.GetString("AddComment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add delegation.
         /// </summary>
         public static string AddDelegation {
@@ -201,6 +210,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string AddDepartment {
             get {
                 return ResourceManager.GetString("AddDepartment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add description .........
+        /// </summary>
+        public static string AddDescription {
+            get {
+                return ResourceManager.GetString("AddDescription", resourceCulture);
             }
         }
         
@@ -462,6 +480,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string ClearSearch {
             get {
                 return ResourceManager.GetString("ClearSearch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Comments.
+        /// </summary>
+        public static string Comments {
+            get {
+                return ResourceManager.GetString("Comments", resourceCulture);
             }
         }
         
@@ -835,7 +862,7 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Description english.
+        ///   Looks up a localized string similar to Description.
         /// </summary>
         public static string DescriptionEnglish {
             get {
@@ -1204,6 +1231,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Upload file.
+        /// </summary>
+        public static string file {
+            get {
+                return ResourceManager.GetString("file", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to File Not Valid.
         /// </summary>
         public static string FileNotValid {
@@ -1506,6 +1542,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string ListWeek {
             get {
                 return ResourceManager.GetString("ListWeek", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Load editor...........
+        /// </summary>
+        public static string LoadEditor {
+            get {
+                return ResourceManager.GetString("LoadEditor", resourceCulture);
             }
         }
         
@@ -2671,7 +2716,7 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Title english.
+        ///   Looks up a localized string similar to Title.
         /// </summary>
         public static string TitleEnglish {
             get {

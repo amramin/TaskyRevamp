@@ -16,6 +16,7 @@ namespace TaskyRevamp.Infrastructure.Seeders
 			{
 				new StatusSettings
 				{
+					Id=Guid.Parse("547022EA-EF8C-4FBC-2236-08DE3318A61C"),
 					NameEnglish = "Not started",
 					NameArabic = "لم تبدأ",
 					NameColor = "#CCCCCC",
@@ -23,49 +24,56 @@ namespace TaskyRevamp.Infrastructure.Seeders
 				},
 				new StatusSettings
 				{
-					NameEnglish = "To do",
+                    Id=Guid.Parse("9843AF9D-1389-4740-B428-08DE3D8A77AB"),
+                    NameEnglish = "To do",
 					NameArabic = "قيد الإنتظار",
 					NameColor = "#007BFF",
 					BackgroundColor = "#E5F2FF"
 				},
 				new StatusSettings
 				{
-					NameEnglish = "In progress",
+                    Id=Guid.Parse("753404A6-8B18-43F7-2238-08DE3318A61C"),
+                    NameEnglish = "In progress",
 					NameArabic = "قيد التنفيذ",
 					NameColor = "#FFC107",
 					BackgroundColor = "#FFF9E6"
 				},
 				new StatusSettings
 				{
-					NameEnglish = "Delayed",
+                    Id=Guid.Parse("270A78EB-C5CA-475D-2239-08DE3318A61C"),
+                    NameEnglish = "Delayed",
 					NameArabic = "متأخرة",
 					NameColor = "#FDEAEA",
 					BackgroundColor = "#E82C2C"
 				},
 				new StatusSettings
 				{
-					NameEnglish = "Pending review",
+                    Id=Guid.Parse("6EE4574D-C439-45B4-223A-08DE3318A61C"),
+                    NameEnglish = "Pending review",
 					NameArabic = "في انتظار المراجعة",
 					NameColor = "#6F42C1",
 					BackgroundColor = "#F1ECF9"
 				},
 				new StatusSettings
 				{
-					NameEnglish = "Reopened",
+                    Id=Guid.Parse("E1319FC1-8CB8-495C-223B-08DE3318A61C"),
+                    NameEnglish = "Reopened",
 					NameArabic = "تم إرجاعها",
 					NameColor = "#FD7E14",
 					BackgroundColor = "#FFF2E7"
 				},
 				new StatusSettings
 				{
-					NameEnglish = "Completed",
+                    Id=Guid.Parse("C8D504C7-9402-4F91-223C-08DE3318A61C"),
+                    NameEnglish = "Completed",
 					NameArabic = "مكتملة",
 					NameColor = "#28A745",
 					BackgroundColor = "#E9F6EC"
 				},
 				new StatusSettings
 				{
-					NameEnglish = "soft-deleted",
+                    Id=Guid.Parse("D8E94CCE-586A-46D3-223D-08DE3318A61C"),
+                    NameEnglish = "soft-deleted",
 					NameArabic = "مؤرشفة",
 					NameColor = "#979EAB",
 					BackgroundColor = "#F8F9FA"

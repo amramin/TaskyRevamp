@@ -9,10 +9,8 @@ using Type = TaskyRevamp.Domain.Models.SystemConfiguration.Type;
 namespace TaskyRevamp.Domain.Models.Task;
 public class TaskItem : Entity, IHasCreationMetaData, IHasUpdateMetaData
 {
-    public string TitleEnglish { get; set; }
-    public string TitleArabic { get; set; }
-    public string? DescriptionEnglish { get; set; }
-    public string? DescriptionArabic { get; set; }
+    public string Title { get; set; }
+    public string? Description { get; set; }
     public Guid TaskTypeId { set; get; }
     public Type Type { get; set; }
     public Guid TaskSourceId { set; get; }
@@ -136,18 +134,16 @@ public class TaskItem : Entity, IHasCreationMetaData, IHasUpdateMetaData
     public User? UpdatedBy { get; set; }
     public Guid FileId { get; set; }
     public TaskItem() { }
-    public TaskItem(Guid id, Guid fle, string titleEnglish, string titleArabic, string descEN, string descAR, Guid type, Guid source, DateTime start, DateTime end, Guid priority, Weight plannedWeight, Guid creatorid, List<Department> assgndep, List<Guid> assigids, DateTime? rmind, int actualprocess, int wight, List<Guid> dependcy)
+    public TaskItem(Guid id, Guid fle, string title, string desc, Guid type, Guid source, DateTime start, DateTime end, Guid priority, Weight plannedWeight, Guid creatorid, List<Department> assgndep, List<Guid> assigids, DateTime? rmind, int actualprocess, int wight, List<Guid> dependcy)
     {
         if (end < start) throw new ArgumentException("End date must be after start date.");
         Id = id;
-        TitleEnglish = titleEnglish;
-        TitleArabic = titleArabic;
+        Title = title;
         FileId = fle;
         //AssignedDepartments = assgndep;
         AssignedDepartmentIds = assgndep.Select(k => k.Id).ToList();
         AssignedIds = assigids;
-        DescriptionEnglish = descEN;
-        DescriptionArabic = descAR;
+        Description = desc;
         TaskTypeId = type;
         TaskSourceId = source;
         StartDate = start;
@@ -184,17 +180,14 @@ public class TaskItem : Entity, IHasCreationMetaData, IHasUpdateMetaData
     public bool SetData(CreateTaskDto tsakdto)
     {
         Id = tsakdto.Id;
-        DescriptionArabic = tsakdto.DescriptionArabic;
-        TitleEnglish = tsakdto.TitleEnglish;
-        TitleArabic = tsakdto.TitleArabic;
-        DescriptionEnglish = tsakdto.DescriptionEnglish;
+        Description = tsakdto.Description;
+        Title = tsakdto.Title;
         return true;
 
     }
-    public void UpdateTitle(string titleEn, string titleAR, User by)
+    public void UpdateTitle(string title, User by)
     {
-        TitleEnglish = titleEn;
-        TitleArabic = titleAR;
+        Title = title;
         AddHistoryEntry(by, $"updated the title");
     }
     public void UpdateStatus(StatusSettings taskStus, User by)
@@ -207,10 +200,8 @@ public class TaskItem : Entity, IHasCreationMetaData, IHasUpdateMetaData
         return new CreateTaskDto
         {
             Id = Id,
-            DescriptionArabic = DescriptionArabic,
-            DescriptionEnglish = DescriptionEnglish,
-            TitleEnglish = TitleEnglish,
-            TitleArabic = TitleArabic,
+            Description = Description,
+            Title = Title,
             Plannedweight = PlannedWeight.Value,
             ActualWeight = ActualWeight.Value,
             weight = Weight,
@@ -231,10 +222,9 @@ public class TaskItem : Entity, IHasCreationMetaData, IHasUpdateMetaData
 			AssignedDepartmentIds = AssignedDepartmentIds?.ToList() ?? new List<Guid>()
 		};
     }
-    public void UpdateDescription(string descEN, string descAR, User by)
+    public void UpdateDescription(string desc, User by)
     {
-        DescriptionEnglish = descEN;
-        DescriptionArabic = descAR;
+        Description = desc;
         AddHistoryEntry(by, $"updated the description");
     }
 

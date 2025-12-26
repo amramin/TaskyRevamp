@@ -14,14 +14,8 @@ public class CreateTaskDto
 {
     public Guid Id { get; set; }
     [Required(ErrorMessageResourceType = typeof(SharedResources), ErrorMessageResourceName = ValidationDto.Required)]
-    public string TitleEnglish { get; set; }
-    [Required(ErrorMessageResourceType = typeof(SharedResources), ErrorMessageResourceName = ValidationDto.Required)]
-    public string TitleArabic { get; set; }
-    public string Title => Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName == "ar" ? TitleArabic : TitleEnglish;
-    public string? DescriptionEnglish { get; set; }
-    public string? DescriptionArabic { get; set; }
-    public string? Description => Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName == "ar" ? DescriptionArabic : DescriptionEnglish;
-
+    public string Title { get; set; }
+    public string? Description { get; set; }
     public DateTime StartDate { get; set; }
     public DateTime EndDate { get; set; }
     public DateTime? ReminderDate { get; set; }

@@ -53,9 +53,8 @@ public class CreateTaskHandler : IRequestHandler<CreateTaskCommand, string>
             if (fileid == null || fileid == Guid.Empty)
                 throw new Exception("file Not Found");
         }
-        var task = new TaskItem(request.CreateTaskDto.Id, fileid, request.CreateTaskDto.TitleEnglish,
-            request.CreateTaskDto.TitleArabic, request.CreateTaskDto.DescriptionEnglish,
-            request.CreateTaskDto.DescriptionArabic, request.CreateTaskDto.TypeId, request.CreateTaskDto.SourceId,
+        var task = new TaskItem(request.CreateTaskDto.Id, fileid, request.CreateTaskDto.Title, request.CreateTaskDto.Description,
+             request.CreateTaskDto.TypeId, request.CreateTaskDto.SourceId,
             request.CreateTaskDto.StartDate, request.CreateTaskDto.EndDate,
          request.CreateTaskDto.Priority
             , new Weight(request.CreateTaskDto.weight), user.Value.Id, departments.Value.ToList(),
@@ -64,17 +63,17 @@ public class CreateTaskHandler : IRequestHandler<CreateTaskCommand, string>
         {
             if (request.CreateTaskDto.ActualProcess == 0&&(request.CreateTaskDto.StartDate>DateTime.Now))
             {
-                task.StatusId = TaskSatuses.Value.FirstOrDefault(s => s.NameEnglish == "Not started").Id;
+                task.StatusId = Guid.Parse("547022EA-EF8C-4FBC-2236-08DE3318A61C");
             }else if(request.CreateTaskDto.ActualProcess == 0 && (request.CreateTaskDto.StartDate <= DateTime.Now))
             {
-                task.StatusId = TaskSatuses.Value.FirstOrDefault(s => s.NameEnglish == "To do").Id;
+                task.StatusId = Guid.Parse("9843AF9D-1389-4740-B428-08DE3D8A77AB");
             }
             else if (request.CreateTaskDto.ActualProcess > 0 && request.CreateTaskDto.ActualProcess < 100)
             {
-                task.StatusId = TaskSatuses.Value.FirstOrDefault(s => s.NameEnglish == "In progress").Id;
+                task.StatusId = Guid.Parse("753404A6-8B18-43F7-2238-08DE3318A61C");
             } else if (request.CreateTaskDto.ActualProcess == 100)
             {
-                task.StatusId = TaskSatuses.Value.FirstOrDefault(s => s.NameEnglish == "Pending review").Id;
+                task.StatusId = Guid.Parse("6EE4574D-C439-45B4-223A-08DE3318A61C"); 
             }
         }
 
