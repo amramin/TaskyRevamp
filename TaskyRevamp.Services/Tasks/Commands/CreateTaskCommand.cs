@@ -22,30 +22,27 @@ public record CreateTaskCommand(CreateTaskDto CreateTaskDto) : IRequest<string>;
 public class CreateTaskHandler : IRequestHandler<CreateTaskCommand, string>
 {
     private readonly IRepository<TaskItem> _taskRepository;
-    private readonly IRepository<StatusSettings> _statusSettings;
-    private readonly IRepository<User> _userRepository;
     private readonly IRepository<Attachment> _attachmentRepository;
     private readonly IRepository<TaskAttachment> _taskAttachmentRepository;
+    private readonly IRepository<StatusSettings> _statusSettings;
+    private readonly IRepository<User> _userRepository;
     private readonly IRepository<Department> _depRepository;
     private readonly IFileManagement _fileManagement;
-	private readonly HashSet<string> AllowedUploadedExtensions = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
-		{ ".pdf", ".doc", ".docx", ".xls", ".xlsx", ".ppt", ".pptx", ".txt", ".csv", ".jpg", ".jpeg", ".png" };
-	public CreateTaskHandler(IRepository<TaskItem> taskRepository, IRepository<User> userRepository,
-        IRepository<Department> depRepository, IRepository<StatusSettings> statusSettings, IFileManagement fileManagement
- IFileManagement fileManagement, IRepository<Attachment> attachmentRepository, IRepository<TaskAttachment> taskAttachmentRepository)
-	{
-		_taskRepository = taskRepository;
-		_userRepository = userRepository;
-		_depRepository = depRepository;
-		_fileManagement = fileManagement;
-
+    private readonly HashSet<string> AllowedUploadedExtensions = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+        { ".pdf", ".doc", ".docx", ".xls", ".xlsx", ".ppt", ".pptx", ".txt", ".csv", ".jpg", ".jpeg", ".png" };
+    public CreateTaskHandler(IRepository<TaskItem> taskRepository, IRepository<User> userRepository, IRepository<StatusSettings> statusSettings,
+        IRepository<Department> depRepository, IFileManagement fileManagement, IRepository<Attachment> attachmentRepository, IRepository<TaskAttachment> taskAttachmentRepository)
+    {
+        _taskRepository = taskRepository;
+        _userRepository = userRepository;
+        _depRepository = depRepository;
+        _fileManagement = fileManagement;
+        _attachmentRepository = attachmentRepository;
+        _taskAttachmentRepository = taskAttachmentRepository;
         _statusSettings = statusSettings;
-		_attachmentRepository = attachmentRepository;
-		_taskAttachmentRepository = taskAttachmentRepository;
-	}
+    }
 
-
-	public async Task<string> Handle(CreateTaskCommand request, CancellationToken cancellationToken)
+    public async Task<string> Handle(CreateTaskCommand request, CancellationToken cancellationToken)
     {
         var user = await _userRepository.FindByKey(request.CreateTaskDto.CreatedBy.Value);
         if (user is null || user.IsFailure || user.Value is null)
@@ -54,63 +51,63 @@ public class CreateTaskHandler : IRequestHandler<CreateTaskCommand, string>
         var departments = await _depRepository.FindBy(k => request.CreateTaskDto.AssignedDepartmentIds.Contains(k.Id));
         if (departments is null || departments.IsFailure || departments.Value is null)
             throw new Exception("Departments Not Found");
-        
-        var task = new TaskItem(request.CreateTaskDto.Id, request.CreateTaskDto.TitleEnglish,
-            request.CreateTaskDto.TitleArabic, request.CreateTaskDto.DescriptionEnglish!,
-            request.CreateTaskDto.DescriptionArabic!, request.CreateTaskDto.TypeId, request.CreateTaskDto.SourceId,
+
+        var task = new TaskItem(request.CreateTaskDto.Id, request.CreateTaskDto.Title,
+             request.CreateTaskDto.Description!,
+             request.CreateTaskDto.TypeId, request.CreateTaskDto.SourceId,
             request.CreateTaskDto.StartDate, request.CreateTaskDto.EndDate,
          request.CreateTaskDto.Priority
             , new Weight(request.CreateTaskDto.weight), user.Value.Id, departments.Value.ToList(),
             request.CreateTaskDto.AssignedIds, request.CreateTaskDto.ReminderDate, request.CreateTaskDto.ActualProcess, request.CreateTaskDto.weight, request.CreateTaskDto.Dependencies);
-        if(TaskSatuses is not null)
+
+        if (TaskSatuses is not null)
         {
-            if (request.CreateTaskDto.ActualProcess == 0&&(request.CreateTaskDto.StartDate>DateTime.Now))
+            if (request.CreateTaskDto.ActualProcess == 0 && (request.CreateTaskDto.StartDate > DateTime.Now))
             {
                 task.StatusId = TaskSatuses.Value.FirstOrDefault(s => s.NameEnglish == "Not started").Id;
-            }else if(request.CreateTaskDto.ActualProcess == 0 && (request.CreateTaskDto.StartDate <= DateTime.Now))
+            }
+            else if (request.CreateTaskDto.ActualProcess == 0 && (request.CreateTaskDto.StartDate <= DateTime.Now))
             {
                 task.StatusId = TaskSatuses.Value.FirstOrDefault(s => s.NameEnglish == "To do").Id;
             }
             else if (request.CreateTaskDto.ActualProcess > 0 && request.CreateTaskDto.ActualProcess < 100)
             {
                 task.StatusId = TaskSatuses.Value.FirstOrDefault(s => s.NameEnglish == "In progress").Id;
-            } else if (request.CreateTaskDto.ActualProcess == 100)
+            }
+            else if (request.CreateTaskDto.ActualProcess == 100)
             {
                 task.StatusId = TaskSatuses.Value.FirstOrDefault(s => s.NameEnglish == "Pending review").Id;
             }
         }
-            request.CreateTaskDto.AssignedIds!, request.CreateTaskDto.ReminderDate, request.CreateTaskDto.ActualProcess, request.CreateTaskDto.weight, request.CreateTaskDto.Dependencies);
-
-		await _taskRepository.Insert(task);
-
-		if (request.CreateTaskDto.uploadAttachmentDtos.Any())
-		{
-			var attachmnentsDto = request.CreateTaskDto.uploadAttachmentDtos.ToList();
-			await uploadTaskFiles(attachmnentsDto, task.Id);
-		}
-		return task.Id.ToString();
+        await _taskRepository.Insert(task);
+        if (request.CreateTaskDto.uploadAttachmentDtos.Any())
+        {
+            var attachmnentsDto = request.CreateTaskDto.uploadAttachmentDtos.ToList();
+            await uploadTaskFiles(attachmnentsDto, task.Id);
+        }
+        return task.Id.ToString();
     }
 
-    public async Task uploadTaskFiles(List<UploadAttachmentDto> uploadAttachmentDtos,Guid taskId)
+    public async Task uploadTaskFiles(List<UploadAttachmentDto> uploadAttachmentDtos, Guid taskId)
     {
-		var taskAttachmentsResult = await _taskAttachmentRepository.FindBy(t => t.TaskItemId == taskId);
-		TaskAttachment taskAttachments;
-		if (!taskAttachmentsResult.Success || taskAttachmentsResult.Value == null || !taskAttachmentsResult.Value.Any())
-		{
-			taskAttachments = new TaskAttachment{ Id = Guid.NewGuid(), TaskItemId = taskId};
-			await _taskAttachmentRepository.Insert(taskAttachments);
-		}
-		else
-			taskAttachments = taskAttachmentsResult.Value.FirstOrDefault()!;
-		foreach (var dto in uploadAttachmentDtos)
-		{
-			var extension = Path.GetExtension(dto.FileName)?.ToLower();
-			if (!AllowedUploadedExtensions.Contains(extension!))
-				continue;
-			var fileType = _fileManagement.ResolveFileType(dto.FileName);
-			var fileId = await _fileManagement.UploadFile(dto.Bytes, dto.FileName, fileType);
-			var attachment = new Attachment(Guid.NewGuid(), dto.FileName, fileId, dto.Size, taskAttachments.Id, fileType);
-			await _attachmentRepository.Insert(attachment);
-		}
-	}
+        var taskAttachmentsResult = await _taskAttachmentRepository.FindBy(t => t.TaskItemId == taskId);
+        TaskAttachment taskAttachments;
+        if (!taskAttachmentsResult.Success || taskAttachmentsResult.Value == null || !taskAttachmentsResult.Value.Any())
+        {
+            taskAttachments = new TaskAttachment { Id = Guid.NewGuid(), TaskItemId = taskId };
+            await _taskAttachmentRepository.Insert(taskAttachments);
+        }
+        else
+            taskAttachments = taskAttachmentsResult.Value.FirstOrDefault()!;
+        foreach (var dto in uploadAttachmentDtos)
+        {
+            var extension = Path.GetExtension(dto.FileName)?.ToLower();
+            if (!AllowedUploadedExtensions.Contains(extension!))
+                continue;
+            var fileType = _fileManagement.ResolveFileType(dto.FileName);
+            var fileId = await _fileManagement.UploadFile(dto.Bytes, dto.FileName, fileType);
+            var attachment = new Attachment(Guid.NewGuid(), dto.FileName, fileId, dto.Size, taskAttachments.Id, fileType);
+            await _attachmentRepository.Insert(attachment);
+        }
+    }
 }

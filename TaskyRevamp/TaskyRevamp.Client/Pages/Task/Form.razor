@@ -104,19 +104,8 @@
                                         <span class="text-danger"> *</span>
                                     }
                                 </label>
-                                <InputText class="form-control" @bind-Value="taskdto.TitleEnglish" placeholder="@Loc["NameEnglish"]" />
-                                <ValidationMessage class="small text-danger" For="@(() => taskdto.TitleEnglish)"></ValidationMessage>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">
-                                    @Loc["TitleArabic"]
-                                    @if (column.IsMandatory)
-                                    {
-                                        <span class="text-danger"> *</span>
-                                    }
-                                </label>
-                                <InputText class="form-control" @bind-Value="taskdto.TitleArabic" placeholder="@Loc["NameEnglish"]" />
-                                <ValidationMessage class="small text-danger" For="@(() => taskdto.TitleArabic)"></ValidationMessage>
+                                <InputText class="form-control" @bind-Value="taskdto.Title" placeholder="@Loc["NameEnglish"]" />
+                                <ValidationMessage class="small text-danger" For="@(() => taskdto.Title)"></ValidationMessage>
                             </div>
 
                             break;
@@ -136,38 +125,12 @@
 
 
                                         <RichTextEditorComponent EditorId="RTE_English2" @ref="RichTextEditorComponentRefDescriptionEnglish"
-                                                                 Content="@taskdto.DescriptionEnglish" ContentChanged="OnDescriptionEnglishChanged">
+                                                                 Content="@taskdto.Description" ContentChanged="OnDescriptionEnglishChanged">
                                         </RichTextEditorComponent>
 
                                         <div class="d-flex align-items-center justify-content-between">
                                             <div class="d-flex gap-2">
-                                                <ValidationMessage class="small text-danger" For="@(() => taskdto.DescriptionEnglish)" />
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">
-                                    @Loc["DescriptionArabic"]
-                                    @if (column.IsMandatory)
-                                    {
-                                        <span class="text-danger"> *</span>
-                                    }
-                                </label>
-
-                                <div class="col-lg-12">
-                                    <div class="mb-2">
-
-
-                                        <RichTextEditorComponent EditorId="RTE_English3" @ref="RichTextEditorComponentRefDescriptionArabic"
-                                                                 Content="@taskdto.DescriptionArabic" ContentChanged="OnContentDescriptionArabicChanged">
-                                        </RichTextEditorComponent>
-
-                                        <div class="d-flex align-items-center justify-content-between">
-                                            <div class="d-flex gap-2">
-                                                <ValidationMessage class="small text-danger" For="@(() => taskdto.DescriptionArabic)" />
+                                                <ValidationMessage class="small text-danger" For="@(() => taskdto.Description)" />
                                             </div>
                                         </div>
                                     </div>
@@ -297,9 +260,8 @@
                             break;
                         case "Assigned to":
                             <div class="mb-3">
-
-                            @Loc["AssignedTo"]
-
+                                <label class="form-label">
+                                    @Loc["AssignedTo"]
                                     @if (column.IsMandatory)
                                     {
                                         <span class="text-danger">*</span>
@@ -520,11 +482,11 @@
     }
     private void OnContentDescriptionArabicChanged(string html)
     {
-        taskdto.DescriptionArabic = html;
+        taskdto.Description = html;
     }
     private void OnDescriptionEnglishChanged(string html)
     {
-        taskdto.DescriptionEnglish = html;
+        taskdto.Description = html;
     }
     protected async override Task OnInitializedAsync()
     {

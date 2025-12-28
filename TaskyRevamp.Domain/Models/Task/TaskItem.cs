@@ -134,12 +134,11 @@ public class TaskItem : Entity, IHasCreationMetaData, IHasUpdateMetaData
     public User? UpdatedBy { get; set; }
     public Guid FileId { get; set; }
     public TaskItem() { }
-    public TaskItem(Guid id, Guid fle, string title, string desc, Guid type, Guid source, DateTime start, DateTime end, Guid priority, Weight plannedWeight, Guid creatorid, List<Department> assgndep, List<Guid> assigids, DateTime? rmind, int actualprocess, int wight, List<Guid> dependcy)
+    public TaskItem(Guid id, string title, string desc, Guid type, Guid source, DateTime start, DateTime end, Guid priority, Weight plannedWeight, Guid creatorid, List<Department> assgndep, List<Guid> assigids, DateTime? rmind, int actualprocess, int wight, List<Guid> dependcy)
     {
         if (end < start) throw new ArgumentException("End date must be after start date.");
         Id = id;
         Title = title;
-        FileId = fle;
         //AssignedDepartments = assgndep;
         AssignedDepartmentIds = assgndep.Select(k => k.Id).ToList();
         AssignedIds = assigids;
