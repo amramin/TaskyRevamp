@@ -34,7 +34,7 @@
                 <span class="rounded-circle cl-preview" style="background-color:@Priority.NameColor"></span>
 
                 <span class="color-indicator">
-                    <input type="color" id="color-name" @bind="Priority.NameColor" />
+                    <input type="color" id="color-name" value="@Priority.NameColor" @onchange="OnNameColorChanged"/>
                     <label for="color-name">
                         <SVGCrud SVGType="SVGCrud.SVGTypeEnum.ColorPalette"></SVGCrud>
                     </label>
@@ -55,7 +55,7 @@
                 <span class="rounded-circle cl-preview" style="background-color:@Priority.BackgroundColor"></span>
 
                 <span class="color-indicator">
-                    <input type="color" id="bg-name" @bind="Priority.BackgroundColor" />
+                    <input type="color" id="bg-name" value="@Priority.BackgroundColor" @onchange="OnBackgroundColorChanged" />
                     <label for="bg-name">
                         <SVGCrud SVGType="SVGCrud.SVGTypeEnum.ColorPalette"></SVGCrud>
                     </label>
@@ -139,5 +139,21 @@
     {
         messageStore.Clear();
         editContext.NotifyValidationStateChanged();
+    }
+    private void OnNameColorChanged(ChangeEventArgs e)
+    {
+        Priority.NameColor = e.Value?.ToString();
+
+        editContext.NotifyFieldChanged(
+            new FieldIdentifier(Priority, nameof(Priority.NameColor))
+        );
+    }
+    private void OnBackgroundColorChanged(ChangeEventArgs e)
+    {
+        Priority.BackgroundColor = e.Value?.ToString();
+
+        editContext.NotifyFieldChanged(
+            new FieldIdentifier(Priority, nameof(Priority.BackgroundColor))
+        );
     }
 }

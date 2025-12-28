@@ -1167,4 +1167,7 @@
     <value>The selected file exceeds the maximum allowed size of  "{0}" MB. Please upload a smaller file.</value>
   </data>
 
+  <data name="userLink" xml:space="preserve">
+    <value>Link user</value>
+  </data>
 </root>

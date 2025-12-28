@@ -147,7 +147,11 @@ else
         await LoadUsers();
     }
     private void Add() => PopupService.ShowNew(@<LinkUsersToPrivilege Id="Id" OnSaved="ReloadAfterSave"></LinkUsersToPrivilege>,Loc["LinkUser"]);
-    private void ViewPrivilege(Guid? id) => navigationManager.NavigateTo($"/privilege?mode=view&id={id}");
+    private void ViewPrivilege(Guid? id)
+    {
+        var currentUrl = navigationManager.Uri;
+        navigationManager.NavigateTo($"/privilege?mode=view&id={id}&ReturnUrl={Uri.EscapeDataString(currentUrl)}");
+    }
 
     private async Task ReloadAfterSave()
     {
