@@ -12,7 +12,6 @@
         @if (ShowViewedBy && Task?.ViewdByNames != null && Task.ViewdByNames.Any())
         {
             <div class="d-flex align-items-center gap-2">
-                <span class="text-muted small">@Loc["ViewedBy"]:</span>
                 <div class="d-flex align-items-center">
                     @{
                         var visibleViewers = Task.ViewdByNames.Take(2).ToList();

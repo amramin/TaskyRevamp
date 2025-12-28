@@ -13,7 +13,7 @@
 @inject PrivilegeConsumer _privilegeConsumer
 @inject DepartmentConsumer _deparmentConsumer
 @inject PopupService PopupService
-@inject TaskyService taskyService
+@inject FileManagementService _fileManagementService
 
 <div class="page-header">
     <div class="title-block">
@@ -316,19 +316,19 @@ else
     }
     private async Task DownloadExcel(MouseEventArgs args)
     {
-        await taskyService.DownloadUsersTemplateAsync();
+        await _fileManagementService.DownloadUsersTemplateAsync();
     }
     private async Task OnFileSelected(InputFileChangeEventArgs e)
     {
         fileInput = e.File;
         if (fileInput != null)
         {
-            var (bytes, name, type) = await taskyService.ReadFileAsync(fileInput);
+            var (bytes, name, type) = await _fileManagementService.ReadFileAsync(fileInput);
             if(bytes == null)
             {
                 return;
             }
-            var rows = taskyService.ReadExcelRows(bytes);
+            var rows = _fileManagementService.ReadExcelRows(bytes);
             Console.WriteLine($"Total Rows: {rows.Count}");
             if (rows.Count <= 1)
             {

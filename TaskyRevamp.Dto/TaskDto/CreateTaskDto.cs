@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TaskyRevamp.Dto.GeneralDto;
+using TaskyRevamp.Dto.TaskAttachment;
 using TaskyRevamp.Dto.TaskViews;
 using TaskyRevamp.Localization.Resources;
 
@@ -21,7 +22,6 @@ public class CreateTaskDto
     public string? DescriptionEnglish { get; set; }
     public string? DescriptionArabic { get; set; }
     public string? Description => Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName == "ar" ? DescriptionArabic : DescriptionEnglish;
-
     public DateTime StartDate { get; set; }
     public DateTime EndDate { get; set; }
     public DateTime? ReminderDate { get; set; }
@@ -30,11 +30,6 @@ public class CreateTaskDto
     public Guid TypeId { get; set; }
     public Guid SourceId { get; set; }
     public Guid Priority { get; set; }
-    public Guid Photo { get; set; }
-    public string? Extention { get; set; }
-
-    public string? PhotoName { get; set; }
-    public string? PhotoBase64 { get; set; }
     public int weight { get; set; } = 0;
     public int ActualProcess { get; set; } = 0;
     //public int Duration = 0;//=> (EndDate.Date - StartDate.Date).Days + 1;
@@ -42,23 +37,19 @@ public class CreateTaskDto
     public int Plannedweight { get; set; } = 0;
     public int PlannedProgress { get; set; }
     public int Duration => (EndDate.Date - StartDate.Date).Days + 1;
-
     public Guid? TaskStatus { get; set; }
     public string? TaskStatusName { get; set; }
     public string? TaskStatusColor { get; set; }
     public string? TaskStatusBackgroundColor { get; set; }
-
     public List<Guid> AssignedDepartmentIds { set; get; }
     public string? AssignedDepartmentName { set; get; }
     public List<Guid>? AssignedIds { set; get; }
     public List<Guid>? Dependencies { set; get; }
-
     public Guid? CreatedBy { get; set; }
     public string? CreatedByName { get; set; }
     public DateTime? CreateDate { get; set; }
     public string? UpdatedBy { get; set; }
     public DateTime? UpdateDate { get; set; }
-
     public string? Content { get; set; }
     public string? SourceName { get; set; }
     public string? TypeName { get; set; }
@@ -68,5 +59,6 @@ public class CreateTaskDto
     public string? AssigneduserNames { get; set; }
     public List<TaskViewsDto>? ViewdByNames { get; set; }
     public string? CreatorDepartment { get; set; }
+    public List<UploadAttachmentDto> uploadAttachmentDtos { get; set; }
 
 }

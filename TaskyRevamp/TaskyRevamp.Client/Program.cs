@@ -43,6 +43,7 @@ builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStat
 builder.Services.AddScoped<CustomAuthenticationService>();
 builder.Services.AddSingleton<PopupService>();
 builder.Services.AddScoped<TaskyService>();
+builder.Services.AddScoped<FileManagementService>();
 builder.Services.AddSingleton<ToastService>();
 builder.Services.AddSingleton<LoaderService>();
 

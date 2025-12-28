@@ -187,6 +187,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add attachment.
+        /// </summary>
+        public static string AddAttachment {
+            get {
+                return ResourceManager.GetString("AddAttachment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add delegation.
         /// </summary>
         public static string AddDelegation {
@@ -399,6 +408,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string AssigneduserNames {
             get {
                 return ResourceManager.GetString("AssigneduserNames", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Attachments.
+        /// </summary>
+        public static string Attachments {
+            get {
+                return ResourceManager.GetString("Attachments", resourceCulture);
             }
         }
         
@@ -1249,6 +1267,24 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to File size exceeds the limit.
+        /// </summary>
+        public static string FileSizeExceedsLimit {
+            get {
+                return ResourceManager.GetString("FileSizeExceedsLimit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The selected file exceeds the maximum allowed size of  &quot;{0}&quot; MB. Please upload a smaller file..
+        /// </summary>
+        public static string FileSizeExceedsLimitTask {
+            get {
+                return ResourceManager.GetString("FileSizeExceedsLimitTask", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The file is adding successfully .
         /// </summary>
         public static string filesSuccess {
@@ -1618,6 +1654,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Max size.
+        /// </summary>
+        public static string MaxSize {
+            get {
+                return ResourceManager.GetString("MaxSize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Module.
         /// </summary>
         public static string Module {
@@ -1713,6 +1758,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string No {
             get {
                 return ResourceManager.GetString("No", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No attachments have been added.
+        /// </summary>
+        public static string NoAttachmentsYet {
+            get {
+                return ResourceManager.GetString("NoAttachmentsYet", resourceCulture);
             }
         }
         
@@ -2491,6 +2545,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Supported files.
+        /// </summary>
+        public static string SupportedTypes {
+            get {
+                return ResourceManager.GetString("SupportedTypes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Are you sure you want to delete this ?.
         /// </summary>
         public static string Sure {
@@ -2829,6 +2892,24 @@ namespace TaskyRevamp.Localization.Resources {
         public static string TypeSure {
             get {
                 return ResourceManager.GetString("TypeSure", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File type is not supported.
+        /// </summary>
+        public static string UnsupportedFileType {
+            get {
+                return ResourceManager.GetString("UnsupportedFileType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This file type is not supported. Allowed formats are: pdf, doc, docx, xls, xlsx, .ppt, .pptx, txt, csv, jpg, jpeg, and png.
+        /// </summary>
+        public static string UnsupportedFileTypeTask {
+            get {
+                return ResourceManager.GetString("UnsupportedFileTypeTask", resourceCulture);
             }
         }
         

@@ -92,7 +92,7 @@ public class GetTaskByIdHandler : IRequestHandler<GetTaskQuery, CreateTaskDto>
 						TaskItemId = tv.TaskItemId,
 						UserId = tv.UserId,
 						ViewdAt = tv.ViewedAt,
-						FullName = currentCulture == "ar"? (tv.User.NameArabic ?? tv.User.NameEnglish): (tv.User.NameEnglish ?? tv.User.NameArabic),
+						FullName = currentCulture == "ar" ? (tv.User.NameArabic ?? tv.User.NameEnglish) : (tv.User.NameEnglish ?? tv.User.NameArabic),
 						IsActive = tv.User.IsActive
 					}).OrderByDescending(v => v.ViewdAt).ToList();
 			}

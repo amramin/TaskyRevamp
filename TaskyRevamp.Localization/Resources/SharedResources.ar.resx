@@ -970,7 +970,7 @@
     <data name="UploadExcelFile" xml:space="preserve">
     <value>إرفع ملف إكسل</value>
   </data>
-  <data name="DepartmentLevelMandatory" xml:space="preserve">
+
     <data name="DepartmentLevelMandatory" xml:space="preserve">
     <value> مستوى الإدارة (إلزامي)</value>
   </data>
@@ -1104,5 +1104,35 @@
   </data>
     <data name="NoUsersPrivilege" xml:space="preserve">
     <value>لا يوجد مستخدمون مرتبطون بهذه الصلاحية</value>
+  </data>
+  <data name="NoAttachmentsYet" xml:space="preserve">
+    <value>لم تتم إضافة أي ملفات</value>
+  </data>
+  <data name="AddAttachment" xml:space="preserve">
+    <value>إضافة ملف</value>
+  </data>
+  <data name="Attachments" xml:space="preserve">
+    <value>الملفات</value>
+  </data>
+  <data name="UnsupportedFileType" xml:space="preserve">
+    <value>نوع الملف غير مدعوم</value>
+  </data>
+  <data name="FileSizeExceedsLimit" xml:space="preserve">
+    <value>حجم الملف يتجاوز الحد الأقصى</value>
+  </data>
+  <data name="MaxSize" xml:space="preserve">
+    <value>الحد الأقصى </value>
+  </data>
+  <data name="SupportedTypes" xml:space="preserve">
+    <value>الملفات المدعومة</value>
+  </data>
+  <data name="Privilege" xml:space="preserve">
+    <value>صلاحيات</value>
+  </data>
+  <data name="UnsupportedFileTypeTask" xml:space="preserve">
+    <value>نوع الملف غير مدعوم. الصيغ المسموح بها هي: pdf, doc, docx, xls, xlsx, .ppt, .pptx, txt, csv, jpg, jpeg, و png</value>
+  </data>
+  <data name="FileSizeExceedsLimitTask" xml:space="preserve">
+    <value>الملف المحدد يتجاوز الحد الأقصى المسموح به وهو "{0}" ميجابايت. يُرجى تحميل ملف أصغر حجمًا</value>
   </data>
 </root>

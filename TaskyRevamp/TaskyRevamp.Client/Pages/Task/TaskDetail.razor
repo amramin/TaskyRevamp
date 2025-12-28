@@ -45,8 +45,6 @@
     override protected async Task OnInitializedAsync()
     {
         var userIdString = await LocalStorage.GetItemAsStringAsync("Id");
-
-        // Remove any quotes if present and parse to Guid
         if (!string.IsNullOrEmpty(userIdString))
         {
             userIdString = userIdString.Trim('"'); // Remove quotes if any

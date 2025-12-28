@@ -1101,6 +1101,7 @@
   <data name="NoUsersPrivilege" xml:space="preserve">
     <value>No users assigned to this privilege</value>
   </data>
+
   <data name="Editedsuccessfully" xml:space="preserve">
     <value>Edited successfully</value>
   </data>
@@ -1137,4 +1138,33 @@
   <data name="ReopenFailed" xml:space="preserve">
     <value>Reopen Failed</value>
   </data>
+
+  <data name="NoAttachmentsYet" xml:space="preserve">
+    <value>No attachments have been added</value>
+  </data>
+  <data name="AddAttachment" xml:space="preserve">
+    <value>Add attachment</value>
+  </data>
+  <data name="Attachments" xml:space="preserve">
+    <value>Attachments</value>
+  </data>
+  <data name="UnsupportedFileType" xml:space="preserve">
+    <value>File type is not supported</value>
+  </data>
+  <data name="FileSizeExceedsLimit" xml:space="preserve">
+    <value>File size exceeds the limit</value>
+  </data>
+  <data name="MaxSize" xml:space="preserve">
+    <value>Max size</value>
+  </data>
+  <data name="SupportedTypes" xml:space="preserve">
+    <value>Supported files</value>
+  </data>
+  <data name="UnsupportedFileTypeTask" xml:space="preserve">
+    <value>This file type is not supported. Allowed formats are: pdf, doc, docx, xls, xlsx, .ppt, .pptx, txt, csv, jpg, jpeg, and png</value>
+  </data>
+  <data name="FileSizeExceedsLimitTask" xml:space="preserve">
+    <value>The selected file exceeds the maximum allowed size of  "{0}" MB. Please upload a smaller file.</value>
+  </data>
+
 </root>
