@@ -500,7 +500,7 @@
     <value>يجب أن يكون اسم الإدارة فريدًا. يرجى كتابة اسم آخر</value>
   </data>
   <data name="NameEnglish" xml:space="preserve">
-    <value>الاسم بالإنجليزي</value>
+    <value>الاسم</value>
   </data>
   <data name="NameArabic" xml:space="preserve">
     <value>الاسم بالعربي</value>
@@ -737,13 +737,13 @@
     <value>إضافة مهمة</value>
   </data>
   <data name="TitleEnglish" xml:space="preserve">
-    <value>العنوان الإنجليزية</value>
+    <value>العنوان</value>
   </data>
   <data name="TitleArabic" xml:space="preserve">
     <value>العنوان بالعربيه</value>
   </data>
   <data name="DescriptionEnglish" xml:space="preserve">
-    <value>الوصف بالانجليزيه </value>
+    <value>الوصف  </value>
   </data>
   <data name="DescriptionArabic" xml:space="preserve">
     <value>الوصف بالعربيه</value>
@@ -760,7 +760,7 @@
   <data name="SelectPriority" xml:space="preserve">
     <value>اختر الاوليه</value>
   </data>
-    <data name="AboveUserDepartmentLevel" xml:space="preserve">
+  <data name="AboveUserDepartmentLevel" xml:space="preserve">
     <value>مستوى أعلى من إدارة المستخدم</value>
   </data>
   <data name="BelowUserDepartmentLevel" xml:space="preserve">
@@ -970,8 +970,7 @@
   <data name="UploadExcelFile" xml:space="preserve">
     <value>إرفع ملف إكسل</value>
   </data>
-
-    <data name="DepartmentLevelMandatory" xml:space="preserve">
+  <data name="DepartmentLevelMandatory" xml:space="preserve">
     <value> مستوى الإدارة (إلزامي)</value>
   </data>
   <data name="DepartmentNameMandatory" xml:space="preserve">
@@ -1105,7 +1104,6 @@
   <data name="NoUsersPrivilege" xml:space="preserve">
     <value>لا يوجد مستخدمون مرتبطون بهذه الصلاحية</value>
   </data>
-
   <data name="NoAttachmentsYet" xml:space="preserve">
     <value>لم تتم إضافة أي ملفات</value>
   </data>
@@ -1127,9 +1125,6 @@
   <data name="SupportedTypes" xml:space="preserve">
     <value>الملفات المدعومة</value>
   </data>
-  <data name="Privilege" xml:space="preserve">
-    <value>صلاحيات</value>
-  </data>
   <data name="UnsupportedFileTypeTask" xml:space="preserve">
     <value>نوع الملف غير مدعوم. الصيغ المسموح بها هي: pdf, doc, docx, xls, xlsx, .ppt, .pptx, txt, csv, jpg, jpeg, و png</value>
   </data>
@@ -1138,5 +1133,8 @@
   </data>
   <data name="userLink" xml:space="preserve">
     <value>ربط المستخدم</value>
+  </data>
+  <data name="Privilege" xml:space="preserve">
+    <value>صلاحيات</value>
   </data>
 </root>

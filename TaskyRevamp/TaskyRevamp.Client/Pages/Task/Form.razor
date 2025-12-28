@@ -104,7 +104,7 @@
                                         <span class="text-danger"> *</span>
                                     }
                                 </label>
-                                <InputText class="form-control" @bind-Value="taskdto.Title" placeholder="@Loc["NameEnglish"]" />
+                                <InputText class="form-control" @bind-Value="taskdto.Title" placeholder="@Loc["TitleEnglish"]" />
                                 <ValidationMessage class="small text-danger" For="@(() => taskdto.Title)"></ValidationMessage>
                             </div>
 
@@ -124,8 +124,9 @@
                                     <div class="mb-2">
 
 
-                                        <RichTextEditorComponent EditorId="RTE_English2" @ref="RichTextEditorComponentRefDescriptionEnglish"
-                                                                 Content="@taskdto.Description" ContentChanged="OnDescriptionEnglishChanged">
+
+                                        <RichTextEditorComponent @key="column.Id" EditorId="RTE_English2" @ref="RichTextEditorComponentRefDescriptionEnglish"
+                                                                 Content="@taskdto.Description" ButtonText="@Loc["AddDescription"]">
                                         </RichTextEditorComponent>
 
                                         <div class="d-flex align-items-center justify-content-between">
@@ -150,7 +151,7 @@
                                 </label>
                                 <SearchableSingleDropdownOffline TInput=TypeDto TOutput=Guid TextSelector="(TypeDto x) => x.DisplayedName"
                                                                  OutputSelector="x => x.Id" @ref="typeref" Datasource="taskTypeDtos" MinCharacterCount="1"
-                                                                 @bind-SelectedOption="@taskdto.TypeId" PlaceHolder="@($"--{Loc["SelectType"]}--")" />
+                                                                 @bind-SelectedOption="@taskdto.TypeId" PlaceHolder="@($"--{Loc["Select"]}--")" />
 
                             </div>
                             break;
@@ -166,7 +167,7 @@
                                 <SearchableSingleDropdownOffline @ref="sourceref" TInput=SourceDto TOutput=Guid
                                                                  TextSelector="(SourceDto x)=> x.DisplayedName" OutputSelector="x => x.Id" Datasource="taskSourceDtos"
                                                                  MinCharacterCount="1" @bind-SelectedOption="@taskdto.SourceId"
-                                                                 PlaceHolder="@($"--{Loc["SelectSource"]}--")" />
+                                                                 PlaceHolder="@($"--{Loc["Select"]}--")" />
 
                             </div>
                             break;
@@ -271,7 +272,7 @@
                                                                 TextSelector=@(x=>x.UserName) OutputSelector="x=> x.Id" @bind-SelectedOptions=taskdto.AssignedIds />
                             </div>
                             break;
-                        case "Checklist":
+@*                         case "Checklist":
                             <div class="mb-3">
                                 <label class="form-label">
                                     @Loc["Checklist"]
@@ -283,27 +284,22 @@
 
                             </div>
 
-                            break;
+                            break; *@
                         case "Comments":
 
                             <div class="mb-3">
-                                <label class="form-label">
-                                    @Loc["Comments"]
-                                    @if (column.IsMandatory)
-                                    {
-                                        <span class="text-danger"> *</span>
-                                    }
-                                </label>
-
                                 <div class="col-lg-12">
                                     <div class="mb-2">
                                         <label class="form-label">
-                                            @Loc["Comment"]
-                                            <span class="text-danger"> *</span>
+                                            @Loc["Comments"]
+                                            @if (column.IsMandatory)
+                                            {
+                                                <span class="text-danger"> *</span>
+                                            }
                                         </label>
 
-                                        <RichTextEditorComponent EditorId="RTE_English4" @ref="RichTextEditorComponentRefComment"
-                                                                 Content="@taskdto.Content" ContentChanged="OnContentChanged"></RichTextEditorComponent>
+                                        <RichTextEditorComponent @key="column.Id" EditorId="RTE_English4" @ref="RichTextEditorComponentRefComment"
+                                                                 Content="@taskdto.Content" ButtonText="@Loc["AddComment"]"></RichTextEditorComponent>
 
                                         <div class="d-flex align-items-center justify-content-between">
                                             <div class="d-flex gap-2">
@@ -326,7 +322,7 @@
                                 </label>
                                 <SearchableSingleDropdownOffline TInput=PriorityDto TOutput=Guid TextSelector=" (PriorityDto x)=> x.Name"
                                                                  OutputSelector="x => x.Id" Datasource="Priorities" MinCharacterCount="1"
-                                                                 @bind-SelectedOption="@taskdto.Priority" PlaceHolder="@($"--{Loc["SelectPriority"]}--")" />
+                                                                 @bind-SelectedOption="@taskdto.Priority" PlaceHolder="@($"--{Loc["Select"]}--")" />
                             </div>
                             break;
                         case "Weight":
@@ -346,8 +342,7 @@
 
 
 
-                case "Actual progress":
-
+                        case "Actual progress":
                             <div class="mb-3">
                                 <label class="form-label" for="maxLength">
                                     @Loc["ActualProgress"]
@@ -357,16 +352,24 @@
                                     }
                                 </label>
                                 <div class="mb-3">
+                                    <input type="range"
+                                           class="form-range"
+                                           min="0"
+                                           max="100"
+                                           @bind="taskdto.ActualProcess" />
+                                    <span class="badge bg-primary">
+                                        @taskdto.ActualProcess%
+                                    </span>
 
-                                    <input type="range" class="form-range" min="0" max="100" @bind="taskdto.ActualProcess" />
-
-                                    <!-- Optional visual bar to match -->
-                                    <div class="progress" style="height: 20px;">
-                                        <div class="progress-bar" role="progressbar" style="width:@taskdto.ActualProcess%;"
-                                             aria-valuenow="@taskdto.ActualProcess" aria-valuemin="0" aria-valuemax="100">
+                                    <div class="progress mt-2" style="height: 20px;">
+                                        <div class="progress-bar"
+                                             role="progressbar"
+                                             style="width:@taskdto.ActualProcess%;"
+                                             aria-valuenow="@taskdto.ActualProcess"
+                                             aria-valuemin="0"
+                                             aria-valuemax="100">
                                         </div>
                                     </div>
-
                                 </div>
 
                             </div>
@@ -378,9 +381,14 @@
         </div>
         <div class="offcanvas-footer">
             <div class="row g-2">
-                <div class="col-12">
+                <div class="col-6">
                     <div class="d-grid">
-                        <button class="btn btn-primary mt-3" type="submit">Submit</button>
+                        <button type="button" class="btn btn-lg btn-light" @onclick="OnCancelClick">@Loc["Cancel"]</button>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-lg btn-primary">@Loc["Save"]</button>
                     </div>
                 </div>
             </div>
@@ -643,9 +651,15 @@
     private async Task HandleValidSubmit(EditContext context)
     {
         // proceed with saving
+        taskdto.Description =
+ RichTextEditorComponentRefDescriptionEnglish.GetContent();
+        taskdto.Content = RichTextEditorComponentRefComment.GetContent();
         await OnValidSubmit.InvokeAsync(context);
     }
-
+    private async Task OnCancelClick()
+    {
+        await OnCancel.InvokeAsync();
+    }
     private void HandleInvalidSubmit(EditContext context)
     {
         ToastService.ShowToastAsync("Please fill all required fields before submitting", "error");
