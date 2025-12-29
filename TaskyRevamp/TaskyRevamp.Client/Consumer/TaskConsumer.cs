@@ -76,6 +76,13 @@ namespace TaskyRevamp.Client.Consumer
 
             return res;
         }
+        public async Task<CommonApiResponse<bool>> ChangeTaskProgress(Guid TaskId, int Progress)
+        {
+            var url = $"api/Task/ChangeTaskProgress/{TaskId}/{Progress}";
+            var res = await _taskyService.GetFromJsonAsync<CommonApiResponse<bool>>(url);
+
+            return res;
+        }
         public async Task<CommonApiResponse<bool>> CheckOpenedTaskForUser(Guid userId)
         {
             var url = $"api/Task/CheckOpenedTaskForUser/{userId}";

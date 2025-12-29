@@ -1101,7 +1101,6 @@
   <data name="NoUsersPrivilege" xml:space="preserve">
     <value>No users assigned to this privilege</value>
   </data>
-
   <data name="Editedsuccessfully" xml:space="preserve">
     <value>Edited successfully</value>
   </data>
@@ -1138,7 +1137,6 @@
   <data name="ReopenFailed" xml:space="preserve">
     <value>Reopen Failed</value>
   </data>
-
   <data name="NoAttachmentsYet" xml:space="preserve">
     <value>No attachments have been added</value>
   </data>
@@ -1166,8 +1164,22 @@
   <data name="FileSizeExceedsLimitTask" xml:space="preserve">
     <value>The selected file exceeds the maximum allowed size of  "{0}" MB. Please upload a smaller file.</value>
   </data>
-
   <data name="userLink" xml:space="preserve">
     <value>Link user</value>
+  </data>
+  <data name="SureChangeProgress" xml:space="preserve">
+    <value>Are you sure you want change progress</value>
+  </data>
+  <data name="Changeprgreess" xml:space="preserve">
+    <value>Change prgreess</value>
+  </data>
+  <data name="progressChangedsuccessfully" xml:space="preserve">
+    <value>progress changed successfully</value>
+  </data>
+  <data name="progressChangedFailed" xml:space="preserve">
+    <value>Progress change failed</value>
+  </data>
+  <data name="Privilege" xml:space="preserve">
+    <value>Privileges</value>
   </data>
 </root>

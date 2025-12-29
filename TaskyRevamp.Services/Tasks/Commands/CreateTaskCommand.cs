@@ -80,10 +80,13 @@ public class CreateTaskHandler : IRequestHandler<CreateTaskCommand, string>
             }
         }
         await _taskRepository.Insert(task);
-        if (request.CreateTaskDto.uploadAttachmentDtos.Any())
+        if (request.CreateTaskDto.uploadAttachmentDtos is not null)
         {
             var attachmnentsDto = request.CreateTaskDto.uploadAttachmentDtos.ToList();
-            await uploadTaskFiles(attachmnentsDto, task.Id);
+           if(attachmnentsDto != null)
+            {
+                await uploadTaskFiles(attachmnentsDto, task.Id);
+            }
         }
         return task.Id.ToString();
     }

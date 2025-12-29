@@ -1104,6 +1104,43 @@
   <data name="NoUsersPrivilege" xml:space="preserve">
     <value>لا يوجد مستخدمون مرتبطون بهذه الصلاحية</value>
   </data>
+  <data name="Editedsuccessfully" xml:space="preserve">
+    <value>تم التعديل بنجاح</value>
+  </data>
+  <data name="Areyousureyouwan" xml:space="preserve">
+    <value>هل انت متأكد انك تريد الغاء التعديل</value>
+  </data>
+  <data name="Edited" xml:space="preserve">
+    <value>تم التعديل</value>
+  </data>
+  <data name="Ares" xml:space="preserve">
+    <value>هل انت متأكد من الحذف</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="SureCompleteTask" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="Complete" xml:space="preserve">
+    <value>اكمال</value>
+  </data>
+  <data name="Completedsuccessfully" xml:space="preserve">
+    <value>تم امال المهمة بنجاح</value>
+  </data>
+  <data name="CompleteFailed" xml:space="preserve">
+    <value>فشلت عملية اكمال المهمة</value>
+  </data>
+  <data name="SureReopenTask" xml:space="preserve">
+    <value>هل انت متأكد انك تريد ارجاع المهمة</value>
+  </data>
+  <data name="Reopen" xml:space="preserve">
+    <value>ارجاع</value>
+  </data>
+  <data name="Reopenedsuccessfully" xml:space="preserve">
+    <value>تم ارجاع المهمة بنجاح</value>
+  </data>
+  <data name="ReopenFailed" xml:space="preserve">
+    <value>فشلت عملية ارجاع المهمة</value>
+  </data>
   <data name="NoAttachmentsYet" xml:space="preserve">
     <value>لم تتم إضافة أي ملفات</value>
   </data>
@@ -1133,6 +1170,18 @@
   </data>
   <data name="userLink" xml:space="preserve">
     <value>ربط المستخدم</value>
+  </data>
+  <data name="SureChangeProgress" xml:space="preserve">
+    <value>هل انت متأكد انك تريد تغيير انجاز المهمة</value>
+  </data>
+  <data name="Changeprgreess" xml:space="preserve">
+    <value>تغيير انجاز المهمة</value>
+  </data>
+  <data name="progressChangedsuccessfully" xml:space="preserve">
+    <value>تم تغيير انجاز المهمة بنجاح</value>
+  </data>
+  <data name="progressChangedFailed" xml:space="preserve">
+    <value>فشلت عملية تغيير انجاز المهمة</value>
   </data>
   <data name="Privilege" xml:space="preserve">
     <value>صلاحيات</value>
