@@ -44,21 +44,17 @@ public class AuthenticateCommandHandler : IRequestHandler<AuthenticateCommand, s
         {
             if (_appSettingsOptions.Value.AuthenticationMode == (int)AuthenticationMode.ActiveDirectory)
             {
-
                 var isAuthenticated = AuthenticateUser(_ldapPath.Value.Path, request.Username, request.Password);
                 if (!isAuthenticated)
                 {
                     return null;
                 }
             }
-
             var user = new User();
-
             var userResponse = await _userRepository.FindBy(x => x.Username == request.Username);
             if (userResponse.IsFailure || userResponse.Value is null || userResponse.Value.Count == 0)
             {
                 var newUser = AddNewUser(_ldapPath.Value.Path, request.Username);
-
                 if (newUser == null)
                 {
                     throw new NoDataException("User Not Found!");
@@ -76,7 +72,15 @@ public class AuthenticateCommandHandler : IRequestHandler<AuthenticateCommand, s
                 {
                     throw new NoDataException("User Not Found!");
                 }
-            }
+				if (_appSettingsOptions.Value.AuthenticationMode == (int)AuthenticationMode.ActiveDirectory)
+				{
+					var updatedUser = await SyncUserWithActiveDirectory(_ldapPath.Value.Path, user);
+					if (updatedUser != null)
+					{
+						user = updatedUser;
+					}
+				}
+			}
 
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_appSettingsOptions.Value.Secret);
@@ -125,7 +129,6 @@ public class AuthenticateCommandHandler : IRequestHandler<AuthenticateCommand, s
                 object nativeObject = entry.NativeObject;
                 return true; // Successful login
             }
-
         }
         //catch (DirectoryServicesCOMException)
         //{
@@ -220,7 +223,103 @@ public class AuthenticateCommandHandler : IRequestHandler<AuthenticateCommand, s
             return null;
         }
     }
-    private string GetUserManager(string ldapPath, string managerDn)
+	private async Task<User?> SyncUserWithActiveDirectory(string ldapPath, User existingUser)
+	{
+		try
+		{
+			using (var entry = new DirectoryEntry(ldapPath, _ldapPath.Value.Username, _ldapPath.Value.Password))
+			{
+				using (var searcher = new DirectorySearcher(entry))
+				{
+					searcher.Filter = $"(sAMAccountName={existingUser.Username})";
+
+					// Load all properties we want to sync
+					searcher.PropertiesToLoad.Add("displayName");
+					searcher.PropertiesToLoad.Add("mail");
+					searcher.PropertiesToLoad.Add("givenName");
+					searcher.PropertiesToLoad.Add("sn");
+					searcher.PropertiesToLoad.Add("title");
+					searcher.PropertiesToLoad.Add("telephoneNumber");
+					searcher.PropertiesToLoad.Add("userAccountControl");
+					searcher.PropertiesToLoad.Add("manager");
+					searcher.PropertiesToLoad.Add("distinguishedName");
+					searcher.PropertiesToLoad.Add("department"); // Add if you track this
+
+					var result = searcher.FindOne();
+
+					if (result == null)
+					{
+						return null; // User not found in AD
+					}
+
+					// Extract AD values
+					string adDisplayName = result.Properties.Contains("displayName")? result.Properties["displayName"][0].ToString(): string.Empty;
+					string adEmail = result.Properties.Contains("mail")? result.Properties["mail"][0].ToString(): string.Empty;
+					string adGivenName = result.Properties.Contains("givenName")? result.Properties["givenName"][0].ToString(): string.Empty;
+					string adSurname = result.Properties.Contains("sn")? result.Properties["sn"][0].ToString(): string.Empty;
+					string adTitle = result.Properties.Contains("title")? result.Properties["title"][0].ToString(): string.Empty;
+					string adPhone = result.Properties.Contains("telephoneNumber")? result.Properties["telephoneNumber"][0].ToString(): string.Empty;
+					string adDistinguishedName = result.Properties.Contains("distinguishedName")? result.Properties["distinguishedName"][0].ToString(): string.Empty;
+					int userAccountControl = result.Properties.Contains("userAccountControl")? Convert.ToInt32(result.Properties["userAccountControl"][0]): 0;
+					bool adIsActive = (userAccountControl & 0x0002) == 0;
+					string adManagerUsername = string.Empty;
+					if (result.Properties.Contains("manager"))
+					{
+						string managerDn = result.Properties["manager"][0].ToString();
+						adManagerUsername = GetUserManager(ldapPath, managerDn);
+					}
+					bool hasChanges = false;
+					if (existingUser.NameEnglish != adDisplayName)
+					{
+						existingUser.NameEnglish = adDisplayName;
+						hasChanges = true;
+					}
+					if (existingUser.NameArabic != adDisplayName)
+					{
+						existingUser.NameArabic = adDisplayName;
+						hasChanges = true;
+					}
+					if (existingUser.Email != adEmail)
+					{
+						existingUser.Email = adEmail;
+						hasChanges = true;
+					}
+					if (existingUser.GivenName != adGivenName)
+					{
+						existingUser.GivenName = adGivenName;
+						hasChanges = true;
+					}
+					if (existingUser.Mobile != adPhone)
+					{
+						existingUser.Mobile = adPhone;
+						hasChanges = true;
+					}
+					if (existingUser.IsActive != adIsActive)
+					{
+						existingUser.IsActive = adIsActive;
+						hasChanges = true;
+					}
+					if (existingUser.DistinguishedName != adDistinguishedName)
+					{
+						existingUser.DistinguishedName = adDistinguishedName;
+						hasChanges = true;
+					}
+					if (hasChanges)
+					{
+						await _userRepository.Update(existingUser);
+						await _userRepository.SaveChangesAsync();
+					}
+					return existingUser;
+				}
+			}
+		}
+		catch (Exception ex)
+		{
+			Console.WriteLine($"AD sync error: {ex.Message}");
+			return existingUser;
+		}
+	}
+	private string GetUserManager(string ldapPath, string managerDn)
     {
         try
         {
@@ -251,8 +350,6 @@ public class AuthenticateCommandHandler : IRequestHandler<AuthenticateCommand, s
 
         return null; // Return null if the manager's sAMAccountName is not found
     }
-
-
     private List<User> GetDelegatedUsers(User user)
     {
         var users = new List<User>();
