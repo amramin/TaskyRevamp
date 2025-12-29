@@ -52,13 +52,22 @@ public class TaskController : ControllerBase
     {
         return Ok(await _mediator.Send(new UpdateTasksDepartmentCommand(oldId, newId)));
     }
+    [HttpGet("ChangeTaskProgress/{taskId}/{progress}")]
+    public async Task<IActionResult> ChangeTaskProgress(Guid taskId, int progress)
+    {
+        return Ok(await _mediator.Send(new ChangeTaskProgressCommand(taskId, progress)));
+    }
 
     [HttpGet("CheckOpenedTaskForUser/{userId}")]
     public async Task<IActionResult> CheckOpenedTaskForUser(Guid userId)
     {
         return Ok(await _mediator.Send(new CheckOpenedTaskForUserCommand(userId)));
     }
-
+    [HttpGet("CheckDelayedTasks")]
+    public async Task<IActionResult> CheckDelayedTasks()
+    {
+        return Ok(await _mediator.Send(new CheckDelayedTasksCommand()));
+    }
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(string id)
     {

@@ -547,6 +547,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Change prgreess.
+        /// </summary>
+        public static string Changeprgreess {
+            get {
+                return ResourceManager.GetString("Changeprgreess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Clear search.
         /// </summary>
         public static string ClearSearch {
@@ -2149,6 +2158,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Privileges.
+        /// </summary>
+        public static string Privilege {
+            get {
+                return ResourceManager.GetString("Privilege", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to You can&apos;t duplicate the privilege name.
         /// </summary>
         public static string PrivilegeDuplicateValidation {
@@ -2190,6 +2208,24 @@ namespace TaskyRevamp.Localization.Resources {
         public static string PrivilegeTilte {
             get {
                 return ResourceManager.GetString("PrivilegeTilte", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Progress change failed.
+        /// </summary>
+        public static string progressChangedFailed {
+            get {
+                return ResourceManager.GetString("progressChangedFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to progress changed successfully.
+        /// </summary>
+        public static string progressChangedsuccessfully {
+            get {
+                return ResourceManager.GetString("progressChangedsuccessfully", resourceCulture);
             }
         }
         
@@ -2667,6 +2703,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string Sure {
             get {
                 return ResourceManager.GetString("Sure", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want change progress.
+        /// </summary>
+        public static string SureChangeProgress {
+            get {
+                return ResourceManager.GetString("SureChangeProgress", resourceCulture);
             }
         }
         
