@@ -4,18 +4,55 @@
 @inject IStringLocalizer<SharedResources> Loc
 
 <div class="mb-3">
+
+    <!-- Conditional Direction fields -->
+    @if (ShowDirectionFields)
+    {
+        <div class="mb-3">
+            <label class="form-label ">@Loc["DirectionLevel"] <span class="text-danger">*</span></label>
+            <input type="number" class="form-control @(Item.DirectionLevel < 1 ? "border-danger" : "")" min="1"
+                   @oninput="ValidateDirectionLevel" @bind="Item.DirectionLevel" disabled="@IsViewMode" />
+            @if (IsSaveClicked && Item.IsActive && Item.DirectionLevel == null)
+            {
+                <div class="text-danger small mt-1">@Loc["Required"]</div>
+            }
+            else if (IsSaveClicked && Item.IsActive && Item.DirectionLevel < 1)
+            {
+                <div class="text-danger small mt-1">@Loc["ValueMustBeGreaterThanOrEqualTo1"]</div>
+            }
+        </div>
+    }
     <!-- Permissions -->
     <div class="mb-3">
         @if (ShowPermissionFields)
         {
             <label class="form-label ">@Loc["Permissions"] <span class="text-danger">*</span></label>
-            <SearchableMultiDropdownOffline TInput="Permission" TOutput="int" Datasource="PermissionList"
+            <SearchableMultiDropdownOffline TInput="Permission" TOutput="int" @key="AvailablePermissions" Datasource="AvailablePermissions"
                 TextSelector="(p => Loc[p.ToString()])" OutputSelector="(p => (int)p)" SelectedOptions="Item.PermissionId"
                 SelectedOptionsChanged="OnPermissionsChanged" IsDisabled="IsViewMode" />
             @if (IsSaveClicked && Item.IsActive && (Item.PermissionId == null || !Item.PermissionId.Any()))
             {
                 <div class="text-danger small mt-1">@Loc["Required"]</div>
 
+            }
+            @if (Item.PermissionId != null && Item.PermissionId.Any())
+            {
+                <div class="mt-2">
+                    <div class="d-flex flex-wrap gap-1">
+                        @foreach (var permissionId in Item.PermissionId)
+                        {
+                            var permission = (Permission)permissionId;
+                            <span class="badge bg-primary d-flex align-items-center gap-1 py-1 px-2 small">
+                                @Loc[permission.ToString()]
+                                @if (!IsViewMode)
+                                {
+                                    <button type="button" class="btn-close btn-close-white btn-close-sm ms-1" aria-label="Remove"
+                                            style="height:1rem; width:1rem;" @onclick="() => RemovePermission(permissionId)"></button>
+                                }
+                            </span>
+                        }
+                    </div>
+                </div>
             }
         }
     </div>
@@ -43,23 +80,7 @@
             }
         </div>
     }
-    <!-- Conditional Direction fields -->
-    @if (ShowDirectionFields)
-    {
-        <div class="mb-3">
-            <label class="form-label ">@Loc["DirectionLevel"] <span class="text-danger">*</span></label>
-            <input type="number" class="form-control @(Item.DirectionLevel < 1 ? "border-danger" : "")" min="1"
-                   @oninput="ValidateDirectionLevel" @bind="Item.DirectionLevel" disabled="@IsViewMode" />
-            @if (IsSaveClicked && Item.IsActive && Item.DirectionLevel == null)
-            {
-                <div class="text-danger small mt-1">@Loc["Required"]</div>
-            }
-            else if (IsSaveClicked && Item.IsActive && Item.DirectionLevel < 1)
-            {
-                <div class="text-danger small mt-1">@Loc["ValueMustBeGreaterThanOrEqualTo1"]</div>
-            }
-        </div>
-    }
+   
 </div>
 
 @code {
@@ -70,10 +91,11 @@
     [Parameter] public bool IsViewMode { get; set; }
     [Parameter] public bool IsSaveClicked { get; set; }
     private List<Permission> PermissionList = Enum.GetValues(typeof(Permission)).Cast<Permission>().ToList();
-
+    private List<Permission> AvailablePermissions => PermissionList.Where(p => Item.PermissionId == null || !Item.PermissionId.Contains((int)p)).ToList();
     private void OnPermissionsChanged(List<int> selectedPermissions)
     {
         Item.PermissionId = selectedPermissions;
+        StateHasChanged();
     }
     private void ValidateDirectionLevel(ChangeEventArgs e)
     {
@@ -85,6 +107,11 @@
         {
             Item.DirectionLevel = 1;
         }
+        StateHasChanged();
+    }
+    private void RemovePermission(int permissionId)
+    {
+        Item.PermissionId?.Remove(permissionId);
         StateHasChanged();
     }
 }
