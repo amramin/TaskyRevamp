@@ -171,8 +171,6 @@
 
                             </div>
                             break;
-
-
                         case "Start date":
 
                             <div class="mb-3">
@@ -190,10 +188,6 @@
                                 <ValidationMessage class="small text-danger" For="@(() => taskdto.StartDate)" />
                             </div>
                             break;
-
-
-
-
                         case "Reminder date":
 
 
@@ -212,7 +206,6 @@
                                 <ValidationMessage class="small text-danger" For="@(() => taskdto.ReminderDate)" />
                             </div>
                             break;
-
                         case "End date":
 
                             <div class="mb-3">
@@ -244,7 +237,6 @@
                                                                 @bind-SelectedOptions=taskdto.AssignedDepartmentIds />
                             </div>
                             break;
-
                         case "Dependency":
 
                             <div class="mb-3">
@@ -272,7 +264,7 @@
                                                                 TextSelector=@(x=>x.UserName) OutputSelector="x=> x.Id" @bind-SelectedOptions=taskdto.AssignedIds />
                             </div>
                             break;
-                        @*                         case "Checklist":
+                        @* case "Checklist":
                             <div class="mb-3">
                                 <label class="form-label">
                                     @Loc["Checklist"]
@@ -338,10 +330,6 @@
 
                             </div>
                             break;
-
-
-
-
                         case "Actual progress":
                             <div class="mb-3">
                                 <label class="form-label" for="maxLength">
@@ -374,7 +362,6 @@
 
                             </div>
                             break;
-
                     }
                 </div>
             }
@@ -562,12 +549,12 @@
         var prioritiesRes = await prioritiesTask;
         if (prioritiesRes.Success && prioritiesRes.Data != null)
         {
-            Priorities = prioritiesRes.Data;
+            Priorities = prioritiesRes.Data.OrderBy(q => q.Order).ToList();
         }
 
-        taskdto.StartDate = taskdto.StartDate == default ? DateTime.Now : taskdto.StartDate;
-        taskdto.EndDate = taskdto.EndDate == default ? DateTime.Now : taskdto.EndDate;
-        taskdto.ReminderDate = taskdto.ReminderDate == default ? DateTime.Now : taskdto.ReminderDate;
+        // taskdto.StartDate = taskdto.StartDate == default ? DateTime.Now : taskdto.StartDate;
+        // taskdto.EndDate = taskdto.EndDate == default ? DateTime.Now : taskdto.EndDate;
+        // taskdto.ReminderDate = taskdto.ReminderDate == default ? DateTime.Now : taskdto.ReminderDate;
         x = true;
         await InvokeAsync(StateHasChanged);
 

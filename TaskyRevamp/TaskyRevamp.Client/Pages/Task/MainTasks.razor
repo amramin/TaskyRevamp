@@ -518,16 +518,16 @@ SearchFieldTask.PlannedProgress
                 builder.AddContent(0, (task.TaskStatusName)?.ToString());
                 break;
             case "Actual Progress":
-                builder.AddContent(0, task.ActualProcess);
+                builder.AddContent(0, $"{task.ActualProcess}%");
                 break;
             case "Start Date":
-                builder.AddContent(0, task.StartDate.ToString(Loc["LocalizeDate"]));
+                builder.AddContent(0, task.StartDate?.ToString(Loc["LocalizeDate"]));
                 break;
             case "End Date":
-                builder.AddContent(0, task.EndDate.ToString(Loc["LocalizeDate"]));
+                builder.AddContent(0, task.EndDate?.ToString(Loc["LocalizeDate"]));
                 break;
             case "weight":
-                builder.AddContent(0, task.weight);
+                builder.AddContent(0, $"{task.weight}%");
                 break;
             case "Assigned To":
                 builder.AddContent(0, task.AssigneduserNames);
@@ -551,7 +551,7 @@ SearchFieldTask.PlannedProgress
                 builder.AddContent(0, task.Duration);
                 break;
             case "Planned Progress":
-                builder.AddContent(0, task.PlannedProgress);
+                builder.AddContent(0, $"{task.PlannedProgress}%");
                 break;
             case "Creation Date":
                 builder.AddContent(0, task.CreateDate?.ToString(Loc["LocalizeDate"]));
@@ -560,10 +560,10 @@ SearchFieldTask.PlannedProgress
                 builder.AddContent(0, task.TypeName);
                 break;
             case "Actual Weight":
-                builder.AddContent(0, task.ActualWeight);
+                builder.AddContent(0, $"{task.ActualWeight}%");
                 break;
             case "Planned Weight":
-                builder.AddContent(0, task.Plannedweight);
+                builder.AddContent(0, $"{task.Plannedweight}%");
                 break;
             case "Action":
                 builder.AddContent(0, "...");

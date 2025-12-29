@@ -71,59 +71,76 @@ namespace TaskyRevamp.Services.Helpers
 				var dayProp = Expression.Property(dateValue, nameof(DateTime.Day));
 				var monthProp = Expression.Property(dateValue, nameof(DateTime.Month));
 				var yearProp = Expression.Property(dateValue, nameof(DateTime.Year));
-				// Normalize input
-				var cleaned = searchText.Trim().Replace(" ", "");
 
-				// Year-only search (4 digits)
-				if (cleaned.Length == 4 && int.TryParse(cleaned, out int year))
-					return Expression.Equal(yearProp, Expression.Constant(year));
+				var cleaned = searchText.Trim();
+				var separators = new[] { "/", "-" };
+				var parts = cleaned.Split(separators, StringSplitOptions.RemoveEmptyEntries);
 
-				// Day or Month-only search (1–2 digits)
-				if (cleaned.Length <= 2 && int.TryParse(cleaned, out int num))
+				Expression finalExpr = null;
+				Expression IntStartsWith(Expression prop, string part)
 				{
-					Expression dayMatch = Expression.Equal(dayProp, Expression.Constant(num));
-					Expression monthMatch = Expression.Equal(monthProp, Expression.Constant(num));
-					return Expression.OrElse(dayMatch, monthMatch);
+					var toStringCall = Expression.Call(prop, nameof(int.ToString), Type.EmptyTypes);
+					return Expression.Call(toStringCall, typeof(string).GetMethod("StartsWith", new[] { typeof(string) }), Expression.Constant(part));
 				}
 
-				// Month + Year (e.g. 11-2025 or 11/2025)
-				var parts = cleaned.Split('/', '-', '.');
-				if (parts.Length == 2 &&
-					parts[0].Length <= 2 && parts[1].Length <= 2 &&
-					int.TryParse(parts[0], out int d) &&
-					int.TryParse(parts[1], out int mm))
+				// Check if it looks like a full date
+				if (parts.Length == 3 && parts[2].Length == 4 && int.TryParse(parts[0].TrimStart('0'), out int d) &&
+						int.TryParse(parts[1].TrimStart('0'), out int m) && int.TryParse(parts[2], out int y))
 				{
-					Expression dayMatch = Expression.Equal(dayProp, Expression.Constant(d));
-					Expression monthMatch = Expression.Equal(monthProp, Expression.Constant(mm));
-					return Expression.AndAlso(dayMatch, monthMatch);
+					// Exact match
+					finalExpr = Expression.AndAlso(
+						Expression.AndAlso(Expression.Equal(dayProp, Expression.Constant(d)), Expression.Equal(monthProp, Expression.Constant(m))),
+						Expression.Equal(yearProp, Expression.Constant(y))
+					);
+					return finalExpr;
 				}
-				// day + month (03/11 or 15-06)
-				if (parts.Length == 2 &&
-					int.TryParse(parts[0], out int m) &&
-					int.TryParse(parts[1], out int y))
+				// Single part input
+				if (parts.Length == 1)
 				{
-					var monthMatch = Expression.Equal(monthProp, Expression.Constant(m));
-					var yearMatch = Expression.Equal(yearProp, Expression.Constant(y));
-					return Expression.AndAlso(monthMatch, yearMatch);
-				}
+					var part = parts[0].TrimStart('0');
+					if (!int.TryParse(part, out int num))
+						return null;
 
-				// full date 
-				var acceptedFormats = new[] { "dd/MM/yyyy", "MM/dd/yyyy", "yyyy-MM-dd", "dd-MM-yyyy", "M/d/yyyy", "d/M/yyyy" };
-				if (DateTime.TryParseExact(searchText, acceptedFormats, CultureInfo.InvariantCulture,
-						DateTimeStyles.None, out var fullDate))
-				{
-					var dateProp = Expression.Property(dateValue, nameof(DateTime.Date));
-					return Expression.Equal(dateProp, Expression.Constant(fullDate.Date));
+					if (part.Length == 4)
+						return Expression.Equal(yearProp, Expression.Constant(num));
+
+					if (part.Length == 3)
+						return IntStartsWith(yearProp, part);
+
+					if (part.Length <= 2)
+					{
+						var dayExpr = Expression.Equal(dayProp, Expression.Constant(num));
+						var monthExpr = Expression.Equal(monthProp, Expression.Constant(num));
+						return Expression.OrElse(dayExpr, monthExpr);
+					}
 				}
-				return null;
+				// Partial match
+				for (int i = 0; i < parts.Length; i++)
+				{
+					var part = parts[i].TrimStart('0');
+					if (!int.TryParse(part, out _))
+						continue;
+
+					Expression partExpr = i switch
+					{
+						0 => IntStartsWith(dayProp, part),
+						1 => IntStartsWith(monthProp, part),
+						2 => IntStartsWith(yearProp, part),
+						_ => null!
+					};
+					
+					if (partExpr != null)
+						finalExpr = finalExpr == null ? partExpr : Expression.AndAlso(finalExpr, partExpr);
+				}
+				return finalExpr;
 			}
 
 			// Handle Boolean
 			if (propertyType == typeof(bool))
 			{
 				var normalized = searchText.Trim().Replace(" ", "").ToLowerInvariant();
-				var trueKeywords = new[]{ "yes", "y", "active", "1", "نعم", "ن"};
-				var falseKeywords = new[]{ "no", "n", "inactive", "0", "لا", "ل", "غيرنشط" };
+				var trueKeywords = new[] { "yes", "y", "active", "1", "نعم", "ن" };
+				var falseKeywords = new[] { "no", "n", "inactive", "0", "لا", "ل", "غيرنشط" };
 				if (trueKeywords.Any(k => k.StartsWith(normalized) || normalized.StartsWith(k)))
 					return Expression.Equal(member, Expression.Constant(true));
 

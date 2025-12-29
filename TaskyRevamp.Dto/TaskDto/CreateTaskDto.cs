@@ -17,8 +17,8 @@ public class CreateTaskDto
     [Required(ErrorMessageResourceType = typeof(SharedResources), ErrorMessageResourceName = ValidationDto.Required)]
     public string Title { get; set; }
     public string? Description { get; set; }
-    public DateTime StartDate { get; set; }
-    public DateTime EndDate { get; set; }
+    public DateTime? StartDate { get; set; }
+    public DateTime? EndDate { get; set; }
     public DateTime? ReminderDate { get; set; }
     public DateTime? DeliveryDate { get; set; }
     public string Createdbydepartment { get; set; } = string.Empty;
@@ -31,8 +31,9 @@ public class CreateTaskDto
     public int ActualWeight { get; set; } = 0;
     public int Plannedweight { get; set; } = 0;
     public int PlannedProgress { get; set; }
-    public int Duration => (EndDate.Date - StartDate.Date).Days + 1;
-    public Guid? TaskStatus { get; set; }
+	public int Duration =>
+	StartDate.HasValue && EndDate.HasValue? (EndDate.Value.Date - StartDate.Value.Date).Days + 1: 0;
+	public Guid? TaskStatus { get; set; }
     public string? TaskStatusName { get; set; }
     public string? TaskStatusColor { get; set; }
     public string? TaskStatusBackgroundColor { get; set; }
