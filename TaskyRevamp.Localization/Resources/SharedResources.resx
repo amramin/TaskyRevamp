@@ -1203,4 +1203,19 @@
   <data name="AddComment" xml:space="preserve">
     <value>Add comment</value>
   </data>
+  <data name="SureChangeProgress" xml:space="preserve">
+    <value>Are you sure you want change progress</value>
+  </data>
+  <data name="Changeprgreess" xml:space="preserve">
+    <value>Change prgreess</value>
+  </data>
+  <data name="progressChangedsuccessfully" xml:space="preserve">
+    <value>progress changed successfully</value>
+  </data>
+  <data name="progressChangedFailed" xml:space="preserve">
+    <value>Progress change failed</value>
+  </data>
+  <data name="Privilege" xml:space="preserve">
+    <value>Privileges</value>
+  </data>
 </root>

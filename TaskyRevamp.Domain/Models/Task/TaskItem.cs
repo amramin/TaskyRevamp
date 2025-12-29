@@ -216,7 +216,7 @@ public class TaskItem : Entity, IHasCreationMetaData, IHasUpdateMetaData
             UpdatedBy = UpdatedBy?.Username,
             ReminderDate = Reminder?.Date,
             TaskStatusName = status?.NameEnglish,
-            TaskStatus = status?.Id,
+            TaskStatus = StatusId,
 			AssignedIds = AssignedIds?.ToList() ?? new List<Guid>(),
 			AssignedDepartmentIds = AssignedDepartmentIds?.ToList() ?? new List<Guid>()
 		};

@@ -1,5 +1,10 @@
-﻿@using TaskyRevamp.Dto.TaskDto
-
+﻿@using TaskyRevamp.Client.Consumer
+@using TaskyRevamp.Client.Services
+@using TaskyRevamp.Dto.TaskDto
+@inject IStringLocalizer<SharedResources> Loc
+@inject ToastService ToastService
+@inject PopupService PopupService
+@inject TaskConsumer _taskConsumer
 <!-- Progress -->
 <div class="card mb-3">
     <div class="card-body">
@@ -19,45 +24,53 @@
                      aria-valuemin="0"
                      aria-valuemax="100"></div>
             </div>
+            <input type="range"
+                   class="form-range"
+                   min="0"
+                   max="100"
+                   @bind-value="Task.ActualProcess"
+                   @bind-value:event="oninput"
+                   @onchange="OnProgressChanged"
+                   disabled="@(Task.ActualProcess >= 100 && !AlllowedToChangeProgress.Any(p=>p==Task.TaskStatus))" />
         </div>
    
-        <small class="text-muted fw-semibold d-block mb-3">Add to card</small>
-        <button class="btn btn-light w-100 text-start mb-2" @* @onclick="OnEditTask" *@>
-            @* <span class="icon">
+       @*  <small class="text-muted fw-semibold d-block mb-3">Add to card</small>
+        <button class="btn btn-light w-100 text-start mb-2" @* @onclick="OnEditTask" >
+            <span class="icon">
                 <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Menu"></SVGCrud>
-            </span> *@ Checklist
+            </span> Checklist
         </button>
-        <button class="btn btn-light w-100 text-start mb-2" @* @onclick="OnCompleteTask *@">
-            @* <span class="icon">
+        <button class="btn btn-light w-100 text-start mb-2"  @onclick="OnCompleteTask ">
+            <span class="icon">
                 <SVGCrud SVGType="SVGCrud.SVGTypeEnum.ArrowsUp"></SVGCrud>
-            </span> *@ Done
+            </span> Done
         </button>
-        <button class="btn btn-light w-100 text-start mb-2" @* @onclick="OnReOpenTask" *@>
-            @* <span class="icon">
+        <button class="btn btn-light w-100 text-start mb-2" @* @onclick="OnReOpenTask" >
+            <span class="icon">
                 <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Edit"></SVGCrud>
-            </span> *@Edit a task
+            </span>Edit a task
         </button>
-        <button class="btn btn-light w-100 text-start mb-2" @* @onclick="OnRejectTask" *@>
-            @* <span class="icon">
+        <button class="btn btn-light w-100 text-start mb-2" @* @onclick="OnRejectTask" >
+            <span class="icon">
                 <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Reject"></SVGCrud>
-            </span> *@ Reject task
+            </span> Reject task
         </button>
-        <button class="btn btn-light w-100 text-start mb-2" @* @onclick="OnDeleteTask" *@>
-            @* <span class="icon">
+        <button class="btn btn-light w-100 text-start mb-2" @* @onclick="OnDeleteTask" >
+            <span class="icon">
                 <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Delete"></SVGCrud>
-            </span> *@Delete task
-        </button>
-        @if (Task?.TaskStatusName == "Pending Review")
+            </span>Delete task
+        </button> *@
+        @if (Task?.TaskStatus == Guid.Parse("6EE4574D-C439-45B4-223A-08DE3318A61C"))
         {
-            <button class="btn btn-light w-100 text-start mb-2" @* @onclick="OnDeleteTask" *@>
-                @* <span class="icon">
-                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.CompletedList"></SVGCrud>
-            </span> *@Complete
+            <button class="btn btn-light w-100 text-start mb-2" @onclick="@(() => CompleteTask(Task.Id))">
+                 <span class="icon">
+                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.CompletedList"></SVGCrud> 
+                </span>
             </button>
-            <button class="btn btn-light w-100 text-start" @* @onclick="OnDeleteTask" *@>
-                @* <span class="icon">
+            <button class="btn btn-light w-100 text-start" @onclick="@(() => ReopenTask(Task.Id))">
+                 <span class="icon">
                 <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Repeat"></SVGCrud>
-            </span> *@Re Open
+                </span>
             </button>
         }
     </div>
@@ -103,7 +116,19 @@
 @code {
     [Parameter]
     public CreateTaskDto? Task { get; set; }
-
+    [Parameter] public EventCallback OnConfirmed { get; set; }
+    int progressold  { get; set; }
+    List<Guid> AlllowedToChangeProgress = new List<Guid>()
+    {
+        Guid.Parse("547022EA-EF8C-4FBC-2236-08DE3318A61C"),
+        Guid.Parse("9843AF9D-1389-4740-B428-08DE3D8A77AB"),
+        Guid.Parse("753404A6-8B18-43F7-2238-08DE3318A61C"),
+        Guid.Parse("270A78EB-C5CA-475D-2239-08DE3318A61C")
+    };
+    protected override void OnParametersSet()
+    {
+        progressold = Task.ActualProcess;
+    }
     // [Parameter]
     // public EventCallback OnEditTask { get; set; }
 
@@ -125,5 +150,99 @@
     {
         showChecklist = !showChecklist;
     }
+    private async Task CompleteConfirmed(Guid id)
+    {
+        var result = await _taskConsumer.CompleteTask(id);
+        if (result.Success && result.Data)
+        {
+            await ToastService.ShowToastAsync(Loc["Completedsuccessfully"], "success");
+            await OnConfirmed.InvokeAsync();
 
+        }
+        else
+        {
+            await ToastService.ShowToastAsync(Loc["CompleteFailed"], "danger");
+        }
+
+        StateHasChanged();
+    }
+    private void CompleteTask(Guid id)
+    {
+        PopupService.ShowConfirmation(
+                @Loc["SureCompleteTask"],
+                "Yes, Complete",
+                async (confirmed) =>
+                {
+                    if (confirmed)
+                        await CompleteConfirmed(id);
+                },
+                ConfirmationType.Primary
+            );
+    }
+    private async Task ReopenConfirmed(Guid id)
+    {
+        var result = await _taskConsumer.ReopenTask(id);
+        if (result.Success && result.Data)
+        {
+            await ToastService.ShowToastAsync(Loc["Reopenedsuccessfully"], "success");
+            await OnConfirmed.InvokeAsync();
+
+        }
+        else
+        {
+            await ToastService.ShowToastAsync(Loc["ReopenFailed"], "danger");
+        }
+
+        StateHasChanged();
+    }
+    private void ReopenTask(Guid id)
+    {
+        PopupService.ShowConfirmation(
+                @Loc["SureReopenTask"],
+                "Yes, Reopen",
+                async (confirmed) =>
+                {
+                    if (confirmed)
+                        await ReopenConfirmed(id);
+                },
+                ConfirmationType.Primary
+            );
+    }
+    private void OnProgressChanged(ChangeEventArgs args)
+    {
+        var progress = Task.ActualProcess;
+        PopupService.ShowConfirmation(
+        @Loc["SureChangeProgress"],
+        "Yes, Changeprgreess",
+        async (confirmed) =>
+        {
+            if (confirmed)
+            {
+                await ChangeProgressConfirmed(progress);
+            }
+            else
+            {
+                Task.ActualProcess = progressold;
+                StateHasChanged();
+            }
+        },
+        ConfirmationType.Primary
+    );
+    }
+    private async Task ChangeProgressConfirmed(int progress)
+    {
+        var result = await _taskConsumer.ChangeTaskProgress(Task.Id,progress);
+        if (result.Success && result.Data)
+        {
+            await ToastService.ShowToastAsync(Loc["progressChangedsuccessfully"], "success");
+            await OnConfirmed.InvokeAsync();
+
+        }
+        else
+        {
+            await ToastService.ShowToastAsync(Loc["progressChangedFailed"], "danger");
+        }
+
+        StateHasChanged();
+    }
 }

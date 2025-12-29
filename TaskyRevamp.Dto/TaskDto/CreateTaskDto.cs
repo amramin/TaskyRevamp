@@ -55,6 +55,6 @@ public class CreateTaskDto
     public string? AssigneduserNames { get; set; }
     public List<TaskViewsDto>? ViewdByNames { get; set; }
     public string? CreatorDepartment { get; set; }
-    public List<UploadAttachmentDto> uploadAttachmentDtos { get; set; }
+    public List<UploadAttachmentDto>? uploadAttachmentDtos { get; set; }
 
 }
