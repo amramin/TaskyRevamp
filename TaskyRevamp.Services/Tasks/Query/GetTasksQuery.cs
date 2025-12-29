@@ -74,7 +74,7 @@ public class GetTasksHandler : IRequestHandler<GetTasksQuery, PagedResult<Create
 
             tasky.TaskStatusName = currentCulture == "ar" ? tsk.status?.NameArabic : tsk.status?.NameEnglish;
             tasky.CreatedByName = currentCulture == "ar" ? tsk.CreatedBy?.NameArabic : tsk.CreatedBy?.NameEnglish;
-            tasky.Createdbydepartment = currentCulture == "ar" ? CreatorDepartment.NameArabic : CreatorDepartment.NameEnglish;
+            tasky.Createdbydepartment = currentCulture == "ar" ? CreatorDepartment?.NameArabic : CreatorDepartment?.NameEnglish;
             tasky.UpdatedBy = currentCulture == "ar" ? tsk.UpdatedBy?.NameArabic : tsk.UpdatedBy?.NameEnglish;
             tasky.AssigneduserNames = string.Join(",", assgnedusr.Value.Select(k => k.NameEnglish));// string.Join(", ", tsk.Assignees.Select(k => k.User.NameEnglish));
             if (tasky.AssigneduserNames.Count() > 0)
