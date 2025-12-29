@@ -800,13 +800,13 @@
     <value>الإدارة </value>
   </data>
   <data name="Permissions" xml:space="preserve">
-    <value>الصلاحيات</value>
+    <value>الأذونات</value>
   </data>
   <data name="EmployeesTasks" xml:space="preserve">
-    <value>مهام الموظف</value>
+    <value>مهام الموظفين</value>
   </data>
   <data name="ManagersTasks" xml:space="preserve">
-    <value>مهمة المدير</value>
+    <value>مهام المدراء</value>
   </data>
   <data name="DirectionLevel" xml:space="preserve">
     <value>مستوي الاتجاه</value>
@@ -1110,9 +1110,6 @@
   <data name="AddAttachment" xml:space="preserve">
     <value>إضافة ملف</value>
   </data>
-  <data name="Privilege" xml:space="preserve">
-    <value>صلاحيات</value>
-  </data>
   <data name="ReOpen" xml:space="preserve">
     <value>إعادة فتح</value>
   </data>
@@ -1185,5 +1182,8 @@
   </data>
   <data name="AddComment" xml:space="preserve">
     <value>إضافة تعليق</value>
+  </data>
+  <data name="Privilege" xml:space="preserve">
+    <value>صلاحيات</value>
   </data>
 </root>

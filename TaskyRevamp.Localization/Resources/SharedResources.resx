@@ -802,10 +802,10 @@
     <value>Permissions</value>
   </data>
   <data name="EmployeesTasks" xml:space="preserve">
-    <value>Employee's tasks</value>
+    <value>Employees' tasks</value>
   </data>
   <data name="ManagersTasks" xml:space="preserve">
-    <value>Manager's tasks</value>
+    <value>Managers' tasks</value>
   </data>
   <data name="DirectionLevel" xml:space="preserve">
     <value>Direction level</value>

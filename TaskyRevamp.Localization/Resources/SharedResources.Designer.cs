@@ -1168,7 +1168,7 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Employee&apos;s tasks.
+        ///   Looks up a localized string similar to Employees&apos; tasks.
         /// </summary>
         public static string EmployeesTasks {
             get {
@@ -1699,7 +1699,7 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Manager&apos;s tasks.
+        ///   Looks up a localized string similar to Managers&apos; tasks.
         /// </summary>
         public static string ManagersTasks {
             get {
