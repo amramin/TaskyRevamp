@@ -19,7 +19,7 @@ namespace TaskyRevamp.Localization.Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "18.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class SharedResources {
@@ -196,6 +196,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add comment.
+        /// </summary>
+        public static string AddComment {
+            get {
+                return ResourceManager.GetString("AddComment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add delegation.
         /// </summary>
         public static string AddDelegation {
@@ -295,7 +304,7 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Add Source.
+        ///   Looks up a localized string similar to Add source.
         /// </summary>
         public static string AddTaskSource {
             get {
@@ -345,6 +354,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string AllrightsKSA {
             get {
                 return ResourceManager.GetString("AllrightsKSA", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Approve and reject the request change end date.
+        /// </summary>
+        public static string ApproveAndRejectTheRequestChangeEndDate {
+            get {
+                return ResourceManager.GetString("ApproveAndRejectTheRequestChangeEndDate", resourceCulture);
             }
         }
         
@@ -493,6 +511,42 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Change end date.
+        /// </summary>
+        public static string ChangeEndDate {
+            get {
+                return ResourceManager.GetString("ChangeEndDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Change progress.
+        /// </summary>
+        public static string ChangeProgress {
+            get {
+                return ResourceManager.GetString("ChangeProgress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Checklist add.
+        /// </summary>
+        public static string ChecklistAdd {
+            get {
+                return ResourceManager.GetString("ChecklistAdd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Checklist update.
+        /// </summary>
+        public static string ChecklistUpdate {
+            get {
+                return ResourceManager.GetString("ChecklistUpdate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Clear search.
         /// </summary>
         public static string ClearSearch {
@@ -561,6 +615,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string CreatedByDepartment {
             get {
                 return ResourceManager.GetString("CreatedByDepartment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create task.
+        /// </summary>
+        public static string CreateTask {
+            get {
+                return ResourceManager.GetString("CreateTask", resourceCulture);
             }
         }
         
@@ -880,7 +943,16 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Different department.
+        ///   Looks up a localized string similar to Details .
+        /// </summary>
+        public static string Details {
+            get {
+                return ResourceManager.GetString("Details", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Different departments.
         /// </summary>
         public static string DifferentDepartment {
             get {
@@ -2140,6 +2212,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Reject.
+        /// </summary>
+        public static string Reject {
+            get {
+                return ResourceManager.GetString("Reject", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Task rejection configuration.
         /// </summary>
         public static string RejectionConfiguration {
@@ -2176,11 +2257,11 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Reopen.
+        ///   Looks up a localized string similar to Re-open.
         /// </summary>
-        public static string Reopen {
+        public static string ReOpen {
             get {
-                return ResourceManager.GetString("Reopen", resourceCulture);
+                return ResourceManager.GetString("ReOpen", resourceCulture);
             }
         }
         
@@ -2226,6 +2307,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string ReportModuleHint {
             get {
                 return ResourceManager.GetString("ReportModuleHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Request change end date.
+        /// </summary>
+        public static string RequestChangeEndDate {
+            get {
+                return ResourceManager.GetString("RequestChangeEndDate", resourceCulture);
             }
         }
         
@@ -2316,6 +2406,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string Select {
             get {
                 return ResourceManager.GetString("Select", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select at least one toggle to proceed..
+        /// </summary>
+        public static string SelectAtLeastOneToggleToProceed {
+            get {
+                return ResourceManager.GetString("SelectAtLeastOneToggleToProceed", resourceCulture);
             }
         }
         
@@ -2509,6 +2608,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Subtask .
+        /// </summary>
+        public static string SubTask {
+            get {
+                return ResourceManager.GetString("SubTask", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Set the maximum number of subtask levels allowed when creating a task. This controls how deeply tasks can be nested..
         /// </summary>
         public static string subtask_hint {
@@ -2554,7 +2662,7 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Are you sure you want to delete this ?.
+        ///   Looks up a localized string similar to Are you sure you want to delete this?.
         /// </summary>
         public static string Sure {
             get {

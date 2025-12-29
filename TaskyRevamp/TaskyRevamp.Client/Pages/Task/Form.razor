@@ -151,7 +151,7 @@
                                 </label>
                                 <SearchableSingleDropdownOffline TInput=TypeDto TOutput=Guid TextSelector="(TypeDto x) => x.DisplayedName"
                                                                  OutputSelector="x => x.Id" @ref="typeref" Datasource="taskTypeDtos" MinCharacterCount="1"
-                                                                 @bind-SelectedOption="@taskdto.TypeId" PlaceHolder="@($"--{Loc["Select"]}--")" />
+                                                                 @bind-SelectedOption="@taskdto.TypeId" PlaceHolder="@($"{Loc["Select"]}")" />
 
                             </div>
                             break;
@@ -167,13 +167,13 @@
                                 <SearchableSingleDropdownOffline @ref="sourceref" TInput=SourceDto TOutput=Guid
                                                                  TextSelector="(SourceDto x)=> x.DisplayedName" OutputSelector="x => x.Id" Datasource="taskSourceDtos"
                                                                  MinCharacterCount="1" @bind-SelectedOption="@taskdto.SourceId"
-                                                                 PlaceHolder="@($"--{Loc["Select"]}--")" />
+                                                                 PlaceHolder="@($"{Loc["Select"]}")" />
 
                             </div>
                             break;
 
 
-                case "Start date":
+                        case "Start date":
 
                             <div class="mb-3">
                                 <label class="form-label" for="fromDate">
@@ -194,7 +194,7 @@
 
 
 
-                case "Reminder date":
+                        case "Reminder date":
 
 
                             <div class="mb-3">
@@ -213,7 +213,7 @@
                             </div>
                             break;
 
-                case "End date":
+                        case "End date":
 
                             <div class="mb-3">
                                 <label class="form-label" for="toDate">
@@ -240,12 +240,12 @@
                                     }
                                 </label>
                                 <SearchableMultiDropdownOffline @ref="departRef" TInput=DepartmentDto TOutput="Guid" Datasource=departmentDtos
-                                                                TextSelector=@(x=>x.NameEnglish) OutputSelector="x=> x.Id"
+                                                                TextSelector=@(x=>x.NameEnglish) OutputSelector="x=> x.Id" PlaceHolder="@($"{Loc["Select"]}")"
                                                                 @bind-SelectedOptions=taskdto.AssignedDepartmentIds />
                             </div>
                             break;
 
-                case "Dependency":
+                        case "Dependency":
 
                             <div class="mb-3">
                                 <label class="form-label">
@@ -255,7 +255,7 @@
                                         <span class="text-danger">*</span>
                                     }
                                 </label>
-                                <SearchableMultiDropdownOffline TInput=CreateTaskDto TOutput="Guid" Datasource=allTaskDtos
+                                <SearchableMultiDropdownOffline TInput=CreateTaskDto TOutput="Guid" Datasource=allTaskDtos PlaceHolder="@($"{Loc["Select"]}")"
                                                                 TextSelector=@(x=>x.Title) OutputSelector="x=> x.Id" @bind-SelectedOptions=taskdto.Dependencies />
                             </div>
                             break;
@@ -268,11 +268,11 @@
                                         <span class="text-danger">*</span>
                                     }
                                 </label>
-                                <SearchableMultiDropdownOffline TInput=UserDto TOutput="Guid" Datasource=userDtos
+                                <SearchableMultiDropdownOffline TInput=UserDto TOutput="Guid" Datasource=userDtos PlaceHolder="@($"{Loc["Select"]}")"
                                                                 TextSelector=@(x=>x.UserName) OutputSelector="x=> x.Id" @bind-SelectedOptions=taskdto.AssignedIds />
                             </div>
                             break;
-@*                         case "Checklist":
+                        @*                         case "Checklist":
                             <div class="mb-3">
                                 <label class="form-label">
                                     @Loc["Checklist"]
@@ -322,7 +322,7 @@
                                 </label>
                                 <SearchableSingleDropdownOffline TInput=PriorityDto TOutput=Guid TextSelector=" (PriorityDto x)=> x.Name"
                                                                  OutputSelector="x => x.Id" Datasource="Priorities" MinCharacterCount="1"
-                                                                 @bind-SelectedOption="@taskdto.Priority" PlaceHolder="@($"--{Loc["Select"]}--")" />
+                                                                 @bind-SelectedOption="@taskdto.Priority" PlaceHolder="@($"{Loc["Select"]}")" />
                             </div>
                             break;
                         case "Weight":
