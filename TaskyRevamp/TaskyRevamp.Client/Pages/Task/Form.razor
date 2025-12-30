@@ -4,11 +4,11 @@
 @using TaskyRevamp.Dto.Account
 @using TaskyRevamp.Dto.Department
 @using TaskyRevamp.Dto.SystemConfiguration
-
 @using TaskyRevamp.Client.Consumer
 @using TaskyRevamp.Client.Services
 @using TaskyRevamp.Dto.Enums;
 @using TaskyRevamp.Dto.SystemConfiguration;
+@using TaskyRevamp.Dto.TaskAttachment
 @using TaskyRevamp.Dto.TaskDto
 @using TaskyRevamp.Dto.TaskSourceDto
 @using TaskyRevamp.Dto.TaskTypeDto
@@ -17,397 +17,386 @@
 @inject TaskConsumer _taskConsumer
 @inject TypeSettingConsumer _typeSettingConsumer
 @inject Microsoft.Extensions.Options.IOptions<MySettings> mySettings
-
 @inject DepartmentConsumer _departmentConsumer
 @inject AddTaskSettingConsumer _addTaskSettingConsumer
 @inject PrioritySettingConsumer _prioritySettingConsumer
 @inject SourceSettingConsumer _sourceSettingConsumer
-@inject TaskyService taskyService
+@inject FileManagementService fileManagementService
 @inject UserConsumer _userConsumer
-@if(x){
-@* <EditForm Model="@taskdto" EditContext="@editContext" OnValidSubmit="HandleValidSubmit"
+@inject TaskAttachmentConsumer _taskAttachmentConsumer
+
+@if (x)
+{
+    @* <EditForm Model="@taskdto" EditContext="@editContext" OnValidSubmit="HandleValidSubmit"
     OnInvalidSubmit="HandleInvalidSubmit"> *@
 
 
     <EditForm EditContext="@editContext"
               OnValidSubmit="HandleValidSubmit"
               OnInvalidSubmit="HandleInvalidSubmit">
-    <DataAnnotationsValidator />
-    <ValidationSummary />
+        <DataAnnotationsValidator />
+        <ValidationSummary />
 
         <div class="offcanvas-body ">
-        @foreach (var column in AddTaskSettings.Where(c => c.IsActive).OrderBy(c => c.Order))
-    {
-                <div @key="column.Id">
-            @switch (column.NameEnglish)
+            @foreach (var column in AddTaskSettings.Where(c => c.IsActive).OrderBy(c => c.Order))
             {
+                <div @key="column.Id">
+                    @switch (column.NameEnglish)
+                    {
 
-               case "File upload":
-                    <div class="mb-3">
-                        <label class="form-label">
-                            @Loc["file"]
-                            @if (column.IsMandatory)
-                            {
-                                <span class="text-danger"> *</span>
-                            }
-                        </label>
-                        <InputFile class="form-control" accept="image/*" OnChange="@LoadFile" @ref="inputFile"></InputFile>
-                        @if (!string.IsNullOrEmpty(taskdto.PhotoBase64))
-                        {
-                            <img class="img-48" src="data:image/png;base64,@taskdto.PhotoBase64" />
-                        }
-                        @* @if (PhotoIsRequired)
-                        {
-                            <div md="3">
-                                <label class="small text-danger"> @PhotoErroMessage</label>
-                            </div>
-                        } *@
-                    </div>
-
-                    break;
-
-
-                case "Title":
-
-                    <div class="mb-3">
-                        <label class="form-label">
-                            @Loc["TitleEnglish"]
-                            @if (column.IsMandatory)
-                            {
-                                <span class="text-danger"> *</span>
-                            }
-                        </label>
-                        <InputText class="form-control" @bind-Value="taskdto.TitleEnglish" placeholder="@Loc["NameEnglish"]" />
-                        <ValidationMessage class="small text-danger" For="@(() => taskdto.TitleEnglish)"></ValidationMessage>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">
-                            @Loc["TitleArabic"]
-                            @if (column.IsMandatory)
-                            {
-                                <span class="text-danger"> *</span>
-                            }
-                        </label>
-                        <InputText class="form-control" @bind-Value="taskdto.TitleArabic" placeholder="@Loc["NameEnglish"]" />
-                        <ValidationMessage class="small text-danger" For="@(() => taskdto.TitleArabic)"></ValidationMessage>
-                    </div>
-
-                    break;
-
-
-                case "Description":
-
-                    <div class="mb-3">
-                        <label class="form-label">
-                            @Loc["DescriptionEnglish"]
-                            @if (column.IsMandatory)
-                            {
-                                <span class="text-danger"> *</span>
-                            }
-                        </label>
-
-                        <div class="col-lg-12">
-                            <div class="mb-2">
-
-
-                                <RichTextEditorComponent EditorId="RTE_English2" @ref="RichTextEditorComponentRefDescriptionEnglish"
-                                    Content="@taskdto.DescriptionEnglish" ContentChanged="OnDescriptionEnglishChanged">
-                                </RichTextEditorComponent>
-
-                                <div class="d-flex align-items-center justify-content-between">
-                                    <div class="d-flex gap-2">
-                                        <ValidationMessage class="small text-danger" For="@(() => taskdto.DescriptionEnglish)" />
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">
-                            @Loc["DescriptionArabic"]
-                            @if (column.IsMandatory)
-                            {
-                                <span class="text-danger"> *</span>
-                            }
-                        </label>
-
-                        <div class="col-lg-12">
-                            <div class="mb-2">
-
-
-                                <RichTextEditorComponent EditorId="RTE_English3" @ref="RichTextEditorComponentRefDescriptionArabic"
-                                    Content="@taskdto.DescriptionArabic" ContentChanged="OnContentDescriptionArabicChanged">
-                                </RichTextEditorComponent>
-
-                                <div class="d-flex align-items-center justify-content-between">
-                                    <div class="d-flex gap-2">
-                                        <ValidationMessage class="small text-danger" For="@(() => taskdto.DescriptionArabic)" />
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-
-                    break;
-                case "Type":
-                    <div class="mb-3">
-                        <label class="form-label">
-                            @Loc["SelectType"]
-                            @if (column.IsMandatory)
-                            {
-                                <span class="text-danger"> *</span>
-                            }
-                        </label>
-                        <SearchableSingleDropdownOffline TInput=TypeDto TOutput=Guid TextSelector="(TypeDto x) => x.DisplayedName"
-                            OutputSelector="x => x.Id" @ref="typeref" Datasource="taskTypeDtos" MinCharacterCount="1"
-                            @bind-SelectedOption="@taskdto.TypeId" PlaceHolder="@($"--{Loc["SelectType"]}--")" />
-
-                    </div>
-                    break;
-                case "Source":
-                    <label class="form-label">
-                        @Loc["SelectSource"]
-                        @if (column.IsMandatory)
-                        {
-                            <span class="text-danger"> *</span>
-                        }
-                    </label>
-                    <div class="mb-3">
-                        <SearchableSingleDropdownOffline @ref="sourceref" TInput=SourceDto TOutput=Guid
-                            TextSelector="(SourceDto x)=> x.DisplayedName" OutputSelector="x => x.Id" Datasource="taskSourceDtos"
-                            MinCharacterCount="1" @bind-SelectedOption="@taskdto.SourceId"
-                            PlaceHolder="@($"--{Loc["SelectSource"]}--")" />
-
-                    </div>
-                    break;
-
-                case "Start date":
-                    <div class="mb-3">
-                        <label class="form-label" for="fromDate">
-                            @Loc["FromDate"]
-                            @if (column.IsMandatory)
-                            {
-                                <span class="text-danger"> *</span>
-                            }
-                        </label>
-
-                        <div class="date-group">
-                            <InputDate class="form-control" id="fromDate" @bind-Value="taskdto.StartDate" />
-                        </div>
-                        <ValidationMessage class="small text-danger" For="@(() => taskdto.StartDate)" />
-                    </div>
-                    break;
-
-
-                case "Reminder date":
-                    <div class="mb-3">
-                        <label class="form-label" for="fromDate">
-                            @Loc["ReminderDate"]
-                            @if (column.IsMandatory)
-                            {
-                                <span class="text-danger"> *</span>
-                            }
-                        </label>
-
-                        <div class="date-group">
-                            <InputDate class="form-control" id="fromDate" @bind-Value="taskdto.ReminderDate" />
-                        </div>
-                        <ValidationMessage class="small text-danger" For="@(() => taskdto.ReminderDate)" />
-                    </div>
-                    break;
-                case "End date":
-                    <div class="mb-3">
-                        <label class="form-label" for="toDate">
-                            @Loc["ToDate"]
-                            @if (column.IsMandatory)
-                            {
-                                <span class="text-danger"> *</span>
-                            }
-                        </label>
-                        <div class="date-group">
-                            <InputDate class="form-control" id="toDate" @bind-Value="taskdto.EndDate" />
-                        </div>
-                        <ValidationMessage class="small text-danger" For="@(() => taskdto.EndDate)" />
-
-                    </div>
-                    break;
-                case "Department":
-                    <div class="mb-3">
-                        <label class="form-label">
-                            @Loc["AssignedToDepartment"]
-                            @if (column.IsMandatory)
-                            {
-                                <span class="text-danger">*</span>
-                            }
-                        </label>
-                        <SearchableMultiDropdownOffline @ref="departRef" TInput=DepartmentDto TOutput="Guid" Datasource=departmentDtos
-                            TextSelector=@(x=>x.NameEnglish) OutputSelector="x=> x.Id"
-                            @bind-SelectedOptions=taskdto.AssignedDepartmentIds />
-                    </div>
-                    break;
-                case "Dependency":
-                    <div class="mb-3">
-                        <label class="form-label">
-                            @Loc["Dependency"]
-                            @if (column.IsMandatory)
-                            {
-                                <span class="text-danger">*</span>
-                            }
-                        </label>
-                        <SearchableMultiDropdownOffline  TInput=CreateTaskDto TOutput="Guid" Datasource=allTaskDtos
-                            TextSelector=@(x=>x.Title) OutputSelector="x=> x.Id" @bind-SelectedOptions=taskdto.Dependencies />
-                    </div>
-                    break;
-                        case "Assigned to":
-                    <div class="mb-3">
-                        <label class="form-label">
-                            @Loc["AssignedTo"]
-                            @if (column.IsMandatory)
-                            {
-                                <span class="text-danger">*</span>
-                            }
-                        </label>
-                        <SearchableMultiDropdownOffline TInput=UserDto TOutput="Guid" Datasource=userDtos
-                            TextSelector=@(x=>x.UserName) OutputSelector="x=> x.Id" @bind-SelectedOptions=taskdto.AssignedIds />
-                    </div>
-                    break;
-
-                case "Checklist":
-                    <div class="mb-3">
-                        <label class="form-label">
-                            @Loc["Checklist"]
-                            @if (column.IsMandatory)
-                            {
-                                <span class="text-danger">*</span>
-                            }
-                        </label>
-
-                    </div>
-
-                    break;
-                case "Comments":
-
-                    <div class="mb-3">
-                        <label class="form-label">
-                            @Loc["Comments"]
-                            @if (column.IsMandatory)
-                            {
-                                <span class="text-danger"> *</span>
-                            }
-                        </label>
-
-                        <div class="col-lg-12">
-                            <div class="mb-2">
+                        case "File upload":
+                            <div class="mb-3">
                                 <label class="form-label">
-                                    @Loc["Comment"]
-                                    <span class="text-danger"> *</span>
+                                    @Loc["file"]
+                                    @if (column.IsMandatory)
+                                    {
+                                        <span class="text-danger"> *</span>
+                                    }
+                                </label>
+                                <div id="dropZone" class="border border-2 border-dashed rounded p-5 text-center mb-4" style="background-color: #f8f9fa;">
+                                    <button class="btn btn-link text-secondary p-1">
+                                        <span class="icon">
+                                            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.FileUpload"></SVGCrud>
+                                        </span>
+                                    </button>
+                                    <p class="mb-2">
+                                        @Loc["Drag and Drop or"],
+                                        <label for="fileInput" class="text-primary" style="cursor: pointer; text-decoration: underline;">
+                                            @Loc["AddAttachment"]
+                                        </label>
+                                    </p>
+                                    <InputFile id="fileInput"
+                                               OnChange="LoadFile"
+                                               multiple
+                                               class="d-none"
+                                               accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.csv,.jpg,.jpeg,.png" />
+                                </div>
+                                @if (uploadedFiles.Any())
+                                {
+                                    <div class="mt-3">
+                                        <h6 class="mb-2">Uploaded Files (@uploadedFiles.Count)</h6>
+                                        <div class="list-group">
+                                            @foreach (var file in uploadedFiles)
+                                            {
+                                                <div class="list-group-item d-flex align-items-center justify-content-between">
+                                                    <div class="d-flex align-items-center flex-grow-1 me-2">
+                                                        <div class="flex-grow-1">
+                                                            <div class="fw-medium">@file.Name</div>
+                                                        </div>
+                                                    </div>
+                                                    @* <button type="button" class="btn btn-sm btn-danger" @onclick="() => RemoveFile(file)">
+                                                    
+                                            </button> *@
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                            break;
+                        case "Title":
+
+                            <div class="mb-3">
+                                <label class="form-label">
+                                    @Loc["TitleEnglish"]
+                                    @if (column.IsMandatory)
+                                    {
+                                        <span class="text-danger"> *</span>
+                                    }
+                                </label>
+                                <InputText class="form-control" @bind-Value="taskdto.Title" placeholder="@Loc["TitleEnglish"]" />
+                                <ValidationMessage class="small text-danger" For="@(() => taskdto.Title)"></ValidationMessage>
+                            </div>
+
+                            break;
+                        case "Description":
+
+                            <div class="mb-3">
+                                <label class="form-label">
+                                    @Loc["DescriptionEnglish"]
+                                    @if (column.IsMandatory)
+                                    {
+                                        <span class="text-danger"> *</span>
+                                    }
                                 </label>
 
-                                <RichTextEditorComponent EditorId="RTE_English4" @ref="RichTextEditorComponentRefComment"
-                                    Content="@taskdto.Content" ContentChanged="OnContentChanged"></RichTextEditorComponent>
+                                <div class="col-lg-12">
+                                    <div class="mb-2">
 
-                                <div class="d-flex align-items-center justify-content-between">
-                                    <div class="d-flex gap-2">
-                                        <ValidationMessage class="small text-danger" For="@(() => taskdto.Content)" />
+
+
+                                        <RichTextEditorComponent @key="column.Id" EditorId="RTE_English2" @ref="RichTextEditorComponentRefDescriptionEnglish"
+                                                                 Content="@taskdto.Description" ButtonText="@Loc["AddDescription"]">
+                                        </RichTextEditorComponent>
+
+                                        <div class="d-flex align-items-center justify-content-between">
+                                            <div class="d-flex gap-2">
+                                                <ValidationMessage class="small text-danger" For="@(() => taskdto.Description)" />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            break;
+                        case "Type":
+                            <div class="mb-3">
+                                <label class="form-label">
+                                    @Loc["SelectType"]
+                                    @if (column.IsMandatory)
+                                    {
+                                        <span class="text-danger"> *</span>
+                                    }
+                                </label>
+                                <SearchableSingleDropdownOffline TInput=TypeDto TOutput=Guid TextSelector="(TypeDto x) => x.DisplayedName"
+                                                                 OutputSelector="x => x.Id" @ref="typeref" Datasource="taskTypeDtos" MinCharacterCount="1"
+                                                                 @bind-SelectedOption="@taskdto.TypeId" PlaceHolder="@($"{Loc["Select"]}")" />
+
+                            </div>
+                            break;
+                        case "Source":
+                            <label class="form-label">
+                                @Loc["SelectSource"]
+                                @if (column.IsMandatory)
+                                {
+                                    <span class="text-danger"> *</span>
+                                }
+                            </label>
+                            <div class="mb-3">
+                                <SearchableSingleDropdownOffline @ref="sourceref" TInput=SourceDto TOutput=Guid
+                                                                 TextSelector="(SourceDto x)=> x.DisplayedName" OutputSelector="x => x.Id" Datasource="taskSourceDtos"
+                                                                 MinCharacterCount="1" @bind-SelectedOption="@taskdto.SourceId"
+                                                                 PlaceHolder="@($"{Loc["Select"]}")" />
+
+                            </div>
+                            break;
+                        case "Start date":
+
+                            <div class="mb-3">
+                                <label class="form-label" for="fromDate">
+                                    @Loc["FromDate"]
+                                    @if (column.IsMandatory)
+                                    {
+                                        <span class="text-danger"> *</span>
+                                    }
+                                </label>
+
+                                <div class="date-group">
+                                    <InputDate class="form-control" id="fromDate" @bind-Value="taskdto.StartDate" />
+                                </div>
+                                <ValidationMessage class="small text-danger" For="@(() => taskdto.StartDate)" />
+                            </div>
+                            break;
+                        case "Reminder date":
+
+
+                            <div class="mb-3">
+                                <label class="form-label" for="fromDate">
+                                    @Loc["ReminderDate"]
+                                    @if (column.IsMandatory)
+                                    {
+                                        <span class="text-danger"> *</span>
+                                    }
+                                </label>
+
+                                <div class="date-group">
+                                    <InputDate class="form-control" id="fromDate" @bind-Value="taskdto.ReminderDate" />
+                                </div>
+                                <ValidationMessage class="small text-danger" For="@(() => taskdto.ReminderDate)" />
+                            </div>
+                            break;
+                        case "End date":
+
+                            <div class="mb-3">
+                                <label class="form-label" for="toDate">
+                                    @Loc["ToDate"]
+                                    @if (column.IsMandatory)
+                                    {
+                                        <span class="text-danger"> *</span>
+                                    }
+                                </label>
+                                <div class="date-group">
+                                    <InputDate class="form-control" id="toDate" @bind-Value="taskdto.EndDate" />
+                                </div>
+                                <ValidationMessage class="small text-danger" For="@(() => taskdto.EndDate)" />
+
+                            </div>
+                            break;
+                        case "Department":
+                            <div class="mb-3">
+                                <label class="form-label">
+                                    @Loc["AssignedToDepartment"]
+                                    @if (column.IsMandatory)
+                                    {
+                                        <span class="text-danger">*</span>
+                                    }
+                                </label>
+                                <SearchableMultiDropdownOffline @ref="departRef" TInput=DepartmentDto TOutput="Guid" Datasource=departmentDtos
+                                                                TextSelector=@(x=>x.NameEnglish) OutputSelector="x=> x.Id" PlaceHolder="@($"{Loc["Select"]}")"
+                                                                @bind-SelectedOptions=taskdto.AssignedDepartmentIds />
+                            </div>
+                            break;
+                        case "Dependency":
+
+                            <div class="mb-3">
+                                <label class="form-label">
+                                    @Loc["Dependency"]
+                                    @if (column.IsMandatory)
+                                    {
+                                        <span class="text-danger">*</span>
+                                    }
+                                </label>
+                                <SearchableMultiDropdownOffline TInput=CreateTaskDto TOutput="Guid" Datasource=allTaskDtos PlaceHolder="@($"{Loc["Select"]}")"
+                                                                TextSelector=@(x=>x.Title) OutputSelector="x=> x.Id" @bind-SelectedOptions=taskdto.Dependencies />
+                            </div>
+                            break;
+                        case "Assigned to":
+                            <div class="mb-3">
+                                <label class="form-label">
+                                    @Loc["AssignedTo"]
+                                    @if (column.IsMandatory)
+                                    {
+                                        <span class="text-danger">*</span>
+                                    }
+                                </label>
+                                <SearchableMultiDropdownOffline TInput=UserDto TOutput="Guid" Datasource=userDtos PlaceHolder="@($"{Loc["Select"]}")"
+                                                                TextSelector=@(x=>x.UserName) OutputSelector="x=> x.Id" @bind-SelectedOptions=taskdto.AssignedIds />
+                            </div>
+                            break;
+                        @* case "Checklist":
+                            <div class="mb-3">
+                                <label class="form-label">
+                                    @Loc["Checklist"]
+                                    @if (column.IsMandatory)
+                                    {
+                                        <span class="text-danger">*</span>
+                                    }
+                                </label>
+
+                            </div>
+
+                            break; *@
+                        case "Comments":
+
+                            <div class="mb-3">
+                                <div class="col-lg-12">
+                                    <div class="mb-2">
+                                        <label class="form-label">
+                                            @Loc["Comments"]
+                                            @if (column.IsMandatory)
+                                            {
+                                                <span class="text-danger"> *</span>
+                                            }
+                                        </label>
+
+                                        <RichTextEditorComponent @key="column.Id" EditorId="RTE_English4" @ref="RichTextEditorComponentRefComment"
+                                                                 Content="@taskdto.Content" ButtonText="@Loc["AddComment"]"></RichTextEditorComponent>
+
+                                        <div class="d-flex align-items-center justify-content-between">
+                                            <div class="d-flex gap-2">
+                                                <ValidationMessage class="small text-danger" For="@(() => taskdto.Content)" />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            break;
+                        case "Priority":
+                            <div class="mb-3">
+                                <label class="form-label">
+                                    @Loc["SelectPriority"]
+                                    @if (column.IsMandatory)
+                                    {
+                                        <span class="text-danger"> *</span>
+                                    }
+                                </label>
+                                <SearchableSingleDropdownOffline TInput=PriorityDto TOutput=Guid TextSelector=" (PriorityDto x)=> x.Name"
+                                                                 OutputSelector="x => x.Id" Datasource="Priorities" MinCharacterCount="1"
+                                                                 @bind-SelectedOption="@taskdto.Priority" PlaceHolder="@($"{Loc["Select"]}")" />
+                            </div>
+                            break;
+                        case "Weight":
+                            <div class="mb-3">
+                                <div class="mb-3">
+                                    <label class="form-label" for="maxLength">
+                                        @Loc["Weight"]
+                                    </label>
+                                    <InputNumber class="form-control" min="0" max="100" id="maxLength" @bind-Value="taskdto.weight" />
+                                    <ValidationMessage class="small text-danger" For="@(() => taskdto.weight)" />
+
+                                </div>
+
+                            </div>
+                            break;
+                        case "Actual progress":
+                            <div class="mb-3">
+                                <label class="form-label" for="maxLength">
+                                    @Loc["ActualProgress"]
+                                    @if (column.IsMandatory)
+                                    {
+                                        <span class="text-danger"> *</span>
+                                    }
+                                </label>
+                                <div class="mb-3">
+                                    <input type="range"
+                                           class="form-range"
+                                           min="0"
+                                           max="100"
+                                           @bind="taskdto.ActualProcess" />
+                                    <span class="badge bg-primary">
+                                        @taskdto.ActualProcess%
+                                    </span>
+
+                                    <div class="progress mt-2" style="height: 20px;">
+                                        <div class="progress-bar"
+                                             role="progressbar"
+                                             style="width:@taskdto.ActualProcess%;"
+                                             aria-valuenow="@taskdto.ActualProcess"
+                                             aria-valuemin="0"
+                                             aria-valuemax="100">
+                                        </div>
                                     </div>
                                 </div>
+
                             </div>
-
-                        </div>
-                    </div>
-                    break;
-                case "Priority":
-                    <div class="mb-3">
-                        <label class="form-label">
-                            @Loc["SelectPriority"]
-                            @if (column.IsMandatory)
-                            {
-                                <span class="text-danger"> *</span>
-                            }
-                        </label>
-                        <SearchableSingleDropdownOffline TInput=PriorityDto TOutput=Guid TextSelector=" (PriorityDto x)=> x.Name"
-                            OutputSelector="x => x.Id" Datasource="Priorities" MinCharacterCount="1"
-                            @bind-SelectedOption="@taskdto.Priority" PlaceHolder="@($"--{Loc["SelectPriority"]}--")" />
-                    </div>
-                    break;
-
-                case "Weight":
-                    <div class="mb-3">
-                        <div class="mb-3">
-                            <label class="form-label" for="maxLength">
-                                @Loc["Weight"]
-                            </label>
-                            <InputNumber class="form-control" min="0" max="100" id="maxLength" @bind-Value="taskdto.weight" />
-                            <ValidationMessage class="small text-danger" For="@(() => taskdto.weight)" />
-
-                        </div>
-
-                    </div>
-                    break;
-
-
-
-                case "Actual progress":
-                    <div class="mb-3">
-                        <label class="form-label" for="maxLength">
-                            @Loc["ActualProgress"]
-                            @if (column.IsMandatory)
-                            {
-                                <span class="text-danger"> *</span>
-                            }
-                        </label>
-                        <div class="mb-3">
-
-                            <input type="range" class="form-range" min="0" max="100" @bind="taskdto.ActualProcess" />
-
-                            <!-- Optional visual bar to match -->
-                            <div class="progress" style="height: 20px;">
-                                <div class="progress-bar" role="progressbar" style="width:@taskdto.ActualProcess%;"
-                                    aria-valuenow="@taskdto.ActualProcess" aria-valuemin="0" aria-valuemax="100">
-                                </div>
-                            </div>
-
-                        </div>
-
-                    </div>
-                    break;
-
+                            break;
+                    }
+                </div>
             }
-</div>
-        }
-    </div>
-    <div class="offcanvas-footer">
-        <div class="row g-2">
-            <div class="col-12">
-                <div class="d-grid">
-                    <button class="btn btn-primary mt-3" type="submit">Submit</button>
+        </div>
+        <div class="offcanvas-footer">
+            <div class="row g-2">
+                <div class="col-6">
+                    <div class="d-grid">
+                        <button type="button" class="btn btn-lg btn-light" @onclick="OnCancelClick">@Loc["Cancel"]</button>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-lg btn-primary">@Loc["Save"]</button>
+                    </div>
                 </div>
             </div>
+
         </div>
 
-    </div>
-
-</EditForm>
+    </EditForm>
 }
 @code {
     [Parameter] public CreateTaskDto taskdto { set; get; }
-
     [Parameter] public EventCallback<EditContext> OnValidSubmit { get; set; }
     [Parameter] public EventCallback OnCancel { get; set; }
-
     [Parameter] public string ButtonText { get; set; }
     public List<AddTaskSettingDto> AddTaskSettings { get; set; } = new List<AddTaskSettingDto>();
     private EditContext editContext;
-    SearchableSingleDropdownOffline<TypeDto, Guid> typeref{ set; get; }
+    SearchableSingleDropdownOffline<TypeDto, Guid> typeref { set; get; }
     SearchableSingleDropdownOffline<SourceDto, Guid> sourceref { set; get; }
-    
-    SearchableMultiDropdownOffline<DepartmentDto,Guid> departRef { set; get; }
+    SearchableMultiDropdownOffline<DepartmentDto, Guid> departRef { set; get; }
     private ValidationMessageStore messageStore;
     private Dictionary<string, object?> formData = new();
     public List<PriorityDto> Priorities = new List<PriorityDto>();
-
     List<TypeDto> taskTypeDtos = new List<TypeDto>();
     List<SourceDto> taskSourceDtos = new List<SourceDto>();
     List<DepartmentDto> departmentDtos = new List<DepartmentDto>();
@@ -423,51 +412,64 @@
     string PhotoErroMessage;
     string fileErroMessage;
     private InputFile? inputFile;
+    private List<IBrowserFile> uploadedFiles = new List<IBrowserFile>();
+    private bool _dropZoneInitialized;
 
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (x && !_dropZoneInitialized)
+        {
+            _dropZoneInitialized = true;
+            await fileManagementService.InitDropZone("dropZone", "fileInput");
+        }
+    }
     private async Task LoadFile(InputFileChangeEventArgs args)
     {
+        var files = args.GetMultipleFiles().ToList();
+        await UploadFiles(files);
 
-        string base64String = "";
-
-        try
-        {
-
-            var file = args.GetMultipleFiles()[0];
-            //   const long maxSize = 25 * 1024 * 1024; // 25MB
-            var fileExtension = Path.GetExtension(file.Name).ToLower();
-
-            var validRes =  taskyService.ValidateUploadedFile(file, fileExtension);
-            notvald = validRes.NotValid;
-            if (notvald)
-            {
-                fileErroMessage = validRes.ValidationMessage;
-                ToastService.ShowToastAsync(fileErroMessage, "error");
-
-                StateHasChanged();
-                return;
-            }
-            taskdto.PhotoName = file.Name;
-            await using MemoryStream fs = new MemoryStream();
-            await file.OpenReadStream(maxFileSize).CopyToAsync(fs);
-            byte[] somBytes = GetBytes(fs);
-            base64String = Convert.ToBase64String(somBytes, 0, somBytes.Length);
-            taskdto.PhotoBase64 = base64String;
-            taskdto.Extention = fileExtension;
-        }
-
-        catch (Exception e)
-        {
-        }
-        //  string newFileName=Path.ChangeExtension
     }
-
-    public static byte[] GetBytes(Stream stream)
+    private async Task UploadFiles(List<IBrowserFile> files)
     {
-        var bytes = new byte[stream.Length];
-        stream.Seek(0, SeekOrigin.Begin);
-        stream.ReadAsync(bytes, 0, bytes.Length);
-        stream.Dispose();
-        return bytes;
+        if (!files.Any()) return;
+        var validFiles = new List<IBrowserFile>();
+        var hasErrors = false;
+        foreach (var file in files)
+        {
+            var validationRes = fileManagementService.ValidateUploadedFile(file, maxFileSize);
+            if (validationRes.NotValid)
+            {
+
+
+                await ToastService.ShowToastAsync(validationRes.ValidationMessage, "error");
+                continue;
+            }
+            validFiles.Add(file);
+            uploadedFiles.Add(file);
+        }
+        if (!validFiles.Any())
+        {
+            return;
+        }
+        StateHasChanged();
+
+        var attachmentDtos = new List<UploadAttachmentDto>();
+        foreach (var file in validFiles)
+        {
+            StateHasChanged();
+            var (bytes, name, type) = await fileManagementService.ReadFileAsync(file);
+            if (bytes != null && bytes.Length > 0)
+            {
+                attachmentDtos.Add(new UploadAttachmentDto
+                {
+                    FileName = name,
+                    Bytes = bytes,
+                    Size = bytes.LongLength
+                });
+            }
+        }
+        taskdto.uploadAttachmentDtos = attachmentDtos;
+        StateHasChanged();
     }
     private void OnContentChanged(string html)
     {
@@ -475,11 +477,11 @@
     }
     private void OnContentDescriptionArabicChanged(string html)
     {
-        taskdto.DescriptionArabic = html;
+        taskdto.Description = html;
     }
     private void OnDescriptionEnglishChanged(string html)
     {
-        taskdto.DescriptionEnglish = html;
+        taskdto.Description = html;
     }
     protected async override Task OnInitializedAsync()
     {
@@ -547,14 +549,14 @@
         var prioritiesRes = await prioritiesTask;
         if (prioritiesRes.Success && prioritiesRes.Data != null)
         {
-            Priorities = prioritiesRes.Data;
+            Priorities = prioritiesRes.Data.OrderBy(q => q.Order).ToList();
         }
 
-        taskdto.StartDate = taskdto.StartDate == default ? DateTime.Now : taskdto.StartDate;
-        taskdto.EndDate = taskdto.EndDate == default ? DateTime.Now : taskdto.EndDate;
-        taskdto.ReminderDate = taskdto.ReminderDate == default ? DateTime.Now : taskdto.ReminderDate;
+        // taskdto.StartDate = taskdto.StartDate == default ? DateTime.Now : taskdto.StartDate;
+        // taskdto.EndDate = taskdto.EndDate == default ? DateTime.Now : taskdto.EndDate;
+        // taskdto.ReminderDate = taskdto.ReminderDate == default ? DateTime.Now : taskdto.ReminderDate;
         x = true;
-        StateHasChanged();
+        await InvokeAsync(StateHasChanged);
 
     }
 
@@ -636,9 +638,15 @@
     private async Task HandleValidSubmit(EditContext context)
     {
         // proceed with saving
+        taskdto.Description =
+ RichTextEditorComponentRefDescriptionEnglish.GetContent();
+        taskdto.Content = RichTextEditorComponentRefComment.GetContent();
         await OnValidSubmit.InvokeAsync(context);
     }
-
+    private async Task OnCancelClick()
+    {
+        await OnCancel.InvokeAsync();
+    }
     private void HandleInvalidSubmit(EditContext context)
     {
         ToastService.ShowToastAsync("Please fill all required fields before submitting", "error");

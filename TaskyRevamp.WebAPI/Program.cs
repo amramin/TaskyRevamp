@@ -29,7 +29,8 @@ using TaskyRevamp.WebAPI;
 using TaskyRevamp.WebAPI.Exeptions;
 using TaskyRevamp.WebAPI.Middleware;
 using TaskyRevamp.WebAPI.Pipeline;
-
+using Hangfire;
+using TaskyRevamp.WebAPI.Controllers;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -62,6 +63,8 @@ builder.Services.AddDbContext<EfDbContext>(options =>
                 maxRetryDelay: TimeSpan.FromSeconds(10),
                 errorNumbersToAdd: null);
         }));
+builder.Services.AddHangfire(x => x.UseSqlServerStorage(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddHangfireServer();
 builder.Services.AddScoped<ITaskRepository, TaskRepository>();
 
 
@@ -213,9 +216,9 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 
-
+app.UseHangfireDashboard("/HangFiredashborad");
 app.MapControllers();
 
 app.UseMiddleware<ExceptionHandlingMiddleware>();
-
+RecurringJob.AddOrUpdate<TaskController>("Check-Delayed-Tasks",j => j.CheckDelayedTasks(), Cron.Daily);
 app.Run();

@@ -16,7 +16,7 @@ namespace TaskyRevamp.Services.SearchMappings
 
         public static readonly Dictionary<SearchFieldTask, Expression<Func<TaskItem, object>>> Map = new()
         {
-            { SearchFieldTask.Title, x =>   x.TitleEnglish},
+            { SearchFieldTask.Title, x =>   x.Title},
             { SearchFieldTask.Priority, x => x.Priority },
              { SearchFieldTask.StartDate, x => x.StartDate },
              { SearchFieldTask.EndDate, x =>   x.EndDate},

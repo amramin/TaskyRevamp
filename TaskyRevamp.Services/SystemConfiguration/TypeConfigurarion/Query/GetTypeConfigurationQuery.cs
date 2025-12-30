@@ -90,19 +90,22 @@ namespace TaskyRevamp.Services.SystemConfiguration.TypeConfigurarion.Query
                         return sortAscending ? q => q.OrderBy(u => u.UpdatedBy!.NameEnglish) : q => q.OrderByDescending(u => u.UpdatedBy!.NameEnglish);
                     }
 
-						case "DisplayedName":
-							if (currentLanguage == "ar")
-							{
-								return sortAscending ? q => q.OrderBy(u => u.NameArabic) : q => q.OrderByDescending(u => u.NameArabic);
-							}
-							else
-							{
-								return sortAscending ? q => q.OrderBy(u => u.NameEnglish) : q => q.OrderByDescending(u => u.NameEnglish);
-							}
-
-						default:
-							return q => q.OrderBy(u => u.CreateDate);
-						}
+				case "DisplayedName":
+					if (currentLanguage == "ar")
+					{
+						return sortAscending ? q => q.OrderBy(u => u.NameArabic) : q => q.OrderByDescending(u => u.NameArabic);
+					}
+					else
+					{
+						return sortAscending ? q => q.OrderBy(u => u.NameEnglish) : q => q.OrderByDescending(u => u.NameEnglish);
+					}
+                case "IsActive":
+                    return sortAscending
+                        ? q => q.OrderBy(u => u.IsActive)
+                        : q => q.OrderByDescending(u => u.IsActive);
+                default:
+					return q => q.OrderBy(u => u.CreateDate);
+				}
 
 		}
 	}

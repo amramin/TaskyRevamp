@@ -17,9 +17,11 @@ namespace TaskyRevamp.Services.SearchMappings
             { SearchField.NameEnglish, x => x.NameEnglish },
             { SearchField.NameArabic, x => x.NameArabic },
             { SearchField.CreateDate, x => x.CreateDate },
-            { SearchField.CreatedBy, x => x.CreatedBy.NameEnglish },
+            { SearchField.CreatedByEnglish, x => x.CreatedBy.NameEnglish },
+            { SearchField.CreatedByArabic, x => x.CreatedBy.NameArabic },
             { SearchField.UpdateDate, x => x.UpdateDate },
-            { SearchField.UpdatedBy, x => x.UpdatedBy.NameEnglish },
+            { SearchField.UpdatedByEnglish, x => x.UpdatedBy.NameEnglish },
+            { SearchField.UpdatedByArabic, x => x.UpdatedBy.NameArabic },
             { SearchField.ActiveStatus, x => x.IsActive }
         };
     }

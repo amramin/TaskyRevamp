@@ -20,12 +20,10 @@ public class EfDbContext : DbContext
     private readonly IHttpContextAccessor _httpContextAccessor;
     public DbSet<User> Users { get; set; }
     public DbSet<UserDelegation> UserDelegation { get; set; }
-    public DbSet<FileMapping> FileMapping { get; set; }
-
+    public DbSet<Attachment> Attachment { get; set; }
     public DbSet<TaskItem> TaskItem { get; set; }
     public DbSet<TaskViews> TaskViews { get; set; }
     public DbSet<NotificationTypeTemplate> NotificationTypeTemplate { get; set; }
-
     public DbSet<RecycleBinSettings> RecycleBinSettings { get; set; }
     public DbSet<RejectionSettings> RejectionSettings { get; set; }
     public DbSet<PrioritySettings> PrioritySettings { get; set; }

@@ -7,8 +7,9 @@
     <!-- Department Selector -->
     <SearchableMultiDropdownOffline TInput="DepartmentDto"
                                     TOutput="Guid"
+                                    @key="AvailableDepartments"
                                     IsDisabled="IsViewMode"
-                                    Datasource="DepartmentList"
+                                    Datasource="AvailableDepartments"
                                     TextSelector="(d => d.Name)"
                                     OutputSelector="(d => d.Id)"
                                     SelectedOptions="@SelectedDepartments"
@@ -16,15 +17,17 @@
 
     @if (DepartmentsWithUsers.Any())
     {
-        @foreach (var dept in DepartmentsWithUsers)
+        @foreach (var entry in DepartmentsWithUsers)
         {
-            var isExpanded = ExpandedDepartments.Contains(dept.Key.Id);
+            var dept = DepartmentList.First(d => d.Id == entry.Key);
+            var users = entry.Value;
+            var isExpanded = ExpandedDepartments.Contains(dept.Id);
 
             <div class="card mt-3 border-0 shadow-sm">
                 <div class="card-header bg-light fw-semibold d-flex justify-content-between align-items-center"
                      style="cursor:pointer"
-                     @onclick="() => ToggleDepartment(dept.Key.Id)">
-                    <span>@dept.Key.Name</span>
+                     @onclick="() => ToggleDepartment(dept.Id)">
+                    <span>@dept.Name</span>
                     <span class="text-muted small">
                         @(isExpanded ? "▲" : "▼")
                     </span>
@@ -33,22 +36,22 @@
                 @if (isExpanded)
                 {
                     <div class="card-body p-2">
-                        @if (dept.Value == null)
+                        @if (users == null)
                         {
                             <div class="text-muted small px-2">Loading users...</div>
                         }
-                        else if (!dept.Value.Any())
+                        else if (!users.Any())
                         {
                             <div class="text-muted small px-2">@Loc["NoUsers"]</div>
                         }
                         else
                         {
                             <ul class="list-unstyled mb-0">
-                                @foreach (var user in dept.Value)
+                                @foreach (var user in users)
                                 {
                                     <li class="border-bottom py-1 px-2">
-                                        <span class="fw-semibold">@user.UserName</span>
-                                        <span class="text-muted small ms-1">(@user.Email)</span>
+                                        @* <span class="fw-semibold">@user.DisplayedName</span> *@
+                                        <span class="text-muted small ms-1">@user.DisplayedName</span>
                                     </li>
                                 }
                             </ul>
@@ -66,8 +69,9 @@
     [Parameter] public EventCallback<List<Guid>> SelectedDepartmentsChanged { get; set; }
     [Parameter] public Func<Guid, Task<List<UserDto>>> LoadUsersByDepartment { get; set; } = default!;
     [Parameter] public bool IsViewMode { get; set; }
-    private Dictionary<DepartmentDto, List<UserDto>?> DepartmentsWithUsers { get; set; } = new();
+    private Dictionary<Guid, List<UserDto>?> DepartmentsWithUsers { get; set; } = new();
     private HashSet<Guid> ExpandedDepartments { get; set; } = new();
+    private List<DepartmentDto> AvailableDepartments => DepartmentList.Where(d => !SelectedDepartments.Contains(d.Id)).ToList();
 
     private async Task OnDepartmentsChanged(List<Guid> selectedIds)
     {
@@ -75,28 +79,27 @@
         await SelectedDepartmentsChanged.InvokeAsync(SelectedDepartments);
 
         // Remove unselected
-        var removed = DepartmentsWithUsers.Keys.Where(d => !SelectedDepartments.Contains(d.Id)).ToList();
+        var removed = DepartmentsWithUsers.Keys.Where(id => !SelectedDepartments.Contains(id)).ToList();
         foreach (var r in removed)
             DepartmentsWithUsers.Remove(r);
 
         // Add new selected
         foreach (var id in SelectedDepartments)
         {
-            var dept = DepartmentList.FirstOrDefault(d => d.Id == id);
-            if (dept != null && !DepartmentsWithUsers.ContainsKey(dept))
+            if (!DepartmentsWithUsers.ContainsKey(id))
             {
-                DepartmentsWithUsers[dept] = null;
-                _ = LoadUsersAsync(dept);
+                DepartmentsWithUsers[id] = null;
+                _ = LoadUsersAsync(id);
             }
         }
 
         StateHasChanged();
     }
 
-    private async Task LoadUsersAsync(DepartmentDto department)
+    private async Task LoadUsersAsync(Guid departmentId)
     {
-        var users = await LoadUsersByDepartment(department.Id);
-        DepartmentsWithUsers[department] = users ?? new List<UserDto>();
+        var users = await LoadUsersByDepartment(departmentId);
+        DepartmentsWithUsers[departmentId] = users ?? new List<UserDto>();
         StateHasChanged();
     }
 

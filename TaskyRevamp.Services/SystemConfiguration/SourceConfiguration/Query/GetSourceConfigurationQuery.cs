@@ -19,6 +19,7 @@ namespace TaskyRevamp.Services.SystemConfiguration.SourceConfiguration.Query
 	public class GetSourceConfigurationHandler : IRequestHandler<GetSourceConfigurationQuery, PagedResult<SourceDtoWithName>>
 	{
 		private readonly IRepository<Sources> _sourceRepository;
+		string currentCulture = System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
 		public GetSourceConfigurationHandler(IRepository<Sources> sourceRepository)
 		{
 			_sourceRepository = sourceRepository;
@@ -45,8 +46,8 @@ namespace TaskyRevamp.Services.SystemConfiguration.SourceConfiguration.Query
 			var items = res.Items.Select(u => new SourceDtoWithName
 			{
 				Source = u.CopyToDto(),
-				CreatedByName = u.CreatedBy != null ? u.CreatedBy.NameEnglish : string.Empty,
-				UpdatedByName = u.UpdatedBy != null ? u.UpdatedBy.NameEnglish : string.Empty
+				CreatedByName = u.CreatedBy != null ? (currentCulture == "ar" ? u.CreatedBy.NameArabic : u.CreatedBy.NameEnglish) : string.Empty,
+				UpdatedByName = u.UpdatedBy != null ? (currentCulture == "ar" ? u.UpdatedBy.NameArabic : u.UpdatedBy.NameEnglish) : string.Empty
 			}).ToList();
 
 			return new PagedResult<SourceDtoWithName>
@@ -75,16 +76,38 @@ namespace TaskyRevamp.Services.SystemConfiguration.SourceConfiguration.Query
 						: q => q.OrderByDescending(u => u.UpdateDate);
 
 				case "CreatedBy":
-					return sortAscending
+					if (currentCulture == "ar")
+					{
+						return sortAscending
+						? q => q.OrderBy(u => u.CreatedBy!.NameArabic)
+						: q => q.OrderByDescending(u => u.CreatedBy!.NameArabic);
+					}
+					else
+					{
+						return sortAscending
 						? q => q.OrderBy(u => u.CreatedBy!.NameEnglish)
 						: q => q.OrderByDescending(u => u.CreatedBy!.NameEnglish);
+					}
 
 				case "UpdatedBy":
-					return sortAscending
+					if (currentCulture == "ar")
+					{
+						return sortAscending
+						? q => q.OrderBy(u => u.UpdatedBy!.NameArabic)
+						: q => q.OrderByDescending(u => u.UpdatedBy!.NameArabic);
+					}
+					else
+					{
+						return sortAscending
 						? q => q.OrderBy(u => u.UpdatedBy!.NameEnglish)
 						: q => q.OrderByDescending(u => u.UpdatedBy!.NameEnglish);
+					}
+				case "IsActive":
+                    return sortAscending
+						? q => q.OrderBy(u => u.IsActive)
+						: q => q.OrderByDescending(u => u.IsActive);
 
-				case "DisplayedName":
+                case "DisplayedName":
 					if (currentCulture == "ar")
 					{
 						return sortAscending

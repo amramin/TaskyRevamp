@@ -170,3 +170,77 @@ window.saveFileFromBytes = (fileName, bytesBase64) => {
     link.click();
     document.body.removeChild(link);
 };
+
+window.previewFileFromBytes = (fileName, base64Content, contentType) => {
+    const byteCharacters = atob(base64Content);
+    const byteNumbers = new Array(byteCharacters.length);
+    for (let i = 0; i < byteCharacters.length; i++) {
+        byteNumbers[i] = byteCharacters.charCodeAt(i);
+    }
+    const byteArray = new Uint8Array(byteNumbers);
+    const blob = new Blob([byteArray], { type: contentType });
+    const blobUrl = URL.createObjectURL(blob);
+    const newWindow = window.open("", "_blank");
+    if (!newWindow) return;
+    newWindow.document.write(`
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <meta charset="UTF-8">
+            <title>${fileName}</title>
+            <style>
+                body { margin: 0; padding: 0; overflow: hidden; }
+                iframe { width: 100%; height: 100vh; border: none; }
+            </style>
+        </head>
+        <body>
+            <iframe src="${blobUrl}"></iframe>
+        </body>
+        </html>
+    `);
+    newWindow.document.close();
+    newWindow.addEventListener("unload", () => {
+        URL.revokeObjectURL(blobUrl);
+    });
+};
+
+window.fileService = {
+    initDropZone: function (dropZoneId, inputFileId) {
+        const dropZone = document.getElementById(dropZoneId);
+        const inputFile = document.getElementById(inputFileId);
+        if (!dropZone || !inputFile) {
+            console.error('Drop zone or input file not found');
+            return;
+        }
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            dropZone.addEventListener(eventName, function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }, false);
+        });
+        dropZone.addEventListener('dragenter', function () {
+            dropZone.classList.add('border-primary', 'bg-light');
+        });
+        dropZone.addEventListener('dragover', function () {
+            dropZone.classList.add('border-primary', 'bg-light');
+        });
+        dropZone.addEventListener('dragleave', function (e) {
+            if (!dropZone.contains(e.relatedTarget)) {
+                dropZone.classList.remove('border-primary', 'bg-light');
+            }
+        });
+        dropZone.addEventListener('drop', function (e) {
+            dropZone.classList.remove('border-primary', 'bg-light');
+            const files = e.dataTransfer.files;
+            if (files && files.length > 0) {
+                const dataTransfer = new DataTransfer();
+                for (let i = 0; i < files.length; i++) {
+                    dataTransfer.items.add(files[i]);
+                }
+                inputFile.files = dataTransfer.files;
+                const event = new Event('change', { bubbles: true });
+                inputFile.dispatchEvent(event);
+            }
+        });
+    }
+};

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TaskyRevamp.Infrastructure;
 
@@ -11,9 +12,11 @@ using TaskyRevamp.Infrastructure;
 namespace TaskyRevamp.Infrastructure.Migrations
 {
     [DbContext(typeof(EfDbContext))]
-    partial class EfDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251222215300_update-attachment-filetype")]
+    partial class updateattachmentfiletype
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -102,8 +105,8 @@ namespace TaskyRevamp.Infrastructure.Migrations
                     b.PrimitiveCollection<string>("DelegationFromUserDepartments")
                         .HasColumnType("nvarchar(max)");
 
-                    b.PrimitiveCollection<string>("DelegationToUser")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int?>("DelegationToUser")
+                        .HasColumnType("int");
 
                     b.PrimitiveCollection<string>("DelegationToUserDepartments")
                         .HasColumnType("nvarchar(max)");
@@ -1110,7 +1113,10 @@ namespace TaskyRevamp.Infrastructure.Migrations
                     b.Property<Guid?>("DependenciesId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Description")
+                    b.Property<string>("DescriptionArabic")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DescriptionEnglish")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("EndDate")
@@ -1125,9 +1131,6 @@ namespace TaskyRevamp.Infrastructure.Migrations
                     b.Property<Guid>("PriorityId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("Progress")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
 
@@ -1140,7 +1143,11 @@ namespace TaskyRevamp.Infrastructure.Migrations
                     b.Property<Guid>("TaskTypeId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Title")
+                    b.Property<string>("TitleArabic")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TitleEnglish")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -1149,9 +1156,6 @@ namespace TaskyRevamp.Infrastructure.Migrations
 
                     b.Property<Guid?>("UpdatedById")
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("Weight")
-                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -1176,28 +1180,25 @@ namespace TaskyRevamp.Infrastructure.Migrations
                     b.ToTable("TaskItem");
                 });
 
-            modelBuilder.Entity("TaskyRevamp.Domain.Models.Task.TaskViews", b =>
+            modelBuilder.Entity("TaskyRevamp.Domain.Models.UploadFile.FileMapping", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("TaskItemId")
+                    b.Property<Guid>("FileId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("FileName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("ViewedAt")
-                        .HasColumnType("datetime2");
+                    b.Property<int>("FileType")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("TaskItemId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("TaskViews");
+                    b.ToTable("FileMapping");
                 });
 
             modelBuilder.Entity("TaskyRevamp.Domain.Models.Users.User", b =>
@@ -1813,25 +1814,6 @@ namespace TaskyRevamp.Infrastructure.Migrations
                     b.Navigation("UpdatedBy");
 
                     b.Navigation("status");
-                });
-
-            modelBuilder.Entity("TaskyRevamp.Domain.Models.Task.TaskViews", b =>
-                {
-                    b.HasOne("TaskyRevamp.Domain.Models.Task.TaskItem", "TaskItem")
-                        .WithMany()
-                        .HasForeignKey("TaskItemId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("TaskyRevamp.Domain.Models.Users.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("TaskItem");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("TaskyRevamp.Domain.Models.Users.User", b =>

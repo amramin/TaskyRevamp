@@ -11,8 +11,10 @@ namespace TaskyRevamp.Dto.Enums.SearchFields
 		NameEnglish,
 		NameArabic,
 		CreateDate,
-		CreatedBy,
+		CreatedByEnglish,
+		CreatedByArabic,
 		UpdateDate,
-		UpdatedBy
+		UpdatedByEnglish,
+		UpdatedByArabic
 	}
 }

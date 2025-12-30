@@ -15,9 +15,11 @@ namespace TaskyRevamp.Dto.Enums.SearchFields
         ParentNameAR,
         Level,
         CreateDate,
-        CreatedBy,
+        CreatedByEnglish,
+        CreatedByArabic,
         UpdateDate,
-        UpdatedBy,
+        UpdatedByEnglish,
+        UpdatedByArabic,
         
     }
 }

@@ -41,7 +41,7 @@ namespace TaskyRevamp.Services.Users.Query
 			var items = res.Items.Select(u => new UserDtoWithName
 			{
 				user = u.CopyToDto(),
-				UpdatedByName = u.UpdatedBy != null ? u.UpdatedBy.NameEnglish! : string.Empty,
+				UpdatedByName = u.UpdatedBy != null ? (currentCulture == "ar" ? u.UpdatedBy.NameArabic : u.UpdatedBy.NameEnglish) : string.Empty,
 				PrivilegeName = u.Privilege != null ? (currentCulture == "ar" ? u.Privilege.NameArabic : u.Privilege.NameEnglish) : string.Empty,
 				DepartmentName = u.Department != null ? (currentCulture == "ar" ? u.Department.NameArabic : u.Department.NameEnglish) : string.Empty
 
@@ -75,7 +75,14 @@ namespace TaskyRevamp.Services.Users.Query
 						: q => q.OrderByDescending(u => u.UpdateDate);
 
 				case "UpdatedBy":
-					return sortAscending
+					if(currentCulture == "ar")
+					{
+						return sortAscending
+						? q => q.OrderBy(u => u.UpdatedBy!.NameArabic)
+						: q => q.OrderByDescending(u => u.UpdatedBy!.NameArabic);
+					}
+					else
+						return sortAscending
 						? q => q.OrderBy(u => u.UpdatedBy!.NameEnglish)
 						: q => q.OrderByDescending(u => u.UpdatedBy!.NameEnglish);
 
