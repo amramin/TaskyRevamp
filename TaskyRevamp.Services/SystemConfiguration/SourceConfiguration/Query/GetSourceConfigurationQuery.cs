@@ -102,8 +102,12 @@ namespace TaskyRevamp.Services.SystemConfiguration.SourceConfiguration.Query
 						? q => q.OrderBy(u => u.UpdatedBy!.NameEnglish)
 						: q => q.OrderByDescending(u => u.UpdatedBy!.NameEnglish);
 					}
+				case "IsActive":
+                    return sortAscending
+						? q => q.OrderBy(u => u.IsActive)
+						: q => q.OrderByDescending(u => u.IsActive);
 
-				case "DisplayedName":
+                case "DisplayedName":
 					if (currentCulture == "ar")
 					{
 						return sortAscending

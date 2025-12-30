@@ -99,8 +99,11 @@ namespace TaskyRevamp.Services.SystemConfiguration.TypeConfigurarion.Query
 					{
 						return sortAscending ? q => q.OrderBy(u => u.NameEnglish) : q => q.OrderByDescending(u => u.NameEnglish);
 					}
-
-				default:
+                case "IsActive":
+                    return sortAscending
+                        ? q => q.OrderBy(u => u.IsActive)
+                        : q => q.OrderByDescending(u => u.IsActive);
+                default:
 					return q => q.OrderBy(u => u.CreateDate);
 				}
 
