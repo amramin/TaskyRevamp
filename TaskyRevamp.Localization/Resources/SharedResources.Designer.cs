@@ -19,7 +19,7 @@ namespace TaskyRevamp.Localization.Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "18.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class SharedResources {
@@ -520,6 +520,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Change prgreess.
+        /// </summary>
+        public static string Changeprgreess {
+            get {
+                return ResourceManager.GetString("Changeprgreess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Change progress.
         /// </summary>
         public static string ChangeProgress {
@@ -543,15 +552,6 @@ namespace TaskyRevamp.Localization.Resources {
         public static string ChecklistUpdate {
             get {
                 return ResourceManager.GetString("ChecklistUpdate", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Change prgreess.
-        /// </summary>
-        public static string Changeprgreess {
-            get {
-                return ResourceManager.GetString("Changeprgreess", resourceCulture);
             }
         }
         
