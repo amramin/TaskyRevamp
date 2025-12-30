@@ -42,15 +42,15 @@ public class AuthenticateCommandHandler : IRequestHandler<AuthenticateCommand, s
     {
         try
         {
-            if (_appSettingsOptions.Value.AuthenticationMode == (int)AuthenticationMode.ActiveDirectory)
-            {
+            //if (_appSettingsOptions.Value.AuthenticationMode == (int)AuthenticationMode.ActiveDirectory)
+            //{
 
-                var isAuthenticated = AuthenticateUser(_ldapPath.Value.Path, request.Username, request.Password);
-                if (!isAuthenticated)
-                {
-                    return null;
-                }
-            }
+            //    var isAuthenticated = AuthenticateUser(_ldapPath.Value.Path, request.Username, request.Password);
+            //    if (!isAuthenticated)
+            //    {
+            //        return null;
+            //    }
+            //}
 
             var user = new User();
 
