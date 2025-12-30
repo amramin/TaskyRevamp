@@ -649,7 +649,7 @@
     <value>Report module</value>
   </data>
   <data name="AddNewPrivilege" xml:space="preserve">
-    <value>Add new privilege</value>
+    <value>Add privilege</value>
   </data>
   <data name="SelectReportOptions" xml:space="preserve">
     <value>Select report options</value>

@@ -27,18 +27,13 @@ public class GetDepartmentsHandler : IRequestHandler<GetDepartmentsQuery, PagedR
     public async Task<PagedResult<DepartmentDto>> Handle(GetDepartmentsQuery request, CancellationToken cancellationToken)
     {
         List<DepartmentDto> allDepartments = new List<DepartmentDto>();
-
-
-
         var orderBy = GetOrderBy(request.sortByColumnName, request.sortAscending);
-
         Expression<Func<Department, bool>> searchExpression = null;
         if (request.SearchFields != null && request.SearchFields.Any())
         {
             var predicates = request.SearchFields.Select(x => DepartmentSearchFieldDepartmentMap.Map[x]).ToList();
             searchExpression = ExpressionBuilder.BuildLikeExpression(predicates, request.SearchText);
         }
-
         var res = await _departmentRepository.GetPagedAsync(
                             request.pageNumber,
                             request.pageSize,
@@ -46,8 +41,6 @@ public class GetDepartmentsHandler : IRequestHandler<GetDepartmentsQuery, PagedR
                             searchExpression,
                             orderBy: orderBy,
                             includeProperties: $"{nameof(Department.CreatedBy)},{nameof(Department.UpdatedBy)},{nameof(Department.Parentdepartment)}");
-
-
         foreach (var Department in res.Items)
         {
             DepartmentDto dep = Department.CopyToDto();
@@ -72,67 +65,75 @@ public class GetDepartmentsHandler : IRequestHandler<GetDepartmentsQuery, PagedR
         {
             case "CreateDate":
                 return sortAscending
-                    ? q => q.OrderBy(u => u.CreateDate)
-                    : q => q.OrderByDescending(u => u.CreateDate);
+                    ? q => q.OrderBy(u => u.Level).ThenBy(u => u.Parentdepartment).ThenBy(u => u.CreateDate)
+					: q => q.OrderByDescending(u => u.Level).ThenBy(u => u.Parentdepartment).ThenBy(u => u.CreateDate);
 			case "DisplayedName":
 				if (currentCulture == "ar")
 				{
-					return sortAscending
-						? q => q.OrderBy(u => u.NameArabic)
-						: q => q.OrderByDescending(u => u.NameArabic);
+                    return sortAscending
+                        ? q => q.OrderBy(u => u.Level).ThenBy(u => u.Parentdepartment).ThenBy(u => u.NameArabic)
+                        : q => q.OrderByDescending(u => u.Level).ThenBy(u => u.Parentdepartment).ThenBy(u => u.NameArabic);
 				}
 				else
 				{
 					return sortAscending
-						? q => q.OrderBy(u => u.NameEnglish)
-						: q => q.OrderByDescending(u => u.NameEnglish);
+						? q => q.OrderBy(u => u.Level).ThenBy(u => u.Parentdepartment).ThenBy(u => u.NameEnglish)
+						: q => q.OrderByDescending(u => u.Level).ThenBy(u => u.Parentdepartment).ThenBy(u => u.NameEnglish);
 				}
 			case "UpdateDate":
                 return sortAscending
-                    ? q => q.OrderBy(u => u.UpdateDate)
-                    : q => q.OrderByDescending(u => u.UpdateDate);
+                    ? q => q.OrderBy(u => u.Level).ThenBy(u => u.Parentdepartment).ThenBy(u => u.UpdateDate)
+                    : q => q.OrderByDescending(u => u.Level).ThenBy(u => u.Parentdepartment).ThenBy(u => u.UpdateDate);
 
             case "CreatedBy":
                 if (currentCulture == "ar")
                 {
-                    return sortAscending ? q => q.OrderBy(u => u.CreatedBy.NameArabic) : q => q.OrderByDescending(u => u.CreatedBy.NameArabic);
+                    return sortAscending 
+                        ? q => q.OrderBy(u => u.Level).ThenBy(u => u.Parentdepartment).ThenBy(u => u.CreatedBy.NameArabic)
+                        : q => q.OrderByDescending(u => u.Level).ThenBy(u => u.Parentdepartment).ThenBy(u => u.CreatedBy.NameArabic);
                 }
                 else
                 {
-                    return sortAscending ? q => q.OrderBy(u => u.CreatedBy.NameEnglish) : q => q.OrderByDescending(u => u.CreatedBy.NameEnglish);
+                    return sortAscending 
+                        ? q => q.OrderBy(u => u.Level).ThenBy(u => u.Parentdepartment).ThenBy(u => u.CreatedBy.NameEnglish) 
+                        : q => q.OrderByDescending(u => u.Level).ThenBy(u => u.Parentdepartment).ThenBy(u => u.CreatedBy.NameEnglish);
                 }
 
             case "UpdatedBy":
                 if (currentCulture == "ar")
                 {
-                    return sortAscending ? q => q.OrderBy(u => u.UpdatedBy!.NameArabic) : q => q.OrderByDescending(u => u.UpdatedBy!.NameArabic);
+                    return sortAscending 
+                        ? q => q.OrderBy(u => u.Level).ThenBy(u => u.Parentdepartment).ThenBy(u => u.UpdatedBy!.NameArabic) 
+                        : q => q.OrderByDescending(u => u.Level).ThenBy(u => u.Parentdepartment).ThenBy(u => u.UpdatedBy!.NameArabic);
                 }
                 else
                 {
-                    return sortAscending ? q => q.OrderBy(u => u.UpdatedBy!.NameEnglish) : q => q.OrderByDescending(u => u.UpdatedBy!.NameEnglish);
+                    return sortAscending 
+                        ? q => q.OrderBy(u => u.Level).ThenBy(u => u.Parentdepartment).ThenBy(u => u.UpdatedBy!.NameEnglish) 
+                        : q => q.OrderByDescending(u => u.Level).ThenBy(u => u.Parentdepartment).ThenBy(u => u.UpdatedBy!.NameEnglish);
                 }
 
             case "DepartmentParent":
                 if (currentCulture == "ar")
                 {
                     return sortAscending
-                        ? q => q.OrderBy(u => u.Parentdepartment!.NameArabic)
-                        : q => q.OrderByDescending(u => u.Parentdepartment!.NameArabic);
+                        ? q => q.OrderBy(u => u.Level).ThenBy(u => u.Parentdepartment).ThenBy(u => u.Parentdepartment!.NameArabic)
+                        : q => q.OrderByDescending(u => u.Level).ThenBy(u => u.Parentdepartment).ThenBy(u => u.Parentdepartment!.NameArabic);
                 }
                 else
                 {
                     return sortAscending
-                       ? q => q.OrderBy(u => u.Parentdepartment!.NameEnglish)
-                        : q => q.OrderByDescending(u => u.Parentdepartment!.NameEnglish);
+                       ? q => q.OrderBy(u => u.Level).ThenBy(u => u.Parentdepartment).ThenBy(u => u.Parentdepartment!.NameEnglish)
+                        : q => q.OrderByDescending(u => u.Level).ThenBy(u => u.Parentdepartment).ThenBy(u => u.Parentdepartment!.NameEnglish);
 
                 }
 
 			case "Level":
 				return sortAscending
-					? q => q.OrderBy(u => u.Level)
-					: q => q.OrderByDescending(u => u.Level);
+					? q => q.OrderBy(u => u.Level).ThenBy(u => u.Parentdepartment).ThenBy(u => u.Level)
+					: q => q.OrderByDescending(u => u.Level).ThenBy(u => u.Parentdepartment).ThenBy(u => u.Level);
 			default:
-                return q => q.OrderBy(u => u.CreateDate);
+                return q => q.OrderBy(u => u.Level).ThenBy(u => u.Parentdepartment).ThenBy(u => u.CreateDate);
         }
     }
 

@@ -25,12 +25,26 @@
 
             <div class="card mt-3 border-0 shadow-sm">
                 <div class="card-header bg-light fw-semibold d-flex justify-content-between align-items-center"
-                     style="cursor:pointer"
-                     @onclick="() => ToggleDepartment(dept.Id)">
-                    <span>@dept.Name</span>
-                    <span class="text-muted small">
-                        @(isExpanded ? "▲" : "▼")
-                    </span>
+                     style="cursor: default; padding:0.5rem 1rem;">
+
+                    <!-- Name on the left -->
+                    <span class="flex-grow-1">@dept.Name</span>
+
+                    <!-- Right controls: Toggle arrow + Reject button -->
+                    <div class="d-flex align-items-center">
+                        @if (!IsViewMode)
+                        {
+                            <span class="text-muted small me-2" style="cursor:pointer;" @onclick="() => ToggleDepartment(dept.Id)">
+                                @(isExpanded ? "▲" : "▼")
+                            </span>
+
+                            <button class="btn btn-action-24 p-0" type="button"
+                                    aria-label="Remove"
+                                    @onclick="() => RemoveDepartment(dept.Id)">
+                                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Reject"></SVGCrud>
+                            </button>
+                        }
+                    </div>
                 </div>
 
                 @if (isExpanded)
@@ -73,6 +87,19 @@
     private HashSet<Guid> ExpandedDepartments { get; set; } = new();
     private List<DepartmentDto> AvailableDepartments => DepartmentList.Where(d => !SelectedDepartments.Contains(d.Id)).ToList();
 
+    protected override async Task OnParametersSetAsync()
+    {
+        // Ensure departments with users are loaded in edit/view mode
+        foreach (var id in SelectedDepartments)
+        {
+            if (!DepartmentsWithUsers.ContainsKey(id))
+            {
+                DepartmentsWithUsers[id] = null;
+                ExpandedDepartments.Add(id);
+                _ = LoadUsersAsync(id); // Load users asynchronously
+            }
+        }
+    }
     private async Task OnDepartmentsChanged(List<Guid> selectedIds)
     {
         SelectedDepartments = selectedIds ?? new();
@@ -81,14 +108,17 @@
         // Remove unselected
         var removed = DepartmentsWithUsers.Keys.Where(id => !SelectedDepartments.Contains(id)).ToList();
         foreach (var r in removed)
+        {
             DepartmentsWithUsers.Remove(r);
-
+            ExpandedDepartments.Remove(r);
+        }
         // Add new selected
         foreach (var id in SelectedDepartments)
         {
             if (!DepartmentsWithUsers.ContainsKey(id))
             {
                 DepartmentsWithUsers[id] = null;
+                ExpandedDepartments.Add(id);
                 _ = LoadUsersAsync(id);
             }
         }
@@ -102,7 +132,18 @@
         DepartmentsWithUsers[departmentId] = users ?? new List<UserDto>();
         StateHasChanged();
     }
+    private async Task RemoveDepartment(Guid deptId)
+    {
+        if (SelectedDepartments.Contains(deptId))
+        {
+            SelectedDepartments.Remove(deptId);
+            DepartmentsWithUsers.Remove(deptId);
+            ExpandedDepartments.Remove(deptId);
 
+            await SelectedDepartmentsChanged.InvokeAsync(SelectedDepartments);
+            StateHasChanged();
+        }
+    }
     private void ToggleDepartment(Guid deptId)
     {
         if (ExpandedDepartments.Contains(deptId))
