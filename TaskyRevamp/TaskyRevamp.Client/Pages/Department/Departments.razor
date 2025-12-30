@@ -12,7 +12,7 @@
 @inject IStringLocalizer<SharedResources> Loc
 @inject ToastService ToastService
 @inject PopupService PopupService
-@inject TaskyService taskyService
+@inject FileManagementService _fileManagementService
 
 
 
@@ -169,12 +169,12 @@ else
         fileInput = e.File;
         if (fileInput != null)
         {
-            var (bytes, name, type) = await taskyService.ReadFileAsync(fileInput);
+            var (bytes, name, type) = await _fileManagementService.ReadFileAsync(fileInput);
             if (bytes == null)
             {
                 return;
             }
-            var rows = taskyService.ReadExcelRows(bytes);
+            var rows = _fileManagementService.ReadExcelRows(bytes);
             Console.WriteLine($"Total Rows: {rows.Count}");
             if (rows.Count <= 1)
             {
@@ -555,8 +555,10 @@ new() { Field = "Action", DisplayName = Loc["Action"] ,IsSortable = false},
     public List<SearchFieldDepartment> searchFields = new List<SearchFieldDepartment>() {
 SearchFieldDepartment.NameEnglish,
 SearchFieldDepartment.NameArabic,
-SearchFieldDepartment.CreatedBy,
-SearchFieldDepartment.UpdatedBy,
+SearchFieldDepartment.CreatedByEnglish,
+SearchFieldDepartment.CreatedByArabic,
+SearchFieldDepartment.UpdatedByEnglish,
+SearchFieldDepartment.UpdatedByArabic,
 SearchFieldDepartment.CreateDate,
 SearchFieldDepartment.UpdateDate,
 SearchFieldDepartment.ParentNameAR,

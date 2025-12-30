@@ -13,7 +13,7 @@
 @inject PrivilegeConsumer _privilegeConsumer
 @inject DepartmentConsumer _deparmentConsumer
 @inject PopupService PopupService
-@inject TaskyService taskyService
+@inject FileManagementService _fileManagementService
 
 <div class="page-header">
     <div class="title-block">
@@ -122,7 +122,7 @@
                                                     <span class="icon">
                                                         <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Users"></SVGCrud>
                                                     </span>
-                                                    @Loc["LinkUser"]
+                                                    @Loc["userLink"]
                                                 </button>
                                             </li>
                                         </ul>
@@ -196,7 +196,7 @@ else
         {
             new() { Field = "Name", DisplayName = Loc["name"] },
             new() { Field = "Email", DisplayName = Loc["email"] },
-            new() { Field = "Privileges", DisplayName = Loc["Privileges"] },
+            new() { Field = "Privileges", DisplayName = Loc["UserPrivilege"] },
             new() { Field = "Department", DisplayName = Loc["Department"] },
             new() { Field = "UpdateDate", DisplayName = Loc["UpdateDate"] },
             new() { Field = "UpdatedBy", DisplayName = Loc["UpdatedBy"] },
@@ -267,7 +267,11 @@ else
         await LoadUsers();
         StateHasChanged();
     }
-    private void ViewPrivilege(Guid? Id) => navigationManager.NavigateTo($"/privilege?mode=view&id={Id}");
+    private void ViewPrivilege(Guid? Id) 
+    {
+        var currentUrl = navigationManager.Uri;
+        navigationManager.NavigateTo($"/privilege?mode=view&id={Id}&ReturnUrl={Uri.EscapeDataString(currentUrl)}");
+    }
     private async Task SortBy(string columnName)
     {
         if (currentSortColumn == columnName)
@@ -288,7 +292,8 @@ else
             SearchFieldUser.IsManager,
             SearchFieldUser.Privilege,
             SearchFieldUser.Department,
-            SearchFieldUser.UpdatedBy,
+            SearchFieldUser.UpdatedByEnglish,
+            SearchFieldUser.UpdatedByArabic,
             SearchFieldUser.UpdateDate,
             SearchFieldUser.ActiveStatus
     };
@@ -316,19 +321,19 @@ else
     }
     private async Task DownloadExcel(MouseEventArgs args)
     {
-        await taskyService.DownloadUsersTemplateAsync();
+        await _fileManagementService.DownloadUsersTemplateAsync();
     }
     private async Task OnFileSelected(InputFileChangeEventArgs e)
     {
         fileInput = e.File;
         if (fileInput != null)
         {
-            var (bytes, name, type) = await taskyService.ReadFileAsync(fileInput);
+            var (bytes, name, type) = await _fileManagementService.ReadFileAsync(fileInput);
             if(bytes == null)
             {
                 return;
             }
-            var rows = taskyService.ReadExcelRows(bytes);
+            var rows = _fileManagementService.ReadExcelRows(bytes);
             Console.WriteLine($"Total Rows: {rows.Count}");
             if (rows.Count <= 1)
             {

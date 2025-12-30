@@ -8,10 +8,10 @@ public class CreateTaskValidator : AbstractValidator<CreateTaskCommand>
 {
     public CreateTaskValidator(IStringLocalizer<CreateTaskValidator> localizer)
     {
-        RuleFor(x => x.CreateTaskDto.TitleEnglish)
+        RuleFor(x => x.CreateTaskDto.Title)
             .NotEmpty().WithMessage(localizer["TitleRequired"])
             .MaximumLength(100).WithMessage(localizer["TitleMaxLength"]);
-        RuleFor(x => x.CreateTaskDto.TitleArabic)
+        RuleFor(x => x.CreateTaskDto.Title)
     .NotEmpty().WithMessage(localizer["TitleRequired"])
     .MaximumLength(100).WithMessage(localizer["TitleMaxLength"]);
     }

@@ -240,7 +240,6 @@
             }
         }
     }
-
     void SetAll(GeneralModulePermissionDto permission, object value)
     {
         bool isChecked = (bool)value;
@@ -249,7 +248,6 @@
         permission.IsAdd = isChecked;
         permission.IsDelete = isChecked;
     }
-
     void OnAddChanged(GeneralModulePermissionDto permission, ChangeEventArgs e)
     {
         permission.IsAdd = (bool)e.Value!;
@@ -277,7 +275,7 @@
     private async Task OnDelegationToUserChanged(int value, object checkedValue, GeneralModulePermissionDto permission)
     {
         bool isChecked = (bool)checkedValue;
-        permission.DelegationFromUser ??= new();
+        permission.DelegationToUser ??= new();
         if(isChecked)
         {
             if (!permission.DelegationToUser!.Contains(value))
@@ -331,7 +329,7 @@
         {
             showDelegationFromUserError = true;
         }
-        if (permission.DelegationToUser == null)
+        if (permission.DelegationToUser == null || !permission.DelegationToUser.Any())
         {
             showDelegationToUserError = true;
         }
@@ -342,4 +340,5 @@
         var res = await _userConsumer.GetUsersByDepartment(deptId);
         return res.Success ? res.Data?.AssignedUsers ?? new List<UserDto>() : new List<UserDto>();
     }
+
 }

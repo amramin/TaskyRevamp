@@ -8,7 +8,7 @@
 @inject PopupService PopupService
 
 
-<EditForm Model="_statusDto" OnValidSubmit="Save">
+<EditForm EditContext="editContext" OnValidSubmit="Save">
     <DataAnnotationsValidator />
     <div class="offcanvas-body">
         <div class="mb-3">
@@ -39,7 +39,7 @@
                 <InputText class="form-control" @bind-Value="_statusDto.NameColor" />
                 <span class="rounded-circle cl-preview" style="background-color:@_statusDto.NameColor"></span>
                 <span class="color-indicator">
-                    <input type="color" id="color-name" @bind="_statusDto.NameColor" />
+                    <input type="color" id="color-name" value="@_statusDto.NameColor" @onchange="OnNameColorChanged" />
                     <label for="color-name">
                         <SVGCrud SVGType="SVGCrud.SVGTypeEnum.ColorPalette"></SVGCrud>
                     </label>
@@ -57,7 +57,7 @@
                 <InputText class="form-control" @bind-Value="_statusDto.BackgroundColor" />
                 <span class="rounded-circle cl-preview" style="background-color:@_statusDto.BackgroundColor"></span>
                 <span class="color-indicator">
-                    <input type="color" id="bg-name" @bind="_statusDto.BackgroundColor" />
+                    <input type="color" id="bg-name" value="@_statusDto.BackgroundColor" @onchange="OnBackgroundColorChanged" />
                     <label for="bg-name">
                         <SVGCrud SVGType="SVGCrud.SVGTypeEnum.ColorPalette"></SVGCrud>
                     </label>
@@ -90,6 +90,7 @@
     [Parameter] public Guid Id { get; set; }
     [Parameter] public EventCallback<StatusSettingsDto> OnValidSubmit { get; set; }
     private StatusSettingsDto _statusDto = new();
+    private EditContext editContext;
 
     protected override async Task OnParametersSetAsync()
     {
@@ -97,6 +98,7 @@
         if (res.Success && res.Data != null)
         {
             _statusDto = res.Data;
+            editContext = new EditContext(_statusDto);
         }
     }
 
@@ -112,7 +114,22 @@
                 await OnValidSubmit.InvokeAsync(_statusDto);
         }
     }
+    private void OnNameColorChanged(ChangeEventArgs e)
+    {
+        _statusDto.NameColor = e.Value?.ToString();
 
+        editContext.NotifyFieldChanged(
+            new FieldIdentifier(_statusDto, nameof(_statusDto.NameColor))
+        );
+    }
+    private void OnBackgroundColorChanged(ChangeEventArgs e)
+    {
+        _statusDto.BackgroundColor = e.Value?.ToString();
+
+        editContext.NotifyFieldChanged(
+            new FieldIdentifier(_statusDto, nameof(_statusDto.BackgroundColor))
+        );
+    }
     private void Cancel()
     {
         PopupService.Hide();

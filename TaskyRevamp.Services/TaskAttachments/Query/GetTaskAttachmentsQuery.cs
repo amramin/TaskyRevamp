@@ -30,6 +30,8 @@ namespace TaskyRevamp.Services.TaskAttachments.Query
 					Id = a.Id,
 					TaskAttachmentId = a.TaskAttachmentId,
 					FileName = a.FileName,
+					FileId = a.FileId,
+					Size = a.Size,
 					CreatedById = a.CreatedById,
 					CreateDate = a.CreateDate
 				},

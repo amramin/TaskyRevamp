@@ -16,9 +16,11 @@ namespace TaskyRevamp.Services.SearchMappings
 			{ SearchFieldPrivileg.NameEnglish, x => x.NameEnglish },
 			{ SearchFieldPrivileg.NameArabic, x => x.NameArabic },
 			{ SearchFieldPrivileg.CreateDate, x => x.CreateDate },
-			{ SearchFieldPrivileg.CreatedBy, x => x.CreatedBy.NameEnglish },
+			{ SearchFieldPrivileg.CreatedByEnglish, x => x.CreatedBy.NameEnglish },
+			{ SearchFieldPrivileg.CreatedByArabic, x => x.CreatedBy.NameArabic },
 			{ SearchFieldPrivileg.UpdateDate, x => x.UpdateDate },
-			{ SearchFieldPrivileg.UpdatedBy, x => x.UpdatedBy.NameEnglish },
+			{ SearchFieldPrivileg.UpdatedByEnglish, x => x.UpdatedBy.NameEnglish },
+			{ SearchFieldPrivileg.UpdatedByArabic, x => x.UpdatedBy.NameArabic },
 		};
 	}
 }
