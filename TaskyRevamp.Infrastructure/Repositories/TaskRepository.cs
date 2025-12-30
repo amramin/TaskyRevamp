@@ -64,7 +64,7 @@ public class TaskRepository : ITaskRepository
 	public async Task<TaskItem?> GetTaskById(Guid id)
 	{
 		var task = _context.Set<TaskItem>().AsQueryable();
-		//task = AddIncludeToTasks(task);
+		task = AddIncludeToTasks(task);
 		var taskItem = await task.FirstOrDefaultAsync(x => x.Id == id);
 		return taskItem;
 	}

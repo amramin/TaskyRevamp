@@ -1150,10 +1150,9 @@
 	<data name="ReOpen" xml:space="preserve">
     <value>إعادة فتح</value>
   </data>
-  <!--<assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="Completedsuccessfully" type="System.Resources.ResXNullRef, System.Windows.Forms">
     <value />
-  </data>-->
+  </data>
   <data name="Reopenedsuccessfully" type="System.Resources.ResXNullRef, System.Windows.Forms">
     <value />
   </data>
