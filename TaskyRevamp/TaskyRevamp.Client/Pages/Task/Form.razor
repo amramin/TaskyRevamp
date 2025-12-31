@@ -1,6 +1,7 @@
 ﻿@using System.Globalization
 @using System.Linq.Expressions
 @using Stingray.Components.MultiSelectComponent
+@using System.Reflection
 @using TaskyRevamp.Dto.Account
 @using TaskyRevamp.Dto.Department
 @using TaskyRevamp.Dto.SystemConfiguration
@@ -565,17 +566,33 @@
         ValidateDynamicFields((EditContext)sender);
     }
 
-    private void ValidateDynamicFields(EditContext context)
+    private async Task ValidateDynamicFields(EditContext context)
     {
         // Clear previous messages
-        messageStore.Clear();
+        //  messageStore.Clear();
 
         foreach (var column in AddTaskSettings.Where(c => c.IsMandatory))
         {
             // Map column name to property name in CreateTaskDto
             // e.g., "Start Date" -> "StartDate"
             string propName = column.NameEnglish.Replace(" ", "").Trim();
-            var prop = typeof(CreateTaskDto).GetProperty(propName);
+
+            var prop = typeof(CreateTaskDto).GetProperty(
+                propName,
+                BindingFlags.Public | BindingFlags.Instance | BindingFlags.IgnoreCase
+            );
+            if (prop == null)
+            {
+                prop = typeof(CreateTaskDto).GetProperty(
+                    propName + "Id",
+                    BindingFlags.Public | BindingFlags.Instance | BindingFlags.IgnoreCase
+                );
+            }
+
+            if (prop == null)
+            {
+                // still not found → log or handle
+            }
             if (prop == null)
                 continue;
 
@@ -626,17 +643,34 @@
             {
                 var fieldId = new FieldIdentifier(taskdto, prop.Name);
                 // Optional: use column.DisplayName for friendly message
+                await ToastService.ShowToastAsync("Please fill all required fields before submitting", "error");
+
                 messageStore.Add(fieldId, $"{column.NameEnglish} is required.");
+                return;  
             }
         }
 
         // Notify EditContext to refresh validation messages
         context.NotifyValidationStateChanged();
+        await Task.CompletedTask;
     }
 
 
     private async Task HandleValidSubmit(EditContext context)
     {
+        await  ValidateDynamicFields(context);
+        if (taskdto.EndDate<taskdto.StartDate)
+        {
+            await ToastService.ShowToastAsync("The start date should be smaller than or equal the end date", "error");
+
+            return;
+        }
+        if (taskdto.ReminderDate < taskdto.StartDate || taskdto.ReminderDate > taskdto.EndDate )
+        {
+            await ToastService.ShowToastAsync("Enter a valid reminder date, it should be between the start and end date", "error");
+
+            return;
+        }
         // proceed with saving
         taskdto.Description =
  RichTextEditorComponentRefDescriptionEnglish.GetContent();

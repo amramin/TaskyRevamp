@@ -23,13 +23,13 @@ public class TaskController : ControllerBase
     }
 
     [HttpPost("CreateTask")]
-    public async Task<ActionResult<string>> CreateTask([FromBody] CreateTaskDto taskDto)
+    public async Task<IActionResult> CreateTask([FromBody] CreateTaskDto taskDto)
     {
-        var res = await _mediator.Send(new CreateTaskCommand(taskDto));
+        return Ok(await _mediator.Send(new CreateTaskCommand(taskDto)));
 
 
 
-        return Ok(res);
+
     }
     [HttpGet("CompleteTask/{id}")]
     public async Task<IActionResult> CompleteTask(Guid id)
@@ -96,7 +96,7 @@ public class TaskController : ControllerBase
     [HttpGet("GetTaskById/{id}/{currentUserId}")]
     public async Task<IActionResult> GetTaskById(Guid id, Guid currentUserId)
     {
-       return Ok(await _mediator.Send(new GetTaskQuery(id, currentUserId)));
+        return Ok(await _mediator.Send(new GetTaskQuery(id, currentUserId)));
     }
 
     [HttpGet("GetTasksForDDL")]

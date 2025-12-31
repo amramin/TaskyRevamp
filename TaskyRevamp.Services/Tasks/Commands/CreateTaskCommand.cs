@@ -43,6 +43,7 @@ public class CreateTaskHandler : IRequestHandler<CreateTaskCommand, string>
     }
 
     public async Task<string> Handle(CreateTaskCommand request, CancellationToken cancellationToken)
+
     {
         var user = await _userRepository.FindByKey(request.CreateTaskDto.CreatedBy.Value);
         if (user is null || user.IsFailure || user.Value is null)
@@ -83,7 +84,7 @@ public class CreateTaskHandler : IRequestHandler<CreateTaskCommand, string>
         if (request.CreateTaskDto.uploadAttachmentDtos is not null)
         {
             var attachmnentsDto = request.CreateTaskDto.uploadAttachmentDtos.ToList();
-           if(attachmnentsDto != null)
+            if (attachmnentsDto != null)
             {
                 await uploadTaskFiles(attachmnentsDto, task.Id);
             }
