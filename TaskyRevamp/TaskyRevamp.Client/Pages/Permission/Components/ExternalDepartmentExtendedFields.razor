@@ -32,7 +32,7 @@
             <div class="d-flex flex-column gap-2 mb-3">
                 <div class="form-check form-switch custom">
                     <input class="form-check-input" type="checkbox" id="manager_@Item.Id"
-                           @bind="Item.IsManagerTasks" disabled="@IsViewMode"/>
+                           @bind="Item.IsManagerTasks" disabled="@IsViewMode" />
                     <label class="form-check-label" for="manager_@Item.Id">
                         <span class="toggler-icon"></span>
                         @Loc["ManagersTasks"]
@@ -54,7 +54,7 @@
 
             <div class="form-check form-switch custom">
                 <input class="form-check-input" type="checkbox" @bind="Item.IsIncludeSubDepartment"
-                disabled="@IsViewMode" id="sub_@Item.Id"/>
+                       disabled="@IsViewMode" id="sub_@Item.Id" />
                 <label class="form-check-label" for="sub_@Item.Id">
                     <span class="toggler-icon"></span>
                     @Loc["IncludingSubDepartment"]
@@ -76,39 +76,45 @@
                     }
                 </div>
             }
+            else
+            {
+                <div class="text-danger small mt-1">@Loc["Required"]</div>
+            }
 
             <div class="mb-3">
                 <label class="form-label fw-bold">@Loc["Permissions"] <span class="text-danger">*</span></label>
-                <SearchableMultiDropdownOffline TInput="Permission" TOutput="int" Datasource="PermissionList"
-                    TextSelector="(p => Loc[p.ToString()])" OutputSelector="(p => (int)p)"
-                    SelectedOptions="Item.PermissionId" SelectedOptionsChanged="OnPermissionsChanged" IsDisabled="IsViewMode"/>
+                <SearchableMultiDropdownOffline TInput="Permission" TOutput="int" @key="AvailablePermissions"
+                                                Datasource="AvailablePermissions"
+                                                TextSelector="(p => Loc[p.ToString()])" OutputSelector="(p => (int)p)"
+                                                SelectedOptions="Item.PermissionId" SelectedOptionsChanged="OnPermissionsChanged" IsDisabled="IsViewMode" />
                 @if (IsSaveClicked && (Item.PermissionId == null || !Item.PermissionId.Any()))
                 {
                     <div class="text-danger small mt-1">@Loc["Required"]</div>
                 }
-            </div>
-
-            <div class="mb-3">
-                <label class="form-label">@Loc["Status"]<span class="text-danger">*</span></label>
-                <SearchableMultiDropdownOffline TInput="StatusSettingsDto" TOutput="Guid" Datasource="StatusList"
-                    TextSelector="(s => s.Name)" OutputSelector="(s => s.Id)" SelectedOptions="Item.Status"
-                    SelectedOptionsChanged="OnStatusChanged"  IsDisabled="IsViewMode"/>
-                @if (IsSaveClicked && (Item.Status == null || !Item.Status.Any()))
+                @if (Item.PermissionId != null && Item.PermissionId.Any())
                 {
-                    <div class="text-danger small mt-1">@Loc["Required"]</div>
+                    <div class="mt-2">
+                        <div class="d-flex flex-wrap gap-1">
+                            @foreach (var permissionId in Item.PermissionId)
+                            {
+                                var permission = (Permission)permissionId;
+                                <span class="badge bg-primary d-flex align-items-center gap-1 py-1 px-2 small">
+                                    @Loc[permission.ToString()]
+                                    @if (!IsViewMode)
+                                    {
+                                        <button type="button" class="btn-close btn-close-white btn-close-sm ms-1" aria-label="Remove"
+                                                style="height:1rem; width:1rem;" @onclick="() => RemovePermission(permissionId)"></button>
+                                    }
+                                </span>
+                            }
+                        </div>
+                    </div>
                 }
             </div>
 
-            <div class="mb-3">
-                <label class="form-label">@Loc["Source"]<span class="text-danger">*</span></label>
-                <SearchableMultiDropdownOffline TInput="SourceDto" TOutput="Guid" Datasource="SourceList"
-                    TextSelector="(s => s.DisplayedName)" OutputSelector="(s => s.Id)" SelectedOptions="Item.Source"
-                    SelectedOptionsChanged="OnSourceChanged" IsDisabled="IsViewMode"/>
-                @if (IsSaveClicked && (Item.Source == null || !Item.Source.Any()))
-                {
-                    <div class="text-danger small mt-1">@Loc["Required"]</div>
-                }
-            </div>
+            <StatusSelector Item="Item" IsViewMode="IsViewMode" IsSaveClicked="IsSaveClicked" />
+            <SourceSelector Item="Item" IsViewMode="IsViewMode" IsSaveClicked="IsSaveClicked" />
+           
         </div>
     }
 </div>
@@ -117,17 +123,16 @@
     [Parameter] public TaskModuleExternalDepartmentDto Item { get; set; }
     [Parameter] public string DepartmentName { get; set; } = string.Empty;
     [Parameter] public EventCallback<TaskModuleExternalDepartmentDto> OnRemove { get; set; }
-    [Parameter] public List<StatusSettingsDto> StatusList { get; set; } = new();
-    [Parameter] public List<SourceDto> SourceList { get; set; } = new();
     [Parameter] public bool IsViewMode { get; set; }
     [Parameter] public bool IsSaveClicked { get; set; }
-    private bool IsExpanded { get; set; } = false;
+    [Parameter] public bool IsExpanded { get; set; }
     private bool IsTouched = false;
     private List<Permission> PermissionList = Enum.GetValues(typeof(Permission)).Cast<Permission>().ToList();
+    private List<Permission> AvailablePermissions => PermissionList.Where(p => Item.PermissionId == null || !Item.PermissionId.Contains((int)p)).ToList();
 
     protected override void OnParametersSet()
     {
-        if (IsSaveClicked && IsInvalid())
+        if ((IsViewMode || IsSaveClicked && IsInvalid()) && !IsExpanded)
         {
             IsExpanded = true;
         }
@@ -135,17 +140,6 @@
     private void OnPermissionsChanged(List<int> selectedPermissions)
     {
         Item.PermissionId = selectedPermissions;
-        StateHasChanged();
-    }
-    private void OnStatusChanged(List<Guid> selectedStatuses)
-    {
-        Item.Status = selectedStatuses;
-        StateHasChanged();
-    }
-
-    private void OnSourceChanged(List<Guid> selectedSources)
-    {
-        Item.Source = selectedSources;
         StateHasChanged();
     }
     private async Task RemoveClicked()
@@ -160,11 +154,11 @@
     {
         if (int.TryParse(e.Value?.ToString(), out int value))
         {
-            Item.DirectionLevel = value < 1 ? 1 : value;
+            Item.DirectionLevel = value < 1 ? null : value;
         }
         else
         {
-            Item.DirectionLevel = 1;
+            Item.DirectionLevel = null;
         }
         StateHasChanged();
     }
@@ -188,5 +182,10 @@
     {
         if (!IsTouched)
             IsTouched = true;
+    }
+    private void RemovePermission(int permissionId)
+    {
+        Item.PermissionId?.Remove(permissionId);
+        StateHasChanged();
     }
 }

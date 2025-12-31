@@ -54,7 +54,7 @@
         </div>
         <div class="card setting-card">
             <!-- Form -->
-            <EditForm class="d-flex flex-column flex-1" EditContext="editContext" OnValidSubmit="SaveSettings">
+            <EditForm class="d-flex flex-column flex-1" EditContext="editContext" OnValidSubmit="SaveSettings" OnInvalidSubmit="OnInvalidSubmit">
                 <DataAnnotationsValidator />
 
                 <div class="card-body">
@@ -245,7 +245,9 @@
         IsSaveClicked = true;
 
         if (IsViewMode)
+        {
             return;
+        }
 
         if (!isGeneralModuleValid)
         {
@@ -287,6 +289,10 @@
         }
         navigationManager.NavigateTo("/Privileges");
 
+    }
+    private void OnInvalidSubmit(EditContext context)
+    {
+        // Do nothing → prevents auto focus
     }
     private void Return()
     {

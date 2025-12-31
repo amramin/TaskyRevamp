@@ -9,8 +9,6 @@
 @using TaskyRevamp.Dto.SystemConfiguration
 @inject IStringLocalizer<SharedResources> Loc
 @inject DepartmentConsumer _departmentConsumer
-@inject StatusSettingConsumer _statusSettingConsumer
-@inject SourceSettingConsumer _sourceSettingConsumer
 
 <div class="card mb-3">
     <div class="card-body">
@@ -51,7 +49,7 @@
 
             <div class="row g-2 align-self-stretch">
                 <div class="col-xl-10 col-lg-9 col-sm-9 col-8">
-                    <SearchableMultiDropdownOffline @key="AvailableDepartments.Count" TInput="DepartmentDto" TOutput="Guid" Datasource="AvailableDepartments"
+                    <SearchableMultiDropdownOffline @key="AvailableDepartments" TInput="DepartmentDto" TOutput="Guid" Datasource="AvailableDepartments"
                                                     TextSelector="(d => d.Name)" OutputSelector="(d => d.Id)" SelectedOptions="@SelectedDepartments"
                                                     SelectedOptionsChanged="@OnDepartmentsChanged" IsDisabled="IsViewMode" />
                 </div>
@@ -68,7 +66,7 @@
                 List<TaskModuleExternalDepartmentDto>())
         {
             <ExternalDepartmentExtendedFields Item="dept" DepartmentName="@GetDepartmentName(dept.DepartmentId)" IsSaveClicked="@IsSaveClicked"
-                                              OnRemove="RemoveDepartment" StatusList="@StatusList" SourceList="@SourceList" IsViewMode="@IsViewMode" />
+                                              OnRemove="RemoveDepartment" IsViewMode="@IsViewMode" IsExpanded="@(IsViewMode || Mode == "Edit")" />
         }
     </div>
 </div>
@@ -79,8 +77,6 @@
     [Parameter] public bool IsSaveClicked { get; set; }
     private List<DepartmentDto> Departments { get; set; } = new List<DepartmentDto>();
     private List<Guid> SelectedDepartments { get; set; } = new();
-    private List<StatusSettingsDto> StatusList { get; set; } = new();
-    private List<SourceDto> SourceList { get; set; } = new();
     private List<DepartmentDto> AvailableDepartments
     {
         get
@@ -99,19 +95,6 @@
         {
             Departments = res.Data;
         }
-
-        var statusRes = await _statusSettingConsumer.GetStatusConfiguration();
-        if (statusRes.Success && statusRes != null && statusRes.Data != null)
-        {
-            StatusList = statusRes.Data;
-        }
-
-        var sourceRes = await _sourceSettingConsumer.GetSourcesWithoutPagination();
-        if (sourceRes.Success && sourceRes != null && sourceRes.Data != null)
-        {
-            SourceList = sourceRes.Data.Where(s => s.IsActive == true).ToList();
-        }
-
         if (PrivilegeDto.TaskModuleUserDepartmentDto == null)
             PrivilegeDto.TaskModuleUserDepartmentDto = new();
 
@@ -125,7 +108,6 @@
             {
                 PrivilegeDto.TaskModuleUserDepartmentDto.Add(new TaskModuleUserDepartmentPermissionDto
                 {
-                    PrivilegeId = PrivilegeDto.Id,
                     SelectedOption = option,
                     IsActive = false,
                     IsManagerTasks = false,
@@ -136,7 +118,6 @@
             }
         }
     }
-
     private void ToggleSelection(TaskModuleUserDepartmentPermissionDto item, bool? isChecked)
     {
         item.IsActive = isChecked == true;
@@ -144,10 +125,7 @@
         {
             item.PermissionId?.Clear();
         }
-
-        StateHasChanged();
     }
-
     private bool ShouldShowDirection(UserDepartmentOptions option)
     {
         return option == UserDepartmentOptions.BelowUserDepartmentLevel
@@ -166,8 +144,8 @@
     }
     private void AddDepartments(MouseEventArgs args)
     {
-
-        PrivilegeDto.TaskModuleExternalDepartmentDto ??= new();
+        if (PrivilegeDto.TaskModuleExternalDepartmentDto == null)
+            PrivilegeDto.TaskModuleExternalDepartmentDto ??= new();
         foreach (var deptId in SelectedDepartments)
         {
             if (PrivilegeDto.TaskModuleExternalDepartmentDto.Any(d => d.DepartmentId == deptId))
@@ -175,8 +153,6 @@
 
             PrivilegeDto.TaskModuleExternalDepartmentDto.Add(new TaskModuleExternalDepartmentDto
             {
-                Id = Guid.NewGuid(),
-                PrivilegeId = PrivilegeDto.Id,
                 DepartmentId = deptId,
                 IsIncludeSubDepartment = false,
                 IsManagerTasks = false,
@@ -187,10 +163,7 @@
             });
         }
         SelectedDepartments = new();
-        StateHasChanged();
     }
-
-
     private void RemoveDepartment(TaskModuleExternalDepartmentDto dept)
     {
         PrivilegeDto.TaskModuleExternalDepartmentDto?.Remove(dept);

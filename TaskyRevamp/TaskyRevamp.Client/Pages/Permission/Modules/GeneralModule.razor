@@ -38,8 +38,8 @@
                         <td>
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" disabled="@IsViewMode"
-                                    checked="@(permission.IsView && permission.IsEdit && permission.IsAdd && permission.IsDelete)"
-                                    @onchange="e => SetAll(permission, e.Value!)" />
+                                       checked="@(permission.IsView && permission.IsEdit && permission.IsAdd && permission.IsDelete)"
+                                       @onchange="e => SetAll(permission, e.Value!)" />
                             </div>
                         </td>
 
@@ -121,16 +121,20 @@
                                     @Loc["SelectAtLeastOneValue"]
                                 </div>
                             }
-   
+
                             @if (delegationPermission?.DelegationFromUser != null &&
                                                     delegationPermission.DelegationFromUser.Contains((int)DelegationFromUser.DifferentDepartment))
                             {
                                 <DelegationDepartmentSelector DepartmentList="departmentDtos" IsViewMode="@IsViewMode"
                                                               SelectedDepartments="@delegationPermission.DelegationFromUserDepartments"
-                                                              SelectedDepartmentsChanged="@((List<Guid> ids) => delegationPermission.DelegationFromUserDepartments = ids)"
+                                                              SelectedDepartmentsChanged="@((List<Guid> ids) =>
+                                                              {
+                                                                    delegationPermission.DelegationFromUserDepartments = new List<Guid>(ids);
+                                                                    _ = ValidateAndNotify(delegationPermission);
+                                                              })"
                                                               LoadUsersByDepartment="@LoadUsersForDepartment" />
                             }
-   
+
                         </div>
                     </div>
                     <!-- TO USER SWITCH GROUP -->
@@ -141,7 +145,7 @@
                             {
                                 var id = $"toUser_{value}";
                                 <div class="form-check form-switch custom">
-                                    <input type="checkbox" id="@id" disabled="@IsViewMode" class="form-check-input" 
+                                    <input type="checkbox" id="@id" disabled="@IsViewMode" class="form-check-input"
                                            checked="@delegationPermission!.DelegationToUser!.Contains((int)value)"
                                            @onchange="e => OnDelegationToUserChanged((int)value, e.Value!, delegationPermission)" />
                                     <label class="form-check-label ms-2" for="@id">
@@ -156,12 +160,16 @@
                                     @Loc["SelectAtLeastOneValue"]
                                 </div>
                             }
-                            @if (delegationPermission!.DelegationToUser != null  && 
-                                            delegationPermission!.DelegationToUser.Contains((int)DelegationToUser.DifferentDepartment))
+                            @if (delegationPermission!.DelegationToUser != null &&
+                                                    delegationPermission!.DelegationToUser.Contains((int)DelegationToUser.DifferentDepartment))
                             {
                                 <DelegationDepartmentSelector DepartmentList="departmentDtos" IsViewMode="@IsViewMode"
                                                               SelectedDepartments="@delegationPermission.DelegationToUserDepartments"
-                                                              SelectedDepartmentsChanged="@((List<Guid> ids) => delegationPermission.DelegationToUserDepartments = ids)"
+                                                              SelectedDepartmentsChanged="@((List<Guid> ids) =>
+                                                              {
+                                                                      delegationPermission.DelegationToUserDepartments = new List<Guid>(ids); // <-- was wrong before
+                                                                      _ = ValidateAndNotify(delegationPermission);
+                                                              })"
                                                               LoadUsersByDepartment="@LoadUsersForDepartment" />
 
                             }
@@ -247,6 +255,14 @@
         permission.IsEdit = isChecked;
         permission.IsAdd = isChecked;
         permission.IsDelete = isChecked;
+        if (!isChecked)
+        {
+            permission.DelegationFromUser = new();
+            permission.DelegationFromUserDepartments = new();
+            permission.DelegationToUser = new();
+            permission.DelegationToUserDepartments = new();
+        }
+        _ = ValidateAndNotify(permission);
     }
     void OnAddChanged(GeneralModulePermissionDto permission, ChangeEventArgs e)
     {
@@ -259,81 +275,69 @@
             // Reset DelegationToUser
             permission.DelegationToUser = new();
             permission.DelegationToUserDepartments = new();
-            // Clear validation errors
-            showDelegationFromUserError = false;
-            showDelegationToUserError = false;
 
-            OnValidationStateChanged.InvokeAsync(true);
         }
-        else
-        {
-            bool isValid = ValidateDelegation(permission);
-            OnValidationStateChanged.InvokeAsync(isValid);
-        }
-        StateHasChanged();
+        _ = ValidateAndNotify(permission);
     }
     private async Task OnDelegationToUserChanged(int value, object checkedValue, GeneralModulePermissionDto permission)
     {
         bool isChecked = (bool)checkedValue;
         permission.DelegationToUser ??= new();
-        if(isChecked)
-        {
-            if (!permission.DelegationToUser!.Contains(value))
-                permission.DelegationToUser.Add(value);
-        }
+        if (isChecked && !permission.DelegationToUser!.Contains(value))
+            permission.DelegationToUser.Add(value);
         else
         {
             permission.DelegationToUser!.Remove(value);
-            // Clear departments if unchecking DifferentDepartment
             if (value == (int)DelegationToUser.DifferentDepartment)
-            {
                 permission.DelegationToUserDepartments = new List<Guid>();
-            }
         }
-        bool isValid = ValidateDelegation(permission);
-        await OnValidationStateChanged.InvokeAsync(isValid);
-        StateHasChanged();
+        await ValidateAndNotify(permission);
     }
     private async Task OnDelegationFromUserChanged(int value, object checkedValue, GeneralModulePermissionDto permission)
     {
         bool isChecked = (bool)checkedValue;
         permission.DelegationFromUser ??= new();
-        if (isChecked)
-        {
-            if (!permission.DelegationFromUser.Contains(value))
-                permission.DelegationFromUser.Add(value);
-        }
+        if (isChecked && !permission.DelegationFromUser.Contains(value))
+            permission.DelegationFromUser.Add(value);
         else
         {
             permission.DelegationFromUser.Remove(value);
-            // Clear departments if unchecking DifferentDepartment
             if (value == (int)DelegationFromUser.DifferentDepartment)
-            {
                 permission.DelegationFromUserDepartments = new List<Guid>();
-            }
         }
-        bool isValid = ValidateDelegation(permission);
-        await OnValidationStateChanged.InvokeAsync(isValid);
-
-        StateHasChanged();
+        await ValidateAndNotify(permission);
     }
-    private bool ValidateDelegation(GeneralModulePermissionDto permission)
+
+    private async Task ValidateAndNotify(GeneralModulePermissionDto permission)
     {
+        bool isValid = true;
         showDelegationFromUserError = false;
         showDelegationToUserError = false;
 
-        if (!permission.IsAdd)
-            return true;
+        if (permission.IsAdd)
+        {
+            var fromUsers = permission.DelegationFromUser ?? new List<int>();
+            var toUsers = permission.DelegationToUser ?? new List<int>();
+            var fromDepartments = permission.DelegationFromUserDepartments ?? new List<Guid>();
+            var toDepartments = permission.DelegationToUserDepartments ?? new List<Guid>();
 
-        if (permission.DelegationFromUser == null || !permission.DelegationFromUser.Any())
-        {
-            showDelegationFromUserError = true;
+            if (!fromUsers.Any())
+            {
+                showDelegationFromUserError = true; isValid = false;
+            }
+            else if (fromUsers.Contains((int)DelegationFromUser.DifferentDepartment) && !fromDepartments.Any()) 
+                isValid = false;
+
+            if (!toUsers.Any())
+            {
+                showDelegationToUserError = true;
+                isValid = false;
+            }
+            else if (toUsers.Contains((int)DelegationToUser.DifferentDepartment) && !toDepartments.Any())
+                isValid = false;
         }
-        if (permission.DelegationToUser == null || !permission.DelegationToUser.Any())
-        {
-            showDelegationToUserError = true;
-        }
-        return !showDelegationFromUserError && !showDelegationToUserError;
+        await OnValidationStateChanged.InvokeAsync(isValid);
+        StateHasChanged();
     }
     private async Task<List<UserDto>> LoadUsersForDepartment(Guid deptId)
     {
