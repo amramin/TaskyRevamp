@@ -62,21 +62,28 @@ public class CreateTaskHandler : IRequestHandler<CreateTaskCommand, string>
 
         if (TaskSatuses is not null)
         {
-            if (request.CreateTaskDto.ActualProcess == 0 && (request.CreateTaskDto.StartDate > DateTime.Now))
+            if (request.CreateTaskDto.EndDate.Date < DateTime.UtcNow.Date&&request.CreateTaskDto.ActualProcess<100)
             {
                 task.StatusId = Guid.Parse("547022EA-EF8C-4FBC-2236-08DE3318A61C");
             }
-            else if (request.CreateTaskDto.ActualProcess == 0 && (request.CreateTaskDto.StartDate <= DateTime.Now))
+            else
             {
-                task.StatusId = Guid.Parse("9843AF9D-1389-4740-B428-08DE3D8A77AB");
-            }
-            else if (request.CreateTaskDto.ActualProcess > 0 && request.CreateTaskDto.ActualProcess < 100)
-            {
-                task.StatusId = Guid.Parse("753404A6-8B18-43F7-2238-08DE3318A61C");
-            }
-            else if (request.CreateTaskDto.ActualProcess == 100)
-            {
-                task.StatusId = Guid.Parse("6EE4574D-C439-45B4-223A-08DE3318A61C");
+                if (request.CreateTaskDto.ActualProcess == 0 && (request.CreateTaskDto.StartDate > DateTime.Now))
+                {
+                    task.StatusId = Guid.Parse("547022EA-EF8C-4FBC-2236-08DE3318A61C");
+                }
+                else if (request.CreateTaskDto.ActualProcess == 0 && (request.CreateTaskDto.StartDate <= DateTime.Now))
+                {
+                    task.StatusId = Guid.Parse("9843AF9D-1389-4740-B428-08DE3D8A77AB");
+                }
+                else if (request.CreateTaskDto.ActualProcess > 0 && request.CreateTaskDto.ActualProcess < 100)
+                {
+                    task.StatusId = Guid.Parse("753404A6-8B18-43F7-2238-08DE3318A61C");
+                }
+                else if (request.CreateTaskDto.ActualProcess == 100)
+                {
+                    task.StatusId = Guid.Parse("6EE4574D-C439-45B4-223A-08DE3318A61C");
+                }
             }
         }
         await _taskRepository.Insert(task);

@@ -134,10 +134,10 @@ public class GetTasksHandler : IRequestHandler<GetTasksQuery, PagedResult<Create
                 return sortAscending
                     ? q => q.OrderBy(u => u.Priority)
                     : q => q.OrderByDescending(u => u.Priority);
-            case "Planned Progress":
-                return sortAscending
-                    ? q => q.OrderBy(u => u.Priority)
-                    : q => q.OrderByDescending(u => u.Priority);
+            //case "Planned Progress":
+            //    return sortAscending
+            //        ? q => q.OrderBy(u => u.Priority)
+            //        : q => q.OrderByDescending(u => u.Priority);
             case "Source":
                 return sortAscending
                     ? q => q.OrderBy(u => u.Source)
@@ -170,15 +170,22 @@ public class GetTasksHandler : IRequestHandler<GetTasksQuery, PagedResult<Create
                 return sortAscending
                     ? q => q.OrderBy(u => u.EndDate)
                     : q => q.OrderByDescending(u => u.EndDate);
-            //case "weight":
-            //    return sortAscending
-            //        ? q => q.OrderBy(u => u.ActualWeight)
-            //        : q => q.OrderByDescending(u => u.ActualWeight);
+            case "weight":
+                return sortAscending
+                    ? q => q.OrderBy(u => u.Weight)
+                    : q => q.OrderByDescending(u => u.Weight);
             case "Type":
                 return sortAscending
                     ? q => q.OrderBy(u => u.Type)
                     : q => q.OrderByDescending(u => u.Type);
-
+            case "Actual Progress":
+                return sortAscending
+                    ? q => q.OrderBy(u => u.Progress)
+                    : q => q.OrderByDescending(u => u.Progress);
+            case "Created by department":
+                return sortAscending
+                    ? q => q.OrderBy(u => currentCulture == "ar" ? u.CreatedBy.Department.NameArabic : u.CreatedBy.Department.NameEnglish)
+                    : q => q.OrderByDescending(u => currentCulture == "ar" ? u.CreatedBy.Department.NameArabic : u.CreatedBy.Department.NameEnglish);
             default:
                 return q => q.OrderBy(u => u.CreateDate);
         }
