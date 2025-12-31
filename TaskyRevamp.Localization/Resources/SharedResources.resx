@@ -607,7 +607,7 @@
     <value>Enter task type name arabic</value>
   </data>
   <data name="EditTaskType" xml:space="preserve">
-    <value>Edit task type</value>
+    <value>Edit type</value>
   </data>
   <data name="Enter Priority Name English" xml:space="preserve">
     <value>Enter priority name english</value>

@@ -635,7 +635,7 @@
     <value>من المستخدم</value>
   </data>
 	<data name="ToUser" xml:space="preserve">
-    <value>إلي المستخدم</value>
+    <value>إلى المستخدم</value>
   </data>
 	<data name="FromDate" xml:space="preserve">
     <value>تاريخ البدء </value>

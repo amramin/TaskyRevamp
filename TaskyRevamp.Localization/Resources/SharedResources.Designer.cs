@@ -1132,7 +1132,7 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Edit task type.
+        ///   Looks up a localized string similar to Edit type.
         /// </summary>
         public static string EditTaskType {
             get {
