@@ -62,7 +62,7 @@ public class CreateTaskHandler : IRequestHandler<CreateTaskCommand, string>
 
         if (TaskSatuses is not null)
         {
-            if (request.CreateTaskDto.EndDate.Date < DateTime.UtcNow.Date&&request.CreateTaskDto.ActualProcess<100)
+            if (request.CreateTaskDto.EndDate < DateTime.UtcNow.Date && request.CreateTaskDto.ActualProcess < 100)
             {
                 task.StatusId = Guid.Parse("547022EA-EF8C-4FBC-2236-08DE3318A61C");
             }
@@ -90,7 +90,7 @@ public class CreateTaskHandler : IRequestHandler<CreateTaskCommand, string>
         if (request.CreateTaskDto.uploadAttachmentDtos is not null)
         {
             var attachmnentsDto = request.CreateTaskDto.uploadAttachmentDtos.ToList();
-           if(attachmnentsDto != null)
+            if (attachmnentsDto != null)
             {
                 await uploadTaskFiles(attachmnentsDto, task.Id);
             }

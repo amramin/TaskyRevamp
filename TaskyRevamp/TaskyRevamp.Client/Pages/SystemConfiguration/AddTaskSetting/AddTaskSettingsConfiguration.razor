@@ -38,21 +38,37 @@
                                         <span >@setting.Name </span>
                                     </div>
                                     <div class="toggle">
-                                        <div class="form-switch custom">
-                                            <input checked="@setting.IsActive" id="IsActive@(setting.Id)"
-                                                type="checkbox"
-                                                @onchange="@(() => setting.IsActive = !setting.IsActive)" />
+
+
+                                        <div class="form-switch custom @(IsFixedField(setting) ? "opacity-50" : "")">
+
+                                            <input checked="@setting.IsActive"
+                                                   id="IsActive@(setting.Id)"
+                                                   type="checkbox"
+                                                   disabled="@IsFixedField(setting)"
+                                                   @onchange="@(() =>
+                                                   {
+                                                       if (!IsFixedField(setting))
+                                                           setting.IsActive = !setting.IsActive;
+                                                   })" />
                                             <label for="IsActive@(setting.Id)">
                                                 <span class="toggler-icon"></span>
                                             </label>
                                         </div>
                                     </div>
                                     <div class="toggle">
-                                        <div class="form-switch custom ">
-                                            <input checked="@setting.IsMandatory" id="IsMandatory@(setting.Id)"
-                                                type="checkbox"
-                                                @onchange="@(() => setting.IsMandatory = !setting.IsMandatory)" />
-                                            <label for="IsMandatory@(setting.Id)">
+                                          <div class="form-switch custom @(IsFixedField(setting) ? "opacity-50" : "")">
+                                              <input checked="@setting.IsMandatory"
+                                                     id="IsMandatory@(setting.Id)"
+                                                     type="checkbox"
+                                                     disabled="@IsFixedField(setting)"
+                                                     @onchange="@(() =>
+                                                   {
+                                                       if (!IsFixedField(setting))
+                                                           setting.IsMandatory = !setting.IsMandatory;
+                                                   })" />
+
+                                                <label for="IsMandatory@(setting.Id)">
                                                 <span class="toggler-icon"></span>
                                             </label>
                                         </div>
@@ -93,7 +109,21 @@
 @code {
 
     public List<AddTaskSettingDto> AddTaskSettings { get; set; } = new List<AddTaskSettingDto>();
+    private readonly HashSet<string> FixedFields = new(StringComparer.OrdinalIgnoreCase)
+{
+    "Title",
+    "Priority",
+    "Department",
+    "Assigned to",
+    "Start date",
+    "End date",
+    "Actual progress"
+};
 
+    private bool IsFixedField(AddTaskSettingDto setting)
+    {
+        return FixedFields.Contains(setting.Name);
+    }
     protected async override Task OnInitializedAsync()
     {
 
@@ -104,6 +134,16 @@
             if (settings != null)
             {
                 AddTaskSettings = settings;
+
+
+                foreach (var setting in AddTaskSettings)
+                {
+                    if (IsFixedField(setting))
+                    {
+                        setting.IsActive = true;
+                        setting.IsMandatory = true;
+                    }
+                }
             }
 
         }
