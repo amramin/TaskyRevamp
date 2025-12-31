@@ -141,6 +141,9 @@
 	<data name="Required" xml:space="preserve">
     <value>هذا الحقل مطلوب</value>
   </data>
+	<data name="file" xml:space="preserve">
+    <value>ارفاق ملفات</value>
+  </data>
 	<data name="DataSavedSuccessfully" xml:space="preserve">
     <value>تم حفظ البيانات بنجاح</value>
   </data>
@@ -396,6 +399,15 @@
 	<data name="weight" xml:space="preserve">
     <value>الوزن</value>
   </data>
+	<data name="Comments" xml:space="preserve">
+    <value>التعليقات</value>
+  </data>
+	<data name="AddDescription" xml:space="preserve">
+    <value>اضف وصف المهمة</value>
+  </data>
+	<data name="Drag and Drop or" xml:space="preserve">
+    <value>سحب وإفلات</value>
+  </data>
 	<data name="AssignedTo" xml:space="preserve">
     <value>المسند إليه</value>
   </data>
@@ -623,7 +635,7 @@
     <value>من المستخدم</value>
   </data>
 	<data name="ToUser" xml:space="preserve">
-    <value>إلي المستخدم</value>
+    <value>إلى المستخدم</value>
   </data>
 	<data name="FromDate" xml:space="preserve">
     <value>تاريخ البدء </value>

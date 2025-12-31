@@ -43,6 +43,7 @@ public class CreateTaskHandler : IRequestHandler<CreateTaskCommand, string>
     }
 
     public async Task<string> Handle(CreateTaskCommand request, CancellationToken cancellationToken)
+
     {
         var user = await _userRepository.FindByKey(request.CreateTaskDto.CreatedBy.Value);
         if (user is null || user.IsFailure || user.Value is null)
