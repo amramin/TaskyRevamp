@@ -49,7 +49,7 @@
 
             <div class="row g-2 align-self-stretch">
                 <div class="col-xl-10 col-lg-9 col-sm-9 col-8">
-                    <SearchableMultiDropdownOffline @key="AvailableDepartments.Count" TInput="DepartmentDto" TOutput="Guid" Datasource="AvailableDepartments"
+                    <SearchableMultiDropdownOffline @key="AvailableDepartments" TInput="DepartmentDto" TOutput="Guid" Datasource="AvailableDepartments"
                                                     TextSelector="(d => d.Name)" OutputSelector="(d => d.Id)" SelectedOptions="@SelectedDepartments"
                                                     SelectedOptionsChanged="@OnDepartmentsChanged" IsDisabled="IsViewMode" />
                 </div>
@@ -108,7 +108,6 @@
             {
                 PrivilegeDto.TaskModuleUserDepartmentDto.Add(new TaskModuleUserDepartmentPermissionDto
                 {
-                    PrivilegeId = PrivilegeDto.Id,
                     SelectedOption = option,
                     IsActive = false,
                     IsManagerTasks = false,
@@ -126,8 +125,6 @@
         {
             item.PermissionId?.Clear();
         }
-
-        StateHasChanged();
     }
     private bool ShouldShowDirection(UserDepartmentOptions option)
     {
@@ -147,8 +144,8 @@
     }
     private void AddDepartments(MouseEventArgs args)
     {
-
-        PrivilegeDto.TaskModuleExternalDepartmentDto ??= new();
+        if (PrivilegeDto.TaskModuleExternalDepartmentDto == null)
+            PrivilegeDto.TaskModuleExternalDepartmentDto ??= new();
         foreach (var deptId in SelectedDepartments)
         {
             if (PrivilegeDto.TaskModuleExternalDepartmentDto.Any(d => d.DepartmentId == deptId))
@@ -156,8 +153,6 @@
 
             PrivilegeDto.TaskModuleExternalDepartmentDto.Add(new TaskModuleExternalDepartmentDto
             {
-                Id = Guid.NewGuid(),
-                PrivilegeId = PrivilegeDto.Id,
                 DepartmentId = deptId,
                 IsIncludeSubDepartment = false,
                 IsManagerTasks = false,
@@ -168,7 +163,6 @@
             });
         }
         SelectedDepartments = new();
-        StateHasChanged();
     }
     private void RemoveDepartment(TaskModuleExternalDepartmentDto dept)
     {
