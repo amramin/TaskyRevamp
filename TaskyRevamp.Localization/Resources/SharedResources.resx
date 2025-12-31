@@ -201,6 +201,9 @@
   <data name="Name Color Indicator" xml:space="preserve">
     <value>Name color indicator</value>
   </data>
+	<data name="file" xml:space="preserve">
+    <value>Upload Files</value>
+  </data>
   <data name="Order" xml:space="preserve">
     <value>Priority ranking</value>
   </data>
@@ -395,6 +398,15 @@
   </data>
   <data name="weight" xml:space="preserve">
     <value>Weight</value>
+  </data>
+	<data name="Comments" xml:space="preserve">
+    <value>Comments</value>
+  </data>
+	<data name="AddDescription" xml:space="preserve">
+    <value>Add Description</value>
+  </data>
+	<data name="Drag and Drop or" xml:space="preserve">
+    <value>Drag and Drop or</value>
   </data>
   <data name="AssignedTo" xml:space="preserve">
     <value>Assigned to</value>

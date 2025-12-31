@@ -223,6 +223,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add Description.
+        /// </summary>
+        public static string AddDescription {
+            get {
+                return ResourceManager.GetString("AddDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Added successfully.
         /// </summary>
         public static string Added_successfully {
@@ -561,6 +570,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string ClearSearch {
             get {
                 return ResourceManager.GetString("ClearSearch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Comments.
+        /// </summary>
+        public static string Comments {
+            get {
+                return ResourceManager.GetString("Comments", resourceCulture);
             }
         }
         
@@ -1006,6 +1024,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Drag and Drop or.
+        /// </summary>
+        public static string Drag_and_Drop_or {
+            get {
+                return ResourceManager.GetString("Drag and Drop or", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Duration.
         /// </summary>
         public static string Duration {
@@ -1335,6 +1362,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string FieldNames {
             get {
                 return ResourceManager.GetString("FieldNames", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Upload Files.
+        /// </summary>
+        public static string file {
+            get {
+                return ResourceManager.GetString("file", resourceCulture);
             }
         }
         
