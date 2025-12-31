@@ -53,9 +53,9 @@
         }
         else
         {
-            if (res.Success)
+            if (res.Success && res.Data != null)
             {
-                await OnValidSubmit.InvokeAsync(_newPriority);
+                await OnValidSubmit.InvokeAsync(res.Data);
                 await ToastService.ShowToastAsync(Loc["Added successfully"], "success");
 
                 StateHasChanged();
