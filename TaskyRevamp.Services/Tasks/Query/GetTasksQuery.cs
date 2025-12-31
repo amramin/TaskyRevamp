@@ -122,7 +122,7 @@ public class GetTasksHandler : IRequestHandler<GetTasksQuery, PagedResult<Create
 
         switch (sortByColumn)
         {
-            case "CreateDate":
+            case "Creation Date":
                 return sortAscending
                     ? q => q.OrderBy(u => u.CreateDate)
                     : q => q.OrderByDescending(u => u.CreateDate);

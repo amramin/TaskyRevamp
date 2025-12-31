@@ -385,10 +385,10 @@ SearchFieldTask.PlannedProgress
                 builder.AddContent(0, task.ActualProcess);
                 break;
             case "Start Date":
-                builder.AddContent(0, task.StartDate);
+                builder.AddContent(0, task.StartDate?.ToString(Loc["LocalizeDate"]));
                 break;
             case "End Date":
-                builder.AddContent(0, task.EndDate);
+                builder.AddContent(0, task.EndDate?.ToString(Loc["LocalizeDate"]));
                 break;
             case "weight":
                 builder.AddContent(0, task.weight);
