@@ -15,6 +15,7 @@ using TaskyRevamp.Dto.GeneralDto;
 using TaskyRevamp.Services;
 using TaskyRevamp.Services.Exceptions;
 using TaskyRevamp.Dto.Enums;
+using TaskyRevamp.Dto.Account;
 
 
 namespace TaskyRevamp.Services.Account.Commands;
@@ -42,40 +43,44 @@ public class AuthenticateCommandHandler : IRequestHandler<AuthenticateCommand, s
     {
         try
         {
-            if (_appSettingsOptions.Value.AuthenticationMode == (int)AuthenticationMode.ActiveDirectory)
+            User user = null;
+			if (_appSettingsOptions.Value.AuthenticationMode == (int)AuthenticationMode.ActiveDirectory)
             {
-
-                var isAuthenticated = AuthenticateUser(_ldapPath.Value.Path, request.Username, request.Password);
-                if (!isAuthenticated)
+                var adUser = AuthenticateAndGetUser(_ldapPath.Value.Path, request.Username, request.Password);
+                if (!adUser.IsAuthenticated)
                 {
                     return null;
                 }
-            }
-
-            var user = new User();
-
-            var userResponse = await _userRepository.FindBy(x => x.Username == request.Username);
-            if (userResponse.IsFailure || userResponse.Value is null || userResponse.Value.Count == 0)
-            {
-                var newUser = AddNewUser(_ldapPath.Value.Path, request.Username);
-
-                if (newUser == null)
+                var userResponse = await _userRepository.FindBy(x => x.Username == request.Username);
+				if (userResponse.IsFailure || userResponse.Value is null || userResponse.Value.Count == 0)
                 {
-                    throw new NoDataException("User Not Found!");
-                }
+                    user = new User
+                    {
+                        Username = adUser.Username,
+                        NameArabic = adUser.DisplayName,
+                        NameEnglish = adUser.DisplayName,
+                        Email = adUser.Email,
+                        DistinguishedName = adUser.DistinguishedName,
+                        GivenName = adUser.GivenName,
+                        //Surname = adUser.Surname,
+                        //Title = adUser.Title,
+                        Mobile = adUser.Phone,
+                        IsActive = adUser.IsActive,
+                        //Manager = adUser.ManagerUsername,
+                    };
+                    await _userRepository.Insert(user);
+                    await _userRepository.SaveChangesAsync();
+				}
                 else
                 {
-                    user = newUser;
-                }
+                    user = userResponse.Value.FirstOrDefault()!;
+                    if (user is null)
+                    {
+                        throw new NoDataException("User Not Found!");
+					}
+                    user = await SyncUserWithActiveDirectory(user, adUser);
+				}
 
-            }
-            else
-            {
-                user = userResponse.Value.FirstOrDefault();
-                if (user is null)
-                {
-                    throw new NoDataException("User Not Found!");
-                }
             }
 
             var tokenHandler = new JwtSecurityTokenHandler();
@@ -114,113 +119,140 @@ public class AuthenticateCommandHandler : IRequestHandler<AuthenticateCommand, s
             throw new InvalidOperationException(ex.Message);
         }
     }
+	private async Task<User> SyncUserWithActiveDirectory(User existingUser, AdUser adUser)
+	{
+		bool hasChanges = false;
 
-    private bool AuthenticateUser(string ldapPath, string username, string password)
-    {
-        try
-        {
-            using (var entry = new DirectoryEntry(ldapPath, username, password))
-            {
-                // Bind to the directory and authenticate
-                object nativeObject = entry.NativeObject;
-                return true; // Successful login
-            }
+		if (existingUser.NameEnglish != adUser.DisplayName)
+		{
+			existingUser.NameEnglish = adUser.DisplayName;
+			hasChanges = true;
+		}
+		if (existingUser.NameArabic != adUser.DisplayName)
+		{
+			existingUser.NameArabic = adUser.DisplayName;
+			hasChanges = true;
+		}
+		if (existingUser.Email != adUser.Email)
+		{
+			existingUser.Email = adUser.Email;
+			hasChanges = true;
+		}
+		if (existingUser.GivenName != adUser.GivenName)
+		{
+			existingUser.GivenName = adUser.GivenName;
+			hasChanges = true;
+		}
+		if (existingUser.Mobile != adUser.Phone)
+		{
+			existingUser.Mobile = adUser.Phone;
+			hasChanges = true;
+		}
+		if (existingUser.IsActive != adUser.IsActive)
+		{
+			existingUser.IsActive = adUser.IsActive;
+			hasChanges = true;
+		}
+		if (existingUser.DistinguishedName != adUser.DistinguishedName)
+		{
+			existingUser.DistinguishedName = adUser.DistinguishedName;
+			hasChanges = true;
+		}
 
-        }
-        //catch (DirectoryServicesCOMException)
-        //{
-        //    // Invalid credentials
-        //    return false;
-        //}
-        catch (Exception ex)
-        {
-            // Handle other exceptions
-            Console.WriteLine($"An error occurred: {ex.Message}");
-            throw new InvalidOperationException(ex.Message);
-            return false;
-        }
-    }
-    private User AddNewUser(string ldapPath, string username)
+		if (hasChanges)
+		{
+			await _userRepository.Update(existingUser);
+			await _userRepository.SaveChangesAsync();
+		}
+
+		return existingUser;
+	}
+    private AdUser AuthenticateAndGetUser(string ldapPath, string username, string password)
     {
-        try
-        {
-            using (var entry = new DirectoryEntry(ldapPath, _ldapPath.Value.Username, _ldapPath.Value.Password))
-            {
-                using (var searcher = new DirectorySearcher(entry))
+		try
+		{
+			// First, authenticate with the user's credentials
+			using (var authEntry = new DirectoryEntry(ldapPath, username, password))
+			{
+                try
                 {
-                    // Search for users created within the last 7 days
-                    var fromDate = DateTime.UtcNow.AddDays(-1);
-                    string filter = searcher.Filter = $"(sAMAccountName={username})";
-
-                    searcher.Filter = filter;
-                    searcher.PropertiesToLoad.Add("samaccountname"); // Account name
-                    searcher.PropertiesToLoad.Add("whenCreated");    // Creation time
-                    searcher.PropertiesToLoad.Add("displayName");       // Display name
-                    searcher.PropertiesToLoad.Add("mail");              // Email
-                    searcher.PropertiesToLoad.Add("distinguishedName"); // Full DN
-                    searcher.PropertiesToLoad.Add("givenName");         // Given name
-                    searcher.PropertiesToLoad.Add("sn");                // Surname
-                    searcher.PropertiesToLoad.Add("title");             // Title
-                    searcher.PropertiesToLoad.Add("telephoneNumber");    // Phone number
-                    searcher.PropertiesToLoad.Add("userAccountControl");
-                    searcher.PropertiesToLoad.Add("manager"); // Manager DN
-
-                    foreach (SearchResult result in searcher.FindAll())
-                    {
-                        string samAccountName = result.Properties.Contains("samAccountName") ? result.Properties["samAccountName"][0].ToString() : string.Empty;
-                        string displayName = result.Properties.Contains("displayName") ? result.Properties["displayName"][0].ToString() : string.Empty;
-                        string email = result.Properties.Contains("mail") ? result.Properties["mail"][0].ToString() : string.Empty;
-                        string distinguishedName = result.Properties.Contains("distinguishedName") ? result.Properties["distinguishedName"][0].ToString() : string.Empty;
-                        string givenName = result.Properties.Contains("givenName") ? result.Properties["givenName"][0].ToString() : string.Empty;
-                        string surname = result.Properties.Contains("sn") ? result.Properties["sn"][0].ToString() : string.Empty;
-                        string title = result.Properties.Contains("title") ? result.Properties["title"][0].ToString() : string.Empty;
-                        string phone = result.Properties.Contains("telephoneNumber") ? result.Properties["telephoneNumber"][0].ToString() : string.Empty;
-                        // Check if the user account is active by inspecting the userAccountControl flag
-                        int userAccountControl = result.Properties.Contains("userAccountControl") ? Convert.ToInt32(result.Properties["userAccountControl"][0]) : 0;
-                        bool isActive = (userAccountControl & 0x0002) == 0; // If the 2nd bit is not set, the account is active
-                        string managerUsername = "";
-                        // Check if the user has a manager
-                        if (result.Properties.Contains("manager"))
-                        {
-                            // Get the manager's DN
-                            string managerDn = result.Properties["manager"][0].ToString();
-                            managerUsername = GetUserManager(ldapPath, managerDn);
-
-                        }
-
-                        // Add the AD user to the list
-                        var newUser = new User
-                        {
-                            Username = samAccountName,
-                            NameArabic = displayName,
-                            NameEnglish = displayName,
-                            Email = email,
-                            DistinguishedName = distinguishedName,
-                            GivenName = givenName,
-                            //Surname = surname,
-                            //Title = title,
-                            Mobile = phone,
-                            IsActive = isActive,
-                            //Manager = managerUsername,
-                            // Add other attributes as needed
-                        };
-
-                        _userRepository.Insert(newUser);
-                        _userRepository.SaveChangesAsync();
-
-                        return newUser;
-                    }
+                    object nativeObject = authEntry.NativeObject;
                 }
-            }
-            return null;
-        }
-        catch (Exception ex)
-        {
-            throw new InvalidOperationException(ex.Message);
-            return null;
-        }
-    }
-    private string GetUserManager(string ldapPath, string managerDn)
+                catch(Exception)
+				{
+                    // Authentication failed
+                    return new AdUser { IsAuthenticated = false };
+				}
+			}
+
+			// Authentication successful, now get user details using service account
+			using (var entry = new DirectoryEntry(ldapPath, _ldapPath.Value.Username, _ldapPath.Value.Password))
+			{
+				using (var searcher = new DirectorySearcher(entry))
+				{
+					searcher.Filter = $"(sAMAccountName={username})";
+
+					// Load all required properties
+					searcher.PropertiesToLoad.Add("samaccountname");
+					searcher.PropertiesToLoad.Add("displayName");
+					searcher.PropertiesToLoad.Add("mail");
+					searcher.PropertiesToLoad.Add("distinguishedName");
+					searcher.PropertiesToLoad.Add("givenName");
+					searcher.PropertiesToLoad.Add("sn");
+					searcher.PropertiesToLoad.Add("title");
+					searcher.PropertiesToLoad.Add("telephoneNumber");
+					searcher.PropertiesToLoad.Add("userAccountControl");
+					searcher.PropertiesToLoad.Add("manager");
+
+					var result = searcher.FindOne();
+					if (result == null)
+					{
+						return new AdUser { IsAuthenticated = false };
+					}
+
+					// Extract all properties
+					string samAccountName = result.Properties.Contains("samAccountName")? result.Properties["samAccountName"][0].ToString(): string.Empty;
+					string displayName = result.Properties.Contains("displayName")? result.Properties["displayName"][0].ToString(): string.Empty;
+					string email = result.Properties.Contains("mail")? result.Properties["mail"][0].ToString(): string.Empty;
+					string distinguishedName = result.Properties.Contains("distinguishedName")? result.Properties["distinguishedName"][0].ToString(): string.Empty;
+					string givenName = result.Properties.Contains("givenName")? result.Properties["givenName"][0].ToString(): string.Empty;
+					string surname = result.Properties.Contains("sn")? result.Properties["sn"][0].ToString(): string.Empty;
+					string title = result.Properties.Contains("title")? result.Properties["title"][0].ToString(): string.Empty;
+					string phone = result.Properties.Contains("telephoneNumber")? result.Properties["telephoneNumber"][0].ToString(): string.Empty;
+
+					int userAccountControl = result.Properties.Contains("userAccountControl")? Convert.ToInt32(result.Properties["userAccountControl"][0]): 0;
+					bool isActive = (userAccountControl & 0x0002) == 0;
+					string managerUsername = string.Empty;
+					if (result.Properties.Contains("manager"))
+					{
+						string managerDn = result.Properties["manager"][0].ToString();
+						managerUsername = GetUserManager(ldapPath, managerDn);
+					}
+
+					return new AdUser
+					{
+						Username = samAccountName,
+						DisplayName = displayName,
+						Email = email,
+						DistinguishedName = distinguishedName,
+						GivenName = givenName,
+						Surname = surname,
+						Title = title,
+						Phone = phone,
+						IsActive = isActive,
+						ManagerUsername = managerUsername,
+						IsAuthenticated = true
+					};
+				}
+			}
+		}
+		catch (Exception ex)
+		{
+			Console.WriteLine($"An error occurred: {ex.Message}");
+			throw new InvalidOperationException(ex.Message);
+		}
+	}
+	private string GetUserManager(string ldapPath, string managerDn)
     {
         try
         {
@@ -251,8 +283,6 @@ public class AuthenticateCommandHandler : IRequestHandler<AuthenticateCommand, s
 
         return null; // Return null if the manager's sAMAccountName is not found
     }
-
-
     private List<User> GetDelegatedUsers(User user)
     {
         var users = new List<User>();

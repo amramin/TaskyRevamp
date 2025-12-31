@@ -37,15 +37,23 @@
     {
         var current = await LocalStorageService.GetItemAsStringAsync("Id");
         Taskdto.CreatedBy = Guid.Parse(current);
-        await _taskonsumer.AddTask(Taskdto);
+   var rs=await _taskonsumer.AddTask(Taskdto);
         //await ToastService.ShowToastAsync(Loc[MessagesMap.DataSavedSuccessfully], "success");
-      
-         ToastService.ShowToastAsync(Loc["DataSavedSuccessfully"], "success");
+        if (rs.Success)
+{       
+    await ToastService.ShowToastAsync(Loc["DataSavedSuccessfully"], "success");
 
         navigationManager.NavigateTo($"/MainTasks",true);
 
-        //await OnValidSubmit.InvokeAsync(Taskdto);
+} 
+else{
+        {
+                await ToastService.ShowToastAsync("Error occurred  please try again!", "error");
+
+            return;
+}//await OnValidSubmit.InvokeAsync(Taskdto);
      }
+}
     private void Cancel()
     {
         PopupService.Hide();
