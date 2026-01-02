@@ -183,7 +183,7 @@ else
         if (confirmed && selectedSource != null)
         {
             var result = await _sourceSettingConsumer.DeleteSource(selectedSource.Source.Id);
-            if (result.Success)
+            if (result.Data)
             {
                 sources.Remove(selectedSource);
                 if (sources.Count() <= 0)
@@ -195,6 +195,12 @@ else
                 showConfirm = false;
                 StateHasChanged();
                 await ToastService.ShowToastAsync(Loc["Deleted successfully"], "success");
+            }
+            else
+            {
+                await ToastService.ShowToastAsync(Loc["Thissorcecannotb"], "error");
+
+                return;
             }
         }
         selectedSource = null;

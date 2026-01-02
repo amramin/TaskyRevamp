@@ -201,9 +201,6 @@
   <data name="Name Color Indicator" xml:space="preserve">
     <value>Name color indicator</value>
   </data>
-	<data name="file" xml:space="preserve">
-    <value>Upload Files</value>
-  </data>
   <data name="Order" xml:space="preserve">
     <value>Priority ranking</value>
   </data>
@@ -398,15 +395,6 @@
   </data>
   <data name="weight" xml:space="preserve">
     <value>Weight</value>
-  </data>
-	<data name="Comments" xml:space="preserve">
-    <value>Comments</value>
-  </data>
-	<data name="AddDescription" xml:space="preserve">
-    <value>Add Description</value>
-  </data>
-	<data name="Drag and Drop or" xml:space="preserve">
-    <value>Drag and Drop or</value>
   </data>
   <data name="AssignedTo" xml:space="preserve">
     <value>Assigned to</value>
@@ -1116,9 +1104,6 @@
   <data name="Complete" xml:space="preserve">
     <value>Complete</value>
   </data>
-  <data name="AddAttachment" xml:space="preserve">
-    <value>Add attachment</value>
-  </data>
   <data name="ReOpen" xml:space="preserve">
     <value>Re-open</value>
   </data>
@@ -1151,6 +1136,9 @@
   </data>
   <data name="ReopenFailed" xml:space="preserve">
     <value>Reopen Failed</value>
+  </data>
+  <data name="AddAttachment" xml:space="preserve">
+    <value>Add attachment</value>
   </data>
   <data name="NoAttachmentsYet" xml:space="preserve">
     <value>No attachments have been added</value>
@@ -1229,5 +1217,29 @@
   </data>
   <data name="Privilege" xml:space="preserve">
     <value>Privileges</value>
+  </data>
+  <data name="file" xml:space="preserve">
+    <value>Upload Files</value>
+  </data>
+  <data name="Comments" xml:space="preserve">
+    <value>Comments</value>
+  </data>
+  <data name="AddDescription" xml:space="preserve">
+    <value>Add Description</value>
+  </data>
+  <data name="Drag and Drop or" xml:space="preserve">
+    <value>Drag and Drop or</value>
+  </data>
+  <data name="hisprioritynam" xml:space="preserve">
+    <value>his priority name was previously deleted and linked to a completed task. Do you want to use it again?</value>
+  </data>
+  <data name="Thisprioritycannotb" xml:space="preserve">
+    <value> This priority cannot be deleted because it is currently used in active tasks</value>
+  </data>
+  <data name="CannotdeleteType" xml:space="preserve">
+    <value>Cannot delete. Type is linked to active tasks</value>
+  </data>
+  <data name="Thissorcecannotb" xml:space="preserve">
+    <value> Can't delete. The source is linked to active tasks.</value>
   </data>
 </root>

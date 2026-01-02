@@ -502,6 +502,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cannot delete. Type is linked to active tasks.
+        /// </summary>
+        public static string CannotdeleteType {
+            get {
+                return ResourceManager.GetString("CannotdeleteType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Card view.
         /// </summary>
         public static string Card {
@@ -1515,6 +1524,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string Hierarchy {
             get {
                 return ResourceManager.GetString("Hierarchy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to his priority name was previously deleted and linked to a completed task. Do you want to use it again?.
+        /// </summary>
+        public static string hisprioritynam {
+            get {
+                return ResourceManager.GetString("hisprioritynam", resourceCulture);
             }
         }
         
@@ -2910,6 +2928,24 @@ namespace TaskyRevamp.Localization.Resources {
         public static string ThevalidRowsuploadedsuccessfully {
             get {
                 return ResourceManager.GetString("ThevalidRowsuploadedsuccessfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to  This priority cannot be deleted because it is currently used in active tasks.
+        /// </summary>
+        public static string Thisprioritycannotb {
+            get {
+                return ResourceManager.GetString("Thisprioritycannotb", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to  Can&apos;t delete. The source is linked to active tasks..
+        /// </summary>
+        public static string Thissorcecannotb {
+            get {
+                return ResourceManager.GetString("Thissorcecannotb", resourceCulture);
             }
         }
         

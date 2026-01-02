@@ -6,28 +6,41 @@ using System.Text;
 using System.Threading.Tasks;
 using TaskyRevamp.Domain.Repositeries;
 using TaskyRevamp.Dto.SystemConfiguration;
+using TaskyRevamp.Services.SystemConfiguration.PriorityConfiguration.Query;
 using PrioritySetting = TaskyRevamp.Domain.Models.SystemConfiguration.PrioritySettings;
 
 namespace TaskyRevamp.Services.SystemConfiguration.PriorityConfiguration.Command
 {
-	public record DeletePriorityCommand(PriorityDto PriorityDto): IRequest<bool>;
-	public class DeletePriorityHandler : IRequestHandler<DeletePriorityCommand, bool>
-	{
-		private readonly IRepository<PrioritySetting> _priorityRepository;
+    public record DeletePriorityCommand(PriorityDto PriorityDto) : IRequest<bool>;
+    public class DeletePriorityHandler : IRequestHandler<DeletePriorityCommand, bool>
+    {
+        private readonly IRepository<PrioritySetting> _priorityRepository;
+        private readonly IMediator _mediator;
 
-		public DeletePriorityHandler(IRepository<PrioritySetting> priorityRepository)
-		{
-			this._priorityRepository = priorityRepository;
-		}
-		public async Task<bool> Handle(DeletePriorityCommand request, CancellationToken cancellationToken)
-		{
-			var res = await _priorityRepository.FindByKey(request.PriorityDto.Id);
-			if(res != null && res.Value != null && res.Success)
-			{
-				var priority = res.Value;
-				await _priorityRepository.Delete(priority.Id);
-			}
-			return true;
-		}
-	}
+        public DeletePriorityHandler(IRepository<PrioritySetting> priorityRepository, IMediator mediator)
+        {
+            this._priorityRepository = priorityRepository;
+            _mediator = mediator;
+        }
+        public async Task<bool> Handle(DeletePriorityCommand request, CancellationToken cancellationToken)
+        {
+            var re = await _mediator.Send(new CheckRelatedTaskitemQuery(request.PriorityDto.Id));
+            if (re == true)
+            {
+                return false;
+            }
+            else
+            {
+                var res = await _priorityRepository.FindByKey(request.PriorityDto.Id);
+                if (res != null && res.Value != null && res.Success)
+                {
+                    var priority = res.Value;
+                    priority.IsDeleted = true;
+                    await _priorityRepository.Update(priority);
+                    //	await _priorityRepository.Delete(priority.Id);
+                }
+            }
+            return true;
+        }
+    }
 }
