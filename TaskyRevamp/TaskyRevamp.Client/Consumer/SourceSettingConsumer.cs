@@ -56,13 +56,7 @@ namespace TaskyRevamp.Client.Consumer
             return res;
         }
 
-        public async Task<CommonApiResponse<bool>> CheckRelatedComplatedTaskitemSource(SourceDto SourceDto)
-        {
-            var url = $"api/SourceSetting/CheckRelatedComplatedTaskitemSource";
-            var res = await _taskyService.PostJsonAsync<bool>(url, SourceDto);
 
-            return res;
-        }
         public async Task<CommonApiResponse<bool>> UpdateSource(SourceDto SourceDto)
         {
             var url = $"api/SourceSetting/UpdateSource";
@@ -73,6 +67,13 @@ namespace TaskyRevamp.Client.Consumer
         public async Task<CommonApiResponse<bool>> RetriveSource(SourceDto SourceDto)
         {
             var url = $"api/SourceSetting/RetriveSource";
+            var res = await _taskyService.PostJsonAsync<bool>(url, SourceDto);
+
+            return res;
+        }
+        public async Task<CommonApiResponse<bool>> CheckRelatedComplatedTaskitemSource(SourceDto SourceDto)
+        {
+            var url = $"api/SourceSetting/CheckRelatedComplatedTaskitemSource";
             var res = await _taskyService.PostJsonAsync<bool>(url, SourceDto);
 
             return res;
