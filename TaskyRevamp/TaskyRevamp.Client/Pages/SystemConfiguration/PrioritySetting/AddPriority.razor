@@ -24,7 +24,8 @@
     public List<PriorityDto> Priorities = new List<PriorityDto>();
     [Parameter] public EventCallback<PriorityDto> OnValidSubmit { get; set; }
     [Parameter] public EventCallback OnCancel { get; set; }
-
+    private PriorityDto? selectedPriority;
+    private bool showConfirm;
     private PriorityForm form;
 
     protected async override Task OnInitializedAsync()
@@ -43,23 +44,80 @@
             }
         }
     }
+    private async Task OnSavedConfirmed(bool confirmed)
+    {
+        if (confirmed && selectedPriority != null)
+        {
+            // retrve
+            var result = await _prioritySettingConsumer.RetrivePriority(selectedPriority);
+            if (result.Data)
+            {
 
+                showConfirm = false;
+                StateHasChanged();
+                await ToastService.ShowToastAsync(Loc["Retrived successfully"], "success");
+            }
+            else
+            {
+
+                return;
+            }
+        }
+        selectedPriority = null;
+
+    }
     private async Task Save(EditContext editContext)
     {
-        var res = await _prioritySettingConsumer.AddPriority(_newPriority);
-        if (res.Errors != null && res.Errors.Count > 0)
+
+
+        var alloldPriorty = await _prioritySettingConsumer.GetPriorities();
+        var allOldActivePriorty = alloldPriorty.Data
+            .Where(k =>  k.IsDeleted != true)
+            .ToList();
+
+        var alloldDeletedSource = alloldPriorty.Data
+            .Where(k => k.IsDeleted == true)
+            .ToList();
+        if (allOldActivePriorty.Any(m => m.NameEnglish == _newPriority.NameEnglish) || allOldActivePriorty.Any(m => m.NameArabic == _newPriority.NameArabic))
         {
-            form.AddErrorsToEditContext(res.Errors);
+            await ToastService.ShowToastAsync(Loc["Anactivesourcewith"], "error");
+
+            return;
+        }
+        else if (alloldDeletedSource.Any(m => m.NameEnglish == _newPriority.NameEnglish) || alloldDeletedSource.Any(m => m.NameArabic == _newPriority.NameArabic))
+        {
+
+            var relatedwithcompleted = await _prioritySettingConsumer.CheckRelatedComplatedTaskitemSource(_newPriority);
+            if (relatedwithcompleted.Data)
+            {
+                PopupService.ShowConfirmation(@Loc["Thissourcenamewas"], @Loc["Confirm"], OnSavedConfirmed, type: ConfirmationType.Danger);
+                selectedPriority = _newPriority;
+                showConfirm = true;
+            }
+            else
+            {
+                var result = await _prioritySettingConsumer.RetrivePriority(_newPriority);
+                await ToastService.ShowToastAsync(Loc["Added successfully"], "success");
+
+            }
         }
         else
         {
-            if (res.Success)
+            var res = await _prioritySettingConsumer.AddPriority(_newPriority);
+            if (res.Errors != null && res.Errors.Count > 0)
             {
-                await OnValidSubmit.InvokeAsync(_newPriority);
-                await ToastService.ShowToastAsync(Loc["Added successfully"], "success");
+                form.AddErrorsToEditContext(res.Errors);
+            }
+            else
+            {
+                if (res.Success)
+                {
+                    await OnValidSubmit.InvokeAsync(_newPriority);
+                    await ToastService.ShowToastAsync(Loc["Added successfully"], "success");
 
-                StateHasChanged();
-                PopupService.Hide();
+                    StateHasChanged();
+                    PopupService.Hide();
+                }
             }
         }
     }
