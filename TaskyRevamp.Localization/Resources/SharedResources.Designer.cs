@@ -367,6 +367,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to An active source with this name already exists. Please choose a different name.
+        /// </summary>
+        public static string Anactivesourcewith {
+            get {
+                return ResourceManager.GetString("Anactivesourcewith", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Approve and reject the request change end date.
         /// </summary>
         public static string ApproveAndRejectTheRequestChangeEndDate {
@@ -2946,6 +2955,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string Thissorcecannotb {
             get {
                 return ResourceManager.GetString("Thissorcecannotb", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to his source name was previously deleted and linked to a completed task. Do you want to use it again?.
+        /// </summary>
+        public static string Thissourcenamewas {
+            get {
+                return ResourceManager.GetString("Thissourcenamewas", resourceCulture);
             }
         }
         

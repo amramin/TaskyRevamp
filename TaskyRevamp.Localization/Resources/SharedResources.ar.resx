@@ -1246,4 +1246,10 @@
   <data name="Thissorcecannotb" xml:space="preserve">
     <value>لا يمكن الحذف. المصدر مرتبط بمهام نشطة</value>
   </data>
+  <data name="Anactivesourcewith" xml:space="preserve">
+    <value>يوجد مصدر نشط بهذا الاسم مسبقًا. يرجى اختيار اسم مختلف</value>
+  </data>
+  <data name="Thissourcenamewas" xml:space="preserve">
+    <value>تم حذف اسم هذا المصدر سابقًا وربطه بمهمة مكتملة. هل ترغب في استخدامه مرة أخرى؟</value>
+  </data>
 </root>

@@ -1242,4 +1242,10 @@
   <data name="Thissorcecannotb" xml:space="preserve">
     <value> Can't delete. The source is linked to active tasks.</value>
   </data>
+  <data name="Anactivesourcewith" xml:space="preserve">
+    <value>An active source with this name already exists. Please choose a different name</value>
+  </data>
+  <data name="Thissourcenamewas" xml:space="preserve">
+    <value>his source name was previously deleted and linked to a completed task. Do you want to use it again?</value>
+  </data>
 </root>
