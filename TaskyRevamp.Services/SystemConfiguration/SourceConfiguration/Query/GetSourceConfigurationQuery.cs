@@ -31,7 +31,8 @@ namespace TaskyRevamp.Services.SystemConfiguration.SourceConfiguration.Query
             Expression<Func<Sources, bool>> searchExpression = null;
             if (request.SearchFields != null && request.SearchFields.Any())
             {
-                var predicates = request.SearchFields.Select(x => TaskSourceSearchFieldMap.Map[x]).ToList();
+				var map = TaskSourceSearchFieldMap.Map(currentCulture);
+				var predicates = request.SearchFields.Select(x => map[x]).ToList();
                 searchExpression = ExpressionBuilder.BuildLikeExpression(predicates, request.SearchText);
             }
 
@@ -46,8 +47,8 @@ namespace TaskyRevamp.Services.SystemConfiguration.SourceConfiguration.Query
 			var items = res.Items.Select(u => new SourceDtoWithName
 			{
 				Source = u.CopyToDto(),
-				CreatedByName = u.CreatedBy != null ? (currentCulture == "ar" ? u.CreatedBy.NameArabic : u.CreatedBy.NameEnglish) : string.Empty,
-				UpdatedByName = u.UpdatedBy != null ? (currentCulture == "ar" ? u.UpdatedBy.NameArabic : u.UpdatedBy.NameEnglish) : string.Empty
+				CreatedByName = u.CreatedBy != null ? (currentCulture == "ar" ? u.CreatedBy.NameArabic! : u.CreatedBy.NameEnglish!) : string.Empty,
+				UpdatedByName = u.UpdatedBy != null ? (currentCulture == "ar" ? u.UpdatedBy.NameArabic! : u.UpdatedBy.NameEnglish!) : string.Empty
 			}).ToList();
 
 			return new PagedResult<SourceDtoWithName>

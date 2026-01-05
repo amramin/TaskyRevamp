@@ -33,7 +33,8 @@ namespace TaskyRevamp.Services.Users.Query
 			Expression<Func<User, bool>> searchExpression = u => u.PrivilegeId == request.PrivilegeId;
 			if (request.SearchFields != null && request.SearchFields.Any() && !string.IsNullOrWhiteSpace(request.SearchText))
 			{
-				var predicates = request.SearchFields.Select(x => UserPrivilegeSearchFieldMap.Map[x]).ToList();
+				var map = UserPrivilegeSearchFieldMap.Map(currentCulture);
+				var predicates = request.SearchFields.Select(x => map[x]).ToList();
 				var likeFilter = ExpressionBuilder.BuildLikeExpression(predicates, request.SearchText);
 				searchExpression = searchExpression.And(likeFilter);
 			}

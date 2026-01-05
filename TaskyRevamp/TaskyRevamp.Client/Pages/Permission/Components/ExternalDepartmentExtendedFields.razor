@@ -60,7 +60,7 @@
                     @Loc["IncludingSubDepartment"]
                 </label>
             </div>
-            @if (Item.IsIncludeSubDepartment)
+            @if (IsSaveClicked && Item.IsIncludeSubDepartment)
             {
                 <div class="mb-3">
                     <label class="form-label fw-bold">@Loc["DirectionLevel"] <span class="text-danger">*</span></label>

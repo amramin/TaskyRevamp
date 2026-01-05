@@ -52,14 +52,14 @@ public class CreateTaskHandler : IRequestHandler<CreateTaskCommand, string>
         var departments = await _depRepository.FindBy(k => request.CreateTaskDto.AssignedDepartmentIds.Contains(k.Id));
         if (departments is null || departments.IsFailure || departments.Value is null)
             throw new Exception("Departments Not Found");
-
-        var task = new TaskItem(request.CreateTaskDto.Id, request.CreateTaskDto.Title,
+        var weight = request.CreateTaskDto.weight.HasValue ? request.CreateTaskDto.weight.Value : 0;
+		var task = new TaskItem(request.CreateTaskDto.Id, request.CreateTaskDto.Title,
              request.CreateTaskDto.Description!,
              request.CreateTaskDto.TypeId, request.CreateTaskDto.SourceId,
             request.CreateTaskDto.StartDate, request.CreateTaskDto.EndDate,
          request.CreateTaskDto.Priority
-            , new Weight(request.CreateTaskDto.weight), user.Value.Id, departments.Value.ToList(),
-            request.CreateTaskDto.AssignedIds, request.CreateTaskDto.ReminderDate, request.CreateTaskDto.ActualProcess, request.CreateTaskDto.weight, request.CreateTaskDto.Dependencies);
+            , new Weight(weight), user.Value.Id, departments.Value.ToList(),
+            request.CreateTaskDto.AssignedIds, request.CreateTaskDto.ReminderDate, request.CreateTaskDto.ActualProcess, weight, request.CreateTaskDto.Dependencies);
 
         if (TaskSatuses is not null)
         {

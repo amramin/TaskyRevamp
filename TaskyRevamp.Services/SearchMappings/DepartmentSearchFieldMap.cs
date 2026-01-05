@@ -13,19 +13,19 @@ namespace TaskyRevamp.Services.SearchMappings
 {
     public class DepartmentSearchFieldDepartmentMap
     {
-        public static readonly Dictionary<SearchFieldDepartment, Expression<Func<Department, object>>> Map = new()
+        public static Dictionary<SearchFieldDepartment, Expression<Func<Department, object>>> Map(string culture)
         {
-            { SearchFieldDepartment.NameEnglish, x => x.NameEnglish },
-            { SearchFieldDepartment.NameArabic, x => x.NameArabic },
-            { SearchFieldDepartment.ParentNameEN, x => x.Parentdepartment.NameEnglish },
-            { SearchFieldDepartment.ParentNameAR, x => x.Parentdepartment.NameArabic },
-            { SearchFieldDepartment.Level, x => x.Level },
-            { SearchFieldDepartment.CreateDate, x => x.CreateDate },
-            { SearchFieldDepartment.CreatedByEnglish, x => x.CreatedBy.NameEnglish },
-            { SearchFieldDepartment.CreatedByArabic, x => x.CreatedBy.NameArabic },
-            { SearchFieldDepartment.UpdateDate, x => x.UpdateDate },
-            { SearchFieldDepartment.UpdatedByEnglish, x => x.UpdatedBy.NameEnglish },
-            { SearchFieldDepartment.UpdatedByArabic, x => x.UpdatedBy.NameArabic }
-        };
+            bool isArabic = culture == "ar";
+            return new Dictionary<SearchFieldDepartment, Expression<Func<Department, object>>>
+            {
+                { SearchFieldDepartment.Name, isArabic ? x => x.NameArabic : x => x.NameEnglish },
+                { SearchFieldDepartment.ParentName, isArabic ? x => x.Parentdepartment.NameArabic : x => x.Parentdepartment.NameEnglish },
+                { SearchFieldDepartment.Level, x => x.Level },
+                { SearchFieldDepartment.CreateDate, x => x.CreateDate },
+                { SearchFieldDepartment.CreatedBy, isArabic ? x => x.CreatedBy.NameArabic! : x => x.CreatedBy.NameEnglish! },
+                { SearchFieldDepartment.UpdateDate, x => x.UpdateDate! },
+                { SearchFieldDepartment.UpdatedBy, isArabic ? x => x.UpdatedBy!.NameArabic! : x => x.UpdatedBy!.NameEnglish! },
+            };
+        }
     }
 }
