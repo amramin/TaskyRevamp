@@ -75,22 +75,22 @@
             .Where(k =>  k.IsDeleted != true)
             .ToList();
 
-        var alloldDeletedSource = alloldPriorty.Data
+        var alloldDeletedPriority = alloldPriorty.Data
             .Where(k => k.IsDeleted == true)
             .ToList();
         if (allOldActivePriorty.Any(m => m.NameEnglish == _newPriority.NameEnglish) || allOldActivePriorty.Any(m => m.NameArabic == _newPriority.NameArabic))
         {
-            await ToastService.ShowToastAsync(Loc["Anactivesourcewith"], "error");
+            await ToastService.ShowToastAsync(Loc["AnactivePrioritywith"], "error");
 
             return;
         }
-        else if (alloldDeletedSource.Any(m => m.NameEnglish == _newPriority.NameEnglish) || alloldDeletedSource.Any(m => m.NameArabic == _newPriority.NameArabic))
+        else if (alloldDeletedPriority.Any(m => m.NameEnglish == _newPriority.NameEnglish) || alloldDeletedPriority.Any(m => m.NameArabic == _newPriority.NameArabic))
         {
 
-            var relatedwithcompleted = await _prioritySettingConsumer.CheckRelatedComplatedTaskitemSource(_newPriority);
+            var relatedwithcompleted = await _prioritySettingConsumer.CheckRelatedComplatedTaskitemPriority(_newPriority);
             if (relatedwithcompleted.Data)
             {
-                PopupService.ShowConfirmation(@Loc["Thissourcenamewas"], @Loc["Confirm"], OnSavedConfirmed, type: ConfirmationType.Danger);
+                PopupService.ShowConfirmation(@Loc["ThisPrioritynamewas"], @Loc["Confirm"], OnSavedConfirmed, type: ConfirmationType.Danger);
                 selectedPriority = _newPriority;
                 showConfirm = true;
             }

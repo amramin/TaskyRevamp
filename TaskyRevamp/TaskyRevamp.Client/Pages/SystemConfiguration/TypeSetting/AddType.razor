@@ -34,8 +34,6 @@
 
     private async Task Save(EditContext editContext)
     {
-
-
         var alloldTypes = await _typeSettingConsumer.GetTaskTypesForDDL();
         var allOldActiveType = alloldTypes.Data
             .Where(k => k.IsActive == true && k.IsDeleted != true)
@@ -92,7 +90,7 @@
 
                 showConfirm = false;
                 StateHasChanged();
-                await ToastService.ShowToastAsync(Loc["Retrived successfully"], "success");
+                await ToastService.ShowToastAsync(Loc["Retrieved successfully"], "success");
             }
             else
             {

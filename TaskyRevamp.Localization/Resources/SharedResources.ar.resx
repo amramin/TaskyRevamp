@@ -1252,4 +1252,17 @@
   <data name="Thissourcenamewas" xml:space="preserve">
     <value>تم حذف اسم هذا المصدر سابقًا وربطه بمهمة مكتملة. هل ترغب في استخدامه مرة أخرى؟</value>
   </data>
+  <data name="AnactiveTypewith" xml:space="preserve">
+    <value>يوجد نوع نشط بهذا الاسم مسبقًا. يرجى اختيار اسم مختلف</value>
+  </data>
+  <data name="ThisTypenamewas" xml:space="preserve">
+    <value> تم حذف اسم هذا النوع سابقًا وربطه بمهمة مكتملة. هل ترغب في استخدامه مرة أخرى؟
+</value>
+  </data>
+  <data name="AnactivePrioritywith" xml:space="preserve">
+    <value>يوجد اولويه نشطه بهذا الاسم مسبقًا. يرجى اختيار اسم مختلف</value>
+  </data>
+  <data name="ThisPrioritynamewas" xml:space="preserve">
+    <value> تم حذف اسم هذه الأولوية سابقًا وربطها بمهمة مكتملة. هل ترغب في استخدامها مرة أخرى؟</value>
+  </data>
 </root>

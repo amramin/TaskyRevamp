@@ -1248,4 +1248,16 @@
   <data name="Thissourcenamewas" xml:space="preserve">
     <value>his source name was previously deleted and linked to a completed task. Do you want to use it again?</value>
   </data>
+  <data name="AnactiveTypewith" xml:space="preserve">
+    <value> An active type with this name already exists. Please choose a different name</value>
+  </data>
+  <data name="ThisTypenamewas" xml:space="preserve">
+    <value>This type name was previously deleted and linked to a completed task. Do you want to use it again?</value>
+  </data>
+  <data name="AnactivePrioritywith" xml:space="preserve">
+    <value> An active Priority with this name already exists. Please choose a different name</value>
+  </data>
+  <data name="ThisPrioritynamewas" xml:space="preserve">
+    <value>This priority name was previously deleted and linked to a completed task. Do you want to use it again?</value>
+  </data>
 </root>

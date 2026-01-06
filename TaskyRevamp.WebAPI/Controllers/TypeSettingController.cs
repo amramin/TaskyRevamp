@@ -7,7 +7,6 @@ using TaskyRevamp.Dto.GeneralDto;
 using TaskyRevamp.Dto.SystemConfiguration;
 using TaskyRevamp.Services.SystemConfiguration.PriorityConfiguration.Query;
 using TaskyRevamp.Services.SystemConfiguration.TypeConfiguration.Command;
-using TaskyRevamp.Services.SystemConfiguration.TypeConfiguration.Query;
 using TaskyRevamp.Services.SystemConfiguration.TypeConfigurarion.Command;
 using TaskyRevamp.Services.SystemConfiguration.TypeConfigurarion.Query;
 using TaskyRevamp.Services.Tasks.Commands;

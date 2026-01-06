@@ -11,7 +11,7 @@ namespace TaskyRevamp.Client.Consumer
         {
             _taskyService = taskyService;
         }
-        public async Task<CommonApiResponse<bool>> CheckRelatedComplatedTaskitemSource(PriorityDto priorityDto)
+        public async Task<CommonApiResponse<bool>> CheckRelatedComplatedTaskitemPriority(PriorityDto priorityDto)
         {
             var url = $"api/PrioritySetting/CheckRelatedComplatedTaskitemPriority";
             var res = await _taskyService.PostJsonAsync<bool>(url, priorityDto);

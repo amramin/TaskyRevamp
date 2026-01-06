@@ -25,7 +25,8 @@
     [Parameter] public EventCallback<SourceDto> OnValidSubmit { get; set; }
     [Parameter] public EventCallback OnCancel { get; set; }
     private SourceForm form;
-
+    private bool showConfirm;
+    private SourceDto? selectedSource;
     protected override async Task OnInitializedAsync()
     {
         var res = await _sourceSettingConsumer.GetSourceById(Id);
@@ -37,17 +38,74 @@
 
     private async Task Save(EditContext editContext)
     {
-         var current = await LocalStorageService.GetItemAsStringAsync("Id");
-        source.UpdatedById = Guid.Parse(current);
-        var res = await _sourceSettingConsumer.UpdateSource(source);
-        if (res.Success)
-        {
-            await OnValidSubmit.InvokeAsync(source);
-            await ToastService.ShowToastAsync(Loc["EditSuccess"], "success");
+        //  var current = await LocalStorageService.GetItemAsStringAsync("Id");
+        //source.UpdatedById = Guid.Parse(current);
+        var alloldSources = await _sourceSettingConsumer.GetTaskSourcesForDDL();
+        var allOldActiveSource = alloldSources.Data
+            .Where(k => k.IsActive == true && k.IsDeleted != true && k.Id != source.Id)
+            .ToList();
 
-            PopupService.Hide();
+        var alloldDeletedSource = alloldSources.Data
+            .Where(k => k.IsDeleted == true)
+            .ToList();
+        if (allOldActiveSource.Any(m => m.NameEnglish == source.NameEnglish) || allOldActiveSource.Any(m => m.NameArabic == source.NameArabic))
+        {
+            await ToastService.ShowToastAsync(Loc["Anactivesourcewith"], "error");
+
+            return;
+        }
+        else if (alloldDeletedSource.Any(m => m.NameEnglish == source.NameEnglish) || alloldDeletedSource.Any(m => m.NameArabic == source.NameArabic))
+        {
+
+            var relatedwithcompleted = await _sourceSettingConsumer.CheckRelatedComplatedTaskitemSource(source);
+            if (relatedwithcompleted.Data)
+            {
+                PopupService.ShowConfirmation(@Loc["Thissourcenamewas"], @Loc["Confirm"], OnSavedConfirmed, type: ConfirmationType.Danger);
+                selectedSource = source;
+                showConfirm = true;
+            }
+            else
+            {
+                var result = await _sourceSettingConsumer.RetriveSource(source);
+                await ToastService.ShowToastAsync(Loc["Added successfully"], "success");
+
+            }
+        }
+        else
+        {
+            var res = await _sourceSettingConsumer.UpdateSource(source);
+            if (res.Success)
+            {
+                await OnValidSubmit.InvokeAsync(source);
+                await ToastService.ShowToastAsync(Loc["EditSuccess"], "success");
+
+                PopupService.Hide();
+            }
         }
     }
+    private async Task OnSavedConfirmed(bool confirmed)
+    {
+        if (confirmed && selectedSource != null)
+        {
+            // retrve
+            var result = await _sourceSettingConsumer.RetriveSource(selectedSource);
+            if (result.Data)
+            {
+
+                showConfirm = false;
+                StateHasChanged();
+                await ToastService.ShowToastAsync(Loc["Retrived successfully"], "success");
+            }
+            else
+            {
+
+                return;
+            }
+        }
+        selectedSource = null;
+
+    }
+
     private async Task Cancel()
     {
         PopupService.Hide();
