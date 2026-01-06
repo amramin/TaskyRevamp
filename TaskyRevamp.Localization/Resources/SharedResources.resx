@@ -1134,20 +1134,11 @@
   <data name="Ares" xml:space="preserve">
     <value>Are you sure you want to delete this?</value>
   </data>
-  <data name="SureCompleteTask" xml:space="preserve">
-    <value>Are you sure to complete task</value>
-  </data>
-  <data name="Completedsuccessfully" xml:space="preserve">
-    <value>Completed successfully</value>
-  </data>
   <data name="CompleteFailed" xml:space="preserve">
     <value>Complete Failed</value>
   </data>
   <data name="SureReopenTask" xml:space="preserve">
     <value>Are you sure to reopen task</value>
-  </data>
-  <data name="Reopenedsuccessfully" xml:space="preserve">
-    <value>Reopened successfully</value>
   </data>
   <data name="ReopenFailed" xml:space="preserve">
     <value>Reopen Failed</value>
@@ -1238,5 +1229,11 @@
   </data>
   <data name="uploadFile" xml:space="preserve">
     <value>File upload</value>
+  </data>
+  <data name="Completedsuccessfully" xml:space="preserve">
+    <value>Completed successfully</value>
+  </data>
+  <data name="SureCompleteTask" xml:space="preserve">
+    <value>Are you sure to complete task</value>
   </data>
 </root>

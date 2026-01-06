@@ -2347,15 +2347,6 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Reopened successfully.
-        /// </summary>
-        public static string Reopenedsuccessfully {
-            get {
-                return ResourceManager.GetString("Reopenedsuccessfully", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Reopen Failed.
         /// </summary>
         public static string ReopenFailed {
