@@ -52,7 +52,6 @@
             var result = await _prioritySettingConsumer.RetrivePriority(selectedPriority);
             if (result.Data)
             {
-
                 showConfirm = false;
                 StateHasChanged();
                 await ToastService.ShowToastAsync(Loc["Retrived successfully"], "success");

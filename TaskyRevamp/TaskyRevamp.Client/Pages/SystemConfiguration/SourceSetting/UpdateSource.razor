@@ -91,7 +91,7 @@
             var result = await _sourceSettingConsumer.RetriveSource(selectedSource);
             if (result.Data)
             {
-
+                await _sourceSettingConsumer.DeleteSource(Id);
                 showConfirm = false;
                 StateHasChanged();
                 await ToastService.ShowToastAsync(Loc["Retrived successfully"], "success");

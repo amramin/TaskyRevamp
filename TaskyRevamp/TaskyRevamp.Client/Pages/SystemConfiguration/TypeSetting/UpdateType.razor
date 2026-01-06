@@ -39,7 +39,7 @@
     private async Task Save(EditContext editContext)
     {
         //var current = await LocalStorageService.GetItemAsStringAsync("Id");
-            //type.UpdatedById = Guid.Parse(current);
+        //type.UpdatedById = Guid.Parse(current);
 
         var alloldTypes = await _typeSettingConsumer.GetTaskTypesForDDL();
         var allOldActiveType = alloldTypes.Data
@@ -72,7 +72,7 @@
 
             }
         }
-    else {
+        else {
             var res = await _typeSettingConsumer.UpdateType(type);
             if (res.Success)
             {
@@ -90,7 +90,7 @@
             var result = await _typeSettingConsumer.RetriveType(selectedType);
             if (result.Data)
             {
-
+                await _typeSettingConsumer.DeleteType(Id);
                 showConfirm = false;
                 StateHasChanged();
                 await ToastService.ShowToastAsync(Loc["Retrieved successfully"], "success");

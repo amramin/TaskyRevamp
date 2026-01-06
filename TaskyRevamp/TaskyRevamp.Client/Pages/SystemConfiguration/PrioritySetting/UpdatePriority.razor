@@ -92,6 +92,7 @@
             var result = await _prioritySettingConsumer.RetrivePriority(selectedPriority);
             if (result.Data)
             {
+                await _prioritySettingConsumer.DeletePriority(Priority.Id);
 
                 showConfirm = false;
                 StateHasChanged();
