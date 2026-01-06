@@ -67,6 +67,8 @@
             else
             {
                 var result = await _sourceSettingConsumer.RetriveSource(source);
+                await _sourceSettingConsumer.DeleteSource(Id);
+
                 await ToastService.ShowToastAsync(Loc["Added successfully"], "success");
 
             }

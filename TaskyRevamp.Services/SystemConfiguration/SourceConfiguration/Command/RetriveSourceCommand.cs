@@ -23,7 +23,7 @@ namespace TaskyRevamp.Services.SystemConfiguration.SourceConfiguration.Command
         }
         public async Task<bool> Handle(RetriveSourceCommand request, CancellationToken cancellationToken)
         {
-            var res = await _sourceRepository.FindBy(k => k.NameArabic == request.SourceDto.NameArabic || k.NameEnglish == request.SourceDto.NameEnglish);
+            var res = await _sourceRepository.FindBy(k => (k.NameArabic == request.SourceDto.NameArabic || k.NameEnglish == request.SourceDto.NameEnglish) && (k.Id != request.SourceDto.Id));
             if (res.Success && res != null && res.Value != null)
             {
                 var sourceData = res.Value.FirstOrDefault();

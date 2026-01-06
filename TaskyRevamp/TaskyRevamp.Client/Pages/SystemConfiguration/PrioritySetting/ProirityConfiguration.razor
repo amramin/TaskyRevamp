@@ -115,7 +115,7 @@
         var res = await _prioritySettingConsumer.GetPriorities();
         if (res.Success && res.Data != null)
         {
-            Priorities = res.Data;
+            Priorities = res.Data.Where(k=>k.IsDeleted !=true).ToList();
             OriginalPriorities = CopyPriorites();
         }
     }

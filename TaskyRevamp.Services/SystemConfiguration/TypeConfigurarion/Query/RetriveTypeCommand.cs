@@ -22,7 +22,7 @@ namespace TaskyRevamp.Services.SystemConfiguration.TypeConfiguration.Command
         }
         public async Task<bool> Handle(RetriveTypeCommand request, CancellationToken cancellationToken)
         {
-            var res = await _TypeRepository.FindBy(k => k.NameArabic == request.TypeDto.NameArabic || k.NameEnglish == request.TypeDto.NameEnglish);
+            var res = await _TypeRepository.FindBy(k => (k.NameArabic == request.TypeDto.NameArabic || k.NameEnglish == request.TypeDto.NameEnglish) && (k.Id != request.TypeDto.Id));
             if (res.Success && res != null && res.Value != null)
             {
                 var TypeData = res.Value.FirstOrDefault();

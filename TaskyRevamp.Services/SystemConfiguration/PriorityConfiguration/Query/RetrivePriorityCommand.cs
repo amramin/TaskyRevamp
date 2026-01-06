@@ -22,7 +22,9 @@ namespace TaskyRevamp.Services.SystemConfiguration.PriorityConfiguration.Command
         }
         public async Task<bool> Handle(RetrivePriorityCommand request, CancellationToken cancellationToken)
         {
-            var res = await _PriorityRepository.FindBy(k => k.NameArabic == request.PriorityDto.NameArabic || k.NameEnglish == request.PriorityDto.NameEnglish);
+            var res = await _PriorityRepository.FindBy(k =>
+            (k.NameArabic == request.PriorityDto.NameArabic || k.NameEnglish == request.PriorityDto.NameEnglish) && (k.Id != request.PriorityDto.Id)
+            );
             if (res.Success && res != null && res.Value != null)
             {
                 var PriorityData = res.Value.FirstOrDefault();

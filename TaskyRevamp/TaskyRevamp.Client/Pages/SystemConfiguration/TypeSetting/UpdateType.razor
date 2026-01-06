@@ -68,6 +68,8 @@
             else
             {
                 var result = await _typeSettingConsumer.RetriveType(type);
+                await _typeSettingConsumer.DeleteType(Id);
+
                 await ToastService.ShowToastAsync(Loc["Added successfully"], "success");
 
             }

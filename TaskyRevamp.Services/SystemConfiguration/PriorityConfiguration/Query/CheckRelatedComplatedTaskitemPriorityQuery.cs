@@ -32,7 +32,7 @@ namespace TaskyRevamp.Services.SystemConfiguration.PriorityConfiguration.Query
 
         public async Task<bool> Handle(CheckRelatedComplatedTaskitemPriorityQuery request, CancellationToken cancellationToken)
         {
-            var deleted = await _PriorityRepository.FindBy(k => k.NameArabic == request.PriorityDto.NameArabic || k.NameEnglish == request.PriorityDto.NameEnglish && k.IsDeleted);
+            var deleted = await _PriorityRepository.FindBy(k => k.NameArabic == request.PriorityDto.NameArabic || k.NameEnglish == request.PriorityDto.NameEnglish && k.IsDeleted && k.Id != request.PriorityDto.Id);
 
             var olddata = deleted.Value.FirstOrDefault();
             if (olddata != null)

@@ -32,7 +32,7 @@ namespace TaskyRevamp.Services.SystemConfiguration.PriorityConfiguration.Query
 
         public async Task<bool> Handle(CheckRelatedComplatedTaskitemTypeQuery request, CancellationToken cancellationToken)
         {
-            var deleted = await _TypeRepository.FindBy(k => k.NameArabic == request.TypeDto.NameArabic || k.NameEnglish == request.TypeDto.NameEnglish && k.IsDeleted);
+            var deleted = await _TypeRepository.FindBy(k => k.NameArabic == request.TypeDto.NameArabic || k.NameEnglish == request.TypeDto.NameEnglish && k.IsDeleted && k.Id != request.TypeDto.Id);
 
             var olddata = deleted.Value.FirstOrDefault();
             if (olddata != null)

@@ -21,7 +21,7 @@ namespace TaskyRevamp.Services.SystemConfiguration.PriorityConfiguration.Query
         public async Task<List<PriorityDto>> Handle(GetPriorityQuery request, CancellationToken cancellationToken)
         {
             var priorityDto = new List<PriorityDto>();
-            var priortiyQuieriesResponse = await _priorityRepository.FindBy(k => !k.IsDeleted);
+            var priortiyQuieriesResponse = await _priorityRepository.All();
             if (priortiyQuieriesResponse.Success && priortiyQuieriesResponse.Value != null && priortiyQuieriesResponse.Value.Any())
             {
                 priorityDto = priortiyQuieriesResponse.Value.Select(q => q.CopyToDto()).ToList();

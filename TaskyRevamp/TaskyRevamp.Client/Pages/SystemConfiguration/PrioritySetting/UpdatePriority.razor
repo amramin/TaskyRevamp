@@ -60,6 +60,8 @@
             else
             {
                 var result = await _prioritySettingConsumer.RetrivePriority(Priority);
+                await _prioritySettingConsumer.DeletePriority(Priority.Id);
+
                 await ToastService.ShowToastAsync(Loc["Added successfully"], "success");
 
             }

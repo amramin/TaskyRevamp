@@ -97,7 +97,8 @@
             {
                 var result = await _prioritySettingConsumer.RetrivePriority(_newPriority);
                 await ToastService.ShowToastAsync(Loc["Added successfully"], "success");
-
+                StateHasChanged();
+                PopupService.Hide();
             }
         }
         else
