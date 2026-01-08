@@ -1,4 +1,5 @@
-﻿@using Blazored.LocalStorage
+﻿@page "/Update-Task/{Id:guid}"
+@using Blazored.LocalStorage
 @using TaskyRevamp.Client.Consumer
 
 @inject ILocalStorageService LocalStorageService
@@ -17,11 +18,12 @@
 
 @if (IsLoaded)
 {
-    <Form ButtonText="@Loc["Add"]" OnCancel="Cancel" taskdto="@Taskdto" OnValidSubmit="@Creat" SaveButton="@Loc["Save"]" />
+    <Form ButtonText="@Loc["Add"]" OnCancel="Cancel" taskdto="@Taskdto" OnValidSubmit="@UpdateTask" SaveButton="@Loc["Edit"]" />
 }
 
 
 @code {
+    [Parameter] public Guid Id { get; set; }
     CreateTaskDto Taskdto = new CreateTaskDto();
     [Parameter]
     public bool IsAdmine { set; get; }
@@ -31,32 +33,41 @@
     bool IsLoaded = false;
     protected override async Task OnInitializedAsync()
     {
-        IsLoaded = true;
-    }
-    async Task Creat()
-    {
         var current = await LocalStorageService.GetItemAsStringAsync("Id");
         Taskdto.CreatedBy = Guid.Parse(current);
-   var rs=await _taskonsumer.AddTask(Taskdto);
+        var res = await _taskonsumer.GetTaskById(Id, Guid.Parse(current));
+        // if(res.Success && res != null && res.Data != null)
+        // {
+        Taskdto = res.Data;
+        //}
+        IsLoaded = true;
+        StateHasChanged();
+    }
+    async Task UpdateTask()
+    {
+        var current = await LocalStorageService.GetItemAsStringAsync("Id");
+        Taskdto.UpdatedBy = current;
+        var rs = await _taskonsumer.UpdateTask(Taskdto);
         //await ToastService.ShowToastAsync(Loc[MessagesMap.DataSavedSuccessfully], "success");
-        if (rs.Success&&string.IsNullOrEmpty(rs.ErrorMessage))
-{       
-    await ToastService.ShowToastAsync(Loc["DataSavedSuccessfully"], "success");
-
-        navigationManager.NavigateTo($"/MainTasks",true);
-
-} 
-else{
+        if (rs.Success && string.IsNullOrEmpty(rs.ErrorMessage))
         {
+            await ToastService.ShowToastAsync(Loc["Edited successfully"], "success");
+
+            navigationManager.NavigateTo($"/MainTasks", true);
+
+        }
+        else
+        {
+            {
                 await ToastService.ShowToastAsync(Loc["Erroroccurred"], "error");
 
-            return;
-}//await OnValidSubmit.InvokeAsync(Taskdto);
-     }
-}
+                return;
+            }//await OnValidSubmit.InvokeAsync(Taskdto);
+        }
+    }
     private void Cancel()
     {
         PopupService.Hide();
     }
-    }
+}
 

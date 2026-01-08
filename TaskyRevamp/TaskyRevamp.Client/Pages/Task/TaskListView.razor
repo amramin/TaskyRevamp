@@ -44,7 +44,14 @@
                                                         @Loc["Task details"]
                                                     </button>
                                                 </li>
-
+                                        <li>
+                                            <button class="dropdown-item" @onclick="@(() => OnEdit.InvokeAsync(task.Id))">
+                                                <span class="icon">
+                                                    <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Edit"></SVGCrud>
+                                                </span>
+                                                @Loc["EditTask"]
+                                            </button>
+                                        </li>
                                                     @if (task.ActualProcess == 100 && task.TaskStatus == Guid.Parse("6EE4574D-C439-45B4-223A-08DE3318A61C"))
                                                     {
                                                         <li>
@@ -59,11 +66,11 @@
                                                     @if (task.ActualProcess == 100 && task.TaskStatus == Guid.Parse("6EE4574D-C439-45B4-223A-08DE3318A61C"))
                                                     {
                                                         <li>
-                                                            <button class="dropdown-item" @onclick="@(() => ReopenTask(task.Id))">
+                                                            <button class="dropdown-item" @onclick="@(() => OnReopen.InvokeAsync(task.Id))">
                                                                 <span class="icon">
                                                                     <SVGCrud SVGType="SVGCrud.SVGTypeEnum.OpenEye"></SVGCrud>
                                                                 </span>
-                                                                @Loc["Reopen"]
+                                                    @Loc["ReOpen"]
                                                             </button>
                                                         </li>
                                                     }
@@ -89,6 +96,7 @@
 @code {
     public bool IsAdmine;// = roleService.IsAllowed(int)Modules., (int)ModuleActions.EditReportPermission) ;//true;//
     [Parameter] public EventCallback<Guid> OnEdit { get; set; }
+    [Parameter] public EventCallback<Guid> OnReopen { get; set; }
     [Parameter] public EventCallback<Guid> OnDelete { get; set; }
     [Parameter] public EventCallback<Guid> OnShowUsers { get; set; }
     [Parameter] public EventCallback<Guid> OnAdd { get; set; }
@@ -229,35 +237,35 @@ new() { Field = "Action", DisplayName = Loc["Action"] ,IsSortable = false},
                 ConfirmationType.Primary
             );
     }
-    private async Task ReopenConfirmed(Guid id)
-    {
-        var result = await _taskConsumer.ReopenTask(id);
-        if (result.Success && result.Data)
-        {
-            await GetTasks();
-            await ToastService.ShowToastAsync(Loc["Reopenedsuccessfully"], "success");
+    // private async Task ReopenConfirmed(Guid id)
+    // {
+    //     var result = await _taskConsumer.ReopenTask(id);
+    //     if (result.Success && result.Data)
+    //     {
+    //         await GetTasks();
+    //         await ToastService.ShowToastAsync(Loc["Reopenedsuccessfully"], "success");
 
-        }
-        else
-        {
-            await ToastService.ShowToastAsync(Loc["ReopenFailed"], "danger");
-        }
+    //     }
+    //     else
+    //     {
+    //         await ToastService.ShowToastAsync(Loc["ReopenFailed"], "danger");
+    //     }
 
-        StateHasChanged();
-    }
-    private void ReopenTask(Guid id)
-    {
-        PopupService.ShowConfirmation(
-                @Loc["SureReopenTask"],
-                "Yes, Reopen",
-                async (confirmed) =>
-                {
-                    if (confirmed)
-                        await ReopenConfirmed(id);
-                },
-                ConfirmationType.Primary
-            );
-    }
+    //     StateHasChanged();
+    // }
+    // private void ReopenTask(Guid id)
+    // {
+    //     PopupService.ShowConfirmation(
+    //             @Loc["SureReopenTask"],
+    //             "Yes, Reopen",
+    //             async (confirmed) =>
+    //             {
+    //                 if (confirmed)
+    //                     await ReopenConfirmed(id);
+    //             },
+    //             ConfirmationType.Primary
+    //         );
+    // }
     private async Task DeleteConfirmed(Guid Id)
     {
         var result = await _taskConsumer.DeleteTask(Id);
@@ -403,7 +411,7 @@ SearchFieldTask.PlannedProgress
                 builder.AddContent(0, task.SourceName);
                 break;
             case "Dependency":
-                builder.AddContent(0, task.Dependencies);
+                builder.AddContent(0, task.DependencyNames);
                 break;
             case "Created by department":
                 builder.AddContent(0, task.Createdbydepartment);
@@ -454,7 +462,7 @@ SearchFieldTask.PlannedProgress
         navigationManager.NavigateTo($"/task/details/{id}");
     }
 
-    private async Task GetTasks(bool isSearch = false, string searchTerm = null)
+    public async Task GetTasks(bool isSearch = false, string searchTerm = null)
     {
 
 

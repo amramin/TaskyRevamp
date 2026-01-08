@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TaskyRevamp.Infrastructure;
 
@@ -11,9 +12,11 @@ using TaskyRevamp.Infrastructure;
 namespace TaskyRevamp.Infrastructure.Migrations
 {
     [DbContext(typeof(EfDbContext))]
-    partial class EfDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260105112601_dependencyfields")]
+    partial class dependencyfields
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1004,8 +1007,6 @@ namespace TaskyRevamp.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("TaskItemId");
-
                     b.ToTable("TaskDependencies");
                 });
 
@@ -1115,6 +1116,9 @@ namespace TaskyRevamp.Infrastructure.Migrations
                     b.Property<Guid>("CreatedById")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid?>("DependenciesId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
@@ -1166,6 +1170,8 @@ namespace TaskyRevamp.Infrastructure.Migrations
                     b.HasIndex("CommentsId");
 
                     b.HasIndex("CreatedById");
+
+                    b.HasIndex("DependenciesId");
 
                     b.HasIndex("ParentId");
 
@@ -1636,17 +1642,6 @@ namespace TaskyRevamp.Infrastructure.Migrations
                     b.Navigation("taskItem");
                 });
 
-            modelBuilder.Entity("TaskyRevamp.Domain.Models.Task.TaskDependencies", b =>
-                {
-                    b.HasOne("TaskyRevamp.Domain.Models.Task.TaskItem", "Task")
-                        .WithMany("Dependencies")
-                        .HasForeignKey("TaskItemId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Task");
-                });
-
             modelBuilder.Entity("TaskyRevamp.Domain.Models.Task.TaskEscalation", b =>
                 {
                     b.HasOne("TaskyRevamp.Domain.Models.Users.User", "CreatedBy")
@@ -1713,6 +1708,10 @@ namespace TaskyRevamp.Infrastructure.Migrations
                         .HasForeignKey("CreatedById")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.HasOne("TaskyRevamp.Domain.Models.Task.TaskDependencies", "Dependencies")
+                        .WithMany("Items")
+                        .HasForeignKey("DependenciesId");
 
                     b.HasOne("TaskyRevamp.Domain.Models.Task.TaskItem", "Parent")
                         .WithMany("Subtasks")
@@ -1807,6 +1806,8 @@ namespace TaskyRevamp.Infrastructure.Migrations
                     b.Navigation("Comments");
 
                     b.Navigation("CreatedBy");
+
+                    b.Navigation("Dependencies");
 
                     b.Navigation("Parent");
 
@@ -1933,6 +1934,11 @@ namespace TaskyRevamp.Infrastructure.Migrations
                     b.Navigation("items");
                 });
 
+            modelBuilder.Entity("TaskyRevamp.Domain.Models.Task.TaskDependencies", b =>
+                {
+                    b.Navigation("Items");
+                });
+
             modelBuilder.Entity("TaskyRevamp.Domain.Models.Task.TaskItem", b =>
                 {
                     b.Navigation("Assignees");
@@ -1942,8 +1948,6 @@ namespace TaskyRevamp.Infrastructure.Migrations
                     b.Navigation("ChangeRequests");
 
                     b.Navigation("Checklist");
-
-                    b.Navigation("Dependencies");
 
                     b.Navigation("Escalations");
 

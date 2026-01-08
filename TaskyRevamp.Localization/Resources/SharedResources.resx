@@ -201,7 +201,7 @@
   <data name="Name Color Indicator" xml:space="preserve">
     <value>Name color indicator</value>
   </data>
-	<data name="file" xml:space="preserve">
+  <data name="file" xml:space="preserve">
     <value>Upload Files</value>
   </data>
   <data name="Order" xml:space="preserve">
@@ -399,13 +399,13 @@
   <data name="weight" xml:space="preserve">
     <value>Weight</value>
   </data>
-	<data name="Comments" xml:space="preserve">
+  <data name="Comments" xml:space="preserve">
     <value>Comments</value>
   </data>
-	<data name="AddDescription" xml:space="preserve">
+  <data name="AddDescription" xml:space="preserve">
     <value>Add Description</value>
   </data>
-	<data name="Drag and Drop or" xml:space="preserve">
+  <data name="Drag and Drop or" xml:space="preserve">
     <value>Drag and Drop or</value>
   </data>
   <data name="AssignedTo" xml:space="preserve">
@@ -1229,5 +1229,32 @@
   </data>
   <data name="Privilege" xml:space="preserve">
     <value>Privileges</value>
+  </data>
+  <data name="EditTask" xml:space="preserve">
+    <value>Edit task</value>
+  </data>
+  <data name="Pleasefillallrequiredfieldsbeforesubmitting" xml:space="preserve">
+    <value>Please fill all required fields before submitting</value>
+  </data>
+  <data name="Thestartdateshouldbesmallerthanorequaltheenddate" xml:space="preserve">
+    <value>The start date should be smaller than or equal the end date</value>
+  </data>
+  <data name="Enteravalidreminderdate" xml:space="preserve">
+    <value>Enter a valid reminder date, it should be between the start and end date</value>
+  </data>
+  <data name="Enterthereason" xml:space="preserve">
+    <value>Enter the reason</value>
+  </data>
+  <data name="Erroroccurred" xml:space="preserve">
+    <value>Error occurred  please try again!</value>
+  </data>
+  <data name="UserNotFound" xml:space="preserve">
+    <value>User not found</value>
+  </data>
+  <data name="DepartmentsNotFound" xml:space="preserve">
+    <value>Departments not found</value>
+  </data>
+  <data name="DependencyError" xml:space="preserve">
+    <value>Progress cannot be set to 100% because one or more dependent tasks are still open, delayed, or have been reopened</value>
   </data>
 </root>

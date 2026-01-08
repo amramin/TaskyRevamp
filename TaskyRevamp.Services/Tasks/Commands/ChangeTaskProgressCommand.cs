@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TaskyRevamp.Domain.Interfaces.Repositeries;
 using TaskyRevamp.Domain.Models.SystemConfiguration;
 using TaskyRevamp.Domain.Models.Task;
 using TaskyRevamp.Domain.Repositeries;
@@ -13,22 +14,24 @@ namespace TaskyRevamp.Services.Tasks.Commands
     public record ChangeTaskProgressCommand(Guid TaskId, int Progress) : IRequest<bool>;
     public class ChangeTaskProgressHandler : IRequestHandler<ChangeTaskProgressCommand, bool>
     {
-        private readonly IRepository<TaskItem> _taskRepository;
+        private readonly ITaskRepository _taskRepository;
         private readonly IRepository<StatusSettings> _statusSettings;
+        private readonly IRepository<TaskItem> _taskRepo;
 
-        public ChangeTaskProgressHandler(IRepository<TaskItem> taskRepository, IRepository<StatusSettings> statusSettings)
+        public ChangeTaskProgressHandler(ITaskRepository taskRepository, IRepository<TaskItem> repository, IRepository<StatusSettings> statusSettings)
         {
             _taskRepository = taskRepository;
             _statusSettings = statusSettings;
+            _taskRepo = repository;
         }
 
         public async Task<bool> Handle(ChangeTaskProgressCommand request, CancellationToken cancellationToken)
         {
-            var res = await _taskRepository.FindByKey(request.TaskId);
+            var res = await _taskRepository.GetTaskById(request.TaskId);
             var TaskSatuses = await _statusSettings.All();
-            if (res.Success && res.Value != null)
+            if (res is not null)
             {
-                var task = res.Value;
+                var task = res;
                 if (task.Progress != request.Progress)
                 {
                     task.Progress = request.Progress;
@@ -48,11 +51,19 @@ namespace TaskyRevamp.Services.Tasks.Commands
                         }
                         else if (task.Progress == 100)
                         {
-                            task.StatusId = Guid.Parse("6EE4574D-C439-45B4-223A-08DE3318A61C");
+                            var dependencies = task.Dependencies?.Select(p => p.DependentId).ToList();
+                            var tasksnotcompleted = await _taskRepo.FindBy(d => dependencies.Contains(d.Id));
+                            if (tasksnotcompleted.Value.Any(p => p.StatusId != Guid.Parse("C8D504C7-9402-4F91-223C-08DE3318A61C")))
+                            {
+                                return false;
+                            }
+                            else
+                            {
+                                task.StatusId = Guid.Parse("6EE4574D-C439-45B4-223A-08DE3318A61C");
+                            }
                         }
                     }
-                    await _taskRepository.Update(task);
-                    await _taskRepository.SaveChangesAsync();
+                    await _taskRepository.UpdateTask(task);
                 }
                 else
                 {

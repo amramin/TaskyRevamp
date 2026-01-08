@@ -127,7 +127,7 @@
 
 
                                         <RichTextEditorComponent @key="column.Id" EditorId="RTE_English2" @ref="RichTextEditorComponentRefDescriptionEnglish"
-                                                                 Content="@taskdto.Description" ButtonText="@Loc["AddDescription"]">
+                                                                 ButtonText="@Loc["AddDescription"]" Content="@taskdto.Description">
                                         </RichTextEditorComponent>
 
                                         <div class="d-flex align-items-center justify-content-between">
@@ -292,7 +292,7 @@
                                         </label>
 
                                         <RichTextEditorComponent @key="column.Id" EditorId="RTE_English4" @ref="RichTextEditorComponentRefComment"
-                                                                 Content="@taskdto.Content" ButtonText="@Loc["AddComment"]"></RichTextEditorComponent>
+                                                                  ButtonText="@Loc["AddComment"]"></RichTextEditorComponent>
 
                                         <div class="d-flex align-items-center justify-content-between">
                                             <div class="d-flex gap-2">
@@ -345,7 +345,8 @@
                                            class="form-range"
                                            min="0"
                                            max="100"
-                                           @bind="taskdto.ActualProcess" />
+                                           @bind="taskdto.ActualProcess"
+                                           disabled="@(taskdto.ActualProcess >= 100 && !AlllowedToChangeProgress.Any(p => p == taskdto.TaskStatus))" />
                                     <span class="badge bg-primary">
                                         @taskdto.ActualProcess%
                                     </span>
@@ -376,7 +377,7 @@
                 </div>
                 <div class="col-6">
                     <div class="d-grid">
-                        <button type="submit" class="btn btn-lg btn-primary">@Loc["Save"]</button>
+                        <button type="submit" class="btn btn-lg btn-primary">@SaveButton</button>
                     </div>
                 </div>
             </div>
@@ -390,6 +391,7 @@
     [Parameter] public EventCallback<EditContext> OnValidSubmit { get; set; }
     [Parameter] public EventCallback OnCancel { get; set; }
     [Parameter] public string ButtonText { get; set; }
+    [Parameter] public string SaveButton { get; set; } 
     public List<AddTaskSettingDto> AddTaskSettings { get; set; } = new List<AddTaskSettingDto>();
     private EditContext editContext;
     SearchableSingleDropdownOffline<TypeDto, Guid> typeref { set; get; }
@@ -415,7 +417,13 @@
     private InputFile? inputFile;
     private List<IBrowserFile> uploadedFiles = new List<IBrowserFile>();
     private bool _dropZoneInitialized;
-
+    List<Guid> AlllowedToChangeProgress = new List<Guid>()
+    {
+        Guid.Parse("547022EA-EF8C-4FBC-2236-08DE3318A61C"),
+        Guid.Parse("9843AF9D-1389-4740-B428-08DE3D8A77AB"),
+        Guid.Parse("753404A6-8B18-43F7-2238-08DE3318A61C"),
+        Guid.Parse("270A78EB-C5CA-475D-2239-08DE3318A61C")
+    };
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (x && !_dropZoneInitialized)
@@ -520,7 +528,7 @@
         var taskSourcesTask = _sourceSettingConsumer.GetTaskSourcesForDDL();
         var usersTask = _userConsumer.GetUsers();
         var departmentsTask = _departmentConsumer.GetDepartmentsForDDL();
-        var tasksTask = _taskConsumer.GetTasksForDDL();
+        var tasksTask = _taskConsumer.GetTasksForDDL(taskdto.Id);
         var prioritiesTask = _prioritySettingConsumer.GetPriorities();
 
         // Run all in parallel
@@ -570,7 +578,6 @@
     {
         // Clear previous messages
         //  messageStore.Clear();
-
         foreach (var column in AddTaskSettings.Where(c => c.IsMandatory))
         {
             // Map column name to property name in CreateTaskDto
@@ -643,7 +650,7 @@
             {
                 var fieldId = new FieldIdentifier(taskdto, prop.Name);
                 // Optional: use column.DisplayName for friendly message
-                await ToastService.ShowToastAsync("Please fill all required fields before submitting", "error");
+                await ToastService.ShowToastAsync(Loc["Pleasefillallrequiredfieldsbeforesubmitting"], "error");
 
                 messageStore.Add(fieldId, $"{column.NameEnglish} is required.");
                 return;  
@@ -658,23 +665,24 @@
 
     private async Task HandleValidSubmit(EditContext context)
     {
+        // proceed with saving
+        taskdto.Description =
+             RichTextEditorComponentRefDescriptionEnglish.GetContent();
+                    taskdto.Content = RichTextEditorComponentRefComment.GetContent();
         await  ValidateDynamicFields(context);
         if (taskdto.EndDate<taskdto.StartDate)
         {
-            await ToastService.ShowToastAsync("The start date should be smaller than or equal the end date", "error");
+            await ToastService.ShowToastAsync(Loc["Thestartdateshouldbesmallerthanorequaltheenddate"], "error");
 
             return;
         }
         if (taskdto.ReminderDate < taskdto.StartDate || taskdto.ReminderDate > taskdto.EndDate )
         {
-            await ToastService.ShowToastAsync("Enter a valid reminder date, it should be between the start and end date", "error");
+            await ToastService.ShowToastAsync(Loc["Enteravalidreminderdate"], "error");
 
             return;
         }
-        // proceed with saving
-        taskdto.Description =
- RichTextEditorComponentRefDescriptionEnglish.GetContent();
-        taskdto.Content = RichTextEditorComponentRefComment.GetContent();
+
         await OnValidSubmit.InvokeAsync(context);
     }
     private async Task OnCancelClick()
@@ -683,7 +691,7 @@
     }
     private void HandleInvalidSubmit(EditContext context)
     {
-        ToastService.ShowToastAsync("Please fill all required fields before submitting", "error");
+        ToastService.ShowToastAsync(Loc["Pleasefillallrequiredfieldsbeforesubmitting"], "error");
 
     }
 

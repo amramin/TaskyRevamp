@@ -2,6 +2,7 @@
 using TaskyRevamp.Dto.Enums.SearchFields;
 using TaskyRevamp.Dto.GeneralDto;
 using TaskyRevamp.Dto.SystemConfiguration;
+using TaskyRevamp.Dto.TaskComment;
 using TaskyRevamp.Dto.TaskDto;
 
 namespace TaskyRevamp.Client.Consumer
@@ -13,9 +14,9 @@ namespace TaskyRevamp.Client.Consumer
         {
             _taskyService = taskyService;
         }
-        public async Task<CommonApiResponse<List<CreateTaskDto>>> GetTasksForDDL()
+        public async Task<CommonApiResponse<List<CreateTaskDto>>> GetTasksForDDL(Guid tskid)
         {
-            var url = $"api/Task/GetTasksForDDL";
+            var url = $"api/Task/GetTasksForDDL/{tskid}";
             var res = await _taskyService.GetFromJsonAsync<CommonApiResponse<List<CreateTaskDto>>>(url);
             return res;
         }
@@ -44,7 +45,6 @@ namespace TaskyRevamp.Client.Consumer
         {
             var url = $"api/Task/CreateTask";
             var res = await _taskyService.PostJsonAsync<CommonApiResponse<string>>(url, CreateTaskDto);
-
             return res.Data;
         }
 
@@ -52,7 +52,6 @@ namespace TaskyRevamp.Client.Consumer
         {
             var url = $"api/Task/UpdateTask";
             var res = await _taskyService.PostJsonAsync<CommonApiResponse<Guid>>(url, CreateTaskDto);
-
             return res.Data;
         }
         public async Task<CommonApiResponse<bool>> CompleteTask(Guid TaskId)
@@ -62,12 +61,11 @@ namespace TaskyRevamp.Client.Consumer
 
             return res;
         }
-        public async Task<CommonApiResponse<bool>> ReopenTask(Guid TaskId)
+        public async Task<CommonApiResponse<bool>> ReopenTask(TaskCommentDto taskCommentDto)
         {
-            var url = $"api/Task/ReopenTask/{TaskId}";
-            var res =await _taskyService.GetFromJsonAsync<CommonApiResponse<bool>>(url);
-
-            return res;
+            var url = $"api/Task/ReopenTask";
+            var res = await _taskyService.PostJsonAsync<CommonApiResponse<bool>>(url, taskCommentDto);
+            return res.Data;
         }
         public async Task<CommonApiResponse<bool>> UpdateTasksDepartment(Guid oldId, Guid newId)
         {

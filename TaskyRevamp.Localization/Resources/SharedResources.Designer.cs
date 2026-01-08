@@ -943,11 +943,29 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Departments not found.
+        /// </summary>
+        public static string DepartmentsNotFound {
+            get {
+                return ResourceManager.GetString("DepartmentsNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Dependency.
         /// </summary>
         public static string Dependency {
             get {
                 return ResourceManager.GetString("Dependency", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Progress cannot be set to 100% because one or more dependent tasks are still open, delayed, or have been reopened.
+        /// </summary>
+        public static string DependencyError {
+            get {
+                return ResourceManager.GetString("DependencyError", resourceCulture);
             }
         }
         
@@ -1123,6 +1141,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Edit task.
+        /// </summary>
+        public static string EditTask {
+            get {
+                return ResourceManager.GetString("EditTask", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Edit source.
         /// </summary>
         public static string EditTaskSource {
@@ -1294,6 +1321,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Enter a valid reminder date, it should be between the start and end date.
+        /// </summary>
+        public static string Enteravalidreminderdate {
+            get {
+                return ResourceManager.GetString("Enteravalidreminderdate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Enter number of days.
         /// </summary>
         public static string EnterDaysNumber {
@@ -1330,11 +1366,29 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Enter the reason.
+        /// </summary>
+        public static string Enterthereason {
+            get {
+                return ResourceManager.GetString("Enterthereason", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Error database.
         /// </summary>
         public static string Errordatabase {
             get {
                 return ResourceManager.GetString("Errordatabase", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error occurred  please try again!.
+        /// </summary>
+        public static string Erroroccurred {
+            get {
+                return ResourceManager.GetString("Erroroccurred", resourceCulture);
             }
         }
         
@@ -2109,6 +2163,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string PlannedWeight {
             get {
                 return ResourceManager.GetString("PlannedWeight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please fill all required fields before submitting.
+        /// </summary>
+        public static string Pleasefillallrequiredfieldsbeforesubmitting {
+            get {
+                return ResourceManager.GetString("Pleasefillallrequiredfieldsbeforesubmitting", resourceCulture);
             }
         }
         
@@ -2905,6 +2968,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The start date should be smaller than or equal the end date.
+        /// </summary>
+        public static string Thestartdateshouldbesmallerthanorequaltheenddate {
+            get {
+                return ResourceManager.GetString("Thestartdateshouldbesmallerthanorequaltheenddate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The file is adding successfully .
         /// </summary>
         public static string ThevalidRowsuploadedsuccessfully {
@@ -3189,6 +3261,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string username {
             get {
                 return ResourceManager.GetString("username", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User not found.
+        /// </summary>
+        public static string UserNotFound {
+            get {
+                return ResourceManager.GetString("UserNotFound", resourceCulture);
             }
         }
         

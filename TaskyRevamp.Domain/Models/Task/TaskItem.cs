@@ -19,6 +19,7 @@ public class TaskItem : Entity, IHasCreationMetaData, IHasUpdateMetaData
     public Source Source { get; set; }
     public DateTime? StartDate { get; set; }
     public DateTime? EndDate { get; set; }
+    public DateTime? ReminderDate { get; set; }
     public List<TaskChecklist> taskChecklists { get; set; }
 	public int Duration => StartDate.HasValue && EndDate.HasValue? (EndDate.Value.Date - StartDate.Value.Date).Days + 1: 0;
 	public Reminder? Reminder { get; set; }
@@ -112,7 +113,7 @@ public class TaskItem : Entity, IHasCreationMetaData, IHasUpdateMetaData
     public List<TaskAssignees> Assignees { get; set; }
     public List<Guid> AssignedDepartmentIds { set; get; }
     public List<Guid> AssignedIds { set; get; }
-    public TaskDependencies? Dependencies { get; set; }
+    public List<TaskDependencies>? Dependencies { get; set; }
     public TaskItem? Parent { get; set; }
     readonly List<TaskItem> _subtasks = new();
     public IReadOnlyCollection<TaskItem> Subtasks => _subtasks.AsReadOnly();
@@ -152,10 +153,14 @@ public class TaskItem : Entity, IHasCreationMetaData, IHasUpdateMetaData
         Progress = actualprocess;
         _plannedWeight = plannedWeight;
         _actualProgress = new Progress(actualprocess);
-
+        ReminderDate = rmind;
         _actualWeight = new Weight(wight);
         CreatedById = creatorid;
         Reminder = rmind == null ? null : new Reminder(rmind.Value);
+        if(dependcy is not null)
+        {
+            Dependencies = dependcy.Select(d => new TaskDependencies { TaskItemId = id, DependentId = d }).ToList();
+        }
         //  Dependencies = new TaskDependencies(dependcy.Select(id => new TaskItem { Id = id }).ToList()
         //);
         //Creator = creator;
@@ -181,6 +186,17 @@ public class TaskItem : Entity, IHasCreationMetaData, IHasUpdateMetaData
         Id = tsakdto.Id;
         Description = tsakdto.Description;
         Title = tsakdto.Title;
+        Progress = tsakdto.ActualProcess;
+        TaskSourceId = tsakdto.SourceId;
+        TaskTypeId = tsakdto.TypeId;
+        StartDate= tsakdto.StartDate;
+        EndDate= tsakdto.EndDate;
+        PriorityId = tsakdto.Priority;
+        Weight = tsakdto.weight;
+        AssignedDepartmentIds = tsakdto.AssignedDepartmentIds;
+        AssignedIds = tsakdto.AssignedIds;
+        ReminderDate= tsakdto.ReminderDate;
+        Dependencies = tsakdto.Dependencies?.Select(d => new TaskDependencies { TaskItemId = tsakdto.Id, DependentId = d }).ToList();
         return true;
 
     }
@@ -214,9 +230,11 @@ public class TaskItem : Entity, IHasCreationMetaData, IHasUpdateMetaData
             Priority = PriorityId,
             CreatedByName = CreatedBy?.Username,
             UpdatedBy = UpdatedBy?.Username,
-            ReminderDate = Reminder?.Date,
+            ReminderDate = ReminderDate,
             TaskStatusName = status?.NameEnglish,
             TaskStatus = StatusId,
+            SourceId=TaskSourceId,
+            TypeId=TaskTypeId,
 			AssignedIds = AssignedIds?.ToList() ?? new List<Guid>(),
 			AssignedDepartmentIds = AssignedDepartmentIds?.ToList() ?? new List<Guid>()
 		};
