@@ -1438,7 +1438,7 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The selected file exceeds the maximum allowed size of  &quot;{0}&quot; MB. Please upload a smaller file..
+        ///   Looks up a localized string similar to The selected file exceeds the maximum allowed size of  {0} MB. Please upload a smaller file..
         /// </summary>
         public static string FileSizeExceedsLimitTask {
             get {
@@ -2383,6 +2383,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Enter a valid reminder date, it should be between the start and end date.
+        /// </summary>
+        public static string ReminderDateBetweenStartAndEnd {
+            get {
+                return ResourceManager.GetString("ReminderDateBetweenStartAndEnd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Re-open.
         /// </summary>
         public static string ReOpen {
@@ -2658,6 +2667,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string StartDate {
             get {
                 return ResourceManager.GetString("StartDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The start date should be smaller than or equal the end date.
+        /// </summary>
+        public static string StartDateMustBeBeforeEndDate {
+            get {
+                return ResourceManager.GetString("StartDateMustBeBeforeEndDate", resourceCulture);
             }
         }
         
@@ -3364,6 +3382,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Value must be greater than or equal to 1..
+        /// </summary>
+        public static string ValueMustBeGreaterThanOrEqualTo1 {
+            get {
+                return ResourceManager.GetString("ValueMustBeGreaterThanOrEqualTo1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to View.
         /// </summary>
         public static string View {
@@ -3468,6 +3495,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string weight {
             get {
                 return ResourceManager.GetString("weight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter a value between 0 and 100.
+        /// </summary>
+        public static string WeightMustBeBetween0And100 {
+            get {
+                return ResourceManager.GetString("WeightMustBeBetween0And100", resourceCulture);
             }
         }
         

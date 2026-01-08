@@ -19,7 +19,7 @@ namespace TaskyRevamp.Dto.Permissions.TaskModule
 		public List<Guid> Status { get; set; }
 		public List<Guid> Source { get; set; }
 		public DirectionType? DirectionType { get; set; }
-		public int? DirectionLevel { get; set; }
+		public long? DirectionLevel { get; set; }
 
 	}
 }

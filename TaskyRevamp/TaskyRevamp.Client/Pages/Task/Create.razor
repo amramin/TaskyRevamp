@@ -1,8 +1,6 @@
 ﻿@using Blazored.LocalStorage
 @using TaskyRevamp.Client.Consumer
-
 @inject ILocalStorageService LocalStorageService
-
 @using TaskyRevamp.Client.Services
 @using TaskyRevamp.Dto;
 @using TaskyRevamp.Dto.GeneralDto
@@ -12,19 +10,15 @@
 @inject TaskConsumer _taskonsumer
 @inject NavigationManager navigationManager
 @inject PopupService PopupService
-
 @inject IStringLocalizer<SharedResources> Loc
 
 @if (IsLoaded)
 {
     <Form ButtonText="@Loc["Add"]" OnCancel="Cancel" taskdto="@Taskdto" OnValidSubmit="@Creat" />
 }
-
-
 @code {
     CreateTaskDto Taskdto = new CreateTaskDto();
-    [Parameter]
-    public bool IsAdmine { set; get; }
+    [Parameter] public bool IsAdmine { set; get; }
     [Parameter] public EventCallback<CreateTaskDto> OnValidSubmit { get; set; }
     [Parameter] public EventCallback OnCancel { get; set; }
 
@@ -37,26 +31,21 @@
     {
         var current = await LocalStorageService.GetItemAsStringAsync("Id");
         Taskdto.CreatedBy = Guid.Parse(current);
-   var rs=await _taskonsumer.AddTask(Taskdto);
-        //await ToastService.ShowToastAsync(Loc[MessagesMap.DataSavedSuccessfully], "success");
+        var rs = await _taskonsumer.AddTask(Taskdto);
         if (rs.Success)
-{       
-    await ToastService.ShowToastAsync(Loc["DataSavedSuccessfully"], "success");
-
-        navigationManager.NavigateTo($"/MainTasks",true);
-
-} 
-else{
         {
-                await ToastService.ShowToastAsync("Error occurred  please try again!", "error");
-
+            await ToastService.ShowToastAsync(Loc["Added Successfully"], "success");
+            navigationManager.NavigateTo($"/MainTasks", true);
+        }
+        else
+        {
+            await ToastService.ShowToastAsync("Error occurred  please try again!", "error");
             return;
-}//await OnValidSubmit.InvokeAsync(Taskdto);
-     }
-}
+        }
+    }
     private void Cancel()
     {
         PopupService.Hide();
     }
-    }
+}
 

@@ -1165,7 +1165,7 @@
     <value>This file type is not supported. Allowed formats are: pdf, doc, docx, xls, xlsx, .ppt, .pptx, txt, csv, jpg, jpeg, and png</value>
   </data>
   <data name="FileSizeExceedsLimitTask" xml:space="preserve">
-    <value>The selected file exceeds the maximum allowed size of  "{0}" MB. Please upload a smaller file.</value>
+    <value>The selected file exceeds the maximum allowed size of  {0} MB. Please upload a smaller file.</value>
   </data>
   <data name="userLink" xml:space="preserve">
     <value>Link user</value>
@@ -1221,18 +1221,6 @@
   <data name="Privilege" xml:space="preserve">
     <value>Privileges</value>
   </data>
-  <data name="file" xml:space="preserve">
-    <value>Upload Files</value>
-  </data>
-  <data name="Comments" xml:space="preserve">
-    <value>Comments</value>
-  </data>
-  <data name="AddDescription" xml:space="preserve">
-    <value>Add Description</value>
-  </data>
-  <data name="Drag and Drop or" xml:space="preserve">
-    <value>Drag and Drop or</value>
-  </data>
   <data name="hisprioritynam" xml:space="preserve">
     <value>his priority name was previously deleted and linked to a completed task. Do you want to use it again?</value>
   </data>
@@ -1277,5 +1265,17 @@
   </data>
   <data name="SureCompleteTask" xml:space="preserve">
     <value>Are you sure to complete task</value>
+  </data>
+  <data name="ValueMustBeGreaterThanOrEqualTo1" xml:space="preserve">
+    <value>Value must be greater than or equal to 1.</value>
+  </data>
+  <data name="WeightMustBeBetween0And100" xml:space="preserve">
+    <value>Enter a value between 0 and 100</value>
+  </data>
+  <data name="StartDateMustBeBeforeEndDate" xml:space="preserve">
+    <value>The start date should be smaller than or equal the end date</value>
+  </data>
+  <data name="ReminderDateBetweenStartAndEnd" xml:space="preserve">
+    <value>Enter a valid reminder date, it should be between the start and end date</value>
   </data>
 </root>

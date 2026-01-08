@@ -1122,12 +1122,6 @@
   <data name="ReOpen" xml:space="preserve">
     <value>إعادة فتح</value>
   </data>
-  <data name="AddAttachment" xml:space="preserve">
-    <value>إضافة ملف</value>
-  </data>
-  <data name="ReOpen" xml:space="preserve">
-    <value>إعادة فتح</value>
-  </data>
   <data name="Editedsuccessfully" xml:space="preserve">
     <value>تم التعديل بنجاح</value>
   </data>
@@ -1140,30 +1134,17 @@
   <data name="Ares" xml:space="preserve">
     <value>هل انت متأكد من الحذف</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="SureCompleteTask" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
-  </data>
-  <data name="Completedsuccessfully" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
-  </data>
   <data name="CompleteFailed" xml:space="preserve">
     <value>فشلت عملية اكمال المهمة</value>
   </data>
   <data name="SureReopenTask" xml:space="preserve">
     <value>هل انت متأكد انك تريد ارجاع المهمة</value>
   </data>
-  <data name="Reopenedsuccessfully" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
-  </data>
   <data name="ReopenFailed" xml:space="preserve">
     <value>فشلت عملية ارجاع المهمة</value>
   </data>
   <data name="AddAttachment" xml:space="preserve">
     <value>إضافة ملف</value>
-  </data>
-  <data name="NoAttachmentsYet" xml:space="preserve">
-    <value>لم تتم إضافة أي ملفات</value>
   </data>
   <data name="NoAttachmentsYet" xml:space="preserve">
     <value>لم تتم إضافة أي ملفات</value>
@@ -1187,7 +1168,7 @@
     <value>نوع الملف غير مدعوم. الصيغ المسموح بها هي: pdf, doc, docx, xls, xlsx, .ppt, .pptx, txt, csv, jpg, jpeg, و png</value>
   </data>
   <data name="FileSizeExceedsLimitTask" xml:space="preserve">
-    <value>الملف المحدد يتجاوز الحد الأقصى المسموح به وهو "{0}" ميجابايت. يُرجى تحميل ملف أصغر حجمًا</value>
+    <value>الملف المحدد يتجاوز الحد الأقصى المسموح به وهو {0} ميجابايت. يُرجى تحميل ملف أصغر حجمًا</value>
   </data>
   <data name="userLink" xml:space="preserve">
     <value>ربط المستخدم</value>
@@ -1243,18 +1224,6 @@
   <data name="Privilege" xml:space="preserve">
     <value>صلاحيات</value>
   </data>
-  <data name="file" xml:space="preserve">
-    <value>ارفاق ملفات</value>
-  </data>
-  <data name="Comments" xml:space="preserve">
-    <value>التعليقات</value>
-  </data>
-  <data name="AddDescription" xml:space="preserve">
-    <value>اضف وصف المهمة</value>
-  </data>
-  <data name="Drag and Drop or" xml:space="preserve">
-    <value>سحب وإفلات</value>
-  </data>
   <data name="hisprioritynam" xml:space="preserve">
     <value />
   </data>
@@ -1300,5 +1269,21 @@
   </data>
   <data name="SureCompleteTask" xml:space="preserve">
     <value>هل انت متأكد انك تريد اكمال المهمة؟</value>
+  </data>
+  <data name="ValueMustBeGreaterThanOrEqualTo1" xml:space="preserve">
+    <value>يجب أن تكون القيمة أكبر من أو تساوي 1</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="Reopenedsuccessfully" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="WeightMustBeBetween0And100" xml:space="preserve">
+    <value>أدخل قيمة بين 0 و 100</value>
+  </data>
+  <data name="StartDateMustBeBeforeEndDate" xml:space="preserve">
+    <value>يجب أن يكون تاريخ البدء أصغر من أو يساوي تاريخ الإنتهاء</value>
+  </data>
+  <data name="ReminderDateBetweenStartAndEnd" xml:space="preserve">
+    <value>أدخل تاريخ تذكير صحيح، يجب أن يكون بين تاريخ البدء والإنتهاء</value>
   </data>
 </root>
