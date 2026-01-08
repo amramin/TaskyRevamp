@@ -5,8 +5,8 @@ using Microsoft.Extensions.Options;
 using TaskyRevamp.Dto.Enums.SearchFields;
 using TaskyRevamp.Dto.GeneralDto;
 using TaskyRevamp.Dto.SystemConfiguration;
-using TaskyRevamp.Services.SystemConfiguration.SourceConfiguration.Command;
-using TaskyRevamp.Services.SystemConfiguration.SourceConfiguration.Query;
+using TaskyRevamp.Services.SystemConfiguration.PriorityConfiguration.Query;
+using TaskyRevamp.Services.SystemConfiguration.TypeConfiguration.Command;
 using TaskyRevamp.Services.SystemConfiguration.TypeConfigurarion.Command;
 using TaskyRevamp.Services.SystemConfiguration.TypeConfigurarion.Query;
 using TaskyRevamp.Services.Tasks.Commands;
@@ -53,6 +53,16 @@ namespace TaskyRevamp.WebAPI.Controllers
             var all = await _mediator.Send(new GetTaskTypesQuery());
 
             return Ok(all);
+        }
+        [HttpPost("RetriveType")]
+        public async Task<IActionResult> RetriveType(TypeDto Type)
+        {
+            return Ok(await _mediator.Send(new RetriveTypeCommand(Type)));
+        }
+        [HttpPost("CheckRelatedComplatedTaskitemType")]
+        public async Task<IActionResult> CheckRelatedComplatedTaskitemType(TypeDto Type)
+        {
+            return Ok(await _mediator.Send(new CheckRelatedComplatedTaskitemTypeQuery(Type)));
         }
         [HttpPost("CreateType")]
         public async Task<IActionResult> CreateType(TypeDto type)

@@ -367,6 +367,33 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to  An active Priority with this name already exists. Please choose a different name.
+        /// </summary>
+        public static string AnactivePrioritywith {
+            get {
+                return ResourceManager.GetString("AnactivePrioritywith", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to An active source with this name already exists. Please choose a different name.
+        /// </summary>
+        public static string Anactivesourcewith {
+            get {
+                return ResourceManager.GetString("Anactivesourcewith", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to  An active type with this name already exists. Please choose a different name.
+        /// </summary>
+        public static string AnactiveTypewith {
+            get {
+                return ResourceManager.GetString("AnactiveTypewith", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Approve and reject the request change end date.
         /// </summary>
         public static string ApproveAndRejectTheRequestChangeEndDate {
@@ -498,6 +525,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string CannotDeletePrivilege {
             get {
                 return ResourceManager.GetString("CannotDeletePrivilege", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot delete. Type is linked to active tasks.
+        /// </summary>
+        public static string CannotdeleteType {
+            get {
+                return ResourceManager.GetString("CannotdeleteType", resourceCulture);
             }
         }
         
@@ -1515,6 +1551,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string Hierarchy {
             get {
                 return ResourceManager.GetString("Hierarchy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to his priority name was previously deleted and linked to a completed task. Do you want to use it again?.
+        /// </summary>
+        public static string hisprioritynam {
+            get {
+                return ResourceManager.GetString("hisprioritynam", resourceCulture);
             }
         }
         
@@ -2910,6 +2955,51 @@ namespace TaskyRevamp.Localization.Resources {
         public static string ThevalidRowsuploadedsuccessfully {
             get {
                 return ResourceManager.GetString("ThevalidRowsuploadedsuccessfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to  This priority cannot be deleted because it is currently used in active tasks.
+        /// </summary>
+        public static string Thisprioritycannotb {
+            get {
+                return ResourceManager.GetString("Thisprioritycannotb", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This priority name was previously deleted and linked to a completed task. Do you want to use it again?.
+        /// </summary>
+        public static string ThisPrioritynamewas {
+            get {
+                return ResourceManager.GetString("ThisPrioritynamewas", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to  Can&apos;t delete. The source is linked to active tasks..
+        /// </summary>
+        public static string Thissorcecannotb {
+            get {
+                return ResourceManager.GetString("Thissorcecannotb", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to his source name was previously deleted and linked to a completed task. Do you want to use it again?.
+        /// </summary>
+        public static string Thissourcenamewas {
+            get {
+                return ResourceManager.GetString("Thissourcenamewas", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This type name was previously deleted and linked to a completed task. Do you want to use it again?.
+        /// </summary>
+        public static string ThisTypenamewas {
+            get {
+                return ResourceManager.GetString("ThisTypenamewas", resourceCulture);
             }
         }
         

@@ -8,34 +8,35 @@ using TaskyRevamp.Localization.Resources;
 
 namespace TaskyRevamp.Dto.SystemConfiguration
 {
-	public class SourceDto
-	{
-		public Guid Id { get; set; }
-		[Required(ErrorMessageResourceType = typeof(SharedResources), ErrorMessageResourceName = "Required")]
-		public string NameEnglish { get; set; }
-		[Required(ErrorMessageResourceType = typeof(SharedResources), ErrorMessageResourceName = "Required")]
-		public string NameArabic { get; set; }
+    public class SourceDto
+    {
+        public Guid Id { get; set; }
+        [Required(ErrorMessageResourceType = typeof(SharedResources), ErrorMessageResourceName = "Required")]
+        public string NameEnglish { get; set; }
+        [Required(ErrorMessageResourceType = typeof(SharedResources), ErrorMessageResourceName = "Required")]
+        public string NameArabic { get; set; }
+        public bool IsDeleted { get; set; } = false;
+        public string DisplayedName
+        {
+            get
+            {
+                return Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName == "ar" ? NameArabic : NameEnglish;
+            }
+        }
+        public bool IsActive { get; set; }
+        public Guid CreatedById { get; set; }
+        public DateTime CreateDate { get; set; }
+        //public string CreatedByName { get; set; }
+        public Guid? UpdatedById { get; set; }
+        public DateTime? UpdateDate { get; set; }
+        //public string? UpdatedByName { get; set; }
+    }
 
-		public string DisplayedName { 
-			get 
-			{ 
-				return Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName == "ar" ? NameArabic : NameEnglish; 
-			}
-		}
-		public bool IsActive { get; set; }
-		public Guid CreatedById { get; set; }
-		public DateTime CreateDate { get; set; }
-		//public string CreatedByName { get; set; }
-		public Guid? UpdatedById { get; set; }
-		public DateTime? UpdateDate { get; set; }
-		//public string? UpdatedByName { get; set; }
-	}
+    public class SourceDtoWithName
+    {
+        public SourceDto Source { get; set; }
+        public string CreatedByName { get; set; }
+        public string UpdatedByName { get; set; }
 
-	public class SourceDtoWithName
-	{
-		public SourceDto Source { get; set; }
-		public string CreatedByName { get; set; }
-		public string UpdatedByName { get; set; }
-
-	}
+    }
 }

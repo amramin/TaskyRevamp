@@ -177,7 +177,7 @@ else
         if (confirmed && selectedType != null)
         {
             var result = await _typeSettingConsumer.DeleteType(selectedType.Type.Id);
-            if (result.Success)
+            if (result.Data)
             {
                 types.Remove(selectedType);
                 if (types.Count()<=0)
@@ -190,6 +190,12 @@ else
                 showConfirm = false;
                 StateHasChanged();
                 await ToastService.ShowToastAsync(Loc["Deleted successfully"], "success");
+            }
+            else
+            {
+                await ToastService.ShowToastAsync(Loc["CannotdeleteType"], "error");
+
+                return;
             }
         }
         selectedType = null;

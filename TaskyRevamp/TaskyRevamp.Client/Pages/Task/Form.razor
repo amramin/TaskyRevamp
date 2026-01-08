@@ -541,8 +541,8 @@
             AddTaskSettings = addTaskSettingsRes.Data;
         }
 
-        taskTypeDtos = (await taskTypesTask).Data;
-        taskSourceDtos = (await taskSourcesTask).Data;
+        taskTypeDtos = (await taskTypesTask).Data.Where(k => k.IsDeleted != true).ToList();
+        taskSourceDtos = (await taskSourcesTask).Data.Where(k => k.IsDeleted != true).ToList();
         userDtos = (await usersTask).Data;
         departmentDtos = (await departmentsTask).Data;
         allTaskDtos = (await tasksTask).Data;
@@ -550,7 +550,7 @@
         var prioritiesRes = await prioritiesTask;
         if (prioritiesRes.Success && prioritiesRes.Data != null)
         {
-            Priorities = prioritiesRes.Data.OrderBy(q => q.Order).ToList();
+            Priorities = prioritiesRes.Data.Where(k => k.IsDeleted != true).ToList().OrderBy(q => q.Order).ToList();
         }
 
         // taskdto.StartDate = taskdto.StartDate == default ? DateTime.Now : taskdto.StartDate;

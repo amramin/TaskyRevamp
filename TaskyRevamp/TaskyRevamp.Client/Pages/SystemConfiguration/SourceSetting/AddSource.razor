@@ -26,26 +26,83 @@
     [Parameter] public EventCallback<SourceDto> OnValidSubmit { get; set; }
     [Parameter] public EventCallback OnCancel { get; set; }
     private SourceForm form;
-
+    private bool showConfirm;
+    private SourceDto? selectedSource;
     protected override Task OnInitializedAsync()
     {
         return base.OnInitializedAsync();
+    }
+    private async Task OnSavedConfirmed(bool confirmed)
+    {
+        if (confirmed && selectedSource != null)
+        {
+            // retrve 
+            var result = await _sourceSettingConsumer.RetriveSource(selectedSource);
+            if (result.Data)
+            {
+
+                showConfirm = false;
+                StateHasChanged();
+                await ToastService.ShowToastAsync(Loc["Retrived successfully"], "success");
+            }
+            else
+            {
+
+                return;
+            }
+        }
+        selectedSource = null;
+
     }
 
     private async Task Save(EditContext editContext)
     {
 
-       // var current = await LocalStorageService.GetItemAsStringAsync("Id");
+        // var current = await LocalStorageService.GetItemAsStringAsync("Id");
         //_newSource.CreatedById = Guid.Parse(current);
 
-        var res = await _sourceSettingConsumer.CreateSource(_newSource);
-        if (res.Success)
-        {
-            await OnValidSubmit.InvokeAsync(_newSource);
-            await ToastService.ShowToastAsync(Loc["Added successfully"], "success");
+        var alloldSources = await _sourceSettingConsumer.GetTaskSourcesForDDL();
+        var allOldActiveSource = alloldSources.Data
+            .Where(k => k.IsActive == true && k.IsDeleted != true)
+            .ToList();
 
-            PopupService.Hide();
-            
+        var alloldDeletedSource = alloldSources.Data
+            .Where(k => k.IsDeleted == true)
+            .ToList(); 
+            if (allOldActiveSource.Any(m => m.NameEnglish == _newSource.NameEnglish) || allOldActiveSource.Any(m => m.NameArabic == _newSource.NameArabic))
+        {
+            await ToastService.ShowToastAsync(Loc["Anactivesourcewith"], "error");
+
+            return;
+        }
+        else if (alloldDeletedSource.Any(m => m.NameEnglish == _newSource.NameEnglish) || alloldDeletedSource.Any(m => m.NameArabic == _newSource.NameArabic))
+        {
+
+            var relatedwithcompleted = await _sourceSettingConsumer.CheckRelatedComplatedTaskitemSource(_newSource);
+            if (relatedwithcompleted.Data)
+            {
+                PopupService.ShowConfirmation(@Loc["Thissourcenamewas"], @Loc["Confirm"], OnSavedConfirmed, type: ConfirmationType.Danger);
+                selectedSource = _newSource;
+                showConfirm = true;
+            }
+            else
+            {
+                var result = await _sourceSettingConsumer.RetriveSource(_newSource);
+                await ToastService.ShowToastAsync(Loc["Added successfully"], "success");
+
+            }
+        }
+        else
+        {
+            var res = await _sourceSettingConsumer.CreateSource(_newSource);
+            if (res.Success)
+            {
+                await OnValidSubmit.InvokeAsync(_newSource);
+                await ToastService.ShowToastAsync(Loc["Added successfully"], "success");
+
+                PopupService.Hide();
+
+            }
         }
     }
     private void Cancel()
