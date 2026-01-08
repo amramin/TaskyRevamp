@@ -16,9 +16,8 @@ public record GetDepartmentsNoPagnationQuery(List<SearchFieldDepartment> SearchF
 public class GetDepartmentsNoPagnationHandler : IRequestHandler<GetDepartmentsNoPagnationQuery, List<DepartmentDto>>
 {
     private readonly IRepository<Department> _departmentRepository;
-
-
-    public GetDepartmentsNoPagnationHandler(IRepository<Department> departmentRepository)
+    private string currentCulture = System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
+	public GetDepartmentsNoPagnationHandler(IRepository<Department> departmentRepository)
     {
         _departmentRepository = departmentRepository;
     }
@@ -26,14 +25,11 @@ public class GetDepartmentsNoPagnationHandler : IRequestHandler<GetDepartmentsNo
     public async Task<List<DepartmentDto>> Handle(GetDepartmentsNoPagnationQuery request, CancellationToken cancellationToken)
     {
         List<DepartmentDto> allDepartments = new List<DepartmentDto>();
-
-
-
-
         Expression<Func<Department, bool>> searchExpression = null;
         if (request.SearchFields != null && request.SearchFields.Any())
         {
-            var predicates = request.SearchFields.Select(x => DepartmentSearchFieldDepartmentMap.Map[x]).ToList();
+            var map = DepartmentSearchFieldDepartmentMap.Map(currentCulture);
+			var predicates = request.SearchFields.Select(x => map[x]).ToList();
             searchExpression = ExpressionBuilder.BuildLikeExpression(predicates, request.SearchText);
         }
 

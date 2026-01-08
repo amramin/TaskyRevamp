@@ -10,19 +10,20 @@ using TaskyRevamp.Dto.SystemConfiguration;
 
 namespace TaskyRevamp.Services.SearchMappings
 {
-    public class TaskSourceSearchFieldMap
-    {
-        public static readonly Dictionary<SearchField, Expression<Func<Source, object>>> Map = new()
-        {
-            { SearchField.NameEnglish, x => x.NameEnglish },
-            { SearchField.NameArabic, x => x.NameArabic },
-            { SearchField.CreateDate, x => x.CreateDate },
-            { SearchField.CreatedByEnglish, x => x.CreatedBy.NameEnglish },
-            { SearchField.CreatedByArabic, x => x.CreatedBy.NameArabic },
-            { SearchField.UpdateDate, x => x.UpdateDate },
-            { SearchField.UpdatedByEnglish, x => x.UpdatedBy.NameEnglish },
-            { SearchField.UpdatedByArabic, x => x.UpdatedBy.NameArabic },
-            { SearchField.ActiveStatus, x => x.IsActive }
-        };
-    }
+	public class TaskSourceSearchFieldMap
+	{
+		public static Dictionary<SearchField, Expression<Func<Source, object>>> Map(string culture)
+		{
+			bool isArabic = culture == "ar";
+			return new Dictionary<SearchField, Expression<Func<Source, object>>>
+			{
+				{ SearchField.Name, isArabic?  x => x.NameArabic : x => x.NameEnglish },
+				{ SearchField.CreateDate, x => x.CreateDate },
+				{ SearchField.CreatedBy,  isArabic?  x => x.CreatedBy.NameArabic! : x => x.CreatedBy.NameEnglish! },
+				{ SearchField.UpdateDate, x => x.UpdateDate! },
+				{ SearchField.UpdatedBy, isArabic?  x => x.UpdatedBy!.NameArabic! : x => x.UpdatedBy!.NameEnglish! },
+				{ SearchField.ActiveStatus, x => x.IsActive }
+			};
+		}
+	}
 }

@@ -33,7 +33,8 @@ namespace TaskyRevamp.Services.SystemConfiguration.TypeConfigurarion.Query
             Expression<Func<Types, bool>> searchExpression = null;
             if (request.SearchFields != null && request.SearchFields.Any())
             {
-                var predicates = request.SearchFields.Select(x => TaskTypeSearchFieldMap.Map[x]).ToList();
+				var map = TaskTypeSearchFieldMap.Map(currentLanguage);
+				var predicates = request.SearchFields.Select(x => map[x]).ToList();
                 searchExpression = ExpressionBuilder.BuildLikeExpression(predicates, request.SearchText);
             }
 

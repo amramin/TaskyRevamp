@@ -9,14 +9,11 @@ namespace TaskyRevamp.Dto.Enums.SearchFields
 
     public enum SearchField
     {
-        NameEnglish,
-        NameArabic,
+        Name,
         CreateDate,
-        CreatedByEnglish,
-        CreatedByArabic,
+        CreatedBy,
         UpdateDate,
-        UpdatedByEnglish,
-        UpdatedByArabic,
+        UpdatedBy,
         ActiveStatus
     }
 }

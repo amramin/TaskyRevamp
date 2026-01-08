@@ -439,7 +439,7 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Assigned to.
+        ///   Looks up a localized string similar to Assignee.
         /// </summary>
         public static string AssignedTo {
             get {
@@ -448,7 +448,7 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Assigned to department.
+        ///   Looks up a localized string similar to Assignee department.
         /// </summary>
         public static string AssignedToDepartment {
             get {
@@ -984,6 +984,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string Dependency {
             get {
                 return ResourceManager.GetString("Dependency", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Description.
+        /// </summary>
+        public static string Description {
+            get {
+                return ResourceManager.GetString("Description", resourceCulture);
             }
         }
         
@@ -2383,15 +2392,6 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Reopened successfully.
-        /// </summary>
-        public static string Reopenedsuccessfully {
-            get {
-                return ResourceManager.GetString("Reopenedsuccessfully", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Reopen Failed.
         /// </summary>
         public static string ReopenFailed {
@@ -2914,6 +2914,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Overall.
+        /// </summary>
+        public static string taskOverall {
+            get {
+                return ResourceManager.GetString("taskOverall", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Task status.
         /// </summary>
         public static string TaskStatus {
@@ -3234,6 +3243,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string UploadExcelFile {
             get {
                 return ResourceManager.GetString("UploadExcelFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File upload.
+        /// </summary>
+        public static string uploadFile {
+            get {
+                return ResourceManager.GetString("uploadFile", resourceCulture);
             }
         }
         

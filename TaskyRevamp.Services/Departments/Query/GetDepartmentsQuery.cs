@@ -31,7 +31,8 @@ public class GetDepartmentsHandler : IRequestHandler<GetDepartmentsQuery, PagedR
 		Expression<Func<Department, bool>> searchExpression = null;
         if (request.SearchFields != null && request.SearchFields.Any())
         {
-            var predicates = request.SearchFields.Select(x => DepartmentSearchFieldDepartmentMap.Map[x]).ToList();
+			var map = DepartmentSearchFieldDepartmentMap.Map(currentCulture);
+			var predicates = request.SearchFields.Select(x => map[x]).ToList();
             searchExpression = ExpressionBuilder.BuildLikeExpression(predicates, request.SearchText);
         }
         var allDepartments = await _departmentRepository.GetPagedAsync(1, int.MaxValue, null, searchExpression, orderBy: null,

@@ -553,18 +553,14 @@ new() { Field = "Action", DisplayName = Loc["Action"] ,IsSortable = false},
         StateHasChanged();
     }
     public List<SearchFieldDepartment> searchFields = new List<SearchFieldDepartment>() {
-SearchFieldDepartment.NameEnglish,
-SearchFieldDepartment.NameArabic,
-SearchFieldDepartment.CreatedByEnglish,
-SearchFieldDepartment.CreatedByArabic,
-SearchFieldDepartment.UpdatedByEnglish,
-SearchFieldDepartment.UpdatedByArabic,
-SearchFieldDepartment.CreateDate,
-SearchFieldDepartment.UpdateDate,
-SearchFieldDepartment.ParentNameAR,
-SearchFieldDepartment.ParentNameEN,
-SearchFieldDepartment.Level
-};
+        SearchFieldDepartment.Name,
+        SearchFieldDepartment.CreatedBy,
+        SearchFieldDepartment.UpdatedBy,
+        SearchFieldDepartment.CreateDate,
+        SearchFieldDepartment.UpdateDate,
+        SearchFieldDepartment.ParentName,
+        SearchFieldDepartment.Level
+    };
     private void HandleAddDepartment(string parentId)
     {
         navigationManager.NavigateTo($"/Add-Department?parentId={parentId}");

@@ -201,6 +201,9 @@
   <data name="Name Color Indicator" xml:space="preserve">
     <value>مؤشر لون الاسم</value>
   </data>
+  <data name="file" xml:space="preserve">
+    <value>ارفاق ملفات</value>
+  </data>
   <data name="Order" xml:space="preserve">
     <value>ترتيب الأولوية</value>
   </data>
@@ -395,6 +398,15 @@
   </data>
   <data name="weight" xml:space="preserve">
     <value>الوزن</value>
+  </data>
+  <data name="Comments" xml:space="preserve">
+    <value>التعليقات</value>
+  </data>
+  <data name="AddDescription" xml:space="preserve">
+    <value>اضف وصف المهمة</value>
+  </data>
+  <data name="Drag and Drop or" xml:space="preserve">
+    <value>سحب وإفلات</value>
   </data>
   <data name="AssignedTo" xml:space="preserve">
     <value>المسند إليه</value>
@@ -629,7 +641,7 @@
     <value>تاريخ البدء </value>
   </data>
   <data name="ToDate" xml:space="preserve">
-    <value>تاريخ الانتهاء</value>
+    <value>تاريخ الإنتهاء</value>
   </data>
   <data name="CreateDate" xml:space="preserve">
     <value>تاريخ الإنشاء</value>
@@ -1110,6 +1122,12 @@
   <data name="ReOpen" xml:space="preserve">
     <value>إعادة فتح</value>
   </data>
+  <data name="AddAttachment" xml:space="preserve">
+    <value>إضافة ملف</value>
+  </data>
+  <data name="ReOpen" xml:space="preserve">
+    <value>إعادة فتح</value>
+  </data>
   <data name="Editedsuccessfully" xml:space="preserve">
     <value>تم التعديل بنجاح</value>
   </data>
@@ -1143,6 +1161,9 @@
   </data>
   <data name="AddAttachment" xml:space="preserve">
     <value>إضافة ملف</value>
+  </data>
+  <data name="NoAttachmentsYet" xml:space="preserve">
+    <value>لم تتم إضافة أي ملفات</value>
   </data>
   <data name="NoAttachmentsYet" xml:space="preserve">
     <value>لم تتم إضافة أي ملفات</value>
@@ -1264,5 +1285,20 @@
   </data>
   <data name="ThisPrioritynamewas" xml:space="preserve">
     <value> تم حذف اسم هذه الأولوية سابقًا وربطها بمهمة مكتملة. هل ترغب في استخدامها مرة أخرى؟</value>
+  </data>
+  <data name="taskOverall" xml:space="preserve">
+    <value>جميع المهام</value>
+  </data>
+  <data name="Description" xml:space="preserve">
+    <value>الوصف  </value>
+  </data>
+  <data name="uploadFile" xml:space="preserve">
+    <value>تحميل ملف</value>
+  </data>
+  <data name="Completedsuccessfully" xml:space="preserve">
+    <value>نجحت عملية اكمال المهمة</value>
+  </data>
+  <data name="SureCompleteTask" xml:space="preserve">
+    <value>هل انت متأكد انك تريد اكمال المهمة؟</value>
   </data>
 </root>

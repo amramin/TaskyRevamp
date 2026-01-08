@@ -8,13 +8,10 @@ namespace TaskyRevamp.Dto.Enums.SearchFields
 {
 	public enum SearchFieldPrivileg
 	{
-		NameEnglish,
-		NameArabic,
+		Name,		
 		CreateDate,
-		CreatedByEnglish,
-		CreatedByArabic,
+		CreatedBy,
 		UpdateDate,
-		UpdatedByEnglish,
-		UpdatedByArabic
+		UpdatedBy
 	}
 }

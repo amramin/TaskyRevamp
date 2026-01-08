@@ -9,11 +9,9 @@ namespace TaskyRevamp.Dto.Enums.SearchFields
 
     public enum SearchFieldUserDepartment
     {
-        NameEnglish,
-        NameArabic,
+        Name,
         Email,
-        PrivilageNameArabic,
-        PrivilageNameEnglish,
+        PrivilageName,
         IsManager
     }
 }
