@@ -22,12 +22,12 @@
             {
                 <TaskDescription @bind-ShowSection="showDescription" Task="task" />
                 <TaskDetails @bind-ShowSection="showDetails" Task="task" />
-                <TaskComments @bind-ShowSection="showComments" TaskId="TaskId" />
+                <TaskComments @bind-ShowSection="showComments" TaskId="TaskId" @ref="commentssection"/>
             }
         </div>
 
         <div class="col-lg-5">
-            <TaskSidebar Task="task" OnConfirmed="LoadTask"/>
+            <TaskSidebar Task="task" OnConfirmed="LoadTask" OnReopenTask="AfterReopen" />
         </div>
     </div>
 </div>
@@ -37,6 +37,7 @@
     private string activeTab = "details";
     private CreateTaskDto task = new CreateTaskDto();
     private bool showDescription = true;
+    private TaskComments commentssection;
     private bool showDetails = false;
     private bool showComments = true;
     private Guid currentUserId;
@@ -68,5 +69,16 @@
     private void GoBack()
     {
         navigationManager.NavigateTo("/MainTasks");
+    }
+    public async Task AfterReopen()
+    {
+        var res = await _taskConsumer.GetTaskById(TaskId, currentUserId);
+        if (res.Success && res.Data != null)
+        {
+            task = res.Data;
+            isCreator = task.CreatedBy == currentUserId;
+            StateHasChanged();
+        }
+        await commentssection.LoadComments();
     }
 }
