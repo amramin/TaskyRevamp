@@ -1221,18 +1221,6 @@
   <data name="Privilege" xml:space="preserve">
     <value>Privileges</value>
   </data>
-  <data name="file" xml:space="preserve">
-    <value>Upload Files</value>
-  </data>
-  <data name="Comments" xml:space="preserve">
-    <value>Comments</value>
-  </data>
-  <data name="AddDescription" xml:space="preserve">
-    <value>Add Description</value>
-  </data>
-  <data name="Drag and Drop or" xml:space="preserve">
-    <value>Drag and Drop or</value>
-  </data>
   <data name="hisprioritynam" xml:space="preserve">
     <value>his priority name was previously deleted and linked to a completed task. Do you want to use it again?</value>
   </data>
@@ -1277,5 +1265,23 @@
   </data>
   <data name="SureCompleteTask" xml:space="preserve">
     <value>Are you sure to complete task</value>
+  </data>
+  <data name="Enterthereason" xml:space="preserve">
+    <value>Enter the reason</value>
+  </data>
+  <data name="Taskdetails" xml:space="preserve">
+    <value>Task details</value>
+  </data>
+  <data name="EditTask" xml:space="preserve">
+    <value>Edit task</value>
+  </data>
+  <data name="loginconditions" xml:space="preserve">
+    <value>login conditions</value>
+  </data>
+  <data name="IDorUserName" xml:space="preserve">
+    <value>User name</value>
+  </data>
+  <data name="Password" xml:space="preserve">
+    <value>Password</value>
   </data>
 </root>
