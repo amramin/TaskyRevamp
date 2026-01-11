@@ -201,7 +201,7 @@
         }
         await LoadComments();
     }
-    private async Task LoadComments()
+    public async Task LoadComments()
     {
         var res = await _taskCommentConsumer.GetTaskCommentsById(TaskId);
         if (res.Success && res.Data != null)

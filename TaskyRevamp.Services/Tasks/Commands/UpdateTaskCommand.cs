@@ -1,9 +1,13 @@
 ﻿using MediatR;
+using TaskyRevamp.Domain.Interfaces;
 using TaskyRevamp.Domain.Interfaces.Repositeries;
 using TaskyRevamp.Domain.Models.SystemConfiguration;
 using TaskyRevamp.Domain.Models.Task;
 using TaskyRevamp.Domain.Repositeries;
+using TaskyRevamp.Dto.TaskAttachment;
 using TaskyRevamp.Dto.TaskDto;
+using TaskComments = TaskyRevamp.Domain.Models.Task.TaskComment;
+using TaskAttachment = TaskyRevamp.Domain.Models.Task.TaskAttachments;
 
 
 namespace TaskyRevamp.Services.Tasks.Commands;
@@ -14,11 +18,25 @@ public class UpdateTaskCommandHandler : IRequestHandler<UpdateTaskCommand, bool>
 {
     private readonly ITaskRepository _taskRepository;
     private readonly IRepository<StatusSettings> _statusSettings;
+    private readonly IRepository<TaskDependencies> _taskDependincesRepository;
+    private readonly IRepository<TaskItem> _taskrepo;
+    private readonly IRepository<TaskComments> _taskCommentRepository;
+    private readonly IRepository<Attachment> _attachmentRepository;
+    private readonly IRepository<TaskAttachment> _taskAttachmentRepository;
+    private readonly HashSet<string> AllowedUploadedExtensions = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+        { ".pdf", ".doc", ".docx", ".xls", ".xlsx", ".ppt", ".pptx", ".txt", ".csv", ".jpg", ".jpeg", ".png" };
+    private readonly IFileManagement _fileManagement;
 
-    public UpdateTaskCommandHandler(ITaskRepository taskRepository, IRepository<StatusSettings> statusSettings)
+    public UpdateTaskCommandHandler(ITaskRepository taskRepository, IFileManagement fileManagement, IRepository<Attachment> attachmentRepository, IRepository<TaskAttachment> taskAttachmentRepository, IRepository<StatusSettings> statusSettings, IRepository<TaskDependencies> taskDependincesRepository, IRepository<TaskItem> taskrepo, IRepository<TaskComments> taskCommentRepository)
     {
         _taskRepository = taskRepository;
         _statusSettings = statusSettings;
+        _taskDependincesRepository = taskDependincesRepository;
+        _taskrepo = taskrepo;
+        _taskCommentRepository = taskCommentRepository;
+        _attachmentRepository = attachmentRepository;
+        _taskAttachmentRepository = taskAttachmentRepository;
+        _fileManagement = fileManagement;
     }
 
     public async Task<bool> Handle(UpdateTaskCommand request, CancellationToken cancellationToken)
@@ -29,10 +47,11 @@ public class UpdateTaskCommandHandler : IRequestHandler<UpdateTaskCommand, bool>
         {
             throw new Exception("Task not found");
         }
- 
 
+        int oldprogress = task.Progress;
+        var oldstatus = task.StatusId;
         task.SetData(request.Task);
-        if (task.Progress != request.Task.ActualProcess)
+        if (oldprogress != request.Task.ActualProcess)
         {
             if (TaskSatuses is not null)
             {
@@ -64,12 +83,61 @@ public class UpdateTaskCommandHandler : IRequestHandler<UpdateTaskCommand, bool>
                 }
                 else if (request.Task.ActualProcess == 100)
                 {
-                    task.StatusId = Guid.Parse("6EE4574D-C439-45B4-223A-08DE3318A61C");
+                    if(task.Dependencies is  not null&&task.Dependencies.Count>0)
+                    {
+                        var dependencies = task.Dependencies?.Select(p => p.DependentId).ToList();
+                        var tasksnotcompleted = await _taskrepo.FindBy(d => dependencies.Contains(d.Id));
+                        if(tasksnotcompleted.Value.Any(p => p.StatusId != Guid.Parse("C8D504C7-9402-4F91-223C-08DE3318A61C"))){
+                            throw new Exception("DependencyError");
+                        }
+                        else
+                        {
+                            task.StatusId = Guid.Parse("6EE4574D-C439-45B4-223A-08DE3318A61C");
+                        }
+                    }
+                    else
+                    {
+                        task.StatusId = Guid.Parse("6EE4574D-C439-45B4-223A-08DE3318A61C");
+                    }
                 }
             }
         }
         await _taskRepository.UpdateTask(task);
-
+        if (request.Task.uploadAttachmentDtos is not null)
+        {
+            var attachmnentsDto = request.Task.uploadAttachmentDtos.ToList();
+            if (attachmnentsDto != null)
+            {
+                await uploadTaskFiles(attachmnentsDto, task.Id);
+            }
+        }
+        if (!string.IsNullOrEmpty(request.Task.Content))
+        {
+            TaskComments taskComment = new TaskComments(task.Id, request.Task.Content);
+            await _taskCommentRepository.Insert(taskComment);
+        }
         return true;
+    }
+    public async Task uploadTaskFiles(List<UploadAttachmentDto> uploadAttachmentDtos, Guid taskId)
+    {
+        var taskAttachmentsResult = await _taskAttachmentRepository.FindBy(t => t.TaskItemId == taskId);
+        TaskAttachment taskAttachments;
+        if (!taskAttachmentsResult.Success || taskAttachmentsResult.Value == null || !taskAttachmentsResult.Value.Any())
+        {
+            taskAttachments = new TaskAttachment { Id = Guid.NewGuid(), TaskItemId = taskId };
+            await _taskAttachmentRepository.Insert(taskAttachments);
+        }
+        else
+            taskAttachments = taskAttachmentsResult.Value.FirstOrDefault()!;
+        foreach (var dto in uploadAttachmentDtos)
+        {
+            var extension = Path.GetExtension(dto.FileName)?.ToLower();
+            if (!AllowedUploadedExtensions.Contains(extension!))
+                continue;
+            var fileType = _fileManagement.ResolveFileType(dto.FileName);
+            var fileId = await _fileManagement.UploadFile(dto.Bytes, dto.FileName, fileType);
+            var attachment = new Attachment(Guid.NewGuid(), dto.FileName, fileId, dto.Size, taskAttachments.Id, fileType);
+            await _attachmentRepository.Insert(attachment);
+        }
     }
 }

@@ -33,6 +33,7 @@ public class CreateTaskDto
     public int ActualWeight { get; set; } = 0;
     public int Plannedweight { get; set; } = 0;
     public int PlannedProgress { get; set; }
+    public string? DependencyNames {  get; set; }
 	public int Duration =>
 	StartDate.HasValue && EndDate.HasValue? (EndDate.Value.Date - StartDate.Value.Date).Days + 1: 0;
 	public Guid? TaskStatus { get; set; }

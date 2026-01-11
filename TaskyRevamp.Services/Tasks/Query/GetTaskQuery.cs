@@ -15,18 +15,20 @@ public record GetTaskQuery(Guid Id, Guid currentUserId) : IRequest<CreateTaskDto
 
 public class GetTaskByIdHandler : IRequestHandler<GetTaskQuery, CreateTaskDto>
 {
- 
+
+    private readonly IRepository<TaskDependencies> _taskDependincesRepository;
     private readonly ITaskRepository _taskRepository;
     private readonly IRepository<User> _userRepository;
     private readonly IRepository<Department> _departmentRepository;
     private readonly IRepository<TaskViews> _taskViewsRepository;
 	private string currentCulture = System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
-	public GetTaskByIdHandler(ITaskRepository taskRepository, IRepository<User> userRepository, IRepository<Department> departmentRepository, IRepository<TaskViews> taskViewsRepository)
+	public GetTaskByIdHandler(ITaskRepository taskRepository, IRepository<User> userRepository,IRepository<TaskDependencies> taskDependincesRepository, IRepository<Department> departmentRepository, IRepository<TaskViews> taskViewsRepository)
 	{
 		_taskRepository = taskRepository;
 		_userRepository = userRepository;
 		_departmentRepository = departmentRepository;
 		_taskViewsRepository = taskViewsRepository;
+		_taskDependincesRepository = taskDependincesRepository;
 	}
 
 	public async Task<CreateTaskDto> Handle(GetTaskQuery request, CancellationToken cancellationToken)
@@ -41,6 +43,11 @@ public class GetTaskByIdHandler : IRequestHandler<GetTaskQuery, CreateTaskDto>
 			await TrackTaskView(request.Id, request.currentUserId);
 		}
 		var taskDto = res.CopyToDto();
+		var dependencies=await _taskDependincesRepository.FindBy(p=>p.TaskItemId==taskDto.Id);
+		if (dependencies is not null)
+		{
+			taskDto.Dependencies = dependencies.Value.Select(p => p.DependentId).ToList();
+        }
 		taskDto.TypeName = currentCulture == "ar" ? res.Type?.NameArabic : res.Type?.NameEnglish;
 		taskDto.SourceName = currentCulture == "ar" ? res.Source?.NameArabic : res.Source?.NameEnglish;
 		taskDto.PriorityName = currentCulture == "ar" ? res.Priority?.NameArabic : res.Priority?.NameEnglish;
@@ -77,8 +84,8 @@ public class GetTaskByIdHandler : IRequestHandler<GetTaskQuery, CreateTaskDto>
 		var orderedDeptNames = res.AssignedDepartmentIds.Where(id => deptDict.ContainsKey(id)).Select(id => deptDict[id]).Distinct().ToList();
 		taskDto.AssignedDepartmentName = string.Join(", ", orderedDeptNames);
 
-		if (res.Dependencies != null)
-			taskDto.Dependencies = res.Dependencies is TaskDependencies td? td.Items.Select(i => i.Id).ToList(): taskDto.Dependencies;
+		//if (res.Dependencies != null)
+		//	taskDto.Dependencies = res.Dependencies is TaskDependencies td? td.Items.Select(i => i.Id).ToList(): taskDto.Dependencies;
 
 		if (request.currentUserId != Guid.Empty && request.currentUserId == res.CreatedById)
 		{
