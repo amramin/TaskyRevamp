@@ -21,7 +21,6 @@
     [Parameter] public bool IsAdmine { set; get; }
     [Parameter] public EventCallback<CreateTaskDto> OnValidSubmit { get; set; }
     [Parameter] public EventCallback OnCancel { get; set; }
-
     bool IsLoaded = false;
     protected override async Task OnInitializedAsync()
     {
@@ -31,19 +30,16 @@
     {
         var current = await LocalStorageService.GetItemAsStringAsync("Id");
         Taskdto.CreatedBy = Guid.Parse(current);
-   var rs=await _taskonsumer.AddTask(Taskdto);
-        //await ToastService.ShowToastAsync(Loc[MessagesMap.DataSavedSuccessfully], "success");
-        if (rs.Success&&string.IsNullOrEmpty(rs.ErrorMessage))
-{       
-    await ToastService.ShowToastAsync(Loc["DataSavedSuccessfully"], "success");
-
-        navigationManager.NavigateTo($"/MainTasks",true);
-
-} 
-else{
+        var rs = await _taskonsumer.AddTask(Taskdto);
+        if (rs.Success && string.IsNullOrEmpty(rs.ErrorMessage))
         {
-                await ToastService.ShowToastAsync(Loc["Erroroccurred"], "error");
+            await ToastService.ShowToastAsync(Loc["Added successfully"], "success");
+            navigationManager.NavigateTo($"/MainTasks", true);
 
+        }
+        else
+        {
+            await ToastService.ShowToastAsync(Loc["Erroroccurred"], "error");
             return;
         }
     }

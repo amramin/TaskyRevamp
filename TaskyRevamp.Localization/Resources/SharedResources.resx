@@ -409,7 +409,7 @@
     <value>Drag and Drop or</value>
   </data>
   <data name="AssignedTo" xml:space="preserve">
-    <value>Assignee</value>
+    <value>Assigned To</value>
   </data>
   <data name="CreatorDepartment" xml:space="preserve">
     <value>Creator department</value>
@@ -775,7 +775,7 @@
     <value>Above user department level</value>
   </data>
   <data name="BelowUserDepartmentLevel" xml:space="preserve">
-    <value>Below user department leve</value>
+    <value>Below user department level</value>
   </data>
   <data name="PeersLevel" xml:space="preserve">
     <value>Peer's level</value>
@@ -1165,7 +1165,7 @@
     <value>This file type is not supported. Allowed formats are: pdf, doc, docx, xls, xlsx, .ppt, .pptx, txt, csv, jpg, jpeg, and png</value>
   </data>
   <data name="FileSizeExceedsLimitTask" xml:space="preserve">
-    <value>The selected file exceeds the maximum allowed size of  {0} MB. Please upload a smaller file.</value>
+    <value>The selected file exceeds the maximum allowed size of  25 MB. Please upload a smaller file.</value>
   </data>
   <data name="userLink" xml:space="preserve">
     <value>Link user</value>

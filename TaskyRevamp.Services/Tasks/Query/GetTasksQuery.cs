@@ -64,8 +64,8 @@ public class GetTasksHandler : IRequestHandler<GetTasksQuery, PagedResult<Create
         {
             var assgnedusr = await _userRepository.FindBy(k => tsk.AssignedIds.Contains(k.Id));
             var CreatorDepartment =  _departmenRepository.FirstOrDefaultAsNoTracking(k => k.Id == (tsk.CreatedBy.DepartmentId??Guid.Empty));
-            tsk.ActualWeight=new Weight(tsk.Weight);
-            tsk.PlannedWeight = new Weight(tsk.Weight);
+            tsk.ActualWeight=new Weight(tsk.Weight ?? 0);
+            tsk.PlannedWeight = new Weight(tsk.Weight ?? 0);
             CreateTaskDto tasky = tsk.CopyToDto();
             tasky.TypeName = currentCulture == "ar" ? tsk.Type?.NameArabic : tsk.Type?.NameEnglish;
             tasky.SourceName = currentCulture == "ar" ? tsk.Source?.NameArabic : tsk.Source?.NameEnglish;

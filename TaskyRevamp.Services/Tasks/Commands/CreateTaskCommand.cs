@@ -67,13 +67,14 @@ public class CreateTaskHandler : IRequestHandler<CreateTaskCommand, string>
                 throw new Exception("DependencyError");
             }
         }
-        var task = new TaskItem(request.CreateTaskDto.Id, request.CreateTaskDto.Title,
+        var weight = request.CreateTaskDto.weight ?? 0;
+		var task = new TaskItem(request.CreateTaskDto.Id, request.CreateTaskDto.Title,
              request.CreateTaskDto.Description!,
              request.CreateTaskDto.TypeId, request.CreateTaskDto.SourceId,
             request.CreateTaskDto.StartDate, request.CreateTaskDto.EndDate,
          request.CreateTaskDto.Priority
-            , new Weight(request.CreateTaskDto.weight), user.Value.Id, departments.Value.ToList(),
-            request.CreateTaskDto.AssignedIds, request.CreateTaskDto.ReminderDate, request.CreateTaskDto.ActualProcess, request.CreateTaskDto.weight, request.CreateTaskDto.Dependencies);
+            , new Weight(weight), user.Value.Id, departments.Value.ToList(),
+            request.CreateTaskDto.AssignedIds, request.CreateTaskDto.ReminderDate, request.CreateTaskDto.ActualProcess, weight, request.CreateTaskDto.Dependencies);
 
         if (TaskSatuses is not null)
         {

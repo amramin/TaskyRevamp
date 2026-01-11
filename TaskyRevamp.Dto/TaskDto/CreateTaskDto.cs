@@ -27,7 +27,7 @@ public class CreateTaskDto
     public Guid TypeId { get; set; }
     public Guid SourceId { get; set; }
 	public Guid Priority { get; set; }
-    public int weight { get; set; } = 0;
+    public int? weight { get; set; }
 	public int ActualProcess { get; set; } = 0;
     //public int Duration = 0;//=> (EndDate.Date - StartDate.Date).Days + 1;
     public int ActualWeight { get; set; } = 0;

@@ -1168,7 +1168,7 @@
     <value>نوع الملف غير مدعوم. الصيغ المسموح بها هي: pdf, doc, docx, xls, xlsx, .ppt, .pptx, txt, csv, jpg, jpeg, و png</value>
   </data>
   <data name="FileSizeExceedsLimitTask" xml:space="preserve">
-    <value>الملف المحدد يتجاوز الحد الأقصى المسموح به وهو {0} ميجابايت. يُرجى تحميل ملف أصغر حجمًا</value>
+    <value>الملف المحدد يتجاوز الحد الأقصى المسموح به وهو 25 ميجابايت. يُرجى تحميل ملف أصغر حجمًا</value>
   </data>
   <data name="userLink" xml:space="preserve">
     <value>ربط المستخدم</value>
@@ -1270,12 +1270,12 @@
   <data name="SureCompleteTask" xml:space="preserve">
     <value>هل انت متأكد انك تريد اكمال المهمة؟</value>
   </data>
-  <data name="ValueMustBeGreaterThanOrEqualTo1" xml:space="preserve">
-    <value>يجب أن تكون القيمة أكبر من أو تساوي 1</value>
-  </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="Reopenedsuccessfully" type="System.Resources.ResXNullRef, System.Windows.Forms">
     <value />
+  </data>
+  <data name="ValueMustBeGreaterThanOrEqualTo1" xml:space="preserve">
+    <value>يجب أن تكون القيمة أكبر من أو تساوي 1</value>
   </data>
   <data name="WeightMustBeBetween0And100" xml:space="preserve">
     <value>أدخل قيمة بين 0 و 100</value>

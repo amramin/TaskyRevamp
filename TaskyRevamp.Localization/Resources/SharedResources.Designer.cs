@@ -439,7 +439,7 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Assignee.
+        ///   Looks up a localized string similar to Assigned To.
         /// </summary>
         public static string AssignedTo {
             get {
@@ -484,7 +484,7 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Below user department leve.
+        ///   Looks up a localized string similar to Below user department level.
         /// </summary>
         public static string BelowUserDepartmentLevel {
             get {
@@ -1438,7 +1438,7 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The selected file exceeds the maximum allowed size of  {0} MB. Please upload a smaller file..
+        ///   Looks up a localized string similar to The selected file exceeds the maximum allowed size of  25 MB. Please upload a smaller file..
         /// </summary>
         public static string FileSizeExceedsLimitTask {
             get {
