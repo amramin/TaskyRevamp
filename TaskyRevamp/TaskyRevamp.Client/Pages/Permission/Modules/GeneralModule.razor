@@ -115,7 +115,7 @@
                                     </label>
                                 </div>
                             }
-                            @if (IsSaveClicked && showDelegationFromUserError)
+                            @if (showDelegationFromUserError)
                             {
                                 <div class="text-danger small mt-1">
                                     @Loc["SelectAtLeastOneValue"]
@@ -132,8 +132,8 @@
                                                                     delegationPermission.DelegationFromUserDepartments = new List<Guid>(ids);
                                                                     _ = ValidateAndNotify(delegationPermission);
                                                               })"
-                                                              LoadUsersByDepartment="@LoadUsersForDepartment" />
-                            }
+                                                               LoadUsersByDepartment="@LoadUsersForDepartment" />
+                           }
 
                         </div>
                     </div>
@@ -154,7 +154,7 @@
                                     </label>
                                 </div>
                             }
-                            @if (IsSaveClicked && showDelegationToUserError)
+                            @if (showDelegationToUserError)
                             {
                                 <div class="text-danger small mt-1">
                                     @Loc["SelectAtLeastOneValue"]
@@ -167,8 +167,8 @@
                                                               SelectedDepartments="@delegationPermission.DelegationToUserDepartments"
                                                               SelectedDepartmentsChanged="@((List<Guid> ids) =>
                                                               {
-                                                                      delegationPermission.DelegationToUserDepartments = new List<Guid>(ids); // <-- was wrong before
-                                                                      _ = ValidateAndNotify(delegationPermission);
+                                                                delegationPermission.DelegationToUserDepartments = new List<Guid>(ids);
+                                                                _ = ValidateAndNotify(delegationPermission);
                                                               })"
                                                               LoadUsersByDepartment="@LoadUsersForDepartment" />
 
@@ -267,17 +267,18 @@
     void OnAddChanged(GeneralModulePermissionDto permission, ChangeEventArgs e)
     {
         permission.IsAdd = (bool)e.Value!;
-        if (!permission.IsAdd)
+        // Only validate if this is the Delegation module
+        var delegationModule = generalModules.FirstOrDefault(m => m.Id == permission.GeneralModuleId);
+        if (permission.IsAdd && delegationModule != null && delegationModule.NameEnglish == "Delegation")
         {
-            // Reset DelegationFromUser
-            permission.DelegationFromUser = new();
-            permission.DelegationFromUserDepartments = new();
-            // Reset DelegationToUser
-            permission.DelegationToUser = new();
-            permission.DelegationToUserDepartments = new();
-
+            _ = ValidateAndNotify(permission);
         }
-        _ = ValidateAndNotify(permission);
+        else // Clear errors if not Delegation module or Add is unchecked
+        {
+            showDelegationFromUserError = false;
+            showDelegationToUserError = false;
+            _ = OnValidationStateChanged.InvokeAsync(true);
+        }
     }
     private async Task OnDelegationToUserChanged(int value, object checkedValue, GeneralModulePermissionDto permission)
     {
@@ -310,32 +311,41 @@
 
     private async Task ValidateAndNotify(GeneralModulePermissionDto permission)
     {
+        var delegationModule = generalModules.FirstOrDefault(m => m.Id == permission.GeneralModuleId);
+        if (delegationModule == null || delegationModule.NameEnglish != "Delegation" || !permission.IsAdd)
+        {
+            showDelegationFromUserError = false;
+            showDelegationToUserError = false;
+            await OnValidationStateChanged.InvokeAsync(true);
+            StateHasChanged();
+            return;
+        }
         bool isValid = true;
         showDelegationFromUserError = false;
         showDelegationToUserError = false;
 
-        if (permission.IsAdd)
+
+        var fromUsers = permission.DelegationFromUser ?? new List<int>();
+        var toUsers = permission.DelegationToUser ?? new List<int>();
+        var fromDepartments = permission.DelegationFromUserDepartments ?? new List<Guid>();
+        var toDepartments = permission.DelegationToUserDepartments ?? new List<Guid>();
+
+        if (!fromUsers.Any())
         {
-            var fromUsers = permission.DelegationFromUser ?? new List<int>();
-            var toUsers = permission.DelegationToUser ?? new List<int>();
-            var fromDepartments = permission.DelegationFromUserDepartments ?? new List<Guid>();
-            var toDepartments = permission.DelegationToUserDepartments ?? new List<Guid>();
-
-            if (!fromUsers.Any())
-            {
-                showDelegationFromUserError = true; isValid = false;
-            }
-            else if (fromUsers.Contains((int)DelegationFromUser.DifferentDepartment) && !fromDepartments.Any()) 
-                isValid = false;
-
-            if (!toUsers.Any())
-            {
-                showDelegationToUserError = true;
-                isValid = false;
-            }
-            else if (toUsers.Contains((int)DelegationToUser.DifferentDepartment) && !toDepartments.Any())
-                isValid = false;
+            showDelegationFromUserError = true;
+            isValid = false;
         }
+        else if (fromUsers.Contains((int)DelegationFromUser.DifferentDepartment) && !fromDepartments.Any())
+            isValid = false;
+
+        if (!toUsers.Any())
+        {
+            showDelegationToUserError = true;
+            isValid = false;
+        }
+        else if (toUsers.Contains((int)DelegationToUser.DifferentDepartment) && !toDepartments.Any())
+            isValid = false;
+
         await OnValidationStateChanged.InvokeAsync(isValid);
         StateHasChanged();
     }

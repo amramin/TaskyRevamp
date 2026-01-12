@@ -69,7 +69,7 @@ namespace TaskyRevamp.Client
 				return new ValidationResult
 				{
 					NotValid = true,
-					ValidationMessage = Loc["FileSizeExceedsLimitTask", maxSize]
+					ValidationMessage = Loc["FileSizeExceedsLimitTask"]
 				};
 			}
 			return new ValidationResult { NotValid = false };
