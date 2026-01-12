@@ -44,8 +44,9 @@ namespace TaskyRevamp.Infrastructure.Migrations
                 name: "TaskItemId",
                 table: "TaskDependencies",
                 type: "uniqueidentifier",
-                nullable: false,
-                defaultValue: new Guid("00000000-0000-0000-0000-000000000000"));
+                nullable: true
+               // defaultValue: new Guid("00000000-0000-0000-0000-000000000000")
+               );
         }
 
         /// <inheritdoc />

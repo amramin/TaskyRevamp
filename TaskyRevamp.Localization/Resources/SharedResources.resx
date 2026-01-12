@@ -1278,4 +1278,22 @@
   <data name="ReminderDateBetweenStartAndEnd" xml:space="preserve">
     <value>Enter a valid reminder date, it should be between the start and end date</value>
   </data>
+  <data name="Enterthereason" xml:space="preserve">
+    <value>Enter the reason</value>
+  </data>
+  <data name="Taskdetails" xml:space="preserve">
+    <value>Task details</value>
+  </data>
+  <data name="EditTask" xml:space="preserve">
+    <value>Edit task</value>
+  </data>
+  <data name="loginconditions" xml:space="preserve">
+    <value>login conditions</value>
+  </data>
+  <data name="IDorUserName" xml:space="preserve">
+    <value>User name</value>
+  </data>
+  <data name="Password" xml:space="preserve">
+    <value>Password</value>
+  </data>
 </root>

@@ -1168,6 +1168,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Edit task.
+        /// </summary>
+        public static string EditTask {
+            get {
+                return ResourceManager.GetString("EditTask", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Edit source.
         /// </summary>
         public static string EditTaskSource {
@@ -1371,6 +1380,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string EnterPrivilegeName {
             get {
                 return ResourceManager.GetString("EnterPrivilegeName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter the reason.
+        /// </summary>
+        public static string Enterthereason {
+            get {
+                return ResourceManager.GetString("Enterthereason", resourceCulture);
             }
         }
         
@@ -1582,6 +1600,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to User name.
+        /// </summary>
+        public static string IDorUserName {
+            get {
+                return ResourceManager.GetString("IDorUserName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Inactive.
         /// </summary>
         public static string inactive {
@@ -1776,6 +1803,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string Login {
             get {
                 return ResourceManager.GetString("Login", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to login conditions.
+        /// </summary>
+        public static string loginconditions {
+            get {
+                return ResourceManager.GetString("loginconditions", resourceCulture);
             }
         }
         
@@ -2118,6 +2154,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string passRequired {
             get {
                 return ResourceManager.GetString("passRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Password.
+        /// </summary>
+        public static string Password {
+            get {
+                return ResourceManager.GetString("Password", resourceCulture);
             }
         }
         
@@ -2910,6 +2955,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string SystemNotifications {
             get {
                 return ResourceManager.GetString("SystemNotifications", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Task details.
+        /// </summary>
+        public static string Taskdetails {
+            get {
+                return ResourceManager.GetString("Taskdetails", resourceCulture);
             }
         }
         
