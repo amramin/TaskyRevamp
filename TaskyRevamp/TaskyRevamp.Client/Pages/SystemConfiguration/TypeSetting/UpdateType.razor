@@ -25,7 +25,8 @@
     [Parameter] public EventCallback<TypeDto> OnValidSubmit { get; set; }
     [Parameter] public EventCallback OnCancel { get; set; }
     private TypeForm form;
-
+    private TypeDto? selectedType;
+    private bool showConfirm;
     protected override async Task OnInitializedAsync()
     {
         var res = await _typeSettingConsumer.GetTypeById(Id);
@@ -37,16 +38,75 @@
 
     private async Task Save(EditContext editContext)
     {
-        var current = await LocalStorageService.GetItemAsStringAsync("Id");
-        type.UpdatedById = Guid.Parse(current);
-        var res = await _typeSettingConsumer.UpdateType(type);
-        if (res.Success)
+        //var current = await LocalStorageService.GetItemAsStringAsync("Id");
+        //type.UpdatedById = Guid.Parse(current);
+
+        var alloldTypes = await _typeSettingConsumer.GetTaskTypesForDDL();
+        var allOldActiveType = alloldTypes.Data
+            .Where(k => k.IsActive == true && k.IsDeleted != true && k.Id != type.Id)
+            .ToList();
+
+        var alloldDeletedType = alloldTypes.Data
+            .Where(k => k.IsDeleted == true)
+            .ToList();
+        if (allOldActiveType.Any(m => m.NameEnglish == type.NameEnglish) || allOldActiveType.Any(m => m.NameArabic == type.NameArabic))
         {
-            await OnValidSubmit.InvokeAsync(type);
-            await ToastService.ShowToastAsync(Loc["EditSuccess"], "success");
-            PopupService.Hide();
+            await ToastService.ShowToastAsync(Loc["AnactiveTypewith"], "error");
+
+            return;
+        }
+        else if (alloldDeletedType.Any(m => m.NameEnglish == type.NameEnglish) || alloldDeletedType.Any(m => m.NameArabic == type.NameArabic))
+        {
+
+            var relatedwithcompleted = await _typeSettingConsumer.CheckRelatedComplatedTaskitemType(type);
+            if (relatedwithcompleted.Data)
+            {
+                PopupService.ShowConfirmation(@Loc["ThisTypenamewas"], @Loc["Confirm"], OnSavedConfirmed, type: ConfirmationType.Danger);
+                selectedType = type;
+                showConfirm = true;
+            }
+            else
+            {
+                var result = await _typeSettingConsumer.RetriveType(type);
+                await _typeSettingConsumer.DeleteType(Id);
+
+                await ToastService.ShowToastAsync(Loc["Added successfully"], "success");
+
+            }
+        }
+        else {
+            var res = await _typeSettingConsumer.UpdateType(type);
+            if (res.Success)
+            {
+                await OnValidSubmit.InvokeAsync(type);
+                await ToastService.ShowToastAsync(Loc["EditSuccess"], "success");
+                PopupService.Hide();
+            }
         }
     }
+    private async Task OnSavedConfirmed(bool confirmed)
+    {
+        if (confirmed && selectedType != null)
+        {
+            // retrve
+            var result = await _typeSettingConsumer.RetriveType(selectedType);
+            if (result.Data)
+            {
+                await _typeSettingConsumer.DeleteType(Id);
+                showConfirm = false;
+                StateHasChanged();
+                await ToastService.ShowToastAsync(Loc["Retrieved successfully"], "success");
+            }
+            else
+            {
+
+                return;
+            }
+        }
+        selectedType = null;
+
+    }
+
     private void Cancel()
     {
         PopupService.Hide();

@@ -11,14 +11,16 @@ namespace TaskyRevamp.Services.SearchMappings
 {
 	public class UserDepartmentSearchFieldMap
 	{
-		public static readonly Dictionary<SearchFieldUserDepartment, Expression<Func<User, object>>> Map = new()
+		public static Dictionary<SearchFieldUserDepartment, Expression<Func<User, object>>> Map(string culture)
 		{
-			{ SearchFieldUserDepartment.NameEnglish, x => x. NameEnglish},
-			{ SearchFieldUserDepartment.NameArabic, x => x.NameArabic },
-			{ SearchFieldUserDepartment.Email, x => x.Email },
-			{ SearchFieldUserDepartment.PrivilageNameEnglish, x => x.Privilege.NameEnglish },
-			{ SearchFieldUserDepartment.PrivilageNameArabic, x => x.Privilege.NameArabic },
-			{ SearchFieldUserDepartment.IsManager, x => x.IsManager},
-		};
+			bool isArabic = culture == "ar";
+			return new Dictionary<SearchFieldUserDepartment, Expression<Func<User, object>>>
+			{
+				{ SearchFieldUserDepartment.Name, isArabic ? x => x.NameArabic! : x => x.NameEnglish!},
+				{ SearchFieldUserDepartment.Email, x => x.Email },
+				{ SearchFieldUserDepartment.PrivilageName, isArabic ? x => x.Privilege!.NameArabic : x => x.Privilege!.NameEnglish },
+				{ SearchFieldUserDepartment.IsManager, x => x.IsManager},
+			};
+		}
 	}
 }

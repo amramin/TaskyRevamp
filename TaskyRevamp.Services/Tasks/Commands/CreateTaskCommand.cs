@@ -16,6 +16,7 @@ using TaskyRevamp.Dto.TaskDto;
 using TaskyRevamp.Services.TaskAttachments.Command;
 using TaskAttachment = TaskyRevamp.Domain.Models.Task.TaskAttachments;
 namespace TaskyRevamp.Services.Tasks.Commands;
+using TaskComments = TaskyRevamp.Domain.Models.Task.TaskComment;
 
 public record CreateTaskCommand(CreateTaskDto CreateTaskDto) : IRequest<string>;
 
@@ -28,10 +29,13 @@ public class CreateTaskHandler : IRequestHandler<CreateTaskCommand, string>
     private readonly IRepository<User> _userRepository;
     private readonly IRepository<Department> _depRepository;
     private readonly IFileManagement _fileManagement;
+    private readonly IRepository<TaskComments> _taskCommentRepository;
+    private readonly IRepository<TaskDependencies> _taskDependincesRepository;
     private readonly HashSet<string> AllowedUploadedExtensions = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
         { ".pdf", ".doc", ".docx", ".xls", ".xlsx", ".ppt", ".pptx", ".txt", ".csv", ".jpg", ".jpeg", ".png" };
     public CreateTaskHandler(IRepository<TaskItem> taskRepository, IRepository<User> userRepository, IRepository<StatusSettings> statusSettings,
-        IRepository<Department> depRepository, IFileManagement fileManagement, IRepository<Attachment> attachmentRepository, IRepository<TaskAttachment> taskAttachmentRepository)
+        IRepository<Department> depRepository, IFileManagement fileManagement, IRepository<Attachment> attachmentRepository, IRepository<TaskAttachment> taskAttachmentRepository
+        , IRepository<TaskComments> taskCommentRepository, IRepository<TaskDependencies> taskDependincesRepository)
     {
         _taskRepository = taskRepository;
         _userRepository = userRepository;
@@ -40,6 +44,8 @@ public class CreateTaskHandler : IRequestHandler<CreateTaskCommand, string>
         _attachmentRepository = attachmentRepository;
         _taskAttachmentRepository = taskAttachmentRepository;
         _statusSettings = statusSettings;
+        _taskCommentRepository = taskCommentRepository;
+        _taskDependincesRepository = taskDependincesRepository;
     }
 
     public async Task<string> Handle(CreateTaskCommand request, CancellationToken cancellationToken)
@@ -47,25 +53,34 @@ public class CreateTaskHandler : IRequestHandler<CreateTaskCommand, string>
     {
         var user = await _userRepository.FindByKey(request.CreateTaskDto.CreatedBy.Value);
         if (user is null || user.IsFailure || user.Value is null)
-            throw new Exception("User Not Found");
+            throw new Exception("UserNotFound");
         var TaskSatuses = await _statusSettings.All();
         var departments = await _depRepository.FindBy(k => request.CreateTaskDto.AssignedDepartmentIds.Contains(k.Id));
         if (departments is null || departments.IsFailure || departments.Value is null)
-            throw new Exception("Departments Not Found");
-
-        var task = new TaskItem(request.CreateTaskDto.Id, request.CreateTaskDto.Title,
+            throw new Exception("DepartmentsNotFound");
+        if(request.CreateTaskDto.ActualProcess==100&&request.CreateTaskDto.Dependencies is not null && request.CreateTaskDto.Dependencies.Count > 0)
+        {
+            var dependencies = request.CreateTaskDto.Dependencies?.Select(p => p).ToList();
+            var tasksnotcompleted = await _taskRepository.FindBy(d => dependencies.Contains(d.Id));
+            if (tasksnotcompleted.Value.Any(p => p.StatusId != Guid.Parse("C8D504C7-9402-4F91-223C-08DE3318A61C")))
+            {
+                throw new Exception("DependencyError");
+            }
+        }
+        var weight = request.CreateTaskDto.weight ?? 0;
+		var task = new TaskItem(request.CreateTaskDto.Id, request.CreateTaskDto.Title,
              request.CreateTaskDto.Description!,
              request.CreateTaskDto.TypeId, request.CreateTaskDto.SourceId,
             request.CreateTaskDto.StartDate, request.CreateTaskDto.EndDate,
          request.CreateTaskDto.Priority
-            , new Weight(request.CreateTaskDto.weight), user.Value.Id, departments.Value.ToList(),
-            request.CreateTaskDto.AssignedIds, request.CreateTaskDto.ReminderDate, request.CreateTaskDto.ActualProcess, request.CreateTaskDto.weight, request.CreateTaskDto.Dependencies);
+            , new Weight(weight), user.Value.Id, departments.Value.ToList(),
+            request.CreateTaskDto.AssignedIds, request.CreateTaskDto.ReminderDate, request.CreateTaskDto.ActualProcess, weight, request.CreateTaskDto.Dependencies);
 
         if (TaskSatuses is not null)
         {
-            if (request.CreateTaskDto.EndDate < DateTime.UtcNow.Date && request.CreateTaskDto.ActualProcess < 100)
+            if (request.CreateTaskDto.EndDate?.Date < DateTime.UtcNow.Date && request.CreateTaskDto.ActualProcess < 100)
             {
-                task.StatusId = Guid.Parse("547022EA-EF8C-4FBC-2236-08DE3318A61C");
+                task.StatusId = Guid.Parse("270A78EB-C5CA-475D-2239-08DE3318A61C");
             }
             else
             {
@@ -96,6 +111,16 @@ public class CreateTaskHandler : IRequestHandler<CreateTaskCommand, string>
                 await uploadTaskFiles(attachmnentsDto, task.Id);
             }
         }
+        if(!string.IsNullOrEmpty(request.CreateTaskDto.Content))
+        {
+            TaskComments taskComment = new TaskComments(task.Id, request.CreateTaskDto.Content);
+            await _taskCommentRepository.Insert(taskComment);
+        }
+        //if (request.CreateTaskDto.Dependencies is not null)
+        //{
+        //    var dependencies = request.CreateTaskDto.Dependencies.Select(d => new TaskDependencies { TaskItemId = task.Id, DependentId = d }).ToList();
+        //    await _taskDependincesRepository.InsertRange(dependencies);
+        //}
         return task.Id.ToString();
     }
 

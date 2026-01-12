@@ -65,7 +65,7 @@
         @foreach (var dept in PrivilegeDto.TaskModuleExternalDepartmentDto ?? new
                 List<TaskModuleExternalDepartmentDto>())
         {
-            <ExternalDepartmentExtendedFields Item="dept" DepartmentName="@GetDepartmentName(dept.DepartmentId)" IsSaveClicked="@IsSaveClicked"
+            <ExternalDepartmentExtendedFields @key="dept.DepartmentId" Item="dept" DepartmentName="@GetDepartmentName(dept.DepartmentId)" IsSaveClicked="@IsSaveClicked"
                                               OnRemove="RemoveDepartment" IsViewMode="@IsViewMode" IsExpanded="@(IsViewMode || Mode == "Edit")" />
         }
     </div>

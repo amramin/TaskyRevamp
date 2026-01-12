@@ -6,6 +6,7 @@ using TaskyRevamp.Dto.Enums.SearchFields;
 using TaskyRevamp.Dto.GeneralDto;
 using TaskyRevamp.Dto.SystemConfiguration;
 using TaskyRevamp.Services.Account.Query;
+using TaskyRevamp.Services.SystemConfiguration.PriorityConfiguration.Query;
 using TaskyRevamp.Services.SystemConfiguration.SourceConfiguration.Command;
 using TaskyRevamp.Services.SystemConfiguration.SourceConfiguration.Query;
 using TaskyRevamp.Services.TaskSources.Query;
@@ -56,12 +57,23 @@ namespace TaskyRevamp.WebAPI.Controllers
             return Ok(await _mediator.Send(new CreateSourceCommand(source)));
         }
 
+
         [HttpPost("UpdateSource")]
         public async Task<IActionResult> UpdateSource(SourceDto source)
         {
             return Ok(await _mediator.Send(new UpdateSourceCommand(source)));
         }
 
+        [HttpPost("RetriveSource")]
+        public async Task<IActionResult> RetriveSource(SourceDto source)
+        {
+            return Ok(await _mediator.Send(new RetriveSourceCommand(source)));
+        }
+        [HttpPost("CheckRelatedComplatedTaskitemSource")]
+        public async Task<IActionResult> CheckRelatedComplatedTaskitemSource(SourceDto source)
+        {
+            return Ok(await _mediator.Send(new CheckRelatedComplatedTaskitemSourceQuery(source)));
+        }
         [HttpDelete("DeleteSource/{id}")]
         public async Task<IActionResult> DeleteSource(Guid id)
         {

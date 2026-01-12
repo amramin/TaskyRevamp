@@ -56,7 +56,7 @@ namespace TaskyRevamp.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("NotificationTypeTemplate");
+                    b.ToTable("NotificationTypeTemplate", (string)null);
                 });
 
             modelBuilder.Entity("TaskyRevamp.Domain.Models.Permissions.GeneralModule.GeneralModule", b =>
@@ -87,7 +87,7 @@ namespace TaskyRevamp.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("GeneralModule");
+                    b.ToTable("GeneralModule", (string)null);
                 });
 
             modelBuilder.Entity("TaskyRevamp.Domain.Models.Permissions.GeneralModule.GeneralModulePermission", b =>
@@ -132,7 +132,7 @@ namespace TaskyRevamp.Infrastructure.Migrations
 
                     b.HasIndex("PrivilegeId");
 
-                    b.ToTable("GeneralModulePermission");
+                    b.ToTable("GeneralModulePermission", (string)null);
                 });
 
             modelBuilder.Entity("TaskyRevamp.Domain.Models.Permissions.Privilege", b =>
@@ -167,7 +167,7 @@ namespace TaskyRevamp.Infrastructure.Migrations
 
                     b.HasIndex("UpdatedById");
 
-                    b.ToTable("Privilege");
+                    b.ToTable("Privilege", (string)null);
                 });
 
             modelBuilder.Entity("TaskyRevamp.Domain.Models.Permissions.ReportModule.ReportModule", b =>
@@ -194,7 +194,7 @@ namespace TaskyRevamp.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ReportModule");
+                    b.ToTable("ReportModule", (string)null);
                 });
 
             modelBuilder.Entity("TaskyRevamp.Domain.Models.Permissions.ReportModule.ReportModulePermission", b =>
@@ -218,7 +218,7 @@ namespace TaskyRevamp.Infrastructure.Migrations
 
                     b.HasIndex("ReportModuleId");
 
-                    b.ToTable("ReportModulePermission");
+                    b.ToTable("ReportModulePermission", (string)null);
                 });
 
             modelBuilder.Entity("TaskyRevamp.Domain.Models.Permissions.TaskModule.TaskModuleExternalDepartment", b =>
@@ -230,8 +230,8 @@ namespace TaskyRevamp.Infrastructure.Migrations
                     b.Property<Guid>("DepartmentId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int?>("DirectionLevel")
-                        .HasColumnType("int");
+                    b.Property<long?>("DirectionLevel")
+                        .HasColumnType("bigint");
 
                     b.Property<int?>("DirectionType")
                         .HasColumnType("int");
@@ -265,7 +265,7 @@ namespace TaskyRevamp.Infrastructure.Migrations
 
                     b.HasIndex("PrivilegeId");
 
-                    b.ToTable("TaskModuleExternalDepartment");
+                    b.ToTable("TaskModuleExternalDepartment", (string)null);
                 });
 
             modelBuilder.Entity("TaskyRevamp.Domain.Models.Permissions.TaskModule.TaskModuleUserDepartment", b =>
@@ -274,8 +274,8 @@ namespace TaskyRevamp.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int?>("DirectionLevel")
-                        .HasColumnType("int");
+                    b.Property<long?>("DirectionLevel")
+                        .HasColumnType("bigint");
 
                     b.Property<int?>("DirectionType")
                         .HasColumnType("int");
@@ -302,7 +302,7 @@ namespace TaskyRevamp.Infrastructure.Migrations
 
                     b.HasIndex("PrivilegeId");
 
-                    b.ToTable("TaskModuleUserDepartment");
+                    b.ToTable("TaskModuleUserDepartment", (string)null);
                 });
 
             modelBuilder.Entity("TaskyRevamp.Domain.Models.SystemConfiguration.AddTaskSettings", b =>
@@ -330,7 +330,7 @@ namespace TaskyRevamp.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("AddTaskSettings");
+                    b.ToTable("AddTaskSettings", (string)null);
                 });
 
             modelBuilder.Entity("TaskyRevamp.Domain.Models.SystemConfiguration.DefaultColumnsSettings", b =>
@@ -355,7 +355,7 @@ namespace TaskyRevamp.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("DefaultColumnsSettings");
+                    b.ToTable("DefaultColumnsSettings", (string)null);
                 });
 
             modelBuilder.Entity("TaskyRevamp.Domain.Models.SystemConfiguration.DefaultViewSettings", b =>
@@ -372,7 +372,7 @@ namespace TaskyRevamp.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("DefaultViewSettings");
+                    b.ToTable("DefaultViewSettings", (string)null);
                 });
 
             modelBuilder.Entity("TaskyRevamp.Domain.Models.SystemConfiguration.FilterFieldsSettings", b =>
@@ -397,7 +397,7 @@ namespace TaskyRevamp.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("FilterFieldsSettings");
+                    b.ToTable("FilterFieldsSettings", (string)null);
                 });
 
             modelBuilder.Entity("TaskyRevamp.Domain.Models.SystemConfiguration.PrioritySettings", b =>
@@ -427,7 +427,7 @@ namespace TaskyRevamp.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("PrioritySettings");
+                    b.ToTable("PrioritySettings", (string)null);
                 });
 
             modelBuilder.Entity("TaskyRevamp.Domain.Models.SystemConfiguration.RecycleBinSettings", b =>
@@ -444,7 +444,7 @@ namespace TaskyRevamp.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("RecycleBinSettings");
+                    b.ToTable("RecycleBinSettings", (string)null);
                 });
 
             modelBuilder.Entity("TaskyRevamp.Domain.Models.SystemConfiguration.RejectionSettings", b =>
@@ -461,7 +461,7 @@ namespace TaskyRevamp.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("RejectionSettings");
+                    b.ToTable("RejectionSettings", (string)null);
                 });
 
             modelBuilder.Entity("TaskyRevamp.Domain.Models.SystemConfiguration.Source", b =>
@@ -499,7 +499,7 @@ namespace TaskyRevamp.Infrastructure.Migrations
 
                     b.HasIndex("UpdatedById");
 
-                    b.ToTable("Source");
+                    b.ToTable("Source", (string)null);
                 });
 
             modelBuilder.Entity("TaskyRevamp.Domain.Models.SystemConfiguration.StatusSettings", b =>
@@ -526,7 +526,7 @@ namespace TaskyRevamp.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("StatusSettings");
+                    b.ToTable("StatusSettings", (string)null);
                 });
 
             modelBuilder.Entity("TaskyRevamp.Domain.Models.SystemConfiguration.SystemIdentity", b =>
@@ -573,7 +573,7 @@ namespace TaskyRevamp.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("SystemIdentity");
+                    b.ToTable("SystemIdentity", (string)null);
                 });
 
             modelBuilder.Entity("TaskyRevamp.Domain.Models.SystemConfiguration.Type", b =>
@@ -611,7 +611,7 @@ namespace TaskyRevamp.Infrastructure.Migrations
 
                     b.HasIndex("UpdatedById");
 
-                    b.ToTable("Type");
+                    b.ToTable("Type", (string)null);
                 });
 
             modelBuilder.Entity("TaskyRevamp.Domain.Models.SystemConfiguration.ViewTaskSettings", b =>
@@ -628,7 +628,7 @@ namespace TaskyRevamp.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ViewTaskSettings");
+                    b.ToTable("ViewTaskSettings", (string)null);
                 });
 
             modelBuilder.Entity("TaskyRevamp.Domain.Models.SystemConfiguration.WeeklyReportSettings", b =>
@@ -648,7 +648,7 @@ namespace TaskyRevamp.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("WeeklyReportSettings");
+                    b.ToTable("WeeklyReportSettings", (string)null);
                 });
 
             modelBuilder.Entity("TaskyRevamp.Domain.Models.SystemConfiguration.WorkingDaysSettings", b =>
@@ -665,7 +665,7 @@ namespace TaskyRevamp.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("WorkingDaysSettings");
+                    b.ToTable("WorkingDaysSettings", (string)null);
                 });
 
             modelBuilder.Entity("TaskyRevamp.Domain.Models.Task.Attachment", b =>
@@ -702,7 +702,7 @@ namespace TaskyRevamp.Infrastructure.Migrations
 
                     b.HasIndex("TaskAttachmentId");
 
-                    b.ToTable("Attachment");
+                    b.ToTable("Attachment", (string)null);
                 });
 
             modelBuilder.Entity("TaskyRevamp.Domain.Models.Task.ChangeEndDateRequest", b =>
@@ -752,7 +752,7 @@ namespace TaskyRevamp.Infrastructure.Migrations
 
                     b.HasIndex("TaskItemId");
 
-                    b.ToTable("ChangeEndDateRequest");
+                    b.ToTable("ChangeEndDateRequest", (string)null);
                 });
 
             modelBuilder.Entity("TaskyRevamp.Domain.Models.Task.ChecklistItem", b =>
@@ -798,7 +798,7 @@ namespace TaskyRevamp.Infrastructure.Migrations
 
                     b.HasIndex("TaskChecklistId");
 
-                    b.ToTable("ChecklistItem");
+                    b.ToTable("ChecklistItem", (string)null);
                 });
 
             modelBuilder.Entity("TaskyRevamp.Domain.Models.Task.Department", b =>
@@ -841,7 +841,7 @@ namespace TaskyRevamp.Infrastructure.Migrations
 
                     b.HasIndex("UpdatedById");
 
-                    b.ToTable("Department");
+                    b.ToTable("Department", (string)null);
                 });
 
             modelBuilder.Entity("TaskyRevamp.Domain.Models.Task.PinnedTasks", b =>
@@ -865,7 +865,7 @@ namespace TaskyRevamp.Infrastructure.Migrations
 
                     b.HasIndex("TaskId");
 
-                    b.ToTable("PinnedTasks");
+                    b.ToTable("PinnedTasks", (string)null);
                 });
 
             modelBuilder.Entity("TaskyRevamp.Domain.Models.Task.TaskAssignees", b =>
@@ -903,7 +903,7 @@ namespace TaskyRevamp.Infrastructure.Migrations
 
                     b.HasIndex("taskId");
 
-                    b.ToTable("TaskAssignees");
+                    b.ToTable("TaskAssignees", (string)null);
                 });
 
             modelBuilder.Entity("TaskyRevamp.Domain.Models.Task.TaskAttachments", b =>
@@ -920,7 +920,7 @@ namespace TaskyRevamp.Infrastructure.Migrations
                     b.HasIndex("TaskItemId")
                         .IsUnique();
 
-                    b.ToTable("TaskAttachments");
+                    b.ToTable("TaskAttachments", (string)null);
                 });
 
             modelBuilder.Entity("TaskyRevamp.Domain.Models.Task.TaskChecklist", b =>
@@ -951,7 +951,7 @@ namespace TaskyRevamp.Infrastructure.Migrations
                         .IsUnique()
                         .HasFilter("[TaskItemId1] IS NOT NULL");
 
-                    b.ToTable("TaskChecklist");
+                    b.ToTable("TaskChecklist", (string)null);
                 });
 
             modelBuilder.Entity("TaskyRevamp.Domain.Models.Task.TaskComment", b =>
@@ -987,7 +987,7 @@ namespace TaskyRevamp.Infrastructure.Migrations
 
                     b.HasIndex("UpdatedById");
 
-                    b.ToTable("TaskComment");
+                    b.ToTable("TaskComment", (string)null);
                 });
 
             modelBuilder.Entity("TaskyRevamp.Domain.Models.Task.TaskDependencies", b =>
@@ -996,7 +996,15 @@ namespace TaskyRevamp.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid>("DependentId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("TaskItemId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("TaskItemId");
 
                     b.ToTable("TaskDependencies");
                 });
@@ -1048,7 +1056,7 @@ namespace TaskyRevamp.Infrastructure.Migrations
 
                     b.HasIndex("TaskItemId");
 
-                    b.ToTable("TaskEscalation");
+                    b.ToTable("TaskEscalation", (string)null);
                 });
 
             modelBuilder.Entity("TaskyRevamp.Domain.Models.Task.TaskHistoryEntry", b =>
@@ -1081,7 +1089,7 @@ namespace TaskyRevamp.Infrastructure.Migrations
 
                     b.HasIndex("TaskItemId");
 
-                    b.ToTable("TaskHistoryEntry");
+                    b.ToTable("TaskHistoryEntry", (string)null);
                 });
 
             modelBuilder.Entity("TaskyRevamp.Domain.Models.Task.TaskItem", b =>
@@ -1107,13 +1115,10 @@ namespace TaskyRevamp.Infrastructure.Migrations
                     b.Property<Guid>("CreatedById")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("DependenciesId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("EndDate")
+                    b.Property<DateTime?>("EndDate")
                         .HasColumnType("datetime2");
 
                     b.Property<Guid>("FileId")
@@ -1128,7 +1133,11 @@ namespace TaskyRevamp.Infrastructure.Migrations
                     b.Property<int>("Progress")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("StartDate")
+
+                    b.Property<DateTime?>("ReminderDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("StartDate")
                         .HasColumnType("datetime2");
 
                     b.Property<Guid?>("StatusId")
@@ -1159,8 +1168,6 @@ namespace TaskyRevamp.Infrastructure.Migrations
 
                     b.HasIndex("CreatedById");
 
-                    b.HasIndex("DependenciesId");
-
                     b.HasIndex("ParentId");
 
                     b.HasIndex("PriorityId");
@@ -1173,7 +1180,7 @@ namespace TaskyRevamp.Infrastructure.Migrations
 
                     b.HasIndex("UpdatedById");
 
-                    b.ToTable("TaskItem");
+                    b.ToTable("TaskItem", (string)null);
                 });
 
             modelBuilder.Entity("TaskyRevamp.Domain.Models.Task.TaskViews", b =>
@@ -1197,7 +1204,7 @@ namespace TaskyRevamp.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("TaskViews");
+                    b.ToTable("TaskViews", (string)null);
                 });
 
             modelBuilder.Entity("TaskyRevamp.Domain.Models.Users.User", b =>
@@ -1259,7 +1266,7 @@ namespace TaskyRevamp.Infrastructure.Migrations
 
                     b.HasIndex("UpdatedById");
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("UserDelegations.UserDelegation", b =>
@@ -1305,7 +1312,7 @@ namespace TaskyRevamp.Infrastructure.Migrations
 
                     b.HasIndex("UpdatedById");
 
-                    b.ToTable("UserDelegation");
+                    b.ToTable("UserDelegation", (string)null);
                 });
 
             modelBuilder.Entity("TaskyRevamp.Domain.Models.Permissions.GeneralModule.GeneralModulePermission", b =>
@@ -1630,6 +1637,17 @@ namespace TaskyRevamp.Infrastructure.Migrations
                     b.Navigation("taskItem");
                 });
 
+            modelBuilder.Entity("TaskyRevamp.Domain.Models.Task.TaskDependencies", b =>
+                {
+                    b.HasOne("TaskyRevamp.Domain.Models.Task.TaskItem", "Task")
+                        .WithMany("Dependencies")
+                        .HasForeignKey("TaskItemId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Task");
+                });
+
             modelBuilder.Entity("TaskyRevamp.Domain.Models.Task.TaskEscalation", b =>
                 {
                     b.HasOne("TaskyRevamp.Domain.Models.Users.User", "CreatedBy")
@@ -1697,10 +1715,6 @@ namespace TaskyRevamp.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("TaskyRevamp.Domain.Models.Task.TaskDependencies", "Dependencies")
-                        .WithMany("Items")
-                        .HasForeignKey("DependenciesId");
-
                     b.HasOne("TaskyRevamp.Domain.Models.Task.TaskItem", "Parent")
                         .WithMany("Subtasks")
                         .HasForeignKey("ParentId");
@@ -1740,20 +1754,7 @@ namespace TaskyRevamp.Infrastructure.Migrations
 
                             b1.HasKey("TaskItemId");
 
-                            b1.ToTable("TaskItem");
-
-                            b1.WithOwner()
-                                .HasForeignKey("TaskItemId");
-                        });
-
-                    b.OwnsOne("TaskyRevamp.Domain.Models.Task.Reminder", "Reminder", b1 =>
-                        {
-                            b1.Property<Guid>("TaskItemId")
-                                .HasColumnType("uniqueidentifier");
-
-                            b1.HasKey("TaskItemId");
-
-                            b1.ToTable("TaskItem");
+                            b1.ToTable("TaskItem", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("TaskItemId");
@@ -1766,7 +1767,7 @@ namespace TaskyRevamp.Infrastructure.Migrations
 
                             b1.HasKey("TaskItemId");
 
-                            b1.ToTable("TaskItem");
+                            b1.ToTable("TaskItem", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("TaskItemId");
@@ -1779,7 +1780,20 @@ namespace TaskyRevamp.Infrastructure.Migrations
 
                             b1.HasKey("TaskItemId");
 
-                            b1.ToTable("TaskItem");
+                            b1.ToTable("TaskItem", (string)null);
+
+                            b1.WithOwner()
+                                .HasForeignKey("TaskItemId");
+                        });
+
+                    b.OwnsOne("TaskyRevamp.Domain.Models.Task.Reminder", "Reminder", b1 =>
+                        {
+                            b1.Property<Guid>("TaskItemId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.HasKey("TaskItemId");
+
+                            b1.ToTable("TaskItem", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("TaskItemId");
@@ -1794,8 +1808,6 @@ namespace TaskyRevamp.Infrastructure.Migrations
                     b.Navigation("Comments");
 
                     b.Navigation("CreatedBy");
-
-                    b.Navigation("Dependencies");
 
                     b.Navigation("Parent");
 
@@ -1922,11 +1934,6 @@ namespace TaskyRevamp.Infrastructure.Migrations
                     b.Navigation("items");
                 });
 
-            modelBuilder.Entity("TaskyRevamp.Domain.Models.Task.TaskDependencies", b =>
-                {
-                    b.Navigation("Items");
-                });
-
             modelBuilder.Entity("TaskyRevamp.Domain.Models.Task.TaskItem", b =>
                 {
                     b.Navigation("Assignees");
@@ -1936,6 +1943,8 @@ namespace TaskyRevamp.Infrastructure.Migrations
                     b.Navigation("ChangeRequests");
 
                     b.Navigation("Checklist");
+
+                    b.Navigation("Dependencies");
 
                     b.Navigation("Escalations");
 

@@ -11,16 +11,17 @@ namespace TaskyRevamp.Services.SearchMappings
 {
 	public class PrivilegeSearchFieldMap
 	{
-		public static readonly Dictionary<SearchFieldPrivileg, Expression<Func<Privilege, object>>> Map = new()
+		public static Dictionary<SearchFieldPrivileg, Expression<Func<Privilege, object>>> Map(string culture)
 		{
-			{ SearchFieldPrivileg.NameEnglish, x => x.NameEnglish },
-			{ SearchFieldPrivileg.NameArabic, x => x.NameArabic },
-			{ SearchFieldPrivileg.CreateDate, x => x.CreateDate },
-			{ SearchFieldPrivileg.CreatedByEnglish, x => x.CreatedBy.NameEnglish },
-			{ SearchFieldPrivileg.CreatedByArabic, x => x.CreatedBy.NameArabic },
-			{ SearchFieldPrivileg.UpdateDate, x => x.UpdateDate },
-			{ SearchFieldPrivileg.UpdatedByEnglish, x => x.UpdatedBy.NameEnglish },
-			{ SearchFieldPrivileg.UpdatedByArabic, x => x.UpdatedBy.NameArabic },
-		};
+			bool isArabic = culture == "ar";
+			return new Dictionary<SearchFieldPrivileg, Expression<Func<Privilege, object>>>
+			{
+				{ SearchFieldPrivileg.Name, isArabic? x => x.NameArabic : x => x.NameEnglish },
+				{ SearchFieldPrivileg.CreateDate, x => x.CreateDate },
+				{ SearchFieldPrivileg.CreatedBy, isArabic? x => x.CreatedBy.NameArabic! : x => x.CreatedBy.NameEnglish! },
+				{ SearchFieldPrivileg.UpdateDate, x => x.UpdateDate! },
+				{ SearchFieldPrivileg.UpdatedBy, isArabic? x => x.UpdatedBy!.NameArabic! : x => x.UpdatedBy!.NameEnglish! },
+			};
+		}
 	}
 }

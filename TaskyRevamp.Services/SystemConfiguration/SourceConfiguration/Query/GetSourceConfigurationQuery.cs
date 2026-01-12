@@ -15,115 +15,116 @@ using Sources = TaskyRevamp.Domain.Models.SystemConfiguration.Source;
 
 namespace TaskyRevamp.Services.SystemConfiguration.SourceConfiguration.Query
 {
-	public record GetSourceConfigurationQuery(int pageNumber, int pageSize, string sortByColumnName, bool sortAscending, List<SearchField> SearchFields, string SearchText) : IRequest<PagedResult<SourceDtoWithName>>;
-	public class GetSourceConfigurationHandler : IRequestHandler<GetSourceConfigurationQuery, PagedResult<SourceDtoWithName>>
-	{
-		private readonly IRepository<Sources> _sourceRepository;
-		string currentCulture = System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
-		public GetSourceConfigurationHandler(IRepository<Sources> sourceRepository)
-		{
-			_sourceRepository = sourceRepository;
-		}
-		public async Task<PagedResult<SourceDtoWithName>> Handle(GetSourceConfigurationQuery request, CancellationToken cancellationToken)
-		{
-			var orderBy = GetOrderBy(request.sortByColumnName, request.sortAscending);
+    public record GetSourceConfigurationQuery(int pageNumber, int pageSize, string sortByColumnName, bool sortAscending, List<SearchField> SearchFields, string SearchText) : IRequest<PagedResult<SourceDtoWithName>>;
+    public class GetSourceConfigurationHandler : IRequestHandler<GetSourceConfigurationQuery, PagedResult<SourceDtoWithName>>
+    {
+        private readonly IRepository<Sources> _sourceRepository;
+        string currentCulture = System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
+        public GetSourceConfigurationHandler(IRepository<Sources> sourceRepository)
+        {
+            _sourceRepository = sourceRepository;
+        }
+        public async Task<PagedResult<SourceDtoWithName>> Handle(GetSourceConfigurationQuery request, CancellationToken cancellationToken)
+        {
+            var orderBy = GetOrderBy(request.sortByColumnName, request.sortAscending);
 
             Expression<Func<Sources, bool>> searchExpression = null;
             if (request.SearchFields != null && request.SearchFields.Any())
             {
-                var predicates = request.SearchFields.Select(x => TaskSourceSearchFieldMap.Map[x]).ToList();
+				var map = TaskSourceSearchFieldMap.Map(currentCulture);
+				var predicates = request.SearchFields.Select(x => map[x]).ToList();
                 searchExpression = ExpressionBuilder.BuildLikeExpression(predicates, request.SearchText);
             }
 
             var res = await _sourceRepository.GetPagedAsync(
-								request.pageNumber,
-								request.pageSize,
-								null,
-								searchExpression,
-								orderBy: orderBy,
-								includeProperties: $"{nameof(Sources.CreatedBy)},{nameof(Sources.UpdatedBy)}");
+                                request.pageNumber,
+                                request.pageSize,
+                                    u => u.IsDeleted == false,
+                                searchExpression,
+                                orderBy: orderBy,
+                                includeProperties: $"{nameof(Sources.CreatedBy)},{nameof(Sources.UpdatedBy)}");
 
-			var items = res.Items.Select(u => new SourceDtoWithName
-			{
-				Source = u.CopyToDto(),
-				CreatedByName = u.CreatedBy != null ? (currentCulture == "ar" ? u.CreatedBy.NameArabic : u.CreatedBy.NameEnglish) : string.Empty,
-				UpdatedByName = u.UpdatedBy != null ? (currentCulture == "ar" ? u.UpdatedBy.NameArabic : u.UpdatedBy.NameEnglish) : string.Empty
-			}).ToList();
+            var items = res.Items.Select(u => new SourceDtoWithName
+            {
+                Source = u.CopyToDto(),
+                CreatedByName = u.CreatedBy != null ? (currentCulture == "ar" ? u.CreatedBy.NameArabic : u.CreatedBy.NameEnglish) : string.Empty,
+                UpdatedByName = u.UpdatedBy != null ? (currentCulture == "ar" ? u.UpdatedBy.NameArabic : u.UpdatedBy.NameEnglish) : string.Empty
+            }).ToList();
 
-			return new PagedResult<SourceDtoWithName>
-			{
-				Items = items,
-				TotalCount = res.TotalCount,
-				PageNumber = request.pageNumber,
-				PageSize = request.pageSize
-			};
-		}
+            return new PagedResult<SourceDtoWithName>
+            {
+                Items = items,
+                TotalCount = res.TotalCount,
+                PageNumber = request.pageNumber,
+                PageSize = request.pageSize
+            };
+        }
 
-		private Func<IQueryable<Sources>, IOrderedQueryable<Sources>> GetOrderBy(string sortByColumn, bool sortAscending)
-		{
-			string currentCulture = System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
+        private Func<IQueryable<Sources>, IOrderedQueryable<Sources>> GetOrderBy(string sortByColumn, bool sortAscending)
+        {
+            string currentCulture = System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
 
-			switch (sortByColumn)
-			{
-				case "CreateDate":
-					return sortAscending
-						? q => q.OrderBy(u => u.CreateDate)
-						: q => q.OrderByDescending(u => u.CreateDate);
-
-				case "UpdateDate":
-					return sortAscending
-						? q => q.OrderBy(u => u.UpdateDate)
-						: q => q.OrderByDescending(u => u.UpdateDate);
-
-				case "CreatedBy":
-					if (currentCulture == "ar")
-					{
-						return sortAscending
-						? q => q.OrderBy(u => u.CreatedBy!.NameArabic)
-						: q => q.OrderByDescending(u => u.CreatedBy!.NameArabic);
-					}
-					else
-					{
-						return sortAscending
-						? q => q.OrderBy(u => u.CreatedBy!.NameEnglish)
-						: q => q.OrderByDescending(u => u.CreatedBy!.NameEnglish);
-					}
-
-				case "UpdatedBy":
-					if (currentCulture == "ar")
-					{
-						return sortAscending
-						? q => q.OrderBy(u => u.UpdatedBy!.NameArabic)
-						: q => q.OrderByDescending(u => u.UpdatedBy!.NameArabic);
-					}
-					else
-					{
-						return sortAscending
-						? q => q.OrderBy(u => u.UpdatedBy!.NameEnglish)
-						: q => q.OrderByDescending(u => u.UpdatedBy!.NameEnglish);
-					}
-				case "IsActive":
+            switch (sortByColumn)
+            {
+                case "CreateDate":
                     return sortAscending
-						? q => q.OrderBy(u => u.IsActive)
-						: q => q.OrderByDescending(u => u.IsActive);
+                        ? q => q.OrderBy(u => u.CreateDate)
+                        : q => q.OrderByDescending(u => u.CreateDate);
+
+                case "UpdateDate":
+                    return sortAscending
+                        ? q => q.OrderBy(u => u.UpdateDate)
+                        : q => q.OrderByDescending(u => u.UpdateDate);
+
+                case "CreatedBy":
+                    if (currentCulture == "ar")
+                    {
+                        return sortAscending
+                        ? q => q.OrderBy(u => u.CreatedBy!.NameArabic)
+                        : q => q.OrderByDescending(u => u.CreatedBy!.NameArabic);
+                    }
+                    else
+                    {
+                        return sortAscending
+                        ? q => q.OrderBy(u => u.CreatedBy!.NameEnglish)
+                        : q => q.OrderByDescending(u => u.CreatedBy!.NameEnglish);
+                    }
+
+                case "UpdatedBy":
+                    if (currentCulture == "ar")
+                    {
+                        return sortAscending
+                        ? q => q.OrderBy(u => u.UpdatedBy!.NameArabic)
+                        : q => q.OrderByDescending(u => u.UpdatedBy!.NameArabic);
+                    }
+                    else
+                    {
+                        return sortAscending
+                        ? q => q.OrderBy(u => u.UpdatedBy!.NameEnglish)
+                        : q => q.OrderByDescending(u => u.UpdatedBy!.NameEnglish);
+                    }
+                case "IsActive":
+                    return sortAscending
+                        ? q => q.OrderBy(u => u.IsActive)
+                        : q => q.OrderByDescending(u => u.IsActive);
 
                 case "DisplayedName":
-					if (currentCulture == "ar")
-					{
-						return sortAscending
-							? q => q.OrderBy(u => u.NameArabic)
-							: q => q.OrderByDescending(u => u.NameArabic);
-					}
-					else
-					{
-						return sortAscending
-							? q => q.OrderBy(u => u.NameEnglish)
-							: q => q.OrderByDescending(u => u.NameEnglish);
-					}
+                    if (currentCulture == "ar")
+                    {
+                        return sortAscending
+                            ? q => q.OrderBy(u => u.NameArabic)
+                            : q => q.OrderByDescending(u => u.NameArabic);
+                    }
+                    else
+                    {
+                        return sortAscending
+                            ? q => q.OrderBy(u => u.NameEnglish)
+                            : q => q.OrderByDescending(u => u.NameEnglish);
+                    }
 
-				default:
-					return q => q.OrderBy(u => u.CreateDate);
-			}
-		}
-	}
+                default:
+                    return q => q.OrderBy(u => u.CreateDate);
+            }
+        }
+    }
 }

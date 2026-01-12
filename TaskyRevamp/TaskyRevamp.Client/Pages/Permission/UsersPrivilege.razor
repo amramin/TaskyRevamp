@@ -175,13 +175,10 @@ else
     }
 
     public List<SearchFieldUserPrivilege> searchFields = new List<SearchFieldUserPrivilege>() {
-            SearchFieldUserPrivilege.NameEnglish,
-            SearchFieldUserPrivilege.NameArabic,
+            SearchFieldUserPrivilege.Name,
             SearchFieldUserPrivilege.Email,
-            SearchFieldUserPrivilege.PrivilegeArabic,
-            SearchFieldUserPrivilege.DepartmentArabic,
-            SearchFieldUserPrivilege.PrivilegeEnglish,
-            SearchFieldUserPrivilege.DepartmentEnglish
+            SearchFieldUserPrivilege.Privilege,
+            SearchFieldUserPrivilege.Department,
     };
 
     public async Task Search(string searchTerm)

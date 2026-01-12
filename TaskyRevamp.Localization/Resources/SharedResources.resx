@@ -409,13 +409,13 @@
     <value>Drag and Drop or</value>
   </data>
   <data name="AssignedTo" xml:space="preserve">
-    <value>Assigned to</value>
+    <value>Assigned To</value>
   </data>
   <data name="CreatorDepartment" xml:space="preserve">
     <value>Creator department</value>
   </data>
   <data name="AssignedToDepartment" xml:space="preserve">
-    <value>Assigned to department</value>
+    <value>Assignee department</value>
   </data>
   <data name="Mandatory" xml:space="preserve">
     <value>Mandatory</value>
@@ -775,7 +775,7 @@
     <value>Above user department level</value>
   </data>
   <data name="BelowUserDepartmentLevel" xml:space="preserve">
-    <value>Below user department leve</value>
+    <value>Below user department level</value>
   </data>
   <data name="PeersLevel" xml:space="preserve">
     <value>Peer's level</value>
@@ -1116,9 +1116,6 @@
   <data name="Complete" xml:space="preserve">
     <value>Complete</value>
   </data>
-  <data name="AddAttachment" xml:space="preserve">
-    <value>Add attachment</value>
-  </data>
   <data name="ReOpen" xml:space="preserve">
     <value>Re-open</value>
   </data>
@@ -1134,23 +1131,17 @@
   <data name="Ares" xml:space="preserve">
     <value>Are you sure you want to delete this?</value>
   </data>
-  <data name="SureCompleteTask" xml:space="preserve">
-    <value>Are you sure to complete task</value>
-  </data>
-  <data name="Completedsuccessfully" xml:space="preserve">
-    <value>Completed successfully</value>
-  </data>
   <data name="CompleteFailed" xml:space="preserve">
     <value>Complete Failed</value>
   </data>
   <data name="SureReopenTask" xml:space="preserve">
     <value>Are you sure to reopen task</value>
   </data>
-  <data name="Reopenedsuccessfully" xml:space="preserve">
-    <value>Reopened successfully</value>
-  </data>
   <data name="ReopenFailed" xml:space="preserve">
     <value>Reopen Failed</value>
+  </data>
+  <data name="AddAttachment" xml:space="preserve">
+    <value>Add attachment</value>
   </data>
   <data name="NoAttachmentsYet" xml:space="preserve">
     <value>No attachments have been added</value>
@@ -1174,7 +1165,7 @@
     <value>This file type is not supported. Allowed formats are: pdf, doc, docx, xls, xlsx, .ppt, .pptx, txt, csv, jpg, jpeg, and png</value>
   </data>
   <data name="FileSizeExceedsLimitTask" xml:space="preserve">
-    <value>The selected file exceeds the maximum allowed size of  "{0}" MB. Please upload a smaller file.</value>
+    <value>The selected file exceeds the maximum allowed size of  25 MB. Please upload a smaller file.</value>
   </data>
   <data name="userLink" xml:space="preserve">
     <value>Link user</value>
@@ -1229,6 +1220,81 @@
   </data>
   <data name="Privilege" xml:space="preserve">
     <value>Privileges</value>
+  </data>
+  <data name="hisprioritynam" xml:space="preserve">
+    <value>his priority name was previously deleted and linked to a completed task. Do you want to use it again?</value>
+  </data>
+  <data name="Thisprioritycannotb" xml:space="preserve">
+    <value> This priority cannot be deleted because it is currently used in active tasks</value>
+  </data>
+  <data name="CannotdeleteType" xml:space="preserve">
+    <value>Cannot delete. Type is linked to active tasks</value>
+  </data>
+  <data name="Thissorcecannotb" xml:space="preserve">
+    <value> Can't delete. The source is linked to active tasks.</value>
+  </data>
+  <data name="Anactivesourcewith" xml:space="preserve">
+    <value>An active source with this name already exists. Please choose a different name</value>
+  </data>
+  <data name="Thissourcenamewas" xml:space="preserve">
+    <value>his source name was previously deleted and linked to a completed task. Do you want to use it again?</value>
+  </data>
+  <data name="AnactiveTypewith" xml:space="preserve">
+    <value> An active type with this name already exists. Please choose a different name</value>
+  </data>
+  <data name="ThisTypenamewas" xml:space="preserve">
+    <value>This type name was previously deleted and linked to a completed task. Do you want to use it again?</value>
+  </data>
+  <data name="AnactivePrioritywith" xml:space="preserve">
+    <value> An active Priority with this name already exists. Please choose a different name</value>
+  </data>
+  <data name="ThisPrioritynamewas" xml:space="preserve">
+    <value>This priority name was previously deleted and linked to a completed task. Do you want to use it again?</value>
+  </data>
+  <data name="taskOverall" xml:space="preserve">
+    <value>Overall</value>
+  </data>
+  <data name="Description" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="uploadFile" xml:space="preserve">
+    <value>File upload</value>
+  </data>
+  <data name="Completedsuccessfully" xml:space="preserve">
+    <value>Completed successfully</value>
+  </data>
+  <data name="SureCompleteTask" xml:space="preserve">
+    <value>Are you sure to complete task</value>
+  </data>
+  <data name="ValueMustBeGreaterThanOrEqualTo1" xml:space="preserve">
+    <value>Value must be greater than or equal to 1.</value>
+  </data>
+  <data name="WeightMustBeBetween0And100" xml:space="preserve">
+    <value>Enter a value between 0 and 100</value>
+  </data>
+  <data name="StartDateMustBeBeforeEndDate" xml:space="preserve">
+    <value>The start date should be smaller than or equal the end date</value>
+  </data>
+  <data name="ReminderDateBetweenStartAndEnd" xml:space="preserve">
+    <value>Enter a valid reminder date, it should be between the start and end date</value>
+  </data>
+  <data name="Enterthereason" xml:space="preserve">
+    <value>Enter the reason</value>
+  </data>
+  <data name="Taskdetails" xml:space="preserve">
+    <value>Task details</value>
+  </data>
+  <data name="EditTask" xml:space="preserve">
+    <value>Edit task</value>
+  </data>
+  <data name="loginconditions" xml:space="preserve">
+    <value>login conditions</value>
+  </data>
+  <data name="IDorUserName" xml:space="preserve">
+    <value>User name</value>
+  </data>
+  <data name="Password" xml:space="preserve">
+    <value>Password</value>
   </data>
   <data name="Mine" xml:space="preserve">
     <value>Mine</value>

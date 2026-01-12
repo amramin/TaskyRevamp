@@ -8,14 +8,12 @@ namespace TaskyRevamp.Dto.Enums.SearchFields
 {
 	public enum SearchFieldUser
 	{
-		NameEnglish,
-		NameArabic,
+		Name,
 		Email,
 		//CreateDate,
 		//CreatedBy,
 		UpdateDate,
-		UpdatedByEnglish,
-		UpdatedByArabic,
+		UpdatedBy,
 		ActiveStatus,
 		IsManager,
 		Privilege,

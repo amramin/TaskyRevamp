@@ -17,29 +17,34 @@ public class CreateTaskDto
     [Required(ErrorMessageResourceType = typeof(SharedResources), ErrorMessageResourceName = ValidationDto.Required)]
     public string Title { get; set; }
     public string? Description { get; set; }
-    public DateTime? StartDate { get; set; }
-    public DateTime? EndDate { get; set; }
+	[Required(ErrorMessageResourceType = typeof(SharedResources), ErrorMessageResourceName = ValidationDto.Required)]
+	public DateTime? StartDate { get; set; }
+	[Required(ErrorMessageResourceType = typeof(SharedResources), ErrorMessageResourceName = ValidationDto.Required)]
+	public DateTime? EndDate { get; set; }
     public DateTime? ReminderDate { get; set; }
     public DateTime? DeliveryDate { get; set; }
     public string Createdbydepartment { get; set; } = string.Empty;
     public Guid TypeId { get; set; }
     public Guid SourceId { get; set; }
-    public Guid Priority { get; set; }
-    public int weight { get; set; } = 0;
-    public int ActualProcess { get; set; } = 0;
+	public Guid Priority { get; set; }
+    public int? weight { get; set; }
+	public int ActualProcess { get; set; } = 0;
     //public int Duration = 0;//=> (EndDate.Date - StartDate.Date).Days + 1;
     public int ActualWeight { get; set; } = 0;
     public int Plannedweight { get; set; } = 0;
     public int PlannedProgress { get; set; }
+    public string? DependencyNames {  get; set; }
 	public int Duration =>
 	StartDate.HasValue && EndDate.HasValue? (EndDate.Value.Date - StartDate.Value.Date).Days + 1: 0;
 	public Guid? TaskStatus { get; set; }
     public string? TaskStatusName { get; set; }
     public string? TaskStatusColor { get; set; }
     public string? TaskStatusBackgroundColor { get; set; }
-    public List<Guid> AssignedDepartmentIds { set; get; }
+	[Required(ErrorMessageResourceType = typeof(SharedResources), ErrorMessageResourceName = ValidationDto.Required)]
+	public List<Guid> AssignedDepartmentIds { set; get; }
     public string? AssignedDepartmentName { set; get; }
-    public List<Guid>? AssignedIds { set; get; }
+	[Required(ErrorMessageResourceType = typeof(SharedResources), ErrorMessageResourceName = ValidationDto.Required)]
+	public List<Guid>? AssignedIds { set; get; }
     public List<Guid>? Dependencies { set; get; }
     public Guid? CreatedBy { get; set; }
     public string? CreatedByName { get; set; }

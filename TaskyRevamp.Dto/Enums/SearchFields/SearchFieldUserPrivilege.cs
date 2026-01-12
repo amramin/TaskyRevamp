@@ -8,12 +8,9 @@ namespace TaskyRevamp.Dto.Enums.SearchFields
 {
 	public enum SearchFieldUserPrivilege
 	{
-		NameEnglish,
-		NameArabic,
+		Name,
 		Email,
-		PrivilegeArabic,
-		DepartmentArabic,
-		PrivilegeEnglish,
-		DepartmentEnglish,
+		Department,
+		Privilege,
 	}
 }

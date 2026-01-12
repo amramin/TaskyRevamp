@@ -641,7 +641,7 @@
     <value>تاريخ البدء </value>
   </data>
   <data name="ToDate" xml:space="preserve">
-    <value>تاريخ الانتهاء</value>
+    <value>تاريخ الإنتهاء</value>
   </data>
   <data name="CreateDate" xml:space="preserve">
     <value>تاريخ الإنشاء</value>
@@ -1137,24 +1137,17 @@
   <data name="Ares" xml:space="preserve">
     <value>هل انت متأكد من الحذف</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="SureCompleteTask" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
-  </data>
-  <data name="Completedsuccessfully" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
-  </data>
   <data name="CompleteFailed" xml:space="preserve">
     <value>فشلت عملية اكمال المهمة</value>
   </data>
   <data name="SureReopenTask" xml:space="preserve">
     <value>هل انت متأكد انك تريد ارجاع المهمة</value>
   </data>
-  <data name="Reopenedsuccessfully" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
-  </data>
   <data name="ReopenFailed" xml:space="preserve">
     <value>فشلت عملية ارجاع المهمة</value>
+  </data>
+  <data name="AddAttachment" xml:space="preserve">
+    <value>إضافة ملف</value>
   </data>
   <data name="NoAttachmentsYet" xml:space="preserve">
     <value>لم تتم إضافة أي ملفات</value>
@@ -1178,7 +1171,7 @@
     <value>نوع الملف غير مدعوم. الصيغ المسموح بها هي: pdf, doc, docx, xls, xlsx, .ppt, .pptx, txt, csv, jpg, jpeg, و png</value>
   </data>
   <data name="FileSizeExceedsLimitTask" xml:space="preserve">
-    <value>الملف المحدد يتجاوز الحد الأقصى المسموح به وهو "{0}" ميجابايت. يُرجى تحميل ملف أصغر حجمًا</value>
+    <value>الملف المحدد يتجاوز الحد الأقصى المسموح به وهو 25 ميجابايت. يُرجى تحميل ملف أصغر حجمًا</value>
   </data>
   <data name="userLink" xml:space="preserve">
     <value>ربط المستخدم</value>
@@ -1240,4 +1233,89 @@
   <data name="Team" xml:space="preserve">
     <value>مهام الفريق</value>
   </data>
+  <data name="hisprioritynam" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Thisprioritycannotb" xml:space="preserve">
+    <value>لا يمكن حذف هذه الأولوية لأنها مستخدمة حاليًا في المهام النشطة</value>
+  </data>
+  <data name="CannotdeleteType" xml:space="preserve">
+    <value>لا يمكن الحذف. النوع مرتبط بمهام نشطة</value>
+  </data>
+  <data name="Thissorcecannotb" xml:space="preserve">
+    <value>لا يمكن الحذف. المصدر مرتبط بمهام نشطة</value>
+  </data>
+  <data name="Anactivesourcewith" xml:space="preserve">
+    <value>يوجد مصدر نشط بهذا الاسم مسبقًا. يرجى اختيار اسم مختلف</value>
+  </data>
+  <data name="Thissourcenamewas" xml:space="preserve">
+    <value>تم حذف اسم هذا المصدر سابقًا وربطه بمهمة مكتملة. هل ترغب في استخدامه مرة أخرى؟</value>
+  </data>
+  <data name="AnactiveTypewith" xml:space="preserve">
+    <value>يوجد نوع نشط بهذا الاسم مسبقًا. يرجى اختيار اسم مختلف</value>
+  </data>
+  <data name="ThisTypenamewas" xml:space="preserve">
+    <value> تم حذف اسم هذا النوع سابقًا وربطه بمهمة مكتملة. هل ترغب في استخدامه مرة أخرى؟
+</value>
+  </data>
+  <data name="AnactivePrioritywith" xml:space="preserve">
+    <value>يوجد اولويه نشطه بهذا الاسم مسبقًا. يرجى اختيار اسم مختلف</value>
+  </data>
+  <data name="ThisPrioritynamewas" xml:space="preserve">
+    <value> تم حذف اسم هذه الأولوية سابقًا وربطها بمهمة مكتملة. هل ترغب في استخدامها مرة أخرى؟</value>
+  </data>
+  <data name="taskOverall" xml:space="preserve">
+    <value>جميع المهام</value>
+  </data>
+  <data name="Description" xml:space="preserve">
+    <value>الوصف  </value>
+  </data>
+  <data name="uploadFile" xml:space="preserve">
+    <value>تحميل ملف</value>
+  </data>
+  <data name="Completedsuccessfully" xml:space="preserve">
+    <value>نجحت عملية اكمال المهمة</value>
+  </data>
+  <data name="SureCompleteTask" xml:space="preserve">
+    <value>هل انت متأكد انك تريد اكمال المهمة؟</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="Reopenedsuccessfully" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="ValueMustBeGreaterThanOrEqualTo1" xml:space="preserve">
+    <value>يجب أن تكون القيمة أكبر من أو تساوي 1</value>
+  </data>
+  <data name="WeightMustBeBetween0And100" xml:space="preserve">
+    <value>أدخل قيمة بين 0 و 100</value>
+  </data>
+  <data name="StartDateMustBeBeforeEndDate" xml:space="preserve">
+    <value>يجب أن يكون تاريخ البدء أصغر من أو يساوي تاريخ الإنتهاء</value>
+  </data>
+  <data name="ReminderDateBetweenStartAndEnd" xml:space="preserve">
+    <value>أدخل تاريخ تذكير صحيح، يجب أن يكون بين تاريخ البدء والإنتهاء</value>
+  </data>
+  <data name="Enterthereason" xml:space="preserve">
+    <value>ادخل السبب</value>
+  </data>
+  <data name="Taskdetails" xml:space="preserve">
+    <value>تفاصيل المهمة</value>
+  </data>
+  <data name="EditTask" xml:space="preserve">
+    <value>تعديل المهمة</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="Reopenedsuccessfully" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="loginconditions" xml:space="preserve">
+    <value>خطوات تسجيل الدخول</value>
+  </data>
+  <data name="IDorUserName" xml:space="preserve">
+    <value>اسم المستخدم</value>
+  </data>
+  <data name="Password" xml:space="preserve">
+    <value>كلمة المرور</value>
+  </data>
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>AUTO GENERATED BY CONFLICT EXTENSION>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Update-LoginPageLocalization
 </root>

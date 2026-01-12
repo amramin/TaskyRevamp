@@ -4,6 +4,7 @@ using Microsoft.Extensions.Options;
 using System.Threading.Tasks;
 using TaskyRevamp.Dto.Enums.SearchFields;
 using TaskyRevamp.Dto.GeneralDto;
+using TaskyRevamp.Dto.TaskComment;
 using TaskyRevamp.Dto.TaskDto;
 using TaskyRevamp.Services.Departments.Query;
 using TaskyRevamp.Services.Tasks.Commands;
@@ -25,7 +26,8 @@ public class TaskController : ControllerBase
     [HttpPost("CreateTask")]
     public async Task<IActionResult> CreateTask([FromBody] CreateTaskDto taskDto)
     {
-        return Ok(await _mediator.Send(new CreateTaskCommand(taskDto)));
+        var res = await _mediator.Send(new CreateTaskCommand(taskDto));
+        return Ok(res);
 
 
 
@@ -36,12 +38,12 @@ public class TaskController : ControllerBase
     {
         return Ok(await _mediator.Send(new CompleteTaskCommand(id)));
     }
-    [HttpGet("ReopenTask/{id}")]
-    public async Task<IActionResult> ReopenTask(Guid id)
+    [HttpPost("ReopenTask")]
+    public async Task<IActionResult> ReopenTask([FromBody] TaskCommentDto TaskCommentDto)
     {
-        return Ok(await _mediator.Send(new ReopenTaskCommand(id)));
+        return Ok(await _mediator.Send(new ReopenTaskCommand(TaskCommentDto)));
     }
-    [HttpPut]
+    [HttpPost("UpdateTask")]
     public async Task<IActionResult> UpdateTask([FromBody] CreateTaskDto Task)
     {
         return Ok(await _mediator.Send(new UpdateTaskCommand(Task)));
@@ -50,7 +52,8 @@ public class TaskController : ControllerBase
     [HttpGet("UpdateTasksDepartment/{oldId}/{newId}")]
     public async Task<IActionResult> UpdateTasksDepartment(Guid oldId, Guid newId)
     {
-        return Ok(await _mediator.Send(new UpdateTasksDepartmentCommand(oldId, newId)));
+        var res = await _mediator.Send(new UpdateTasksDepartmentCommand(oldId, newId));
+        return Ok(res);
     }
     [HttpGet("ChangeTaskProgress/{taskId}/{progress}")]
     public async Task<IActionResult> ChangeTaskProgress(Guid taskId, int progress)
@@ -99,11 +102,11 @@ public class TaskController : ControllerBase
         return Ok(await _mediator.Send(new GetTaskQuery(id, currentUserId)));
     }
 
-    [HttpGet("GetTasksForDDL")]
-    public async Task<IActionResult> GetTasksForDDL()
+    [HttpGet("GetTasksForDDL/{id}")]
+    public async Task<IActionResult> GetTasksForDDL(Guid id)
     {
 
-        var all = await _mediator.Send(new GetTasksForDDLQuery());
+        var all = await _mediator.Send(new GetTasksForDDLQuery(id));
 
         return Ok(all);
     }

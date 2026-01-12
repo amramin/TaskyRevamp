@@ -201,16 +201,12 @@
         StateHasChanged();
     }
     public List<SearchFieldDepartment> searchFields = new List<SearchFieldDepartment>() {
-        SearchFieldDepartment.NameEnglish,
-        SearchFieldDepartment.NameArabic,
-        SearchFieldDepartment.CreatedByEnglish,
-        SearchFieldDepartment.CreatedByArabic,
-        SearchFieldDepartment.UpdatedByEnglish,
-        SearchFieldDepartment.UpdatedByArabic,
+        SearchFieldDepartment.Name,
+        SearchFieldDepartment.CreatedBy,
+        SearchFieldDepartment.UpdatedBy,
         SearchFieldDepartment.CreateDate,
         SearchFieldDepartment.UpdateDate,
-        SearchFieldDepartment.ParentNameAR,
-        SearchFieldDepartment.ParentNameEN,
+        SearchFieldDepartment.ParentName,
         SearchFieldDepartment.Level
     };
     private async Task HandleSort((string Column, bool? Ascending) sortInfo)

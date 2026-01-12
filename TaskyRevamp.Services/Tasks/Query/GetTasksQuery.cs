@@ -24,13 +24,16 @@ public class GetTasksHandler : IRequestHandler<GetTasksQuery, PagedResult<Create
     private readonly IRepository<User> _userRepository;
     private readonly IRepository<TaskItem> _taskRepository;
     private readonly IRepository<Department> _departmenRepository;
+    private readonly IRepository<TaskDependencies> _taskDependincesRepository;
 
-    public GetTasksHandler(IRepository<TaskItem> taskRepository, IRepository<User> userRepository, IRepository<Department> departmentRepository)
+    public GetTasksHandler(IRepository<TaskItem> taskRepository, IRepository<User> userRepository, IRepository<TaskDependencies> taskDependincesRepository, IRepository<Department> departmentRepository)
     {
         _taskRepository = taskRepository;
         _departmenRepository = departmentRepository;
         _userRepository = userRepository;
         _currentLanguage = Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName;
+        _taskDependincesRepository = taskDependincesRepository;
+
     }
 
     public async Task<PagedResult<CreateTaskDto>> Handle(GetTasksQuery request, CancellationToken cancellationToken)
@@ -61,8 +64,8 @@ public class GetTasksHandler : IRequestHandler<GetTasksQuery, PagedResult<Create
         {
             var assgnedusr = await _userRepository.FindBy(k => tsk.AssignedIds.Contains(k.Id));
             var CreatorDepartment =  _departmenRepository.FirstOrDefaultAsNoTracking(k => k.Id == (tsk.CreatedBy.DepartmentId??Guid.Empty));
-            tsk.ActualWeight=new Weight(tsk.Weight);
-            tsk.PlannedWeight = new Weight(tsk.Weight);
+            tsk.ActualWeight=new Weight(tsk.Weight ?? 0);
+            tsk.PlannedWeight = new Weight(tsk.Weight ?? 0);
             CreateTaskDto tasky = tsk.CopyToDto();
             tasky.TypeName = currentCulture == "ar" ? tsk.Type?.NameArabic : tsk.Type?.NameEnglish;
             tasky.SourceName = currentCulture == "ar" ? tsk.Source?.NameArabic : tsk.Source?.NameEnglish;
@@ -70,7 +73,21 @@ public class GetTasksHandler : IRequestHandler<GetTasksQuery, PagedResult<Create
             var departments = await _departmenRepository.FindBy(k => tsk.AssignedDepartmentIds.Contains(k.Id));
             var depsName = departments.Value.Select(k => k.NameEnglish);
             tasky.AssignedDepartmentName = string.Join(" ", depsName);
+            var dependencies = await _taskDependincesRepository.FindBy(p => p.TaskItemId == tasky.Id);
+            if (dependencies is not null)
+            {
+                var dependenciesids = dependencies.Value.Select(p => p.DependentId);
+                //string DependencyNames = "";
+                //foreach (var taskid in dependenciesids)
+                //{
+                //    var taskdependency = await _taskRepository.FindBy()
+                //    DependencyNames += $"{taskdependency.Title} , ";
+                //}
+                var tasksdependent = await _taskRepository.FindBy(p => dependenciesids.Contains(p.Id));
+                var DependencyNames = string.Join(", ", tasksdependent.Value.Select(d => d.Title));
+                tasky.DependencyNames= DependencyNames;
 
+            }
 
             tasky.TaskStatusName = currentCulture == "ar" ? tsk.status?.NameArabic : tsk.status?.NameEnglish;
             tasky.CreatedByName = currentCulture == "ar" ? tsk.CreatedBy?.NameArabic : tsk.CreatedBy?.NameEnglish;
@@ -122,7 +139,7 @@ public class GetTasksHandler : IRequestHandler<GetTasksQuery, PagedResult<Create
 
         switch (sortByColumn)
         {
-            case "CreateDate":
+            case "Creation Date":
                 return sortAscending
                     ? q => q.OrderBy(u => u.CreateDate)
                     : q => q.OrderByDescending(u => u.CreateDate);

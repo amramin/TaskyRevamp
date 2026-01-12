@@ -115,7 +115,7 @@
         var res = await _prioritySettingConsumer.GetPriorities();
         if (res.Success && res.Data != null)
         {
-            Priorities = res.Data;
+            Priorities = res.Data.Where(k=>k.IsDeleted !=true).ToList();
             OriginalPriorities = CopyPriorites();
         }
     }
@@ -182,13 +182,20 @@
         if (confirmed && selectedPriority != null)
         {
             var result = await _prioritySettingConsumer.DeletePriority(selectedPriority.Id);
-            if (result.Success)
+            if (result.Data)
             {
                 Priorities.Remove(selectedPriority);
                 showConfirm = false;
                 StateHasChanged();
                 await ToastService.ShowToastAsync(Loc["Deleted successfully"], "success");
             }
+            else
+            {
+                await ToastService.ShowToastAsync(Loc["Thisprioritycannotb"], "error");
+
+                return;
+            }
+            
         }
         selectedPriority = null;
         StateHasChanged();

@@ -26,7 +26,8 @@ namespace TaskyRevamp.Services.Users.Query
 			Expression<Func<User, bool>> searchExpression = null;
 			if (request.SearchFields != null && request.SearchFields.Any())
 			{
-				var predicates = request.SearchFields.Select(x => UserSearchFieldMap.Map[x]).ToList();
+				var map = UserSearchFieldMap.Map(currentCulture);
+				var predicates = request.SearchFields.Select(x => map[x]).ToList();
 				searchExpression = ExpressionBuilder.BuildLikeExpression(predicates, request.SearchText);
 			}
 
@@ -41,7 +42,7 @@ namespace TaskyRevamp.Services.Users.Query
 			var items = res.Items.Select(u => new UserDtoWithName
 			{
 				user = u.CopyToDto(),
-				UpdatedByName = u.UpdatedBy != null ? (currentCulture == "ar" ? u.UpdatedBy.NameArabic : u.UpdatedBy.NameEnglish) : string.Empty,
+				UpdatedByName = u.UpdatedBy != null ? (currentCulture == "ar" ? u.UpdatedBy!.NameArabic! : u.UpdatedBy!.NameEnglish!) : string.Empty,
 				PrivilegeName = u.Privilege != null ? (currentCulture == "ar" ? u.Privilege.NameArabic : u.Privilege.NameEnglish) : string.Empty,
 				DepartmentName = u.Department != null ? (currentCulture == "ar" ? u.Department.NameArabic : u.Department.NameEnglish) : string.Empty
 
@@ -57,8 +58,6 @@ namespace TaskyRevamp.Services.Users.Query
 		}
 		private Func<IQueryable<User>, IOrderedQueryable<User>> GetOrderBy(string sortByColumn, bool sortAscending)
 		{
-
-
 			switch (sortByColumn)
 			{
 				case "CreateDate":

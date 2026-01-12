@@ -28,7 +28,8 @@ namespace TaskyRevamp.Services.Permission.Privilege.Query
 			Expression<Func<Privileges, bool>> searchExpression = null;
 			if (request.SearchFields != null && request.SearchFields.Any())
 			{
-				var predicates = request.SearchFields.Select(x => PrivilegeSearchFieldMap.Map[x]).ToList();
+				var map = PrivilegeSearchFieldMap.Map(currentCulture);
+				var predicates = request.SearchFields.Select(x => map[x]).ToList();
 				searchExpression = ExpressionBuilder.BuildLikeExpression(predicates, request.SearchText);
 			}
 

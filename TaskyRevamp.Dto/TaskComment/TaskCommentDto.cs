@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TaskyRevamp.Localization.Resources;
 
 namespace TaskyRevamp.Dto.TaskComment
 {
@@ -10,6 +12,7 @@ namespace TaskyRevamp.Dto.TaskComment
     {
         public Guid Id { get; set; }
         public Guid TaskItemId { get; set; }
+        [Required(ErrorMessageResourceType = typeof(SharedResources), ErrorMessageResourceName = "Required")]
         public string Content { get; set; }
         public Guid CreatedById { get; set; }
         public DateTime CreateDate { get; set; }

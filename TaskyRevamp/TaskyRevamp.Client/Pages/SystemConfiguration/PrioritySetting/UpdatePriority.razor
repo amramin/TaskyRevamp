@@ -27,26 +27,88 @@
     [Parameter] public EventCallback OnCancel { get; set; }
     private PriorityDto _priority = new PriorityDto();
     private PriorityForm form;
-
+    private PriorityDto? selectedPriority;
+    private bool showConfirm;
     private async Task Save(EditContext editContext)
     {
-        var res = await _prioritySettingConsumer.UpdatePriority(Priority);
-        if (res.Errors != null && res.Errors.Count > 0)
+
+
+        var alloldPriorty = await _prioritySettingConsumer.GetPriorities();
+        var allOldActivePriorty = alloldPriorty.Data
+            .Where(k => k.IsDeleted != true && k.Id != Priority.Id)
+            .ToList();
+
+        var alloldDeletedPriority = alloldPriorty.Data
+            .Where(k => k.IsDeleted == true)
+            .ToList();
+        if (allOldActivePriorty.Any(m => m.NameEnglish == Priority.NameEnglish) || allOldActivePriorty.Any(m => m.NameArabic == Priority.NameArabic))
         {
-            form.AddErrorsToEditContext(res.Errors);
+            await ToastService.ShowToastAsync(Loc["AnactivePrioritywith"], "error");
+
+            return;
+        }
+        else if (alloldDeletedPriority.Any(m => m.NameEnglish == Priority.NameEnglish) || alloldDeletedPriority.Any(m => m.NameArabic == Priority.NameArabic))
+        {
+
+            var relatedwithcompleted = await _prioritySettingConsumer.CheckRelatedComplatedTaskitemPriority(Priority);
+            if (relatedwithcompleted.Data)
+            {
+                PopupService.ShowConfirmation(@Loc["ThisPrioritynamewas"], @Loc["Confirm"], OnSavedConfirmed, type: ConfirmationType.Danger);
+                selectedPriority = Priority;
+                showConfirm = true;
+            }
+            else
+            {
+                var result = await _prioritySettingConsumer.RetrivePriority(Priority);
+                await _prioritySettingConsumer.DeletePriority(Priority.Id);
+
+                await ToastService.ShowToastAsync(Loc["Added successfully"], "success");
+
+            }
         }
         else
         {
-            if (res.Success)
+            var res = await _prioritySettingConsumer.UpdatePriority(Priority);
+            if (res.Errors != null && res.Errors.Count > 0)
             {
-                await ToastService.ShowToastAsync(Loc["EditSuccess"], "success");
-                PopupService.Hide();
-                if (OnValidSubmit.HasDelegate)
-                    await OnValidSubmit.InvokeAsync(Priority);
+                form.AddErrorsToEditContext(res.Errors);
+            }
+            else
+            {
+                if (res.Success)
+                {
+                    await ToastService.ShowToastAsync(Loc["EditSuccess"], "success");
+                    PopupService.Hide();
+                    if (OnValidSubmit.HasDelegate)
+                        await OnValidSubmit.InvokeAsync(Priority);
+                }
             }
         }
-    }
 
+    }
+    private async Task OnSavedConfirmed(bool confirmed)
+    {
+        if (confirmed && selectedPriority != null)
+        {
+            // retrve
+            var result = await _prioritySettingConsumer.RetrivePriority(selectedPriority);
+            if (result.Data)
+            {
+                await _prioritySettingConsumer.DeletePriority(Priority.Id);
+
+                showConfirm = false;
+                StateHasChanged();
+                await ToastService.ShowToastAsync(Loc["Retrived successfully"], "success");
+            }
+            else
+            {
+
+                return;
+            }
+        }
+        selectedPriority = null;
+
+    }
 
     private void Cancel()
     {

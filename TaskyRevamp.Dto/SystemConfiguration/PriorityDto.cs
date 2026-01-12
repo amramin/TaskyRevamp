@@ -35,6 +35,7 @@ namespace TaskyRevamp.Dto.SystemConfiguration
         [Required(ErrorMessageResourceType = typeof(SharedResources), ErrorMessageResourceName = "Required")]
         public string BackgroundColor { get; set; }
         public int Order { get; set; }
+        public bool IsDeleted { get; set; } = false;
 
         public static PriorityDto CopyFrom(PriorityDto source)
         {

@@ -117,6 +117,8 @@
     [Parameter]
     public CreateTaskDto? Task { get; set; }
     [Parameter] public EventCallback OnConfirmed { get; set; }
+    [Parameter] public EventCallback OnReopenTask { get; set; }
+
     int progressold  { get; set; }
     List<Guid> AlllowedToChangeProgress = new List<Guid>()
     {
@@ -179,34 +181,46 @@
                 ConfirmationType.Primary
             );
     }
-    private async Task ReopenConfirmed(Guid id)
+    // private async Task ReopenConfirmed(Guid id)
+    // {
+    //     var result = await _taskConsumer.ReopenTask(new Dto.TaskComment.TaskCommentDto{TaskItemId=id,Content="comment"});
+    //     if (result.Success && result.Data)
+    //     {
+    //         await ToastService.ShowToastAsync(Loc["Reopenedsuccessfully"], "success");
+    //         await OnConfirmed.InvokeAsync();
+
+    //     }
+    //     else
+    //     {
+    //         await ToastService.ShowToastAsync(Loc["ReopenFailed"], "danger");
+    //     }
+
+    //     StateHasChanged();
+    // }
+    // private void ReopenTask(Guid id)
+    // {
+    //     PopupService.ShowConfirmation(
+    //             @Loc["SureReopenTask"],
+    //             "Yes, Reopen",
+    //             async (confirmed) =>
+    //             {
+    //                 if (confirmed)
+    //                     await ReopenConfirmed(id);
+    //             },
+    //             ConfirmationType.Primary
+    //         );
+    // }
+    public async Task ReopenTask(Guid id)
     {
-        var result = await _taskConsumer.ReopenTask(id);
-        if (result.Success && result.Data)
-        {
-            await ToastService.ShowToastAsync(Loc["Reopenedsuccessfully"], "success");
-            await OnConfirmed.InvokeAsync();
+        PopupService.ShowNew(@<ReopenTask Id="id" OnSaved="ReloadAfterSave"></ReopenTask>,Loc["ReOpen"]);
 
-        }
-        else
-        {
-            await ToastService.ShowToastAsync(Loc["ReopenFailed"], "danger");
-        }
+        // StateHasChanged();
 
-        StateHasChanged();
     }
-    private void ReopenTask(Guid id)
+    private async Task ReloadAfterSave()
     {
-        PopupService.ShowConfirmation(
-                @Loc["SureReopenTask"],
-                "Yes, Reopen",
-                async (confirmed) =>
-                {
-                    if (confirmed)
-                        await ReopenConfirmed(id);
-                },
-                ConfirmationType.Primary
-            );
+        await OnReopenTask.InvokeAsync();
+        //currentPage = page;
     }
     private void OnProgressChanged(ChangeEventArgs args)
     {
@@ -240,7 +254,8 @@
         }
         else
         {
-            await ToastService.ShowToastAsync(Loc["progressChangedFailed"], "danger");
+            await ToastService.ShowToastAsync(Loc["DependencyError"], "danger");
+            await OnConfirmed.InvokeAsync();
         }
 
         StateHasChanged();
