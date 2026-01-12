@@ -33,10 +33,10 @@ namespace TaskyRevamp.Client.Consumer
             return res;
         }
 
-        public async Task<CommonApiResponse<bool>> AddPriority(PriorityDto priorityDto)
-        {
-            var url = $"api/PrioritySetting/AddPriority";
-            var res = await _taskyService.PostJsonAsync<bool>(url, priorityDto);
+		public async Task<CommonApiResponse<PriorityDto>> AddPriority(PriorityDto priorityDto)
+		{
+			var url = $"api/PrioritySetting/AddPriority";
+			var res = await _taskyService.PostJsonAsync<PriorityDto>(url, priorityDto);
 
             return res;
         }

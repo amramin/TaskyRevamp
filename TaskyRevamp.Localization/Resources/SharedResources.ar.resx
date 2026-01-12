@@ -1119,6 +1119,9 @@
   <data name="Complete" xml:space="preserve">
     <value>إكمال</value>
   </data>
+  <data name="AddAttachment" xml:space="preserve">
+    <value>إضافة ملف</value>
+  </data>
   <data name="ReOpen" xml:space="preserve">
     <value>إعادة فتح</value>
   </data>
@@ -1223,6 +1226,12 @@
   </data>
   <data name="Privilege" xml:space="preserve">
     <value>صلاحيات</value>
+  </data>
+  <data name="Mine" xml:space="preserve">
+    <value>مهامي</value>
+  </data>
+  <data name="Team" xml:space="preserve">
+    <value>مهام الفريق</value>
   </data>
   <data name="hisprioritynam" xml:space="preserve">
     <value />
