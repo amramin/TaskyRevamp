@@ -1,10 +1,11 @@
 using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Components.Authorization;
-
+using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.JSInterop;
+using Syncfusion.Blazor;
 using System.Globalization;
 using System.Text;
 using TaskyRevamp.Client;
@@ -14,7 +15,7 @@ using TaskyRevamp.Client.Pages;
 using TaskyRevamp.Client.Services;
 using TaskyRevamp.Components;
 using TaskyRevamp.Dto.GeneralDto;
-using Syncfusion.Blazor;
+using TaskyRevamp.Dto.TaskViews;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -34,6 +35,8 @@ builder.Services.AddScoped<PopupService>();
 builder.Services.AddScoped<ToastService>();
 builder.Services.AddSingleton<LoaderService>();
 builder.Services.Configure<MySettings>((builder.Configuration.GetSection("MySettings")));
+builder.Services.AddScoped<ProtectedSessionStorage>();
+builder.Services.AddSingleton<ColumnPreferenceService>();
 
 //builder.Services.AddAuthorizationCore();
 //Consumers
