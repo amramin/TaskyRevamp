@@ -57,24 +57,24 @@
 
 
 @code {
-    [Parameter] public EventCallback<List<TaskColumnSetting>> OnValidSubmit { get; set; }
+    [Parameter] public EventCallback<List<SortableColumn>> OnValidSubmit { get; set; }
 
     //private ProtectedSessionStorage SessionStorage { get; set; } = default!;
-    private List<TaskColumnSetting> Columns = new();
-    private List<TaskColumnSetting> BackupColumns = new();
-    private bool IsFirst(TaskColumnSetting column)
+    private List<SortableColumn> Columns = new();
+    private List<SortableColumn> BackupColumns = new();
+    private bool IsFirst(SortableColumn column)
     {
         return Columns
             .OrderBy(c => c.Order)
             .FirstOrDefault() == column;
     }
-    private bool IsLast(TaskColumnSetting column)
+    private bool IsLast(SortableColumn column)
     {
         return Columns
             .OrderBy(c => c.Order)
             .LastOrDefault() == column;
     }
-    private void ToggleVisibility(TaskColumnSetting column, ChangeEventArgs e)
+    private void ToggleVisibility(SortableColumn column, ChangeEventArgs e)
     {
         if (column == null)
             return;
@@ -86,15 +86,15 @@
         }
     }
 
-    private async Task<List<TaskColumnSetting>> GetColumnsFromSession(
+    private async Task<List<SortableColumn>> GetColumnsFromSession(
         bool isCompletedTasks = false)
     {
         // var sessionKey = isCompletedTasks
         //     ? SessionKeys.CompletedTaskColumns
         //     : SessionKeys.ActiveTaskColumns;
 
-        //  var result = await SessionStorage.GetAsync<List<TaskColumnSetting>>(sessionKey);
-        // var result = await LocalStorageService.GetItemAsync<List<TaskColumnSetting>>(sessionKey);
+        //  var result = await SessionStorage.GetAsync<List<SortableColumn>>(sessionKey);
+        // var result = await LocalStorageService.GetItemAsync<List<SortableColumn>>(sessionKey);
 
         // if (result.Success && result.Value != null && result.Value.Any())
         // {
@@ -109,7 +109,7 @@
         //  await LocalStorageService.SetItemAsync(sessionKey, defaults);
 
         //  return defaults;
-        var getdata = await LocalStorageService.GetItemAsync<List<TaskColumnSetting>>("AllColumn");
+        var getdata = await LocalStorageService.GetItemAsync<List<SortableColumn>>("AllColumn");
         return getdata;//?? GetDefaultColumns();
     }
 
@@ -127,28 +127,31 @@
     }
 
     private async Task SaveColumnsToSession(
-    List<TaskColumnSetting> columns,
+    List<SortableColumn> columns,
     bool isCompletedTasks = false)
     {
         if (columns == null || !columns.Any())
             return;
 
         // Ensure order is updated before saving
-        for (int i = 0; i < columns.Count; i++)
-            columns[i].Order = i;
+        // for (int i = 0; i < columns.Count; i++)
+        //     columns[i].Order = i;
 
-        var sessionKey = isCompletedTasks
-            ? SessionKeys.CompletedTaskColumns
-            : SessionKeys.ActiveTaskColumns;
+        // var sessionKey = isCompletedTasks
+        //     ? SessionKeys.CompletedTaskColumns
+        //     : SessionKeys.ActiveTaskColumns;
+       // var x = columns;
+        await LocalStorageService.SetItemAsync("AllColumn", columns);
+        PopupService.Hide();
+        navigationManager.NavigateTo($"/MainTasks", true);
 
-        await LocalStorageService.SetItemAsync(sessionKey, columns);
     }
     private void Cancel()
     {
         Columns = BackupColumns
-            .Select(c => new TaskColumnSetting
+            .Select(c => new SortableColumn
             {
-                Id = c.Id,
+                Field = c.Field,
                 DisplayName = c.DisplayName,
                 Order = c.Order,
                 IsVisible = c.IsVisible,
@@ -160,8 +163,20 @@
 
     protected async override Task OnInitializedAsync()
     {
-        var all = await GetDefaultColumns();
-        Columns = all.ToList();
+
+        //check if session has data
+        var olddata = await GetColumns();
+        if (olddata != null && olddata.Count > 0)
+        {
+            Columns = olddata.OrderBy(c => c.Order).ToList();
+        }
+        else
+        {
+            //if yes load from session else load default
+
+            var all = await GetDefaultColumns();
+            Columns = all.ToList();
+        }
         StateHasChanged();
         // Columns = GetColumnsFromSession().Result
         //             .OrderBy(c => c.Order)
@@ -169,7 +184,7 @@
 
         // // Backup for Cancel
         // BackupColumns = Columns
-        //     .Select(c => new TaskColumnSetting
+        //     .Select(c => new SortableColumn
         //     {
         //         Id = c.Id,
         //         DisplayName = c.DisplayName,
@@ -184,24 +199,45 @@
         public const string ActiveTaskColumns = "ActiveTask_Columns";
         public const string CompletedTaskColumns = "CompletedTask_Columns";
     }
-    private async Task<List<TaskColumnSetting>> GetDefaultColumns()
+    public async Task<List<SortableColumn>> GetColumns()
     {
-        List<TaskColumnSetting> column = new List<TaskColumnSetting>();
-        column= new List<TaskColumnSetting>()
+        var columns = await LocalStorageService.GetItemAsync<List<SortableColumn>>("AllColumn");
+        return columns;
+    }
+    private async Task<List<SortableColumn>> GetDefaultColumns()
     {
-        new() { Id = "Title", DisplayName = "Task Title", Order = 0, IsVisible = true },
-        new() { Id = "Status", DisplayName = "Status", Order = 1, IsVisible = true },
-        new() { Id = "Priority", DisplayName = "Priority", Order = 2, IsVisible = true },
-        new() { Id = "Source", DisplayName = "Source", Order = 3, IsVisible = true },
-        new() { Id = "DueDate", DisplayName = "Due Date", Order = 4, IsVisible = true }
+        List<SortableColumn> column = new List<SortableColumn>();
+        column= new List<SortableColumn>()
+    {
+        new() { Field = "Title", DisplayName  = Loc["Title"], Order = 0, IsVisible = true },
+        new() { Field = "Priority", DisplayName =  Loc["Priority2"], Order = 1, IsVisible = true },
+        new() { Field = "Status", DisplayName =  Loc["TaskStatus"], Order = 2, IsVisible = true },
+        new() { Field = "ActualProgress", DisplayName = Loc["ActualProgress"], Order = 3, IsVisible = true },
+        new() { Field = "Start Date", DisplayName = Loc["StartDate"], Order = 4, IsVisible = true },
+            new() { Field = "End Date", DisplayName = Loc["EndDate"], Order = 5, IsVisible = true },
+        new() { Field = "weight", DisplayName = Loc["weight"], Order = 6, IsVisible = true },
+        new() { Field = "Assigned To", DisplayName = Loc["AssigneduserNames"], Order = 7, IsVisible = true },
+        new() { Field = "Assigned To Department", DisplayName =Loc["AssignedToDepartment"], Order = 8, IsVisible = true },
+        new() { Field = "Source", DisplayName =Loc["Source"], Order = 9, IsVisible = true },
+        new() { Field = "Dependency", DisplayName = Loc["Dependency"], Order = 10, IsVisible = true },
+        new() { Field = "Created By", DisplayName = Loc["CreatedBy"], Order = 11, IsVisible = true },
+        new() { Field = "Duration", DisplayName = Loc["Duration"], Order = 12, IsVisible = true },
+        new() { Field = "Created by department", DisplayName = Loc["Createdbydepartment"], Order = 13, IsVisible = true },
+        new() { Field = "Planned Progress", DisplayName = Loc["PlannedProgress"], Order = 14, IsVisible = true },
+        new() { Field = "Creation Date", DisplayName = Loc["CreationDate"], Order = 15, IsVisible = true },
+        new() { Field = "Type", DisplayName = Loc["Type"], Order = 16, IsVisible = true },
+        new() { Field = "Actual Weight", DisplayName = Loc["ActualWeight"], Order = 17, IsVisible = true },
+        new() { Field = "Planned Weight", DisplayName =Loc["PlannedWeight"], Order = 18, IsVisible = true },
+
+    
     };
 
         await LocalStorageService.SetItemAsync("AllColumn", column);
-        var all = await LocalStorageService.GetItemAsync<List<TaskColumnSetting>>("AllColumn");
+        var all = await LocalStorageService.GetItemAsync<List<SortableColumn>>("AllColumn");
         return all;
     }
 
-    private void MoveUp(TaskColumnSetting column)
+    private void MoveUp(SortableColumn column)
     {
         var index = Columns.IndexOf(column);
         if (index <= 0) return;
@@ -212,7 +248,7 @@
         UpdateOrder();
     }
 
-    private void MoveDown(TaskColumnSetting column)
+    private void MoveDown(SortableColumn column)
     {
         var index = Columns.IndexOf(column);
         if (index >= Columns.Count - 1) return;
