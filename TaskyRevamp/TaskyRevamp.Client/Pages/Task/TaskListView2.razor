@@ -1,0 +1,279 @@
+﻿@using Blazored.LocalStorage
+@using TaskyRevamp.Client.Consumer
+@using TaskyRevamp.Client.Services
+@using TaskyRevamp.Dto.Enums.SearchFields
+@using TaskyRevamp.Dto.SystemConfiguration
+@using TaskyRevamp.Dto.TaskDto
+@using TaskyRevamp.Dto.TaskViews
+@inject IStringLocalizer<SharedResources> Loc
+@inject ToastService ToastService
+@inject PopupService PopupService
+@inject TaskConsumer _taskConsumer
+@inject NavigationManager navigationManager
+@inject StatusSettingConsumer _statusSettingConsumer
+@inject DefaultColumnsSettingConsumer _defaultColumnsSettingConsumer
+@inject ILocalStorageService LocalStorageService
+
+<div class="column-reorder-container mb-2">
+    <SortableList Items="@Columns.OrderBy(c => c.Order).ToList()"
+                  KeySelector="@(c => c.Field)"
+                  OnUpdate="EventCallback.Factory.Create<(int oldIndex, int newIndex)>(this, args => SortColumns(args.oldIndex, args.newIndex))">
+ 
+
+              <SortableItemTemplate Context="column">
+            <span class="column-handle me-2">☰</span>
+            @column.DisplayName
+        </SortableItemTemplate>
+
+    </SortableList>
+</div>
+
+<div class="table-responsive sticky-header-custom">
+    <SortableTable TItem="CreateTaskDto"
+                   Columns="@Columns.Where(p => p.IsVisible).OrderBy(k => k.Order).ToList()"
+                   Items="@allTaks"
+                   SortColumn="@currentSortColumn"
+
+                   SortAscending="@sortAscending"
+                   OnSortRequested="HandleSort">
+
+        <RowTemplate>
+            @foreach (var task in allTaks)
+            {
+                <tr>
+                    @foreach (var column in Columns.Where(p => p.IsVisible).OrderBy(k => k.Order))
+                    {
+                        <td>@RenderColumnValue(task, column.Field)</td>
+                    }
+                </tr>
+            }
+        </RowTemplate>
+    </SortableTable>
+</div>
+
+
+@code {
+    [Parameter] public EventCallback<Guid> OnEdit { get; set; }
+    [Parameter] public EventCallback<Guid> OnReopen { get; set; }
+    [Parameter] public EventCallback<Guid> OnDelete { get; set; }
+    [Parameter] public EventCallback<Guid> OnShowUsers { get; set; }
+    [Parameter] public EventCallback OnAdd { get; set; }
+
+    private List<SortableColumn> Columns = new();
+    private List<CreateTaskDto> allTaks = new();
+    private List<SortableColumn> tableColumns = new();
+    private List<DefaultColumnsSettingDto> ColumnsList = new();
+    private List<StatusSettingsDto> Statuses = new();
+    private Search? searchComponent;
+    private string currentSortColumn = "";
+    private bool? sortAscending = true;
+    private int currentPage = 1;
+    private int totalPages = 1;
+    private int totalCount = 0;
+    private int pageSize = 10;
+    private void SortColumns(int oldIndex, int newIndex)
+    {
+        // Move the column in the list
+        var item = Columns[oldIndex];
+        Columns.RemoveAt(oldIndex);
+        Columns.Insert(newIndex, item);
+
+        // Update the Order property to persist the new order
+        for (int i = 0; i < Columns.Count; i++)
+        {
+            Columns[i].Order = i;
+        }
+
+        StateHasChanged();
+    }
+
+    private async Task OnColumnsReordered(List<SortableColumn> newOrder)
+    {
+        // Update order property
+        for (int i = 0; i < newOrder.Count; i++)
+            newOrder[i].Order = i;
+
+        Columns = newOrder;
+
+        // Persist order to LocalStorage
+        await LocalStorageService.SetItemAsync("AllColumn", Columns);
+
+        StateHasChanged();
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Load statuses
+        var statusres = await _statusSettingConsumer.GetStatusConfiguration();
+        if (statusres.Success && statusres.Data != null)
+            Statuses = statusres.Data;
+
+        // Load columns from LocalStorage or defaults
+        var storedColumns = await LocalStorageService.GetItemAsync<List<SortableColumn>>("AllColumn");
+        if (storedColumns != null && storedColumns.Count > 0)
+            Columns = storedColumns.OrderBy(c => c.Order).ToList();
+        else
+            Columns = await LoadDefaultColumns();
+
+        // Apply user column settings
+        var res = await _defaultColumnsSettingConsumer.GetDefaultColumnsSettings();
+        if (res.Success && res.Data != null)
+            ColumnsList = res.Data;
+
+        Columns = Columns
+            .Where(c => ColumnsList.Any(s => s.IsActive && string.Equals(s.NameEnglish, c.Field, StringComparison.OrdinalIgnoreCase)))
+            .OrderBy(c => ColumnsList.First(s => string.Equals(s.NameEnglish, c.Field, StringComparison.OrdinalIgnoreCase)).Order ?? int.MaxValue)
+            .ToList();
+
+        await GetTasks();
+    }
+
+    private async Task<List<SortableColumn>> LoadDefaultColumns()
+    {
+        var defaults = new List<SortableColumn>
+        {
+            new() { Field = "Title", DisplayName  = Loc["Title"], Order = 0, IsVisible = true },
+            new() { Field = "Priority", DisplayName =  Loc["Priority2"], Order = 1, IsVisible = true },
+            new() { Field = "Status", DisplayName =  Loc["TaskStatus"], Order = 2, IsVisible = true },
+            new() { Field = "ActualProgress", DisplayName = Loc["ActualProgress"], Order = 3, IsVisible = true },
+            new() { Field = "Start Date", DisplayName = Loc["StartDate"], Order = 4, IsVisible = true },
+            new() { Field = "End Date", DisplayName = Loc["EndDate"], Order = 5, IsVisible = true },
+            new() { Field = "weight", DisplayName = Loc["weight"], Order = 6, IsVisible = true },
+            new() { Field = "Assigned To", DisplayName = Loc["AssigneduserNames"], Order = 7, IsVisible = true },
+            new() { Field = "Assigned To Department", DisplayName =Loc["AssignedToDepartment"], Order = 8, IsVisible = true },
+            new() { Field = "Source", DisplayName =Loc["Source"], Order = 9, IsVisible = true },
+            new() { Field = "Dependency", DisplayName = Loc["Dependency"], Order = 10, IsVisible = true },
+            new() { Field = "Created By", DisplayName = Loc["CreatedBy"], Order = 11, IsVisible = true },
+            new() { Field = "Duration", DisplayName = Loc["Duration"], Order = 12, IsVisible = true },
+            new() { Field = "Planned Progress", DisplayName = Loc["PlannedProgress"], Order = 13, IsVisible = true },
+            new() { Field = "Creation Date", DisplayName = Loc["CreationDate"], Order = 14, IsVisible = true },
+            new() { Field = "Type", DisplayName = Loc["Type"], Order = 15, IsVisible = true },
+            new() { Field = "Actual Weight", DisplayName = Loc["ActualWeight"], Order = 16, IsVisible = true },
+            new() { Field = "Planned Weight", DisplayName =Loc["PlannedWeight"], Order = 17, IsVisible = true },
+        };
+        await LocalStorageService.SetItemAsync("AllColumn", defaults);
+        return defaults;
+    }
+
+    #region Public Methods
+    public async Task GetTasks(bool isSearch = false, string searchTerm = null)
+    {
+        var res = await _taskConsumer.GetTasks(currentPage, pageSize, currentSortColumn, sortAscending ?? true,
+            isSearch ? searchFields : null, isSearch ? searchTerm : null);
+
+        allTaks = res.Data?.Items.ToList() ?? new List<CreateTaskDto>();
+        totalPages = res.Data?.TotalPages ?? 1;
+        totalCount = res.Data?.TotalCount ?? 0;
+
+        StateHasChanged();
+    }
+
+    public async Task RefreshTable()
+    {
+        await GetTasks();
+    }
+    #endregion
+
+    #region Sorting & Pagination
+    private async Task HandleSort((string Column, bool? Ascending) sortInfo)
+    {
+        currentSortColumn = sortInfo.Column;
+        sortAscending = sortInfo.Ascending ?? true;
+        await GetTasks();
+    }
+
+    private async Task ChangePage(int page)
+    {
+        currentPage = page;
+        await GetTasks();
+    }
+
+    private async Task ChangePageSize(int newSize)
+    {
+        pageSize = newSize;
+        currentPage = 1;
+        await GetTasks();
+    }
+    #endregion
+
+    #region Task Actions
+    private void ViewTaskDetails(Guid id)
+    {
+        navigationManager.NavigateTo($"/task/details/{id}");
+    }
+
+    private void CompleteTask(Guid id)
+    {
+        PopupService.ShowConfirmation(
+            @Loc["SureCompleteTask"],
+            "Yes, Complete",
+            async confirmed =>
+            {
+                if (confirmed)
+                {
+                    var result = await _taskConsumer.CompleteTask(id);
+                    if (result.Success && result.Data)
+                    {
+                        await GetTasks();
+                        await ToastService.ShowToastAsync(Loc["Completedsuccessfully"], "success");
+                    }
+                    else
+                    {
+                        await ToastService.ShowToastAsync(Loc["CompleteFailed"], "danger");
+                    }
+                }
+            },
+            ConfirmationType.Primary
+        );
+    }
+
+    public async Task Add()
+    {
+        await OnAdd.InvokeAsync();
+    }
+    #endregion
+
+    #region Column Rendering
+    private List<SearchFieldTask> searchFields = new()
+    {
+        SearchFieldTask.Title,
+        SearchFieldTask.Priority,
+        SearchFieldTask.TaskStatus,
+        SearchFieldTask.StartDate,
+        SearchFieldTask.EndDate,
+        SearchFieldTask.weight,
+        SearchFieldTask.AssigneduserNames,
+        SearchFieldTask.CreatedBy,
+        SearchFieldTask.CreateDate,
+        SearchFieldTask.UpdatedBy,
+        SearchFieldTask.UpdateDate,
+        SearchFieldTask.PlannedProgress
+    };
+
+    private RenderFragment RenderColumnValue(CreateTaskDto task, string field) => builder =>
+    {
+        switch (field)
+        {
+            case "Title": builder.AddContent(0, task.Title); break;
+            case "Priority": builder.AddContent(0, task.PriorityName); break;
+            case "Status": builder.AddContent(0, task.TaskStatusName); break;
+            case "ActualProgress": builder.AddContent(0, task.ActualProcess); break;
+            case "Start Date": builder.AddContent(0, task.StartDate?.ToString(Loc["LocalizeDate"])); break;
+            case "End Date": builder.AddContent(0, task.EndDate?.ToString(Loc["LocalizeDate"])); break;
+            case "weight": builder.AddContent(0, task.weight); break;
+            case "Assigned To": builder.AddContent(0, task.AssigneduserNames); break;
+            case "Assigned To Department": builder.AddContent(0, task.AssignedDepartmentName); break;
+            case "Source": builder.AddContent(0, task.SourceName); break;
+            case "Dependency": builder.AddContent(0, task.DependencyNames); break;
+            case "Created By": builder.AddContent(0, task.CreatedByName); break;
+            case "Duration": builder.AddContent(0, task.Duration); break;
+            case "Planned Progress": builder.AddContent(0, task.PlannedProgress); break;
+            case "Creation Date": builder.AddContent(0, task.CreateDate?.ToString(Loc["LocalizeDate"])); break;
+            case "Type": builder.AddContent(0, task.TypeName); break;
+            case "Actual Weight": builder.AddContent(0, task.ActualWeight); break;
+            case "Planned Weight": builder.AddContent(0, task.Plannedweight); break;
+            default: builder.AddContent(0, "..."); break;
+        }
+    };
+    #endregion
+}

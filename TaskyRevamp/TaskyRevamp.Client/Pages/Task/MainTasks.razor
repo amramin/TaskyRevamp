@@ -194,7 +194,15 @@
                     @switch (ViewType)
                     {
                         case 1:
-                            <div><TaskListView OnAdd="Add" OnEdit="Edit" OnReopen="Reopen" @ref="taskListRef"></TaskListView></div>
+                            <div>
+
+                                <TaskListView2 @ref="taskListRef"
+                                               OnAdd="Add"
+                                               OnEdit="Edit"
+                                               OnReopen="Reopen">
+                                </TaskListView2>
+
+                            </div>
                             break;
                         case 2:
                             <div>testttttttt</div>
@@ -257,13 +265,13 @@
     [Parameter] public EventCallback<Guid> OnDelete { get; set; }
     [Parameter] public EventCallback<Guid> OnShowUsers { get; set; }
     [Parameter] public EventCallback<Guid> OnAdd { get; set; }
-    private TaskListView taskListRef;
+    private TaskListView2 taskListRef;
     private List<TaskColumnSetting> Columns = new();
     public int ViewType { get; set; } = 1;
     public Guid currentUserId { set; get; }
     private Search? searchComponent;
     private List<SortableColumn> tableColumns = new();
-
+   
     private async Task ClearSearch()
     {
         //currentPage = 1;
