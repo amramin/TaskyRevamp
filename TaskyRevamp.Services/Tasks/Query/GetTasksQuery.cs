@@ -71,7 +71,7 @@ public class GetTasksHandler : IRequestHandler<GetTasksQuery, PagedResult<Create
             tasky.SourceName = currentCulture == "ar" ? tsk.Source?.NameArabic : tsk.Source?.NameEnglish;
             tasky.PriorityName = currentCulture == "ar" ? tsk.Priority?.NameArabic : tsk.Priority?.NameEnglish;
             var departments = await _departmenRepository.FindBy(k => tsk.AssignedDepartmentIds.Contains(k.Id));
-            var depsName = departments.Value.Select(k => k.NameEnglish);
+            var depsName = currentCulture == "ar" ? departments.Value.Select(k => k.NameArabic): departments.Value.Select(k => k.NameEnglish);
             tasky.AssignedDepartmentName = string.Join(" ", depsName);
             var dependencies = await _taskDependincesRepository.FindBy(p => p.TaskItemId == tasky.Id);
             if (dependencies is not null)

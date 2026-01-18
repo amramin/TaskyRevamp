@@ -439,7 +439,7 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Assigned To.
+        ///   Looks up a localized string similar to Assigned to.
         /// </summary>
         public static string AssignedTo {
             get {
@@ -448,7 +448,7 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Assignee department.
+        ///   Looks up a localized string similar to Assigned to department.
         /// </summary>
         public static string AssignedToDepartment {
             get {
@@ -1105,7 +1105,7 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Edit Department.
+        ///   Looks up a localized string similar to Edit department.
         /// </summary>
         public static string EditDepartment {
             get {
@@ -2577,6 +2577,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string Search {
             get {
                 return ResourceManager.GetString("Search", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Search....
+        /// </summary>
+        public static string Search___ {
+            get {
+                return ResourceManager.GetString("Search...", resourceCulture);
             }
         }
         

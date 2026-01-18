@@ -1,6 +1,7 @@
 ﻿@using Syncfusion.Blazor
 @using Syncfusion.Blazor.RichTextEditor
 @inject IStringLocalizer<SharedResources> Loc
+@using System.Globalization
 
 @if (!IsLoaded)
 {
@@ -37,6 +38,7 @@ else{
                   Value="@InternalContent"
                   ValueChanged="OnValueChange"
                   EnablePersistence="false"
+                      EnableRtl="EnableRtl"
                   ShowCharCount="true"
                   MaxLength="3000"
                   CssClass="@(EnableRtl ? "arabic-rte" : "")">
@@ -61,7 +63,7 @@ else{
     public EventCallback<string> ContentChanged { get; set; }
 
     [Parameter]
-    public bool EnableRtl { get; set; } = false;
+    public bool EnableRtl { get; set; } = CultureInfo.CurrentCulture.Name == "ar-EG" ? true : false;
     private bool IsLoaded;
     private bool IsLoading;
     private SfRichTextEditor rte;
@@ -73,24 +75,24 @@ else{
         new ToolbarItemModel() { Command = ToolbarCommand.Underline },
         new ToolbarItemModel() { Command = ToolbarCommand.Italic },
         new ToolbarItemModel() { Command = ToolbarCommand.Bold },
-        new ToolbarItemModel() { Command = ToolbarCommand.BackgroundColor },
-        new ToolbarItemModel() { Command = ToolbarCommand.FontColor },
+        //new ToolbarItemModel() { Command = ToolbarCommand.BackgroundColor },
+        //new ToolbarItemModel() { Command = ToolbarCommand.FontColor },
         new ToolbarItemModel() { Command = ToolbarCommand.StrikeThrough },
-        new ToolbarItemModel() { Command = ToolbarCommand.Image },
+       // new ToolbarItemModel() { Command = ToolbarCommand.Image },
         new ToolbarItemModel() { Command = ToolbarCommand.CreateLink },
         new ToolbarItemModel() { Command = ToolbarCommand.Alignments },
-        new ToolbarItemModel() { Command = ToolbarCommand.FontSize },
-        new ToolbarItemModel() { Command = ToolbarCommand.FontName },
-        new ToolbarItemModel() { Command = ToolbarCommand.Indent },
-        new ToolbarItemModel() { Command = ToolbarCommand.Outdent },
-        new ToolbarItemModel() { Command = ToolbarCommand.Separator },
-        new ToolbarItemModel() { Command = ToolbarCommand.Formats },
-        new ToolbarItemModel() { Command = ToolbarCommand.SourceCode },
-        new ToolbarItemModel() { Command = ToolbarCommand.Separator },
-        new ToolbarItemModel() { Command = ToolbarCommand.SubScript},
-        new ToolbarItemModel() { Command = ToolbarCommand.SuperScript},
-        new ToolbarItemModel() { Command = ToolbarCommand.Undo },
-        new ToolbarItemModel() { Command = ToolbarCommand.Redo },
+        // new ToolbarItemModel() { Command = ToolbarCommand.FontSize },
+        // new ToolbarItemModel() { Command = ToolbarCommand.FontName },
+        // new ToolbarItemModel() { Command = ToolbarCommand.Indent },
+        // new ToolbarItemModel() { Command = ToolbarCommand.Outdent },
+        // new ToolbarItemModel() { Command = ToolbarCommand.Separator },
+        // new ToolbarItemModel() { Command = ToolbarCommand.Formats },
+        // new ToolbarItemModel() { Command = ToolbarCommand.SourceCode },
+        // new ToolbarItemModel() { Command = ToolbarCommand.Separator },
+        // new ToolbarItemModel() { Command = ToolbarCommand.SubScript},
+        // new ToolbarItemModel() { Command = ToolbarCommand.SuperScript},
+        // new ToolbarItemModel() { Command = ToolbarCommand.Undo },
+        // new ToolbarItemModel() { Command = ToolbarCommand.Redo },
 
     };
     //void LoadEditor() => IsLoaded = true;

@@ -197,6 +197,7 @@
     }
     private async Task ReloadAfterSave()
     {
+        await ToastService.ShowToastAsync(Loc["Added successfully"], "success");
         PopupService.Hide();
         StateHasChanged();
     }
