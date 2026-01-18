@@ -61,7 +61,7 @@ namespace TaskyRevamp.Client
 				return new ValidationResult
 				{
 					NotValid = true,
-					ValidationMessage = Loc["UnsupportedFileTypeTask"]
+					ValidationMessage = string.Format(Loc["UnsupportedFileTypeTask"], file.Name)
 				};
 			}
 			if (file.Size > maxSize)
@@ -69,7 +69,7 @@ namespace TaskyRevamp.Client
 				return new ValidationResult
 				{
 					NotValid = true,
-					ValidationMessage = Loc["FileSizeExceedsLimitTask"]
+					ValidationMessage = string.Format(Loc["FileSizeExceedsLimitTask"], file.Name)
 				};
 			}
 			return new ValidationResult { NotValid = false };

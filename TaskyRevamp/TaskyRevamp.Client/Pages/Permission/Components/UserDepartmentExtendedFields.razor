@@ -12,14 +12,19 @@
             <label class="form-label ">@Loc["DirectionLevel"] <span class="text-danger">*</span></label>
             <input type="text" maxlength="10"
                    class="form-control @(IsSaveClicked && (Item.DirectionLevel == null || Item.DirectionLevel < 1) ? "border-danger" : "")"
-                   @bind="Item.DirectionLevel" @oninput="onDirectionLevelChanged" />
-            @if (IsSaveClicked && Item.IsActive && Item.DirectionLevel == null)
+                   value="@DirectionLevelText" @oninput="onDirectionLevelChanged" />
+            @if (IsSaveClicked && Item.IsActive)
             {
-                <div class="text-danger small mt-1">@Loc["Required"]</div>
-            }
-            else if (IsSaveClicked && Item.IsActive && Item.DirectionLevel < 1)
-            {
-                <div class="text-danger small mt-1">@Loc["ValueMustBeGreaterThanOrEqualTo1"]</div>
+                <div class="text-danger small mt-1">
+                    @if (string.IsNullOrWhiteSpace(DirectionLevelText))
+                    {
+                        @Loc["Required"]
+                    }
+                    else if (!long.TryParse(DirectionLevelText, out var val) || val < 1)
+                    {
+                        @Loc["ValueMustBeGreaterThanOrEqualTo1"]
+                    }
+                </div>
             }
         </div>
     }
@@ -93,6 +98,16 @@
     [Parameter] public bool IsSaveClicked { get; set; }
     private List<Permission> PermissionList = Enum.GetValues(typeof(Permission)).Cast<Permission>().ToList();
     private List<Permission> AvailablePermissions => PermissionList.Where(p => Item.PermissionId == null || !Item.PermissionId.Contains((int)p)).ToList();
+    private string DirectionLevelText { get; set; } = "";
+    private long? DirectionLevelValue { get; set; } = null;
+    protected override void OnParametersSet()
+    {
+        if (string.IsNullOrEmpty(DirectionLevelText) && Item.DirectionLevel != null)
+        {
+            DirectionLevelValue = Item.DirectionLevel;
+            DirectionLevelText = Item.DirectionLevel.ToString()!;
+        }
+    }
     private void OnPermissionsChanged(List<int> selectedPermissions)
     {
         Item.PermissionId = selectedPermissions;
@@ -105,13 +120,22 @@
     }
     private void onDirectionLevelChanged(ChangeEventArgs e)
     {
-        var input = e.Value?.ToString() ?? string.Empty;
-        if (input.Length > 10)
-            input = input.Substring(0, 10);
-
-        if (long.TryParse(input, out var value))
-            Item.DirectionLevel = value;
-        else
+        DirectionLevelText = e.Value?.ToString() ?? string.Empty;
+        if (DirectionLevelText.Length > 10)
+            DirectionLevelText = DirectionLevelText.Substring(0, 10);
+        if (string.IsNullOrWhiteSpace(DirectionLevelText))
+        {
+            DirectionLevelValue = null;
+            Item.DirectionLevel = null;
             return;
+        }
+
+        if (long.TryParse(DirectionLevelText, out var value))
+        {
+            DirectionLevelValue = value;
+            Item.DirectionLevel = value;
+        }
+        else
+            DirectionLevelValue = null;
     }
 }

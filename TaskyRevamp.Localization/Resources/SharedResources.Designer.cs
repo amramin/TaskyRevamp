@@ -1456,7 +1456,7 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The selected file exceeds the maximum allowed size of  25 MB. Please upload a smaller file..
+        ///   Looks up a localized string similar to The selected file &quot;{0}&quot; exceeds the maximum allowed size of  25 MB. Please upload a smaller file..
         /// </summary>
         public static string FileSizeExceedsLimitTask {
             get {
@@ -3292,7 +3292,7 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This file type is not supported. Allowed formats are: pdf, doc, docx, xls, xlsx, .ppt, .pptx, txt, csv, jpg, jpeg, and png.
+        ///   Looks up a localized string similar to This file type &quot;{0}&quot; is not supported. Allowed formats are: pdf, doc, docx, xls, xlsx, .ppt, .pptx, txt, csv, jpg, jpeg, and png.
         /// </summary>
         public static string UnsupportedFileTypeTask {
             get {

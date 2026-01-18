@@ -746,7 +746,7 @@
     <value>المسند إليه</value>
   </data>
   <data name="AddTask" xml:space="preserve">
-    <value>إضافة مهمة</value>
+    <value>أضف مهمة</value>
   </data>
   <data name="TitleEnglish" xml:space="preserve">
     <value>العنوان</value>
@@ -1119,9 +1119,6 @@
   <data name="Complete" xml:space="preserve">
     <value>إكمال</value>
   </data>
-  <data name="AddAttachment" xml:space="preserve">
-    <value>إضافة ملف</value>
-  </data>
   <data name="ReOpen" xml:space="preserve">
     <value>إعادة فتح</value>
   </data>
@@ -1168,10 +1165,10 @@
     <value>الملفات المدعومة</value>
   </data>
   <data name="UnsupportedFileTypeTask" xml:space="preserve">
-    <value>نوع الملف غير مدعوم. الصيغ المسموح بها هي: pdf, doc, docx, xls, xlsx, .ppt, .pptx, txt, csv, jpg, jpeg, و png</value>
+    <value>نوع الملف "{0}" غير مدعوم. الصيغ المسموح بها هي: pdf, doc, docx, xls, xlsx, .ppt, .pptx, txt, csv, jpg, jpeg, و png</value>
   </data>
   <data name="FileSizeExceedsLimitTask" xml:space="preserve">
-    <value>الملف المحدد يتجاوز الحد الأقصى المسموح به وهو 25 ميجابايت. يُرجى تحميل ملف أصغر حجمًا</value>
+    <value>الملف المحدد "{0}" يتجاوز الحد الأقصى المسموح به وهو 25 ميجابايت. يُرجى تحميل ملف أصغر حجمًا</value>
   </data>
   <data name="userLink" xml:space="preserve">
     <value>ربط المستخدم</value>
@@ -1226,12 +1223,6 @@
   </data>
   <data name="Privilege" xml:space="preserve">
     <value>صلاحيات</value>
-  </data>
-  <data name="Mine" xml:space="preserve">
-    <value>مهامي</value>
-  </data>
-  <data name="Team" xml:space="preserve">
-    <value>مهام الفريق</value>
   </data>
   <data name="hisprioritynam" xml:space="preserve">
     <value />
@@ -1309,11 +1300,13 @@
   <data name="Password" xml:space="preserve">
     <value>كلمة المرور</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="Reopenedsuccessfully" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
-  </data>
   <data name="Search..." xml:space="preserve">
     <value>... بحث</value>
+  </data>
+  <data name="Mine" xml:space="preserve">
+    <value>مهامي</value>
+  </data>
+  <data name="Team" xml:space="preserve">
+    <value>مهام الفريق</value>
   </data>
 </root>
