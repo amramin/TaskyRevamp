@@ -1,4 +1,5 @@
 ﻿@using TaskyRevamp.Client.Consumer
+@using TaskyRevamp.Client.Pages.Task.Components
 @using TaskyRevamp.Client.Services
 @using TaskyRevamp.Dto.Enums.SearchFields
 @using TaskyRevamp.Dto.SystemConfiguration
@@ -402,7 +403,14 @@ SearchFieldTask.PlannedProgress
                 builder.AddContent(0, task.weight);
                 break;
             case "Assigned To":
-                builder.AddContent(0, task.AssigneduserNames);
+                builder.AddContent(0, (RenderFragment)(b =>
+                {
+                    b.OpenComponent<Initials>(0);
+                    b.AddAttribute(1, "Names", task.AssigneduserNames);
+                    b.AddAttribute(2, "Size", 32);
+                    b.AddAttribute(3, "Black", true);
+                    b.CloseComponent();
+                }));
                 break;
             case "Assigned To Department":
                 builder.AddContent(0, task.AssignedDepartmentName);
@@ -417,7 +425,14 @@ SearchFieldTask.PlannedProgress
                 builder.AddContent(0, task.Createdbydepartment);
                 break;
             case "Created By":
-                builder.AddContent(0, task.CreatedByName);
+                builder.AddContent(0, (RenderFragment)(b =>
+                {
+                    b.OpenComponent<Initials>(0);
+                    b.AddAttribute(1, "Names", task.CreatedByName);
+                    b.AddAttribute(2, "Size", 32);
+                    b.AddAttribute(3, "Black", true);
+                    b.CloseComponent();
+                }));
                 break;
             case "Duration":
                 builder.AddContent(0, task.Duration);
@@ -446,8 +461,6 @@ SearchFieldTask.PlannedProgress
     {
         currentSortColumn = sortInfo.Column;
         sortAscending = sortInfo.Ascending;
-
-
         if (sortAscending == null)
         {
             // third click → reset to default sorting
@@ -456,29 +469,19 @@ SearchFieldTask.PlannedProgress
         }
         await GetTasks();
     }
-
     private void ViewTaskDetails(Guid id)
     {
         navigationManager.NavigateTo($"/task/details/{id}");
     }
-
     public async Task GetTasks(bool isSearch = false, string searchTerm = null)
     {
-
-
-        var res = await _taskConsumer.GetTasks(currentPage, pageSize, currentSortColumn, sortAscending.Value, isSearch ?
-        searchFields : null, isSearch ? searchTerm : null);
+        var res = await _taskConsumer.GetTasks(currentPage, pageSize, currentSortColumn, sortAscending.Value, isSearch ? searchFields : null, isSearch ? searchTerm : null);
         allTaks = res.Data.Items.ToList();
-
         if (!(res?.Success ?? false) || res.Data is null)
             return;
-
         var data = res.Data;
         totalPages = data.TotalPages;
         totalCount = data.TotalCount;
-
         StateHasChanged();
     }
-
-
 }

@@ -1165,10 +1165,10 @@
     <value>الملفات المدعومة</value>
   </data>
   <data name="UnsupportedFileTypeTask" xml:space="preserve">
-    <value>نوع الملف غير مدعوم. الصيغ المسموح بها هي: pdf, doc, docx, xls, xlsx, .ppt, .pptx, txt, csv, jpg, jpeg, و png</value>
+    <value>نوع الملف "{0}" غير مدعوم. الصيغ المسموح بها هي: pdf, doc, docx, xls, xlsx, .ppt, .pptx, txt, csv, jpg, jpeg, و png</value>
   </data>
   <data name="FileSizeExceedsLimitTask" xml:space="preserve">
-    <value>الملف المحدد يتجاوز الحد الأقصى المسموح به وهو 25 ميجابايت. يُرجى تحميل ملف أصغر حجمًا</value>
+    <value>الملف المحدد "{0}" يتجاوز الحد الأقصى المسموح به وهو 25 ميجابايت. يُرجى تحميل ملف أصغر حجمًا</value>
   </data>
   <data name="userLink" xml:space="preserve">
     <value>ربط المستخدم</value>

@@ -1162,10 +1162,10 @@
     <value>Supported files</value>
   </data>
   <data name="UnsupportedFileTypeTask" xml:space="preserve">
-    <value>This file type is not supported. Allowed formats are: pdf, doc, docx, xls, xlsx, .ppt, .pptx, txt, csv, jpg, jpeg, and png</value>
+    <value>This file type "{0}" is not supported. Allowed formats are: pdf, doc, docx, xls, xlsx, .ppt, .pptx, txt, csv, jpg, jpeg, and png</value>
   </data>
   <data name="FileSizeExceedsLimitTask" xml:space="preserve">
-    <value>The selected file exceeds the maximum allowed size of  25 MB. Please upload a smaller file.</value>
+    <value>The selected file "{0}" exceeds the maximum allowed size of  25 MB. Please upload a smaller file.</value>
   </data>
   <data name="userLink" xml:space="preserve">
     <value>Link user</value>

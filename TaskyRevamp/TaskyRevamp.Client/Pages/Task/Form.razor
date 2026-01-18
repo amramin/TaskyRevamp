@@ -159,7 +159,7 @@
                                 </label>
 
                                 <div class="date-group">
-                                    <InputDate class="form-control" id="fromDate" Format="yyyy-MM-dd" @bind-Value="taskdto.StartDate" />
+                                    <InputDate class="form-control" id="fromDate" Format="yyyy-MM-dd" @bind-Value="taskdto.StartDate"/>
                                 </div>
                                 <ValidationMessage class="small text-danger mt-1" For="@(() => taskdto.StartDate)" />
                             </div>
@@ -430,9 +430,9 @@
                 attachmentDtos.Add(new UploadAttachmentDto{ FileName = name, Bytes = bytes, Size = bytes.LongLength});
         }
         taskdto.uploadAttachmentDtos = attachmentDtos;
-        if (attachmentDtos.Any())
-            messageStore.Clear(field);
-        editContext.NotifyValidationStateChanged();
+        // if (attachmentDtos.Any())
+        //     messageStore.Clear(field);
+        // editContext.NotifyValidationStateChanged();
         StateHasChanged();
     }
     private void OnContentChanged(string html)
@@ -625,7 +625,7 @@
                     break;
                 case "Actual progress":
                     var progressField = new FieldIdentifier(taskdto, nameof(taskdto.ActualProcess));
-                    if (column.IsMandatory && taskdto.ActualProcess <= 0)
+                    if (column.IsMandatory && (taskdto.ActualProcess < 0 || taskdto.ActualProcess > 100))
                         messageStore.Add(progressField, Loc["Required"]);
                     break;
             }
