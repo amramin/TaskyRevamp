@@ -409,13 +409,13 @@
     <value>Drag and Drop or</value>
   </data>
   <data name="AssignedTo" xml:space="preserve">
-    <value>Assigned To</value>
+    <value>Assigned to</value>
   </data>
   <data name="CreatorDepartment" xml:space="preserve">
     <value>Creator department</value>
   </data>
   <data name="AssignedToDepartment" xml:space="preserve">
-    <value>Assignee department</value>
+    <value>Assigned to department</value>
   </data>
   <data name="Mandatory" xml:space="preserve">
     <value>Mandatory</value>
@@ -931,7 +931,7 @@
     <value>Items per page</value>
   </data>
   <data name="EditDepartment" xml:space="preserve">
-    <value>Edit Department</value>
+    <value>Edit department</value>
   </data>
   <data name="AddADepartmentToGetStarted" xml:space="preserve">
     <value>Add a department to get started</value>
@@ -1295,5 +1295,8 @@
   </data>
   <data name="Password" xml:space="preserve">
     <value>Password</value>
+  </data>
+  <data name="Search..." xml:space="preserve">
+    <value>Search...</value>
   </data>
 </root>
