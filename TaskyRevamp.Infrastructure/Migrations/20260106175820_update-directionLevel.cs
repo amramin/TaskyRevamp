@@ -6,11 +6,29 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace TaskyRevamp.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class dependencyfields : Migration
+    public partial class updatedirectionLevel : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.AlterColumn<long>(
+                name: "DirectionLevel",
+                table: "TaskModuleUserDepartment",
+                type: "bigint",
+                nullable: true,
+                oldClrType: typeof(int),
+                oldType: "int",
+                oldNullable: true);
+
+            migrationBuilder.AlterColumn<long>(
+                name: "DirectionLevel",
+                table: "TaskModuleExternalDepartment",
+                type: "bigint",
+                nullable: true,
+                oldClrType: typeof(int),
+                oldType: "int",
+                oldNullable: true);
+
             migrationBuilder.AlterColumn<DateTime>(
                 name: "StartDate",
                 table: "TaskItem",
@@ -26,43 +44,28 @@ namespace TaskyRevamp.Infrastructure.Migrations
                 nullable: true,
                 oldClrType: typeof(DateTime),
                 oldType: "datetime2");
-
-            migrationBuilder.AddColumn<DateTime>(
-                name: "ReminderDate",
-                table: "TaskItem",
-                type: "datetime2",
-                nullable: true);
-
-            migrationBuilder.AddColumn<Guid>(
-                name: "DependentId",
-                table: "TaskDependencies",
-                type: "uniqueidentifier",
-                nullable: false,
-                defaultValue: new Guid("00000000-0000-0000-0000-000000000000"));
-
-            migrationBuilder.AddColumn<Guid>(
-                name: "TaskItemId",
-                table: "TaskDependencies",
-                type: "uniqueidentifier",
-                nullable: true
-               // defaultValue: new Guid("00000000-0000-0000-0000-000000000000")
-               );
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropColumn(
-                name: "ReminderDate",
-                table: "TaskItem");
+            migrationBuilder.AlterColumn<int>(
+                name: "DirectionLevel",
+                table: "TaskModuleUserDepartment",
+                type: "int",
+                nullable: true,
+                oldClrType: typeof(long),
+                oldType: "bigint",
+                oldNullable: true);
 
-            migrationBuilder.DropColumn(
-                name: "DependentId",
-                table: "TaskDependencies");
-
-            migrationBuilder.DropColumn(
-                name: "TaskItemId",
-                table: "TaskDependencies");
+            migrationBuilder.AlterColumn<int>(
+                name: "DirectionLevel",
+                table: "TaskModuleExternalDepartment",
+                type: "int",
+                nullable: true,
+                oldClrType: typeof(long),
+                oldType: "bigint",
+                oldNullable: true);
 
             migrationBuilder.AlterColumn<DateTime>(
                 name: "StartDate",

@@ -27,7 +27,6 @@
     private PriorityDto? selectedPriority;
     private bool showConfirm;
     private PriorityForm form;
-
     protected async override Task OnInitializedAsync()
     {
         var res = await _prioritySettingConsumer.GetPriorities();
@@ -35,13 +34,9 @@
         {
             Priorities = res.Data;
             if (Priorities.Any())
-            {
                 _newPriority.Order = Priorities.Count() + 1;
-            }
             else
-            {
                 _newPriority.Order = 1;
-            }
         }
     }
     private async Task OnSavedConfirmed(bool confirmed)
@@ -57,35 +52,22 @@
                 await ToastService.ShowToastAsync(Loc["Retrived successfully"], "success");
             }
             else
-            {
-
                 return;
-            }
         }
         selectedPriority = null;
-
     }
     private async Task Save(EditContext editContext)
     {
-
-
         var alloldPriorty = await _prioritySettingConsumer.GetPriorities();
-        var allOldActivePriorty = alloldPriorty.Data
-            .Where(k =>  k.IsDeleted != true)
-            .ToList();
-
-        var alloldDeletedPriority = alloldPriorty.Data
-            .Where(k => k.IsDeleted == true)
-            .ToList();
+        var allOldActivePriorty = alloldPriorty.Data.Where(k =>  k.IsDeleted != true).ToList();
+        var alloldDeletedPriority = alloldPriorty.Data.Where(k => k.IsDeleted == true).ToList();
         if (allOldActivePriorty.Any(m => m.NameEnglish == _newPriority.NameEnglish) || allOldActivePriorty.Any(m => m.NameArabic == _newPriority.NameArabic))
         {
             await ToastService.ShowToastAsync(Loc["AnactivePrioritywith"], "error");
-
             return;
         }
         else if (alloldDeletedPriority.Any(m => m.NameEnglish == _newPriority.NameEnglish) || alloldDeletedPriority.Any(m => m.NameArabic == _newPriority.NameArabic))
         {
-
             var relatedwithcompleted = await _prioritySettingConsumer.CheckRelatedComplatedTaskitemPriority(_newPriority);
             if (relatedwithcompleted.Data)
             {
@@ -110,11 +92,10 @@
             }
             else
             {
-                if (res.Success)
+                if (res.Success && res.Data != null)
                 {
-                    await OnValidSubmit.InvokeAsync(_newPriority);
+                    await OnValidSubmit.InvokeAsync(res.Data);
                     await ToastService.ShowToastAsync(Loc["Added successfully"], "success");
-
                     StateHasChanged();
                     PopupService.Hide();
                 }

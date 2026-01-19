@@ -68,7 +68,7 @@
                                             @Loc["EnglishName"] <span class="text-danger">*</span>
                                         </label>
                                         <InputText class="form-control" @bind-Value="PrivilegeDto.NameEnglish"
-                                            placeholder=@Loc["EnterPrivilegeEnglishName"] />
+                                                   placeholder=@Loc["EnterPrivilegeEnglishName"] disabled="@(Mode == "view")" />
                                         <ValidationMessage For="@(() => PrivilegeDto.NameEnglish)"
                                             class="small text-danger" />
                                     </div>
@@ -77,7 +77,7 @@
                                             @Loc["ArabicName"] <span class="text-danger">*</span>
                                         </label>
                                         <InputText class="form-control" @bind-Value="PrivilegeDto.NameArabic"
-                                            placeholder=@Loc["EnterPrivilegeArabicName"] />
+                                                   placeholder=@Loc["EnterPrivilegeArabicName"] disabled="@(Mode == "view")" />
                                         <ValidationMessage For="@(() => PrivilegeDto.NameArabic)"
                                             class="small text-danger" />
                                     </div>

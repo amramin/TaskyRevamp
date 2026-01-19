@@ -14,8 +14,8 @@ using PrioritySetting = TaskyRevamp.Domain.Models.SystemConfiguration.PrioritySe
 
 namespace TaskyRevamp.Services.SystemConfiguration.PriorityConfiguration.Command
 {
-	public record CreatePriorityCommand(PriorityDto PriorityDto):IRequest<bool>;
-	public class CreatePriorityHandler : IRequestHandler<CreatePriorityCommand, bool>
+	public record CreatePriorityCommand(PriorityDto PriorityDto):IRequest<PriorityDto>;
+	public class CreatePriorityHandler : IRequestHandler<CreatePriorityCommand, PriorityDto>
 	{
 		private readonly IRepository<PrioritySetting> _priorityRepository;
         private readonly IStringLocalizer<SharedResources> _localizer;
@@ -25,7 +25,7 @@ namespace TaskyRevamp.Services.SystemConfiguration.PriorityConfiguration.Command
             _priorityRepository = priorityRepositry;
             _localizer = localizer;
         }
-        public async Task<bool> Handle(CreatePriorityCommand request, CancellationToken cancellationToken)
+        public async Task<PriorityDto> Handle(CreatePriorityCommand request, CancellationToken cancellationToken)
 		{
             await ValidatePriority(request.PriorityDto);
 
@@ -41,7 +41,7 @@ namespace TaskyRevamp.Services.SystemConfiguration.PriorityConfiguration.Command
 
 			await _priorityRepository.Insert(priority);
 
-			return true;
+            return priority.CopyToDto();
 		}
 
         private async Task ValidatePriority(PriorityDto priorityDto)

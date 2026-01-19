@@ -64,65 +64,30 @@ public class GetTasksHandler : IRequestHandler<GetTasksQuery, PagedResult<Create
         {
             var assgnedusr = await _userRepository.FindBy(k => tsk.AssignedIds.Contains(k.Id));
             var CreatorDepartment =  _departmenRepository.FirstOrDefaultAsNoTracking(k => k.Id == (tsk.CreatedBy.DepartmentId??Guid.Empty));
-            tsk.ActualWeight=new Weight(tsk.Weight);
-            tsk.PlannedWeight = new Weight(tsk.Weight);
+            tsk.ActualWeight=new Weight(tsk.Weight ?? 0);
+            tsk.PlannedWeight = new Weight(tsk.Weight ?? 0);
             CreateTaskDto tasky = tsk.CopyToDto();
             tasky.TypeName = currentCulture == "ar" ? tsk.Type?.NameArabic : tsk.Type?.NameEnglish;
             tasky.SourceName = currentCulture == "ar" ? tsk.Source?.NameArabic : tsk.Source?.NameEnglish;
             tasky.PriorityName = currentCulture == "ar" ? tsk.Priority?.NameArabic : tsk.Priority?.NameEnglish;
             var departments = await _departmenRepository.FindBy(k => tsk.AssignedDepartmentIds.Contains(k.Id));
-            var depsName = departments.Value.Select(k => k.NameEnglish);
+            var depsName = currentCulture == "ar" ? departments.Value.Select(k => k.NameArabic): departments.Value.Select(k => k.NameEnglish);
             tasky.AssignedDepartmentName = string.Join(" ", depsName);
             var dependencies = await _taskDependincesRepository.FindBy(p => p.TaskItemId == tasky.Id);
             if (dependencies is not null)
             {
-                var dependenciesids = dependencies.Value.Select(p => p.DependentId);
-                //string DependencyNames = "";
-                //foreach (var taskid in dependenciesids)
-                //{
-                //    var taskdependency = await _taskRepository.FindBy()
-                //    DependencyNames += $"{taskdependency.Title} , ";
-                //}
+                var dependenciesids = dependencies.Value!.Select(p => p.DependentId);
                 var tasksdependent = await _taskRepository.FindBy(p => dependenciesids.Contains(p.Id));
-                var DependencyNames = string.Join(", ", tasksdependent.Value.Select(d => d.Title));
+                var DependencyNames = string.Join(", ", tasksdependent.Value!.Select(d => d.Title));
                 tasky.DependencyNames= DependencyNames;
 
             }
-
             tasky.TaskStatusName = currentCulture == "ar" ? tsk.status?.NameArabic : tsk.status?.NameEnglish;
             tasky.CreatedByName = currentCulture == "ar" ? tsk.CreatedBy?.NameArabic : tsk.CreatedBy?.NameEnglish;
-            tasky.Createdbydepartment = currentCulture == "ar" ? CreatorDepartment?.NameArabic : CreatorDepartment?.NameEnglish;
+            tasky.Createdbydepartment = currentCulture == "ar" ? CreatorDepartment?.NameArabic! : CreatorDepartment?.NameEnglish!;
             tasky.UpdatedBy = currentCulture == "ar" ? tsk.UpdatedBy?.NameArabic : tsk.UpdatedBy?.NameEnglish;
-            tasky.AssigneduserNames = string.Join(",", assgnedusr.Value.Select(k => k.NameEnglish));// string.Join(", ", tsk.Assignees.Select(k => k.User.NameEnglish));
-            if (tasky.AssigneduserNames.Count() > 0)
-            {
-                var initials = string.Join(", ",
-
-                    tasky.AssigneduserNames
-            .Split(',', StringSplitOptions.RemoveEmptyEntries) // split users
-            .Select(u =>
-            {
-                var parts = u.Trim().Split(' ', StringSplitOptions.RemoveEmptyEntries);
-                if (parts.Length >= 2)
-                {
-                    return $"{parts[0][0]}{parts[1][0]}"; // first letter of first and last name
-                }
-                else if (parts.Length == 1)
-                {
-                    return $"{parts[0][0]}"; // only first name exists
-                }
-                else
-                {
-                    return string.Empty;
-                }
-            })
-            .Where(x => !string.IsNullOrEmpty(x)) // remove empty
-    );
-
-                tasky.AssigneduserNames = initials;
-            }
+            tasky.AssigneduserNames = string.Join(",", assgnedusr.Value!.Select(u => currentCulture == "ar" ? u.NameArabic : u.NameEnglish));
             alltasks.Add(tasky);
-
         }
         return new PagedResult<CreateTaskDto>
         {
@@ -131,12 +96,10 @@ public class GetTasksHandler : IRequestHandler<GetTasksQuery, PagedResult<Create
             PageNumber = request.pageNumber,
             PageSize = request.pageSize
         };
-
     }
     private Func<IQueryable<TaskItem>, IOrderedQueryable<TaskItem>> GetOrderBy(string sortByColumn, bool sortAscending)
     {
         string currentCulture = System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
-
         switch (sortByColumn)
         {
             case "Creation Date":
@@ -207,6 +170,4 @@ public class GetTasksHandler : IRequestHandler<GetTasksQuery, PagedResult<Create
                 return q => q.OrderBy(u => u.CreateDate);
         }
     }
-
-
 }

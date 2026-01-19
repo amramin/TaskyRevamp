@@ -24,18 +24,10 @@ namespace TaskyRevamp.Services.Permission.Privilege.Command
 		}
 		public async Task<bool> Handle(CheckPrivilegeIsLinkedWithUsersCommand request, CancellationToken cancellationToken)
 		{
-			var usersWithPrivilege = await _userRepository.AllAsNoTracking();
-			if(usersWithPrivilege != null && usersWithPrivilege.Success && usersWithPrivilege.Value != null)
-			{
-				foreach (var user in usersWithPrivilege.Value)
-				{
-					if (user.PrivilegeId != null && user.PrivilegeId != request.PrivilegeId)
-					{
-						return true;
-					}
-				}
-			}
-			return false;
+			var users= await _userRepository.AllAsNoTracking();
+			if (!users.Success || users.Value == null)
+				return false;
+			return users.Value.Any(u => u.PrivilegeId == request.PrivilegeId);
 		}
 	}
 }

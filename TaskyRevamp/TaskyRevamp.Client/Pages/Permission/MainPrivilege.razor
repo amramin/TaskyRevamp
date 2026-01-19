@@ -67,6 +67,14 @@
                                                 </button>
                                             </li>
                                             <li>
+                                                <button class="dropdown-item" @onclick="@(() => LinkUsers(item.PrivilegeDto.Id))">
+                                                    <span class="icon">
+                                                        <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Users"></SVGCrud>
+                                                    </span>
+                                                    @Loc["linkUsers"]
+                                                </button>
+                                            </li>
+                                            <li>
                                                 <button class="dropdown-item text-danger" @onclick="@(() => DeletePrivilege(item))">
                                                     <span class="icon">
                                                         <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Delete"></SVGCrud>
@@ -176,11 +184,16 @@ else
     private void EditPrivilege(Guid id) => navigationManager.NavigateTo($"/privilege?mode=edit&id={id}");
     private void ViewPermission(Guid id) => navigationManager.NavigateTo($"/privilege?mode=view&id={id}");
     private void ViewUsers(Guid id) => navigationManager.NavigateTo($"/UsersPrivilege/{id}");
-
+    private void LinkUsers(Guid id) => PopupService.ShowNew(@<LinkUsersToPrivilege Id="id" OnSaved="ReloadAfterSave"></LinkUsersToPrivilege>,Loc["Addusers"]);
+    private void ReloadAfterSave()
+    {
+        PopupService.Hide();
+        StateHasChanged();
+    }
     private async Task DeletePrivilege(PrivilegeDtoWithName privilege)
     {
         var res = await _privilegeConsumer.CheckPrivilegeIsLinkedWithUsers(privilege.PrivilegeDto.Id);
-        if(res.Success && !res.Data)
+        if(res.Success && res.Data)
         {
             await ToastService.ShowToastAsync(Loc["CannotDeletePrivilege"], "error");
             return;
@@ -196,9 +209,19 @@ else
             var result = await _privilegeConsumer.DeletePrivilege(selectedPrivilege.PrivilegeDto.Id);
             if (result.Success)
             {
-                Privilegs.Remove(selectedPrivilege);
-                initialPrivilegs = initialPrivilegs.Where(s => s.PrivilegeDto.Id != selectedPrivilege.PrivilegeDto.Id).ToList();
-                showConfirm = false;
+                var toremove = Privilegs.FirstOrDefault(p => p.PrivilegeDto.Id == selectedPrivilege.PrivilegeDto.Id);
+                if(toremove is not null)
+                {
+                    Privilegs.Remove(selectedPrivilege);
+                    initialPrivilegs = initialPrivilegs.Where(s => s.PrivilegeDto.Id != selectedPrivilege.PrivilegeDto.Id).ToList();
+                    if (Privilegs.Count() <= 0)
+                    {
+                        currentPage -= 1;
+                        await LoadPrivilegs();
+                    }
+                    showConfirm = false;
+                }
+
                 StateHasChanged();
                 await ToastService.ShowToastAsync(Loc["Deleted successfully"], "success");
             }

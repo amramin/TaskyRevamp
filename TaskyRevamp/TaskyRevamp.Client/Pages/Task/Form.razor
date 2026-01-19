@@ -1,4 +1,5 @@
-﻿@using System.Globalization
+﻿@implements IDisposable
+@using System.Globalization
 @using System.Linq.Expressions
 @using Stingray.Components.MultiSelectComponent
 @using System.Reflection
@@ -8,7 +9,6 @@
 @using TaskyRevamp.Client.Consumer
 @using TaskyRevamp.Client.Services
 @using TaskyRevamp.Dto.Enums;
-@using TaskyRevamp.Dto.SystemConfiguration;
 @using TaskyRevamp.Dto.TaskAttachment
 @using TaskyRevamp.Dto.TaskDto
 @using TaskyRevamp.Dto.TaskSourceDto
@@ -28,23 +28,14 @@
 
 @if (x)
 {
-    @* <EditForm Model="@taskdto" EditContext="@editContext" OnValidSubmit="HandleValidSubmit"
-    OnInvalidSubmit="HandleInvalidSubmit"> *@
-
-
-    <EditForm EditContext="@editContext"
-              OnValidSubmit="HandleValidSubmit"
-              OnInvalidSubmit="HandleInvalidSubmit">
+    <EditForm EditContext="@editContext" OnValidSubmit="HandleValidSubmit">
         <DataAnnotationsValidator />
-        <ValidationSummary />
-
         <div class="offcanvas-body ">
             @foreach (var column in AddTaskSettings.Where(c => c.IsActive).OrderBy(c => c.Order))
             {
                 <div @key="column.Id">
                     @switch (column.NameEnglish)
                     {
-
                         case "File upload":
                             <div class="mb-3">
                                 <label class="form-label">
@@ -71,7 +62,9 @@
                                                multiple
                                                class="d-none"
                                                accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.csv,.jpg,.jpeg,.png" />
+                                    
                                 </div>
+                                <ValidationMessage class="small text-danger" For="@(() => taskdto.uploadAttachmentDtos)"></ValidationMessage>
                                 @if (uploadedFiles.Any())
                                 {
                                     <div class="mt-3">
@@ -85,9 +78,6 @@
                                                             <div class="fw-medium">@file.Name</div>
                                                         </div>
                                                     </div>
-                                                    @* <button type="button" class="btn btn-sm btn-danger" @onclick="() => RemoveFile(file)">
-                                                    
-                                            </button> *@
                                                 </div>
                                             }
                                         </div>
@@ -96,7 +86,6 @@
                             </div>
                             break;
                         case "Title":
-
                             <div class="mb-3">
                                 <label class="form-label">
                                     @Loc["Title"]
@@ -108,10 +97,8 @@
                                 <InputText class="form-control" @bind-Value="taskdto.Title" placeholder="@Loc["TitleEnglish"]" />
                                 <ValidationMessage class="small text-danger" For="@(() => taskdto.Title)"></ValidationMessage>
                             </div>
-
                             break;
                         case "Description":
-
                             <div class="mb-3">
                                 <label class="form-label">
                                     @Loc["Description"]
@@ -120,26 +107,14 @@
                                         <span class="text-danger"> *</span>
                                     }
                                 </label>
-
                                 <div class="col-lg-12">
                                     <div class="mb-2">
-
-
-
-                                        <RichTextEditorComponent @key="column.Id" EditorId="RTE_English2" @ref="RichTextEditorComponentRefDescriptionEnglish"
-                                                                 ButtonText="@Loc["AddDescription"]" Content="@taskdto.Description">
-                                        </RichTextEditorComponent>
-
-                                        <div class="d-flex align-items-center justify-content-between">
-                                            <div class="d-flex gap-2">
-                                                <ValidationMessage class="small text-danger" For="@(() => taskdto.Description)" />
-                                            </div>
-                                        </div>
+                                        <RichTextEditorComponent @key="column.Id" EditorId="RTE_English2" @ref="RichTextEditorComponentRefDescriptionEnglish" ContentChanged="OnDescriptionChanged"
+                                                                 Content="@taskdto.Description" ButtonText="@Loc["AddDescription"]"> </RichTextEditorComponent>
+                                        <ValidationMessage class="small text-danger" For="@(() => taskdto.Description)" />
                                     </div>
-
                                 </div>
                             </div>
-
                             break;
                         case "Type":
                             <div class="mb-3">
@@ -151,9 +126,10 @@
                                     }
                                 </label>
                                 <SearchableSingleDropdownOffline TInput=TypeDto TOutput=Guid TextSelector="(TypeDto x) => x.DisplayedName"
-                                                                 OutputSelector="x => x.Id" @ref="typeref" Datasource="taskTypeDtos" MinCharacterCount="1"
-                                                                 @bind-SelectedOption="@taskdto.TypeId" PlaceHolder="@($"{Loc["Select"]}")" />
-
+                                                                 OutputSelector="x => x.Id"  Datasource="taskTypeDtos" MinCharacterCount="1"
+                                                                 SelectedOptionChanged="OnTypeChanged"
+                                                                 SelectedOption="taskdto.TypeId" PlaceHolder="@Loc["Select"]" />
+                                <ValidationMessage class="small text-danger" For="@(() => taskdto.TypeId)" />
                             </div>
                             break;
                         case "Source":
@@ -165,11 +141,11 @@
                                 }
                             </label>
                             <div class="mb-3">
-                                <SearchableSingleDropdownOffline @ref="sourceref" TInput=SourceDto TOutput=Guid
-                                                                 TextSelector="(SourceDto x)=> x.DisplayedName" OutputSelector="x => x.Id" Datasource="taskSourceDtos"
-                                                                 MinCharacterCount="1" @bind-SelectedOption="@taskdto.SourceId"
-                                                                 PlaceHolder="@($"{Loc["Select"]}")" />
-
+                                <SearchableSingleDropdownOffline TInput=SourceDto TOutput=Guid TextSelector="(SourceDto x)=> x.DisplayedName" 
+                                                                 OutputSelector="x => x.Id" Datasource="taskSourceDtos"
+                                                                 MinCharacterCount="1" SelectedOption="taskdto.SourceId"
+                                                                 PlaceHolder="@Loc["Select"]"  SelectedOptionChanged="OnSourceChanged"/>
+                               <ValidationMessage class="small text-danger" For="@(() => taskdto.SourceId)"></ValidationMessage>
                             </div>
                             break;
                         case "Start date":
@@ -183,9 +159,9 @@
                                 </label>
 
                                 <div class="date-group">
-                                    <InputDate class="form-control" id="fromDate" Format="yyyy-MM-dd" @bind-Value="taskdto.StartDate" />
+                                    <InputDate class="form-control" id="fromDate" Format="yyyy-MM-dd" @bind-Value="taskdto.StartDate"/>
                                 </div>
-                                <ValidationMessage class="small text-danger" For="@(() => taskdto.StartDate)" />
+                                <ValidationMessage class="small text-danger mt-1" For="@(() => taskdto.StartDate)" />
                             </div>
                             break;
                         case "Reminder date":
@@ -201,11 +177,10 @@
                                 <div class="date-group">
                                     <InputDate class="form-control" id="fromDate" Format="yyyy-MM-dd" @bind-Value="taskdto.ReminderDate" />
                                 </div>
-                                <ValidationMessage class="small text-danger" For="@(() => taskdto.ReminderDate)" />
+                                 <ValidationMessage class="small text-danger mt-1" For="@(() => taskdto.ReminderDate)" />
                             </div>
                             break;
                         case "End date":
-
                             <div class="mb-3">
                                 <label class="form-label" for="toDate">
                                     @Loc["EndDate"]
@@ -218,7 +193,6 @@
                                     <InputDate class="form-control" id="toDate" Format="yyyy-MM-dd" @bind-Value="taskdto.EndDate" />
                                 </div>
                                 <ValidationMessage class="small text-danger" For="@(() => taskdto.EndDate)" />
-
                             </div>
                             break;
                         case "Department":
@@ -230,13 +204,14 @@
                                         <span class="text-danger">*</span>
                                     }
                                 </label>
-                                <SearchableMultiDropdownOffline @ref="departRef" TInput=DepartmentDto TOutput="Guid" Datasource=departmentDtos
-                                                                TextSelector=@(x=>x.NameEnglish) OutputSelector="x=> x.Id" PlaceHolder="@($"{Loc["Select"]}")"
-                                                                @bind-SelectedOptions=taskdto.AssignedDepartmentIds />
+                                <SearchableMultiDropdownOffline TInput=DepartmentDto TOutput="Guid" Datasource=departmentDtos
+                                                                TextSelector=@(x=>x.NameEnglish) OutputSelector="x=> x.Id" 
+                                                                PlaceHolder="@Loc["Select"]" SelectedOptions=taskdto.AssignedDepartmentIds
+                                                                SelectedOptionsChanged="OnDepartmentsChanged"/>
+                                <ValidationMessage class="small text-danger mt-1" For="@(() => taskdto.AssignedDepartmentIds)"></ValidationMessage>
                             </div>
                             break;
                         case "Dependency":
-
                             <div class="mb-3">
                                 <label class="form-label">
                                     @Loc["Dependency"]
@@ -245,38 +220,29 @@
                                         <span class="text-danger">*</span>
                                     }
                                 </label>
-                                <SearchableMultiDropdownOffline TInput=CreateTaskDto TOutput="Guid" Datasource=allTaskDtos PlaceHolder="@($"{Loc["Select"]}")"
-                                                                TextSelector=@(x=>x.Title) OutputSelector="x=> x.Id" @bind-SelectedOptions=taskdto.Dependencies />
+                                <SearchableMultiDropdownOffline TInput=CreateTaskDto TOutput="Guid" Datasource=allTaskDtos 
+                                                        PlaceHolder="@Loc["Select"]" TextSelector=@(x=>x.Title) 
+                                                        OutputSelector="x=> x.Id" SelectedOptions=taskdto.Dependencies 
+                                                        SelectedOptionsChanged="OnDependenciesChanged"/>
+                                <ValidationMessage class="small text-danger mt-1" For="@(() => taskdto.Dependencies)"></ValidationMessage>
                             </div>
                             break;
                         case "Assigned to":
                             <div class="mb-3">
                                 <label class="form-label">
-                                    @Loc["AssignedTo"]
+                                    @Loc["AssigneduserNames"]
                                     @if (column.IsMandatory)
                                     {
                                         <span class="text-danger">*</span>
                                     }
                                 </label>
-                                <SearchableMultiDropdownOffline TInput=UserDto TOutput="Guid" Datasource=userDtos PlaceHolder="@($"{Loc["Select"]}")"
-                                                                TextSelector=@(x=>x.UserName) OutputSelector="x=> x.Id" @bind-SelectedOptions=taskdto.AssignedIds />
+                                <SearchableMultiDropdownOffline TInput=UserDto TOutput="Guid" Datasource=userDtos PlaceHolder="@Loc["Select"]"
+                                                                TextSelector=@(x=>x.DisplayedName) OutputSelector="x=> x.Id" 
+                                                                SelectedOptions=taskdto.AssignedIds SelectedOptionsChanged="OnAssigneesChanged"/>
+                                <ValidationMessage class="small text-danger mt-1" For="@(() => taskdto.AssignedIds)" />
                             </div>
                             break;
-                        @* case "Checklist":
-                            <div class="mb-3">
-                                <label class="form-label">
-                                    @Loc["Checklist"]
-                                    @if (column.IsMandatory)
-                                    {
-                                        <span class="text-danger">*</span>
-                                    }
-                                </label>
-
-                            </div>
-
-                            break; *@
                         case "Comments":
-
                             <div class="mb-3">
                                 <div class="col-lg-12">
                                     <div class="mb-2">
@@ -287,14 +253,15 @@
                                                 <span class="text-danger"> *</span>
                                             }
                                         </label>
-
-                                        <RichTextEditorComponent @key="column.Id" EditorId="RTE_English4" @ref="RichTextEditorComponentRefComment"
-                                                                  ButtonText="@Loc["AddComment"]"></RichTextEditorComponent>
-
+                                        <RichTextEditorComponent @key="column.Id" EditorId="RTE_English4" @ref="RichTextEditorComponentRefComment" ContentChanged="OnCommentsChanged"
+                                                                 Content="@taskdto.Content" ButtonText="@Loc["AddComment"]"></RichTextEditorComponent>
                                         <div class="d-flex align-items-center justify-content-between">
-                                            <div class="d-flex gap-2">
-                                                <ValidationMessage class="small text-danger" For="@(() => taskdto.Content)" />
-                                            </div>
+                                            @if (column.IsMandatory)
+                                            {
+                                                <div class="d-flex gap-2">
+                                                    <ValidationMessage class="small text-danger" For="@(() => taskdto.Content)" />
+                                                </div>
+                                            }
                                         </div>
                                     </div>
 
@@ -312,7 +279,9 @@
                                 </label>
                                 <SearchableSingleDropdownOffline TInput=PriorityDto TOutput=Guid TextSelector=" (PriorityDto x)=> x.Name"
                                                                  OutputSelector="x => x.Id" Datasource="Priorities" MinCharacterCount="1"
-                                                                 @bind-SelectedOption="@taskdto.Priority" PlaceHolder="@($"{Loc["Select"]}")" />
+                                                                 SelectedOption="taskdto.Priority" PlaceHolder="@Loc["Select"]" 
+                                                                 SelectedOptionChanged="OnPriorityChanged"/>
+                                <ValidationMessage class="small text-danger mt-1" For="@(() => taskdto.Priority)" />
                             </div>
                             break;
                         case "Weight":
@@ -325,11 +294,10 @@
                                             <span class="text-danger"> *</span>
                                         }
                                     </label>
-                                    <InputNumber class="form-control" min="0" max="100" id="maxLength" @bind-Value="taskdto.weight" />
-                                    <ValidationMessage class="small text-danger" For="@(() => taskdto.weight)" />
+                                    <InputNumber class="form-control" id="maxLength" @bind-Value="taskdto.weight" ParsingErrorMessage="" />
+                                    <ValidationMessage class="small text-danger mt-1" For="@(() => taskdto.weight)" />
 
                                 </div>
-
                             </div>
                             break;
                         case "Actual progress":
@@ -342,16 +310,9 @@
                                     }
                                 </label>
                                 <div class="mb-3">
-                                    <input type="range"
-                                           class="form-range"
-                                           min="0"
-                                           max="100"
-                                           @bind="taskdto.ActualProcess"
+                                    <input type="range" class="form-range" min="0" max="100" value="@taskdto.ActualProcess" @oninput="OnActualProgressChanged"
                                            disabled="@(taskdto.ActualProcess >= 100 && !AlllowedToChangeProgress.Any(p => p == taskdto.TaskStatus))" />
-                                    <span class="badge bg-primary">
-                                        @taskdto.ActualProcess%
-                                    </span>
-
+                                    <span class="badge bg-primary"> @taskdto.ActualProcess% </span>
                                     <div class="progress mt-2" style="height: 20px;">
                                         <div class="progress-bar"
                                              role="progressbar"
@@ -361,8 +322,8 @@
                                              aria-valuemax="100">
                                         </div>
                                     </div>
+                                    <ValidationMessage class="small text-danger" For="@(() => taskdto.ActualProcess)" />
                                 </div>
-
                             </div>
                             break;
                     }
@@ -437,48 +398,41 @@
     {
         var files = args.GetMultipleFiles(int.MaxValue).ToList();
         await UploadFiles(files);
-
     }
     private async Task UploadFiles(List<IBrowserFile> files)
     {
         if (!files.Any()) return;
         var validFiles = new List<IBrowserFile>();
-        var hasErrors = false;
+        var field = new FieldIdentifier(taskdto, nameof(taskdto.uploadAttachmentDtos));
+        messageStore.Clear(field);
+        const long maxFileSize = 26214400;
         foreach (var file in files)
         {
             var validationRes = fileManagementService.ValidateUploadedFile(file, maxFileSize);
             if (validationRes.NotValid)
             {
-
-
-                await ToastService.ShowToastAsync(validationRes.ValidationMessage, "error");
+                messageStore.Add(field,validationRes.ValidationMessage);
+                editContext.NotifyValidationStateChanged();
                 continue;
             }
             validFiles.Add(file);
             uploadedFiles.Add(file);
         }
         if (!validFiles.Any())
-        {
             return;
-        }
         StateHasChanged();
-
         var attachmentDtos = new List<UploadAttachmentDto>();
         foreach (var file in validFiles)
         {
             StateHasChanged();
             var (bytes, name, type) = await fileManagementService.ReadFileAsync(file);
             if (bytes != null && bytes.Length > 0)
-            {
-                attachmentDtos.Add(new UploadAttachmentDto
-                {
-                    FileName = name,
-                    Bytes = bytes,
-                    Size = bytes.LongLength
-                });
-            }
+                attachmentDtos.Add(new UploadAttachmentDto{ FileName = name, Bytes = bytes, Size = bytes.LongLength});
         }
         taskdto.uploadAttachmentDtos = attachmentDtos;
+        // if (attachmentDtos.Any())
+        //     messageStore.Clear(field);
+        // editContext.NotifyValidationStateChanged();
         StateHasChanged();
     }
     private void OnContentChanged(string html)
@@ -493,37 +447,74 @@
     {
         taskdto.Description = html;
     }
+    private void OnCommentsChanged()
+    {
+        taskdto.Content = RichTextEditorComponentRefComment.GetContent();
+        Notify(new FieldIdentifier(taskdto, nameof(taskdto.Content)));
+    }
+    private void OnDescriptionChanged()
+    {
+        taskdto.Description = RichTextEditorComponentRefDescriptionEnglish.GetContent();
+        Notify(new FieldIdentifier(taskdto, nameof(taskdto.Description)));
+    }
+    private void OnPriorityChanged(Guid value)
+    {
+        taskdto.Priority = value;
+        var filedId = new FieldIdentifier(taskdto, nameof(taskdto.Priority));
+        Notify(filedId);
+    }
+    private void OnTypeChanged(Guid value)
+    {
+        taskdto.TypeId = value;
+        var filedId = new FieldIdentifier(taskdto, nameof(taskdto.TypeId));
+        Notify(filedId);
+    }
+    private void OnSourceChanged(Guid value)
+    {
+        taskdto.SourceId = value;
+        var filedId = new FieldIdentifier(taskdto, nameof(taskdto.SourceId));
+        Notify(filedId);
+    }
+    private void OnDepartmentsChanged(List<Guid> values)
+    {
+        taskdto.AssignedDepartmentIds = values;
+        var field = new FieldIdentifier(taskdto, nameof(taskdto.AssignedDepartmentIds));
+        Notify(field);
+    }
+    private void OnAssigneesChanged(List<Guid> values)
+    {
+        taskdto.AssignedIds = values;
+        var field = new FieldIdentifier(taskdto, nameof(taskdto.AssignedIds));
+        Notify(field);
+    }
+    private void OnDependenciesChanged(List<Guid> values)
+    {
+        taskdto.Dependencies = values;
+        var field = new FieldIdentifier(taskdto, nameof(taskdto.Dependencies));
+        Notify(field);
+    }
+    private void OnActualProgressChanged(ChangeEventArgs e)
+    {
+        if (int.TryParse(e.Value?.ToString(), out var value))
+        {
+            taskdto.ActualProcess = value;
+            var field = new FieldIdentifier(taskdto, nameof(taskdto.ActualProcess));
+            Notify(field);
+        }
+    }
+    private void Notify(FieldIdentifier field)
+    {
+        messageStore.Clear(field);
+        editContext.NotifyFieldChanged(field);
+    }
     protected async override Task OnInitializedAsync()
     {
         editContext = new EditContext(taskdto);
         maxFileSize = mySettings.Value.MaxFileSize;
+        messageStore = new ValidationMessageStore(editContext);
+        editContext.OnValidationRequested +=  ValidateDynamicFields;
+        editContext.OnFieldChanged += OnFieldChanged;
 
-        // var res = await _addTaskSettingConsumer.GetAddTaskSettings();
-        // if (res.Success)
-        // {
-        //     var settings = res.Data;
-        //     if (settings != null)
-        //     {
-        //         AddTaskSettings = settings;
-        //     }
-
-        // }
-        // var typs = await _typeSettingConsumer.GetTaskTypesForDDL();
-        // taskTypeDtos = typs.Data;
-        // var sorce = await _sourceSettingConsumer.GetTaskSourcesForDDL();
-        // taskSourceDtos = sorce.Data;
-        // var users = await _userConsumer.GetUsers();
-        // userDtos = users.Data;
-        // var departs = await _departmentConsumer.GetDepartmentsForDDL();
-        // departmentDtos = departs.Data;
-        // var tsks = await _taskConsumer.GetTasksForDDL();
-
-        // allTaskDtos = tsks.Data;
-        // var ress = await _prioritySettingConsumer.GetPriorities();
-        // if (ress.Success && ress.Data != null)
-        // {
-        //     Priorities = ress.Data;
-        // }
         var addTaskSettingsTask = _addTaskSettingConsumer.GetAddTaskSettings();
         var taskTypesTask = _typeSettingConsumer.GetTaskTypesForDDL();
         var taskSourcesTask = _sourceSettingConsumer.GetTaskSourcesForDDL();
@@ -542,158 +533,119 @@
             tasksTask,
             prioritiesTask
         );
-
-        // Read results safely
         var addTaskSettingsRes = await addTaskSettingsTask;
         if (addTaskSettingsRes.Success && addTaskSettingsRes.Data != null)
         {
             AddTaskSettings = addTaskSettingsRes.Data;
         }
-
-        taskTypeDtos = (await taskTypesTask).Data.Where(k => k.IsDeleted != true).ToList();
-        taskSourceDtos = (await taskSourcesTask).Data.Where(k => k.IsDeleted != true).ToList();
-        userDtos = (await usersTask).Data;
-        departmentDtos = (await departmentsTask).Data;
-        allTaskDtos = (await tasksTask).Data;
+        taskTypeDtos = (await taskTypesTask).Data!.Where(k => k.IsDeleted != true).ToList();
+        taskSourceDtos = (await taskSourcesTask).Data!.Where(k => k.IsDeleted != true).ToList();
+        userDtos = (await usersTask).Data!;
+        departmentDtos = (await departmentsTask).Data!;
+        allTaskDtos = (await tasksTask).Data!;
 
         var prioritiesRes = await prioritiesTask;
         if (prioritiesRes.Success && prioritiesRes.Data != null)
         {
             Priorities = prioritiesRes.Data.Where(k => k.IsDeleted != true).ToList().OrderBy(q => q.Order).ToList();
         }
-
-        // taskdto.StartDate = taskdto.StartDate == default ? DateTime.Now : taskdto.StartDate;
-        // taskdto.EndDate = taskdto.EndDate == default ? DateTime.Now : taskdto.EndDate;
-        // taskdto.ReminderDate = taskdto.ReminderDate == default ? DateTime.Now : taskdto.ReminderDate;
         x = true;
         await InvokeAsync(StateHasChanged);
-
     }
-
+    private void OnFieldChanged(object sender, FieldChangedEventArgs e)
+    {
+        var field = e.FieldIdentifier;
+        switch (field.FieldName)
+        {
+            case nameof(taskdto.StartDate):
+            case nameof(taskdto.EndDate):
+                ValidateDateRange();
+                break;
+        }
+        editContext.NotifyValidationStateChanged();
+    }
+    private void ValidateDateRange()
+    {
+        var startField = new FieldIdentifier(taskdto, nameof(taskdto.StartDate));
+        messageStore.Clear(startField);
+        if (taskdto.StartDate.HasValue && taskdto.EndDate.HasValue && taskdto.StartDate > taskdto.EndDate)
+            messageStore.Add(startField, Loc["StartDateMustBeBeforeEndDate"]);
+    }
     private void ValidateDynamicFields(object sender, ValidationRequestedEventArgs e)
     {
-        ValidateDynamicFields((EditContext)sender);
-    }
-
-    private async Task ValidateDynamicFields(EditContext context)
-    {
-        // Clear previous messages
-        //  messageStore.Clear();
-        foreach (var column in AddTaskSettings.Where(c => c.IsMandatory))
+        messageStore.Clear();
+        foreach (var column in AddTaskSettings.Where(c => c.IsMandatory || true))
         {
-            // Map column name to property name in CreateTaskDto
-            // e.g., "Start Date" -> "StartDate"
-            string propName = column.NameEnglish.Replace(" ", "").Trim();
-
-            var prop = typeof(CreateTaskDto).GetProperty(
-                propName,
-                BindingFlags.Public | BindingFlags.Instance | BindingFlags.IgnoreCase
-            );
-            if (prop == null)
+            switch (column.NameEnglish)
             {
-                prop = typeof(CreateTaskDto).GetProperty(
-                    propName + "Id",
-                    BindingFlags.Public | BindingFlags.Instance | BindingFlags.IgnoreCase
-                );
-            }
-
-            if (prop == null)
-            {
-                // still not found → log or handle
-            }
-            if (prop == null)
-                continue;
-
-            var value = prop.GetValue(taskdto);
-            bool isEmpty = false;
-
-            if (value == null)
-            {
-                isEmpty = true;
-            }
-            else
-            {
-                var type = prop.PropertyType;
-
-                // String
-                if (type == typeof(string))
-                {
-                    isEmpty = string.IsNullOrWhiteSpace(value as string);
-                }
-                // Guid / Nullable<Guid>
-                else if (type == typeof(Guid) || type == typeof(Guid?))
-                {
-                    isEmpty = (Guid)value == Guid.Empty;
-                }
-                // DateTime / Nullable<DateTime>
-                else if (type == typeof(DateTime) || type == typeof(DateTime?))
-                {
-                    isEmpty = value == null;
-                }
-                // Numeric types (optional: you can treat 0 as invalid if needed)
-                else if (type == typeof(int) || type == typeof(int?) ||
-                type == typeof(double) || type == typeof(double?) ||
-                type == typeof(decimal) || type == typeof(decimal?))
-                {
-                    // Example: consider 0 as invalid
-                    // isEmpty = Convert.ToDecimal(value) == 0;
-                }
-                // Collections (List<Guid>, List<string>, etc.)
-                else if (typeof(System.Collections.IEnumerable).IsAssignableFrom(type)
-                && type != typeof(string))
-                {
-                    var enumerable = (System.Collections.IEnumerable)value;
-                    isEmpty = !enumerable.Cast<object>().Any();
-                }
-            }
-
-            if (isEmpty)
-            {
-                var fieldId = new FieldIdentifier(taskdto, prop.Name);
-                // Optional: use column.DisplayName for friendly message
-                await ToastService.ShowToastAsync(Loc["Pleasefillallrequiredfieldsbeforesubmitting"], "error");
-
-                messageStore.Add(fieldId, $"{column.NameEnglish} is required.");
-                return;  
+                case "File upload":
+                    if (column.IsMandatory && (taskdto.uploadAttachmentDtos == null || !taskdto.uploadAttachmentDtos.Any()))
+                        messageStore.Add(new FieldIdentifier(taskdto, nameof(taskdto.uploadAttachmentDtos)), Loc["Required"]);
+                    break;
+                case "Description":
+                    if (column.IsMandatory && string.IsNullOrWhiteSpace(taskdto.Description))
+                        messageStore.Add(new FieldIdentifier(taskdto, nameof(taskdto.Description)), Loc["Required"]);
+                    break;
+                case "Type":
+                    if (column.IsMandatory && taskdto.TypeId == Guid.Empty)
+                        messageStore.Add(new FieldIdentifier(taskdto, nameof(taskdto.TypeId)), Loc["Required"]);
+                    break;
+                case "Source":
+                    if (column.IsMandatory && taskdto.SourceId == Guid.Empty)
+                        messageStore.Add(new FieldIdentifier(taskdto, nameof(taskdto.SourceId)), Loc["Required"]);
+                    break;
+                case "Priority":
+                    if (column.IsMandatory && taskdto.Priority == Guid.Empty)
+                        messageStore.Add(new FieldIdentifier(taskdto, nameof(taskdto.Priority)), Loc["Required"]);
+                    break;
+                case "Reminder date":
+                    var field = new FieldIdentifier(taskdto, nameof(taskdto.ReminderDate));
+                    if (column.IsMandatory && !taskdto.ReminderDate.HasValue)
+                        messageStore.Add(field, Loc["Required"]);
+                    else if (taskdto.ReminderDate.HasValue && taskdto.StartDate.HasValue && taskdto.EndDate.HasValue)
+                    {
+                        if (taskdto.ReminderDate < taskdto.StartDate || taskdto.ReminderDate > taskdto.EndDate)
+                            messageStore.Add(field, Loc["ReminderDateBetweenStartAndEnd"]);
+                    }
+                    break;
+                case "Dependency":
+                    if (column.IsMandatory && (taskdto.Dependencies == null || !taskdto.Dependencies.Any()))
+                        messageStore.Add(new FieldIdentifier(taskdto, nameof(taskdto.Dependencies)), Loc["Required"]);
+                    break;
+                case "Weight":
+                    var weightField = new FieldIdentifier(taskdto, nameof(taskdto.weight));
+                    if (column.IsMandatory && !taskdto.weight.HasValue)
+                        messageStore.Add(weightField, Loc["Required"]);
+                    else if (taskdto.weight.HasValue && (taskdto.weight < 0 || taskdto.weight > 100))
+                        messageStore.Add(weightField, Loc["WeightMustBeBetween0And100"]);
+                    break;
+                case "Comments":
+                    if (column.IsMandatory && string.IsNullOrWhiteSpace(taskdto.Content))
+                        messageStore.Add(new FieldIdentifier(taskdto, nameof(taskdto.Content)), Loc["Required"]);
+                    break;
+                case "Actual progress":
+                    var progressField = new FieldIdentifier(taskdto, nameof(taskdto.ActualProcess));
+                    if (column.IsMandatory && (taskdto.ActualProcess < 0 || taskdto.ActualProcess > 100))
+                        messageStore.Add(progressField, Loc["Required"]);
+                    break;
             }
         }
-
-        // Notify EditContext to refresh validation messages
-        context.NotifyValidationStateChanged();
-        await Task.CompletedTask;
+        ValidateDateRange();
+        editContext.NotifyValidationStateChanged();
     }
-
-
     private async Task HandleValidSubmit(EditContext context)
     {
-        // proceed with saving
-        taskdto.Description =
-             RichTextEditorComponentRefDescriptionEnglish.GetContent();
-                    taskdto.Content = RichTextEditorComponentRefComment.GetContent();
-        await  ValidateDynamicFields(context);
-        if (taskdto.EndDate<taskdto.StartDate)
-        {
-            await ToastService.ShowToastAsync(Loc["Thestartdateshouldbesmallerthanorequaltheenddate"], "error");
-
-            return;
-        }
-        if (taskdto.ReminderDate < taskdto.StartDate || taskdto.ReminderDate > taskdto.EndDate )
-        {
-            await ToastService.ShowToastAsync(Loc["Enteravalidreminderdate"], "error");
-
-            return;
-        }
-
+        taskdto.Description = RichTextEditorComponentRefDescriptionEnglish.GetContent();
+        taskdto.Content = RichTextEditorComponentRefComment.GetContent();
         await OnValidSubmit.InvokeAsync(context);
     }
-    private async Task OnCancelClick()
+    private async Task OnCancelClick() => await OnCancel.InvokeAsync();
+    public void Dispose()
     {
-        await OnCancel.InvokeAsync();
+        if (editContext != null)
+        {
+            editContext.OnValidationRequested -= ValidateDynamicFields;
+            editContext.OnFieldChanged -= OnFieldChanged;
+        }
     }
-    private void HandleInvalidSubmit(EditContext context)
-    {
-        ToastService.ShowToastAsync(Loc["Pleasefillallrequiredfieldsbeforesubmitting"], "error");
-
-    }
-
 }

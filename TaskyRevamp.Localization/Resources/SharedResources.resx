@@ -409,13 +409,13 @@
     <value>Drag and Drop or</value>
   </data>
   <data name="AssignedTo" xml:space="preserve">
-    <value>Assignee</value>
+    <value>Assigned to</value>
   </data>
   <data name="CreatorDepartment" xml:space="preserve">
     <value>Creator department</value>
   </data>
   <data name="AssignedToDepartment" xml:space="preserve">
-    <value>Assignee department</value>
+    <value>Assigned to department</value>
   </data>
   <data name="Mandatory" xml:space="preserve">
     <value>Mandatory</value>
@@ -775,7 +775,7 @@
     <value>Above user department level</value>
   </data>
   <data name="BelowUserDepartmentLevel" xml:space="preserve">
-    <value>Below user department leve</value>
+    <value>Below user department level</value>
   </data>
   <data name="PeersLevel" xml:space="preserve">
     <value>Peer's level</value>
@@ -931,7 +931,7 @@
     <value>Items per page</value>
   </data>
   <data name="EditDepartment" xml:space="preserve">
-    <value>Edit Department</value>
+    <value>Edit department</value>
   </data>
   <data name="AddADepartmentToGetStarted" xml:space="preserve">
     <value>Add a department to get started</value>
@@ -1162,10 +1162,10 @@
     <value>Supported files</value>
   </data>
   <data name="UnsupportedFileTypeTask" xml:space="preserve">
-    <value>This file type is not supported. Allowed formats are: pdf, doc, docx, xls, xlsx, .ppt, .pptx, txt, csv, jpg, jpeg, and png</value>
+    <value>This file type "{0}" is not supported. Allowed formats are: pdf, doc, docx, xls, xlsx, .ppt, .pptx, txt, csv, jpg, jpeg, and png</value>
   </data>
   <data name="FileSizeExceedsLimitTask" xml:space="preserve">
-    <value>The selected file exceeds the maximum allowed size of  "{0}" MB. Please upload a smaller file.</value>
+    <value>The selected file "{0}" exceeds the maximum allowed size of  25 MB. Please upload a smaller file.</value>
   </data>
   <data name="userLink" xml:space="preserve">
     <value>Link user</value>
@@ -1265,6 +1265,45 @@
   </data>
   <data name="SureCompleteTask" xml:space="preserve">
     <value>Are you sure to complete task</value>
+  </data>
+  <data name="ValueMustBeGreaterThanOrEqualTo1" xml:space="preserve">
+    <value>Value must be greater than or equal to 1.</value>
+  </data>
+  <data name="WeightMustBeBetween0And100" xml:space="preserve">
+    <value>Enter a value between 0 and 100</value>
+  </data>
+  <data name="StartDateMustBeBeforeEndDate" xml:space="preserve">
+    <value>The start date should be smaller than or equal the end date</value>
+  </data>
+  <data name="ReminderDateBetweenStartAndEnd" xml:space="preserve">
+    <value>Enter a valid reminder date, it should be between the start and end date</value>
+  </data>
+  <data name="Enterthereason" xml:space="preserve">
+    <value>Enter the reason</value>
+  </data>
+  <data name="Taskdetails" xml:space="preserve">
+    <value>Task details</value>
+  </data>
+  <data name="EditTask" xml:space="preserve">
+    <value>Edit task</value>
+  </data>
+  <data name="loginconditions" xml:space="preserve">
+    <value>login conditions</value>
+  </data>
+  <data name="IDorUserName" xml:space="preserve">
+    <value>User name</value>
+  </data>
+  <data name="Password" xml:space="preserve">
+    <value>Password</value>
+  </data>
+  <data name="Mine" xml:space="preserve">
+    <value>Mine</value>
+  </data>
+  <data name="Team" xml:space="preserve">
+    <value>Team</value>
+  </data>
+  <data name="Search..." xml:space="preserve">
+    <value>Search...</value>
   </data>
   <data name="Viewcolumn" xml:space="preserve">
     <value>Column options</value>
