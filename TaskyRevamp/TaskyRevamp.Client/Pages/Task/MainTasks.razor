@@ -134,7 +134,7 @@
                         <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Filter"></SVGCrud>
 
                     </button>
-                    <button type="button" data-bs-toggle="tooltip" @onclick="OnViewClick" data-bs-placement="top" title="View column"
+                    <button type="button" data-bs-toggle="tooltip" @onclick="OnViewClick" data-bs-placement="top" title="@Loc["Viewcolumn"]"
                         class="btn btn-action-40 btn-outline-light-pimary">
                         <SVGCrud SVGType="SVGCrud.SVGTypeEnum.AddColumn"></SVGCrud>
 
@@ -321,7 +321,7 @@
     private async Task OnViewClick()
     {
        
-        PopupService.ShowNew(@<ViewColumn OnValidSubmit="OnInitializedAsync"></ViewColumn>, headerText: @Loc["ViewColumn"]);
+        PopupService.ShowNew(@<ViewColumn OnValidSubmit="OnInitializedAsync"></ViewColumn>, headerText: @Loc["Viewcolumn"]);
 
     }
     private void Edit(Guid id)
@@ -340,6 +340,6 @@
     private async Task ReloadAfterSave()
     {
         //currentPage = page;
-        await taskListRef.GetTasks();
+       // await taskListRef.GetTasks();
     }
 }

@@ -1,0 +1,9 @@
+﻿.drag-th {
+    cursor: grab;
+    user-select: none;
+    white-space: nowrap;
+}
+
+    .drag-th:active {
+        cursor: grabbing;
+    }

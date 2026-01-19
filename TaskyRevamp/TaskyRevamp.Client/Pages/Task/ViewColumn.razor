@@ -11,45 +11,75 @@
 @inject ToastService ToastService
 @inject TypeSettingConsumer _typeSettingConsumer
 @inject ILocalStorageService LocalStorageService
+@inject DefaultColumnsSettingConsumer _defaultColumnsSettingConsumer
 
 @inject PopupService PopupService
 
+<div class="table-responsive sticky-header-custom">
 
-<div class="column-options-panel">
+    <table class="table table-bordered">
+        <thead class="table-responsive sticky-header-custom">
 
-    @foreach (var column in Columns.OrderBy(c => c.Order))
-    {
-        <div class="column-row">
+            <tr>
+                <!-- DRAGGABLE HEADERS -->
+                <SortableList Items="@OrderedColumns"
+                              KeySelector="@(c => c.Field)"
+                              OnUpdate="EventCallback.Factory.Create<(int oldIndex, int newIndex)>(
+                                                                                      this,
+                                                                                      e => OnColumnDrop(e.oldIndex, e.newIndex))">
 
-            <!-- Drag Handle -->
-            <span class="drag-handle">☰</span>
+                    <SortableItemTemplate Context="column">
+                        <div class="column-options-panel">
 
-            <!-- Column Name -->
-            <span class="column-name">@column.DisplayName</span>
+                           <th class="drag-th">
+                                <div class="column-row">
 
-            <!-- Up Arrow -->
-            <button class="icon-btn"
-                    disabled="@IsFirst(column)"
-                    @onclick="() => MoveUp(column)">
-                ▲
-            </button>
+                                    <!-- Drag Handle -->
+                                    <span class="drag-handle">☰</span>
 
-            <!-- Down Arrow -->
-            <button class="icon-btn"
-                    disabled="@IsLast(column)"
-                    @onclick="() => MoveDown(column)">
-                ▼
-            </button>
+                                    <!-- Column Name -->
+                                    <span class="column-name">@column.DisplayName</span>
 
-            <!-- Show / Hide Toggle -->
-            <input type="checkbox"
-                   checked="@column.IsVisible"
-                  
-                   @onchange="e => ToggleVisibility(column, e)" />
-        </div>
-    }
+                                    <!-- Up Arrow -->
+                                    <button class="icon-btn"
+                                            disabled="@IsFirst(column)"
+                                            @onclick="() => MoveUp(column)">
+                                        ▲
+                                    </button>
 
+                                    <!-- Down Arrow -->
+                                    <button class="icon-btn"
+                                            disabled="@IsLast(column)"
+                                            @onclick="() => MoveDown(column)">
+                                        ▼
+                                    </button>
+
+                                    <!-- Show / Hide Toggle -->
+                                    <input type="checkbox"
+                                           checked="@column.IsVisible"
+                                       disabled="@IsTitleColumn(column)"
+                                           @onchange="e => ToggleVisibility(column, e)" />
+                                </div>
+                            </th>
+                            
+
+                        </div>
+                        <!-- THE <th> ITSELF IS DRAGGABLE -->
+                        
+                            
+                       
+                    </SortableItemTemplate>
+
+                </SortableList>
+            </tr>
+        </thead>
+
+      
+    </table>
 </div>
+
+
+
 <div class="actions">
     <button class="btn btn-primary" @onclick="Save">Save</button>
     <button class="btn btn-secondary" @onclick="Cancel">Cancel</button>
@@ -61,7 +91,33 @@
 
     //private ProtectedSessionStorage SessionStorage { get; set; } = default!;
     private List<SortableColumn> Columns = new();
-    private List<SortableColumn> BackupColumns = new();
+   private List<SortableColumn> BackupColumns = new();
+    private List<DefaultColumnsSettingDto> ColumnsList = new();
+
+    private bool IsTitleColumn(SortableColumn column)
+    {
+        return column.Field == "Title";
+    }
+    private void OnColumnDrop(int oldIndex, int newIndex)
+    {
+        var movedColumn = OrderedColumns[oldIndex];
+
+        Columns.Remove(movedColumn);
+        Columns.Insert(newIndex, movedColumn);
+
+        // Update order so UI stays consistent
+        for (int i = 0; i < Columns.Count; i++)
+            Columns[i].Order = i;
+
+        StateHasChanged();
+    }
+
+    private List<SortableColumn> OrderedColumns =>
+    Columns
+        .Where(c => c.IsVisible)
+        .OrderBy(c => c.Order)
+        .ToList();
+
     private bool IsFirst(SortableColumn column)
     {
         return Columns
@@ -177,22 +233,46 @@
             var all = await GetDefaultColumns();
             Columns = all.ToList();
         }
+        BackupColumns = Columns
+            .Select(c => new SortableColumn
+            {
+                Field = c.Field,
+                DisplayName = c.DisplayName,
+                Order = c.Order,
+                IsVisible = c.IsVisible,
+
+            })
+            .ToList();
+
+
+
+        var res = await _defaultColumnsSettingConsumer.GetDefaultColumnsSettings();
+        if (res.Success)
+        {
+            var settings = res.Data;
+            if (settings != null)
+            {
+                ColumnsList = settings;
+            }
+
+        }
+        // ColumnsList = res.Data;
+
+        // Filter and order by settings
+        Columns = Columns
+        .Where(c => ColumnsList.Any(s => s.IsActive &&
+        string.Equals(s.NameEnglish, c.Field, StringComparison.OrdinalIgnoreCase)))
+        .OrderBy(c => ColumnsList
+        .First(s => string.Equals(s.NameEnglish, c.Field, StringComparison.OrdinalIgnoreCase))
+        .Order ?? int.MaxValue)
+        .ToList();
         StateHasChanged();
         // Columns = GetColumnsFromSession().Result
         //             .OrderBy(c => c.Order)
         //             .ToList();
 
         // // Backup for Cancel
-        // BackupColumns = Columns
-        //     .Select(c => new SortableColumn
-        //     {
-        //         Id = c.Id,
-        //         DisplayName = c.DisplayName,
-        //         Order = c.Order,
-        //         IsVisible = c.IsVisible,
-               
-        //     })
-        //     .ToList();
+       
     }
     public static class SessionKeys
     {

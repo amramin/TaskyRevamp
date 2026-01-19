@@ -527,6 +527,30 @@
                 height: 1.25rem;
             }
 
+.column-handle {
+    cursor: grab;
+}
+
+.table-responsive {
+    display: flex;
+    flex-direction: column;
+}
+
+th {
+    user-select: none; /* Prevent text selection while dragging */
+}
+
+    th .column-handle {
+        cursor: grab;
+        margin-right: 5px;
+    }
+
+.sortable-header {
+    display: flex;
+    justify-content: start; /* or space-between for full-width */
+    gap: 10px;
+}
+
 .main-wrapper .main-header .main-header-body .notifcation-dropdown .btn-action {
     width: 2.75rem;
     height: 2.75rem;

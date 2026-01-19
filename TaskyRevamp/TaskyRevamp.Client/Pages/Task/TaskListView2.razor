@@ -71,7 +71,7 @@
     private int totalPages = 1;
     private int totalCount = 0;
     private int pageSize = 10;
-    private void SortColumns(int oldIndex, int newIndex)
+    private async Task SortColumns(int oldIndex, int newIndex)
     {
         // Move the column in the list
         var item = Columns[oldIndex];
@@ -84,6 +84,8 @@
             Columns[i].Order = i;
         }
 
+
+        await LocalStorageService.SetItemAsync("AllColumn", Columns);
         StateHasChanged();
     }
 
