@@ -120,6 +120,12 @@
                                         <label class="small text-danger"> @Loc["InvaildUserNameOrPassWord"]</label>
                                     </div>
                                 }
+                                @if (ApiError)
+                                {
+                                    <div class="mb-3">
+                                        <label class="small text-danger"> @Loc["Anunexpectederroroccurredwhile"]</label>
+                                    </div>
+                                }
                                 <button _ngcontent-uxv-c2="" type="submit" class="btn btn-lg btn-primary">
                                     @Loc["Login"] <i _ngcontent-uxv-c2=""
                                                      class="feather feather-settings spin icon mt-minus-2"></i>
@@ -174,7 +180,7 @@
         isPasswordVisible = !isPasswordVisible;
         passwordInputType = isPasswordVisible ? "text" : "password";
     }
-
+    bool ApiError=false;
     public async Task HandleValidSubmit()
     {
         IsRequiredName = false;
@@ -209,7 +215,7 @@
         ? new ClaimsIdentity()
         : new ClaimsIdentity(StaticMethods.ParseClaimsFromJwt(token), "jwt");
 
-        if (ret.Data != null)
+        if (ret.Data != null || ret.Success)
         {
 
             var newUser = new ClaimsPrincipal(identity);
@@ -231,7 +237,11 @@
             else
                 NavigationManager.NavigateTo("/", true);
         }
-
+        else
+        {
+            ApiError=true;
+            StateHasChanged();
+        }
     }
 
 }
