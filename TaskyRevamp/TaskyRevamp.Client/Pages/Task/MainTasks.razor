@@ -196,11 +196,11 @@
                         case 1:
                             <div>
 
-                                <TaskListView2 @ref="taskListRef"
+                                <TaskListView @ref="taskListRef"
                                                OnAdd="Add"
                                                OnEdit="Edit"
                                                OnReopen="Reopen">
-                                </TaskListView2>
+                                </TaskListView>
 
                             </div>
                             break;
@@ -265,7 +265,7 @@
     [Parameter] public EventCallback<Guid> OnDelete { get; set; }
     [Parameter] public EventCallback<Guid> OnShowUsers { get; set; }
     [Parameter] public EventCallback<Guid> OnAdd { get; set; }
-    private TaskListView2 taskListRef;
+    private TaskListView taskListRef;
     private List<TaskColumnSetting> Columns = new();
     public int ViewType { get; set; } = 1;
     public Guid currentUserId { set; get; }
