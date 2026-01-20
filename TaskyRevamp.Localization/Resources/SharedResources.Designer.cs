@@ -394,6 +394,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to An unexpected error occurred while communicating with the server. Please try again later or contact support if the issue persists.
+        /// </summary>
+        public static string Anunexpectederroroccurredwhile {
+            get {
+                return ResourceManager.GetString("Anunexpectederroroccurredwhile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Approve and reject the request change end date.
         /// </summary>
         public static string ApproveAndRejectTheRequestChangeEndDate {
