@@ -182,12 +182,22 @@
 
                 // Get the first character of the last word
                 char firstCharOfLastWord = words[words.Length - 1][0];
+                bool isArabic = IsArabic(displayName);
 
-                OfficalName = firstCharOfFirstWord + "" + firstCharOfLastWord;
+                OfficalName = isArabic
+                    ? $"{firstCharOfFirstWord} {firstCharOfLastWord}"   // space for Arabic
+                    : $"{firstCharOfFirstWord}{firstCharOfLastWord}";   // no space for others
+                //OfficalName = firstCharOfFirstWord + "" + firstCharOfLastWord;
             }
         }
     }
-
+    private static bool IsArabic(string text)
+    {
+        return text.Any(c =>
+            (c >= '\u0600' && c <= '\u06FF') ||
+            (c >= '\u0750' && c <= '\u077F') ||
+            (c >= '\u08A0' && c <= '\u08FF'));
+    }
     void SetRenderFragment(RenderFragment content, string headerName)
     {
         HeaderName = headerName;
