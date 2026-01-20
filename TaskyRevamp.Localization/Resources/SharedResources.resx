@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
-  <!-- 
+	<!-- 
     Microsoft ResX Schema 
     
     Version 2.0
@@ -59,1250 +59,1257 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
-    <xsd:element name="root" msdata:IsDataSet="true">
-      <xsd:complexType>
-        <xsd:choice maxOccurs="unbounded">
-          <xsd:element name="metadata">
-            <xsd:complexType>
-              <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" />
-              </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string" />
-              <xsd:attribute name="type" type="xsd:string" />
-              <xsd:attribute name="mimetype" type="xsd:string" />
-              <xsd:attribute ref="xml:space" />
-            </xsd:complexType>
-          </xsd:element>
-          <xsd:element name="assembly">
-            <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string" />
-              <xsd:attribute name="name" type="xsd:string" />
-            </xsd:complexType>
-          </xsd:element>
-          <xsd:element name="data">
-            <xsd:complexType>
-              <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
-              </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-              <xsd:attribute ref="xml:space" />
-            </xsd:complexType>
-          </xsd:element>
-          <xsd:element name="resheader">
-            <xsd:complexType>
-              <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-              </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" />
-            </xsd:complexType>
-          </xsd:element>
-        </xsd:choice>
-      </xsd:complexType>
-    </xsd:element>
-  </xsd:schema>
-  <resheader name="resmimetype">
-    <value>text/microsoft-resx</value>
-  </resheader>
-  <resheader name="version">
-    <value>2.0</value>
-  </resheader>
-  <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </resheader>
-  <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </resheader>
-  <data name="Custom" xml:space="preserve">
+	<xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+		<xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+		<xsd:element name="root" msdata:IsDataSet="true">
+			<xsd:complexType>
+				<xsd:choice maxOccurs="unbounded">
+					<xsd:element name="metadata">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="value" type="xsd:string" minOccurs="0" />
+							</xsd:sequence>
+							<xsd:attribute name="name" use="required" type="xsd:string" />
+							<xsd:attribute name="type" type="xsd:string" />
+							<xsd:attribute name="mimetype" type="xsd:string" />
+							<xsd:attribute ref="xml:space" />
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="assembly">
+						<xsd:complexType>
+							<xsd:attribute name="alias" type="xsd:string" />
+							<xsd:attribute name="name" type="xsd:string" />
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="data">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+								<xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+							</xsd:sequence>
+							<xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+							<xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+							<xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+							<xsd:attribute ref="xml:space" />
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="resheader">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+							</xsd:sequence>
+							<xsd:attribute name="name" type="xsd:string" use="required" />
+						</xsd:complexType>
+					</xsd:element>
+				</xsd:choice>
+			</xsd:complexType>
+		</xsd:element>
+	</xsd:schema>
+	<resheader name="resmimetype">
+		<value>text/microsoft-resx</value>
+	</resheader>
+	<resheader name="version">
+		<value>2.0</value>
+	</resheader>
+	<resheader name="reader">
+		<value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
+	<resheader name="writer">
+		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
+	<data name="Custom" xml:space="preserve">
     <value>Custom</value>
   </data>
-  <data name="Days7" xml:space="preserve">
+	<data name="Days7" xml:space="preserve">
     <value>7 days</value>
   </data>
-  <data name="Days15" xml:space="preserve">
+	<data name="Days15" xml:space="preserve">
     <value>15 days</value>
   </data>
-  <data name="Days30" xml:space="preserve">
+	<data name="Days30" xml:space="preserve">
     <value>30 days</value>
   </data>
-  <data name="Days60" xml:space="preserve">
+	<data name="Days60" xml:space="preserve">
     <value>60 days</value>
   </data>
-  <data name="Login" xml:space="preserve">
+	<data name="Login" xml:space="preserve">
     <value>Login</value>
   </data>
-  <data name="Never" xml:space="preserve">
+	<data name="Never" xml:space="preserve">
     <value>Never</value>
   </data>
-  <data name="Required" xml:space="preserve">
+	<data name="Required" xml:space="preserve">
     <value>This field is required</value>
   </data>
-  <data name="DataSavedSuccessfully" xml:space="preserve">
+	<data name="DataSavedSuccessfully" xml:space="preserve">
     <value>Data saved successfully</value>
   </data>
-  <data name="ParentNotFound" xml:space="preserve">
+	<data name="ParentNotFound" xml:space="preserve">
     <value>Parent not found</value>
   </data>
-  <data name="RecycleBinConfiguration" xml:space="preserve">
+	<data name="RecycleBinConfiguration" xml:space="preserve">
     <value>Recycle bin configuration</value>
   </data>
-  <data name="RetentionPeriodOptions" xml:space="preserve">
+	<data name="RetentionPeriodOptions" xml:space="preserve">
     <value>Retention period Options</value>
   </data>
-  <data name="SystemNotifications" xml:space="preserve">
+	<data name="SystemNotifications" xml:space="preserve">
     <value>System notifications</value>
   </data>
-  <data name="EmailNotification" xml:space="preserve">
+	<data name="EmailNotification" xml:space="preserve">
     <value>Email notifications</value>
   </data>
-  <data name="Cancel" xml:space="preserve">
+	<data name="Cancel" xml:space="preserve">
     <value>Cancel</value>
   </data>
-  <data name="Save" xml:space="preserve">
+	<data name="Save" xml:space="preserve">
     <value>Save</value>
   </data>
-  <data name="EditSuccess" xml:space="preserve">
+	<data name="EditSuccess" xml:space="preserve">
     <value>Edited successfully</value>
   </data>
-  <data name="Hours24" xml:space="preserve">
+	<data name="Hours24" xml:space="preserve">
     <value>24 hours</value>
   </data>
-  <data name="ListWeek" xml:space="preserve">
+	<data name="ListWeek" xml:space="preserve">
     <value>1 week</value>
   </data>
-  <data name="Days3" xml:space="preserve">
+	<data name="Days3" xml:space="preserve">
     <value>3 days</value>
   </data>
-  <data name="RejectionConfiguration" xml:space="preserve">
+	<data name="RejectionConfiguration" xml:space="preserve">
     <value>Task rejection configuration</value>
   </data>
-  <data name="RejectionPeriodOptions" xml:space="preserve">
+	<data name="RejectionPeriodOptions" xml:space="preserve">
     <value>Rejection period options</value>
   </data>
-  <data name="Priority" xml:space="preserve">
+	<data name="Priority" xml:space="preserve">
     <value>Tasks priority configuration</value>
   </data>
-  <data name="Added successfully" xml:space="preserve">
+	<data name="Added successfully" xml:space="preserve">
     <value>Added successfully</value>
   </data>
-  <data name="Name English" xml:space="preserve">
+	<data name="Name English" xml:space="preserve">
     <value>Name english</value>
   </data>
-  <data name="Name Arabic" xml:space="preserve">
+	<data name="Name Arabic" xml:space="preserve">
     <value>Name arabic</value>
   </data>
-  <data name="Background Color Indicator" xml:space="preserve">
+	<data name="Background Color Indicator" xml:space="preserve">
     <value>Background color indicator</value>
   </data>
-  <data name="Name Color Indicator" xml:space="preserve">
+	<data name="Name Color Indicator" xml:space="preserve">
     <value>Name color indicator</value>
   </data>
-  <data name="file" xml:space="preserve">
+	<data name="file" xml:space="preserve">
     <value>Upload Files</value>
   </data>
-  <data name="Order" xml:space="preserve">
+	<data name="Order" xml:space="preserve">
     <value>Priority ranking</value>
   </data>
-  <data name="EditPriority" xml:space="preserve">
+	<data name="EditPriority" xml:space="preserve">
     <value>Edit priority</value>
   </data>
-  <data name="AddPriority" xml:space="preserve">
+	<data name="AddPriority" xml:space="preserve">
     <value>Add priority</value>
   </data>
-  <data name="Delete" xml:space="preserve">
+	<data name="Delete" xml:space="preserve">
     <value>Delete</value>
   </data>
-  <data name="Deleted successfully" xml:space="preserve">
+	<data name="Deleted successfully" xml:space="preserve">
     <value>Deleted successfully</value>
   </data>
-  <data name="PriorityDuplicateValidation" xml:space="preserve">
+	<data name="PriorityDuplicateValidation" xml:space="preserve">
     <value>You can't duplicate the priority name</value>
   </data>
-  <data name="PriorityConfiguration" xml:space="preserve">
+	<data name="PriorityConfiguration" xml:space="preserve">
     <value>Priority configuration</value>
   </data>
-  <data name="PriorityOptions" xml:space="preserve">
+	<data name="PriorityOptions" xml:space="preserve">
     <value>Priority options</value>
   </data>
-  <data name="StatusConfig" xml:space="preserve">
+	<data name="StatusConfig" xml:space="preserve">
     <value>Tasks status configuration </value>
   </data>
-  <data name="StatusOptions" xml:space="preserve">
+	<data name="StatusOptions" xml:space="preserve">
     <value>Status options</value>
   </data>
-  <data name="List" xml:space="preserve">
+	<data name="List" xml:space="preserve">
     <value>List view</value>
   </data>
-  <data name="Gantt" xml:space="preserve">
+	<data name="Gantt" xml:space="preserve">
     <value>Gantt chart view</value>
   </data>
-  <data name="Kanban" xml:space="preserve">
+	<data name="Kanban" xml:space="preserve">
     <value>Kanban view</value>
   </data>
-  <data name="Card" xml:space="preserve">
+	<data name="Card" xml:space="preserve">
     <value>Card view</value>
   </data>
-  <data name="List_Type" xml:space="preserve">
+	<data name="List_Type" xml:space="preserve">
     <value>Type view</value>
   </data>
-  <data name="List_Source" xml:space="preserve">
+	<data name="List_Source" xml:space="preserve">
     <value>Source view</value>
   </data>
-  <data name="List_Timeline" xml:space="preserve">
+	<data name="List_Timeline" xml:space="preserve">
     <value>Timeline view</value>
   </data>
-  <data name="List_Overall" xml:space="preserve">
+	<data name="List_Overall" xml:space="preserve">
     <value>Overall view</value>
   </data>
-  <data name="Dashboard" xml:space="preserve">
+	<data name="Dashboard" xml:space="preserve">
     <value>Dashboard</value>
   </data>
-  <data name="Tasksviews" xml:space="preserve">
+	<data name="Tasksviews" xml:space="preserve">
     <value>Tasks views</value>
   </data>
-  <data name="Default View Error" xml:space="preserve">
+	<data name="Default View Error" xml:space="preserve">
     <value>The selected default page is no longer active.</value>
   </data>
-  <data name="Default view" xml:space="preserve">
+	<data name="Default view" xml:space="preserve">
     <value>Default view</value>
   </data>
-  <data name="Subtask_Level" xml:space="preserve">
+	<data name="Subtask_Level" xml:space="preserve">
     <value>Subtask level</value>
   </data>
-  <data name="Types of system notification Messages" xml:space="preserve">
+	<data name="Types of system notification Messages" xml:space="preserve">
     <value>Types of system notification messages</value>
   </data>
-  <data name="subtask_hint" xml:space="preserve">
+	<data name="subtask_hint" xml:space="preserve">
     <value>Set the maximum number of subtask levels allowed when creating a task. This controls how deeply tasks can be nested.</value>
   </data>
-  <data name="Maximum_Subtask_Level" xml:space="preserve">
+	<data name="Maximum_Subtask_Level" xml:space="preserve">
     <value>Maximum subtask level</value>
   </data>
-  <data name="sub_task_warning" xml:space="preserve">
+	<data name="sub_task_warning" xml:space="preserve">
     <value>Displaying more than 3 levels may impact the user interface performance and readability</value>
   </data>
-  <data name="ViewTaskSettingHint" xml:space="preserve">
+	<data name="ViewTaskSettingHint" xml:space="preserve">
     <value>Use this option to enable different task views in your system for better task management and visualization.</value>
   </data>
-  <data name="DefaultViewHint" xml:space="preserve">
+	<data name="DefaultViewHint" xml:space="preserve">
     <value>Select your default page after login</value>
   </data>
-  <data name="ViewOptions" xml:space="preserve">
+	<data name="ViewOptions" xml:space="preserve">
     <value>View options</value>
   </data>
-  <data name="WorkingDaysConfiguration" xml:space="preserve">
+	<data name="WorkingDaysConfiguration" xml:space="preserve">
     <value>Working days configuration</value>
   </data>
-  <data name="workingDaysHint" xml:space="preserve">
+	<data name="workingDaysHint" xml:space="preserve">
     <value>Define the official working days for your organization. This configuration will be used for task scheduling, deadlines, and workload calculations</value>
   </data>
-  <data name="Saturday" xml:space="preserve">
+	<data name="Saturday" xml:space="preserve">
     <value>Saturday</value>
   </data>
-  <data name="Friday" xml:space="preserve">
+	<data name="Friday" xml:space="preserve">
     <value>Friday</value>
   </data>
-  <data name="Thursday" xml:space="preserve">
+	<data name="Thursday" xml:space="preserve">
     <value>Thursday</value>
   </data>
-  <data name="Wednesday" xml:space="preserve">
+	<data name="Wednesday" xml:space="preserve">
     <value>Wednesday</value>
   </data>
-  <data name="Tuesday" xml:space="preserve">
+	<data name="Tuesday" xml:space="preserve">
     <value>Tuesday</value>
   </data>
-  <data name="Monday" xml:space="preserve">
+	<data name="Monday" xml:space="preserve">
     <value>Monday</value>
   </data>
-  <data name="Sunday" xml:space="preserve">
+	<data name="Sunday" xml:space="preserve">
     <value>Sunday</value>
   </data>
-  <data name="WeeklyReport" xml:space="preserve">
+	<data name="WeeklyReport" xml:space="preserve">
     <value>Weekly report</value>
   </data>
-  <data name="English" xml:space="preserve">
+	<data name="English" xml:space="preserve">
     <value>English</value>
   </data>
-  <data name="Arabic" xml:space="preserve">
+	<data name="Arabic" xml:space="preserve">
     <value>Arabic</value>
   </data>
-  <data name="weeklyReportHint" xml:space="preserve">
+	<data name="weeklyReportHint" xml:space="preserve">
     <value>Select the weekly report sent day and time</value>
   </data>
-  <data name="languageHint" xml:space="preserve">
+	<data name="languageHint" xml:space="preserve">
     <value>You can select the report language that will be sent via email.</value>
   </data>
-  <data name="ReportLanguage" xml:space="preserve">
+	<data name="ReportLanguage" xml:space="preserve">
     <value>Report language</value>
   </data>
-  <data name="Day" xml:space="preserve">
+	<data name="Day" xml:space="preserve">
     <value>Day</value>
   </data>
-  <data name="Time" xml:space="preserve">
+	<data name="Time" xml:space="preserve">
     <value>Time</value>
   </data>
-  <data name="rejectionHint" xml:space="preserve">
+	<data name="rejectionHint" xml:space="preserve">
     <value>Set maximum allowed rejection period for the task from the assignee</value>
   </data>
-  <data name="Week" xml:space="preserve">
+	<data name="Week" xml:space="preserve">
     <value>1 week</value>
   </data>
-  <data name="priorityHint" xml:space="preserve">
+	<data name="priorityHint" xml:space="preserve">
     <value>The parent task’s priority is automatically set to match the highest priority among its sub-tasks. </value>
   </data>
-  <data name="recycleHint" xml:space="preserve">
+	<data name="recycleHint" xml:space="preserve">
     <value>Set the auto deletion period from the system for deleted tasks inside the recycle bin</value>
   </data>
-  <data name="SourceConfiguration" xml:space="preserve">
+	<data name="SourceConfiguration" xml:space="preserve">
     <value>Task source configuration</value>
   </data>
-  <data name="AddTaskSource" xml:space="preserve">
+	<data name="AddTaskSource" xml:space="preserve">
     <value>Add source</value>
   </data>
-  <data name="EditTaskSource" xml:space="preserve">
+	<data name="EditTaskSource" xml:space="preserve">
     <value>Edit source</value>
   </data>
-  <data name="DeleteTaskSource" xml:space="preserve">
+	<data name="DeleteTaskSource" xml:space="preserve">
     <value>Delete task source</value>
   </data>
-  <data name="active" xml:space="preserve">
+	<data name="active" xml:space="preserve">
     <value>Active</value>
   </data>
-  <data name="inactive" xml:space="preserve">
+	<data name="inactive" xml:space="preserve">
     <value>Inactive</value>
   </data>
-  <data name="name" xml:space="preserve">
+	<data name="name" xml:space="preserve">
     <value>Name</value>
   </data>
-  <data name="AllrightsKSA" xml:space="preserve">
+	<data name="AllrightsKSA" xml:space="preserve">
     <value>All rights are safe - Kingdom of Saudi Arabia</value>
   </data>
-  <data name="Title" xml:space="preserve">
+	<data name="Title" xml:space="preserve">
     <value>Title</value>
   </data>
-  <data name="ActualProgress" xml:space="preserve">
+	<data name="ActualProgress" xml:space="preserve">
     <value>Actual progress</value>
   </data>
-  <data name="Source" xml:space="preserve">
+	<data name="Source" xml:space="preserve">
     <value>Source</value>
   </data>
-  <data name="StartDate" xml:space="preserve">
+	<data name="StartDate" xml:space="preserve">
     <value>Start date</value>
   </data>
-  <data name="EndDate" xml:space="preserve">
+	<data name="EndDate" xml:space="preserve">
     <value>End date</value>
   </data>
-  <data name="weight" xml:space="preserve">
+	<data name="weight" xml:space="preserve">
     <value>Weight</value>
   </data>
-  <data name="Comments" xml:space="preserve">
+	<data name="Comments" xml:space="preserve">
     <value>Comments</value>
   </data>
-  <data name="AddDescription" xml:space="preserve">
+	<data name="AddDescription" xml:space="preserve">
     <value>Add Description</value>
   </data>
-  <data name="Drag and Drop or" xml:space="preserve">
+	<data name="Drag and Drop or" xml:space="preserve">
     <value>Drag and Drop or</value>
   </data>
-  <data name="AssignedTo" xml:space="preserve">
+	<data name="AssignedTo" xml:space="preserve">
     <value>Assigned to</value>
   </data>
-  <data name="CreatorDepartment" xml:space="preserve">
+	<data name="CreatorDepartment" xml:space="preserve">
     <value>Creator department</value>
   </data>
-  <data name="AssignedToDepartment" xml:space="preserve">
+	<data name="AssignedToDepartment" xml:space="preserve">
     <value>Assigned to department</value>
   </data>
-  <data name="Mandatory" xml:space="preserve">
+	<data name="Mandatory" xml:space="preserve">
     <value>Mandatory</value>
   </data>
-  <data name="Status" xml:space="preserve">
+	<data name="Status" xml:space="preserve">
     <value>Status</value>
   </data>
-  <data name="Dependency" xml:space="preserve">
+	<data name="Dependency" xml:space="preserve">
     <value>Dependency</value>
   </data>
-  <data name="CreatedBy" xml:space="preserve">
+	<data name="CreatedBy" xml:space="preserve">
     <value>Created by</value>
   </data>
-  <data name="CreatedByDepartment" xml:space="preserve">
+	<data name="CreatedByDepartment" xml:space="preserve">
     <value>Created by department</value>
   </data>
-  <data name="Duration" xml:space="preserve">
+	<data name="Duration" xml:space="preserve">
     <value>Duration</value>
   </data>
-  <data name="PlannedProgress" xml:space="preserve">
+	<data name="PlannedProgress" xml:space="preserve">
     <value>Planned progress</value>
   </data>
-  <data name="CreationDate" xml:space="preserve">
+	<data name="CreationDate" xml:space="preserve">
     <value>Creation date</value>
   </data>
-  <data name="UpdateDate" xml:space="preserve">
+	<data name="UpdateDate" xml:space="preserve">
     <value>Updated date</value>
   </data>
-  <data name="UpdatedBy" xml:space="preserve">
+	<data name="UpdatedBy" xml:space="preserve">
     <value>Updated by</value>
   </data>
-  <data name="Action" xml:space="preserve">
+	<data name="Action" xml:space="preserve">
     <value>Action </value>
   </data>
-  <data name="NoTaskSourcesAvailable" xml:space="preserve">
+	<data name="NoTaskSourcesAvailable" xml:space="preserve">
     <value>No task sources available</value>
   </data>
-  <data name="AddANewTaskSourceToGetStarted" xml:space="preserve">
+	<data name="AddANewTaskSourceToGetStarted" xml:space="preserve">
     <value>Add a new task source to get started.</value>
   </data>
-  <data name="TaskTypeConfiguration" xml:space="preserve">
+	<data name="TaskTypeConfiguration" xml:space="preserve">
     <value>Tasks type configuration</value>
   </data>
-  <data name="AddTaskType" xml:space="preserve">
+	<data name="AddTaskType" xml:space="preserve">
     <value>Add type</value>
   </data>
-  <data name="NoTaskTypeAvailable" xml:space="preserve">
+	<data name="NoTaskTypeAvailable" xml:space="preserve">
     <value>No task type available</value>
   </data>
-  <data name="AddANewTaskTypeToGetStarted" xml:space="preserve">
+	<data name="AddANewTaskTypeToGetStarted" xml:space="preserve">
     <value>Add a new task type to get started.</value>
   </data>
-  <data name="Type" xml:space="preserve">
+	<data name="Type" xml:space="preserve">
     <value>Type</value>
   </data>
-  <data name="ActualWeight" xml:space="preserve">
+	<data name="ActualWeight" xml:space="preserve">
     <value>Actual weight</value>
   </data>
-  <data name="PlannedWeight" xml:space="preserve">
+	<data name="PlannedWeight" xml:space="preserve">
     <value>Planned weight</value>
   </data>
-  <data name="FromStartDate" xml:space="preserve">
+
+	<data name="Anunexpectederroroccurredwhile" xml:space="preserve">
+    <value>An unexpected error occurred while communicating with the server. Please try again later or contact support if the issue persists</value>
+  </data>
+	<data name="FromStartDate" xml:space="preserve">
     <value>From start date</value>
   </data>
-  <data name="ToStartDate" xml:space="preserve">
+	<data name="ToStartDate" xml:space="preserve">
     <value>To start date</value>
   </data>
-  <data name="FromEndDate" xml:space="preserve">
+	<data name="FromEndDate" xml:space="preserve">
     <value>From end date</value>
   </data>
-  <data name="ToEndDate" xml:space="preserve">
+	<data name="ToEndDate" xml:space="preserve">
     <value>To end date</value>
   </data>
-  <data name="FromCreationDate" xml:space="preserve">
+	<data name="FromCreationDate" xml:space="preserve">
     <value>From creation date</value>
   </data>
-  <data name="ToCreationDate" xml:space="preserve">
+	<data name="ToCreationDate" xml:space="preserve">
     <value>To creation date</value>
   </data>
-  <data name="DefaultColumnsConfiguration" xml:space="preserve">
+	<data name="DefaultColumnsConfiguration" xml:space="preserve">
     <value>Default columns configuration</value>
   </data>
-  <data name="FilterFields" xml:space="preserve">
+	<data name="FilterFields" xml:space="preserve">
     <value>Filter fields</value>
   </data>
-  <data name="AddTaskFieldsConfiguration" xml:space="preserve">
+	<data name="AddTaskFieldsConfiguration" xml:space="preserve">
     <value>Add task fields configuration</value>
   </data>
-  <data name="Nodepartmentavailable" xml:space="preserve">
+	<data name="Nodepartmentavailable" xml:space="preserve">
     <value> No department available </value>
   </data>
-  <data name="DepartmentDuplicateValidation" xml:space="preserve">
+	<data name="DepartmentDuplicateValidation" xml:space="preserve">
     <value>Department name must be unique. Please type a different name</value>
   </data>
-  <data name="NameEnglish" xml:space="preserve">
+	<data name="NameEnglish" xml:space="preserve">
     <value>Name english</value>
   </data>
-  <data name="NameArabic" xml:space="preserve">
+	<data name="NameArabic" xml:space="preserve">
     <value>Name arabic</value>
   </data>
-  <data name="SelectParent" xml:space="preserve">
+	<data name="SelectParent" xml:space="preserve">
     <value>Parent department </value>
   </data>
-  <data name="Update" xml:space="preserve">
+	<data name="Update" xml:space="preserve">
     <value>Update</value>
   </data>
-  <data name="Departments" xml:space="preserve">
+	<data name="Departments" xml:space="preserve">
     <value>Departments</value>
   </data>
-  <data name="AddDepartment" xml:space="preserve">
+	<data name="AddDepartment" xml:space="preserve">
     <value>Add department</value>
   </data>
-  <data name="DepartmentParent" xml:space="preserve">
+	<data name="DepartmentParent" xml:space="preserve">
     <value>Parent department</value>
   </data>
-  <data name="DefaultColumnsHint" xml:space="preserve">
+	<data name="DefaultColumnsHint" xml:space="preserve">
     <value>Customize the columns you want to display and set the default column view that will appear when the user logs into the system.</value>
   </data>
-  <data name="TaskFilterHint" xml:space="preserve">
+	<data name="TaskFilterHint" xml:space="preserve">
     <value>Select which fields to display in any task filter</value>
   </data>
-  <data name="AddTaskHint" xml:space="preserve">
+	<data name="AddTaskHint" xml:space="preserve">
     <value>Use this option to activate the fields that will appear on the task creation/editing page. You can also specify which fields should be marked as mandatory.</value>
   </data>
-  <data name="Addedsuccessfully" xml:space="preserve">
+	<data name="Addedsuccessfully" xml:space="preserve">
     <value>Added successfully</value>
   </data>
-  <data name="SureDeleteDepartment" xml:space="preserve">
+	<data name="SureDeleteDepartment" xml:space="preserve">
     <value>Are you sure you want to delete this department?</value>
   </data>
-  <data name="Confirm" xml:space="preserve">
+	<data name="Confirm" xml:space="preserve">
     <value>Confirm</value>
   </data>
-  <data name="Search" xml:space="preserve">
+	<data name="Search" xml:space="preserve">
     <value>Search</value>
   </data>
-  <data name="EnterDaysNumber" xml:space="preserve">
+	<data name="EnterDaysNumber" xml:space="preserve">
     <value>Enter number of days</value>
   </data>
-  <data name="FieldNames" xml:space="preserve">
+	<data name="FieldNames" xml:space="preserve">
     <value>Field names</value>
   </data>
-  <data name="AddTaskSettingNotFound" xml:space="preserve">
+	<data name="AddTaskSettingNotFound" xml:space="preserve">
     <value>Add task setting with Id {id} not found.</value>
   </data>
-  <data name="FilterFieldNotFound" xml:space="preserve">
+	<data name="FilterFieldNotFound" xml:space="preserve">
     <value>Filter field with Id {id} not found.</value>
   </data>
-  <data name="DefaultColumnNotFound" xml:space="preserve">
+	<data name="DefaultColumnNotFound" xml:space="preserve">
     <value>Default column with Id {id} not found.</value>
   </data>
-  <data name="System Identity Configuration" xml:space="preserve">
+	<data name="System Identity Configuration" xml:space="preserve">
     <value>System identity configuration</value>
   </data>
-  <data name="Primary Color" xml:space="preserve">
+	<data name="Primary Color" xml:space="preserve">
     <value>Primary color</value>
   </data>
-  <data name="Primary Active Color" xml:space="preserve">
+	<data name="Primary Active Color" xml:space="preserve">
     <value>Primary active color</value>
   </data>
-  <data name="Main Title" xml:space="preserve">
+	<data name="Main Title" xml:space="preserve">
     <value>Main title</value>
   </data>
-  <data name="Sub Title" xml:space="preserve">
+	<data name="Sub Title" xml:space="preserve">
     <value>Sub title</value>
   </data>
-  <data name="Navigation Background" xml:space="preserve">
+	<data name="Navigation Background" xml:space="preserve">
     <value>Navigation background</value>
   </data>
-  <data name="Border Color" xml:space="preserve">
+	<data name="Border Color" xml:space="preserve">
     <value>Border color</value>
   </data>
-  <data name="System Identity" xml:space="preserve">
+	<data name="System Identity" xml:space="preserve">
     <value>System identity</value>
   </data>
-  <data name="EditStatus" xml:space="preserve">
+	<data name="EditStatus" xml:space="preserve">
     <value>Edit status</value>
   </data>
-  <data name="Type Source Name English" xml:space="preserve">
+	<data name="Type Source Name English" xml:space="preserve">
     <value>Type source name english</value>
   </data>
-  <data name="Type Source Name Arabic" xml:space="preserve">
+	<data name="Type Source Name Arabic" xml:space="preserve">
     <value>Type source name arabic</value>
   </data>
-  <data name="Enter Task Type Name English" xml:space="preserve">
+	<data name="Enter Task Type Name English" xml:space="preserve">
     <value>Enter task type name english</value>
   </data>
-  <data name="Enter Task Type Name Arabic" xml:space="preserve">
+	<data name="Enter Task Type Name Arabic" xml:space="preserve">
     <value>Enter task type name arabic</value>
   </data>
-  <data name="EditTaskType" xml:space="preserve">
+	<data name="EditTaskType" xml:space="preserve">
     <value>Edit type</value>
   </data>
-  <data name="Enter Priority Name English" xml:space="preserve">
+	<data name="Enter Priority Name English" xml:space="preserve">
     <value>Enter priority name english</value>
   </data>
-  <data name="Enter Priority Name Arabic" xml:space="preserve">
+	<data name="Enter Priority Name Arabic" xml:space="preserve">
     <value>Enter priority name arabic</value>
   </data>
-  <data name="Deletedsuccessfully" xml:space="preserve">
+	<data name="Deletedsuccessfully" xml:space="preserve">
     <value>Deleted successfully</value>
   </data>
-  <data name="Addusers" xml:space="preserve">
+	<data name="Addusers" xml:space="preserve">
     <value>Add users</value>
   </data>
-  <data name="Errordatabase" xml:space="preserve">
+	<data name="Errordatabase" xml:space="preserve">
     <value>Error database</value>
   </data>
-  <data name="AddDelegation" xml:space="preserve">
+	<data name="AddDelegation" xml:space="preserve">
     <value>Add delegation</value>
   </data>
-  <data name="EditDelegation" xml:space="preserve">
+	<data name="EditDelegation" xml:space="preserve">
     <value>Edit delegation</value>
   </data>
-  <data name="FromUser" xml:space="preserve">
+	<data name="FromUser" xml:space="preserve">
     <value>From user</value>
   </data>
-  <data name="ToUser" xml:space="preserve">
+	<data name="ToUser" xml:space="preserve">
     <value>To user</value>
   </data>
-  <data name="FromDate" xml:space="preserve">
+	<data name="FromDate" xml:space="preserve">
     <value>Start date </value>
   </data>
-  <data name="ToDate" xml:space="preserve">
+	<data name="ToDate" xml:space="preserve">
     <value>End date</value>
   </data>
-  <data name="CreateDate" xml:space="preserve">
+	<data name="CreateDate" xml:space="preserve">
     <value>Creation date</value>
   </data>
-  <data name="SureDeleteDelegation" xml:space="preserve">
+	<data name="SureDeleteDelegation" xml:space="preserve">
     <value>Are you sure you want to remove this delegation?</value>
   </data>
-  <data name="NoDelegationvailable" xml:space="preserve">
+	<data name="NoDelegationvailable" xml:space="preserve">
     <value>No delegations available</value>
   </data>
-  <data name="GeneralModule" xml:space="preserve">
+	<data name="GeneralModule" xml:space="preserve">
     <value>General modules </value>
   </data>
-  <data name="TaskModule" xml:space="preserve">
+	<data name="TaskModule" xml:space="preserve">
     <value>Task module</value>
   </data>
-  <data name="ReportModule" xml:space="preserve">
+	<data name="ReportModule" xml:space="preserve">
     <value>Report module</value>
   </data>
-  <data name="AddNewPrivilege" xml:space="preserve">
+	<data name="AddNewPrivilege" xml:space="preserve">
     <value>Add privilege</value>
   </data>
-  <data name="SelectReportOptions" xml:space="preserve">
+	<data name="SelectReportOptions" xml:space="preserve">
     <value>Select report options</value>
   </data>
-  <data name="ReportModuleHint" xml:space="preserve">
+	<data name="ReportModuleHint" xml:space="preserve">
     <value>All the options below are optional. If no option is selected, then no report will be sent from the system to the users.</value>
   </data>
-  <data name="Loading" xml:space="preserve">
+	<data name="Loading" xml:space="preserve">
     <value>Loading</value>
   </data>
-  <data name="PrivilegeNotFound" xml:space="preserve">
+	<data name="PrivilegeNotFound" xml:space="preserve">
     <value>Privilege with Id {id} not found.</value>
   </data>
-  <data name="EnterPrivilegeName" xml:space="preserve">
+	<data name="EnterPrivilegeName" xml:space="preserve">
     <value>Permissions english name</value>
   </data>
-  <data name="ArabicName" xml:space="preserve">
+	<data name="ArabicName" xml:space="preserve">
     <value>Arabic name</value>
   </data>
-  <data name="EnglishName" xml:space="preserve">
+	<data name="EnglishName" xml:space="preserve">
     <value>English name</value>
   </data>
-  <data name="EnterPrivilegeArabicName" xml:space="preserve">
+	<data name="EnterPrivilegeArabicName" xml:space="preserve">
     <value>Enter privilege arabic name</value>
   </data>
-  <data name="EnterPrivilegeEnglishName" xml:space="preserve">
+	<data name="EnterPrivilegeEnglishName" xml:space="preserve">
     <value>Enter privilege english name</value>
   </data>
-  <data name="SelectAtLeastOneValue" xml:space="preserve">
+	<data name="SelectAtLeastOneValue" xml:space="preserve">
     <value>Select at least one value.</value>
   </data>
-  <data name="Add" xml:space="preserve">
+	<data name="Add" xml:space="preserve">
     <value>Add</value>
   </data>
-  <data name="Edit" xml:space="preserve">
+	<data name="Edit" xml:space="preserve">
     <value>Edit</value>
   </data>
-  <data name="View" xml:space="preserve">
+	<data name="View" xml:space="preserve">
     <value>View</value>
   </data>
-  <data name="All" xml:space="preserve">
+	<data name="All" xml:space="preserve">
     <value>All</value>
   </data>
-  <data name="DifferentDepartment" xml:space="preserve">
+	<data name="DifferentDepartment" xml:space="preserve">
     <value>Different departments</value>
   </data>
-  <data name="SameDepartment" xml:space="preserve">
+	<data name="SameDepartment" xml:space="preserve">
     <value>Same department</value>
   </data>
-  <data name="SameUser" xml:space="preserve">
+	<data name="SameUser" xml:space="preserve">
     <value>Same user</value>
   </data>
-  <data name="Module" xml:space="preserve">
+	<data name="Module" xml:space="preserve">
     <value>Module</value>
   </data>
-  <data name="ViewPermission" xml:space="preserve">
+	<data name="ViewPermission" xml:space="preserve">
     <value>View permissions</value>
   </data>
-  <data name="ViewUsers" xml:space="preserve">
+	<data name="ViewUsers" xml:space="preserve">
     <value>Users</value>
   </data>
-  <data name="AddANewPrivilegeToGetStarted" xml:space="preserve">
+	<data name="AddANewPrivilegeToGetStarted" xml:space="preserve">
     <value>Add a new privilege to get started</value>
   </data>
-  <data name="NoPrivilegeAvailable" xml:space="preserve">
+	<data name="NoPrivilegeAvailable" xml:space="preserve">
     <value>No privilege available</value>
   </data>
-  <data name="Priority2" xml:space="preserve">
+	<data name="Priority2" xml:space="preserve">
     <value>Priority</value>
   </data>
-  <data name="Logout" xml:space="preserve">
+	<data name="Logout" xml:space="preserve">
     <value>Log out</value>
   </data>
-  <data name="Titlee" xml:space="preserve">
+	<data name="Titlee" xml:space="preserve">
     <value>Title</value>
   </data>
-  <data name="TaskStatus" xml:space="preserve">
+	<data name="TaskStatus" xml:space="preserve">
     <value>Task status</value>
   </data>
-  <data name="AssigneduserNames" xml:space="preserve">
+	<data name="AssigneduserNames" xml:space="preserve">
     <value>Assignee</value>
   </data>
-  <data name="AddTask" xml:space="preserve">
+	<data name="AddTask" xml:space="preserve">
     <value>Add task</value>
   </data>
-  <data name="TitleEnglish" xml:space="preserve">
+	<data name="TitleEnglish" xml:space="preserve">
     <value>Title english</value>
   </data>
-  <data name="TitleArabic" xml:space="preserve">
+	<data name="TitleArabic" xml:space="preserve">
     <value>Title Arabic</value>
   </data>
-  <data name="DescriptionEnglish" xml:space="preserve">
+	<data name="DescriptionEnglish" xml:space="preserve">
     <value>Description english</value>
   </data>
-  <data name="DescriptionArabic" xml:space="preserve">
+	<data name="DescriptionArabic" xml:space="preserve">
     <value>Description arabic</value>
   </data>
-  <data name="SelectType" xml:space="preserve">
+	<data name="SelectType" xml:space="preserve">
     <value>Select type</value>
   </data>
-  <data name="SelectSource" xml:space="preserve">
+	<data name="SelectSource" xml:space="preserve">
     <value>Select source</value>
   </data>
-  <data name="ReminderDate" xml:space="preserve">
+	<data name="ReminderDate" xml:space="preserve">
     <value>Reminder date</value>
   </data>
-  <data name="SelectPriority" xml:space="preserve">
+	<data name="SelectPriority" xml:space="preserve">
     <value>Select priority</value>
   </data>
-  <data name="AboveUserDepartmentLevel" xml:space="preserve">
+	<data name="AboveUserDepartmentLevel" xml:space="preserve">
     <value>Above user department level</value>
   </data>
-  <data name="BelowUserDepartmentLevel" xml:space="preserve">
+	<data name="BelowUserDepartmentLevel" xml:space="preserve">
     <value>Below user department level</value>
   </data>
-  <data name="PeersLevel" xml:space="preserve">
+	<data name="PeersLevel" xml:space="preserve">
     <value>Peer's level</value>
   </data>
-  <data name="CreateTaskOnHim" xml:space="preserve">
+	<data name="CreateTaskOnHim" xml:space="preserve">
     <value>Create task on him</value>
   </data>
-  <data name="CreateTaskOnHimHint" xml:space="preserve">
+	<data name="CreateTaskOnHimHint" xml:space="preserve">
     <value>This allows the user to create tasks for himself and see his tasks only as creator or assignee</value>
   </data>
-  <data name="SameDepartmentHint" xml:space="preserve">
+	<data name="SameDepartmentHint" xml:space="preserve">
     <value>This option will automatically select your department to apply the permission to it</value>
   </data>
-  <data name="PeersLevelHint" xml:space="preserve">
+	<data name="PeersLevelHint" xml:space="preserve">
     <value> Same level departments: This option will automatically select the peer departments that are at the same level as the user's department. Only departments that share the same parent as the user's department will be selected to apply the permission to them.</value>
   </data>
-  <data name="BelowUserDepartmentLevelHint" xml:space="preserve">
+	<data name="BelowUserDepartmentLevelHint" xml:space="preserve">
     <value>This option allows you to apply the permission to departments located below the user's department level. The system will automatically follow the vertical hierarchy linked to user's department</value>
   </data>
-  <data name="AboveUserDepartmentLevelHint" xml:space="preserve">
+	<data name="AboveUserDepartmentLevelHint" xml:space="preserve">
     <value>This option allows you to apply the permission to departments located above the user's department level. The system will automatically follow the vertical hierarchy linked to the parent of the user's department</value>
   </data>
-  <data name="ExternalDepartmentHint" xml:space="preserve">
+	<data name="ExternalDepartmentHint" xml:space="preserve">
     <value>You can use an external department not related to the user department to apply the permission to it</value>
   </data>
-  <data name="UserDepartment" xml:space="preserve">
+	<data name="UserDepartment" xml:space="preserve">
     <value>User department</value>
   </data>
-  <data name="ExternalDepartment" xml:space="preserve">
+	<data name="ExternalDepartment" xml:space="preserve">
     <value>External department</value>
   </data>
-  <data name="Department" xml:space="preserve">
+	<data name="Department" xml:space="preserve">
     <value>Department</value>
   </data>
-  <data name="Permissions" xml:space="preserve">
+	<data name="Permissions" xml:space="preserve">
     <value>Permissions</value>
   </data>
-  <data name="EmployeesTasks" xml:space="preserve">
+	<data name="EmployeesTasks" xml:space="preserve">
     <value>Employees' tasks</value>
   </data>
-  <data name="ManagersTasks" xml:space="preserve">
+	<data name="ManagersTasks" xml:space="preserve">
     <value>Managers' tasks</value>
   </data>
-  <data name="DirectionLevel" xml:space="preserve">
+	<data name="DirectionLevel" xml:space="preserve">
     <value>Direction level</value>
   </data>
-  <data name="DirectionType" xml:space="preserve">
+	<data name="DirectionType" xml:space="preserve">
     <value>Direction type</value>
   </data>
-  <data name="IncludingSubDepartment" xml:space="preserve">
+	<data name="IncludingSubDepartment" xml:space="preserve">
     <value>Including sub-department</value>
   </data>
-  <data name="PrivilegeDuplicateValidation" xml:space="preserve">
+	<data name="PrivilegeDuplicateValidation" xml:space="preserve">
     <value>You can't duplicate the privilege name</value>
   </data>
-  <data name="Subtask_Levels" xml:space="preserve">
+	<data name="Subtask_Levels" xml:space="preserve">
     <value>Subtask level</value>
   </data>
-  <data name="Select" xml:space="preserve">
+	<data name="Select" xml:space="preserve">
     <value>Select</value>
   </data>
-  <data name="users" xml:space="preserve">
+	<data name="users" xml:space="preserve">
     <value>Users</value>
   </data>
-  <data name="email" xml:space="preserve">
+	<data name="email" xml:space="preserve">
     <value>Email address</value>
   </data>
-  <data name="Add_user" xml:space="preserve">
+	<data name="Add_user" xml:space="preserve">
     <value>Add user</value>
   </data>
-  <data name="NoUsersAvailable" xml:space="preserve">
+	<data name="NoUsersAvailable" xml:space="preserve">
     <value>No users available</value>
   </data>
-  <data name="AddANewUserToGetStarted" xml:space="preserve">
+	<data name="AddANewUserToGetStarted" xml:space="preserve">
     <value>Add a new user to get started</value>
   </data>
-  <data name="setAsManager" xml:space="preserve">
+	<data name="setAsManager" xml:space="preserve">
     <value>Set as manager</value>
   </data>
-  <data name="Privileges" xml:space="preserve">
+	<data name="Privileges" xml:space="preserve">
     <value>Privileges</value>
   </data>
-  <data name="ViewPrivilege" xml:space="preserve">
+	<data name="ViewPrivilege" xml:space="preserve">
     <value>View privilege</value>
   </data>
-  <data name="LinkUser" xml:space="preserve">
+	<data name="LinkUser" xml:space="preserve">
     <value>Link users</value>
   </data>
-  <data name="Usethisoption" xml:space="preserve">
+	<data name="Usethisoption" xml:space="preserve">
     <value>Use this option to enable system notifications that will be automatically sent when the specified action is triggered.</value>
   </data>
-  <data name="NotificationTypeTemplateConfiguration" xml:space="preserve">
+	<data name="NotificationTypeTemplateConfiguration" xml:space="preserve">
     <value>Configure notifications</value>
   </data>
-  <data name="NoResultsFound" xml:space="preserve">
+	<data name="NoResultsFound" xml:space="preserve">
     <value>No results found</value>
   </data>
-  <data name="TryAjustingYourSearch" xml:space="preserve">
+	<data name="TryAjustingYourSearch" xml:space="preserve">
     <value>Try adjusting your search.</value>
   </data>
-  <data name="ClearSearch" xml:space="preserve">
+	<data name="ClearSearch" xml:space="preserve">
     <value>Clear search</value>
   </data>
-  <data name="KanbanView" xml:space="preserve">
+	<data name="KanbanView" xml:space="preserve">
     <value>Kanban view</value>
   </data>
-  <data name="Sure" xml:space="preserve">
+	<data name="Sure" xml:space="preserve">
     <value>Are you sure you want to delete this?</value>
   </data>
-  <data name="EditPrivilege" xml:space="preserve">
+	<data name="EditPrivilege" xml:space="preserve">
     <value>Edit privilege</value>
   </data>
-  <data name="ViewUserPrivilege" xml:space="preserve">
+	<data name="ViewUserPrivilege" xml:space="preserve">
     <value>View user privilege</value>
   </data>
-  <data name="Email_user" xml:space="preserve">
+	<data name="Email_user" xml:space="preserve">
     <value>Email</value>
   </data>
-  <data name="NoUsers" xml:space="preserve">
+	<data name="NoUsers" xml:space="preserve">
     <value>No users assigned to this department</value>
   </data>
-  <data name="username" xml:space="preserve">
+	<data name="username" xml:space="preserve">
     <value>User name</value>
   </data>
-  <data name="No" xml:space="preserve">
+	<data name="No" xml:space="preserve">
     <value>No</value>
   </data>
-  <data name="Yes" xml:space="preserve">
+	<data name="Yes" xml:space="preserve">
     <value>Yes</value>
   </data>
-  <data name="priorityHint2" xml:space="preserve">
+	<data name="priorityHint2" xml:space="preserve">
     <value>Note: Priority order follows this order — 1 (highest/most critical), 2, 3 (lowest). The parent will always take the highest priority number (the most critical) from its sub-tasks.</value>
   </data>
-  <data name="ChangeDepartment" xml:space="preserve">
+	<data name="ChangeDepartment" xml:space="preserve">
     <value>Change department </value>
   </data>
-  <data name="validationDepartmentPart1" xml:space="preserve">
+	<data name="validationDepartmentPart1" xml:space="preserve">
     <value>This user is currently assigned to active tasks under his previous department</value>
   </data>
-  <data name="validationDepartmentPart2" xml:space="preserve">
+	<data name="validationDepartmentPart2" xml:space="preserve">
     <value>Please reassign these tasks before the change.</value>
   </data>
-  <data name="user_is_active" xml:space="preserve">
+	<data name="user_is_active" xml:space="preserve">
     <value>This user exists in the Active Directory and cannot be deleted</value>
   </data>
-  <data name="userHasTasksValidation" xml:space="preserve">
+	<data name="userHasTasksValidation" xml:space="preserve">
     <value>Can't delete, the user has an open task on him.</value>
   </data>
-  <data name="Of" xml:space="preserve">
+	<data name="Of" xml:space="preserve">
     <value>of</value>
   </data>
-  <data name="Items per page" xml:space="preserve">
+	<data name="Items per page" xml:space="preserve">
     <value>Items per page</value>
   </data>
-  <data name="EditDepartment" xml:space="preserve">
+	<data name="EditDepartment" xml:space="preserve">
     <value>Edit department</value>
   </data>
-  <data name="AddADepartmentToGetStarted" xml:space="preserve">
+	<data name="AddADepartmentToGetStarted" xml:space="preserve">
     <value>Add a department to get started</value>
   </data>
-  <data name="Level" xml:space="preserve">
+	<data name="Level" xml:space="preserve">
     <value>Level</value>
   </data>
-  <data name="DepartmentHasUsersCannotDelete" xml:space="preserve">
+	<data name="DepartmentHasUsersCannotDelete" xml:space="preserve">
     <value>Can't delete, the department has an active users</value>
   </data>
-  <data name="CannotDeletePrivilege" xml:space="preserve">
+	<data name="CannotDeletePrivilege" xml:space="preserve">
     <value>You can't delete this privilege, it's linked to a user</value>
   </data>
-  <data name="PrivilegeTilte" xml:space="preserve">
+	<data name="PrivilegeTilte" xml:space="preserve">
     <value>Privilege </value>
   </data>
-  <data name="NoTasks" xml:space="preserve">
+	<data name="NoTasks" xml:space="preserve">
     <value>No Tasks Found</value>
   </data>
-  <data name="AddTaskToStart" xml:space="preserve">
+	<data name="AddTaskToStart" xml:space="preserve">
     <value>Data will appear after adding the first task</value>
   </data>
-  <data name="Download" xml:space="preserve">
+	<data name="Download" xml:space="preserve">
     <value>Download Excel template</value>
   </data>
-  <data name="Upload" xml:space="preserve">
+	<data name="Upload" xml:space="preserve">
     <value>Upload Excel file</value>
   </data>
-  <data name="Link" xml:space="preserve">
+	<data name="Link" xml:space="preserve">
     <value>Link the user with a department and privilege</value>
   </data>
-  <data name="EmailMandatory" xml:space="preserve">
+	<data name="EmailMandatory" xml:space="preserve">
     <value>User Email (Mandatory)</value>
   </data>
-  <data name="PrivilegeMandatory" xml:space="preserve">
+	<data name="PrivilegeMandatory" xml:space="preserve">
     <value>Privilege Name (Mandatory)</value>
   </data>
-  <data name="DepartmentMandatory" xml:space="preserve">
+	<data name="DepartmentMandatory" xml:space="preserve">
     <value>Department Name (Mandatory)</value>
   </data>
-  <data name="ValidationError" xml:space="preserve">
+	<data name="ValidationError" xml:space="preserve">
     <value>The file has duplicate, missing or not matched department, privilege or email, recheck the file and import it again.</value>
   </data>
-  <data name="filesSuccess" xml:space="preserve">
+	<data name="filesSuccess" xml:space="preserve">
     <value>The file is adding successfully </value>
   </data>
-  <data name="UploadExcelFile" xml:space="preserve">
+	<data name="UploadExcelFile" xml:space="preserve">
     <value>Upload Excel file</value>
   </data>
-  <data name="DepartmentLevelMandatory" xml:space="preserve">
+	<data name="DepartmentLevelMandatory" xml:space="preserve">
     <value> Department Level (Mandatory)</value>
   </data>
-  <data name="DepartmentNameMandatory" xml:space="preserve">
+	<data name="DepartmentNameMandatory" xml:space="preserve">
     <value> Department Name (Mandatory)</value>
   </data>
-  <data name="ParentDepartmentNameMandatory" xml:space="preserve">
+	<data name="ParentDepartmentNameMandatory" xml:space="preserve">
     <value> Parent Department Name (Mandatory)</value>
   </data>
-  <data name="DownloadExcelTemplate" xml:space="preserve">
+	<data name="DownloadExcelTemplate" xml:space="preserve">
     <value>Download Excel template</value>
   </data>
-  <data name="Add the department's structure" xml:space="preserve">
+	<data name="Add the department's structure" xml:space="preserve">
     <value>Add the department's structure</value>
   </data>
-  <data name="FileNotValid" xml:space="preserve">
+	<data name="FileNotValid" xml:space="preserve">
     <value>File Not Valid</value>
   </data>
-  <data name="ThevalidRowsuploadedsuccessfully" xml:space="preserve">
+	<data name="ThevalidRowsuploadedsuccessfully" xml:space="preserve">
     <value>The file is adding successfully </value>
   </data>
-  <data name="SomeInvalidRowsSkipped" xml:space="preserve">
+	<data name="SomeInvalidRowsSkipped" xml:space="preserve">
     <value>The file has in duplicate, missing or not matched departement, recheck the file and import it again.</value>
   </data>
-  <data name="System name english" xml:space="preserve">
+	<data name="System name english" xml:space="preserve">
     <value>System name english</value>
   </data>
-  <data name="Enter system name english" xml:space="preserve">
+	<data name="Enter system name english" xml:space="preserve">
     <value>Enter system name english</value>
   </data>
-  <data name="System name arabic" xml:space="preserve">
+	<data name="System name arabic" xml:space="preserve">
     <value>System name arabic</value>
   </data>
-  <data name="Enter system name arabic" xml:space="preserve">
+	<data name="Enter system name arabic" xml:space="preserve">
     <value>Enter system name arabic</value>
   </data>
-  <data name="LocalizeDate" xml:space="preserve">
+	<data name="LocalizeDate" xml:space="preserve">
     <value>dd-MM-yyyy</value>
   </data>
-  <data name="Hierarchy" xml:space="preserve">
+	<data name="Hierarchy" xml:space="preserve">
     <value>Hierarchy</value>
   </data>
-  <data name="Tree" xml:space="preserve">
+	<data name="Tree" xml:space="preserve">
     <value>Tree</value>
   </data>
-  <data name="Grid" xml:space="preserve">
+	<data name="Grid" xml:space="preserve">
     <value>Grid</value>
   </data>
-  <data name="Welcome" xml:space="preserve">
+	<data name="Welcome" xml:space="preserve">
     <value>Welcome</value>
   </data>
-  <data name="Requiredd" xml:space="preserve">
+	<data name="Requiredd" xml:space="preserve">
     <value>User name is required</value>
   </data>
-  <data name="passRequired" xml:space="preserve">
+	<data name="passRequired" xml:space="preserve">
     <value>Password is required</value>
   </data>
-  <data name="InvaildUserNameOrPassWord" xml:space="preserve">
+	<data name="InvaildUserNameOrPassWord" xml:space="preserve">
     <value>Username or password is incorrect</value>
   </data>
-  <data name="linkUsers" xml:space="preserve">
+	<data name="linkUsers" xml:space="preserve">
     <value>Link users</value>
   </data>
-  <data name="SubjectEnglish" xml:space="preserve">
+	<data name="SubjectEnglish" xml:space="preserve">
     <value>Subject English</value>
   </data>
-  <data name="SubjectArabic" xml:space="preserve">
+	<data name="SubjectArabic" xml:space="preserve">
     <value>Subject Arabic</value>
   </data>
-  <data name="EmailbodyinEnglish" xml:space="preserve">
+	<data name="EmailbodyinEnglish" xml:space="preserve">
     <value>Email body in English</value>
   </data>
-  <data name="EmailbodyinArabic" xml:space="preserve">
+	<data name="EmailbodyinArabic" xml:space="preserve">
     <value>Email body in Arabic</value>
   </data>
-  <data name="Themessagecontentcannotbeempty" xml:space="preserve">
+	<data name="Themessagecontentcannotbeempty" xml:space="preserve">
     <value>The message content cannot be empty</value>
   </data>
-  <data name="SourceSure" xml:space="preserve">
+	<data name="SourceSure" xml:space="preserve">
     <value>Are you sure you want to delete this task source?</value>
   </data>
-  <data name="TypeSure" xml:space="preserve">
+	<data name="TypeSure" xml:space="preserve">
     <value>Are you sure you want to delete this task type?</value>
   </data>
-  <data name="AddNewPriority" xml:space="preserve">
+	<data name="AddNewPriority" xml:space="preserve">
     <value>Add New Priority</value>
   </data>
-  <data name="SelectDay" xml:space="preserve">
+	<data name="SelectDay" xml:space="preserve">
     <value>Select Day</value>
   </data>
-  <data name="SelectTime" xml:space="preserve">
+	<data name="SelectTime" xml:space="preserve">
     <value>Select Time</value>
   </data>
-  <data name="SystemNotification" xml:space="preserve">
+	<data name="SystemNotification" xml:space="preserve">
     <value>System Notification</value>
   </data>
-  <data name="EmailNotificationContent" xml:space="preserve">
+	<data name="EmailNotificationContent" xml:space="preserve">
     <value>Email Notification Content</value>
   </data>
-  <data name="SystemNotificationContent" xml:space="preserve">
+	<data name="SystemNotificationContent" xml:space="preserve">
     <value>System Notification Content</value>
   </data>
-  <data name="notvald250" xml:space="preserve">
+	<data name="notvald250" xml:space="preserve">
     <value>Maximum character limit reached.</value>
   </data>
-  <data name="notvald1000" xml:space="preserve">
+	<data name="notvald1000" xml:space="preserve">
     <value>Maximum character limit reached.</value>
   </data>
-  <data name="LevelValue" xml:space="preserve">
+	<data name="LevelValue" xml:space="preserve">
     <value>Value must be greater than or equal to 0</value>
   </data>
-  <data name="Usersin" xml:space="preserve">
+	<data name="Usersin" xml:space="preserve">
     <value>Users in </value>
   </data>
-  <data name="NoUsersAddNew" xml:space="preserve">
+	<data name="NoUsersAddNew" xml:space="preserve">
     <value>Add a user to get started</value>
   </data>
-  <data name="IsManager" xml:space="preserve">
+	<data name="IsManager" xml:space="preserve">
     <value>Is a manager</value>
   </data>
-  <data name="UserPrivilege" xml:space="preserve">
+	<data name="UserPrivilege" xml:space="preserve">
     <value>Privilege</value>
   </data>
-  <data name="notvald" xml:space="preserve">
+	<data name="notvald" xml:space="preserve">
     <value>Maximum character limit reached.</value>
   </data>
-  <data name="DeliveryDate" xml:space="preserve">
+	<data name="DeliveryDate" xml:space="preserve">
     <value>Delivery date </value>
   </data>
-  <data name="NoUsersPrivilege" xml:space="preserve">
+	<data name="NoUsersPrivilege" xml:space="preserve">
     <value>No users assigned to this privilege</value>
   </data>
-  <data name="Complete" xml:space="preserve">
+	<data name="Complete" xml:space="preserve">
     <value>Complete</value>
   </data>
-  <data name="ReOpen" xml:space="preserve">
+	<data name="ReOpen" xml:space="preserve">
     <value>Re-open</value>
   </data>
-  <data name="Editedsuccessfully" xml:space="preserve">
+	<data name="Editedsuccessfully" xml:space="preserve">
     <value>Edited successfully</value>
   </data>
-  <data name="Areyousureyouwan" xml:space="preserve">
+	<data name="Areyousureyouwan" xml:space="preserve">
     <value>Are `you sure you want to discard this draft?</value>
   </data>
-  <data name="Edited" xml:space="preserve">
+	<data name="Edited" xml:space="preserve">
     <value>Edited</value>
   </data>
-  <data name="Ares" xml:space="preserve">
+	<data name="Ares" xml:space="preserve">
     <value>Are you sure you want to delete this?</value>
   </data>
-  <data name="CompleteFailed" xml:space="preserve">
+	<data name="CompleteFailed" xml:space="preserve">
     <value>Complete Failed</value>
   </data>
-  <data name="SureReopenTask" xml:space="preserve">
+	<data name="SureReopenTask" xml:space="preserve">
     <value>Are you sure to reopen task</value>
   </data>
-  <data name="ReopenFailed" xml:space="preserve">
+	<data name="ReopenFailed" xml:space="preserve">
     <value>Reopen Failed</value>
   </data>
-  <data name="AddAttachment" xml:space="preserve">
+	<data name="AddAttachment" xml:space="preserve">
     <value>Add attachment</value>
   </data>
-  <data name="NoAttachmentsYet" xml:space="preserve">
+	<data name="NoAttachmentsYet" xml:space="preserve">
     <value>No attachments have been added</value>
   </data>
-  <data name="Attachments" xml:space="preserve">
+	<data name="Attachments" xml:space="preserve">
     <value>Attachments</value>
   </data>
-  <data name="UnsupportedFileType" xml:space="preserve">
+	<data name="UnsupportedFileType" xml:space="preserve">
     <value>File type is not supported</value>
   </data>
-  <data name="FileSizeExceedsLimit" xml:space="preserve">
+	<data name="FileSizeExceedsLimit" xml:space="preserve">
     <value>File size exceeds the limit</value>
   </data>
-  <data name="MaxSize" xml:space="preserve">
+	<data name="MaxSize" xml:space="preserve">
     <value>Max size</value>
   </data>
-  <data name="SupportedTypes" xml:space="preserve">
+	<data name="SupportedTypes" xml:space="preserve">
     <value>Supported files</value>
   </data>
-  <data name="UnsupportedFileTypeTask" xml:space="preserve">
+	<data name="UnsupportedFileTypeTask" xml:space="preserve">
     <value>This file type "{0}" is not supported. Allowed formats are: pdf, doc, docx, xls, xlsx, .ppt, .pptx, txt, csv, jpg, jpeg, and png</value>
   </data>
-  <data name="FileSizeExceedsLimitTask" xml:space="preserve">
+	<data name="FileSizeExceedsLimitTask" xml:space="preserve">
     <value>The selected file "{0}" exceeds the maximum allowed size of  25 MB. Please upload a smaller file.</value>
   </data>
-  <data name="userLink" xml:space="preserve">
+	<data name="userLink" xml:space="preserve">
     <value>Link user</value>
   </data>
-  <data name="SelectAtLeastOneToggleToProceed" xml:space="preserve">
+	<data name="SelectAtLeastOneToggleToProceed" xml:space="preserve">
     <value>Select at least one toggle to proceed.</value>
   </data>
-  <data name="CreateTask" xml:space="preserve">
+	<data name="CreateTask" xml:space="preserve">
     <value>Create task</value>
   </data>
-  <data name="SubTask" xml:space="preserve">
+	<data name="SubTask" xml:space="preserve">
     <value>Subtask </value>
   </data>
-  <data name="Reject" xml:space="preserve">
+	<data name="Reject" xml:space="preserve">
     <value>Reject</value>
   </data>
-  <data name="ChangeEndDate" xml:space="preserve">
+	<data name="ChangeEndDate" xml:space="preserve">
     <value>Change end date</value>
   </data>
-  <data name="RequestChangeEndDate" xml:space="preserve">
+	<data name="RequestChangeEndDate" xml:space="preserve">
     <value>Request change end date</value>
   </data>
-  <data name="ApproveAndRejectTheRequestChangeEndDate" xml:space="preserve">
+	<data name="ApproveAndRejectTheRequestChangeEndDate" xml:space="preserve">
     <value>Approve and reject the request change end date</value>
   </data>
-  <data name="ChangeProgress" xml:space="preserve">
+	<data name="ChangeProgress" xml:space="preserve">
     <value>Change progress</value>
   </data>
-  <data name="ChecklistAdd" xml:space="preserve">
+	<data name="ChecklistAdd" xml:space="preserve">
     <value>Checklist add</value>
   </data>
-  <data name="ChecklistUpdate" xml:space="preserve">
+	<data name="ChecklistUpdate" xml:space="preserve">
     <value>Checklist update</value>
   </data>
-  <data name="Details" xml:space="preserve">
+	<data name="Details" xml:space="preserve">
     <value>Details </value>
   </data>
-  <data name="AddComment" xml:space="preserve">
+	<data name="AddComment" xml:space="preserve">
     <value>Add comment</value>
   </data>
-  <data name="SureChangeProgress" xml:space="preserve">
+	<data name="SureChangeProgress" xml:space="preserve">
     <value>Are you sure you want change progress</value>
   </data>
-  <data name="Changeprgreess" xml:space="preserve">
+	<data name="Changeprgreess" xml:space="preserve">
     <value>Change prgreess</value>
   </data>
-  <data name="progressChangedsuccessfully" xml:space="preserve">
+	<data name="progressChangedsuccessfully" xml:space="preserve">
     <value>progress changed successfully</value>
   </data>
-  <data name="progressChangedFailed" xml:space="preserve">
+	<data name="progressChangedFailed" xml:space="preserve">
     <value>Progress change failed</value>
   </data>
-  <data name="Privilege" xml:space="preserve">
+	<data name="Privilege" xml:space="preserve">
     <value>Privileges</value>
   </data>
-  <data name="hisprioritynam" xml:space="preserve">
+	<data name="hisprioritynam" xml:space="preserve">
     <value>his priority name was previously deleted and linked to a completed task. Do you want to use it again?</value>
   </data>
-  <data name="Thisprioritycannotb" xml:space="preserve">
+	<data name="Thisprioritycannotb" xml:space="preserve">
     <value> This priority cannot be deleted because it is currently used in active tasks</value>
   </data>
-  <data name="CannotdeleteType" xml:space="preserve">
+	<data name="CannotdeleteType" xml:space="preserve">
     <value>Cannot delete. Type is linked to active tasks</value>
   </data>
-  <data name="Thissorcecannotb" xml:space="preserve">
+	<data name="Thissorcecannotb" xml:space="preserve">
     <value> Can't delete. The source is linked to active tasks.</value>
   </data>
-  <data name="Anactivesourcewith" xml:space="preserve">
+	<data name="Anactivesourcewith" xml:space="preserve">
     <value>An active source with this name already exists. Please choose a different name</value>
   </data>
-  <data name="Thissourcenamewas" xml:space="preserve">
+	<data name="Thissourcenamewas" xml:space="preserve">
     <value>his source name was previously deleted and linked to a completed task. Do you want to use it again?</value>
   </data>
-  <data name="AnactiveTypewith" xml:space="preserve">
+	<data name="AnactiveTypewith" xml:space="preserve">
     <value> An active type with this name already exists. Please choose a different name</value>
   </data>
-  <data name="ThisTypenamewas" xml:space="preserve">
+	<data name="ThisTypenamewas" xml:space="preserve">
     <value>This type name was previously deleted and linked to a completed task. Do you want to use it again?</value>
   </data>
-  <data name="AnactivePrioritywith" xml:space="preserve">
+	<data name="AnactivePrioritywith" xml:space="preserve">
     <value> An active Priority with this name already exists. Please choose a different name</value>
   </data>
-  <data name="ThisPrioritynamewas" xml:space="preserve">
+	<data name="ThisPrioritynamewas" xml:space="preserve">
     <value>This priority name was previously deleted and linked to a completed task. Do you want to use it again?</value>
   </data>
-  <data name="taskOverall" xml:space="preserve">
+	<data name="taskOverall" xml:space="preserve">
     <value>Overall</value>
   </data>
-  <data name="Description" xml:space="preserve">
+	<data name="Description" xml:space="preserve">
     <value>Description</value>
   </data>
-  <data name="uploadFile" xml:space="preserve">
+	<data name="uploadFile" xml:space="preserve">
     <value>File upload</value>
   </data>
-  <data name="Completedsuccessfully" xml:space="preserve">
+	<data name="Completedsuccessfully" xml:space="preserve">
     <value>Completed successfully</value>
   </data>
-  <data name="SureCompleteTask" xml:space="preserve">
+	<data name="SureCompleteTask" xml:space="preserve">
     <value>Are you sure to complete task</value>
   </data>
-  <data name="ValueMustBeGreaterThanOrEqualTo1" xml:space="preserve">
+	<data name="ValueMustBeGreaterThanOrEqualTo1" xml:space="preserve">
     <value>Value must be greater than or equal to 1.</value>
   </data>
-  <data name="WeightMustBeBetween0And100" xml:space="preserve">
+	<data name="WeightMustBeBetween0And100" xml:space="preserve">
     <value>Enter a value between 0 and 100</value>
   </data>
-  <data name="StartDateMustBeBeforeEndDate" xml:space="preserve">
+	<data name="StartDateMustBeBeforeEndDate" xml:space="preserve">
     <value>The start date should be smaller than or equal the end date</value>
   </data>
-  <data name="ReminderDateBetweenStartAndEnd" xml:space="preserve">
+	<data name="ReminderDateBetweenStartAndEnd" xml:space="preserve">
     <value>Enter a valid reminder date, it should be between the start and end date</value>
   </data>
-  <data name="Enterthereason" xml:space="preserve">
+	<data name="Enterthereason" xml:space="preserve">
     <value>Enter the reason</value>
   </data>
-  <data name="Taskdetails" xml:space="preserve">
+	<data name="Taskdetails" xml:space="preserve">
     <value>Task details</value>
   </data>
-  <data name="EditTask" xml:space="preserve">
+	<data name="EditTask" xml:space="preserve">
     <value>Edit task</value>
   </data>
-  <data name="loginconditions" xml:space="preserve">
+	<data name="loginconditions" xml:space="preserve">
     <value>login conditions</value>
   </data>
-  <data name="IDorUserName" xml:space="preserve">
+	<data name="IDorUserName" xml:space="preserve">
     <value>User name</value>
   </data>
-  <data name="Password" xml:space="preserve">
+	<data name="Password" xml:space="preserve">
     <value>Password</value>
   </data>
-  <data name="Mine" xml:space="preserve">
+	<data name="Mine" xml:space="preserve">
     <value>Mine</value>
   </data>
-  <data name="Team" xml:space="preserve">
+	<data name="Team" xml:space="preserve">
     <value>Team</value>
   </data>
-  <data name="Search..." xml:space="preserve">
+	<data name="Search..." xml:space="preserve">
     <value>Search...</value>
+  </data>
+  <data name="Viewcolumn" xml:space="preserve">
+    <value>Column options</value>
   </data>
 </root>

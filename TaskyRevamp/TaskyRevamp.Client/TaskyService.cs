@@ -71,6 +71,8 @@ public class TaskyService
         _localStorage.RemoveItemAsync("Email");
         _localStorage.RemoveItemAsync("Id");
         _localStorage.RemoveItemAsync("DelegatedUsersId");
+        _localStorage.RemoveItemAsync("AllColumn");
+
     }
 
     public string PreparePaginatedSearchQueryString<T>(int pageNumber, int pageSize, string sortByColumnName, bool sortAscending, List<T> searchFields = null, string searchText = null)
@@ -217,7 +219,7 @@ public class TaskyService
 
         return result;
     }
-	
+
     private async Task<bool> CheckForToken2()
     {
         try
