@@ -97,11 +97,11 @@
             <Pagination CurrentPage="@currentPage" TotalPages="@totalPages" TotalCount="@totalCount" PageSize="@pageSize"
                         PageChanged="ChangePage" PageSizeChangedCallback="ChangePageSize" />
         }
-        else
-        {
-            <NoDataAvailable MessageTitle="@Loc["NoTasks"]" MessageSubtitle="@Loc["AddTaskToStart"]"
-                             ButtonText="@Loc["AddTask"]" OnButtonClick="Add" />
-        }
+    }
+    else
+    {
+        <NoDataAvailable MessageTitle="@Loc["NoTasks"]" MessageSubtitle="@Loc["AddTaskToStart"]"
+                         ButtonText="@Loc["AddTask"]" OnButtonClick="Add" />
     }
 </div>
 
@@ -421,18 +421,24 @@
         switch (field)
         {
             case "Title":
-                builder.AddContent(0, (RenderFragment)(b =>
-                {
-                    if (IsTaskDelayed(task))
-                    {
-                        b.OpenElement(0, "span");
-                        b.AddAttribute(1, "class", "me-1 text-danger");
-                        b.AddMarkupContent(2, "&#x23F0;");
-                        b.CloseElement();
-                    }
-                    b.AddContent(3, task.Title);
-                }));
+                builder.OpenElement(0, "span");
+                builder.AddAttribute(1, "class", "task-title");
+                builder.AddAttribute(2, "title", task.Title ?? string.Empty);
+                builder.AddContent(3, task.Title);
+                builder.CloseElement();
                 break;
+            // builder.AddContent(0, (RenderFragment)(b =>
+            // {
+            //     if (IsTaskDelayed(task))
+            //     {
+            //         b.OpenElement(0, "span");
+            //         b.AddAttribute(1, "class", "me-1 text-danger");
+            //         b.AddMarkupContent(2, "&#x23F0;");
+            //         b.CloseElement();
+            //     }
+            //     b.AddContent(3, task.Title);
+            // }));
+            // break;
             case "Priority":
                 builder.AddContent(0, task.PriorityName);
                 break;
