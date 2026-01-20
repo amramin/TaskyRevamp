@@ -54,7 +54,7 @@
         </div>
         <div class="card setting-card">
             <!-- Form -->
-            <EditForm class="d-flex flex-column flex-1" EditContext="editContext" OnValidSubmit="SaveSettings" OnInvalidSubmit="OnInvalidSubmit">
+            <EditForm class="d-flex flex-column flex-1" EditContext="editContext" onsubmit="SaveSettings">
                 <DataAnnotationsValidator />
 
                 <div class="card-body">
@@ -68,7 +68,7 @@
                                             @Loc["EnglishName"] <span class="text-danger">*</span>
                                         </label>
                                         <InputText class="form-control" @bind-Value="PrivilegeDto.NameEnglish"
-                                                   placeholder=@Loc["EnterPrivilegeEnglishName"] disabled="@(Mode == "view")" />
+                                            placeholder=@Loc["EnterPrivilegeEnglishName"] disabled="@IsViewMode" />
                                         <ValidationMessage For="@(() => PrivilegeDto.NameEnglish)"
                                             class="small text-danger" />
                                     </div>
@@ -77,15 +77,13 @@
                                             @Loc["ArabicName"] <span class="text-danger">*</span>
                                         </label>
                                         <InputText class="form-control" @bind-Value="PrivilegeDto.NameArabic"
-                                                   placeholder=@Loc["EnterPrivilegeArabicName"] disabled="@(Mode == "view")" />
+                                                   placeholder=@Loc["EnterPrivilegeArabicName"] disabled="@IsViewMode" />
                                         <ValidationMessage For="@(() => PrivilegeDto.NameArabic)"
                                             class="small text-danger" />
                                     </div>
                                 </div>
                             </div>
                             <div style="display:@(SelectedTab == "General" ? "block" : "none")">
-
-                                <!-- GeneralModule child component -->
                                 <GeneralModule PrivilegeDto="PrivilegeDto" Mode="Mode" IsViewMode="IsViewMode"
                                     OnValidationStateChanged="@OnGeneralModuleValidationChanged" IsSaveClicked="@IsSaveClicked"/>
                             </div>
@@ -164,6 +162,7 @@
         PrivilegeDto = new PrivilegeDto();
         editContext = new EditContext(PrivilegeDto);
         SelectedTab = "General";
+        IsSaveClicked = false;
         navigationManager.NavigateTo("/Privileges");
     }
 
@@ -242,30 +241,49 @@
 
     private async Task SaveSettings()
     {
-        IsSaveClicked = true;
-
         if (IsViewMode)
         {
             return;
         }
+        IsSaveClicked = true;
+        StateHasChanged();
+        await Task.Yield();
 
+        bool hasValidationErrors = false;
+        string firstInvalidTab = null;
+        bool isFormValid = editContext!.Validate();
+        if (!isFormValid)
+        {
+            hasValidationErrors = true;
+            // firstInvalidTab = "General";
+        }
         if (!isGeneralModuleValid)
         {
-            SelectedTab = "General";
-            StateHasChanged();
-            return;
+            hasValidationErrors = true;
+            firstInvalidTab = "General";
+            // SelectedTab = "General";
+            // StateHasChanged();
+            // return;
         }
-        if (HasInvalidUserDepartments() || HasInvalidExternalDepartments())
+        if (HasInvalidUserDepartments())
         {
-            SelectedTab = "Task";
+            hasValidationErrors = true;
+            firstInvalidTab ??= "Task";
+            // SelectedTab = "Task";
+            // StateHasChanged();
+            // return;
+        }
+        if(HasInvalidExternalDepartments())
+        {
+            hasValidationErrors = true;
+            firstInvalidTab ??= "Task";
+        }
+        if (hasValidationErrors)
+        {
+            SelectedTab = firstInvalidTab!;
             StateHasChanged();
             return;
         }
-        // var json = System.Text.Json.JsonSerializer.Serialize(PrivilegeDto, new System.Text.Json.JsonSerializerOptions
-        // {
-        // WriteIndented = true
-        // });
-        // Console.WriteLine(json);
         ClearValidationMessages();
         if (Mode == "add")
         {
@@ -292,7 +310,7 @@
     }
     private void OnInvalidSubmit(EditContext context)
     {
-        // Do nothing → prevents auto focus
+        
     }
     private void Return()
     {
