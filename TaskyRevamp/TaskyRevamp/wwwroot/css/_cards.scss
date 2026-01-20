@@ -82,8 +82,8 @@
       display: flex;
 
       overflow: hidden;
-      max-width: calc(100% - 1rem);
-      margin-inline-end:1rem;
+      max-width: calc(100% - 16px);
+      margin-inline-end: 16px;
       span {
         overflow: hidden;
         display: inline-block;
@@ -212,7 +212,7 @@
                 z-index: 2;
               }
             }
-            
+
             &:last-child::after {
               inset-inline-end: 0;
             }
