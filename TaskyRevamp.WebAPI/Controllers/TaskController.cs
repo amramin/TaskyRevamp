@@ -28,21 +28,20 @@ public class TaskController : ControllerBase
     {
         var res = await _mediator.Send(new CreateTaskCommand(taskDto));
         return Ok(res);
-
-
-
-
     }
+
     [HttpGet("CompleteTask/{id}")]
     public async Task<IActionResult> CompleteTask(Guid id)
     {
         return Ok(await _mediator.Send(new CompleteTaskCommand(id)));
     }
+
     [HttpPost("ReopenTask")]
     public async Task<IActionResult> ReopenTask([FromBody] TaskCommentDto TaskCommentDto)
     {
         return Ok(await _mediator.Send(new ReopenTaskCommand(TaskCommentDto)));
     }
+
     [HttpPost("UpdateTask")]
     public async Task<IActionResult> UpdateTask([FromBody] CreateTaskDto Task)
     {
@@ -55,6 +54,7 @@ public class TaskController : ControllerBase
         var res = await _mediator.Send(new UpdateTasksDepartmentCommand(oldId, newId));
         return Ok(res);
     }
+
     [HttpGet("ChangeTaskProgress/{taskId}/{progress}")]
     public async Task<IActionResult> ChangeTaskProgress(Guid taskId, int progress)
     {
@@ -94,8 +94,6 @@ public class TaskController : ControllerBase
         return Ok(all);
     }
 
-
-
     [HttpGet("GetTaskById/{id}/{currentUserId}")]
     public async Task<IActionResult> GetTaskById(Guid id, Guid currentUserId)
     {
@@ -105,10 +103,14 @@ public class TaskController : ControllerBase
     [HttpGet("GetTasksForDDL/{id}")]
     public async Task<IActionResult> GetTasksForDDL(Guid id)
     {
-
         var all = await _mediator.Send(new GetTasksForDDLQuery(id));
-
         return Ok(all);
+    }
+
+    [HttpGet("GetMainAndParentTasks")]
+    public async Task<IActionResult> GetMainAndParentTasks()
+    {
+        return Ok(await _mediator.Send(new GetMainAndParentTasksQuery()));
     }
 
 

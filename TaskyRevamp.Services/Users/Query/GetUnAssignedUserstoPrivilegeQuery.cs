@@ -22,7 +22,7 @@ namespace TaskyRevamp.Services.Users.Query
 		public async Task<List<UserDto>> Handle(GetUnAssignedUserstoPrivilegeQuery request, CancellationToken cancellationToken)
 		{
 			List<UserDto> allusers = new List<UserDto>();
-			var users = await _userRepository.FindBy(u => u.PrivilegeId == null);
+			var users = await _userRepository.FindBy(u => (u.PrivilegeId == null && u.IsActive));
 			if(users.Success && users.Value != null)
 			{
 				allusers = users.Value.Select(u => u.CopyToDto()).ToList();

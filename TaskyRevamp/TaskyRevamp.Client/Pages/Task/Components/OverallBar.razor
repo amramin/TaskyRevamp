@@ -1,0 +1,49 @@
+﻿@using TaskyRevamp.Dto.TaskDto
+
+@if (ShouldRenderBar)
+{
+    <div class="d-flex align-items-center mb-3">
+        <div class="flex-grow-1"></div>
+
+        <div class="progress"
+             style="width:@($"{Width}px"); height:22px; cursor:@(IsEditable ? "pointer" : "default")"
+             @onmousedown="OnMouseDown">
+            <div class="progress-bar bg-primary"
+                 role="progressbar"
+                 style="width:@ProgressValue%;"
+                 aria-valuenow="@ProgressValue"
+                 aria-valuemin="0"
+                 aria-valuemax="100">
+                @ProgressValue%
+            </div>
+        </div>
+    </div>
+}
+@code {
+    [Parameter] public List<CreateTaskDto>? Tasks { get; set; }
+    [Parameter] public int? ActualProgress { get; set; }
+    [Parameter] public EventCallback<int> OnProgressChanged { get; set; }
+    [Parameter] public int Width { get; set; } = 400;
+    private bool IsEditable => ActualProgress.HasValue;
+    private bool ShouldRenderBar => IsEditable || (Tasks != null && Tasks.Any());
+    private int ProgressValue
+    {
+        get
+        {
+            if (IsEditable)
+                return Math.Clamp(ActualProgress!.Value, 0, 100);
+            if (Tasks == null || !Tasks.Any()) return 0;
+            return (int)Math.Round(Tasks.Sum(t => t.ActualProcess) / (double)Tasks.Count);
+        }
+    }
+    // private string ProgressColor => ProgressValue < 40 ? "bg-danger" : ProgressValue < 70 ? "bg-warning" : "bg-success";
+    private async Task OnMouseDown(MouseEventArgs e)
+    {
+        if (!IsEditable)
+            return;
+        var newValue = (int)Math.Round((e.OffsetX / Width) * 100.0);
+        newValue = Math.Clamp(newValue, 0, 100);
+        ActualProgress = newValue;
+        await OnProgressChanged.InvokeAsync(newValue);
+    }
+}
