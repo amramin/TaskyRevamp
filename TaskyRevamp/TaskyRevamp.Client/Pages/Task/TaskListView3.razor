@@ -1,0 +1,140 @@
+﻿
+@using Blazored.LocalStorage
+@using TaskyRevamp.Client.Consumer
+@using TaskyRevamp.Client.Services
+@using TaskyRevamp.Dto.TaskDto
+@inject ILocalStorageService LocalStorageService
+@inject TaskConsumer _taskConsumer
+@inject NavigationManager navigationManager
+@inject ToastService ToastService
+@inject PopupService PopupService
+@inject IStringLocalizer<SharedResources> Loc
+
+
+<h3>@Loc["Tasks"]</h3>
+
+<div class="table-responsive sticky-header-custom">
+    <SortableTable TItem="CreateTaskDto"
+                   Columns="@Columns"
+                   RowTemplate="@RenderRows"
+                   SortColumn="@currentSortColumn"
+                   SortAscending="@sortAscending"
+                   OnSortRequested="HandleSort"
+                   OnColumnsReordered="HandleColumnsReordered" />
+</div>
+
+
+
+<Pagination CurrentPage="@currentPage"
+            TotalPages="@totalPages"
+            TotalCount="@totalCount"
+            PageSize="@pageSize"
+            PageChanged="ChangePage"
+            PageSizeChangedCallback="ChangePageSize" />
+
+@code {
+    private List<CreateTaskDto> allTaks = new();
+    private List<SortableColumn> Columns = new();
+    private string currentSortColumn = "";
+    private bool? sortAscending = true;
+    [Parameter] public EventCallback<Guid> OnAdd { get; set; }
+    [Parameter] public EventCallback<Guid> OnEdit { get; set; }
+    [Parameter] public EventCallback<Guid> OnReopen { get; set; }
+    [Parameter] public EventCallback<Guid> OnDelete { get; set; }
+    [Parameter] public EventCallback<Guid> OnShowUsers { get; set; }
+    private int currentPage = 1;
+    private int totalPages = 1;
+    private int totalCount = 0;
+    private int pageSize = 10;
+    public async Task Add()
+    {
+        await OnAdd.InvokeAsync();
+    }
+    protected override async Task OnInitializedAsync()
+    {
+        // Load columns from LocalStorage or default
+        var oldColumns = await LocalStorageService.GetItemAsync<List<SortableColumn>>("AllColumn");
+        if (oldColumns != null && oldColumns.Any())
+        {
+            Columns = oldColumns.OrderBy(c => c.Order).ToList();
+        }
+        else
+        {
+            Columns = new List<SortableColumn>
+            {
+                new() { Field="Title", DisplayName=Loc["Title"], Order=0, IsVisible=true },
+                new() { Field="Priority", DisplayName=Loc["Priority2"], Order=1, IsVisible=true },
+                new() { Field="Status", DisplayName=Loc["TaskStatus"], Order=2, IsVisible=true },
+                new() { Field="StartDate", DisplayName=Loc["StartDate"], Order=3, IsVisible=true },
+                new() { Field="Action", DisplayName=Loc["Action"], Order=4, IsVisible=true }
+            };
+            await LocalStorageService.SetItemAsync("AllColumn", Columns);
+        }
+
+        await GetTasks();
+    }
+
+    private RenderFragment RenderRows => builder =>
+    {
+        int seq = 0;
+        foreach (var task in allTaks)
+        {
+            builder.OpenElement(seq++, "tr");
+
+            foreach (var col in Columns.OrderBy(c => c.Order))
+            {
+                builder.OpenElement(seq++, "td");
+                builder.AddContent(seq++, col.Field switch
+                {
+                    "Title" => task.Title,
+                    "Priority" => task.PriorityName,
+                    "Status" => task.TaskStatusName,
+                    "StartDate" => task.StartDate?.ToString("yyyy-MM-dd"),
+                    "Action" => "...",
+                    _ => ""
+                });
+                builder.CloseElement();
+            }
+
+            builder.CloseElement();
+        }
+    };
+
+    private async Task GetTasks()
+    {
+        var res = await _taskConsumer.GetTasks(currentPage, pageSize, currentSortColumn, sortAscending ?? true, null, null);
+        if (res?.Success == true && res.Data != null)
+        {
+            allTaks = res.Data.Items.ToList();
+            totalPages = res.Data.TotalPages;
+            totalCount = res.Data.TotalCount;
+        }
+    }
+
+    private async Task HandleSort((string Column, bool? Ascending) sortInfo)
+    {
+        currentSortColumn = sortInfo.Column;
+        sortAscending = sortInfo.Ascending;
+        await GetTasks();
+    }
+
+    private async Task HandleColumnsReordered(List<SortableColumn> reorderedColumns)
+    {
+        Columns = reorderedColumns;
+        await LocalStorageService.SetItemAsync("AllColumn", Columns);
+        StateHasChanged();
+    }
+
+    private async Task ChangePage(int page)
+    {
+        currentPage = page;
+        await GetTasks();
+    }
+
+    private async Task ChangePageSize(int size)
+    {
+        pageSize = size;
+        currentPage = 1;
+        await GetTasks();
+    }
+}

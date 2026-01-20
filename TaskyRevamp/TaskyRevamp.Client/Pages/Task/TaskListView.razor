@@ -1,9 +1,11 @@
-﻿@using TaskyRevamp.Client.Consumer
+﻿@using Blazored.LocalStorage
+@using TaskyRevamp.Client.Consumer
 @using TaskyRevamp.Client.Pages.Task.Components
 @using TaskyRevamp.Client.Services
 @using TaskyRevamp.Dto.Enums.SearchFields
 @using TaskyRevamp.Dto.SystemConfiguration
 @using TaskyRevamp.Dto.TaskDto
+@using TaskyRevamp.Dto.TaskViews
 @inject IStringLocalizer<SharedResources> Loc
 @inject ToastService ToastService
 @inject PopupService PopupService
@@ -11,20 +13,21 @@
 @inject NavigationManager navigationManager
 @inject StatusSettingConsumer _statusSettingConsumer
 @inject DefaultColumnsSettingConsumer _defaultColumnsSettingConsumer
+@inject ILocalStorageService LocalStorageService
 
 <div>
 
     @if (allTaks != null && allTaks.Any())
 {
                     <div class="table-responsive sticky-header-custom">
-                    <SortableTable TItem="CreateTaskDto" Columns="@tableColumns" Items="@allTaks"
+            <SortableTable TItem="CreateTaskDto" Columns="@Columns.Where(p => p.IsVisible).OrderBy(k => k.Order).ToList()" Items="@allTaks"
                         SortColumn="@currentSortColumn" SortAscending="@sortAscending" OnSortRequested="HandleSort">
 
                         <RowTemplate>
                             @foreach (var task in allTaks)
                             {
                                 <tr>
-                                    @foreach (var column in tableColumns)
+                            @foreach (var column in Columns.Where(p=>p.IsVisible).OrderBy(k=>k.Order))
                                     {
                                             <td style="white-space: nowrap; overflow: visible; text-overflow: unset;">
                                             @RenderColumnValue(task, column.Field)
@@ -121,7 +124,46 @@
     private int totalPages = 1;
     private int totalCount = 0;
     private int pageSize = 10;
+    private List<SortableColumn> Columns = new();
+
     private List<DefaultColumnsSettingDto> ColumnsList = new();
+    public async Task<List<SortableColumn>> GetColumns()
+    {
+        var columns = await LocalStorageService.GetItemAsync<List<SortableColumn>>("AllColumn");
+        return columns;
+    }
+    private async Task<List<SortableColumn>> GetDefaultColumns()
+    {
+        List<SortableColumn> column = new List<SortableColumn>();
+        column = new List<SortableColumn>()
+    {
+        new() { Field = "Title", DisplayName  = Loc["Title"], Order = 0, IsVisible = true },
+        new() { Field = "Priority", DisplayName =  Loc["Priority2"], Order = 1, IsVisible = true },
+        new() { Field = "Status", DisplayName =  Loc["TaskStatus"], Order = 2, IsVisible = true },
+        new() { Field = "ActualProgress", DisplayName = Loc["ActualProgress"], Order = 3, IsVisible = true },
+        new() { Field = "Start Date", DisplayName = Loc["StartDate"], Order = 4, IsVisible = true },
+            new() { Field = "End Date", DisplayName = Loc["EndDate"], Order = 5, IsVisible = true },
+        new() { Field = "weight", DisplayName = Loc["weight"], Order = 6, IsVisible = true },
+        new() { Field = "Assigned To", DisplayName = Loc["AssigneduserNames"], Order = 7, IsVisible = true },
+        new() { Field = "Assigned To Department", DisplayName =Loc["AssignedToDepartment"], Order = 8, IsVisible = true },
+        new() { Field = "Source", DisplayName =Loc["Source"], Order = 9, IsVisible = true },
+        new() { Field = "Dependency", DisplayName = Loc["Dependency"], Order = 10, IsVisible = true },
+        new() { Field = "Created By", DisplayName = Loc["CreatedBy"], Order = 11, IsVisible = true },
+        new() { Field = "Duration", DisplayName = Loc["Duration"], Order = 12, IsVisible = true },
+        new() { Field = "Created by department", DisplayName = Loc["Createdbydepartment"], Order = 13, IsVisible = true },
+        new() { Field = "Planned Progress", DisplayName = Loc["PlannedProgress"], Order = 14, IsVisible = true },
+        new() { Field = "Creation Date", DisplayName = Loc["CreationDate"], Order = 15, IsVisible = true },
+        new() { Field = "Type", DisplayName = Loc["Type"], Order = 16, IsVisible = true },
+        new() { Field = "Actual Weight", DisplayName = Loc["ActualWeight"], Order = 17, IsVisible = true },
+        new() { Field = "Planned Weight", DisplayName =Loc["PlannedWeight"], Order = 18, IsVisible = true },
+
+
+    };
+
+        await LocalStorageService.SetItemAsync("AllColumn", column);
+        var all = await LocalStorageService.GetItemAsync<List<SortableColumn>>("AllColumn");
+        return all;
+    }
 
     protected override async Task OnInitializedAsync()
     {
@@ -130,29 +172,41 @@
         {
             Statuses = statusres.Data;
         }
-        tableColumns = new()
-{
-new() { Field = "Title", DisplayName = Loc["Title"] },
-new() { Field = "Priority", DisplayName = Loc["Priority2"] },
-new() { Field = "Status", DisplayName = Loc["Status"] },
-new() { Field = "Actual Progress", DisplayName = Loc["ActualProgress"] },
-new() { Field = "Start Date", DisplayName = Loc["StartDate"] },
-new() { Field = "End Date", DisplayName = Loc["EndDate"] },
-new() { Field = "weight", DisplayName = Loc["weight"] },
-new() { Field = "Assigned To", DisplayName = Loc["AssignedTo"] },
-new() { Field = "Assigned To Department", DisplayName = Loc["AssignedToDepartment"] },
-new() { Field = "Source", DisplayName = Loc["Source"] },
-new() { Field = "Dependency", DisplayName = Loc["Dependency"] },
-new() { Field = "Created By", DisplayName = Loc["CreatedBy"] },
-new() { Field = "Created by department", DisplayName = Loc["CreatedByDepartment"] },
-new() { Field = "Duration", DisplayName = Loc["Duration"] },
-new() { Field = "Planned Progress", DisplayName = Loc["PlannedProgress"] },
-new() { Field = "Creation Date", DisplayName = Loc["CreationDate"] },
-new() { Field = "Type", DisplayName = Loc["Type"] },
-new() { Field = "Actual Weight", DisplayName = Loc["ActualWeight"] },
-new() { Field = "Planned Weight", DisplayName = Loc["PlannedWeight"] },
-new() { Field = "Action", DisplayName = Loc["Action"] ,IsSortable = false},
-};
+        var olddata = await GetColumns();
+        if (olddata != null && olddata.Count > 0)
+        {
+            Columns = olddata.OrderBy(c => c.Order).ToList();
+        }
+        else
+        {
+            //if yes load from session else load default
+
+            var all = await GetDefaultColumns();
+            Columns = all.ToList();
+        }
+//         tableColumns = new()
+// {
+// new() { Field = "Title", DisplayName = Loc["Title"] },
+// new() { Field = "Priority", DisplayName = Loc["Priority2"] },
+// new() { Field = "Status", DisplayName = Loc["TaskStatus"] },
+// new() { Field = "Actual Progress", DisplayName = Loc["ActualProgress"] },
+// new() { Field = "Start Date", DisplayName = Loc["StartDate"] },
+// new() { Field = "End Date", DisplayName = Loc["EndDate"] },
+// new() { Field = "weight", DisplayName = Loc["weight"] },
+// new() { Field = "Assigned To", DisplayName = Loc["AssigneduserNames"] },
+// new() { Field = "Assigned To Department", DisplayName = Loc["AssignedToDepartment"] },
+// new() { Field = "Source", DisplayName = Loc["Source"] },
+// new() { Field = "Dependency", DisplayName = Loc["Dependency"] },
+// new() { Field = "Created By", DisplayName = Loc["CreatedBy"] },
+// new() { Field = "Created by department", DisplayName = Loc["Createdbydepartment"] },
+// new() { Field = "Duration", DisplayName = Loc["Duration"] },
+// new() { Field = "Planned Progress", DisplayName = Loc["PlannedProgress"] },
+// new() { Field = "Creation Date", DisplayName = Loc["CreationDate"] },
+// new() { Field = "Type", DisplayName = Loc["Type"] },
+// new() { Field = "Actual Weight", DisplayName = Loc["ActualWeight"] },
+// new() { Field = "Planned Weight", DisplayName = Loc["PlannedWeight"] },
+// new() { Field = "Action", DisplayName = Loc["Action"] ,IsSortable = false},
+// };
 
         await GetTasks();
 
@@ -169,7 +223,7 @@ new() { Field = "Action", DisplayName = Loc["Action"] ,IsSortable = false},
         // ColumnsList = res.Data;
 
         // Filter and order by settings
-        tableColumns = tableColumns
+        Columns = Columns
         .Where(c => ColumnsList.Any(s => s.IsActive &&
         string.Equals(s.NameEnglish, c.Field, StringComparison.OrdinalIgnoreCase)))
         .OrderBy(c => ColumnsList
