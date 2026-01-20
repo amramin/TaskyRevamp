@@ -1,15 +1,19 @@
 ﻿@page "/MainTasks"
+@using Blazored.LocalStorage
 @using TaskyRevamp.Client.Consumer
 @using TaskyRevamp.Client.Services
 @using TaskyRevamp.Dto.Enums.SearchFields
 @using TaskyRevamp.Dto.SystemConfiguration
 @using TaskyRevamp.Dto.TaskDto
 @using TaskyRevamp.Client.Pages.Task.Components
+@using TaskyRevamp.Dto.TaskViews
 @inject ToastService ToastService
 @inject PopupService PopupService
 @inject TaskConsumer _taskConsumer
 @inject NavigationManager navigationManager
 @inject IStringLocalizer<SharedResources> Loc
+@inject ILocalStorageService LocalStorageService
+
 @inject DefaultColumnsSettingConsumer _defaultColumnsSettingConsumer
 @inject StatusSettingConsumer _statusSettingConsumer
 <style>
@@ -130,7 +134,7 @@
                         <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Filter"></SVGCrud>
 
                     </button>
-                    <button type="button" data-bs-toggle="tooltip" data-bs-placement="top" title="View column"
+                    <button type="button" data-bs-toggle="tooltip" @onclick="OnViewClick" data-bs-placement="top" title="@Loc["Viewcolumn"]"
                         class="btn btn-action-40 btn-outline-light-pimary">
                         <SVGCrud SVGType="SVGCrud.SVGTypeEnum.AddColumn"></SVGCrud>
 
@@ -190,7 +194,15 @@
                     @switch (ViewType)
                     {
                         case 1:
-                            <div><TaskListView OnAdd="Add" OnEdit="Edit" OnReopen="Reopen" @ref="taskListRef"></TaskListView></div>
+                            <div>
+
+                                <TaskListView @ref="taskListRef"
+                                               OnAdd="Add"
+                                               OnEdit="Edit"
+                                               OnReopen="Reopen">
+                                </TaskListView>
+
+                            </div>
                             break;
                         case 2:
                             <div>testttttttt</div>
@@ -254,11 +266,12 @@
     [Parameter] public EventCallback<Guid> OnShowUsers { get; set; }
     [Parameter] public EventCallback<Guid> OnAdd { get; set; }
     private TaskListView taskListRef;
-
+    private List<TaskColumnSetting> Columns = new();
     public int ViewType { get; set; } = 1;
     public Guid currentUserId { set; get; }
     private Search? searchComponent;
-
+    private List<SortableColumn> tableColumns = new();
+   
     private async Task ClearSearch()
     {
         //currentPage = 1;
@@ -271,6 +284,20 @@
     protected override void OnInitialized()
     {
         ViewType = 1;
+        //Columns = ColumnService.Columns.OrderBy(c => c.Order).ToList();
+
+        // Subscribe to updates
+       // ColumnService.OnColumnsChanged += RefreshColumns;
+    }
+    private void RefreshColumns()
+    {
+       // Columns = ColumnService.Columns.OrderBy(c => c.Order).ToList();
+        StateHasChanged();
+    }
+
+    public void Dispose()
+    {
+        //ColumnService.OnColumnsChanged -= RefreshColumns;
     }
     private void changeViewType(int type)
     {
@@ -285,12 +312,19 @@
     }
     public async Task Add()
     {
+    
         PopupService.ShowNew(@<Create OnValidSubmit="OnInitializedAsync"></Create>,Loc["AddTask"]);
 
         // StateHasChanged();
 
     }
-        private void Edit(Guid id)
+    private async Task OnViewClick()
+    {
+       
+        PopupService.ShowNew(@<ViewColumn OnValidSubmit="OnInitializedAsync"></ViewColumn>, headerText: @Loc["Viewcolumn"]);
+
+    }
+    private void Edit(Guid id)
     {
         PopupService.ShowNew(@<EditTask Id="id" OnValidSubmit="OnInitializedAsync"></EditTask>, headerText:
         @Loc["EditTask"]);
@@ -306,6 +340,6 @@
     private async Task ReloadAfterSave()
     {
         //currentPage = page;
-        await taskListRef.GetTasks();
+       // await taskListRef.GetTasks();
     }
 }
