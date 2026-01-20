@@ -183,6 +183,12 @@
                 // Get the first character of the last word
                 char firstCharOfLastWord = words[words.Length - 1][0];
                 bool isArabic = IsArabic(displayName);
+                // Capitalize ONLY if not Arabic
+                if (!isArabic)
+                {
+                    firstCharOfFirstWord = char.ToUpperInvariant(firstCharOfFirstWord);
+                    firstCharOfLastWord = char.ToUpperInvariant(firstCharOfLastWord);
+                }
 
                 OfficalName = isArabic
                     ? $"{firstCharOfFirstWord} {firstCharOfLastWord}"   // space for Arabic
