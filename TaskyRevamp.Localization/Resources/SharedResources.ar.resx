@@ -505,8 +505,8 @@
     <value>إعدادات حقول إضافة المهمة</value>
   </data>
   <data name="Nodepartmentavailable" xml:space="preserve">
-    <value> لا توجد إدارة متاحة
-أضف إدارة جديدة للبدء</value>
+    <value> لا توجد إدارة متاحة</value>
+
   </data>
   <data name="DepartmentDuplicateValidation" xml:space="preserve">
     <value>يجب أن يكون اسم الإدارة فريدًا. يرجى كتابة اسم آخر</value>

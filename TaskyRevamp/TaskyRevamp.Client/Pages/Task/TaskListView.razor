@@ -15,36 +15,36 @@
 <div>
 
     @if (allTaks != null && allTaks.Any())
-{
-                    <div class="table-responsive sticky-header-custom">
-                    <SortableTable TItem="CreateTaskDto" Columns="@tableColumns" Items="@allTaks"
-                        SortColumn="@currentSortColumn" SortAscending="@sortAscending" OnSortRequested="HandleSort">
+    {
+        <div class="table-responsive sticky-header-custom">
+            <SortableTable TItem="CreateTaskDto" Columns="@tableColumns" Items="@allTaks" SortColumn="@currentSortColumn"
+                SortAscending="@sortAscending" OnSortRequested="HandleSort">
 
-                        <RowTemplate>
-                            @foreach (var task in allTaks)
+                <RowTemplate>
+                    @foreach (var task in allTaks)
+                    {
+                        <tr>
+                            @foreach (var column in tableColumns)
                             {
-                                <tr>
-                                    @foreach (var column in tableColumns)
-                                    {
-                                            <td style="white-space: nowrap; overflow: visible; text-overflow: unset;">
-                                            @RenderColumnValue(task, column.Field)
-                                        </td>
-                                    }
-                                    <td>
-                                        <div class="dropdown actions">
-                                            <button class="btn btn-action-24" type="button" data-bs-toggle="dropdown"
-                                                    aria-expanded="false">
-                                                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.EllipseVertical"></SVGCrud>
+                                <td class="@(column.Field == "Title" ? "" : "text-nowrap")">
+                                    @RenderColumnValue(task, column.Field)
+                                </td>
+                            }
+                            <td>
+                                <div class="dropdown actions">
+                                    <button class="btn btn-action-24" type="button" data-bs-toggle="dropdown"
+                                        aria-expanded="false">
+                                        <SVGCrud SVGType="SVGCrud.SVGTypeEnum.EllipseVertical"></SVGCrud>
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li>
+                                            <button class="dropdown-item" @onclick="@(() => ViewTaskDetails(task.Id))">
+                                                <span class="icon">
+                                                    <SVGCrud SVGType="SVGCrud.SVGTypeEnum.OpenEye"></SVGCrud>
+                                                </span>
+                                                @Loc["Taskdetails"]
                                             </button>
-                                            <ul class="dropdown-menu">
-                                                <li>
-                                                    <button class="dropdown-item" @onclick="@(() => ViewTaskDetails(task.Id))">
-                                                        <span class="icon">
-                                                            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.OpenEye"></SVGCrud>
-                                                        </span>
-                                                        @Loc["Taskdetails"]
-                                                    </button>
-                                                </li>
+                                        </li>
                                         <li>
                                             <button class="dropdown-item" @onclick="@(() => OnEdit.InvokeAsync(task.Id))">
                                                 <span class="icon">
@@ -53,46 +53,48 @@
                                                 @Loc["EditTask"]
                                             </button>
                                         </li>
-                                                    @if (task.ActualProcess == 100 && task.TaskStatus == Guid.Parse("6EE4574D-C439-45B4-223A-08DE3318A61C"))
-                                                    {
-                                                        <li>
-                                                            <button class="dropdown-item" @onclick="@(() => CompleteTask(task.Id))">
-                                                                <span class="icon">
-                                                                    <SVGCrud SVGType="SVGCrud.SVGTypeEnum.OpenEye"></SVGCrud>
-                                                                </span>
-                                                                @Loc["Complete"]
-                                                            </button>
-                                                        </li>
-                                                    }
-                                                    @if (task.ActualProcess == 100 && task.TaskStatus == Guid.Parse("6EE4574D-C439-45B4-223A-08DE3318A61C"))
-                                                    {
-                                                        <li>
-                                                            <button class="dropdown-item" @onclick="@(() => OnReopen.InvokeAsync(task.Id))">
-                                                                <span class="icon">
-                                                                    <SVGCrud SVGType="SVGCrud.SVGTypeEnum.OpenEye"></SVGCrud>
-                                                                </span>
+                                        @if (task.ActualProcess == 100 && task.TaskStatus ==
+                                                                        Guid.Parse("6EE4574D-C439-45B4-223A-08DE3318A61C"))
+                                        {
+                                            <li>
+                                                <button class="dropdown-item" @onclick="@(() => CompleteTask(task.Id))">
+                                                    <span class="icon">
+                                                        <SVGCrud SVGType="SVGCrud.SVGTypeEnum.OpenEye"></SVGCrud>
+                                                    </span>
+                                                    @Loc["Complete"]
+                                                </button>
+                                            </li>
+                                        }
+                                        @if (task.ActualProcess == 100 && task.TaskStatus ==
+                                                                        Guid.Parse("6EE4574D-C439-45B4-223A-08DE3318A61C"))
+                                        {
+                                            <li>
+                                                <button class="dropdown-item" @onclick="@(() => OnReopen.InvokeAsync(task.Id))">
+                                                    <span class="icon">
+                                                        <SVGCrud SVGType="SVGCrud.SVGTypeEnum.OpenEye"></SVGCrud>
+                                                    </span>
                                                     @Loc["ReOpen"]
-                                                            </button>
-                                                        </li>
-                                                    }
-                                                </ul>
-                                        </div>
-                                    </td>
-                                </tr>
-                            }
-                        </RowTemplate>
-                    </SortableTable>
-                                    </div>
-                <Pagination CurrentPage="@currentPage" TotalPages="@totalPages" TotalCount="@totalCount"
-                    PageSize="@pageSize" PageChanged="ChangePage" PageSizeChangedCallback="ChangePageSize" />
+                                                </button>
+                                            </li>
+                                        }
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
                     }
-                    else
-                    {
-                        <NoDataAvailable MessageTitle="@Loc["NoTasks"]" MessageSubtitle="@Loc["AddTaskToStart"]"
-                                         ButtonText="@Loc["AddTask"]" OnButtonClick="Add" />
-                    }
+                </RowTemplate>
+            </SortableTable>
+        </div>
+        <Pagination CurrentPage="@currentPage" TotalPages="@totalPages" TotalCount="@totalCount" PageSize="@pageSize"
+            PageChanged="ChangePage" PageSizeChangedCallback="ChangePageSize" />
+    }
+    else
+    {
+        <NoDataAvailable MessageTitle="@Loc["NoTasks"]" MessageSubtitle="@Loc["AddTaskToStart"]"
+            ButtonText="@Loc["AddTask"]" OnButtonClick="Add" />
+    }
 
-            </div>
+</div>
 
 @code {
     public bool IsAdmine;// = roleService.IsAllowed(int)Modules., (int)ModuleActions.EditReportPermission) ;//true;//
@@ -212,7 +214,7 @@ new() { Field = "Action", DisplayName = Loc["Action"] ,IsSortable = false},
     private async Task CompleteConfirmed(Guid id)
     {
         var result = await _taskConsumer.CompleteTask(id);
-        if (result.Success &&result.Data)
+        if (result.Success && result.Data)
         {
             await GetTasks();
             await ToastService.ShowToastAsync(Loc["Completedsuccessfully"], "success");
@@ -228,44 +230,44 @@ new() { Field = "Action", DisplayName = Loc["Action"] ,IsSortable = false},
     private void CompleteTask(Guid id)
     {
         PopupService.ShowConfirmation(
-                @Loc["SureCompleteTask"],
-                "Yes, Complete",
-                async (confirmed) =>
-                {
-                    if (confirmed)
-                        await CompleteConfirmed(id);
-                },
-                ConfirmationType.Primary
-            );
+        @Loc["SureCompleteTask"],
+        "Yes, Complete",
+        async (confirmed) =>
+        {
+            if (confirmed)
+                await CompleteConfirmed(id);
+        },
+        ConfirmationType.Primary
+        );
     }
     // private async Task ReopenConfirmed(Guid id)
     // {
-    //     var result = await _taskConsumer.ReopenTask(id);
-    //     if (result.Success && result.Data)
-    //     {
-    //         await GetTasks();
-    //         await ToastService.ShowToastAsync(Loc["Reopenedsuccessfully"], "success");
+    // var result = await _taskConsumer.ReopenTask(id);
+    // if (result.Success && result.Data)
+    // {
+    // await GetTasks();
+    // await ToastService.ShowToastAsync(Loc["Reopenedsuccessfully"], "success");
 
-    //     }
-    //     else
-    //     {
-    //         await ToastService.ShowToastAsync(Loc["ReopenFailed"], "danger");
-    //     }
+    // }
+    // else
+    // {
+    // await ToastService.ShowToastAsync(Loc["ReopenFailed"], "danger");
+    // }
 
-    //     StateHasChanged();
+    // StateHasChanged();
     // }
     // private void ReopenTask(Guid id)
     // {
-    //     PopupService.ShowConfirmation(
-    //             @Loc["SureReopenTask"],
-    //             "Yes, Reopen",
-    //             async (confirmed) =>
-    //             {
-    //                 if (confirmed)
-    //                     await ReopenConfirmed(id);
-    //             },
-    //             ConfirmationType.Primary
-    //         );
+    // PopupService.ShowConfirmation(
+    // @Loc["SureReopenTask"],
+    // "Yes, Reopen",
+    // async (confirmed) =>
+    // {
+    // if (confirmed)
+    // await ReopenConfirmed(id);
+    // },
+    // ConfirmationType.Primary
+    // );
     // }
     private async Task DeleteConfirmed(Guid Id)
     {
@@ -322,8 +324,8 @@ new() { Field = "Action", DisplayName = Loc["Action"] ,IsSortable = false},
     public void ShowEditPopup(Guid id)
     {
         PopupService.ShowNew(@<Edit UserDelegationId="@id.ToString()" IsAdmine="@IsAdmine" OnValidSubmit="OnInitializedAsync">
-        </Edit>
-    , headerText:
+</Edit>
+, headerText:
         @Loc["EditDelegation"]);
     }
     private async Task OnConfirmDelete(bool confirmed)
@@ -382,7 +384,11 @@ SearchFieldTask.PlannedProgress
         switch (field)
         {
             case "Title":
-                builder.AddContent(0, task.Title);
+                builder.OpenElement(0, "span");
+                builder.AddAttribute(1, "class", "task-title");
+                builder.AddAttribute(2, "title", task.Title ?? string.Empty);
+                builder.AddContent(3, task.Title);
+                builder.CloseElement();
                 break;
             case "Priority":
                 builder.AddContent(0, task.PriorityName);
@@ -404,13 +410,13 @@ SearchFieldTask.PlannedProgress
                 break;
             case "Assigned To":
                 builder.AddContent(0, (RenderFragment)(b =>
-                {
-                    b.OpenComponent<Initials>(0);
-                    b.AddAttribute(1, "Names", task.AssigneduserNames);
-                    b.AddAttribute(2, "Size", 32);
-                    b.AddAttribute(3, "Black", true);
-                    b.CloseComponent();
-                }));
+            {
+        b.OpenComponent<Initials>(0);
+        b.AddAttribute(1, "Names", task.AssigneduserNames);
+        b.AddAttribute(2, "Size", 32);
+        b.AddAttribute(3, "Black", true);
+        b.CloseComponent();
+    }));
                 break;
             case "Assigned To Department":
                 builder.AddContent(0, task.AssignedDepartmentName);
@@ -426,13 +432,13 @@ SearchFieldTask.PlannedProgress
                 break;
             case "Created By":
                 builder.AddContent(0, (RenderFragment)(b =>
-                {
-                    b.OpenComponent<Initials>(0);
-                    b.AddAttribute(1, "Names", task.CreatedByName);
-                    b.AddAttribute(2, "Size", 32);
-                    b.AddAttribute(3, "Black", true);
-                    b.CloseComponent();
-                }));
+            {
+        b.OpenComponent<Initials>(0);
+        b.AddAttribute(1, "Names", task.CreatedByName);
+        b.AddAttribute(2, "Size", 32);
+        b.AddAttribute(3, "Black", true);
+        b.CloseComponent();
+    }));
                 break;
             case "Duration":
                 builder.AddContent(0, task.Duration);
@@ -475,7 +481,8 @@ SearchFieldTask.PlannedProgress
     }
     public async Task GetTasks(bool isSearch = false, string searchTerm = null)
     {
-        var res = await _taskConsumer.GetTasks(currentPage, pageSize, currentSortColumn, sortAscending.Value, isSearch ? searchFields : null, isSearch ? searchTerm : null);
+        var res = await _taskConsumer.GetTasks(currentPage, pageSize, currentSortColumn, sortAscending.Value, isSearch ?
+        searchFields : null, isSearch ? searchTerm : null);
         allTaks = res.Data.Items.ToList();
         if (!(res?.Success ?? false) || res.Data is null)
             return;
