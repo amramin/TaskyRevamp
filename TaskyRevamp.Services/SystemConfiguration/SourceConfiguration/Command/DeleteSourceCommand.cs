@@ -27,10 +27,12 @@ namespace TaskyRevamp.Services.SystemConfiguration.SourceConfiguration.Command
             var re = await _mediator.Send(new CheckRelatedTaskitemSourceQuery(request.id));
             if (re == true)
             {
+                // has task and still not completed
                 return false;
             }
             else
-            {
+            { // check if norelated task so hard delete
+                //else soft delete
                 var res = await _sourceRepository.FindByKey(request.id);
                 if (res.Success && res != null && res.Value != null)
                 {
