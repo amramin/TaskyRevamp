@@ -1142,7 +1142,6 @@ html[dir=rtl] .badge {
   font-size: 0.875rem;
   font-weight: 600;
   color: var(--dark-800);
-  cursor: pointer;
   width: -webkit-fit-content;
   width: -moz-fit-content;
   width: fit-content;
@@ -1160,6 +1159,7 @@ html[dir=rtl] .badge {
   margin-left: 0;
   margin-right: 0;
   margin-top: 0;
+  cursor: pointer;
 }
 .form-check .form-check-input + label {
   color: var(--dark-600);
