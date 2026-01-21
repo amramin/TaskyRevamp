@@ -225,7 +225,12 @@ new() { Field = "Action", DisplayName = Loc["Action"] ,IsSortable = false},
         // o => o.ColumnName,
         // (c, o) => c)
         // .ToList();
+        if (allTaks is null || !allTaks.Any())
+        {
+            IsCollapse = true;
+        }
         StateHasChanged();
+
     }
     // protected override async Task OnParametersSetAsync()
     // {
