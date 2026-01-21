@@ -16,6 +16,7 @@
 @inject StatusSettingConsumer _statusSettingConsumer
 @inject TypeSettingConsumer _typeSettingConsumer
 @inject SourceSettingConsumer _sourceSettingConsumer
+
 <style>
     .task-layout {
         display: flex;
@@ -135,7 +136,7 @@
 
                     </button>
                     <button type="button" data-bs-toggle="tooltip" data-bs-placement="top" title="View column"
-                        class="btn btn-action-40 btn-outline-light-pimary">
+                            class="btn btn-action-40 btn-outline-light-pimary" @onclick="OnViewClick">
                         <SVGCrud SVGType="SVGCrud.SVGTypeEnum.AddColumn"></SVGCrud>
 
                     </button>
@@ -154,15 +155,31 @@
 
                 <!-- SIDE BUTTON BAR -->
                 <div class="task-sidebar mt-2" style="max-height:300px;">
-                    @foreach (ViewTypes view in Enum.GetValues(typeof(ViewTypes)))
-                    {
-                        <button class="view-btn @(ViewType == 1 ? "active" : "")"
-                                title="@Loc[view.ToString()]"
-                                @onclick="() => changeViewType((int)view)">
-                            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.List" />
-                        </button>
-                    }
-
+                    <button class="view-btn @(ViewType == 1 ? "active" : "")"
+                            title="@Loc[ViewTypes.OverAllView.ToString()]"
+                            @onclick="() => changeViewType((int)ViewTypes.OverAllView)">
+                        <SVGCrud SVGType="SVGCrud.SVGTypeEnum.List" />
+                    </button>
+                    <button class="view-btn @(ViewType == 1 ? "active" : "")"
+                            title="@Loc[ViewTypes.TimeLineView.ToString()]"
+                            @onclick="() => changeViewType((int)ViewTypes.TimeLineView)">
+                        <SVGCrud SVGType="SVGCrud.SVGTypeEnum.CalnderPluse" />
+                    </button>
+                    <button class="view-btn @(ViewType == 1 ? "active" : "")"
+                            title="@Loc[ViewTypes.SourceView.ToString()]"
+                            @onclick="() => changeViewType((int)ViewTypes.SourceView)">
+                        <SVGCrud SVGType="SVGCrud.SVGTypeEnum.DataFlow" />
+                    </button>
+                    <button class="view-btn @(ViewType == 1 ? "active" : "")"
+                            title="@Loc[ViewTypes.TypeView.ToString()]"
+                            @onclick="() => changeViewType((int)ViewTypes.TypeView)">
+                        <SVGCrud SVGType="SVGCrud.SVGTypeEnum.TaskType" />
+                    </button>
+                    <button class="view-btn @(ViewType == 1 ? "active" : "")"
+                            title="@Loc[ViewTypes.StatusView.ToString()]"
+                            @onclick="() => changeViewType((int)ViewTypes.StatusView)">
+                        <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Repeat" />
+                    </button>
 @*                     <button class="view-btn @(ViewType == 2 ? "active" : "")"
                             title="Column View"
                             @onclick="() => changeViewType(2)">
@@ -197,7 +214,7 @@
                     @switch (ViewType)
                     {
                         case (int)ViewTypes.OverAllView:
-                            <div><TaskListView OnAdd="Add" OnEdit="Edit" OnReopen="Reopen" @ref="taskListRef"></TaskListView></div>
+                            <div><TaskListView Title="@Loc[ViewTypes.OverAllView.ToString()]" OnAdd="Add" OnEdit="Edit" OnReopen="Reopen" @ref="taskListRef"></TaskListView></div>
                             break;
                         case (int)ViewTypes.TimeLineView:
                             @foreach (TimeLineView timeview in Enum.GetValues(typeof(TimeLineView)))
@@ -306,7 +323,7 @@
         // await GetTasks(isSearch: false, null);
 
     }
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
         ViewType = (int)ViewTypes.OverAllView;
     }
@@ -400,5 +417,11 @@
         Types = res?.Data?.Items.ToList();
         totalCount = res.Data.TotalCount;
         totalPages = res.Data.TotalPages;
+    }
+    private async Task OnViewClick()
+    {
+
+        PopupService.ShowNew(@<ViewColumn OnValidSubmit="OnInitializedAsync"></ViewColumn>, headerText: @Loc["Viewcolumn"]);
+
     }
 }

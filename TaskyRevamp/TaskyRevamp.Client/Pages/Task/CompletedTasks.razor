@@ -136,7 +136,7 @@
 
                     </button>
                     <button type="button" data-bs-toggle="tooltip" data-bs-placement="top" title="View column"
-                            class="btn btn-action-40 btn-outline-light-pimary">
+                            class="btn btn-action-40 btn-outline-light-pimary" @onclick="OnViewClick">
                         <SVGCrud SVGType="SVGCrud.SVGTypeEnum.AddColumn"></SVGCrud>
 
                     </button>
@@ -164,12 +164,12 @@
                     <button class="view-btn @(ViewType == 1 ? "active" : "")"
                             title="@Loc[ViewTypes.SourceView.ToString()]"
                             @onclick="() => changeViewType((int)ViewTypes.SourceView)">
-                        <SVGCrud SVGType="SVGCrud.SVGTypeEnum.List" />
+                        <SVGCrud SVGType="SVGCrud.SVGTypeEnum.DataFlow" />
                     </button>
                     <button class="view-btn @(ViewType == 1 ? "active" : "")"
                             title="@Loc[ViewTypes.TypeView.ToString()]"
                             @onclick="() => changeViewType((int)ViewTypes.TypeView)">
-                        <SVGCrud SVGType="SVGCrud.SVGTypeEnum.List" />
+                        <SVGCrud SVGType="SVGCrud.SVGTypeEnum.TaskType" />
                     </button>
                     
 
@@ -207,7 +207,7 @@
                     @switch (ViewType)
                     {
                         case (int)ViewTypes.OverAllView:
-                            <div><TaskListView IsCompleted="true" OnAdd="Add" OnEdit="Edit" OnReopen="Reopen" @ref="taskListRef"></TaskListView></div>
+                            <div><TaskListView Title="@Loc[ViewTypes.OverAllView.ToString()]" IsCompleted="true" OnAdd="Add" OnEdit="Edit" OnReopen="Reopen" @ref="taskListRef"></TaskListView></div>
                             break;
                         case (int)ViewTypes.SourceView:
                             @foreach (var source in sources)
@@ -394,5 +394,11 @@
         Types = res?.Data?.Items.ToList();
         totalCount = res.Data.TotalCount;
         totalPages = res.Data.TotalPages;
+    }
+    private async Task OnViewClick()
+    {
+
+        PopupService.ShowNew(@<ViewColumn OnValidSubmit="OnInitializedAsync"></ViewColumn>, headerText: @Loc["Viewcolumn"]);
+
     }
 }
