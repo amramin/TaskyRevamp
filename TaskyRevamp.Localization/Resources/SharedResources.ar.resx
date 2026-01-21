@@ -1317,8 +1317,9 @@
   <data name="Reopenedsuccessfully" type="System.Resources.ResXNullRef, System.Windows.Forms">
     <value />
   </data>
-  <data name="Viewcolumn" xml:space="preserve">
+	<data name="Viewcolumn" xml:space="preserve">
     <value>خيارات الأعمدة</value>
+	  </data>
   <data name="OverAllView" xml:space="preserve">
     <value>كل المهام</value>
   </data>
