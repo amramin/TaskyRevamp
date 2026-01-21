@@ -1,4 +1,4 @@
-﻿@page "/MainTasks"
+﻿@page "/CompletedTasks"
 @using System.Globalization
 @using TaskyRevamp.Client.Consumer
 @using TaskyRevamp.Client.Services
@@ -51,13 +51,14 @@
             background: #f5f7fa;
             border-color: #007197;
         }
-            .view-btn.active svg {
-                fill: #fff;
-            }
+
+        .view-btn.active svg {
+            fill: #fff;
+        }
 
     .task-content {
         flex: 1;
-        min-height:500px;
+        min-height: 500px;
         padding: 12px;
         overflow: auto;
     }
@@ -68,7 +69,7 @@
     <ul class="nav nav-pills" id="myTab" role="tablist">
         <li class="nav-item" role="presentation">
             <button class="nav-link active" id="List-view" data-bs-toggle="tab" data-bs-target="#List-view-tab"
-                type="button" role="tab" aria-controls="List-view-tab" aria-selected="true">
+                    type="button" role="tab" aria-controls="List-view-tab" aria-selected="true">
                 <span class="icon">
                     <SVGCrud SVGType="SVGCrud.SVGTypeEnum.List"></SVGCrud>
                 </span>
@@ -80,7 +81,7 @@
         </li>
         <li class="nav-item" role="presentation">
             <button class="nav-link" data-bs-toggle="tab" data-bs-target="#kanban-view-tab" type="button" role="tab"
-                aria-controls="profile" aria-selected="false">
+                    aria-controls="profile" aria-selected="false">
                 <span class="icon">
                     <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Kanban"></SVGCrud>
 
@@ -90,7 +91,7 @@
         </li>
         <li class="nav-item" role="presentation">
             <button class="nav-link" id="gannt-tab" data-bs-toggle="tab" data-bs-target="#gannt-view-tab" type="button"
-                role="tab" aria-controls="gannt-tab" aria-selected="false">
+                    role="tab" aria-controls="gannt-tab" aria-selected="false">
                 <span class="icon">
                     <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Gantt"></SVGCrud>
 
@@ -106,7 +107,7 @@
                     <h1 class="page-headline">@Loc[((ViewTypes)ViewType).ToString()]</h1>
                     <div class="view-scope-toggle" role="group" aria-label="Basic radio toggle button group">
                         <input type="radio" class="btn-check" name="taskRadio" id="mineRadio-task" autocomplete="off"
-                            checked />
+                               checked />
                         <label class="btn" for="mineRadio-task">
                             <SVGCrud SVGType="SVGCrud.SVGTypeEnum.User"></SVGCrud>
                             <span>@Loc["Mine"]</span>
@@ -130,45 +131,54 @@
                     </button>
                     <Search SearchSubmit="Search" CssClass="form-control"></Search>
                     <button type="button" data-bs-toggle="tooltip" data-bs-placement="top" title="Filter"
-                        class="btn btn-action-40 btn-outline-light-pimary">
+                            class="btn btn-action-40 btn-outline-light-pimary">
                         <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Filter"></SVGCrud>
 
                     </button>
                     <button type="button" data-bs-toggle="tooltip" data-bs-placement="top" title="View column"
-                        class="btn btn-action-40 btn-outline-light-pimary">
+                            class="btn btn-action-40 btn-outline-light-pimary">
                         <SVGCrud SVGType="SVGCrud.SVGTypeEnum.AddColumn"></SVGCrud>
 
                     </button>
                     <button type="button" data-bs-toggle="tooltip" data-bs-placement="top" title="Card View"
-                        class="btn btn-action-40 btn-outline-light-pimary">
+                            class="btn btn-action-40 btn-outline-light-pimary">
                         <SVGCrud SVGType="SVGCrud.SVGTypeEnum.CardView"></SVGCrud>
                     </button>
                     <button type="button" data-bs-toggle="tooltip" data-bs-placement="top" title="Export Excel"
-                        class="btn btn-action-40 btn-outline-light-pimary">
+                            class="btn btn-action-40 btn-outline-light-pimary">
                         <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Excel"></SVGCrud>
                     </button>
                 </div>
 
             </div>
-                        <div class="task-layout">
+            <div class="task-layout">
 
                 <!-- SIDE BUTTON BAR -->
                 <div class="task-sidebar mt-2" style="max-height:300px;">
-                    @foreach (ViewTypes view in Enum.GetValues(typeof(ViewTypes)))
-                    {
+
                         <button class="view-btn @(ViewType == 1 ? "active" : "")"
-                                title="@Loc[view.ToString()]"
-                                @onclick="() => changeViewType((int)view)">
+                                title="@Loc[ViewTypes.OverAllView.ToString()]"
+                            @onclick="() => changeViewType((int)ViewTypes.OverAllView)">
                             <SVGCrud SVGType="SVGCrud.SVGTypeEnum.List" />
                         </button>
-                    }
+                    <button class="view-btn @(ViewType == 1 ? "active" : "")"
+                            title="@Loc[ViewTypes.SourceView.ToString()]"
+                            @onclick="() => changeViewType((int)ViewTypes.SourceView)">
+                        <SVGCrud SVGType="SVGCrud.SVGTypeEnum.List" />
+                    </button>
+                    <button class="view-btn @(ViewType == 1 ? "active" : "")"
+                            title="@Loc[ViewTypes.TypeView.ToString()]"
+                            @onclick="() => changeViewType((int)ViewTypes.TypeView)">
+                        <SVGCrud SVGType="SVGCrud.SVGTypeEnum.List" />
+                    </button>
+                    
 
-@*                     <button class="view-btn @(ViewType == 2 ? "active" : "")"
+                    @*                     <button class="view-btn @(ViewType == 2 ? "active" : "")"
                             title="Column View"
                             @onclick="() => changeViewType(2)">
                         <SVGCrud SVGType="SVGCrud.SVGTypeEnum.List" />
                     </button> *@
-@*                     <ul class="nav menu flex-column">
+                    @*                     <ul class="nav menu flex-column">
                         <li class="nav-item">
                             <NavLink href="" class="nav-link" Match="NavLinkMatch.All"
                                      @onclick="() => changeViewType(1)">
@@ -190,40 +200,27 @@
                             </NavLink>
                         </li>
                     </ul>*@
-                </div> 
+                </div>
 
                 <!-- MAIN CONTENT -->
                 <div class="task-content">
                     @switch (ViewType)
                     {
                         case (int)ViewTypes.OverAllView:
-                            <div><TaskListView OnAdd="Add" OnEdit="Edit" OnReopen="Reopen" @ref="taskListRef"></TaskListView></div>
-                            break;
-                        case (int)ViewTypes.TimeLineView:
-                            @foreach (TimeLineView timeview in Enum.GetValues(typeof(TimeLineView)))
-                            {
-                                <div><TaskListView Title="@Loc[timeview.ToString()]" ViewType="@((int)ViewTypes.TimeLineView)" ViewTypeId="@(Guid.Parse(timeview.GetDescription()))" OnAdd="Add" OnEdit="Edit" OnReopen="Reopen" @ref="taskListRef"></TaskListView></div>
-
-                            }
+                            <div><TaskListView IsCompleted="true" OnAdd="Add" OnEdit="Edit" OnReopen="Reopen" @ref="taskListRef"></TaskListView></div>
                             break;
                         case (int)ViewTypes.SourceView:
-                            @foreach(var source in sources)
+                            @foreach (var source in sources)
                             {
-                                <div class="my-2"><TaskListView @key="source.Id" Title="@(CultureInfo.CurrentCulture.Name == "ar-EG" ? source.NameArabic : source.NameEnglish)" ViewType="@((int)ViewTypes.SourceView)" ViewTypeId="@source.Id" OnAdd="Add" OnEdit="Edit" OnReopen="Reopen" @ref="taskListRef"></TaskListView></div>
+                                <div class="my-2"><TaskListView IsCompleted="true" @key="source.Id" Title="@(CultureInfo.CurrentCulture.Name == "ar-EG" ? source.NameArabic : source.NameEnglish)" ViewType="@((int)ViewTypes.SourceView)" ViewTypeId="@source.Id" OnAdd="Add" OnEdit="Edit" OnReopen="Reopen" @ref="taskListRef"></TaskListView></div>
                             }
                             <Pagination CurrentPage="@currentPage" TotalPages="@totalPages" TotalCount="@totalCount"
                                         PageSize="@pageSize" PageSizeOptions="new[] { 3, 5, 7, 10 }" PageChanged="ChangePage" PageSizeChangedCallback="ChangePageSize" />
                             break;
-                        case (int)ViewTypes.StatusView:
-                            @foreach (var status in Satuses.Where(s => s.Id != Guid.Parse("D8E94CCE-586A-46D3-223D-08DE3318A61C") && s.Id != Guid.Parse("C8D504C7-9402-4F91-223C-08DE3318A61C")))
-                            {
-                                <div class="my-2"><TaskListView Title="@(CultureInfo.CurrentCulture.Name == "ar-EG" ? status.NameArabic : status.NameEnglish)" ViewType="@((int)ViewTypes.StatusView)" ViewTypeId="@status.Id" OnAdd="Add" OnEdit="Edit" OnReopen="Reopen" @ref="taskListRef"></TaskListView></div>
-                            }
-                            break;
                         case (int)ViewTypes.TypeView:
                             @foreach (var type in Types)
                             {
-                                <div class="my-2"><TaskListView @key="type.Id" Title="@(CultureInfo.CurrentCulture.Name == "ar-EG" ? type.NameArabic : type.NameEnglish)" ViewType="@((int)ViewTypes.TypeView)" ViewTypeId="@type.Id" OnAdd="Add" OnEdit="Edit" OnReopen="Reopen" @ref="taskListRef"></TaskListView></div>
+                                <div class="my-2"><TaskListView IsCompleted="true" @key="type.Id" Title="@(CultureInfo.CurrentCulture.Name == "ar-EG" ? type.NameArabic : type.NameEnglish)" ViewType="@((int)ViewTypes.TypeView)" ViewTypeId="@type.Id" OnAdd="Add" OnEdit="Edit" OnReopen="Reopen" @ref="taskListRef"></TaskListView></div>
                             }
                             <Pagination CurrentPage="@currentPage" TotalPages="@totalPages" TotalCount="@totalCount"
                                         PageSize="@pageSize" PageSizeOptions="new[] { 3, 5, 7, 10 }" PageChanged="ChangePageType" PageSizeChangedCallback="ChangePageSizeType" />
@@ -240,7 +237,7 @@
                     @* <h1 class="page-headline">@Loc["taskOverall"]</h1> *@
                     <div class="view-scope-toggle" role="group" aria-label="Basic radio toggle button group">
                         <input type="radio" class="btn-check" name="btnradio" id="mineRadio" autocomplete="off"
-                            checked />
+                               checked />
                         <label class="btn" for="mineRadio">
                             <SVGCrud SVGType="SVGCrud.SVGTypeEnum.User"></SVGCrud>
                             <span>Mine</span>
@@ -257,7 +254,7 @@
 
                 <div class="action-btn-list">
                     <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas"
-                        data-bs-target="#survey-type-modal" aria-controls="offcanvasWithBothOptions">
+                            data-bs-target="#survey-type-modal" aria-controls="offcanvasWithBothOptions">
                         <span class="icon">
                             <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Pluse"></SVGCrud>
                         </span>
@@ -265,7 +262,7 @@
                     </button>
 
                     <button type="button" data-bs-toggle="tooltip" data-bs-placement="top" title="Filter"
-                        class="btn btn-action-40 btn-outline-light-pimary">
+                            class="btn btn-action-40 btn-outline-light-pimary">
                         <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Filter"></SVGCrud>
                     </button>
                 </div>
@@ -287,7 +284,7 @@
     [Parameter] public EventCallback<Guid> OnShowUsers { get; set; }
     [Parameter] public EventCallback<Guid> OnAdd { get; set; }
     private TaskListView taskListRef;
-    public List<SourceDto> sources=new List<SourceDto>();
+    public List<SourceDto> sources = new List<SourceDto>();
     public List<TypeDto> Types = new List<TypeDto>();
     public List<StatusSettingsDto> Satuses = new List<StatusSettingsDto>();
     public int ViewType { get; set; } = (int)ViewTypes.OverAllView;
@@ -313,19 +310,16 @@
     private async Task changeViewType(int type)
     {
         ViewType = type;
-        if(ViewType==(int)ViewTypes.SourceView)
+        if (ViewType == (int)ViewTypes.SourceView)
         {
-            var res = await _sourceSettingConsumer.GetSourcesView(currentPage,pageSize);
+            var res = await _sourceSettingConsumer.GetSourcesView(currentPage, pageSize,true);
             sources = res?.Data?.Items.ToList();
             totalCount = res.Data.TotalCount;
             totalPages = res.Data.TotalPages;
-        }else if (ViewType == (int)ViewTypes.StatusView)
+        }
+        else if (ViewType == (int)ViewTypes.TypeView)
         {
-            var res=await _statusSettingConsumer.GetStatusConfiguration();
-            Satuses = res.Data.ToList();
-        }else if (ViewType == (int)ViewTypes.TypeView)
-        {
-            var res=await _typeSettingConsumer.GetTypesView(currentPage,pageSize);
+            var res = await _typeSettingConsumer.GetTypesView(currentPage, pageSize,true);
             Types = res.Data.Items.ToList();
             totalCount = res.Data.TotalCount;
             totalPages = res.Data.TotalPages;
@@ -334,7 +328,7 @@
     }
     public async Task Search(string searchTerm)
     {
-       // taskListRef.CurrentPage = 1;
+        // taskListRef.CurrentPage = 1;
         //await taskListRef.GetTasks(true, searchTerm);
         //await taskListRef.LoadSources(true, searchTerm);
     }
@@ -345,7 +339,7 @@
         // StateHasChanged();
 
     }
-        private void Edit(Guid id)
+    private void Edit(Guid id)
     {
         PopupService.ShowNew(@<EditTask Id="id" OnValidSubmit="OnInitializedAsync"></EditTask>, headerText:
         @Loc["EditTask"]);
@@ -372,7 +366,7 @@
     {
         pageSize = newSize;
         currentPage = 1;
-      await  LoadSources();
+        await LoadSources();
     }
     private async Task ChangePageType(int page)
     {
@@ -387,7 +381,7 @@
     }
     private async Task LoadSources()
     {
-        var res = await _sourceSettingConsumer.GetSourcesView(currentPage, pageSize);
+        var res = await _sourceSettingConsumer.GetSourcesView(currentPage, pageSize,true);
 
         sources = res?.Data?.Items.ToList();
         totalCount = res.Data.TotalCount;
@@ -395,7 +389,7 @@
     }
     private async Task LoadTypes()
     {
-        var res = await _typeSettingConsumer.GetTypesView(currentPage, pageSize);
+        var res = await _typeSettingConsumer.GetTypesView(currentPage, pageSize,true);
 
         Types = res?.Data?.Items.ToList();
         totalCount = res.Data.TotalCount;

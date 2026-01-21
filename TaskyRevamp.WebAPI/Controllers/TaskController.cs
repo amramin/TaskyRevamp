@@ -2,6 +2,7 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using System.Threading.Tasks;
+using TaskyRevamp.Dto.Enums;
 using TaskyRevamp.Dto.Enums.SearchFields;
 using TaskyRevamp.Dto.GeneralDto;
 using TaskyRevamp.Dto.TaskComment;
@@ -85,11 +86,13 @@ public class TaskController : ControllerBase
          [FromQuery] string sortByColumnName = "CreateDate",
          [FromQuery] bool sortAscending = true,
          [FromQuery] List<SearchFieldTask> searchFields = null,
-         [FromQuery] string searchText = null)
+         [FromQuery] string searchText = null,
+         [FromQuery] int viewType=(int) ViewTypes.OverAllView,
+        [FromQuery] Guid? viewTypeId= null,bool IsCompleted=false)
     {
 
         var size = pageSize ?? paginationSettings.Value.DefaultPageSize;
-        var all = await _mediator.Send(new GetTasksQuery(pageNumber, size, sortByColumnName, sortAscending, searchFields, searchText));
+        var all = await _mediator.Send(new GetTasksQuery(pageNumber, size, sortByColumnName, sortAscending, searchFields, searchText,viewType,viewTypeId,IsCompleted));
 
         return Ok(all);
     }
