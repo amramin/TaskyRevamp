@@ -1,5 +1,6 @@
 ﻿@using TaskyRevamp.Client.Consumer
 @using TaskyRevamp.Client.Services
+@using TaskyRevamp.Dto.Enums
 @using TaskyRevamp.Dto.Enums.SearchFields
 @using TaskyRevamp.Dto.SystemConfiguration
 @using TaskyRevamp.Dto.TaskDto
@@ -11,14 +12,16 @@
 @inject StatusSettingConsumer _statusSettingConsumer
 @inject DefaultColumnsSettingConsumer _defaultColumnsSettingConsumer
 
-<div>
-
+<div class="table-wrapper">
+    <div class="table-caption fs-4">
+        @Title
+    </div>
     @if (allTaks != null && allTaks.Any())
-{
+    {
                     <div class="table-responsive sticky-header-custom">
                     <SortableTable TItem="CreateTaskDto" Columns="@tableColumns" Items="@allTaks"
                         SortColumn="@currentSortColumn" SortAscending="@sortAscending" OnSortRequested="HandleSort">
-
+                        
                         <RowTemplate>
                             @foreach (var task in allTaks)
                             {
@@ -100,6 +103,10 @@
     [Parameter] public EventCallback<Guid> OnDelete { get; set; }
     [Parameter] public EventCallback<Guid> OnShowUsers { get; set; }
     [Parameter] public EventCallback<Guid> OnAdd { get; set; }
+    [Parameter] public int ViewType{ get; set; } = (int)ViewTypes.OverAllView;
+    [Parameter] public Guid? ViewTypeId { get; set; } = null;
+    [Parameter] public string Title { get; set; } = string.Empty;
+    [Parameter] public bool IsCompleted { get; set; } = false;
     CreateTaskDto taskdto = new CreateTaskDto();
     private List<StatusSettingsDto> Statuses = new();
     List<CreateTaskDto> allTaks = new List<CreateTaskDto>();
@@ -183,6 +190,14 @@ new() { Field = "Action", DisplayName = Loc["Action"] ,IsSortable = false},
         // .ToList();
         StateHasChanged();
     }
+    // protected override async Task OnParametersSetAsync()
+    // {
+    //   currentPage = 1;
+    //   totalPages = 1;
+    //   totalCount = 0;
+    //   pageSize = 10;
+    //     await GetTasks();
+    // }
     public async Task ResetPage()
     {
         await GetTasks();
@@ -467,7 +482,7 @@ SearchFieldTask.PlannedProgress
 
 
         var res = await _taskConsumer.GetTasks(currentPage, pageSize, currentSortColumn, sortAscending.Value, isSearch ?
-        searchFields : null, isSearch ? searchTerm : null);
+        searchFields : null, isSearch ? searchTerm : null, ViewType, ViewTypeId, IsCompleted);
         allTaks = res.Data.Items.ToList();
 
         if (!(res?.Success ?? false) || res.Data is null)

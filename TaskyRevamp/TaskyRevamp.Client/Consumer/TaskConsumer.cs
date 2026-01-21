@@ -20,9 +20,9 @@ namespace TaskyRevamp.Client.Consumer
             var res = await _taskyService.GetFromJsonAsync<CommonApiResponse<List<CreateTaskDto>>>(url);
             return res;
         }
-        public async Task<CommonApiResponse<PagedResult<CreateTaskDto>>> GetTasks(int pageNumber, int pageSize, string sortByColumnName, bool sortAscending, List<SearchFieldTask> searchFields = null, string searchText = null)
+        public async Task<CommonApiResponse<PagedResult<CreateTaskDto>>> GetTasks(int pageNumber, int pageSize, string sortByColumnName, bool sortAscending, List<SearchFieldTask> searchFields = null, string searchText = null,int ViewType=1,Guid? ViewTypeId=null, bool IsCompleted = false)
         {
-            var queryString = _taskyService.PreparePaginatedSearchQueryString(pageNumber, pageSize, sortByColumnName, sortAscending, searchFields, searchText);
+            var queryString = _taskyService.PreparePaginatedSearchQueryString(pageNumber, pageSize, sortByColumnName, sortAscending, searchFields, searchText,ViewType,ViewTypeId,IsCompleted);
             var url = $"api/Task/GetAllTask{queryString}";
             var res = await _taskyService.GetFromJsonAsync<CommonApiResponse<PagedResult<CreateTaskDto>>>(url);
             return res;

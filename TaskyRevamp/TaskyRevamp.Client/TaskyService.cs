@@ -73,14 +73,17 @@ public class TaskyService
         _localStorage.RemoveItemAsync("DelegatedUsersId");
     }
 
-    public string PreparePaginatedSearchQueryString<T>(int pageNumber, int pageSize, string sortByColumnName, bool sortAscending, List<T> searchFields = null, string searchText = null)
+    public string PreparePaginatedSearchQueryString<T>(int pageNumber, int pageSize, string sortByColumnName, bool sortAscending, List<T> searchFields = null, string searchText = null, int ViewType = 1, Guid? ViewTypeId = null, bool IsCompleted = false)
     {
         var query = new List<string>
             {
                 $"pageNumber={pageNumber}",
                 $"pageSize={pageSize}",
                 $"sortByColumnName={Uri.EscapeDataString(sortByColumnName)}",
-                $"sortAscending={sortAscending}"
+                $"sortAscending={sortAscending}",
+                $"viewType={ViewType}",
+                $"viewTypeId={ViewTypeId}",
+                $"IsCompleted={IsCompleted}",
             };
 
         if (searchFields != null && searchFields.Count > 0)

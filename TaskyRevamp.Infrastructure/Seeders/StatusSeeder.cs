@@ -87,10 +87,12 @@ namespace TaskyRevamp.Infrastructure.Seeders
 			var existingAr = context.StatusSettings
 				.Select(s => s.NameArabic)
 				.ToHashSet(StringComparer.OrdinalIgnoreCase);
+			var ids = context.StatusSettings
+				.Select(s => s.Id);
 
-			foreach (var status in StatusToSeed)
+            foreach (var status in StatusToSeed)
 			{
-				if (!existingEn.Contains(status.NameEnglish) && !existingAr.Contains(status.NameArabic))
+				if (!ids.Contains(status.Id))
 				{
 					context.StatusSettings.Add(status);
 				}

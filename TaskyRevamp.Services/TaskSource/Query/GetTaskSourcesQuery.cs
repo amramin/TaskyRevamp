@@ -36,7 +36,7 @@ public class GetTaskSourcesHandler : IRequestHandler<GetTaskSourcesQuery, List<S
         foreach (var TaskSource in data.Value)
         {
             SourceDto dep = TaskSource.CopyToDto();
-
+     
             allTaskSources.Add(dep);
 
         }
