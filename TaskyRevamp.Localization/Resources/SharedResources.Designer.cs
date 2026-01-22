@@ -1060,7 +1060,7 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Download Excel template.
+        ///   Looks up a localized string similar to Download.
         /// </summary>
         public static string Download {
             get {
@@ -1825,7 +1825,7 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Log out.
+        ///   Looks up a localized string similar to Logout.
         /// </summary>
         public static string Logout {
             get {

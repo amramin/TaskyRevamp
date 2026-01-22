@@ -31,35 +31,26 @@ namespace TaskyRevamp.Services.TaskAttachments.Command
 		}
 		public async Task<bool> Handle(AddTaskAttachmentCommand request, CancellationToken cancellationToken)
 		{
-
 			var taskAttachmentsResult = await _taskAttachmentRepository.FindBy(t => t.TaskItemId == request.taskItemId);
 			TaskAttachment taskAttachments;
 			if (!taskAttachmentsResult.Success || taskAttachmentsResult.Value == null || !taskAttachmentsResult.Value.Any())
 			{
-				taskAttachments = new TaskAttachment
-				{
-					Id = Guid.NewGuid(),
-					TaskItemId = request.taskItemId
-				};
+				taskAttachments = new TaskAttachment { Id = Guid.NewGuid(), TaskItemId = request.taskItemId };
 				await _taskAttachmentRepository.Insert(taskAttachments);
 			}
 			else
-			{
 				taskAttachments = taskAttachmentsResult.Value.FirstOrDefault()!;
-			}
+
 			foreach (var dto in request.AttachmentsDto)
 			{
 				var extension = Path.GetExtension(dto.FileName)?.ToLower();
-				if (!SupportedAttachmentExtensions.Contains(extension))
-				{
-					continue; // skip invalid file or throw an exception
-				}
+				if (!SupportedAttachmentExtensions.Contains(extension!))
+					continue;
 				var fileType = _fileManagement.ResolveFileType(dto.FileName);
 				var fileId = await _fileManagement.UploadFile(dto.Bytes, dto.FileName, fileType);
 				var attachment = new Attachment(Guid.NewGuid(), dto.FileName, fileId, dto.Size, taskAttachments.Id, fileType);
 				await _attachmentRepository.Insert(attachment);
 			}
-			
 			return true;
 		}
 	}

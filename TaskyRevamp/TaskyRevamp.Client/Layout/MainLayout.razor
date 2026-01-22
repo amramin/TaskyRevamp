@@ -14,27 +14,33 @@
 @inject IStringLocalizer<SharedResources> Loc
 @inject Blazored.LocalStorage.ILocalStorageService LocalStorage
 
-<main class="@SideMenuWrapperClass">
-    <NavMenu />
-    <section class="main-content">
-        <header class="main-header sticky-top">
-            <div class="main-header-body">
-                <div class="start">
-                    <button class="btn btn-action-40 btn-outline-light d-none d-lg-flex" @onclick="ToggleSideMenu">
-                        <span class="icon arrow">
-                            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Menu"></SVGCrud>
-                        </span>
-                    </button>
-                    <div class="group-input">
-                        <span class="start-icon">
-                            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Search"></SVGCrud>
-                        </span>
-                        <input class="form-control form-control-lg" placeholder="User name" id="id-number" required />
+@if(!IsAuthChecked)
+{
+    <Loader IsVisible="true" />
+}
+else
+{
+    <main class="@SideMenuWrapperClass">
+        <NavMenu />
+        <section class="main-content">
+            <header class="main-header sticky-top">
+                <div class="main-header-body">
+                    <div class="start">
+                        <button class="btn btn-action-40 btn-outline-light d-none d-lg-flex" @onclick="ToggleSideMenu">
+                            <span class="icon arrow">
+                                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Menu"></SVGCrud>
+                            </span>
+                        </button>
+                        <div class="group-input">
+                            <span class="start-icon">
+                                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Search"></SVGCrud>
+                            </span>
+                            <input class="form-control form-control-lg" placeholder="User name" id="id-number" required />
+                        </div>
                     </div>
-                </div>
-                <div class="end">
-                    <CultureSelector @rendermode="StaticClasses.InteractiveAutoRenderModeFalse" />
-                    @*                     <button class="btn-change-lang btn" onclick="@ChangeLanguage">
+                    <div class="end">
+                        <CultureSelector @rendermode="StaticClasses.InteractiveAutoRenderModeFalse" />
+                        @*                     <button class="btn-change-lang btn" onclick="@ChangeLanguage">
                             <span class="ar">
                                 <SVGCrud SVGType="SVGCrud.SVGTypeEnum.AR"></SVGCrud>
                             </span>
@@ -42,65 +48,65 @@
                                 <SVGCrud SVGType="SVGCrud.SVGTypeEnum.EN"></SVGCrud>
                             </span>
                         </button> *@
-                    <div class="dropdown notifcation-dropdown">
-                        <button class="btn btn-action" data-bs-toggle="dropdown" aria-expanded="false">
-                            <span class="icon">
-                                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Bell"></SVGCrud>
-                            </span>
-                            <span class="badge"></span>
-                        </button>
-                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                            <li><a class="dropdown-item" href="#">Action</a></li>
-                            <li><a class="dropdown-item" href="#">Another action</a></li>
-                            <li>
-                                <a class="dropdown-item" href="#">Something else here</a>
-                            </li>
-                        </ul>
+                        <div class="dropdown notifcation-dropdown">
+                            <button class="btn btn-action" data-bs-toggle="dropdown" aria-expanded="false">
+                                <span class="icon">
+                                    <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Bell"></SVGCrud>
+                                </span>
+                                <span class="badge"></span>
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                <li><a class="dropdown-item" href="#">Action</a></li>
+                                <li><a class="dropdown-item" href="#">Another action</a></li>
+                                <li>
+                                    <a class="dropdown-item" href="#">Something else here</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <img class="logo" src="@(string.IsNullOrEmpty(systemLogoAsImgSrc) ? "" : systemLogoAsImgSrc)"
+                             alt="system-logo" />
+
+                        <div class="dropdown dropdown-user">
+                            <button class="btn btn-user" data-bs-toggle="dropdown" aria-expanded="false">
+                                <span class="first-user-letter">@OfficalName</span>
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="topDropdown">
+                                <li class="header">
+                                    <span class="first-user-letter"> @OfficalName</span>
+                                    <div class="user-info">
+                                        <span class="user-name">
+                                            <span>@Loc["Welcome"],</span>
+                                            <span>@displayName </span>
+                                        </span>
+                                    </div>
+                                </li>
+
+                                <li class="dropdown-item">
+                                    <a class="drop-link" @onclick="Logout">
+                                        <span class="icon">
+                                            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.LogOut"></SVGCrud>
+                                        </span>
+                                        @Loc["Logout"]
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+
                     </div>
-                    <img class="logo" src="@(string.IsNullOrEmpty(systemLogoAsImgSrc) ? "" : systemLogoAsImgSrc)"
-                        alt="system-logo" />
-
-                    <div class="dropdown dropdown-user">
-                        <button class="btn btn-user" data-bs-toggle="dropdown" aria-expanded="false">
-                            <span class="first-user-letter">@OfficalName</span>
-                        </button>
-                        <ul class="dropdown-menu" aria-labelledby="topDropdown">
-                            <li class="header">
-                                <span class="first-user-letter"> @OfficalName</span>
-                                <div class="user-info">
-                                    <span class="user-name">
-                                        <span>@Loc["Welcome"],</span>
-                                        <span>@displayName </span>
-                                    </span>
-                                </div>
-                            </li>
-
-                            <li class="dropdown-item">
-                                <a class="drop-link" @onclick="Logout">
-                                    <span class="icon">
-                                        <SVGCrud SVGType="SVGCrud.SVGTypeEnum.LogOut"></SVGCrud>
-                                    </span>
-                                    @Loc["Logout"]
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-
                 </div>
-            </div>
-        </header>
-        <section class="main-page">
-            <CascadingValue Value="ToggleDialog">
-                <CascadingValue Value="SetRenderFragment">
-                    <CascadingValue Value="Loc">
-                        @Body
+            </header>
+            <section class="main-page">
+                <CascadingValue Value="ToggleDialog">
+                    <CascadingValue Value="SetRenderFragment">
+                        <CascadingValue Value="Loc">
+                            @Body
+                        </CascadingValue>
+                        <PopupHost />
                     </CascadingValue>
-                    <PopupHost />
                 </CascadingValue>
-            </CascadingValue>
 
-            <footer class="page-footer">
-                @* <span class="start-text">
+                <footer class="page-footer">
+                    @* <span class="start-text">
                         Copyright &copy;
                         <a class="primary-link-btn" href="#"> Stingray Tasky</a>
                         <span class="year">2024</span> . All rights reserved.
@@ -109,18 +115,20 @@
                         Power by
                         <a href="#" class="primary-link-btn text-decoration-none">Stingray</a>
                     </span> *@
-                <span class="text-center  flex-grow-1">
-                    @Loc["AllrightsKSA"]
-                </span>
-            </footer>
+                    <span class="text-center  flex-grow-1">
+                        @Loc["AllrightsKSA"]
+                    </span>
+                </footer>
+            </section>
         </section>
-    </section>
-</main>
-<Toast />
-<Loader IsVisible="@isLoaderVisible" />
+    </main>
+}
+@* <Toast />
+<Loader IsVisible="@isLoaderVisible" /> *@
 
 @code {
     private bool IsAuthChecked = false;
+    private bool _authCheckedOnce = false;
     private bool langInitialized = false;
     private bool isLoaderVisible;
     string OfficalName = "";
@@ -131,7 +139,7 @@
     private bool IsSideMenuCollapsed = false;
     private string SideMenuWrapperClass =>
     IsSideMenuCollapsed ? "main-wrapper mainlayout-collapsed" : "main-wrapper";
-
+    private DotNetObjectReference<MainLayout>? _dotNetRef;
     private string systemLogoAsImgSrc = "";
 
     private void ToggleSideMenu()
@@ -140,11 +148,35 @@
     }
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        await CheckAuth(firstRender);
-        await base.OnAfterRenderAsync(firstRender);
-
+        if(firstRender)
+        {
+            _dotNetRef = DotNetObjectReference.Create(this);
+            await JS.InvokeVoidAsync("authListener.register", _dotNetRef);
+            if (!_authCheckedOnce)
+            {
+                _authCheckedOnce = true;
+                await CheckAuth(true);
+            }
+        }
     }
-
+    [JSInvokable]
+    public void ForceLogout()
+    {
+        taskyService.NavigateToLogin();
+    }
+    [JSInvokable]
+    public async Task OnLoginDetected()
+    {
+        await Task.Delay(100);
+        var tokenExists = await localStorageService.ContainKeyAsync("bearerToken");
+        if (!tokenExists)
+            return;
+        var currentUri = NavigationManager.ToAbsoluteUri(NavigationManager.Uri).AbsolutePath;
+        if (currentUri.Contains("login"))
+            NavigationManager.NavigateTo("/");
+        else
+            await CheckAuth(false);
+    }
     protected async override Task OnInitializedAsync()
     {
         displayName = await LocalStorage.GetItemAsStringAsync("NameEnglish");
@@ -224,24 +256,20 @@
 
     private async Task CheckAuth(bool firstRender)
     {
-        if (firstRender || IsAuthChecked)
-            return;
-
-        var isHomePage = NavigationManager.ToAbsoluteUri(NavigationManager.Uri).AbsolutePath == "/";
-
-        IsAuthChecked = true;
         var isTokenExist = await localStorageService.ContainKeyAsync("bearerToken");
         if (!isTokenExist)
         {
             taskyService.NavigateToLogin();
             return;
         }
-
         var token = await localStorageService.GetItemAsStringAsync("bearerToken");
         if (taskyService.IsTokenExpired(token))
         {
             taskyService.NavigateToLogin();
+            return;
         }
+        IsAuthChecked = true;
+        StateHasChanged();
     }
 
 
