@@ -22,13 +22,9 @@ public class GetUnassignedUsersToDepartmentHandler : IRequestHandler<GetUnassign
     public async Task<List<UserDto>> Handle(GetUnassignedUsersToDepartmentQuery request, CancellationToken cancellationToken)
     {
         List<UserDto> allusers = new List<UserDto>();
-
-
-        var data = await _userRepository.FindBy(K => K.DepartmentId == null);
-
-        data.Value.ToList().ForEach(k => allusers.Add(k.CopyToDto()));
-
-
+        var data = await _userRepository.FindBy(K => (K.DepartmentId == null && K.IsActive));
+        if(data.Value != null)
+			data.Value.ToList().ForEach(k => allusers.Add(k.CopyToDto()));
         return allusers;
     }
 }

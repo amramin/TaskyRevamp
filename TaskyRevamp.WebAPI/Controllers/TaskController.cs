@@ -2,6 +2,7 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using System.Threading.Tasks;
+using TaskyRevamp.Dto.Enums;
 using TaskyRevamp.Dto.Enums.SearchFields;
 using TaskyRevamp.Dto.GeneralDto;
 using TaskyRevamp.Dto.TaskComment;
@@ -28,21 +29,20 @@ public class TaskController : ControllerBase
     {
         var res = await _mediator.Send(new CreateTaskCommand(taskDto));
         return Ok(res);
-
-
-
-
     }
+
     [HttpGet("CompleteTask/{id}")]
     public async Task<IActionResult> CompleteTask(Guid id)
     {
         return Ok(await _mediator.Send(new CompleteTaskCommand(id)));
     }
+
     [HttpPost("ReopenTask")]
     public async Task<IActionResult> ReopenTask([FromBody] TaskCommentDto TaskCommentDto)
     {
         return Ok(await _mediator.Send(new ReopenTaskCommand(TaskCommentDto)));
     }
+
     [HttpPost("UpdateTask")]
     public async Task<IActionResult> UpdateTask([FromBody] CreateTaskDto Task)
     {
@@ -55,6 +55,7 @@ public class TaskController : ControllerBase
         var res = await _mediator.Send(new UpdateTasksDepartmentCommand(oldId, newId));
         return Ok(res);
     }
+
     [HttpGet("ChangeTaskProgress/{taskId}/{progress}")]
     public async Task<IActionResult> ChangeTaskProgress(Guid taskId, int progress)
     {
@@ -85,16 +86,16 @@ public class TaskController : ControllerBase
          [FromQuery] string sortByColumnName = "CreateDate",
          [FromQuery] bool sortAscending = true,
          [FromQuery] List<SearchFieldTask> searchFields = null,
-         [FromQuery] string searchText = null)
+         [FromQuery] string searchText = null,
+         [FromQuery] int viewType=(int) ViewTypes.OverAllView,
+        [FromQuery] Guid? viewTypeId= null,bool IsCompleted=false)
     {
 
         var size = pageSize ?? paginationSettings.Value.DefaultPageSize;
-        var all = await _mediator.Send(new GetTasksQuery(pageNumber, size, sortByColumnName, sortAscending, searchFields, searchText));
+        var all = await _mediator.Send(new GetTasksQuery(pageNumber, size, sortByColumnName, sortAscending, searchFields, searchText,viewType,viewTypeId,IsCompleted));
 
         return Ok(all);
     }
-
-
 
     [HttpGet("GetTaskById/{id}/{currentUserId}")]
     public async Task<IActionResult> GetTaskById(Guid id, Guid currentUserId)
@@ -105,10 +106,14 @@ public class TaskController : ControllerBase
     [HttpGet("GetTasksForDDL/{id}")]
     public async Task<IActionResult> GetTasksForDDL(Guid id)
     {
-
         var all = await _mediator.Send(new GetTasksForDDLQuery(id));
-
         return Ok(all);
+    }
+
+    [HttpGet("GetMainAndParentTasks")]
+    public async Task<IActionResult> GetMainAndParentTasks()
+    {
+        return Ok(await _mediator.Send(new GetMainAndParentTasksQuery()));
     }
 
 

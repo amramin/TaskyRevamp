@@ -38,7 +38,16 @@ namespace TaskyRevamp.WebAPI.Controllers
             var result = await _mediator.Send(new GetTypeConfigurationQuery(pageNumber, size, sortByColumnName, sortAscending, searchFields, searchText));
             return Ok(result);
         }
-
+        [HttpGet("GetTypeSettingsView")]
+        public async Task<IActionResult> GetTypeSettingsView(
+            [FromServices] IOptions<PaginationSettings> paginationSettings,
+            [FromQuery] int pageNumber = 1,
+            [FromQuery] int? pageSize = null, bool IsCompleted = false)
+        {
+            var size = pageSize ?? paginationSettings.Value.DefaultPageSize;
+            var result = await _mediator.Send(new GetTypeConfigurationViewQuery(pageNumber, size,IsCompleted));
+            return Ok(result);
+        }
         [HttpGet("GetTypeSettingById/{id}")]
         public async Task<IActionResult> GetTypeSettingById(Guid id)
         {

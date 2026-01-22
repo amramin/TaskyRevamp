@@ -1,4 +1,5 @@
-﻿using TaskyRevamp.Dto.Enums.SearchFields;
+﻿using TaskyRevamp.Dto.Enums;
+using TaskyRevamp.Dto.Enums.SearchFields;
 using TaskyRevamp.Dto.GeneralDto;
 using TaskyRevamp.Dto.SystemConfiguration;
 using TaskyRevamp.Dto.TaskSourceDto;
@@ -34,7 +35,21 @@ namespace TaskyRevamp.Client.Consumer
 
             return res;
         }
+        public async Task<CommonApiResponse<PagedResult<SourceDto>>> GetSourcesView(int pageNumber, int pageSize, bool IsCompleted = false)
+        {
+            var query = new List<string>
+            {
+                $"pageNumber={pageNumber}",
+                $"pageSize={pageSize}",
+                $"IsCompleted={IsCompleted}"
+            };
+            var queryString = "?" + string.Join("&", query);
+            var url = $"api/SourceSetting/GetSourceSettingsView{queryString}";
 
+            var res = await _taskyService.GetFromJsonAsync<CommonApiResponse<PagedResult<SourceDto>>>(url);
+
+            return res;
+        }
         public async Task<CommonApiResponse<List<SourceDto>>> GetSourcesWithoutPagination()
         {
             var url = $"api/SourceSetting/GetSourceWithoutPagination";

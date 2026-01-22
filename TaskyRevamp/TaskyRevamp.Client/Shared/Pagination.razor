@@ -94,7 +94,7 @@
     [Parameter] public EventCallback<int> PageSizeChangedCallback { get; set; }
 
     [Parameter] public bool ShowPageSize { get; set; } = true;
-    private int[] PageSizeOptions = new[] { 5, 10, 25, 100 };
+    [Parameter] public int[] PageSizeOptions { get; set; } = new[] { 5, 10, 25, 100 };
 
     private async Task OnPageChanged(int page)
     {

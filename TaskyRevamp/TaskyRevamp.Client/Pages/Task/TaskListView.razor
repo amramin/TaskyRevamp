@@ -1,11 +1,11 @@
 ﻿@using Blazored.LocalStorage
 @using TaskyRevamp.Client.Consumer
-@using TaskyRevamp.Client.Pages.Task.Components
 @using TaskyRevamp.Client.Services
+@using TaskyRevamp.Dto.Enums
 @using TaskyRevamp.Dto.Enums.SearchFields
 @using TaskyRevamp.Dto.SystemConfiguration
 @using TaskyRevamp.Dto.TaskDto
-@using TaskyRevamp.Dto.TaskViews
+@using Syncfusion.Blazor
 @inject IStringLocalizer<SharedResources> Loc
 @inject ToastService ToastService
 @inject PopupService PopupService
@@ -15,87 +15,96 @@
 @inject DefaultColumnsSettingConsumer _defaultColumnsSettingConsumer
 @inject ILocalStorageService LocalStorageService
 
-<div>
-
+<div class="table-wrapper">
+    <div class="table-caption fs-4" @onclick="Collapse">
+        <span class="e-icons @(IsCollapse ? "e-chevron-right" : "e-chevron-down")"></span>
+        @Title
+    </div>
     @if (allTaks != null && allTaks.Any())
-{
-                    <div class="table-responsive sticky-header-custom">
-            <SortableTable TItem="CreateTaskDto" Columns="@Columns.Where(p => p.IsVisible).OrderBy(k => k.Order).ToList()" Items="@allTaks"
-                        SortColumn="@currentSortColumn" SortAscending="@sortAscending" OnSortRequested="HandleSort">
+    {
+        <div style="display:@(IsCollapse ? "none" : "block")">
+            <div class="table-responsive task-table">
+                <SortableTable TItem="CreateTaskDto" Columns="@tableColumns" Items="@allTaks"
+                    SortColumn="@currentSortColumn" SortAscending="@sortAscending" OnSortRequested="HandleSort">
 
-                        <RowTemplate>
-                            @foreach (var task in allTaks)
-                            {
-                                <tr>
-                            @foreach (var column in Columns.Where(p=>p.IsVisible).OrderBy(k=>k.Order))
-                                    {
-                                            <td style="white-space: nowrap; overflow: visible; text-overflow: unset;">
-                                            @RenderColumnValue(task, column.Field)
-                                        </td>
-                                    }
-                                    <td>
-                                        <div class="dropdown actions">
-                                            <button class="btn btn-action-24" type="button" data-bs-toggle="dropdown"
-                                                    aria-expanded="false">
-                                                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.EllipseVertical"></SVGCrud>
-                                            </button>
-                                            <ul class="dropdown-menu">
+                    <RowTemplate>
+                        @foreach (var task in allTaks)
+                        {
+                            <tr>
+                                @foreach (var column in tableColumns)
+                                {
+                                    <td class="@(column.Field == "Title" ? "" : "text-nowrap")">
+                                        @RenderColumnValue(task, column.Field)
+                                    </td>
+                                }
+                                <td>
+                                    <div class="dropdown actions">
+                                        <button class="btn btn-action-24" type="button" data-bs-toggle="dropdown"
+                                            aria-expanded="false">
+                                            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.EllipseVertical"></SVGCrud>
+                                        </button>
+                                        <ul class="dropdown-menu">
+                                            <li>
+                                                <button class="dropdown-item" @onclick="@(() => ViewTaskDetails(task.Id))">
+                                                    <span class="icon">
+                                                        <SVGCrud SVGType="SVGCrud.SVGTypeEnum.OpenEye"></SVGCrud>
+                                                    </span>
+                                                    @Loc["Taskdetails"]
+                                                </button>
+                                            </li>
+                                            <li>
+                                                <button class="dropdown-item" @onclick="@(() => OnEdit.InvokeAsync(task.Id))">
+                                                    <span class="icon">
+                                                        <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Edit"></SVGCrud>
+                                                    </span>
+                                                    @Loc["EditTask"]
+                                                </button>
+                                            </li>
+                                            @if (task.ActualProcess == 100 && task.TaskStatus ==
+                                                                                Guid.Parse("6EE4574D-C439-45B4-223A-08DE3318A61C"))
+                                            {
                                                 <li>
-                                                    <button class="dropdown-item" @onclick="@(() => ViewTaskDetails(task.Id))">
+                                                    <button class="dropdown-item" @onclick="@(() => CompleteTask(task.Id))">
                                                         <span class="icon">
                                                             <SVGCrud SVGType="SVGCrud.SVGTypeEnum.OpenEye"></SVGCrud>
                                                         </span>
-                                                        @Loc["Taskdetails"]
+                                                        @Loc["Complete"]
                                                     </button>
                                                 </li>
-                                        <li>
-                                            <button class="dropdown-item" @onclick="@(() => OnEdit.InvokeAsync(task.Id))">
-                                                <span class="icon">
-                                                    <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Edit"></SVGCrud>
-                                                </span>
-                                                @Loc["EditTask"]
-                                            </button>
-                                        </li>
-                                                    @if (task.ActualProcess == 100 && task.TaskStatus == Guid.Parse("6EE4574D-C439-45B4-223A-08DE3318A61C"))
-                                                    {
-                                                        <li>
-                                                            <button class="dropdown-item" @onclick="@(() => CompleteTask(task.Id))">
-                                                                <span class="icon">
-                                                                    <SVGCrud SVGType="SVGCrud.SVGTypeEnum.OpenEye"></SVGCrud>
-                                                                </span>
-                                                                @Loc["Complete"]
-                                                            </button>
-                                                        </li>
-                                                    }
-                                                    @if (task.ActualProcess == 100 && task.TaskStatus == Guid.Parse("6EE4574D-C439-45B4-223A-08DE3318A61C"))
-                                                    {
-                                                        <li>
-                                                            <button class="dropdown-item" @onclick="@(() => OnReopen.InvokeAsync(task.Id))">
-                                                                <span class="icon">
-                                                                    <SVGCrud SVGType="SVGCrud.SVGTypeEnum.OpenEye"></SVGCrud>
-                                                                </span>
-                                                    @Loc["ReOpen"]
-                                                            </button>
-                                                        </li>
-                                                    }
-                                                </ul>
-                                        </div>
-                                    </td>
-                                </tr>
-                            }
-                        </RowTemplate>
-                    </SortableTable>
+                                            }
+                                            @if (task.ActualProcess == 100 && task.TaskStatus ==
+                                                                                Guid.Parse("6EE4574D-C439-45B4-223A-08DE3318A61C"))
+                                            {
+                                                <li>
+                                                    <button class="dropdown-item" @onclick="@(() => OnReopen.InvokeAsync(task.Id))">
+                                                        <span class="icon">
+                                                            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.OpenEye"></SVGCrud>
+                                                        </span>
+                                                        @Loc["ReOpen"]
+                                                    </button>
+                                                </li>
+                                            }
+                                        </ul>
                                     </div>
-                <Pagination CurrentPage="@currentPage" TotalPages="@totalPages" TotalCount="@totalCount"
-                    PageSize="@pageSize" PageChanged="ChangePage" PageSizeChangedCallback="ChangePageSize" />
-                    }
-                    else
-                    {
-                        <NoDataAvailable MessageTitle="@Loc["NoTasks"]" MessageSubtitle="@Loc["AddTaskToStart"]"
-                                         ButtonText="@Loc["AddTask"]" OnButtonClick="Add" />
-                    }
-
+                                </td>
+                            </tr>
+                        }
+                    </RowTemplate>
+                </SortableTable>
             </div>
+            <Pagination CurrentPage="@currentPage" TotalPages="@totalPages" TotalCount="@totalCount" PageSize="@pageSize"
+                PageChanged="ChangePage" PageSizeChangedCallback="ChangePageSize" />
+        </div>
+    }
+    else
+    {
+        <div style="display:@(IsCollapse ? "none" : "block")">
+            <NoDataAvailable MessageTitle="@Loc["NoTasks"]" MessageSubtitle="@Loc["AddTaskToStart"]"
+                ButtonText="@Loc["AddTask"]" OnButtonClick="Add" />
+        </div>
+    }
+
+</div>
 
 @code {
     public bool IsAdmine;// = roleService.IsAllowed(int)Modules., (int)ModuleActions.EditReportPermission) ;//true;//
@@ -104,6 +113,10 @@
     [Parameter] public EventCallback<Guid> OnDelete { get; set; }
     [Parameter] public EventCallback<Guid> OnShowUsers { get; set; }
     [Parameter] public EventCallback<Guid> OnAdd { get; set; }
+    [Parameter] public int ViewType { get; set; } = (int)ViewTypes.OverAllView;
+    [Parameter] public Guid? ViewTypeId { get; set; } = null;
+    [Parameter] public string Title { get; set; } = string.Empty;
+    [Parameter] public bool IsCompleted { get; set; } = false;
     CreateTaskDto taskdto = new CreateTaskDto();
     private List<StatusSettingsDto> Statuses = new();
     List<CreateTaskDto> allTaks = new List<CreateTaskDto>();
@@ -124,89 +137,65 @@
     private int totalPages = 1;
     private int totalCount = 0;
     private int pageSize = 10;
-    private List<SortableColumn> Columns = new();
-
+    bool IsCollapse = false;
     private List<DefaultColumnsSettingDto> ColumnsList = new();
-    public async Task<List<SortableColumn>> GetColumns()
-    {
-        var columns = await LocalStorageService.GetItemAsync<List<SortableColumn>>("AllColumn");
-        return columns;
-    }
-    private async Task<List<SortableColumn>> GetDefaultColumns()
-    {
-        List<SortableColumn> column = new List<SortableColumn>();
-        column = new List<SortableColumn>()
-    {
-        new() { Field = "Title", DisplayName  = Loc["Title"], Order = 0, IsVisible = true },
-        new() { Field = "Priority", DisplayName =  Loc["Priority2"], Order = 1, IsVisible = true },
-        new() { Field = "Status", DisplayName =  Loc["TaskStatus"], Order = 2, IsVisible = true },
-        new() { Field = "ActualProgress", DisplayName = Loc["ActualProgress"], Order = 3, IsVisible = true },
-        new() { Field = "Start Date", DisplayName = Loc["StartDate"], Order = 4, IsVisible = true },
-            new() { Field = "End Date", DisplayName = Loc["EndDate"], Order = 5, IsVisible = true },
-        new() { Field = "weight", DisplayName = Loc["weight"], Order = 6, IsVisible = true },
-        new() { Field = "Assigned To", DisplayName = Loc["AssigneduserNames"], Order = 7, IsVisible = true },
-        new() { Field = "Assigned To Department", DisplayName =Loc["AssignedToDepartment"], Order = 8, IsVisible = true },
-        new() { Field = "Source", DisplayName =Loc["Source"], Order = 9, IsVisible = true },
-        new() { Field = "Dependency", DisplayName = Loc["Dependency"], Order = 10, IsVisible = true },
-        new() { Field = "Created By", DisplayName = Loc["CreatedBy"], Order = 11, IsVisible = true },
-        new() { Field = "Duration", DisplayName = Loc["Duration"], Order = 12, IsVisible = true },
-        new() { Field = "Created by department", DisplayName = Loc["Createdbydepartment"], Order = 13, IsVisible = true },
-        new() { Field = "Planned Progress", DisplayName = Loc["PlannedProgress"], Order = 14, IsVisible = true },
-        new() { Field = "Creation Date", DisplayName = Loc["CreationDate"], Order = 15, IsVisible = true },
-        new() { Field = "Type", DisplayName = Loc["Type"], Order = 16, IsVisible = true },
-        new() { Field = "Actual Weight", DisplayName = Loc["ActualWeight"], Order = 17, IsVisible = true },
-        new() { Field = "Planned Weight", DisplayName =Loc["PlannedWeight"], Order = 18, IsVisible = true },
-
-
-    };
-
-        await LocalStorageService.SetItemAsync("AllColumn", column);
-        var all = await LocalStorageService.GetItemAsync<List<SortableColumn>>("AllColumn");
-        return all;
-    }
 
     protected override async Task OnInitializedAsync()
     {
+        if (IsCompleted)
+        {
+            if (ViewTypeId is null)
+            {
+                var value = await LocalStorageService.GetItemAsStringAsync("overall-c");
+                IsCollapse = bool.TryParse(value, out var result) && result;
+            }
+            else
+            {
+                var value = await LocalStorageService.GetItemAsStringAsync($"{ViewTypeId?.ToString()}-c");
+                IsCollapse = bool.TryParse(value, out var result) && result;
+            }
+        }
+        else
+        {
+            if (ViewTypeId is null)
+            {
+                var value = await LocalStorageService.GetItemAsStringAsync("overall");
+                IsCollapse = bool.TryParse(value, out var result) && result;
+            }
+            else
+            {
+                var value = await LocalStorageService.GetItemAsStringAsync($"{ViewTypeId?.ToString()}");
+                IsCollapse = bool.TryParse(value, out var result) && result;
+            }
+        }
         var statusres = await _statusSettingConsumer.GetStatusConfiguration();
         if (statusres.Success && statusres != null && statusres.Data != null)
         {
             Statuses = statusres.Data;
         }
-        var olddata = await GetColumns();
-        if (olddata != null && olddata.Count > 0)
-        {
-            Columns = olddata.OrderBy(c => c.Order).ToList();
-        }
-        else
-        {
-            //if yes load from session else load default
-
-            var all = await GetDefaultColumns();
-            Columns = all.ToList();
-        }
-//         tableColumns = new()
-// {
-// new() { Field = "Title", DisplayName = Loc["Title"] },
-// new() { Field = "Priority", DisplayName = Loc["Priority2"] },
-// new() { Field = "Status", DisplayName = Loc["TaskStatus"] },
-// new() { Field = "Actual Progress", DisplayName = Loc["ActualProgress"] },
-// new() { Field = "Start Date", DisplayName = Loc["StartDate"] },
-// new() { Field = "End Date", DisplayName = Loc["EndDate"] },
-// new() { Field = "weight", DisplayName = Loc["weight"] },
-// new() { Field = "Assigned To", DisplayName = Loc["AssigneduserNames"] },
-// new() { Field = "Assigned To Department", DisplayName = Loc["AssignedToDepartment"] },
-// new() { Field = "Source", DisplayName = Loc["Source"] },
-// new() { Field = "Dependency", DisplayName = Loc["Dependency"] },
-// new() { Field = "Created By", DisplayName = Loc["CreatedBy"] },
-// new() { Field = "Created by department", DisplayName = Loc["Createdbydepartment"] },
-// new() { Field = "Duration", DisplayName = Loc["Duration"] },
-// new() { Field = "Planned Progress", DisplayName = Loc["PlannedProgress"] },
-// new() { Field = "Creation Date", DisplayName = Loc["CreationDate"] },
-// new() { Field = "Type", DisplayName = Loc["Type"] },
-// new() { Field = "Actual Weight", DisplayName = Loc["ActualWeight"] },
-// new() { Field = "Planned Weight", DisplayName = Loc["PlannedWeight"] },
-// new() { Field = "Action", DisplayName = Loc["Action"] ,IsSortable = false},
-// };
+        tableColumns = new()
+{
+new() { Field = "Title", DisplayName = Loc["Title"] },
+new() { Field = "Priority", DisplayName = Loc["Priority2"] },
+new() { Field = "Status", DisplayName = Loc["Status"] },
+new() { Field = "Actual Progress", DisplayName = Loc["ActualProgress"] },
+new() { Field = "Start Date", DisplayName = Loc["StartDate"] },
+new() { Field = "End Date", DisplayName = Loc["EndDate"] },
+new() { Field = "weight", DisplayName = Loc["weight"] },
+new() { Field = "Assigned To", DisplayName = Loc["AssignedTo"] },
+new() { Field = "Assigned To Department", DisplayName = Loc["AssignedToDepartment"] },
+new() { Field = "Source", DisplayName = Loc["Source"] },
+new() { Field = "Dependency", DisplayName = Loc["Dependency"] },
+new() { Field = "Created By", DisplayName = Loc["CreatedBy"] },
+new() { Field = "Created by department", DisplayName = Loc["CreatedByDepartment"] },
+new() { Field = "Duration", DisplayName = Loc["Duration"] },
+new() { Field = "Planned Progress", DisplayName = Loc["PlannedProgress"] },
+new() { Field = "Creation Date", DisplayName = Loc["CreationDate"] },
+new() { Field = "Type", DisplayName = Loc["Type"] },
+new() { Field = "Actual Weight", DisplayName = Loc["ActualWeight"] },
+new() { Field = "Planned Weight", DisplayName = Loc["PlannedWeight"] },
+new() { Field = "Action", DisplayName = Loc["Action"] ,IsSortable = false},
+};
 
         await GetTasks();
 
@@ -223,7 +212,7 @@
         // ColumnsList = res.Data;
 
         // Filter and order by settings
-        Columns = Columns
+        tableColumns = tableColumns
         .Where(c => ColumnsList.Any(s => s.IsActive &&
         string.Equals(s.NameEnglish, c.Field, StringComparison.OrdinalIgnoreCase)))
         .OrderBy(c => ColumnsList
@@ -236,8 +225,21 @@
         // o => o.ColumnName,
         // (c, o) => c)
         // .ToList();
+        if (allTaks is null || !allTaks.Any())
+        {
+            IsCollapse = true;
+        }
         StateHasChanged();
+
     }
+    // protected override async Task OnParametersSetAsync()
+    // {
+    // currentPage = 1;
+    // totalPages = 1;
+    // totalCount = 0;
+    // pageSize = 10;
+    // await GetTasks();
+    // }
     public async Task ResetPage()
     {
         await GetTasks();
@@ -266,7 +268,7 @@
     private async Task CompleteConfirmed(Guid id)
     {
         var result = await _taskConsumer.CompleteTask(id);
-        if (result.Success &&result.Data)
+        if (result.Success && result.Data)
         {
             await GetTasks();
             await ToastService.ShowToastAsync(Loc["Completedsuccessfully"], "success");
@@ -282,44 +284,44 @@
     private void CompleteTask(Guid id)
     {
         PopupService.ShowConfirmation(
-                @Loc["SureCompleteTask"],
-                "Yes, Complete",
-                async (confirmed) =>
-                {
-                    if (confirmed)
-                        await CompleteConfirmed(id);
-                },
-                ConfirmationType.Primary
-            );
+        @Loc["SureCompleteTask"],
+        "Yes, Complete",
+        async (confirmed) =>
+        {
+            if (confirmed)
+                await CompleteConfirmed(id);
+        },
+        ConfirmationType.Primary
+        );
     }
     // private async Task ReopenConfirmed(Guid id)
     // {
-    //     var result = await _taskConsumer.ReopenTask(id);
-    //     if (result.Success && result.Data)
-    //     {
-    //         await GetTasks();
-    //         await ToastService.ShowToastAsync(Loc["Reopenedsuccessfully"], "success");
+    // var result = await _taskConsumer.ReopenTask(id);
+    // if (result.Success && result.Data)
+    // {
+    // await GetTasks();
+    // await ToastService.ShowToastAsync(Loc["Reopenedsuccessfully"], "success");
 
-    //     }
-    //     else
-    //     {
-    //         await ToastService.ShowToastAsync(Loc["ReopenFailed"], "danger");
-    //     }
+    // }
+    // else
+    // {
+    // await ToastService.ShowToastAsync(Loc["ReopenFailed"], "danger");
+    // }
 
-    //     StateHasChanged();
+    // StateHasChanged();
     // }
     // private void ReopenTask(Guid id)
     // {
-    //     PopupService.ShowConfirmation(
-    //             @Loc["SureReopenTask"],
-    //             "Yes, Reopen",
-    //             async (confirmed) =>
-    //             {
-    //                 if (confirmed)
-    //                     await ReopenConfirmed(id);
-    //             },
-    //             ConfirmationType.Primary
-    //         );
+    // PopupService.ShowConfirmation(
+    // @Loc["SureReopenTask"],
+    // "Yes, Reopen",
+    // async (confirmed) =>
+    // {
+    // if (confirmed)
+    // await ReopenConfirmed(id);
+    // },
+    // ConfirmationType.Primary
+    // );
     // }
     private async Task DeleteConfirmed(Guid Id)
     {
@@ -376,8 +378,8 @@
     public void ShowEditPopup(Guid id)
     {
         PopupService.ShowNew(@<Edit UserDelegationId="@id.ToString()" IsAdmine="@IsAdmine" OnValidSubmit="OnInitializedAsync">
-        </Edit>
-    , headerText:
+</Edit>
+, headerText:
         @Loc["EditDelegation"]);
     }
     private async Task OnConfirmDelete(bool confirmed)
@@ -436,7 +438,11 @@ SearchFieldTask.PlannedProgress
         switch (field)
         {
             case "Title":
-                builder.AddContent(0, task.Title);
+                builder.OpenElement(0, "span");
+                builder.AddAttribute(1, "class", "task-title");
+                builder.AddAttribute(2, "title", task.Title ?? string.Empty);
+                builder.AddContent(3, task.Title);
+                builder.CloseElement();
                 break;
             case "Priority":
                 builder.AddContent(0, task.PriorityName);
@@ -457,14 +463,7 @@ SearchFieldTask.PlannedProgress
                 builder.AddContent(0, task.weight);
                 break;
             case "Assigned To":
-                builder.AddContent(0, (RenderFragment)(b =>
-                {
-                    b.OpenComponent<Initials>(0);
-                    b.AddAttribute(1, "Names", task.AssigneduserNames);
-                    b.AddAttribute(2, "Size", 32);
-                    b.AddAttribute(3, "Black", true);
-                    b.CloseComponent();
-                }));
+                builder.AddContent(0, task.AssigneduserNames);
                 break;
             case "Assigned To Department":
                 builder.AddContent(0, task.AssignedDepartmentName);
@@ -479,14 +478,7 @@ SearchFieldTask.PlannedProgress
                 builder.AddContent(0, task.Createdbydepartment);
                 break;
             case "Created By":
-                builder.AddContent(0, (RenderFragment)(b =>
-                {
-                    b.OpenComponent<Initials>(0);
-                    b.AddAttribute(1, "Names", task.CreatedByName);
-                    b.AddAttribute(2, "Size", 32);
-                    b.AddAttribute(3, "Black", true);
-                    b.CloseComponent();
-                }));
+                builder.AddContent(0, task.CreatedByName);
                 break;
             case "Duration":
                 builder.AddContent(0, task.Duration);
@@ -515,6 +507,8 @@ SearchFieldTask.PlannedProgress
     {
         currentSortColumn = sortInfo.Column;
         sortAscending = sortInfo.Ascending;
+
+
         if (sortAscending == null)
         {
             // third click → reset to default sorting
@@ -523,19 +517,55 @@ SearchFieldTask.PlannedProgress
         }
         await GetTasks();
     }
+
     private void ViewTaskDetails(Guid id)
     {
         navigationManager.NavigateTo($"/task/details/{id}");
     }
+
     public async Task GetTasks(bool isSearch = false, string searchTerm = null)
     {
-        var res = await _taskConsumer.GetTasks(currentPage, pageSize, currentSortColumn, sortAscending.Value, isSearch ? searchFields : null, isSearch ? searchTerm : null);
+
+
+        var res = await _taskConsumer.GetTasks(currentPage, pageSize, currentSortColumn, sortAscending.Value, isSearch ?
+        searchFields : null, isSearch ? searchTerm : null, ViewType, ViewTypeId, IsCompleted);
         allTaks = res.Data.Items.ToList();
+
         if (!(res?.Success ?? false) || res.Data is null)
             return;
+
         var data = res.Data;
         totalPages = data.TotalPages;
         totalCount = data.TotalCount;
+
         StateHasChanged();
+    }
+
+    private async Task Collapse(MouseEventArgs args)
+    {
+        IsCollapse = !IsCollapse;
+        if (IsCompleted)
+        {
+            if (ViewTypeId is null)
+            {
+                await LocalStorageService.SetItemAsStringAsync("overall-c", IsCollapse.ToString());
+
+            }
+            else
+            {
+                await LocalStorageService.SetItemAsStringAsync($"{ViewTypeId.ToString()}-c", IsCollapse.ToString());
+            }
+        }
+        else
+        {
+            if (ViewTypeId is null)
+            {
+                await LocalStorageService.SetItemAsStringAsync("overall", IsCollapse.ToString());
+            }
+            else
+            {
+                await LocalStorageService.SetItemAsStringAsync(ViewTypeId.ToString(), IsCollapse.ToString());
+            }
+        }
     }
 }

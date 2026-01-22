@@ -20,9 +20,9 @@ namespace TaskyRevamp.Client.Consumer
             var res = await _taskyService.GetFromJsonAsync<CommonApiResponse<List<CreateTaskDto>>>(url);
             return res;
         }
-        public async Task<CommonApiResponse<PagedResult<CreateTaskDto>>> GetTasks(int pageNumber, int pageSize, string sortByColumnName, bool sortAscending, List<SearchFieldTask> searchFields = null, string searchText = null)
+        public async Task<CommonApiResponse<PagedResult<CreateTaskDto>>> GetTasks(int pageNumber, int pageSize, string sortByColumnName, bool sortAscending, List<SearchFieldTask> searchFields = null, string searchText = null,int ViewType=1,Guid? ViewTypeId=null, bool IsCompleted = false)
         {
-            var queryString = _taskyService.PreparePaginatedSearchQueryString(pageNumber, pageSize, sortByColumnName, sortAscending, searchFields, searchText);
+            var queryString = _taskyService.PreparePaginatedSearchQueryString(pageNumber, pageSize, sortByColumnName, sortAscending, searchFields, searchText,ViewType,ViewTypeId,IsCompleted);
             var url = $"api/Task/GetAllTask{queryString}";
             var res = await _taskyService.GetFromJsonAsync<CommonApiResponse<PagedResult<CreateTaskDto>>>(url);
             return res;
@@ -38,6 +38,12 @@ namespace TaskyRevamp.Client.Consumer
         {
             var url = $"api/Task/GetTaskById/{id}/{currentUserId}";
             var res = await _taskyService.GetFromJsonAsync<CommonApiResponse<CreateTaskDto>>(url);
+            return res;
+        }
+        public async Task<CommonApiResponse<List<CreateTaskDto>>> GetMainAndParentTasks()
+        {
+            var url = $"api/Task/GetMainAndParentTasks";
+            var res = await _taskyService.GetFromJsonAsync<CommonApiResponse<List<CreateTaskDto>>>(url);
             return res;
         }
 
@@ -58,7 +64,6 @@ namespace TaskyRevamp.Client.Consumer
         {
             var url = $"api/Task/CompleteTask/{TaskId}";
             var res = await _taskyService.GetFromJsonAsync<CommonApiResponse<bool>>(url);
-
             return res;
         }
         public async Task<CommonApiResponse<bool>> ReopenTask(TaskCommentDto taskCommentDto)
@@ -71,28 +76,24 @@ namespace TaskyRevamp.Client.Consumer
         {
             var url = $"api/Task/UpdateTasksDepartment/{oldId}/{newId}";
             var res = await _taskyService.GetFromJsonAsync<CommonApiResponse<bool>>(url);
-
             return res;
         }
         public async Task<CommonApiResponse<bool>> ChangeTaskProgress(Guid TaskId, int Progress)
         {
             var url = $"api/Task/ChangeTaskProgress/{TaskId}/{Progress}";
             var res = await _taskyService.GetFromJsonAsync<CommonApiResponse<bool>>(url);
-
             return res;
         }
         public async Task<CommonApiResponse<bool>> CheckOpenedTaskForUser(Guid userId)
         {
             var url = $"api/Task/CheckOpenedTaskForUser/{userId}";
             var res = await _taskyService.GetFromJsonAsync<CommonApiResponse<bool>>(url);
-
             return res;
         }
         public async Task<CommonApiResponse<bool>> DeleteTask(Guid id)
         {
             var url = $"api/Task/{id}";
             var res = await _taskyService.DeleteFromJsonAsync<CommonApiResponse<bool>>(url);
-
             return res;
         }
     }

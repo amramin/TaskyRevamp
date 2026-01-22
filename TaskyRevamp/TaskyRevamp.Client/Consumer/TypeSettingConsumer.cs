@@ -23,6 +23,21 @@ namespace TaskyRevamp.Client.Consumer
 
             return res;
         }
+        public async Task<CommonApiResponse<PagedResult<TypeDto>>> GetTypesView(int pageNumber, int pageSize,bool IsCompleted = false)
+        {
+            var query = new List<string>
+            {
+                $"pageNumber={pageNumber}",
+                $"pageSize={pageSize}",
+                $"IsCompleted={IsCompleted}",
+            };
+            var queryString = "?" + string.Join("&", query);
+
+            var url = $"api/TypeSetting/GetTypeSettingsView{queryString}";
+            var res = await _taskyService.GetFromJsonAsync<CommonApiResponse<PagedResult<TypeDto>>>(url);
+
+            return res;
+        }
         public async Task<CommonApiResponse<List<TypeDto>>> GetTaskTypesForDDL()
         {
 

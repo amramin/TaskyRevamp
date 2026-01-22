@@ -871,6 +871,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Delayed.
+        /// </summary>
+        public static string Delayed {
+            get {
+                return ResourceManager.GetString("Delayed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Delete.
         /// </summary>
         public static string Delete {
@@ -1978,6 +1987,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Next months.
+        /// </summary>
+        public static string NextMonths {
+            get {
+                return ResourceManager.GetString("NextMonths", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No.
         /// </summary>
         public static string No {
@@ -2145,6 +2163,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string Order {
             get {
                 return ResourceManager.GetString("Order", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Over all.
+        /// </summary>
+        public static string OverAllView {
+            get {
+                return ResourceManager.GetString("OverAllView", resourceCulture);
             }
         }
         
@@ -2734,6 +2761,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Source.
+        /// </summary>
+        public static string SourceView {
+            get {
+                return ResourceManager.GetString("SourceView", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Start date.
         /// </summary>
         public static string StartDate {
@@ -2775,6 +2811,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string StatusOptions {
             get {
                 return ResourceManager.GetString("StatusOptions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Status.
+        /// </summary>
+        public static string StatusView {
+            get {
+                return ResourceManager.GetString("StatusView", resourceCulture);
             }
         }
         
@@ -3076,6 +3121,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to This month.
+        /// </summary>
+        public static string ThisMonth {
+            get {
+                return ResourceManager.GetString("ThisMonth", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to  This priority cannot be deleted because it is currently used in active tasks.
         /// </summary>
         public static string Thisprioritycannotb {
@@ -3122,6 +3176,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to This week.
+        /// </summary>
+        public static string ThisWeek {
+            get {
+                return ResourceManager.GetString("ThisWeek", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Thursday.
         /// </summary>
         public static string Thursday {
@@ -3136,6 +3199,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string Time {
             get {
                 return ResourceManager.GetString("Time", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Timeline.
+        /// </summary>
+        public static string TimeLineView {
+            get {
+                return ResourceManager.GetString("TimeLineView", resourceCulture);
             }
         }
         
@@ -3190,6 +3262,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string ToDate {
             get {
                 return ResourceManager.GetString("ToDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Today.
+        /// </summary>
+        public static string Today {
+            get {
+                return ResourceManager.GetString("Today", resourceCulture);
             }
         }
         
@@ -3289,6 +3370,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string TypeSure {
             get {
                 return ResourceManager.GetString("TypeSure", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Type.
+        /// </summary>
+        public static string TypeView {
+            get {
+                return ResourceManager.GetString("TypeView", resourceCulture);
             }
         }
         
