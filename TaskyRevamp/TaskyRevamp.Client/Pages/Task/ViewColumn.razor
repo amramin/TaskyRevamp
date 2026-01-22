@@ -1,6 +1,4 @@
-﻿
-
-@using Blazored.LocalStorage
+﻿@using Blazored.LocalStorage
 @using TaskyRevamp.Client.Consumer
 @using TaskyRevamp.Client.Pages.SystemConfiguration.TypeSetting
 @using TaskyRevamp.Client.Services
@@ -14,76 +12,63 @@
 @inject DefaultColumnsSettingConsumer _defaultColumnsSettingConsumer
 
 @inject PopupService PopupService
-
-<div class="table-responsive sticky-header-custom">
-
-    <table class="table table-bordered">
-        <thead class="table-responsive sticky-header-custom">
-
-            <tr>
-                <!-- DRAGGABLE HEADERS -->
-                <SortableList Items="@OrderedColumns"
-                              KeySelector="@(c => c.Field)"
-                              OnUpdate="EventCallback.Factory.Create<(int oldIndex, int newIndex)>(
-                                                                                      this,
-                                                                                      e => OnColumnDrop(e.oldIndex, e.newIndex))">
-
-                    <SortableItemTemplate Context="column">
-                        <div class="column-options-panel">
-
-                           <th class="drag-th">
-                                <div class="column-row">
-
-                                    <!-- Drag Handle -->
-                                    <span class="drag-handle">☰</span>
-
-                                    <!-- Column Name -->
-                                    <span class="column-name">@column.DisplayName</span>
-
-                                    <!-- Up Arrow -->
-                                    <button class="icon-btn"
-                                            disabled="@IsFirst(column)"
-                                            @onclick="() => MoveUp(column)">
-                                        ▲
-                                    </button>
-
-                                    <!-- Down Arrow -->
-                                    <button class="icon-btn"
-                                            disabled="@IsLast(column)"
-                                            @onclick="() => MoveDown(column)">
-                                        ▼
-                                    </button>
-
-                                    <!-- Show / Hide Toggle -->
-                                    <input type="checkbox"
-                                           checked="@column.IsVisible"
-                                       disabled="@IsTitleColumn(column)"
-                                           @onchange="e => ToggleVisibility(column, e)" />
-                                </div>
-                            </th>
-                            
-
+<div class="offcanvas-body ">
+    <SortableList Items="@OrderedColumns" KeySelector="@(c => c.Field)"
+        OnUpdate="EventCallback.Factory.Create<(int oldIndex, int newIndex)>(
+                                                                                                                this,
+                                                                                                                e => OnColumnDrop(e.oldIndex, e.newIndex))">
+        <SortableItemTemplate Context="column">
+            <div class="card card-order-control">
+                <div class="card-body d-flex justify-content-between align-items-center">
+                    <div class="flex-fill">
+                        <span>@column.DisplayName</span>
+                    </div>
+                    <div class="toggle">
+                        <div class="form-switch custom ">
+                            @* <input type="checkbox" id="IsActive@(setting.Id)" class="form-check-input"
+                                @bind="setting.IsActive" /> *@
+                            <input type="checkbox" id="col-@column.Field" checked="@column.IsVisible"
+                                disabled="@IsTitleColumn(column)" @onchange="e => ToggleVisibility(column, e)" />
+                            <label for="col-@column.Field">
+                                <span class="toggler-icon"></span>
+                            </label>
                         </div>
-                        <!-- THE <th> ITSELF IS DRAGGABLE -->
-                        
-                            
-                       
-                    </SortableItemTemplate>
+                    </div>
+                </div>
+                <div class="btn-group-vertical">
+                    <button class="btn" disabled="@IsFirst(column)" @onclick="() => MoveUp(column)">
+                        <span class="icon">
+                            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.ArrowUp"></SVGCrud>
+                        </span>
+                    </button>
 
-                </SortableList>
-            </tr>
-        </thead>
+                    <button class="btn" disabled="@IsLast(column)" @onclick="() => MoveDown(column)">
+                        <span class="icon">
+                            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.ArrowDown"></SVGCrud>
+                        </span>
+                    </button>
+                </div>
+            </div>
+        </SortableItemTemplate>
+    </SortableList>
+</div>
+<div class="offcanvas-footer">
+    <div class="row g-2">
+        <div class="col-6">
+            <div class="d-grid">
+                <button type="button" class="btn btn-lg btn-light" @onclick="Cancel">@Loc["Cancel"]</button>
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="d-grid">
+                <button @onclick="Save" class="btn btn-lg btn-primary">@Loc["Save"]</button>
+            </div>
+        </div>
+    </div>
 
-      
-    </table>
 </div>
 
 
-
-<div class="actions">
-    <button class="btn btn-primary" @onclick="Save">Save</button>
-    <button class="btn btn-secondary" @onclick="Cancel">Cancel</button>
-</div>
 
 
 @code {
@@ -91,7 +76,7 @@
 
     //private ProtectedSessionStorage SessionStorage { get; set; } = default!;
     private List<SortableColumn> Columns = new();
-   private List<SortableColumn> BackupColumns = new();
+    private List<SortableColumn> BackupColumns = new();
     private List<DefaultColumnsSettingDto> ColumnsList = new();
 
     private bool IsTitleColumn(SortableColumn column)
@@ -114,21 +99,20 @@
 
     private List<SortableColumn> OrderedColumns =>
     Columns
-        .Where(c => c.IsVisible)
-        .OrderBy(c => c.Order)
-        .ToList();
+    .OrderBy(c => c.Order)
+    .ToList();
 
     private bool IsFirst(SortableColumn column)
     {
         return Columns
-            .OrderBy(c => c.Order)
-            .FirstOrDefault() == column;
+        .OrderBy(c => c.Order)
+        .FirstOrDefault() == column;
     }
     private bool IsLast(SortableColumn column)
     {
         return Columns
-            .OrderBy(c => c.Order)
-            .LastOrDefault() == column;
+        .OrderBy(c => c.Order)
+        .LastOrDefault() == column;
     }
     private void ToggleVisibility(SortableColumn column, ChangeEventArgs e)
     {
@@ -143,28 +127,28 @@
     }
 
     private async Task<List<SortableColumn>> GetColumnsFromSession(
-        bool isCompletedTasks = false)
+    bool isCompletedTasks = false)
     {
         // var sessionKey = isCompletedTasks
-        //     ? SessionKeys.CompletedTaskColumns
-        //     : SessionKeys.ActiveTaskColumns;
+        // ? SessionKeys.CompletedTaskColumns
+        // : SessionKeys.ActiveTaskColumns;
 
-        //  var result = await SessionStorage.GetAsync<List<SortableColumn>>(sessionKey);
+        // var result = await SessionStorage.GetAsync<List<SortableColumn>>(sessionKey);
         // var result = await LocalStorageService.GetItemAsync<List<SortableColumn>>(sessionKey);
 
         // if (result.Success && result.Value != null && result.Value.Any())
         // {
-        //      return result
-        //          .OrderBy(c => c.Order)
-        //          .ToList();
+        // return result
+        // .OrderBy(c => c.Order)
+        // .ToList();
         // // }
 
-        //  // First time → load defaults
-        //  var defaults = GetDefaultColumns();
+        // // First time → load defaults
+        // var defaults = GetDefaultColumns();
 
-        //  await LocalStorageService.SetItemAsync(sessionKey, defaults);
+        // await LocalStorageService.SetItemAsync(sessionKey, defaults);
 
-        //  return defaults;
+        // return defaults;
         var getdata = await LocalStorageService.GetItemAsync<List<SortableColumn>>("AllColumn");
         return getdata;//?? GetDefaultColumns();
     }
@@ -191,12 +175,12 @@
 
         // Ensure order is updated before saving
         // for (int i = 0; i < columns.Count; i++)
-        //     columns[i].Order = i;
+        // columns[i].Order = i;
 
         // var sessionKey = isCompletedTasks
-        //     ? SessionKeys.CompletedTaskColumns
-        //     : SessionKeys.ActiveTaskColumns;
-       // var x = columns;
+        // ? SessionKeys.CompletedTaskColumns
+        // : SessionKeys.ActiveTaskColumns;
+        // var x = columns;
         await LocalStorageService.SetItemAsync("AllColumn", columns);
         PopupService.Hide();
         navigationManager.NavigateTo($"/MainTasks", true);
@@ -205,15 +189,15 @@
     private void Cancel()
     {
         Columns = BackupColumns
-            .Select(c => new SortableColumn
-            {
-                Field = c.Field,
-                DisplayName = c.DisplayName,
-                Order = c.Order,
-                IsVisible = c.IsVisible,
+        .Select(c => new SortableColumn
+        {
+            Field = c.Field,
+            DisplayName = c.DisplayName,
+            Order = c.Order,
+            IsVisible = c.IsVisible,
 
-            })
-            .ToList();
+        })
+        .ToList();
         PopupService.Hide();
     }
 
@@ -234,15 +218,15 @@
             Columns = all.ToList();
         }
         BackupColumns = Columns
-            .Select(c => new SortableColumn
-            {
-                Field = c.Field,
-                DisplayName = c.DisplayName,
-                Order = c.Order,
-                IsVisible = c.IsVisible,
+        .Select(c => new SortableColumn
+        {
+            Field = c.Field,
+            DisplayName = c.DisplayName,
+            Order = c.Order,
+            IsVisible = c.IsVisible,
 
-            })
-            .ToList();
+        })
+        .ToList();
 
 
 
@@ -268,11 +252,11 @@
         .ToList();
         StateHasChanged();
         // Columns = GetColumnsFromSession().Result
-        //             .OrderBy(c => c.Order)
-        //             .ToList();
+        // .OrderBy(c => c.Order)
+        // .ToList();
 
         // // Backup for Cancel
-       
+
     }
     public static class SessionKeys
     {
@@ -287,30 +271,30 @@
     private async Task<List<SortableColumn>> GetDefaultColumns()
     {
         List<SortableColumn> column = new List<SortableColumn>();
-        column= new List<SortableColumn>()
-    {
-        new() { Field = "Title", DisplayName  = Loc["Title"], Order = 0, IsVisible = true },
-        new() { Field = "Priority", DisplayName =  Loc["Priority2"], Order = 1, IsVisible = true },
-        new() { Field = "Status", DisplayName =  Loc["TaskStatus"], Order = 2, IsVisible = true },
-        new() { Field = "ActualProgress", DisplayName = Loc["ActualProgress"], Order = 3, IsVisible = true },
-        new() { Field = "Start Date", DisplayName = Loc["StartDate"], Order = 4, IsVisible = true },
-            new() { Field = "End Date", DisplayName = Loc["EndDate"], Order = 5, IsVisible = true },
-        new() { Field = "weight", DisplayName = Loc["weight"], Order = 6, IsVisible = true },
-        new() { Field = "Assigned To", DisplayName = Loc["AssigneduserNames"], Order = 7, IsVisible = true },
-        new() { Field = "Assigned To Department", DisplayName =Loc["AssignedToDepartment"], Order = 8, IsVisible = true },
-        new() { Field = "Source", DisplayName =Loc["Source"], Order = 9, IsVisible = true },
-        new() { Field = "Dependency", DisplayName = Loc["Dependency"], Order = 10, IsVisible = true },
-        new() { Field = "Created By", DisplayName = Loc["CreatedBy"], Order = 11, IsVisible = true },
-        new() { Field = "Duration", DisplayName = Loc["Duration"], Order = 12, IsVisible = true },
-        new() { Field = "Created by department", DisplayName = Loc["Createdbydepartment"], Order = 13, IsVisible = true },
-        new() { Field = "Planned Progress", DisplayName = Loc["PlannedProgress"], Order = 14, IsVisible = true },
-        new() { Field = "Creation Date", DisplayName = Loc["CreationDate"], Order = 15, IsVisible = true },
-        new() { Field = "Type", DisplayName = Loc["Type"], Order = 16, IsVisible = true },
-        new() { Field = "Actual Weight", DisplayName = Loc["ActualWeight"], Order = 17, IsVisible = true },
-        new() { Field = "Planned Weight", DisplayName =Loc["PlannedWeight"], Order = 18, IsVisible = true },
+        column = new List<SortableColumn>()
+{
+new() { Field = "Title", DisplayName = Loc["Title"], Order = 0, IsVisible = true },
+new() { Field = "Priority", DisplayName = Loc["Priority2"], Order = 1, IsVisible = true },
+new() { Field = "Status", DisplayName = Loc["TaskStatus"], Order = 2, IsVisible = true },
+new() { Field = "ActualProgress", DisplayName = Loc["ActualProgress"], Order = 3, IsVisible = true },
+new() { Field = "Start Date", DisplayName = Loc["StartDate"], Order = 4, IsVisible = true },
+new() { Field = "End Date", DisplayName = Loc["EndDate"], Order = 5, IsVisible = true },
+new() { Field = "weight", DisplayName = Loc["weight"], Order = 6, IsVisible = true },
+new() { Field = "Assigned To", DisplayName = Loc["AssigneduserNames"], Order = 7, IsVisible = true },
+new() { Field = "Assigned To Department", DisplayName =Loc["AssignedToDepartment"], Order = 8, IsVisible = true },
+new() { Field = "Source", DisplayName =Loc["Source"], Order = 9, IsVisible = true },
+new() { Field = "Dependency", DisplayName = Loc["Dependency"], Order = 10, IsVisible = true },
+new() { Field = "Created By", DisplayName = Loc["CreatedBy"], Order = 11, IsVisible = true },
+new() { Field = "Duration", DisplayName = Loc["Duration"], Order = 12, IsVisible = true },
+new() { Field = "Created by department", DisplayName = Loc["Createdbydepartment"], Order = 13, IsVisible = true },
+new() { Field = "Planned Progress", DisplayName = Loc["PlannedProgress"], Order = 14, IsVisible = true },
+new() { Field = "Creation Date", DisplayName = Loc["CreationDate"], Order = 15, IsVisible = true },
+new() { Field = "Type", DisplayName = Loc["Type"], Order = 16, IsVisible = true },
+new() { Field = "Actual Weight", DisplayName = Loc["ActualWeight"], Order = 17, IsVisible = true },
+new() { Field = "Planned Weight", DisplayName =Loc["PlannedWeight"], Order = 18, IsVisible = true },
 
-    
-    };
+
+};
 
         await LocalStorageService.SetItemAsync("AllColumn", column);
         var all = await LocalStorageService.GetItemAsync<List<SortableColumn>>("AllColumn");
@@ -323,7 +307,7 @@
         if (index <= 0) return;
 
         (Columns[index - 1], Columns[index]) =
-            (Columns[index], Columns[index - 1]);
+        (Columns[index], Columns[index - 1]);
 
         UpdateOrder();
     }
@@ -334,7 +318,7 @@
         if (index >= Columns.Count - 1) return;
 
         (Columns[index + 1], Columns[index]) =
-            (Columns[index], Columns[index + 1]);
+        (Columns[index], Columns[index + 1]);
 
         UpdateOrder();
     }

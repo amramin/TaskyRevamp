@@ -23,9 +23,9 @@
     @if (allTaks != null && allTaks.Any())
     {
         <div style="display:@(IsCollapse ? "none" : "block")">
-            <div class="table-responsive sticky-header-custom" >
+            <div class="table-responsive task-table">
                 <SortableTable TItem="CreateTaskDto" Columns="@tableColumns" Items="@allTaks"
-                               SortColumn="@currentSortColumn" SortAscending="@sortAscending" OnSortRequested="HandleSort">
+                    SortColumn="@currentSortColumn" SortAscending="@sortAscending" OnSortRequested="HandleSort">
 
                     <RowTemplate>
                         @foreach (var task in allTaks)
@@ -33,14 +33,14 @@
                             <tr>
                                 @foreach (var column in tableColumns)
                                 {
-                                    <td style="white-space: nowrap; overflow: visible; text-overflow: unset;">
+                                    <td class="@(column.Field == "Title" ? "" : "text-nowrap")">
                                         @RenderColumnValue(task, column.Field)
                                     </td>
                                 }
                                 <td>
                                     <div class="dropdown actions">
                                         <button class="btn btn-action-24" type="button" data-bs-toggle="dropdown"
-                                                aria-expanded="false">
+                                            aria-expanded="false">
                                             <SVGCrud SVGType="SVGCrud.SVGTypeEnum.EllipseVertical"></SVGCrud>
                                         </button>
                                         <ul class="dropdown-menu">
@@ -60,7 +60,8 @@
                                                     @Loc["EditTask"]
                                                 </button>
                                             </li>
-                                            @if (task.ActualProcess == 100 && task.TaskStatus == Guid.Parse("6EE4574D-C439-45B4-223A-08DE3318A61C"))
+                                            @if (task.ActualProcess == 100 && task.TaskStatus ==
+                                                                                Guid.Parse("6EE4574D-C439-45B4-223A-08DE3318A61C"))
                                             {
                                                 <li>
                                                     <button class="dropdown-item" @onclick="@(() => CompleteTask(task.Id))">
@@ -71,7 +72,8 @@
                                                     </button>
                                                 </li>
                                             }
-                                            @if (task.ActualProcess == 100 && task.TaskStatus == Guid.Parse("6EE4574D-C439-45B4-223A-08DE3318A61C"))
+                                            @if (task.ActualProcess == 100 && task.TaskStatus ==
+                                                                                Guid.Parse("6EE4574D-C439-45B4-223A-08DE3318A61C"))
                                             {
                                                 <li>
                                                     <button class="dropdown-item" @onclick="@(() => OnReopen.InvokeAsync(task.Id))">
@@ -90,19 +92,19 @@
                     </RowTemplate>
                 </SortableTable>
             </div>
-            <Pagination CurrentPage="@currentPage" TotalPages="@totalPages" TotalCount="@totalCount"
-                        PageSize="@pageSize" PageChanged="ChangePage" PageSizeChangedCallback="ChangePageSize" />
+            <Pagination CurrentPage="@currentPage" TotalPages="@totalPages" TotalCount="@totalCount" PageSize="@pageSize"
+                PageChanged="ChangePage" PageSizeChangedCallback="ChangePageSize" />
         </div>
     }
     else
     {
         <div style="display:@(IsCollapse ? "none" : "block")">
             <NoDataAvailable MessageTitle="@Loc["NoTasks"]" MessageSubtitle="@Loc["AddTaskToStart"]"
-                             ButtonText="@Loc["AddTask"]" OnButtonClick="Add" />
+                ButtonText="@Loc["AddTask"]" OnButtonClick="Add" />
         </div>
     }
 
-            </div>
+</div>
 
 @code {
     public bool IsAdmine;// = roleService.IsAllowed(int)Modules., (int)ModuleActions.EditReportPermission) ;//true;//
@@ -111,7 +113,7 @@
     [Parameter] public EventCallback<Guid> OnDelete { get; set; }
     [Parameter] public EventCallback<Guid> OnShowUsers { get; set; }
     [Parameter] public EventCallback<Guid> OnAdd { get; set; }
-    [Parameter] public int ViewType{ get; set; } = (int)ViewTypes.OverAllView;
+    [Parameter] public int ViewType { get; set; } = (int)ViewTypes.OverAllView;
     [Parameter] public Guid? ViewTypeId { get; set; } = null;
     [Parameter] public string Title { get; set; } = string.Empty;
     [Parameter] public bool IsCompleted { get; set; } = false;
@@ -140,9 +142,9 @@
 
     protected override async Task OnInitializedAsync()
     {
-        if(IsCompleted)
+        if (IsCompleted)
         {
-            if(ViewTypeId is null)
+            if (ViewTypeId is null)
             {
                 var value = await LocalStorageService.GetItemAsStringAsync("overall-c");
                 IsCollapse = bool.TryParse(value, out var result) && result;
@@ -223,15 +225,20 @@ new() { Field = "Action", DisplayName = Loc["Action"] ,IsSortable = false},
         // o => o.ColumnName,
         // (c, o) => c)
         // .ToList();
+        if (allTaks is null || !allTaks.Any())
+        {
+            IsCollapse = true;
+        }
         StateHasChanged();
+
     }
     // protected override async Task OnParametersSetAsync()
     // {
-    //   currentPage = 1;
-    //   totalPages = 1;
-    //   totalCount = 0;
-    //   pageSize = 10;
-    //     await GetTasks();
+    // currentPage = 1;
+    // totalPages = 1;
+    // totalCount = 0;
+    // pageSize = 10;
+    // await GetTasks();
     // }
     public async Task ResetPage()
     {
@@ -261,7 +268,7 @@ new() { Field = "Action", DisplayName = Loc["Action"] ,IsSortable = false},
     private async Task CompleteConfirmed(Guid id)
     {
         var result = await _taskConsumer.CompleteTask(id);
-        if (result.Success &&result.Data)
+        if (result.Success && result.Data)
         {
             await GetTasks();
             await ToastService.ShowToastAsync(Loc["Completedsuccessfully"], "success");
@@ -277,44 +284,44 @@ new() { Field = "Action", DisplayName = Loc["Action"] ,IsSortable = false},
     private void CompleteTask(Guid id)
     {
         PopupService.ShowConfirmation(
-                @Loc["SureCompleteTask"],
-                "Yes, Complete",
-                async (confirmed) =>
-                {
-                    if (confirmed)
-                        await CompleteConfirmed(id);
-                },
-                ConfirmationType.Primary
-            );
+        @Loc["SureCompleteTask"],
+        "Yes, Complete",
+        async (confirmed) =>
+        {
+            if (confirmed)
+                await CompleteConfirmed(id);
+        },
+        ConfirmationType.Primary
+        );
     }
     // private async Task ReopenConfirmed(Guid id)
     // {
-    //     var result = await _taskConsumer.ReopenTask(id);
-    //     if (result.Success && result.Data)
-    //     {
-    //         await GetTasks();
-    //         await ToastService.ShowToastAsync(Loc["Reopenedsuccessfully"], "success");
+    // var result = await _taskConsumer.ReopenTask(id);
+    // if (result.Success && result.Data)
+    // {
+    // await GetTasks();
+    // await ToastService.ShowToastAsync(Loc["Reopenedsuccessfully"], "success");
 
-    //     }
-    //     else
-    //     {
-    //         await ToastService.ShowToastAsync(Loc["ReopenFailed"], "danger");
-    //     }
+    // }
+    // else
+    // {
+    // await ToastService.ShowToastAsync(Loc["ReopenFailed"], "danger");
+    // }
 
-    //     StateHasChanged();
+    // StateHasChanged();
     // }
     // private void ReopenTask(Guid id)
     // {
-    //     PopupService.ShowConfirmation(
-    //             @Loc["SureReopenTask"],
-    //             "Yes, Reopen",
-    //             async (confirmed) =>
-    //             {
-    //                 if (confirmed)
-    //                     await ReopenConfirmed(id);
-    //             },
-    //             ConfirmationType.Primary
-    //         );
+    // PopupService.ShowConfirmation(
+    // @Loc["SureReopenTask"],
+    // "Yes, Reopen",
+    // async (confirmed) =>
+    // {
+    // if (confirmed)
+    // await ReopenConfirmed(id);
+    // },
+    // ConfirmationType.Primary
+    // );
     // }
     private async Task DeleteConfirmed(Guid Id)
     {
@@ -371,8 +378,8 @@ new() { Field = "Action", DisplayName = Loc["Action"] ,IsSortable = false},
     public void ShowEditPopup(Guid id)
     {
         PopupService.ShowNew(@<Edit UserDelegationId="@id.ToString()" IsAdmine="@IsAdmine" OnValidSubmit="OnInitializedAsync">
-        </Edit>
-    , headerText:
+</Edit>
+, headerText:
         @Loc["EditDelegation"]);
     }
     private async Task OnConfirmDelete(bool confirmed)
@@ -431,7 +438,11 @@ SearchFieldTask.PlannedProgress
         switch (field)
         {
             case "Title":
-                builder.AddContent(0, task.Title);
+                builder.OpenElement(0, "span");
+                builder.AddAttribute(1, "class", "task-title");
+                builder.AddAttribute(2, "title", task.Title ?? string.Empty);
+                builder.AddContent(3, task.Title);
+                builder.CloseElement();
                 break;
             case "Priority":
                 builder.AddContent(0, task.PriorityName);
@@ -535,7 +546,7 @@ SearchFieldTask.PlannedProgress
         IsCollapse = !IsCollapse;
         if (IsCompleted)
         {
-            if(ViewTypeId is null)
+            if (ViewTypeId is null)
             {
                 await LocalStorageService.SetItemAsStringAsync("overall-c", IsCollapse.ToString());
 
@@ -547,7 +558,7 @@ SearchFieldTask.PlannedProgress
         }
         else
         {
-            if(ViewTypeId is null)
+            if (ViewTypeId is null)
             {
                 await LocalStorageService.SetItemAsStringAsync("overall", IsCollapse.ToString());
             }
