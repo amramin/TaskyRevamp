@@ -31,13 +31,21 @@ namespace TaskyRevamp.Services.SystemConfiguration.PriorityConfiguration.Command
             }
             else
             {
-                var res = await _priorityRepository.FindByKey(request.PriorityDto.Id);
-                if (res != null && res.Value != null && res.Success)
+                var hascompleted = await _mediator.Send(new CheckPriorityRelatedCompletedTaskQuery(request.PriorityDto.Id));
+                if (hascompleted == true)
                 {
-                    var priority = res.Value;
-                    priority.IsDeleted = true;
-                    await _priorityRepository.Update(priority);
-                    //	await _priorityRepository.Delete(priority.Id);
+                    var res = await _priorityRepository.FindByKey(request.PriorityDto.Id);
+                    if (res != null && res.Value != null && res.Success)
+                    {
+                        var priority = res.Value;
+                        priority.IsDeleted = true;
+                        await _priorityRepository.Update(priority);
+                        //	await _priorityRepository.Delete(priority.Id);
+                    }
+                }
+                else
+                {
+                    await _priorityRepository.Delete(request.PriorityDto.Id);
                 }
             }
             return true;

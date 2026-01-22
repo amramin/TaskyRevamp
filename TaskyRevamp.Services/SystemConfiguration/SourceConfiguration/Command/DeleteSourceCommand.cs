@@ -31,14 +31,24 @@ namespace TaskyRevamp.Services.SystemConfiguration.SourceConfiguration.Command
                 return false;
             }
             else
-            { // check if norelated task so hard delete
-                //else soft delete
-                var res = await _sourceRepository.FindByKey(request.id);
-                if (res.Success && res != null && res.Value != null)
+            {
+                var hascompleted = await _mediator.Send(new CheckRelatedCompletedTaskQuery(request.id));
+                if (hascompleted == true)
                 {
-                    var source = res.Value;
-                    source.IsDeleted = true;
-                    await _sourceRepository.Update(source);
+
+                    // check if norelated task so hard delete
+                    //else soft delete
+                    var res = await _sourceRepository.FindByKey(request.id);
+                    if (res.Success && res != null && res.Value != null)
+                    {
+                        var source = res.Value;
+                        source.IsDeleted = true;
+                        await _sourceRepository.Update(source);
+                    }
+                }
+                else
+                {
+                    await _sourceRepository.Delete(request.id);
                 }
             }
             return true;

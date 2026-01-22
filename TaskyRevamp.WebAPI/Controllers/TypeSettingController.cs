@@ -59,6 +59,11 @@ namespace TaskyRevamp.WebAPI.Controllers
         {
             return Ok(await _mediator.Send(new RetriveTypeCommand(Type)));
         }
+        [HttpPost("RetriveDeleteType")]
+        public async Task<IActionResult> RetriveDeleteType(TypeDto Type)
+        {
+            return Ok(await _mediator.Send(new RetriveDeleteTypeCommand(Type)));
+        }
         [HttpPost("CheckRelatedComplatedTaskitemType")]
         public async Task<IActionResult> CheckRelatedComplatedTaskitemType(TypeDto Type)
         {

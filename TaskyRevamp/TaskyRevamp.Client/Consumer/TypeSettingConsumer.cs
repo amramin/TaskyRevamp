@@ -64,6 +64,15 @@ namespace TaskyRevamp.Client.Consumer
 
             return res;
         }
+
+
+        public async Task<CommonApiResponse<bool>> RetriveDeleteType(TypeDto TypeDto)
+        {
+            var url = $"api/TypeSetting/RetriveDeleteType";
+            var res = await _taskyService.PostJsonAsync<bool>(url, TypeDto);
+
+            return res;
+        }
         public async Task<CommonApiResponse<bool>> CheckRelatedComplatedTaskitemType(TypeDto TypeDto)
         {
             var url = $"api/TypeSetting/CheckRelatedComplatedTaskitemType";

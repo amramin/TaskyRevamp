@@ -69,6 +69,12 @@ namespace TaskyRevamp.WebAPI.Controllers
         {
             return Ok(await _mediator.Send(new RetriveSourceCommand(source)));
         }
+        [HttpPost("RetriveDeleteSource")]
+        public async Task<IActionResult> RetriveDeleteSource(SourceDto source)
+        {
+            return Ok(await _mediator.Send(new RetriveDeleteSourceCommand(source)));
+        }
+
         [HttpPost("CheckRelatedComplatedTaskitemSource")]
         public async Task<IActionResult> CheckRelatedComplatedTaskitemSource(SourceDto source)
         {

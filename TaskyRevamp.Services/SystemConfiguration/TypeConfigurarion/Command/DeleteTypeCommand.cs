@@ -31,13 +31,21 @@ namespace TaskyRevamp.Services.SystemConfiguration.TypeConfigurarion.Command
             }
             else
             {
-                var res = await _typeRepository.FindByKey(request.id);
-                if (res.Success && res != null && res.Value != null)
+                var hascompleted = await _mediator.Send(new CheckTypeRelatedCompletedTaskQuery(request.id));
+                if (hascompleted == true)
                 {
-                    var type = res.Value;
-                    type.IsDeleted = true;
-                    await _typeRepository.Update(type);
-                    //await _typeRepository.Delete(type.Id);
+                    var res = await _typeRepository.FindByKey(request.id);
+                    if (res.Success && res != null && res.Value != null)
+                    {
+                        var type = res.Value;
+                        type.IsDeleted = true;
+                        await _typeRepository.Update(type);
+                        //await _typeRepository.Delete(type.Id);
+                    }
+                }
+                else
+                {
+                    await _typeRepository.Delete(request.id);
                 }
             }
             return true;
