@@ -1311,4 +1311,34 @@
   <data name="Viewcolumn" xml:space="preserve">
     <value>Column options</value>
   </data>
+  <data name="OverAllView" xml:space="preserve">
+    <value>Over all</value>
+  </data>
+  <data name="TimeLineView" xml:space="preserve">
+    <value>Timeline</value>
+  </data>
+  <data name="SourceView" xml:space="preserve">
+    <value>Source</value>
+  </data>
+  <data name="TypeView" xml:space="preserve">
+    <value>Type</value>
+  </data>
+  <data name="StatusView" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="Delayed" xml:space="preserve">
+    <value>Delayed</value>
+  </data>
+  <data name="Today" xml:space="preserve">
+    <value>Today</value>
+  </data>
+  <data name="ThisWeek" xml:space="preserve">
+    <value>This week</value>
+  </data>
+  <data name="ThisMonth" xml:space="preserve">
+    <value>This month</value>
+  </data>
+  <data name="NextMonths" xml:space="preserve">
+    <value>Next months</value>
+  </data>
 </root>
