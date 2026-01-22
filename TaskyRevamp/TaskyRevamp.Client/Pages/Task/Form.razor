@@ -127,7 +127,7 @@
                                         <span class="text-danger"> *</span>
                                     }
                                 </label>
-                                <SearchableSingleDropdownOffline TInput=TypeDto TOutput=Guid TextSelector="(TypeDto x) => x.DisplayedName"
+                                <SearchableSingleDropdownOffline TInput=TypeDto TOutput=Guid? TextSelector="(TypeDto x) => x.DisplayedName"
                                                                  OutputSelector="x => x.Id" Datasource="taskTypeDtos" MinCharacterCount="1"
                                                                  SelectedOptionChanged="OnTypeChanged"
                                                                  SelectedOption="taskdto.TypeId" PlaceHolder="@Loc["Select"]" />
@@ -143,7 +143,7 @@
                                 }
                             </label>
                             <div class="mb-3">
-                                <SearchableSingleDropdownOffline TInput=SourceDto TOutput=Guid TextSelector="(SourceDto x) => x.DisplayedName"
+                                <SearchableSingleDropdownOffline TInput=SourceDto TOutput=Guid? TextSelector="(SourceDto x) => x.DisplayedName"
                                                                  OutputSelector="x => x.Id" Datasource="taskSourceDtos"
                                                                  MinCharacterCount="1" SelectedOption="taskdto.SourceId"
                                                                  PlaceHolder="@Loc["Select"]" SelectedOptionChanged="OnSourceChanged" />
@@ -491,13 +491,13 @@
         var filedId = new FieldIdentifier(taskdto, nameof(taskdto.Priority));
         Notify(filedId);
     }
-    private void OnTypeChanged(Guid value)
+    private void OnTypeChanged(Guid? value)
     {
         taskdto.TypeId = value;
         var filedId = new FieldIdentifier(taskdto, nameof(taskdto.TypeId));
         Notify(filedId);
     }
-    private void OnSourceChanged(Guid value)
+    private void OnSourceChanged(Guid? value)
     {
         taskdto.SourceId = value;
         var filedId = new FieldIdentifier(taskdto, nameof(taskdto.SourceId));

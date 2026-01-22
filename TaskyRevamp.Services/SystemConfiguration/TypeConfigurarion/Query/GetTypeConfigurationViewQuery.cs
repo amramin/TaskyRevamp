@@ -33,7 +33,7 @@ namespace TaskyRevamp.Services.SystemConfiguration.TypeConfigurarion.Query
         public async Task<PagedResult<TypeDto>> Handle(GetTypeConfigurationViewQuery request, CancellationToken cancellationToken)
         {
             var orderBy = GetOrderBy();
-            var typeids = new List<Guid>();
+            var typeids = new List<Guid?>();
             if (request.IsCompleted)
             {
                 typeids = _taskRepository.AllAsNoTracking().Result.Value.Where(t=>t.StatusId== Guid.Parse("C8D504C7-9402-4F91-223C-08DE3318A61C")).Select(p => p.TaskTypeId).Distinct().ToList();

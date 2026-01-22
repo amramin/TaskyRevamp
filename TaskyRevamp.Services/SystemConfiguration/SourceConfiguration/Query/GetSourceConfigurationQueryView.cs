@@ -30,7 +30,7 @@ namespace TaskyRevamp.Services.SystemConfiguration.SourceConfiguration.Query
         public async Task<PagedResult<SourceDto>> Handle(GetSourceConfigurationQueryView request, CancellationToken cancellationToken)
         {
             var orderBy = GetOrderBy();
-            var sourceuids = new List<Guid>();
+            var sourceuids = new List<Guid?>();
             if (request.IsCompleted)
             {
                 sourceuids = _taskRepository.AllAsNoTracking().Result.Value.Where(t => t.StatusId == Guid.Parse("C8D504C7-9402-4F91-223C-08DE3318A61C")).Select(p => p.TaskSourceId).Distinct().ToList();
