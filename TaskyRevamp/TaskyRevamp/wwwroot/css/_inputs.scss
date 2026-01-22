@@ -18,7 +18,8 @@
     background-color: var(--bs-white);
     border-radius: 50%;
     transition: var(--transtion-3ms-e-out);
-    box-shadow: 0 1px 3px rgba(16, 24, 40, 0.01),
+    box-shadow:
+      0 1px 3px rgba(16, 24, 40, 0.01),
       0 1px 2px rgba(16, 24, 40, 0.06);
   }
 }
@@ -169,6 +170,17 @@
           }
         }
       }
+      &:disabled,
+      .disabled {
+        opacity: 0.65;
+        cursor: default;
+        + label {
+          .toggler-icon {
+            opacity: 0.5;
+            cursor: default;
+          }
+        }
+      }
     }
 
     &.filter {
@@ -239,7 +251,6 @@
   font-weight: 600;
   color: var(--dark-800);
 
-  
   width: fit-content;
 
   &.form-check-inline {
@@ -254,7 +265,7 @@
     margin-left: 0;
     margin-right: 0;
     margin-top: 0;
-cursor:pointer;
+    cursor: pointer;
     & + label {
       color: var(--dark-600);
     }
@@ -268,7 +279,6 @@ cursor:pointer;
         color: var(--dark-800);
       }
     }
-   
   }
 
   .form-check-label {

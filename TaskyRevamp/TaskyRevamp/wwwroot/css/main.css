@@ -1072,6 +1072,16 @@ html[dir=rtl] .badge {
   -webkit-box-shadow: none;
           box-shadow: none;
 }
+.form-switch.custom input:disabled,
+.form-switch.custom input .disabled {
+  opacity: 0.65;
+  cursor: default;
+}
+.form-switch.custom input:disabled + label .toggler-icon,
+.form-switch.custom input .disabled + label .toggler-icon {
+  opacity: 0.5;
+  cursor: default;
+}
 .form-switch.custom.filter input + label {
   font-size: 0.75rem;
   font-weight: 500;
