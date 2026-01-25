@@ -167,7 +167,7 @@ public class GetTasksHandler : IRequestHandler<GetTasksQuery, PagedResult<Create
                 var tasksdependent = await _taskRepository.FindBy(p => dependenciesids.Contains(p.Id));
                 var DependencyNames = string.Join(", ", tasksdependent.Value!.Select(d => d.Title));
                 tasky.DependencyNames= DependencyNames;
-
+                tasky.Dependencies = dependenciesids.ToList();
             }
 
             tasky.TaskStatusName = currentCulture == "ar" ? tsk.status?.NameArabic ?? "" : tsk.status?.NameEnglish ?? "";
