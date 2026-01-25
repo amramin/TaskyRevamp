@@ -155,7 +155,7 @@
     max-height: calc(100svh - 23.5rem);
   }
   border: 1px solid var(--light-300);
-    border-radius: 0.375rem;
+  border-radius: 0.375rem;
 }
 
 .table {
@@ -207,6 +207,14 @@
     .title,
     .no-desc {
       display: none;
+    }
+  }
+  .task-depancy-number {
+    display: inline-flex;
+    color:var(--dark-700);
+    svg {
+      width: 1rem;
+      height: 1rem;
     }
   }
   .mx-w-300 {

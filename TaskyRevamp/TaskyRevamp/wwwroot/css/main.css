@@ -3016,6 +3016,16 @@ fieldset:disabled .btn {
 .table .td-content .no-desc {
   display: none;
 }
+.table .task-depancy-number {
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  color: var(--dark-700);
+}
+.table .task-depancy-number svg {
+  width: 1rem;
+  height: 1rem;
+}
 .table .mx-w-300 {
   max-width: 300px;
 }

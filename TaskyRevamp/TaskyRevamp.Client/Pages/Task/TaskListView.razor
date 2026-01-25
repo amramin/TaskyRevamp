@@ -40,7 +40,7 @@
                             <tr>
                                 @foreach (var column in tableColumns)
                                 {
-                                    <td class="@(column.Field == "Title" ? "" : "text-nowrap")">
+                                    <td class="@(column.Field == "Title" ? "d-flex gap-1" : "text-nowrap")">
                                         @RenderColumnValue(task, column.Field)
                                     </td>
                                 }
@@ -442,13 +442,45 @@ SearchFieldTask.PlannedProgress
     {
         switch (field)
         {
-            case "Title":
+            @* case "Title":
                 builder.OpenElement(0, "span");
                 builder.AddAttribute(1, "class", "task-title");
                 builder.AddAttribute(2, "title", task.Title ?? string.Empty);
                 builder.AddContent(3, task.Title);
                 builder.CloseElement();
+                break; *@
+            case "Title":
+               
+                builder.OpenElement(0, "span");
+                builder.AddAttribute(1, "class", "task-title");
+                builder.AddAttribute(2, "title", task.Title ?? string.Empty);
+                builder.AddContent(3, task.Title);
+                builder.CloseElement();
+
+               
+                builder.OpenElement(4, "span");
+                builder.AddAttribute(5, "class", "task-depancy-number"); 
+
+              
+                builder.OpenElement(6, "span");
+                builder.AddAttribute(7, "class", "icon");
+
+                builder.OpenComponent<SVGCrud>(8);
+                builder.AddAttribute(9, "SVGType", SVGCrud.SVGTypeEnum.Relation);
+                builder.CloseComponent();
+
+                builder.CloseElement(); 
+
+               
+                builder.OpenElement(10, "span");
+                builder.AddAttribute(11, "class", "text");
+                builder.AddContent(12, "2");
+                builder.CloseElement();
+
+                builder.CloseElement(); 
+
                 break;
+
             case "Priority":
                 builder.AddContent(0, task.PriorityName);
                 break;
