@@ -354,6 +354,66 @@
     align-items: center;
     gap: 0.5rem;
   }
+  &.table-card {
+    margin-bottom: 0.5rem;
+    border:0;
+    .table-caption {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--dark-900);
+      border-start-end-radius: var(--bs-border-radius);
+      border-start-start-radius: var(--bs-border-radius);
+      border: 1px solid var(--light-300);
+      border-bottom-width:0;
+            padding:1rem;
+      .chevron-icon svg {
+        width: 1.5rem;
+        height: 1.5rem;
+      }
+    }
+    & .table-responsive , .card.empty-page{
+      border-top: 0;
+      border-start-start-radius: 0;
+      border-start-end-radius: 0;
+      .card-body .vector svg{
+        height:100px;
+      }
+    }
+  }
+  &.collaped-task-card{
+    .content{
+      padding-top:0;
+      transition:var(--transtion-3ms-e-out);
+      &.collapsed{
+          display:none;
+      }
+    }
+    .table-caption{
+    position:relative;
+    &::after{
+      content:"";
+      position:absolute;
+      width:Calc(100% - 2rem);
+      height:1px;
+      background-color:var(--light-300);
+      bottom:0;
+      left:50%;
+      transform:translateX(-50%);
+    }
+    &.collapsed{
+      &:after{
+        display:none;
+      }
+      border-bottom-width:1px;
+      border-radius:var(--bs-border-radius)
+    }
+
+    
+    }
+  }
 }
 
 /* Connecting each child up to the horizontal line */

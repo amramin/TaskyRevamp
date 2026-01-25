@@ -1313,7 +1313,7 @@ Do you want to restore the original type and merge this one into it? Consider th
     <value>Column options</value>
   </data>
   <data name="OverAllView" xml:space="preserve">
-    <value>Over all</value>
+    <value>Overall</value>
   </data>
   <data name="TimeLineView" xml:space="preserve">
     <value>Timeline</value>
