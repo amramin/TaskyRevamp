@@ -736,7 +736,7 @@
     <value>Priority</value>
   </data>
   <data name="Logout" xml:space="preserve">
-    <value>Log out</value>
+    <value>Logout</value>
   </data>
   <data name="Titlee" xml:space="preserve">
     <value>Title</value>
@@ -958,7 +958,7 @@
     <value>Data will appear after adding the first task</value>
   </data>
   <data name="Download" xml:space="preserve">
-    <value>Download Excel template</value>
+    <value>Download</value>
   </data>
   <data name="Upload" xml:space="preserve">
     <value>Upload Excel file</value>

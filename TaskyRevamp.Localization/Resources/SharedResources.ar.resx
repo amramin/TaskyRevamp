@@ -510,7 +510,6 @@
   </data>
   <data name="Nodepartmentavailable" xml:space="preserve">
     <value> لا توجد إدارة متاحة</value>
-
   </data>
   <data name="DepartmentDuplicateValidation" xml:space="preserve">
     <value>يجب أن يكون اسم الإدارة فريدًا. يرجى كتابة اسم آخر</value>
@@ -960,7 +959,7 @@
     <value>ستظهر البيانات بعد إضافة المهمة الأولى</value>
   </data>
   <data name="Download" xml:space="preserve">
-    <value>تحميل ملف إكسل</value>
+    <value>تحميل</value>
   </data>
   <data name="Upload" xml:space="preserve">
     <value>إرفع ملف إكسل</value>

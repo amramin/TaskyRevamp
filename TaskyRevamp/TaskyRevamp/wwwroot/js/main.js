@@ -47,7 +47,22 @@ window.setDocumentDirection = function (dir) {
 };
 
 
-
+window.authListener = {
+    register: function (dotNetRef) {
+        window.addEventListener("storage", function (event) {
+            if (event.key === "bearerToken") {
+                // LOGOUT
+                if (event.newValue === null) {
+                    dotNetRef.invokeMethodAsync("ForceLogout");
+                }
+                // LOGIN (token added or changed)
+                if (event.oldValue === null && event.newValue !== null) {
+                    dotNetRef.invokeMethodAsync("OnLoginDetected");
+                }
+            }
+        });
+    }
+};
 
 function OpenModel(modalRef) {
     if (modalRef?.classList == null || modalRef.classList.contains('show')) {

@@ -35,7 +35,7 @@ namespace TaskyRevamp.Services.TaskAttachments.Query
 					CreatedById = a.CreatedById,
 					CreateDate = a.CreateDate
 				},
-				CreatedByName = currentCulture == "ar" ? a.CreatedBy.NameArabic: a.CreatedBy.NameEnglish,
+				CreatedByName = currentCulture == "ar" ? a.CreatedBy.NameArabic!: a.CreatedBy.NameEnglish!,
 			});
 			return result.OrderByDescending(a => a.AttachmentDto.CreateDate).ToList();
 		}
