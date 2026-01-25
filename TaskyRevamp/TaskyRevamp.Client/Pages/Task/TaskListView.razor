@@ -1,5 +1,6 @@
 ﻿@using Blazored.LocalStorage
 @using TaskyRevamp.Client.Consumer
+@using TaskyRevamp.Client.Pages.Task.Components
 @using TaskyRevamp.Client.Services
 @using TaskyRevamp.Dto.Enums
 @using TaskyRevamp.Dto.Enums.SearchFields
@@ -161,9 +162,9 @@
         new() { Field = "Title", DisplayName  = Loc["Title"], Order = 0, IsVisible = true },
         new() { Field = "Priority", DisplayName =  Loc["Priority2"], Order = 1, IsVisible = true },
         new() { Field = "Status", DisplayName =  Loc["TaskStatus"], Order = 2, IsVisible = true },
-        new() { Field = "ActualProgress", DisplayName = Loc["ActualProgress"], Order = 3, IsVisible = true },
+        new() { Field = "Actual progress", DisplayName = Loc["ActualProgress"], Order = 3, IsVisible = true },
         new() { Field = "Start Date", DisplayName = Loc["StartDate"], Order = 4, IsVisible = true },
-            new() { Field = "End Date", DisplayName = Loc["EndDate"], Order = 5, IsVisible = true },
+        new() { Field = "End Date", DisplayName = Loc["EndDate"], Order = 5, IsVisible = true },
         new() { Field = "weight", DisplayName = Loc["weight"], Order = 6, IsVisible = true },
         new() { Field = "Assigned To", DisplayName = Loc["AssigneduserNames"], Order = 7, IsVisible = true },
         new() { Field = "Assigned To Department", DisplayName =Loc["AssignedToDepartment"], Order = 8, IsVisible = true },
@@ -552,7 +553,14 @@ SearchFieldTask.PlannedProgress
                 builder.AddContent(0, task.weight);
                 break;
             case "Assigned To":
-                builder.AddContent(0, task.AssigneduserNames);
+                builder.AddContent(0, (RenderFragment)(b =>
+                {
+                    b.OpenComponent<Initials>(0);
+                    b.AddAttribute(1, "Names", task.AssigneduserNames);
+                    b.AddAttribute(2, "Size", 32);
+                    b.AddAttribute(3, "Black", true);
+                    b.CloseComponent();
+                }));
                 break;
             case "Assigned To Department":
                 builder.AddContent(0, task.AssignedDepartmentName);
@@ -567,7 +575,14 @@ SearchFieldTask.PlannedProgress
                 builder.AddContent(0, task.Createdbydepartment);
                 break;
             case "Created By":
-                builder.AddContent(0, task.CreatedByName);
+                builder.AddContent(0, (RenderFragment)(b =>
+                {
+                   b.OpenComponent<Initials>(0);
+                   b.AddAttribute(1, "Names", task.CreatedByName);
+                   b.AddAttribute(2, "Size", 32);
+                   b.AddAttribute(3, "Black", true);
+                   b.CloseComponent();
+                }));
                 break;
             case "Duration":
                 builder.AddContent(0, task.Duration);
