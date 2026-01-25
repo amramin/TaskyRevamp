@@ -30,7 +30,10 @@
     </div>
     @if (allTaks != null && allTaks.Any())
     {
-        <div class="content @(IsCollapse ? "collapsed" : "")">
+        <div style="display:@(IsCollapse ? "none" : "block")">
+            <div class="mb-1">
+                <OverallBar Tasks="MainAndParentTasks" Width="600"></OverallBar>
+            </div>
             <div class="table-responsive task-table">
                 <SortableTable TItem="CreateTaskDto" Columns="@Columns.Where(p => p.IsVisible).OrderBy(k => k.Order).ToList()" Items="@allTaks"
                     SortColumn="@currentSortColumn" SortAscending="@sortAscending" OnSortRequested="HandleSort">
@@ -147,7 +150,7 @@
     private int pageSize = 10;
     bool IsCollapse = false;
     private List<SortableColumn> Columns = new();
-
+    private List<CreateTaskDto> MainAndParentTasks = new List<CreateTaskDto>();
     private List<DefaultColumnsSettingDto> ColumnsList = new();
     public async Task<List<SortableColumn>> GetColumns()
     {
@@ -259,9 +262,12 @@
 // new() { Field = "Planned Weight", DisplayName = Loc["PlannedWeight"] },
 // new() { Field = "Action", DisplayName = Loc["Action"] ,IsSortable = false},
 // };
-
+        var resMainTasks = await _taskConsumer.GetMainAndParentTasks();
+        if (resMainTasks.Success && resMainTasks.Data != null)
+        {
+            MainAndParentTasks = resMainTasks.Data;
+        }
         await GetTasks();
-
         var res = await _defaultColumnsSettingConsumer.GetDefaultColumnsSettings();
         if (res.Success)
         {
@@ -270,10 +276,8 @@
             {
                 ColumnsList = settings;
             }
-
         }
         // ColumnsList = res.Data;
-
         // Filter and order by settings
         tableColumns = tableColumns
         .Where(c => ColumnsList.Any(s => s.IsActive &&
@@ -540,8 +544,15 @@ SearchFieldTask.PlannedProgress
             case "Status":
                 builder.AddContent(0, (task.TaskStatusName)?.ToString());
                 break;
-            case "Actual Progress":
-                builder.AddContent(0, $"{task.ActualProcess}%");
+            case "Actual progress":
+                builder.AddContent(0, (RenderFragment)(b =>
+                {
+                    b.OpenComponent<OverallBar>(0);
+                    b.AddAttribute(1, "ActualProgress", task.ActualProcess);
+                    b.AddAttribute(2, "Width", 150);
+                    b.AddAttribute(3, "OnProgressChanged", EventCallback.Factory.Create<int>(this, value => OnTaskProgressChanged(task, value)));
+                    b.CloseComponent();
+                }));
                 break;
             case "Start Date":
                 builder.AddContent(0, task.StartDate?.ToString(Loc["LocalizeDate"]));
@@ -644,7 +655,15 @@ SearchFieldTask.PlannedProgress
 
         StateHasChanged();
     }
-
+    private async Task OnTaskProgressChanged(CreateTaskDto task, int value)
+    {
+        task.ActualProcess = value;
+        await _taskConsumer.ChangeTaskProgress(task.Id, value);
+        var resMainTasks = await _taskConsumer.GetMainAndParentTasks();
+        if (resMainTasks.Success && resMainTasks.Data != null)
+            MainAndParentTasks = resMainTasks.Data;
+        StateHasChanged();
+    }
     private async Task Collapse(MouseEventArgs args)
     {
 
