@@ -86,6 +86,14 @@ namespace TaskyRevamp.Client.Consumer
 
             return res;
         }
+
+        public async Task<CommonApiResponse<bool>> RetriveDeleteSource(SourceDto SourceDto)
+        {
+            var url = $"api/SourceSetting/RetriveDeleteSource";
+            var res = await _taskyService.PostJsonAsync<bool>(url, SourceDto);
+
+            return res;
+        }
         public async Task<CommonApiResponse<bool>> CheckRelatedComplatedTaskitemSource(SourceDto SourceDto)
         {
             var url = $"api/SourceSetting/CheckRelatedComplatedTaskitemSource";

@@ -59,7 +59,7 @@
             }
             else
             {
-                var result = await _prioritySettingConsumer.RetrivePriority(Priority);
+                var result = await _prioritySettingConsumer.UpdatePriority(Priority);
                 await _prioritySettingConsumer.DeletePriority(Priority.Id);
 
                 await ToastService.ShowToastAsync(Loc["Added successfully"], "success");
@@ -91,10 +91,10 @@
         if (confirmed && selectedPriority != null)
         {
             // retrve
-            var result = await _prioritySettingConsumer.RetrivePriority(selectedPriority);
+            var result = await _prioritySettingConsumer.RetriveDeletePriority(selectedPriority);
             if (result.Data)
             {
-                await _prioritySettingConsumer.DeletePriority(Priority.Id);
+              //  await _prioritySettingConsumer.DeletePriority(Priority.Id);
 
                 showConfirm = false;
                 StateHasChanged();
@@ -107,7 +107,7 @@
             }
         }
         selectedPriority = null;
-
+        await OnValidSubmit.InvokeAsync();
     }
 
     private void Cancel()

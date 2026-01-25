@@ -3166,7 +3166,8 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This type name was previously deleted and linked to a completed task. Do you want to use it again?.
+        ///   Looks up a localized string similar to This type name was previously deleted and linked to completed tasks.
+        ///Do you want to restore the original type and merge this one into it? Consider that the current type will be permanently deleted..
         /// </summary>
         public static string ThisTypenamewas {
             get {

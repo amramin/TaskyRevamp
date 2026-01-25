@@ -67,8 +67,8 @@
             }
             else
             {
-                var result = await _typeSettingConsumer.RetriveType(type);
-                await _typeSettingConsumer.DeleteType(Id);
+                var result = await _typeSettingConsumer.UpdateType(type);
+              //  await _typeSettingConsumer.DeleteType(Id);
 
                 await ToastService.ShowToastAsync(Loc["Added successfully"], "success");
 
@@ -89,10 +89,10 @@
         if (confirmed && selectedType != null)
         {
             // retrve
-            var result = await _typeSettingConsumer.RetriveType(selectedType);
+            var result = await _typeSettingConsumer.RetriveDeleteType(selectedType);
             if (result.Data)
             {
-                await _typeSettingConsumer.DeleteType(Id);
+                //await _typeSettingConsumer.DeleteType(Id);
                 showConfirm = false;
                 StateHasChanged();
                 await ToastService.ShowToastAsync(Loc["Retrieved successfully"], "success");
@@ -104,7 +104,7 @@
             }
         }
         selectedType = null;
-
+        await OnValidSubmit.InvokeAsync();
     }
 
     private void Cancel()
