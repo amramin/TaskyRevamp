@@ -30,14 +30,18 @@ namespace TaskyRevamp.Services.SystemConfiguration.SourceConfiguration.Query
         public async Task<PagedResult<SourceDto>> Handle(GetSourceConfigurationQueryView request, CancellationToken cancellationToken)
         {
             var orderBy = GetOrderBy();
-            var sourceuids = new List<Guid>();
+            var sourceuids = new List<Guid?>();
+            bool IsNoSource = false;
             if (request.IsCompleted)
             {
                 sourceuids = _taskRepository.AllAsNoTracking().Result.Value.Where(t => t.StatusId == Guid.Parse("C8D504C7-9402-4F91-223C-08DE3318A61C")).Select(p => p.TaskSourceId).Distinct().ToList();
+                IsNoSource = _taskRepository.AllAsNoTracking().Result.Value.Where(t => t.StatusId == Guid.Parse("C8D504C7-9402-4F91-223C-08DE3318A61C")).Where(p => p.TaskSourceId==null).Any();
+
             }
             else
             {
                 sourceuids = _taskRepository.AllAsNoTracking().Result.Value.Select(p => p.TaskSourceId).Distinct().ToList();
+                IsNoSource = _taskRepository.AllAsNoTracking().Result.Value.Where(p => p.TaskSourceId == null).Any();
             }
             Expression<Func<Sources, bool>> searchExpression = null;
             searchExpression = s => sourceuids.Contains(s.Id);
@@ -50,7 +54,14 @@ namespace TaskyRevamp.Services.SystemConfiguration.SourceConfiguration.Query
                                 includeProperties: $"{nameof(Sources.CreatedBy)},{nameof(Sources.UpdatedBy)}");
 
             var items = res.Items.Select(u => u.CopyToDto()).ToList();
-
+            if (IsNoSource)
+            {
+                if (request.pageNumber == 1)
+                {
+                    var nosource = new SourceDto() { NameArabic = "مهام ليس لها مصدر", NameEnglish = "No sorce tasks" };
+                    items.Insert(0, nosource);
+                }
+            }
             return new PagedResult<SourceDto>
             {
                 Items = items,

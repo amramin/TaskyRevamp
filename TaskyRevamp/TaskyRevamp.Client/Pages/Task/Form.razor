@@ -127,10 +127,11 @@
                                         <span class="text-danger"> *</span>
                                     }
                                 </label>
-                                <SearchableSingleDropdownOffline TInput=TypeDto TOutput=Guid TextSelector="(TypeDto x) => x.DisplayedName"
+                                <SearchableSingleDropdownOffline TInput=TypeDto TOutput=Guid? TextSelector="(TypeDto x) => x.DisplayedName"
                                                                  OutputSelector="x => x.Id" Datasource="taskTypeDtos" MinCharacterCount="1"
-                                                                 SelectedOptionChanged="OnTypeChanged"
-                                                                 SelectedOption="taskdto.TypeId" PlaceHolder="@Loc["Select"]" />
+                                                                 @bind-SelectedOption="@taskdto.TypeId"
+                                                                 For="@(() => taskdto.TypeId)"
+                                                                  PlaceHolder="@Loc["Select"]" />
                                 <ValidationMessage class="small text-danger" For="@(() => taskdto.TypeId)" />
                             </div>
                             break;
@@ -143,10 +144,11 @@
                                 }
                             </label>
                             <div class="mb-3">
-                                <SearchableSingleDropdownOffline TInput=SourceDto TOutput=Guid TextSelector="(SourceDto x) => x.DisplayedName"
+                                <SearchableSingleDropdownOffline TInput=SourceDto TOutput=Guid? TextSelector="(SourceDto x) => x.DisplayedName"
                                                                  OutputSelector="x => x.Id" Datasource="taskSourceDtos"
-                                                                 MinCharacterCount="1" SelectedOption="taskdto.SourceId"
-                                                                 PlaceHolder="@Loc["Select"]" SelectedOptionChanged="OnSourceChanged" />
+                                                                 MinCharacterCount="1" @bind-SelectedOption="@taskdto.SourceId"
+                                                                 For="@(() => taskdto.SourceId)"
+                                                                 PlaceHolder="@Loc["Select"]"/>
                                 <ValidationMessage class="small text-danger" For="@(() => taskdto.SourceId)"></ValidationMessage>
                             </div>
                             break;
@@ -229,8 +231,8 @@
                                 </label>
                                 <SearchableMultiDropdownOffline TInput=DepartmentDto TOutput="Guid" Datasource=departmentDtos
                                                                 TextSelector=@(x=>x.NameEnglish) OutputSelector="x=> x.Id"
-                                                                PlaceHolder="@Loc["Select"]" SelectedOptions=taskdto.AssignedDepartmentIds
-                                                                SelectedOptionsChanged="OnDepartmentsChanged" />
+                                                                PlaceHolder="@Loc["Select"]" @bind-SelectedOptions="@taskdto.AssignedDepartmentIds"
+                                                                For="@(() => taskdto.AssignedDepartmentIds)" />
                                 <ValidationMessage class="small text-danger mt-1" For="@(() => taskdto.AssignedDepartmentIds)"></ValidationMessage>
                             </div>
                             break;
@@ -245,8 +247,8 @@
                                 </label>
                                 <SearchableMultiDropdownOffline TInput=CreateTaskDto TOutput="Guid" Datasource=allTaskDtos
                                                                 PlaceHolder="@Loc["Select"]" TextSelector=@(x=>x.Title)
-                                                                OutputSelector="x=> x.Id" SelectedOptions=taskdto.Dependencies
-                                                                SelectedOptionsChanged="OnDependenciesChanged" />
+                                                                OutputSelector="x=> x.Id" @bind-SelectedOptions="@taskdto.Dependencies"
+                                                                For="@(() => taskdto.Dependencies)" />
                                 <ValidationMessage class="small text-danger mt-1" For="@(() => taskdto.Dependencies)"></ValidationMessage>
                             </div>
                             break;
@@ -261,7 +263,8 @@
                                 </label>
                                 <SearchableMultiDropdownOffline TInput=UserDto TOutput="Guid" Datasource=userDtos PlaceHolder="@Loc["Select"]"
                                                                 TextSelector=@(x=>x.DisplayedName) OutputSelector="x=> x.Id"
-                                                                SelectedOptions=taskdto.AssignedIds SelectedOptionsChanged="OnAssigneesChanged" />
+                                                                @bind-SelectedOptions="@taskdto.AssignedIds"
+                                                                For="@(() => taskdto.AssignedIds)" />
                                 <ValidationMessage class="small text-danger mt-1" For="@(() => taskdto.AssignedIds)" />
                             </div>
                             break;
@@ -302,8 +305,9 @@
                                 </label>
                                 <SearchableSingleDropdownOffline TInput=PriorityDto TOutput=Guid TextSelector=" (PriorityDto x)=> x.Name"
                                                                  OutputSelector="x => x.Id" Datasource="Priorities" MinCharacterCount="1"
-                                                                 SelectedOption="taskdto.Priority" PlaceHolder="@Loc["Select"]"
-                                                                 SelectedOptionChanged="OnPriorityChanged" />
+                                                                 @bind-SelectedOption="@taskdto.Priority"
+                                                                 For="@(() => taskdto.Priority)" PlaceHolder="@Loc["Select"]"
+                                                                 />
                                 <ValidationMessage class="small text-danger mt-1" For="@(() => taskdto.Priority)" />
                             </div>
                             break;
@@ -491,13 +495,13 @@
         var filedId = new FieldIdentifier(taskdto, nameof(taskdto.Priority));
         Notify(filedId);
     }
-    private void OnTypeChanged(Guid value)
+    private void OnTypeChanged(Guid? value)
     {
         taskdto.TypeId = value;
         var filedId = new FieldIdentifier(taskdto, nameof(taskdto.TypeId));
         Notify(filedId);
     }
-    private void OnSourceChanged(Guid value)
+    private void OnSourceChanged(Guid? value)
     {
         taskdto.SourceId = value;
         var filedId = new FieldIdentifier(taskdto, nameof(taskdto.SourceId));

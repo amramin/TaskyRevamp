@@ -117,11 +117,26 @@ public class GetTasksHandler : IRequestHandler<GetTasksQuery, PagedResult<Create
         }
         else if (request.viewType == (int)ViewTypes.SourceView)
         {
-            searchExpression = searchExpression.And(t => t.TaskSourceId == request.viewTypeId);
+            if (request.viewTypeId == Guid.Empty)
+            {
+                searchExpression = searchExpression.And(t => t.TaskSourceId == null);
+            }
+            else
+            {
+                searchExpression = searchExpression.And(t => t.TaskSourceId == request.viewTypeId);
+            }
         }
         else if (request.viewType == (int)ViewTypes.TypeView)
         {
-            searchExpression = searchExpression.And(t => t.TaskTypeId == request.viewTypeId);
+            if (request.viewTypeId == Guid.Empty)
+            {
+                searchExpression = searchExpression.And(t => t.TaskTypeId == null);
+
+            }
+            else
+            {
+                searchExpression = searchExpression.And(t => t.TaskTypeId == request.viewTypeId);
+            }
         }
         
             var res = await _taskRepository.GetPagedAsync(

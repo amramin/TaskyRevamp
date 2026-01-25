@@ -33,14 +33,20 @@ namespace TaskyRevamp.Services.SystemConfiguration.TypeConfigurarion.Query
         public async Task<PagedResult<TypeDto>> Handle(GetTypeConfigurationViewQuery request, CancellationToken cancellationToken)
         {
             var orderBy = GetOrderBy();
-            var typeids = new List<Guid>();
+            var typeids = new List<Guid?>();
+            var notypedto = new TypeDto();
+            bool IsNoType = false;
             if (request.IsCompleted)
             {
                 typeids = _taskRepository.AllAsNoTracking().Result.Value.Where(t=>t.StatusId== Guid.Parse("C8D504C7-9402-4F91-223C-08DE3318A61C")).Select(p => p.TaskTypeId).Distinct().ToList();
+                IsNoType=_taskRepository.AllAsNoTracking().Result.Value.Where(t => t.StatusId == Guid.Parse("C8D504C7-9402-4F91-223C-08DE3318A61C")).Where(p => p.TaskTypeId == null).Any();
+
+
             }
             else
             {
                 typeids = _taskRepository.AllAsNoTracking().Result.Value.Select(p => p.TaskTypeId).Distinct().ToList();
+                IsNoType = _taskRepository.AllAsNoTracking().Result.Value.Where(p => p.TaskTypeId == null).Any();
             }
                 Expression<Func<Types, bool>> searchExpression = null;
             searchExpression = s => typeids.Contains(s.Id);
@@ -54,7 +60,16 @@ namespace TaskyRevamp.Services.SystemConfiguration.TypeConfigurarion.Query
                                 includeProperties: $"{nameof(Types.CreatedBy)},{nameof(Types.UpdatedBy)}");
 
             var items = res.Items.Select(u => u.CopyToDto()).ToList();
-
+            if (IsNoType)
+            {
+                if (request.PageNumber == 1)
+                {
+                    
+                    notypedto.NameArabic = "مهام ليس لها نوع";
+                    notypedto.NameEnglish = "No type tasks";
+                    items.Insert(0,notypedto);
+                }
+            }
             return new PagedResult<TypeDto>
             {
                 Items = items,
