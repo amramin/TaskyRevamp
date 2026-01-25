@@ -15,14 +15,21 @@
 @inject DefaultColumnsSettingConsumer _defaultColumnsSettingConsumer
 @inject ILocalStorageService LocalStorageService
 
-<div class="table-wrapper">
-    <div class="table-caption fs-4" @onclick="Collapse">
-        <span class="e-icons @(IsCollapse ? "e-chevron-right" : "e-chevron-down")"></span>
-        @Title
+<div class="card table-card collaped-task-card">
+    <div class="table-caption cursor-pointer @(IsCollapse ? "collapsed" : "")" @onclick="Collapse">
+        @if (ViewType != (int)ViewTypes.OverAllView)
+        {
+            <span class="chevron-icon">
+                <SVGCrud SVGType="@(IsCollapse
+                                                                                                       ? SVGCrud.SVGTypeEnum.ChevronEnd
+                                                                                           : SVGCrud.SVGTypeEnum.ChevronDown)" />
+        </span>
+                }
+        <span class="text"> @Title</span>
     </div>
     @if (allTaks != null && allTaks.Any())
     {
-        <div style="display:@(IsCollapse ? "none" : "block")">
+        <div class="content @(IsCollapse ? "collapsed" : "")">
             <div class="table-responsive task-table">
                 <SortableTable TItem="CreateTaskDto" Columns="@tableColumns" Items="@allTaks"
                     SortColumn="@currentSortColumn" SortAscending="@sortAscending" OnSortRequested="HandleSort">
@@ -146,8 +153,7 @@
         {
             if (ViewTypeId is null)
             {
-                var value = await LocalStorageService.GetItemAsStringAsync("overall-c");
-                IsCollapse = bool.TryParse(value, out var result) && result;
+                IsCollapse = false;
             }
             else
             {
@@ -159,8 +165,7 @@
         {
             if (ViewTypeId is null)
             {
-                var value = await LocalStorageService.GetItemAsStringAsync("overall");
-                IsCollapse = bool.TryParse(value, out var result) && result;
+                IsCollapse = false;
             }
             else
             {
@@ -543,26 +548,23 @@ SearchFieldTask.PlannedProgress
 
     private async Task Collapse(MouseEventArgs args)
     {
-        IsCollapse = !IsCollapse;
+
+        if (ViewTypeId is not null)
+        {
+            IsCollapse = !IsCollapse;
+        }
         if (IsCompleted)
         {
-            if (ViewTypeId is null)
-            {
-                await LocalStorageService.SetItemAsStringAsync("overall-c", IsCollapse.ToString());
-
-            }
-            else
+            if (!(ViewTypeId is null))
             {
                 await LocalStorageService.SetItemAsStringAsync($"{ViewTypeId.ToString()}-c", IsCollapse.ToString());
+
             }
+
         }
         else
         {
-            if (ViewTypeId is null)
-            {
-                await LocalStorageService.SetItemAsStringAsync("overall", IsCollapse.ToString());
-            }
-            else
+            if (!(ViewTypeId is null))
             {
                 await LocalStorageService.SetItemAsStringAsync(ViewTypeId.ToString(), IsCollapse.ToString());
             }

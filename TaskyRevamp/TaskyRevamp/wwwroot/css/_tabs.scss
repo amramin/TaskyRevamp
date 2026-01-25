@@ -53,10 +53,9 @@
       svg {
         width: 1.5rem;
         height: 1.5rem;
-        stroke-width: 2;
       }
       &.active,
-      :active {
+      &:active {
         color: var(--primary-color);
         background-color: transparent;
       }
