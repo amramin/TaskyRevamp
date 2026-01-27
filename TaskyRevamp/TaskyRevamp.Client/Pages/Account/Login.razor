@@ -16,6 +16,7 @@
 @using TaskyRevamp.Dto.Account
 @using TaskyRevamp.Localization.Resources
 @using Microsoft.Extensions.Localization
+@inject IJSRuntime JS
 @* @rendermode InteractiveServer *@
 
 <section class="auth">
@@ -144,11 +145,6 @@
 
 </section>
 
-
-
-
-
-
 @code {
 
     public class LoginModel
@@ -157,7 +153,6 @@
         public string Password { get; set; }
     }
     private LoginModel loginModel = new LoginModel();
-
     public bool IsRequiredPass;
     public bool IsRequiredName;
     public bool Invald;
@@ -232,10 +227,13 @@
             var roles = await LocalStorageService.GetItemAsStringAsync("Roles");
             //set roles from local storage
 
-            if (!string.IsNullOrEmpty(returnUrl))
-                NavigationManager.NavigateTo(returnUrl, true);
-            else
-                NavigationManager.NavigateTo("/", true);
+            var returnUrl = await JS.InvokeAsync<string>("navigationTracker.getReturnUrl");
+            await JS.InvokeVoidAsync("navigationTracker.clearReturnUrl");
+
+            NavigationManager.NavigateTo(
+                string.IsNullOrEmpty(returnUrl) ? "/" : returnUrl,
+                true
+            );
         }
         else
         {

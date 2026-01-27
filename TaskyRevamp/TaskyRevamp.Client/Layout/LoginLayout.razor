@@ -1,3 +1,4 @@
+@using Blazored.LocalStorage
 @using TaskyRevamp.Client.Services
 @inherits LayoutComponentBase
 @inject LoaderService LoaderService
@@ -5,7 +6,8 @@
 @inject IJSRuntime JS
 @using TaskyRevamp.Client.Consumer
 @inject SystemIdentityConsumer _systemIdentityConsumer
-
+@inject ILocalStorageService localStorageService
+@inject NavigationManager NavigationManager
 @Body
 
 <Loader IsVisible="@isLoaderVisible" />
@@ -13,7 +15,16 @@
 @code {
     private bool isLoaderVisible;
     private string systemLogoAsImgSrc = "";
+    private DotNetObjectReference<LoginLayout>? _dotNetRef;
 
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            _dotNetRef = DotNetObjectReference.Create(this);
+            await JS.InvokeVoidAsync("authListener.register", _dotNetRef);
+        }
+    }
     protected override async Task OnInitializedAsync()
     {
         LoaderService.OnShow += () =>
@@ -38,5 +49,15 @@
             await taskyService.ChangeTheme(updatedIdentity);
             await InvokeAsync(StateHasChanged);
         };
+    }
+    [JSInvokable]
+    public async Task OnLoginDetected()
+    {
+        await Task.Delay(100);
+        var tokenExists = await localStorageService.ContainKeyAsync("bearerToken");
+        if (!tokenExists)
+            return;
+        var returnUrl = await JS.InvokeAsync<string>("navigationTracker.getReturnUrl");
+        NavigationManager.NavigateTo(string.IsNullOrEmpty(returnUrl) ? "/" : returnUrl, forceLoad: true);
     }
 }

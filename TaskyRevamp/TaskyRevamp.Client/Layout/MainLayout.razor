@@ -128,7 +128,6 @@ else
 
 @code {
     private bool IsAuthChecked = false;
-    private bool _authCheckedOnce = false;
     private bool langInitialized = false;
     private bool isLoaderVisible;
     string OfficalName = "";
@@ -150,13 +149,9 @@ else
     {
         if(firstRender)
         {
+            await CheckAuth(true);
             _dotNetRef = DotNetObjectReference.Create(this);
             await JS.InvokeVoidAsync("authListener.register", _dotNetRef);
-            if (!_authCheckedOnce)
-            {
-                _authCheckedOnce = true;
-                await CheckAuth(true);
-            }
         }
     }
     [JSInvokable]
@@ -164,21 +159,13 @@ else
     {
         taskyService.NavigateToLogin();
     }
-    [JSInvokable]
-    public async Task OnLoginDetected()
-    {
-        await Task.Delay(100);
-        var tokenExists = await localStorageService.ContainKeyAsync("bearerToken");
-        if (!tokenExists)
-            return;
-        var currentUri = NavigationManager.ToAbsoluteUri(NavigationManager.Uri).AbsolutePath;
-        if (currentUri.Contains("login"))
-            NavigationManager.NavigateTo("/");
-        else
-            await CheckAuth(false);
-    }
     protected async override Task OnInitializedAsync()
     {
+        NavigationManager.LocationChanged += async (_, __) =>
+        {   
+            if (!NavigationManager.Uri.Contains("/Login", StringComparison.OrdinalIgnoreCase))
+                await JS.InvokeVoidAsync("navigationTracker.saveCurrentUrl");
+        };
         displayName = await LocalStorage.GetItemAsStringAsync("NameEnglish");
 
         LoaderService.OnShow += () =>
@@ -263,6 +250,11 @@ else
             return;
         }
         var token = await localStorageService.GetItemAsStringAsync("bearerToken");
+        if (string.IsNullOrEmpty(token) || taskyService.IsTokenExpired(token))
+        {
+            taskyService.NavigateToLogin();
+            return;
+        }
         if (taskyService.IsTokenExpired(token))
         {
             taskyService.NavigateToLogin();

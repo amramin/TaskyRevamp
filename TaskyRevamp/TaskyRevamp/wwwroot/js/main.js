@@ -64,6 +64,20 @@ window.authListener = {
     }
 };
 
+window.navigationTracker = {
+    saveCurrentUrl: function () {
+        sessionStorage.setItem(
+            "returnUrl",
+            window.location.pathname + window.location.search
+        );
+    },
+    getReturnUrl: function () {
+        return sessionStorage.getItem("returnUrl");
+    },
+    clearReturnUrl: function () {
+        sessionStorage.removeItem("returnUrl");
+    }
+};
 function OpenModel(modalRef) {
     if (modalRef?.classList == null || modalRef.classList.contains('show')) {
         return;
