@@ -1138,7 +1138,7 @@
     <value>Complete Failed</value>
   </data>
   <data name="SureReopenTask" xml:space="preserve">
-    <value>Are you sure to reopen task</value>
+    <value>Are you sure you want to reopen the task?</value>
   </data>
   <data name="ReopenFailed" xml:space="preserve">
     <value>Reopen Failed</value>
@@ -1341,5 +1341,8 @@ Do you want to restore the original type and merge this one into it? Consider th
   </data>
   <data name="NextMonths" xml:space="preserve">
     <value>Next months</value>
+  </data>
+  <data name="TimeLineTilte" xml:space="preserve">
+    <value> - Tasks are grouped based on their end date</value>
   </data>
 </root>

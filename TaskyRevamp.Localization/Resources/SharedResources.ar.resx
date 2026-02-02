@@ -1141,7 +1141,7 @@
     <value>فشلت عملية اكمال المهمة</value>
   </data>
   <data name="SureReopenTask" xml:space="preserve">
-    <value>هل انت متأكد انك تريد ارجاع المهمة</value>
+    <value>هل انت متأكد انك تريد إرجاع المهمة؟</value>
   </data>
   <data name="ReopenFailed" xml:space="preserve">
     <value>فشلت عملية ارجاع المهمة</value>
@@ -1313,13 +1313,9 @@
   <data name="Search..." xml:space="preserve">
     <value>... بحث</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="Reopenedsuccessfully" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
-  </data>
-	<data name="Viewcolumn" xml:space="preserve">
+  <data name="Viewcolumn" xml:space="preserve">
     <value>خيارات الأعمدة</value>
-	  </data>
+  </data>
   <data name="OverAllView" xml:space="preserve">
     <value>كل المهام</value>
   </data>
@@ -1349,5 +1345,8 @@
   </data>
   <data name="NextMonths" xml:space="preserve">
     <value>الأشهر المقبلة</value>
+  </data>
+  <data name="TimeLineTilte" xml:space="preserve">
+    <value> - يتم تجميع المهام حسب تاريخ الإنتهاء</value>
   </data>
 </root>

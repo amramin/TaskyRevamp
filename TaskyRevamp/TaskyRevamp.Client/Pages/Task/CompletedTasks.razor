@@ -23,10 +23,14 @@
         <div class="tab-pane fade show active" id="List-view-tab" role="tabpanel" aria-labelledby="List-view-tab">
             <div class="page-header">
                 <div class="title-block">
-                    <h1 class="page-headline">@Loc[((ViewTypes)ViewType).ToString()]</h1>
+                    <div class="cursor-pointer d-flex align-items-center gap-2" @onclick="ToggleCollapse">
+                        <span> @(IsCollapsed ? "▼" : "▶")</span>
+                        <h1 class="page-headline">@Loc[((ViewTypes)ViewType).ToString()]</h1>
+                    </div>
+
                     <div class="view-scope-toggle" role="group" aria-label="Basic radio toggle button group">
                         <input type="radio" class="btn-check" name="taskRadio" id="mineRadio-task" autocomplete="off"
-                            checked />
+                               checked />
                         <label class="btn" for="mineRadio-task">
                             <SVGCrud SVGType="SVGCrud.SVGTypeEnum.User"></SVGCrud>
                             <span>@Loc["Mine"]</span>
@@ -50,20 +54,20 @@
                     </button>
                     <Search SearchSubmit="Search" CssClass="form-control"></Search>
                     <button type="button" data-bs-toggle="tooltip" data-bs-placement="top" title="Filter"
-                        class="btn btn-action-40 btn-outline-light-pimary">
+                            class="btn btn-action-40 btn-outline-light-pimary">
                         <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Filter"></SVGCrud>
                     </button>
                     <button type="button" data-bs-toggle="tooltip" data-bs-placement="top" title="View column"
-                        class="btn btn-action-40 btn-outline-light-pimary" @onclick="OnViewClick">
+                            class="btn btn-action-40 btn-outline-light-pimary" @onclick="OnViewClick">
                         <SVGCrud SVGType="SVGCrud.SVGTypeEnum.AddColumn"></SVGCrud>
 
                     </button>
                     <button type="button" data-bs-toggle="tooltip" data-bs-placement="top" title="Card View"
-                        class="btn btn-action-40 btn-outline-light-pimary">
+                            class="btn btn-action-40 btn-outline-light-pimary">
                         <SVGCrud SVGType="SVGCrud.SVGTypeEnum.CardView"></SVGCrud>
                     </button>
                     <button type="button" data-bs-toggle="tooltip" data-bs-placement="top" title="Export Excel"
-                        class="btn btn-action-40 btn-outline-light-pimary">
+                            class="btn btn-action-40 btn-outline-light-pimary">
                         <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Excel"></SVGCrud>
                     </button>
                 </div>
@@ -74,22 +78,22 @@
                 <!-- SIDE BUTTON BAR -->
                 <div class="tab-nav">
                     <button class="btn tab-btn @(ViewType == (int)ViewTypes.OverAllView ? "active" : "")"
-                        @onclick="() => changeViewType((int)ViewTypes.OverAllView)">
+                            @onclick="() => changeViewType((int)ViewTypes.OverAllView)">
                         <span class="icon">
                             <SVGCrud SVGType="SVGCrud.SVGTypeEnum.File"></SVGCrud>
                         </span>
                         <span class="text">@Loc[ViewTypes.OverAllView.ToString()]</span>
                     </button>
                     <button class="btn tab-btn @(ViewType == (int)ViewTypes.SourceView ? " active" : "")"
-                        @onclick="() => changeViewType((int)ViewTypes.SourceView)">
+                            @onclick="() => changeViewType((int)ViewTypes.SourceView)">
                         <span class="icon">
                             <SVGCrud SVGType="SVGCrud.SVGTypeEnum.TaskSource" />
                         </span>
                         <span class="text">@Loc[ViewTypes.SourceView.ToString()]</span>
                     </button>
                     <button class="btn tab-btn @(ViewType == (int)ViewTypes.TypeView ? " active" : "")"
-                        title="@Loc[ViewTypes.TypeView.ToString()]"
-                        @onclick="() => changeViewType((int)ViewTypes.TypeView)">
+                            title="@Loc[ViewTypes.TypeView.ToString()]"
+                            @onclick="() => changeViewType((int)ViewTypes.TypeView)">
                         <span class="icon">
                             <SVGCrud SVGType="SVGCrud.SVGTypeEnum.TaskType" />
                         </span>
@@ -125,48 +129,50 @@
                         </li>
                     </ul>*@
                 </div>
+                @if (IsCollapsed)
+                {
 
-                <!-- MAIN CONTENT -->
-                <div class="page-body">
-                    @switch (ViewType)
-                    {
-                        case (int)ViewTypes.OverAllView:
-                            <div>
-                                <TaskListView Title="@Loc[ViewTypes.OverAllView.ToString()]" IsCompleted="true" OnAdd="Add"
-                                    OnEdit="Edit" OnReopen="Reopen" @ref="taskListRef"></TaskListView>
-                            </div>
-                            break;
-                        case (int)ViewTypes.SourceView:
-                            @foreach (var source in sources)
-                            {
+                    <!-- MAIN CONTENT -->
+                    <div class="page-body">
+                        @switch (ViewType)
+                        {
+                            case (int)ViewTypes.OverAllView:
                                 <div>
-                                    <TaskListView IsCompleted="true" @key="source.Id"
-                                        Title="@(CultureInfo.CurrentCulture.Name == "ar-EG" ? source.NameArabic : source.NameEnglish)"
-                                        ViewType="@((int)ViewTypes.SourceView)" ViewTypeId="@source.Id" OnAdd="Add" OnEdit="Edit"
-                                        OnReopen="Reopen" @ref="taskListRef"></TaskListView>
+                                    <TaskListView Title="@Loc[ViewTypes.OverAllView.ToString()]" IsCompleted="true" OnAdd="Add"
+                                                  OnEdit="Edit" OnReopen="Reopen" @ref="taskListRef"></TaskListView>
                                 </div>
-                            }
-                            <Pagination CurrentPage="@currentPage" TotalPages="@totalPages" TotalCount="@totalCount"
-                                PageSize="@pageSize" PageSizeOptions="new[] { 3, 5, 7, 10 }" PageChanged="ChangePage"
-                                PageSizeChangedCallback="ChangePageSize" />
-                            break;
-                        case (int)ViewTypes.TypeView:
-                            @foreach (var type in Types)
-                            {
-                                <div>
-                                    <TaskListView IsCompleted="true" @key="type.Id"
-                                        Title="@(CultureInfo.CurrentCulture.Name == "ar-EG" ? type.NameArabic : type.NameEnglish)"
-                                        ViewType="@((int)ViewTypes.TypeView)" ViewTypeId="@type.Id" OnAdd="Add" OnEdit="Edit"
-                                        OnReopen="Reopen" @ref="taskListRef"></TaskListView>
-                                </div>
-                            }
-                            <Pagination CurrentPage="@currentPage" TotalPages="@totalPages" TotalCount="@totalCount"
-                                PageSize="@pageSize" PageSizeOptions="new[] { 3, 5, 7, 10 }" PageChanged="ChangePageType"
-                                PageSizeChangedCallback="ChangePageSizeType" />
-                            break;
-                    }
-                </div>
-
+                                break;
+                            case (int)ViewTypes.SourceView:
+                                @foreach (var source in sources)
+                                {
+                                    <div>
+                                        <TaskListView IsCompleted="true" @key="source.Id"
+                                                      Title="@(CultureInfo.CurrentCulture.Name == "ar-EG" ? source.NameArabic : source.NameEnglish)"
+                                                      ViewType="@((int)ViewTypes.SourceView)" ViewTypeId="@source.Id" OnAdd="Add" OnEdit="Edit"
+                                                      OnReopen="Reopen" @ref="taskListRef"></TaskListView>
+                                    </div>
+                                }
+                                <Pagination CurrentPage="@currentPage" TotalPages="@totalPages" TotalCount="@totalCount"
+                                            PageSize="@pageSize" PageSizeOptions="new[] { 3, 5, 7, 10 }" PageChanged="ChangePage"
+                                            PageSizeChangedCallback="ChangePageSize" />
+                                break;
+                            case (int)ViewTypes.TypeView:
+                                @foreach (var type in Types)
+                                {
+                                    <div>
+                                        <TaskListView IsCompleted="true" @key="type.Id"
+                                                      Title="@(CultureInfo.CurrentCulture.Name == "ar-EG" ? type.NameArabic : type.NameEnglish)"
+                                                      ViewType="@((int)ViewTypes.TypeView)" ViewTypeId="@type.Id" OnAdd="Add" OnEdit="Edit"
+                                                      OnReopen="Reopen" @ref="taskListRef"></TaskListView>
+                                    </div>
+                                }
+                                <Pagination CurrentPage="@currentPage" TotalPages="@totalPages" TotalCount="@totalCount"
+                                            PageSize="@pageSize" PageSizeOptions="new[] { 3, 5, 7, 10 }" PageChanged="ChangePageType"
+                                            PageSizeChangedCallback="ChangePageSizeType" />
+                                break;
+                        }
+                    </div>
+                }
             </div>
 
         </div>
@@ -190,6 +196,7 @@
     private int totalPages = 1;
     private int totalCount = 0;
     private int pageSize = 5;
+    private bool IsCollapsed = false;
     private async Task ClearSearch()
     {
         //currentPage = 1;
@@ -205,6 +212,7 @@
     }
     private async Task changeViewType(int type)
     {
+        IsCollapsed = false;
         ViewType = type;
         if (ViewType == (int)ViewTypes.SourceView)
         {
@@ -296,5 +304,9 @@
 
         PopupService.ShowNew(@<ViewColumn OnValidSubmit="OnInitializedAsync"></ViewColumn>, headerText: @Loc["Viewcolumn"]);
 
+    }
+    private void ToggleCollapse()
+    {
+        IsCollapsed = !IsCollapsed;
     }
 }

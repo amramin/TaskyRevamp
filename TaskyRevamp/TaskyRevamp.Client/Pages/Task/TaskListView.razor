@@ -21,11 +21,9 @@
         @if (ViewType != (int)ViewTypes.OverAllView)
         {
             <span class="chevron-icon">
-                <SVGCrud SVGType="@(IsCollapse
-                                                                                                       ? SVGCrud.SVGTypeEnum.ChevronEnd
-                                                                                           : SVGCrud.SVGTypeEnum.ChevronDown)" />
-        </span>
-                }
+                <SVGCrud SVGType="@(IsCollapse? SVGCrud.SVGTypeEnum.ChevronEnd : SVGCrud.SVGTypeEnum.ChevronDown)" />
+            </span>
+        }
         <span class="text"> @Title</span>
     </div>
     @if (allTaks != null && allTaks.Any())
@@ -36,7 +34,7 @@
             </div>
             <div class="table-responsive task-table">
                 <SortableTable TItem="CreateTaskDto" Columns="@Columns.Where(p => p.IsVisible).OrderBy(k => k.Order).ToList()" Items="@allTaks"
-                    SortColumn="@currentSortColumn" SortAscending="@sortAscending" OnSortRequested="HandleSort">
+                               SortColumn="@currentSortColumn" SortAscending="@sortAscending" OnSortRequested="HandleSort">
 
                     <RowTemplate>
                         @foreach (var task in allTaks)
@@ -51,7 +49,7 @@
                                 <td>
                                     <div class="dropdown actions">
                                         <button class="btn btn-action-24" type="button" data-bs-toggle="dropdown"
-                                            aria-expanded="false">
+                                                aria-expanded="false">
                                             <SVGCrud SVGType="SVGCrud.SVGTypeEnum.EllipseVertical"></SVGCrud>
                                         </button>
                                         <ul class="dropdown-menu">
@@ -104,14 +102,14 @@
                 </SortableTable>
             </div>
             <Pagination CurrentPage="@currentPage" TotalPages="@totalPages" TotalCount="@totalCount" PageSize="@pageSize"
-                PageChanged="ChangePage" PageSizeChangedCallback="ChangePageSize" />
+                        PageChanged="ChangePage" PageSizeChangedCallback="ChangePageSize" />
         </div>
     }
     else
     {
         <div style="display:@(IsCollapse ? "none" : "block")">
             <NoDataAvailable MessageTitle="@Loc["NoTasks"]" MessageSubtitle="@Loc["AddTaskToStart"]"
-                ButtonText="@Loc["AddTask"]" OnButtonClick="Add" />
+                             ButtonText="@Loc["AddTask"]" OnButtonClick="Add" />
         </div>
     }
 
@@ -149,9 +147,11 @@
     private int totalCount = 0;
     private int pageSize = 10;
     bool IsCollapse = false;
+    private bool collapseLoadedFromStorage = false;
     private List<SortableColumn> Columns = new();
     private List<CreateTaskDto> MainAndParentTasks = new List<CreateTaskDto>();
     private List<DefaultColumnsSettingDto> ColumnsList = new();
+
     public async Task<List<SortableColumn>> GetColumns()
     {
         var columns = await LocalStorageService.GetItemAsync<List<SortableColumn>>("AllColumn");
@@ -189,34 +189,33 @@
         var all = await LocalStorageService.GetItemAsync<List<SortableColumn>>("AllColumn");
         return all;
     }
-
     protected override async Task OnInitializedAsync()
     {
-        if (IsCompleted)
+        var isNewLogin = await LocalStorageService.GetItemAsync<bool>("IsNewLogin");
+        if (!isNewLogin && ViewTypeId is not null)
         {
-            if (ViewTypeId is null)
+            var key = IsCompleted ? $"collapse-{ViewTypeId}-c" : $"collapse-{ViewTypeId}";
+            var value = await LocalStorageService.GetItemAsStringAsync(key);
+            if (bool.TryParse(value, out var result))
             {
-                IsCollapse = false;
-            }
-            else
-            {
-                var value = await LocalStorageService.GetItemAsStringAsync($"{ViewTypeId?.ToString()}-c");
-                IsCollapse = bool.TryParse(value, out var result) && result;
+                IsCollapse = result;
+                collapseLoadedFromStorage = true;
             }
         }
         else
         {
-            if (ViewTypeId is null)
-            {
-                IsCollapse = false;
-            }
-            else
-            {
-                var value = await LocalStorageService.GetItemAsStringAsync($"{ViewTypeId?.ToString()}");
-                IsCollapse = bool.TryParse(value, out var result) && result;
-            }
+            IsCollapse = false; 
         }
-
+        if (isNewLogin)
+        {
+            IsCollapse = false;
+            var keys = await LocalStorageService.KeysAsync();
+            foreach (var key in keys.Where(k => k.StartsWith("collapse-")))
+            {
+                await LocalStorageService.RemoveItemAsync(key);
+            }
+            await LocalStorageService.RemoveItemAsync("IsNewLogin");
+        }
         var statusres = await _statusSettingConsumer.GetStatusConfiguration();
         if (statusres.Success && statusres != null && statusres.Data != null)
         {
@@ -229,39 +228,9 @@
         }
         else
         {
-            //if yes load from session else load default
-
             var all = await GetDefaultColumns();
             Columns = all.ToList();
         }
-//         var statusres = await _statusSettingConsumer.GetStatusConfiguration();
-//         if (statusres.Success && statusres != null && statusres.Data != null)
-//         {
-//             Statuses = statusres.Data;
-//         }
-//         tableColumns = new()
-// {
-// new() { Field = "Title", DisplayName = Loc["Title"] },
-// new() { Field = "Priority", DisplayName = Loc["Priority2"] },
-// new() { Field = "Status", DisplayName = Loc["Status"] },
-// new() { Field = "Actual Progress", DisplayName = Loc["ActualProgress"] },
-// new() { Field = "Start Date", DisplayName = Loc["StartDate"] },
-// new() { Field = "End Date", DisplayName = Loc["EndDate"] },
-// new() { Field = "weight", DisplayName = Loc["weight"] },
-// new() { Field = "Assigned To", DisplayName = Loc["AssignedTo"] },
-// new() { Field = "Assigned To Department", DisplayName = Loc["AssignedToDepartment"] },
-// new() { Field = "Source", DisplayName = Loc["Source"] },
-// new() { Field = "Dependency", DisplayName = Loc["Dependency"] },
-// new() { Field = "Created By", DisplayName = Loc["CreatedBy"] },
-// new() { Field = "Created by department", DisplayName = Loc["CreatedByDepartment"] },
-// new() { Field = "Duration", DisplayName = Loc["Duration"] },
-// new() { Field = "Planned Progress", DisplayName = Loc["PlannedProgress"] },
-// new() { Field = "Creation Date", DisplayName = Loc["CreationDate"] },
-// new() { Field = "Type", DisplayName = Loc["Type"] },
-// new() { Field = "Actual Weight", DisplayName = Loc["ActualWeight"] },
-// new() { Field = "Planned Weight", DisplayName = Loc["PlannedWeight"] },
-// new() { Field = "Action", DisplayName = Loc["Action"] ,IsSortable = false},
-// };
         var resMainTasks = await _taskConsumer.GetMainAndParentTasks();
         if (resMainTasks.Success && resMainTasks.Data != null)
         {
@@ -273,43 +242,21 @@
         {
             var settings = res.Data;
             if (settings != null)
-            {
                 ColumnsList = settings;
-            }
         }
-        // ColumnsList = res.Data;
         // Filter and order by settings
-        tableColumns = tableColumns
-        .Where(c => ColumnsList.Any(s => s.IsActive &&
-        string.Equals(s.NameEnglish, c.Field, StringComparison.OrdinalIgnoreCase)))
-        .OrderBy(c => ColumnsList
-        .First(s => string.Equals(s.NameEnglish, c.Field, StringComparison.OrdinalIgnoreCase))
-        .Order ?? int.MaxValue)
-        .ToList();
-        // Apply order from DB
-        // var xx = ColumnsList.OrderBy(x=>,
-        // c => c.PropertyName,
-        // o => o.ColumnName,
-        // (c, o) => c)
-        // .ToList();
+        tableColumns = tableColumns.Where(c => ColumnsList.Any(s => s.IsActive && string.Equals(s.NameEnglish, c.Field, StringComparison.OrdinalIgnoreCase)))
+        .OrderBy(c => ColumnsList.First(s => string.Equals(s.NameEnglish, c.Field, StringComparison.OrdinalIgnoreCase)).Order ?? int.MaxValue).ToList();
         StateHasChanged();
     }
-    // protected override async Task OnParametersSetAsync()
+    // public async Task ResetPage()
     // {
-    // currentPage = 1;
-    // totalPages = 1;
-    // totalCount = 0;
-    // pageSize = 10;
-    // await GetTasks();
+    //     await GetTasks();
+    //     IsShowCreateDialog = false;
+    //     IsShowEditDialog = false;
+    //     isPopupVisible = false;
+    //     StateHasChanged();
     // }
-    public async Task ResetPage()
-    {
-        await GetTasks();
-        IsShowCreateDialog = false;
-        IsShowEditDialog = false;
-        isPopupVisible = false;
-        StateHasChanged();
-    }
     public async Task Search(string searchTerm)
     {
         currentPage = 1;
@@ -337,54 +284,18 @@
 
         }
         else
-        {
             await ToastService.ShowToastAsync(Loc["CompleteFailed"], "danger");
-        }
-
         StateHasChanged();
     }
     private void CompleteTask(Guid id)
     {
-        PopupService.ShowConfirmation(
-        @Loc["SureCompleteTask"],
-        "Yes, Complete",
-        async (confirmed) =>
-        {
-            if (confirmed)
-                await CompleteConfirmed(id);
-        },
-        ConfirmationType.Primary
-        );
+        PopupService.ShowConfirmation(@Loc["SureCompleteTask"], @Loc["Confirm"],
+                async (confirmed) =>
+                {
+                    if (confirmed)
+                        await CompleteConfirmed(id);
+                },ConfirmationType.Primary);
     }
-    // private async Task ReopenConfirmed(Guid id)
-    // {
-    // var result = await _taskConsumer.ReopenTask(id);
-    // if (result.Success && result.Data)
-    // {
-    // await GetTasks();
-    // await ToastService.ShowToastAsync(Loc["Reopenedsuccessfully"], "success");
-
-    // }
-    // else
-    // {
-    // await ToastService.ShowToastAsync(Loc["ReopenFailed"], "danger");
-    // }
-
-    // StateHasChanged();
-    // }
-    // private void ReopenTask(Guid id)
-    // {
-    // PopupService.ShowConfirmation(
-    // @Loc["SureReopenTask"],
-    // "Yes, Reopen",
-    // async (confirmed) =>
-    // {
-    // if (confirmed)
-    // await ReopenConfirmed(id);
-    // },
-    // ConfirmationType.Primary
-    // );
-    // }
     private async Task DeleteConfirmed(Guid Id)
     {
         var result = await _taskConsumer.DeleteTask(Id);
@@ -392,66 +303,44 @@
         {
             var toRemove = allTaks.FirstOrDefault(d => d.Id == Id);
             if (toRemove != null)
-            {
                 allTaks.Remove(toRemove);
-            }
-
             await ToastService.ShowToastAsync(Loc["Deletedsuccessfully"], "success");
         }
         else
-        {
             await ToastService.ShowToastAsync(Loc["DeleteFailed"], "danger");
-        }
-
         StateHasChanged();
     }
     private Search? searchComponent;
-
     private async Task ClearSearch()
     {
         currentPage = 1;
         searchComponent.SearchTerm = "";
-
-        await searchComponent?.SearchSubmit.InvokeAsync("");
+        await searchComponent?.SearchSubmit.InvokeAsync("")!;
         await GetTasks(isSearch: false, null);
-
     }
-
-    public async Task Add()
-    {
-        await OnAdd.InvokeAsync();
-    }
+    public async Task Add() =>  await OnAdd.InvokeAsync();
     private void OnDeleteDelegation(Guid delegationId)
     {
-        PopupService.ShowConfirmation(
-        @Loc["SureDeleteDelegation"],
-        "Yes, Delete",
-        async (confirmed) =>
-        {
+        PopupService.ShowConfirmation( @Loc["SureDeleteDelegation"], "Yes, Delete",
+            async (confirmed) =>
+            {
             if (confirmed)
                 await DeleteConfirmed(delegationId);
-        },
-        ConfirmationType.Danger
-        );
+            },ConfirmationType.Danger);
     }
-
-
-
-    public void ShowEditPopup(Guid id)
-    {
-        PopupService.ShowNew(@<Edit UserDelegationId="@id.ToString()" IsAdmine="@IsAdmine" OnValidSubmit="OnInitializedAsync">
-</Edit>
-, headerText:
-        @Loc["EditDelegation"]);
-    }
+    // public void ShowEditPopup(Guid id)
+    // {
+    //     PopupService.ShowNew(@<Edit UserDelegationId="@id.ToString()" IsAdmine="@IsAdmine" OnValidSubmit="GetTasks"></Edit>,
+    //         headerText: @Loc["EditDelegation"]);
+    // }
     private async Task OnConfirmDelete(bool confirmed)
     {
-        if (confirmed && itemToDelete != null)
+        if (confirmed && itemToDelete != null!)
         {
             var res = await _taskConsumer.DeleteTask(itemToDelete);
             if (res.Success)
             {
-                allTaks.Remove(allTaks.FirstOrDefault(x => x.Id == itemToDelete));
+                allTaks.Remove(allTaks.FirstOrDefault(x => x.Id == itemToDelete)!);
                 await GetTasks();
             }
         }
@@ -464,37 +353,42 @@
         isPopupVisible = true;
         StateHasChanged();
     }
+    public async Task UpdateTask(CreateTaskDto updatedTask)
+    {
+        var taskIndex = allTaks.FindIndex(t => t.Id == updatedTask.Id);
+        if (taskIndex >= 0)
+            allTaks[taskIndex] = updatedTask;
+        await InvokeAsync(StateHasChanged);
+    }
     public async void OnPageChange(int selectedPage, int pageSize)
     {
         IsShowCreateDialog = false;
         IsShowEditDialog = false;
         CurrentPage = selectedPage;
         PageSize = pageSize;
-
         // await GetUsersList();
         await GetTasks();
         StateHasChanged();
     }
-    private async Task Cancel()
+    private void Cancel()
     {
         taskdto = new CreateTaskDto();
         StateHasChanged();
     }
     public List<SearchFieldTask> searchFields = new List<SearchFieldTask>() {
-SearchFieldTask.Title,
-SearchFieldTask.Priority,
-SearchFieldTask.TaskStatus,
-SearchFieldTask.StartDate,
-SearchFieldTask.EndDate,
-SearchFieldTask.weight,
-SearchFieldTask.AssigneduserNames,
-SearchFieldTask.CreatedBy,
-SearchFieldTask.CreateDate,
-SearchFieldTask.UpdatedBy,
-SearchFieldTask.UpdateDate,
-SearchFieldTask.PlannedProgress
-
-};
+        SearchFieldTask.Title,
+        SearchFieldTask.Priority,
+        SearchFieldTask.TaskStatus,
+        SearchFieldTask.StartDate,
+        SearchFieldTask.EndDate,
+        SearchFieldTask.weight,
+        SearchFieldTask.AssigneduserNames,
+        SearchFieldTask.CreatedBy,
+        SearchFieldTask.CreateDate,
+        SearchFieldTask.UpdatedBy,
+        SearchFieldTask.UpdateDate,
+        SearchFieldTask.PlannedProgress
+    };
     private RenderFragment RenderColumnValue(CreateTaskDto task, string field) => builder =>
     {
         switch (field)
@@ -507,18 +401,16 @@ SearchFieldTask.PlannedProgress
                 builder.CloseElement();
                 break; *@
             case "Title":
-               
+
                 builder.OpenElement(0, "span");
                 builder.AddAttribute(1, "class", "task-title");
                 builder.AddAttribute(2, "title", task.Title ?? string.Empty);
                 builder.AddContent(3, task.Title);
                 builder.CloseElement();
 
-               
                 builder.OpenElement(4, "span");
-                builder.AddAttribute(5, "class", "task-depancy-number"); 
+                builder.AddAttribute(5, "class", "task-depancy-number");
 
-              
                 builder.OpenElement(6, "span");
                 builder.AddAttribute(7, "class", "icon");
 
@@ -526,18 +418,15 @@ SearchFieldTask.PlannedProgress
                 builder.AddAttribute(9, "SVGType", SVGCrud.SVGTypeEnum.Relation);
                 builder.CloseComponent();
 
-                builder.CloseElement(); 
+                builder.CloseElement();
 
-               
                 builder.OpenElement(10, "span");
                 builder.AddAttribute(11, "class", "text");
                 builder.AddContent(12, "2");
                 builder.CloseElement();
 
-                builder.CloseElement(); 
-
+                builder.CloseElement();
                 break;
-
             case "Priority":
                 builder.AddContent(0, task.PriorityName);
                 break;
@@ -588,11 +477,11 @@ SearchFieldTask.PlannedProgress
             case "Created By":
                 builder.AddContent(0, (RenderFragment)(b =>
                 {
-                   b.OpenComponent<Initials>(0);
-                   b.AddAttribute(1, "Names", task.CreatedByName);
-                   b.AddAttribute(2, "Size", 32);
-                   b.AddAttribute(3, "Black", true);
-                   b.CloseComponent();
+                    b.OpenComponent<Initials>(0);
+                    b.AddAttribute(1, "Names", task.CreatedByName);
+                    b.AddAttribute(2, "Size", 32);
+                    b.AddAttribute(3, "Black", true);
+                    b.CloseComponent();
                 }));
                 break;
             case "Duration":
@@ -622,8 +511,6 @@ SearchFieldTask.PlannedProgress
     {
         currentSortColumn = sortInfo.Column;
         sortAscending = sortInfo.Ascending;
-
-
         if (sortAscending == null)
         {
             // third click → reset to default sorting
@@ -632,27 +519,21 @@ SearchFieldTask.PlannedProgress
         }
         await GetTasks();
     }
-
-    private void ViewTaskDetails(Guid id)
+    private void ViewTaskDetails(Guid id) => navigationManager.NavigateTo($"/task/details/{id}");
+    public async Task GetTasks(bool isSearch = false, string searchTerm = null!)
     {
-        navigationManager.NavigateTo($"/task/details/{id}");
-    }
-
-    public async Task GetTasks(bool isSearch = false, string searchTerm = null)
-    {
-
-
-        var res = await _taskConsumer.GetTasks(currentPage, pageSize, currentSortColumn, sortAscending.Value, isSearch ?
-        searchFields : null, isSearch ? searchTerm : null, ViewType, ViewTypeId, IsCompleted);
-        allTaks = res.Data.Items.ToList();
-
+        var res = await _taskConsumer.GetTasks(currentPage, pageSize, currentSortColumn, sortAscending!.Value, isSearch ?
+        searchFields : null!, isSearch ? searchTerm : null!, ViewType, ViewTypeId, IsCompleted);
+        allTaks = res.Data!.Items.ToList();
         if (!(res?.Success ?? false) || res.Data is null)
             return;
-
         var data = res.Data;
         totalPages = data.TotalPages;
         totalCount = data.TotalCount;
-
+        if (!collapseLoadedFromStorage)
+        {
+            IsCollapse = allTaks == null || !allTaks.Any();
+        }
         StateHasChanged();
     }
     private async Task OnTaskProgressChanged(CreateTaskDto task, int value)
@@ -664,28 +545,12 @@ SearchFieldTask.PlannedProgress
             MainAndParentTasks = resMainTasks.Data;
         StateHasChanged();
     }
-    private async Task Collapse(MouseEventArgs args)
+    private async Task Collapse()
     {
-
-        if (ViewTypeId is not null)
-        {
-            IsCollapse = !IsCollapse;
-        }
-        if (IsCompleted)
-        {
-            if (!(ViewTypeId is null))
-            {
-                await LocalStorageService.SetItemAsStringAsync($"{ViewTypeId.ToString()}-c", IsCollapse.ToString());
-
-            }
-
-        }
-        else
-        {
-            if (!(ViewTypeId is null))
-            {
-                await LocalStorageService.SetItemAsStringAsync(ViewTypeId.ToString(), IsCollapse.ToString());
-            }
-        }
+        IsCollapse = !IsCollapse;
+        if(ViewTypeId is null)
+            return;
+        var key = IsCompleted? $"collapse-{ViewTypeId}-c" : $"collapse-{ViewTypeId}";
+        await LocalStorageService.SetItemAsStringAsync(key, IsCollapse.ToString());
     }
 }

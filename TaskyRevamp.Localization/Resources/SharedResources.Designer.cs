@@ -2167,7 +2167,7 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Over all.
+        ///   Looks up a localized string similar to Overall.
         /// </summary>
         public static string OverAllView {
             get {
@@ -2959,7 +2959,7 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Are you sure to reopen task.
+        ///   Looks up a localized string similar to Are you sure you want to reopen the task?.
         /// </summary>
         public static string SureReopenTask {
             get {
@@ -3199,6 +3199,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string Time {
             get {
                 return ResourceManager.GetString("Time", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to  - Tasks are grouped based on their end date.
+        /// </summary>
+        public static string TimeLineTilte {
+            get {
+                return ResourceManager.GetString("TimeLineTilte", resourceCulture);
             }
         }
         
