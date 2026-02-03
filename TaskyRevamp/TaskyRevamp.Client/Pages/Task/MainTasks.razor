@@ -29,7 +29,7 @@
                         @Loc[((ViewTypes)ViewType).ToString()]
                         @if ((ViewTypes)ViewType == ViewTypes.TimeLineView)
                         {
-                            <span>@Loc["TimeLineTilte"]</span>
+                            <span class="ms-1">@timeLineTitle</span>
                         }
                     </h1>
                     <div class="view-scope-toggle" role="group" aria-label="Basic radio toggle button group">
@@ -249,7 +249,7 @@
     private int totalCount = 0;
     private int pageSize = 5;
     private bool IsCollapsed = false;
-
+    private string timeLineTitle => $" - {Loc["TimeLineTilte"]}";
     protected override void OnInitialized()
     {
         ViewType = (int)ViewTypes.OverAllView;

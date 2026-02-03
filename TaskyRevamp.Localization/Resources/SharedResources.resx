@@ -1343,6 +1343,6 @@ Do you want to restore the original type and merge this one into it? Consider th
     <value>Next months</value>
   </data>
   <data name="TimeLineTilte" xml:space="preserve">
-    <value> - Tasks are grouped based on their end date</value>
+    <value>Tasks are grouped based on their end date</value>
   </data>
 </root>

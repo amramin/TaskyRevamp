@@ -3203,7 +3203,7 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to  - Tasks are grouped based on their end date.
+        ///   Looks up a localized string similar to Tasks are grouped based on their end date.
         /// </summary>
         public static string TimeLineTilte {
             get {
