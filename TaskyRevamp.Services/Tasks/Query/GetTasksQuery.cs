@@ -79,6 +79,7 @@ public class GetTasksHandler : IRequestHandler<GetTasksQuery, PagedResult<Create
                 var endOfWeek = startOfWeek.AddDays(7);
 
                 searchExpression = searchExpression.And(t =>
+                    t.EndDate > today &&
                     t.EndDate >= startOfWeek &&
                     t.EndDate < endOfWeek);
             }

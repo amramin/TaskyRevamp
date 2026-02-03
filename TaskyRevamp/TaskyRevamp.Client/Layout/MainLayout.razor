@@ -3,6 +3,7 @@
 @using TaskyRevamp.Client.Services
 @using TaskyRevamp.Client.Shared.Popups
 @using TaskyRevamp.Client.Consumer
+@using TaskyRevamp.Dto.Account
 @using TaskyRevamp.Dto.SystemConfiguration
 @inherits LayoutComponentBase
 @inject SystemIdentityConsumer _systemIdentityConsumer
@@ -13,6 +14,7 @@
 @inject LoaderService LoaderService
 @inject IStringLocalizer<SharedResources> Loc
 @inject Blazored.LocalStorage.ILocalStorageService LocalStorage
+@inject UserConsumer userConsumer
 
 @if(!IsAuthChecked)
 {
@@ -166,8 +168,9 @@ else
             if (!NavigationManager.Uri.Contains("/Login", StringComparison.OrdinalIgnoreCase))
                 await JS.InvokeVoidAsync("navigationTracker.saveCurrentUrl");
         };
-        displayName = await LocalStorage.GetItemAsStringAsync("NameEnglish");
-
+        var id = await localStorageService.GetItemAsStringAsync("Id");
+        var currentUser = await GetUser(Guid.Parse(id!));
+        displayName = currentUser.DisplayedName;
         LoaderService.OnShow += () =>
         {
             isLoaderVisible = true;
@@ -178,10 +181,8 @@ else
             isLoaderVisible = false;
             InvokeAsync(StateHasChanged); // force UI refresh
         };
-
         var identity = await taskyService.GetSystemIdentity();
         systemLogoAsImgSrc = taskyService.GetSystemLogoAsImgSrc(identity.Logo);
-
         await taskyService.ChangeTheme(identity);
         // Listen for logo
         taskyService.OnSystemIdentityChanged += (updatedIdentity) =>
@@ -189,32 +190,25 @@ else
             systemLogoAsImgSrc = taskyService.GetSystemLogoAsImgSrc(updatedIdentity.Logo);
             InvokeAsync(StateHasChanged);
         };
-
-        if (!string.IsNullOrEmpty(displayName))
+        OfficalName = GetInitials(displayName!);
+    }
+    private async Task<UserDto> GetUser(Guid id)
+    {
+        var res = await userConsumer.GetUserById(id);
+        if(res.Success && res.Data != null)
         {
-            string[] words = displayName.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-
-            if (words.Length > 0)
-            {
-                // Get the first character of the first word
-                char firstCharOfFirstWord = words[0][0];
-
-                // Get the first character of the last word
-                char firstCharOfLastWord = words[words.Length - 1][0];
-                bool isArabic = IsArabic(displayName);
-                // Capitalize ONLY if not Arabic
-                if (!isArabic)
-                {
-                    firstCharOfFirstWord = char.ToUpperInvariant(firstCharOfFirstWord);
-                    firstCharOfLastWord = char.ToUpperInvariant(firstCharOfLastWord);
-                }
-
-                OfficalName = isArabic
-                    ? $"{firstCharOfFirstWord} {firstCharOfLastWord}"   // space for Arabic
-                    : $"{firstCharOfFirstWord}{firstCharOfLastWord}";   // no space for others
-                //OfficalName = firstCharOfFirstWord + "" + firstCharOfLastWord;
-            }
+            return res.Data;
         }
+        return null!;
+    }
+    private static string GetInitials(string fullName)
+    {
+        if (string.IsNullOrWhiteSpace(fullName))
+            return "";
+        var parts = fullName.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+        if (parts.Length == 1)
+            return parts[0][0].ToString().ToUpper();
+        return $"{char.ToUpper(parts[0][0])}{char.ToUpper(parts[^1][0])}";
     }
     private static bool IsArabic(string text)
     {

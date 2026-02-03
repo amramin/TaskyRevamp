@@ -61,7 +61,7 @@
                         <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Filter"></SVGCrud>
 
                     </button>
-                    <button type="button" data-bs-toggle="tooltip" data-bs-placement="top" title="View column"
+                    <button type="button" data-bs-toggle="tooltip" data-bs-placement="top" title="@Loc["Viewcolumn"]"
                             class="btn btn-action-40 btn-outline-light-pimary" @onclick="OnViewClick">
                         <SVGCrud SVGType="SVGCrud.SVGTypeEnum.AddColumn"></SVGCrud>
 
@@ -142,42 +142,64 @@
                                 }
                                 break;
                             case (int)ViewTypes.SourceView:
-                                @foreach (var source in sources)
+                                @if (sources != null && sources.Any())
                                 {
-                                    <TaskListView @key="source.Id"
-                                                  Title="@(CultureInfo.CurrentCulture.Name == "ar-EG" ? source.NameArabic : source.NameEnglish)"
-                                                  ViewType="@((int)ViewTypes.SourceView)" ViewTypeId="@source.Id" OnAdd="Add" OnEdit="Edit"
-                                                  OnReopen="Reopen" @ref="@taskListRefs[$" source-{source.Id}"]"></TaskListView>
+                                    @foreach (var source in sources)
+                                    {
+                                        <TaskListView @key="source.Id"
+                                        Title="@(CultureInfo.CurrentCulture.Name == "ar-EG" ? source.NameArabic : source.NameEnglish)"
+                                        ViewType="@((int)ViewTypes.SourceView)" ViewTypeId="@source.Id" OnAdd="Add" OnEdit="Edit"
+                                        OnReopen="Reopen" @ref="@taskListRefs[$" source-{source.Id}"]"></TaskListView>
 
+                                    }
+                                    <Pagination CurrentPage="@currentPage" TotalPages="@totalPages" TotalCount="@totalCount"
+                                    PageSize="@pageSize" PageSizeOptions="new[] {5, 8, 10, 15 }" PageChanged="ChangePage"
+                                    PageSizeChangedCallback="ChangePageSize" />
+                                }else
+                                {
+                                    <NoDataAvailable MessageTitle="@Loc["NoTasks"]" MessageSubtitle="@Loc["AddTaskToStart"]"
+                                                     ButtonText="@Loc["AddTask"]" OnButtonClick="Add" />
                                 }
-                                <Pagination CurrentPage="@currentPage" TotalPages="@totalPages" TotalCount="@totalCount"
-                                            PageSize="@pageSize" PageSizeOptions="new[] {5, 8, 10, 15 }" PageChanged="ChangePage"
-                                            PageSizeChangedCallback="ChangePageSize" />
-
                                 break;
                             case (int)ViewTypes.StatusView:
-                                @foreach (var status in Satuses.Where(s => s.Id !=
-                                                    Guid.Parse("D8E94CCE-586A-46D3-223D-08DE3318A61C") && s.Id !=
-                                                    Guid.Parse("C8D504C7-9402-4F91-223C-08DE3318A61C")))
+                                var statusList = Satuses.Where(s => s.Id != Guid.Parse("D8E94CCE-586A-46D3-223D-08DE3318A61C") && s.Id != Guid.Parse("C8D504C7-9402-4F91-223C-08DE3318A61C")).ToList();
+                                @if (statusList.Any())
                                 {
+                                    @foreach (var status in Satuses.Where(s => s.Id !=
+                                                                                  Guid.Parse("D8E94CCE-586A-46D3-223D-08DE3318A61C") && s.Id !=
+                                                                                  Guid.Parse("C8D504C7-9402-4F91-223C-08DE3318A61C")))
+                                    {
 
-                                    <TaskListView Title="@(CultureInfo.CurrentCulture.Name == "ar-EG" ? status.NameArabic : status.NameEnglish)"
-                                                  ViewType="@((int)ViewTypes.StatusView)" ViewTypeId="@status.Id" OnAdd="Add" OnEdit="Edit"
-                                                  OnReopen="Reopen" @ref="@taskListRefs[$" status-{status.Id}"]"></TaskListView>
+                                        <TaskListView Title="@(CultureInfo.CurrentCulture.Name == "ar-EG" ? status.NameArabic : status.NameEnglish)"
+                                        ViewType="@((int)ViewTypes.StatusView)" ViewTypeId="@status.Id" OnAdd="Add" OnEdit="Edit"
+                                        OnReopen="Reopen" @ref="@taskListRefs[$" status-{status.Id}"]"></TaskListView>
+                                    }
                                 }
-
+                                else
+                                {
+                                    <NoDataAvailable MessageTitle="@Loc["NoTasks"]" MessageSubtitle="@Loc["AddTaskToStart"]"
+                                                     ButtonText="@Loc["AddTask"]" OnButtonClick="Add" />
+                                }
                                 break;
                             case (int)ViewTypes.TypeView:
-                                @foreach (var type in Types)
+                                if (Types != null && Types.Any())
                                 {
-                                    <TaskListView @key="type.Id"
-                                                  Title="@(CultureInfo.CurrentCulture.Name == "ar-EG" ? type.NameArabic : type.NameEnglish)"
-                                                  ViewType="@((int)ViewTypes.TypeView)" ViewTypeId="@type.Id" OnAdd="Add" OnEdit="Edit"
-                                                  OnReopen="Reopen" @ref="@taskListRefs[$"type-{type.Id}"]"></TaskListView>
+                                    @foreach (var type in Types)
+                                    {
+                                        <TaskListView @key="type.Id"
+                                        Title="@(CultureInfo.CurrentCulture.Name == "ar-EG" ? type.NameArabic : type.NameEnglish)"
+                                        ViewType="@((int)ViewTypes.TypeView)" ViewTypeId="@type.Id" OnAdd="Add" OnEdit="Edit"
+                                        OnReopen="Reopen" @ref="@taskListRefs[$"type-{type.Id}"]"></TaskListView>
+                                    }
+                                    <Pagination CurrentPage="@currentPage" TotalPages="@totalPages" TotalCount="@totalCount"
+                                    PageSize="@pageSize" PageSizeOptions="new[] { 5, 8, 10, 15 }" PageChanged="ChangePage"
+                                    PageSizeChangedCallback="ChangePageSize" />
                                 }
-                                <Pagination CurrentPage="@currentPage" TotalPages="@totalPages" TotalCount="@totalCount"
-                                            PageSize="@pageSize" PageSizeOptions="new[] { 5, 8, 10, 15 }" PageChanged="ChangePage"
-                                            PageSizeChangedCallback="ChangePageSize" />
+                                else
+                                {
+                                    <NoDataAvailable MessageTitle="@Loc["NoTasks"]" MessageSubtitle="@Loc["AddTaskToStart"]"
+                                                     ButtonText="@Loc["AddTask"]" OnButtonClick="Add" />
+                                }
                                 break;
                         }
                     </div>

@@ -24,7 +24,7 @@
             <div class="page-header">
                 <div class="title-block">
                     <div class="cursor-pointer d-flex align-items-center gap-2" @onclick="ToggleCollapse">
-                        <span> @(IsCollapsed ? "▼" : "▶")</span>
+                        <span> @(IsCollapsed ? "▶" : "▼")</span>
                         <h1 class="page-headline">@Loc[((ViewTypes)ViewType).ToString()]</h1>
                     </div>
                     <div class="view-scope-toggle" role="group" aria-label="Basic radio toggle button group">
@@ -96,45 +96,62 @@
                         <span class="text">@Loc[ViewTypes.TypeView.ToString()]</span>
                     </button>
                 </div>
-                @if (IsCollapsed)
+                @if (!IsCollapsed)
                 {
                     <!-- MAIN CONTENT -->
                     <div class="page-body">
                         @switch (ViewType)
                         {
                             case (int)ViewTypes.OverAllView:
+
                                 <div>
                                     <TaskListView Title="@Loc[ViewTypes.OverAllView.ToString()]" IsCompleted="true" OnAdd="Add"
                                                   OnEdit="Edit" OnReopen="Reopen" @ref="taskListRef"></TaskListView>
                                 </div>
                                 break;
                             case (int)ViewTypes.SourceView:
-                                @foreach (var source in sources)
+                                @if (sources != null && sources.Any())
                                 {
-                                    <div>
-                                        <TaskListView IsCompleted="true" @key="source.Id"
-                                                      Title="@(CultureInfo.CurrentCulture.Name == "ar-EG" ? source.NameArabic : source.NameEnglish)"
-                                                      ViewType="@((int)ViewTypes.SourceView)" ViewTypeId="@source.Id" OnAdd="Add" OnEdit="Edit"
-                                                      OnReopen="Reopen" @ref="taskListRef"></TaskListView>
-                                    </div>
+                                    @foreach (var source in sources)
+                                    {
+                                        <div>
+                                            <TaskListView IsCompleted="true" @key="source.Id"
+                                            Title="@(CultureInfo.CurrentCulture.Name == "ar-EG" ? source.NameArabic : source.NameEnglish)"
+                                            ViewType="@((int)ViewTypes.SourceView)" ViewTypeId="@source.Id" OnAdd="Add" OnEdit="Edit"
+                                            OnReopen="Reopen" @ref="taskListRef"></TaskListView>
+                                        </div>
+                                    }
+                                    <Pagination CurrentPage="@currentPage" TotalPages="@totalPages" TotalCount="@totalCount"
+                                    PageSize="@pageSize" PageSizeOptions="new[] { 3, 5, 7, 10 }" PageChanged="ChangePage"
+                                    PageSizeChangedCallback="ChangePageSize" />
                                 }
-                                <Pagination CurrentPage="@currentPage" TotalPages="@totalPages" TotalCount="@totalCount"
-                                            PageSize="@pageSize" PageSizeOptions="new[] { 3, 5, 7, 10 }" PageChanged="ChangePage"
-                                            PageSizeChangedCallback="ChangePageSize" />
+                                else
+                                {
+                                    <NoDataAvailable MessageTitle="@Loc["NoTasks"]" MessageSubtitle="@Loc["AddTaskToStart"]"
+                                                     ButtonText="@Loc["AddTask"]" OnButtonClick="Add" />
+                                }
                                 break;
                             case (int)ViewTypes.TypeView:
-                                @foreach (var type in Types)
+                                @if (Types != null && Types.Any())
                                 {
-                                    <div>
-                                        <TaskListView IsCompleted="true" @key="type.Id"
-                                                      Title="@(CultureInfo.CurrentCulture.Name == "ar-EG" ? type.NameArabic : type.NameEnglish)"
-                                                      ViewType="@((int)ViewTypes.TypeView)" ViewTypeId="@type.Id" OnAdd="Add" OnEdit="Edit"
-                                                      OnReopen="Reopen" @ref="taskListRef"></TaskListView>
-                                    </div>
+                                    @foreach (var type in Types)
+                                    {
+                                        <div>
+                                            <TaskListView IsCompleted="true" @key="type.Id"
+                                            Title="@(CultureInfo.CurrentCulture.Name == "ar-EG" ? type.NameArabic : type.NameEnglish)"
+                                            ViewType="@((int)ViewTypes.TypeView)" ViewTypeId="@type.Id" OnAdd="Add" OnEdit="Edit"
+                                            OnReopen="Reopen" @ref="taskListRef"></TaskListView>
+                                        </div>
+                                    }
+                                    <Pagination CurrentPage="@currentPage" TotalPages="@totalPages" TotalCount="@totalCount"
+                                    PageSize="@pageSize" PageSizeOptions="new[] { 3, 5, 7, 10 }" PageChanged="ChangePageType"
+                                    PageSizeChangedCallback="ChangePageSizeType" />
                                 }
-                                <Pagination CurrentPage="@currentPage" TotalPages="@totalPages" TotalCount="@totalCount"
-                                            PageSize="@pageSize" PageSizeOptions="new[] { 3, 5, 7, 10 }" PageChanged="ChangePageType"
-                                            PageSizeChangedCallback="ChangePageSizeType" />
+                                else
+                                {
+                                    <NoDataAvailable MessageTitle="@Loc["NoTasks"]" MessageSubtitle="@Loc["AddTaskToStart"]"
+                                                     ButtonText="@Loc["AddTask"]" OnButtonClick="Add" />
+                                }
                                 break;
                         }
                     </div>

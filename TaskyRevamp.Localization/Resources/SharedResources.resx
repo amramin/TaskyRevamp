@@ -952,7 +952,7 @@
     <value>Privilege </value>
   </data>
   <data name="NoTasks" xml:space="preserve">
-    <value>No Tasks Found</value>
+    <value>No tasks found</value>
   </data>
   <data name="AddTaskToStart" xml:space="preserve">
     <value>Data will appear after adding the first task</value>

@@ -2050,7 +2050,7 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No Tasks Found.
+        ///   Looks up a localized string similar to No tasks found.
         /// </summary>
         public static string NoTasks {
             get {
