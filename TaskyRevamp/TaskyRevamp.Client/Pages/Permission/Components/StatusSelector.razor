@@ -12,7 +12,9 @@
                                     TextSelector="(s => s.Name)" OutputSelector="(s => s.Id)"
                                     SelectedOptions="SelectedStatuses"
                                     SelectedOptionsChanged="OnSelectedChanged"
-                                    IsDisabled="IsViewMode" />
+                                    IsDisabled="IsViewMode"
+                                    SearchInputPlaceHolder="@Loc["Search"]" PlaceHolder="@($"{Loc["Select"]}")" NoMatchPlaceHolder="@Loc["NoResultsFound"]"
+                                    SelectAllPlaceHolder="@Loc["SelectAll"]" AllowSelectAll="AvailableStatuses.Any()"/>
 
     @if (IsSaveClicked && (SelectedStatuses == null || !SelectedStatuses.Any()))
     {

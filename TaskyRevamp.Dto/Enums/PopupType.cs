@@ -11,6 +11,7 @@ public enum PopupType
     Confirmation,
     InValid,
     New,
-    Standard
+    Standard,
+    Info
 }
 
