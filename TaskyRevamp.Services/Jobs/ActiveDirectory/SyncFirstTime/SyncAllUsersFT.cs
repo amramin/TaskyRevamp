@@ -1,50 +1,55 @@
-﻿using MediatR;
+﻿using DocumentFormat.OpenXml.Spreadsheet;
+using MediatR;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Options;
+using Org.BouncyCastle.Asn1.Ocsp;
 using System;
 using System.Collections.Generic;
+using System.DirectoryServices;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.DirectoryServices;
-using Microsoft.Extensions.Options;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 using TaskyRevamp.Domain.Models.Users;
 using TaskyRevamp.Domain.Repositeries;
+using TaskyRevamp.Dto.Account;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 
 namespace TaskyRevamp.Services.Jobs.ActiveDirectory.SyncFirstTime;
 
-public record SyncAllUsersFt : IRequest<bool>;
+public record SyncAllUsersFt(Guid LogedInUser) : IRequest<int>;
 
-public class SyncAllUsersFtHandler : IRequestHandler<SyncAllUsersFt, bool>
+public class SyncAllUsersFtHandler : IRequestHandler<SyncAllUsersFt, int>
 {
     private readonly IRepository<User> _userRepository;
     private readonly IOptions<LdapSettings> _ldapPath;
-
-    public SyncAllUsersFtHandler(IOptions<LdapSettings> ldapSettings, IRepository<User> userRepository)
+    private readonly IHttpContextAccessor _httpContextAccessor;
+    public SyncAllUsersFtHandler(IOptions<LdapSettings> ldapSettings, IRepository<User> userRepository,IHttpContextAccessor httpContextAccessor)
     {
         _userRepository = userRepository;
         _ldapPath = ldapSettings;
+        _httpContextAccessor = httpContextAccessor;
     }
 
-    public async Task<bool> Handle(SyncAllUsersFt request, CancellationToken cancellationToken)
+    public async Task<int> Handle(SyncAllUsersFt request, CancellationToken cancellationToken)
     {
         try
         {
-            await SyncAllAdUsers();
-            return true;
+            var AddedUsers=await SyncAllAdUsers(request.LogedInUser);
+            return AddedUsers;
         }
-        catch (Exception ex) { Console.WriteLine(ex); return false; }
+        catch (Exception ex) { Console.WriteLine(ex); return 0; }
 
     }
 
-    private async Task SyncAllAdUsers()
+    private async Task<int> SyncAllAdUsers(Guid updatedby)
     {
         string ldapPath = _ldapPath.Value.Path;
         var adUsers = await GetAllActiveDirectoryUsers(ldapPath, _ldapPath.Value.Username, _ldapPath.Value.Password);
-        await SaveUsersToDatabaseBulk(adUsers);
+        var AddedUsers=await SaveUsersToDatabaseBulk(adUsers, updatedby);
 
         Console.WriteLine("Active Directory users successfully saved to the database.");
-
+        return AddedUsers;
     }
     public async Task<List<User>> GetAllActiveDirectoryUsers(string ldapPath, string userName, string password)
     {
@@ -180,12 +185,62 @@ public class SyncAllUsersFtHandler : IRequestHandler<SyncAllUsersFt, bool>
         }
         await _userRepository.SaveChangesAsync();
     }
-    public async Task SaveUsersToDatabaseBulk(List<User> users)
+    public async Task<int> SaveUsersToDatabaseBulk(List<User> users,Guid UpdatedBy)
     {
-        await _userRepository.InsertRange(users);
-        await _userRepository.BulkInsertAsync(users);
-
+        int AddedUsers = 0;
+        var dbUsers = (_userRepository.AllAsNoTracking().Result.Value
+              ?? Enumerable.Empty<User>());
+        
+        var dbUsernames = dbUsers
+            .Select(u => u.Username)
+            .ToHashSet();
+        var ExistUsersAD = users.Where(u => dbUsernames.Contains(u.Username)).ToList();
+         users.RemoveAll(u => dbUsernames.Contains(u.Username));
+        if(users is not null && users.Count() > 0)
+        {
+            await _userRepository.InsertRange(users);
+            //await _userRepository.BulkInsertAsync(users);
+            AddedUsers = users.Count();
+        }
+        if(ExistUsersAD is not null&&dbUsers is not null)
+        {
+            var UsersToUpdate = UpdateDbUsers(dbUsers.ToList(), ExistUsersAD, UpdatedBy);
+            await _userRepository.UpdateRange(UsersToUpdate);
+        }
+        return AddedUsers;
     }
 
+    private List<User> UpdateDbUsers(List<User> DbUsers,List<User> AdUsers,Guid UpdatedBy)
+    {
+        var adUserDict = AdUsers.ToDictionary(u => u.Username??"", u => u);
+
+        foreach (var dbUser in DbUsers)
+        {
+            // Try get the corresponding AD user
+            try
+            {
+                if (adUserDict.TryGetValue(dbUser.Username ?? "", out var adUser))
+                {
+                    // Only update if AD user exists
+                    dbUser.NameEnglish = adUser.NameEnglish;
+                    dbUser.NameArabic = adUser.NameArabic;
+                    dbUser.Email = adUser.Email;
+                    dbUser.DistinguishedName = adUser.DistinguishedName;
+                    dbUser.GivenName = adUser.GivenName;
+                    dbUser.Mobile = adUser.Mobile;
+                    dbUser.IsManager = adUser.IsManager;
+                    dbUser.UpdatedById = UpdatedBy;
+                    // Optional: uncomment if you want to update these as well
+                    // dbUser.Surname = adUser.Surname;
+                    // dbUser.Title = adUser.Title;
+                }
+            }catch(Exception ex)
+            {
+                var res = ex;
+            }
+        }
+
+        return DbUsers;
+    }
 
 }

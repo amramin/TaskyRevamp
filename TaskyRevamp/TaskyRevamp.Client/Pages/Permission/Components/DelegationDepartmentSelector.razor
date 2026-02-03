@@ -13,7 +13,10 @@
                                     TextSelector="(d => d.Name)"
                                     OutputSelector="(d => d.Id)"
                                     SelectedOptions="@SelectedDepartments"
-                                    SelectedOptionsChanged="@OnDepartmentsChanged" />
+                                    SelectedOptionsChanged="@OnDepartmentsChanged"
+                                    SearchInputPlaceHolder="@Loc["Search"]" 
+                                    SelectAllPlaceHolder="@Loc["SelectAll"]" 
+                                    PlaceHolder="@($"{Loc["Select"]}")" NoMatchPlaceHolder="@Loc["NoResultsFound"]" />
 
     @if (DepartmentsWithUsers.Any())
     {

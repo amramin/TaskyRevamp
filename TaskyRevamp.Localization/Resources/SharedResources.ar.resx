@@ -1349,4 +1349,23 @@
   <data name="TimeLineTilte" xml:space="preserve">
     <value> - يتم تجميع المهام حسب تاريخ الإنتهاء</value>
   </data>
+  <data name="SelectAll" xml:space="preserve">
+    <value>اختر الكل</value>
+  </data>
+  <data name="Close" xml:space="preserve">
+    <value>اغلاق</value>
+  </data>
+  <data name="UsersAdded" xml:space="preserve">
+    <value>المستخدمون المضافون:</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="Reopenedsuccessfully" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="UsersUpdated" xml:space="preserve">
+    <value>تم تحديث بيانات المستخدمين</value>
+  </data>
+  <data name="SyncUsers" xml:space="preserve">
+    <value>مزامنة المستخدمين</value>
+  </data>
 </root>

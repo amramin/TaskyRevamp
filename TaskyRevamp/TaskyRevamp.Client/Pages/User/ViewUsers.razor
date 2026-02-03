@@ -1,4 +1,6 @@
 ﻿@page "/Users"
+@using System.Threading.Tasks
+@using Blazored.LocalStorage
 @using TaskyRevamp.Client.Consumer
 @using TaskyRevamp.Client.Services
 @using TaskyRevamp.Client.Shared.Popups
@@ -10,11 +12,12 @@
 @inject ToastService ToastService
 @inject UserConsumer _userConsumer
 @inject TaskConsumer _taskConsumer
+@inject AccountConsumer _accountConsumer
 @inject PrivilegeConsumer _privilegeConsumer
 @inject DepartmentConsumer _deparmentConsumer
 @inject PopupService PopupService
 @inject FileManagementService _fileManagementService
-
+@inject ILocalStorageService LocalStorageService
 <div class="page-header">
     <div class="title-block">
         <h1 class="page-headline">@Loc["users"]</h1>
@@ -55,6 +58,19 @@
         <button class="btn btn-lg btn-light text-nowrap" @onclick="DownloadExcel">
             @Loc["DownloadExcelTemplate"]
         </button>
+        @if (!IsLoading)
+        {
+            <button class="btn btn-lg btn-light text-nowrap" @onclick="SyncUsers">
+                @Loc["SyncUsers"]
+            </button>
+        }else
+            {
+            <button class="btn btn-lg btn-light text-nowrap" @onclick="SyncUsers">
+                <span class="spinner-border spinner-border-sm me-2"
+                      role="status" aria-hidden="true"></span>
+                @Loc["SyncUsers"]
+            </button>
+            }
     </div>
 
     @if (users != null && users.Any())
@@ -184,7 +200,7 @@
     private HashSet<string> systemPrivileges = new();
     private HashSet<string> systemEmails = new();
     private List<UserLinkDto> userLinkDtos = new();
-
+    private bool IsLoading = false;
     private async Task ChangePage(int page)
     {
         currentPage = page;
@@ -430,5 +446,23 @@ SearchFieldUser.ActiveStatus
         }
 
         return true;
+    }
+    private async Task SyncUsers(MouseEventArgs args)
+    {
+        IsLoading = true;
+        var current = await LocalStorageService.GetItemAsStringAsync("Id");
+        var UpdatedBy= Guid.Parse(current);
+        var res=await _accountConsumer.SyncUsers(UpdatedBy);
+        if (res.Success)
+        {
+            IsLoading = false;
+            await LoadUsers();
+            StateHasChanged();
+             PopupService.ShowInfo(
+       @Loc[$"UsersUpdated"],
+   $"{Loc["UsersAdded"]} {res.Data}",
+        ConfirmationType.Primary
+        );
+        }
     }
 }

@@ -28,7 +28,7 @@
             </label>
             <SearchableSingleDropdownOffline TInput=PrivilegeDto TOutput=Guid TextSelector="@(p => p.Name)"
                                              OutputSelector="x => x.Id" Datasource="allPrivileges" MinCharacterCount="1"
-                                             @bind-SelectedOption="@SelectedPrivilegeId" PlaceHolder="@($"{Loc["Select"]}")" />
+                                             @bind-SelectedOption="@SelectedPrivilegeId" SearchInputPlaceHolder="@Loc["Search"]" PlaceHolder="@($"{Loc["Select"]}")" NoMatchPlaceHolder="@Loc["NoResultsFound"]" />
             @if (privilegeRequired)
             {
                 <div class="text-danger small">@Loc["Required"]</div>
@@ -41,7 +41,7 @@
             </label>
             <SearchableSingleDropdownOffline TInput=DepartmentDto TOutput=Guid TextSelector="@(x => x.Name)"
                                              OutputSelector="x => x.Id" Datasource="allDepartments" MinCharacterCount="1"
-                                             @bind-SelectedOption="@SelectedDepartmentId" PlaceHolder="@($"{Loc["Select"]}")" />
+                                             @bind-SelectedOption="@SelectedDepartmentId" SearchInputPlaceHolder="@Loc["Search"]" PlaceHolder="@($"{Loc["Select"]}")" NoMatchPlaceHolder="@Loc["NoResultsFound"]" />
             @if (departmentRequired)
             {
                 <div class="text-danger small">@Loc["Required"]</div>

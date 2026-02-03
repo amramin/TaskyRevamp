@@ -73,6 +73,39 @@
                         </div>
                     </div>
                 }
+                else if (_popupType == PopupType.Info && _parameters is InfoPopupParams infoParams)
+                {
+                    var buttonClass = infoParams.Type == ConfirmationType.Danger ? "btn-danger" : "btn-primary";
+                    <div class="modal-content confirmation-popup">
+                        <div class="">
+                            <div class="modal-body">
+                                <span class="confirm-icon">
+                                    @if (infoParams.Type == ConfirmationType.Danger)
+                                    {
+                                        <SVGCrud SVGType="SVGCrud.SVGTypeEnum.InfoCircleDanger"></SVGCrud>
+                                    }
+                                    else
+                                    {
+                                        <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Info"></SVGCrud>
+                                    }
+                                </span>
+                                @if (infoParams.Type == ConfirmationType.Danger)
+                                {
+                                    @* <h6 class="modal-title headline-6">Sure to Delete ?</h6> *@
+                                }
+                                else
+                                {
+@*                                     <h6 class="modal-title headline-6"> Move to trash ?</h6>
+ *@                                }
+                                <p class="small-medium-text">@infoParams.Message</p>
+                                <p class="small-medium-text">@infoParams.Info</p>
+                                <div class="action d-grid w-100">
+                                        <button class="btn btn-lg @(buttonClass)" @onclick="() => Confirm(false, infoParams.OnConfirm)">@Loc["Close"]</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
                 else if (_popupType == PopupType.InValid && _parameters is InvalidPopupParams invalidParams)
                 {
                     <div class="modal-content">

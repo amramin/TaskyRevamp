@@ -31,7 +31,7 @@
                             TextSelector="(w => Loc[w.Day.ToString()])" OutputSelector="(w => w.Day)"
                             Datasource="workingDaysSettingsDtos!.Where(w => w.IsActive).ToList()"
                             SelectedOption="settingsDto.Day" SelectedOptionChanged="OnDayChanged"
-                            PlaceHolder="@($"{Loc["Select"]}")" />
+                                                         PlaceHolder="@($"{Loc["Select"]}")" NoMatchPlaceHolder="@Loc["NoResultsFound"]" />
                         <div class="text-danger small mt-1">@DayError</div>
                     </div>
                     <div class="mb-4">
@@ -41,7 +41,7 @@
                         <SearchableSingleDropdownOffline TInput="(TimeSpan Value, string Text)" TOutput="string"
                             TextSelector="t => t.Text" OutputSelector="t => t.Text" Datasource="TimeSlots"
                             SelectedOption="SelectedTimeText" SelectedOptionChanged="OnTimeTextChanged"
-                            PlaceHolder="@($"{Loc["Select"]}")" />
+                                                         PlaceHolder="@($"{Loc["Select"]}")" NoMatchPlaceHolder="@Loc["NoResultsFound"]" />
                         <div class="text-danger small mt-1">@TimeError</div>
                     </div>
                     <div class="text-content mb-2">

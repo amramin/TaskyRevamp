@@ -45,7 +45,7 @@
                                             <input checked="@setting.IsActive"
                                                    id="IsActive@(setting.Id)"
                                                    type="checkbox"
-                                                   disabled="@IsFixedField(setting)"
+                                                   disabled="@(IsFixedField(setting)||setting.IsMandatory)"
                                                    @onchange="@(() =>
                                                    {
                                                        if (!IsFixedField(setting))
@@ -65,7 +65,12 @@
                                                      @onchange="@(() =>
                                                    {
                                                        if (!IsFixedField(setting))
-                                                           setting.IsMandatory = !setting.IsMandatory;
+                                                           {
+                                                                setting.IsMandatory = !setting.IsMandatory;
+                                                                if(setting.IsMandatory){
+                                                                setting.IsActive=true;
+                                                                }
+                                                            }
                                                    })" />
 
                                                 <label for="IsMandatory@(setting.Id)">
