@@ -229,9 +229,10 @@ else
         Content = content;
         StateHasChanged();
     }
-    public void Logout()
+    public async Task Logout()
     {
-        taskyService.NavigateToLogin();
+        await localStorageService.SetItemAsync("IsManualLogout", true);
+        taskyService.NavigateToLoginManual();
     }
 
     void ToggleDialog(bool isShow)

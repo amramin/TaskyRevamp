@@ -223,17 +223,20 @@
             await LocalStorageService.SetItemAsStringAsync("Email", identity.GetClaim("Email"));
             await LocalStorageService.SetItemAsStringAsync("Id", identity.GetClaim("Id"));
             await LocalStorageService.SetItemAsStringAsync("DelegatedUsersId", identity.GetClaim("DelegatedUsersId"));
-
+            await LocalStorageService.SetItemAsync("IsNewLogin", true);
             var roles = await LocalStorageService.GetItemAsStringAsync("Roles");
             //set roles from local storage
 
-            var returnUrl = await JS.InvokeAsync<string>("navigationTracker.getReturnUrl");
-            await JS.InvokeVoidAsync("navigationTracker.clearReturnUrl");
-
-            NavigationManager.NavigateTo(
-                string.IsNullOrEmpty(returnUrl) ? "/" : returnUrl,
-                true
-            );
+            var isManualLogout = await LocalStorageService.GetItemAsync<bool>("IsManualLogout");
+            await LocalStorageService.RemoveItemAsync("IsManualLogout");
+            if (isManualLogout)
+                NavigationManager.NavigateTo("/");
+            else
+            {
+                var returnUrl = await JS.InvokeAsync<string>("navigationTracker.getReturnUrl");
+                await JS.InvokeVoidAsync("navigationTracker.clearReturnUrl");
+                NavigationManager.NavigateTo(string.IsNullOrEmpty(returnUrl) ? "/" : returnUrl, true);
+            }
         }
         else
         {

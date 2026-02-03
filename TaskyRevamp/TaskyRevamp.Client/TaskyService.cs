@@ -60,9 +60,13 @@ public class TaskyService
 
         NavigationManager.NavigateTo(loginUrl, true);
     }
+	public void NavigateToLoginManual()
+	{
+		ClearLocalStorage();
+		NavigationManager.NavigateTo("/login", true);
+	}
 
-
-    public void ClearLocalStorage()
+	public void ClearLocalStorage()
     {
         _localStorage.RemoveItemAsync("bearerToken");
         _localStorage.RemoveItemAsync("NameEnglish");

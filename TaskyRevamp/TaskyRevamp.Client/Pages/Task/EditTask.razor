@@ -52,17 +52,14 @@
         if (rs.Success && string.IsNullOrEmpty(rs.ErrorMessage))
         {
             await ToastService.ShowToastAsync(Loc["Edited successfully"], "success");
-
-            navigationManager.NavigateTo($"/MainTasks", true);
+            await OnValidSubmit.InvokeAsync(Taskdto);
+            PopupService.Hide();
 
         }
         else
         {
-            {
-                await ToastService.ShowToastAsync(Loc["Erroroccurred"], "error");
-
-                return;
-            }//await OnValidSubmit.InvokeAsync(Taskdto);
+            await ToastService.ShowToastAsync(Loc["Erroroccurred"], "error");
+            return;
         }
     }
     private void Cancel()

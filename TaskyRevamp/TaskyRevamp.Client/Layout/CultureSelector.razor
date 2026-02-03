@@ -13,7 +13,7 @@
         <span class="icon">
             <SVGCrud SVGType="SVGCrud.SVGTypeEnum.SwitchLang"></SVGCrud>
         </span>
-        <span class="ar-text">تحويل إلى العربية</span>
+        <span class="ar-text">التحويل الى العربية</span>
         <span class="en-text">Change to English</span>
     </span>
 </button>
@@ -43,7 +43,7 @@ new CultureInfo("ar-EG"),
         if (string.IsNullOrEmpty(culture))
         {
             // Default to Arabic if no culture is stored
-            selectedCulture = new CultureInfo("ar-EG");
+            selectedCulture = new CultureInfo("en-US");
         }
         else
         {
