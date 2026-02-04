@@ -24,10 +24,9 @@
             <div class="page-header">
                 <div class="title-block">
                     <div class="cursor-pointer d-flex align-items-center gap-2" @onclick="ToggleCollapse">
-                        <span> @(IsCollapsed ? "▼" : "▶")</span>
+                        <span> @(IsCollapsed ? "▶" : "▼")</span>
                         <h1 class="page-headline">@Loc[((ViewTypes)ViewType).ToString()]</h1>
                     </div>
-
                     <div class="view-scope-toggle" role="group" aria-label="Basic radio toggle button group">
                         <input type="radio" class="btn-check" name="taskRadio" id="mineRadio-task" autocomplete="off"
                                checked />
@@ -44,7 +43,6 @@
                         </label>
                     </div>
                 </div>
-
                 <div class="action-btn-list">
                     <button class="btn btn-primary" @onclick="Add">
                         <span class="icon">
@@ -71,10 +69,8 @@
                         <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Excel"></SVGCrud>
                     </button>
                 </div>
-
             </div>
             <div class="horizintal-tab">
-
                 <!-- SIDE BUTTON BAR -->
                 <div class="tab-nav">
                     <button class="btn tab-btn @(ViewType == (int)ViewTypes.OverAllView ? "active" : "")"
@@ -99,76 +95,63 @@
                         </span>
                         <span class="text">@Loc[ViewTypes.TypeView.ToString()]</span>
                     </button>
-
-
-                    @*                     <button class="view-btn @(ViewType == 2 ? "active" : "")"
-                            title="Column View"
-                            @onclick="() => changeViewType(2)">
-                        <SVGCrud SVGType="SVGCrud.SVGTypeEnum.List" />
-                    </button> *@
-                    @*                     <ul class="nav menu flex-column">
-                        <li class="nav-item">
-                            <NavLink href="" class="nav-link" Match="NavLinkMatch.All"
-                                     @onclick="() => changeViewType(1)">
-                                <div class="icon-text">
-                                    <span class="nav-icon">
-                                        <SVGCrud SVGType="SVGCrud.SVGTypeEnum.List"></SVGCrud>
-                                    </span>
-                                </div>
-                            </NavLink>
-                        </li>
-                        <li class="nav-item">
-                            <NavLink href="" class="nav-link" Match="NavLinkMatch.All"
-                                     @onclick="() => changeViewType(2)">
-                                <div class="icon-text">
-                                    <span class="nav-icon">
-                                        <SVGCrud SVGType="SVGCrud.SVGTypeEnum.List"></SVGCrud>
-                                    </span>
-                                </div>
-                            </NavLink>
-                        </li>
-                    </ul>*@
                 </div>
-                @if (IsCollapsed)
+                @if (!IsCollapsed)
                 {
-
                     <!-- MAIN CONTENT -->
                     <div class="page-body">
                         @switch (ViewType)
                         {
                             case (int)ViewTypes.OverAllView:
+
                                 <div>
                                     <TaskListView Title="@Loc[ViewTypes.OverAllView.ToString()]" IsCompleted="true" OnAdd="Add"
                                                   OnEdit="Edit" OnReopen="Reopen" @ref="taskListRef"></TaskListView>
                                 </div>
                                 break;
                             case (int)ViewTypes.SourceView:
-                                @foreach (var source in sources)
+                                @if (sources != null && sources.Any())
                                 {
-                                    <div>
-                                        <TaskListView IsCompleted="true" @key="source.Id"
-                                                      Title="@(CultureInfo.CurrentCulture.Name == "ar-EG" ? source.NameArabic : source.NameEnglish)"
-                                                      ViewType="@((int)ViewTypes.SourceView)" ViewTypeId="@source.Id" OnAdd="Add" OnEdit="Edit"
-                                                      OnReopen="Reopen" @ref="taskListRef"></TaskListView>
-                                    </div>
+                                    @foreach (var source in sources)
+                                    {
+                                        <div>
+                                            <TaskListView IsCompleted="true" @key="source.Id"
+                                            Title="@(CultureInfo.CurrentCulture.Name == "ar-EG" ? source.NameArabic : source.NameEnglish)"
+                                            ViewType="@((int)ViewTypes.SourceView)" ViewTypeId="@source.Id" OnAdd="Add" OnEdit="Edit"
+                                            OnReopen="Reopen" @ref="taskListRef"></TaskListView>
+                                        </div>
+                                    }
+                                    <Pagination CurrentPage="@currentPage" TotalPages="@totalPages" TotalCount="@totalCount"
+                                    PageSize="@pageSize" PageSizeOptions="new[] { 3, 5, 7, 10 }" PageChanged="ChangePage"
+                                    PageSizeChangedCallback="ChangePageSize" />
                                 }
-                                <Pagination CurrentPage="@currentPage" TotalPages="@totalPages" TotalCount="@totalCount"
-                                            PageSize="@pageSize" PageSizeOptions="new[] { 3, 5, 7, 10 }" PageChanged="ChangePage"
-                                            PageSizeChangedCallback="ChangePageSize" />
+                                else
+                                {
+                                    <NoDataAvailable MessageTitle="@Loc["NoTasks"]" MessageSubtitle="@Loc["AddTaskToStart"]"
+                                                     ButtonText="@Loc["AddTask"]" OnButtonClick="Add" />
+                                }
                                 break;
                             case (int)ViewTypes.TypeView:
-                                @foreach (var type in Types)
+                                @if (Types != null && Types.Any())
                                 {
-                                    <div>
-                                        <TaskListView IsCompleted="true" @key="type.Id"
-                                                      Title="@(CultureInfo.CurrentCulture.Name == "ar-EG" ? type.NameArabic : type.NameEnglish)"
-                                                      ViewType="@((int)ViewTypes.TypeView)" ViewTypeId="@type.Id" OnAdd="Add" OnEdit="Edit"
-                                                      OnReopen="Reopen" @ref="taskListRef"></TaskListView>
-                                    </div>
+                                    @foreach (var type in Types)
+                                    {
+                                        <div>
+                                            <TaskListView IsCompleted="true" @key="type.Id"
+                                            Title="@(CultureInfo.CurrentCulture.Name == "ar-EG" ? type.NameArabic : type.NameEnglish)"
+                                            ViewType="@((int)ViewTypes.TypeView)" ViewTypeId="@type.Id" OnAdd="Add" OnEdit="Edit"
+                                            OnReopen="Reopen" @ref="taskListRef"></TaskListView>
+                                        </div>
+                                    }
+                                    <Pagination CurrentPage="@currentPage" TotalPages="@totalPages" TotalCount="@totalCount"
+                                    PageSize="@pageSize" PageSizeOptions="new[] { 3, 5, 7, 10 }" PageChanged="ChangePageType"
+                                    PageSizeChangedCallback="ChangePageSizeType" />
                                 }
-                                <Pagination CurrentPage="@currentPage" TotalPages="@totalPages" TotalCount="@totalCount"
-                                            PageSize="@pageSize" PageSizeOptions="new[] { 3, 5, 7, 10 }" PageChanged="ChangePageType"
-                                            PageSizeChangedCallback="ChangePageSizeType" />
+                                else
+                                {
+                                    <NoDataAvailable MessageTitle="@Loc["NoTasks"]" MessageSubtitle="@Loc["AddTaskToStart"]"
+                                                     ButtonText="@Loc["AddTask"]" OnButtonClick="Add" />
+                                }
                                 break;
                         }
                     </div>
@@ -197,14 +180,13 @@
     private int totalCount = 0;
     private int pageSize = 5;
     private bool IsCollapsed = false;
+
     private async Task ClearSearch()
     {
         //currentPage = 1;
-        searchComponent.SearchTerm = "";
-
-        await searchComponent?.SearchSubmit.InvokeAsync("");
+        searchComponent!.SearchTerm = "";
+        await searchComponent?.SearchSubmit.InvokeAsync("")!;
         // await GetTasks(isSearch: false, null);
-
     }
     protected override void OnInitialized()
     {
@@ -212,19 +194,18 @@
     }
     private async Task changeViewType(int type)
     {
-        IsCollapsed = false;
         ViewType = type;
         if (ViewType == (int)ViewTypes.SourceView)
         {
             var res = await _sourceSettingConsumer.GetSourcesView(currentPage, pageSize, true);
-            sources = res?.Data?.Items.ToList();
-            totalCount = res.Data.TotalCount;
+            sources = res?.Data?.Items.ToList()!;
+            totalCount = res!.Data!.TotalCount;
             totalPages = res.Data.TotalPages;
         }
         else if (ViewType == (int)ViewTypes.TypeView)
         {
             var res = await _typeSettingConsumer.GetTypesView(currentPage, pageSize, true);
-            Types = res.Data.Items.ToList();
+            Types = res.Data!.Items.ToList();
             totalCount = res.Data.TotalCount;
             totalPages = res.Data.TotalPages;
         }
@@ -236,26 +217,9 @@
         //await taskListRef.GetTasks(true, searchTerm);
         //await taskListRef.LoadSources(true, searchTerm);
     }
-    public async Task Add()
-    {
-        PopupService.ShowNew(@<Create OnValidSubmit="OnInitializedAsync"></Create>,Loc["AddTask"]);
-
-        // StateHasChanged();
-
-    }
-    private void Edit(Guid id)
-    {
-        PopupService.ShowNew(@<EditTask Id="id" OnValidSubmit="OnInitializedAsync"></EditTask>, headerText:
-        @Loc["EditTask"]);
-
-    }
-    public async Task Reopen(Guid id)
-    {
-        PopupService.ShowNew(@<ReopenTask Id="id" OnSaved="ReloadAfterSave"></ReopenTask>,Loc["ReOpen"]);
-
-        // StateHasChanged();
-
-    }
+    public void Add() => PopupService.ShowNew(@<Create OnValidSubmit="OnInitializedAsync"></Create>,Loc["AddTask"]);
+    private void Edit(Guid id) => PopupService.ShowNew(@<EditTask Id="id" OnValidSubmit="OnInitializedAsync"></EditTask>, headerText: @Loc["EditTask"]);
+    public async Task Reopen(Guid id) => PopupService.ShowNew(@<ReopenTask Id="id" OnSaved="ReloadAfterSave"></ReopenTask>,Loc["ReOpen"]);
     private async Task ReloadAfterSave()
     {
         //currentPage = page;
@@ -286,25 +250,18 @@
     private async Task LoadSources()
     {
         var res = await _sourceSettingConsumer.GetSourcesView(currentPage, pageSize, true);
-
-        sources = res?.Data?.Items.ToList();
+        sources = res?.Data?.Items.ToList()!;
         totalCount = res.Data.TotalCount;
         totalPages = res.Data.TotalPages;
     }
     private async Task LoadTypes()
     {
         var res = await _typeSettingConsumer.GetTypesView(currentPage, pageSize, true);
-
-        Types = res?.Data?.Items.ToList();
+        Types = res?.Data?.Items.ToList()!;
         totalCount = res.Data.TotalCount;
         totalPages = res.Data.TotalPages;
     }
-    private async Task OnViewClick()
-    {
-
-        PopupService.ShowNew(@<ViewColumn OnValidSubmit="OnInitializedAsync"></ViewColumn>, headerText: @Loc["Viewcolumn"]);
-
-    }
+    private void OnViewClick() => PopupService.ShowNew(@<ViewColumn OnValidSubmit="OnInitializedAsync"></ViewColumn>, headerText: @Loc["Viewcolumn"]);
     private void ToggleCollapse()
     {
         IsCollapsed = !IsCollapsed;

@@ -107,10 +107,10 @@
     }
     else
     {
-        <div style="display:@(IsCollapse ? "none" : "block")">
+        
             <NoDataAvailable MessageTitle="@Loc["NoTasks"]" MessageSubtitle="@Loc["AddTaskToStart"]"
                              ButtonText="@Loc["AddTask"]" OnButtonClick="Add" />
-        </div>
+
     }
 
 </div>
@@ -547,6 +547,8 @@
     }
     private async Task Collapse()
     {
+        if (ViewType == (int)ViewTypes.OverAllView)
+            return;
         IsCollapse = !IsCollapse;
         if(ViewTypeId is null)
             return;

@@ -1347,7 +1347,7 @@
     <value>الأشهر المقبلة</value>
   </data>
   <data name="TimeLineTilte" xml:space="preserve">
-    <value> - يتم تجميع المهام حسب تاريخ الإنتهاء</value>
+    <value>يتم تجميع المهام حسب تاريخ الإنتهاء</value>
   </data>
   <data name="SelectAll" xml:space="preserve">
     <value>اختر الكل</value>

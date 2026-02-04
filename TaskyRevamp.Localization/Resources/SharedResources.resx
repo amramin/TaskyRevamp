@@ -952,7 +952,7 @@
     <value>Privilege </value>
   </data>
   <data name="NoTasks" xml:space="preserve">
-    <value>No Tasks Found</value>
+    <value>No tasks found</value>
   </data>
   <data name="AddTaskToStart" xml:space="preserve">
     <value>Data will appear after adding the first task</value>
@@ -1343,7 +1343,7 @@ Do you want to restore the original type and merge this one into it? Consider th
     <value>Next months</value>
   </data>
   <data name="TimeLineTilte" xml:space="preserve">
-    <value> - Tasks are grouped based on their end date</value>
+    <value>Tasks are grouped based on their end date</value>
   </data>
   <data name="SelectAll" xml:space="preserve">
     <value>Select all</value>
