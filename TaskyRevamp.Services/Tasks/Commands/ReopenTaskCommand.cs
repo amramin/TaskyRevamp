@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,11 +20,13 @@ namespace TaskyRevamp.Services.Tasks.Commands
         private readonly ITaskRepository _taskRepository;
         private readonly IRepository<StatusSettings> _statusSettings;
         private readonly IRepository<TaskComments> _taskCommentRepository;
-        public ReopenTaskCommandHandler(ITaskRepository taskRepository, IRepository<StatusSettings> statusSettings, IRepository<TaskComments> taskCommentRepository)
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        public ReopenTaskCommandHandler(ITaskRepository taskRepository, IRepository<StatusSettings> statusSettings, IRepository<TaskComments> taskCommentRepository, IHttpContextAccessor httpContextAccessor)
         {
             _taskRepository = taskRepository;
             _statusSettings = statusSettings;
             _taskCommentRepository = taskCommentRepository;
+            _httpContextAccessor = httpContextAccessor;
         }
         public async Task<bool> Handle(ReopenTaskCommand request, CancellationToken cancellationToken)
         {
@@ -38,7 +41,7 @@ namespace TaskyRevamp.Services.Tasks.Commands
                 task.StatusId = TaskSatuses.Value.FirstOrDefault(s => s.NameEnglish == "Reopened").Id;
                 task.Progress = 50;
                 await _taskRepository.UpdateTask(task);
-                TaskComments taskComment = new TaskComments(request.TaskCommentDto.TaskItemId, request.TaskCommentDto.Content);
+                TaskComments taskComment = new TaskComments(request.TaskCommentDto.TaskItemId, request.TaskCommentDto.Content, Guid.Parse(_httpContextAccessor.GetUserId()), request.TaskCommentDto.Type);
                 //var taskComment=new Domain.Models.Task.TaskComment( request.TaskCommentDto.TaskItemId,
                 //    request.TaskCommentDto.Content,request.TaskCommentDto.CreatedById);
                 await _taskCommentRepository.Insert(taskComment);

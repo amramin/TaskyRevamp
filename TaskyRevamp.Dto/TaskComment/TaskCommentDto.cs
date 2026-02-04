@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TaskyRevamp.Dto.Enums;
 using TaskyRevamp.Localization.Resources;
 
 namespace TaskyRevamp.Dto.TaskComment
@@ -18,6 +19,7 @@ namespace TaskyRevamp.Dto.TaskComment
         public DateTime CreateDate { get; set; }
         public Guid? UpdatedById { get; set; }
         public DateTime? UpdateDate { get; set; }
+        public CommentType Type { get; set; } = CommentType.General;
 
     }
     public class TaskCommentWithNameDto

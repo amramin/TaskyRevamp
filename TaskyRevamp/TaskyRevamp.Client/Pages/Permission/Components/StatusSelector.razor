@@ -61,7 +61,7 @@
         var statusRes = await _statusSettingConsumer.GetStatusConfiguration();
         if (statusRes.Success && statusRes != null && statusRes.Data != null)
         {
-            StatusList = statusRes.Data;
+            StatusList = statusRes.Data.Where(p => p.Id != Guid.Parse("D8E94CCE-586A-46D3-223D-08DE3318A61C")).ToList();
         }
     }
     private void OnSelectedChanged(List<Guid> selected)

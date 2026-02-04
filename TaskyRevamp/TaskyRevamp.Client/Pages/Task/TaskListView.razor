@@ -15,7 +15,7 @@
 @inject StatusSettingConsumer _statusSettingConsumer
 @inject DefaultColumnsSettingConsumer _defaultColumnsSettingConsumer
 @inject ILocalStorageService LocalStorageService
-
+@inject RejectionSettingConsumer _rejectionSettingConsumer
 <div class="card table-card collaped-task-card">
     <div class="table-caption cursor-pointer @(IsCollapse ? "collapsed" : "")" @onclick="Collapse">
         @if (ViewType != (int)ViewTypes.OverAllView)
@@ -93,6 +93,17 @@
                                                     </button>
                                                 </li>
                                             }
+                                            @if (DisplayRejectButton(task))
+                                                                                                  {
+                                                <li>
+                                                    <button class="dropdown-item" @onclick="@(() => OnReject.InvokeAsync(task.Id))">
+                                                        <span class="icon">
+                                                            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Reject"></SVGCrud>
+                                                        </span>
+                                                        @Loc["Reject"]
+                                                    </button>
+                                                </li>
+                                            }
                                         </ul>
                                     </div>
                                 </td>
@@ -119,6 +130,7 @@
     public bool IsAdmine;// = roleService.IsAllowed(int)Modules., (int)ModuleActions.EditReportPermission) ;//true;//
     [Parameter] public EventCallback<Guid> OnEdit { get; set; }
     [Parameter] public EventCallback<Guid> OnReopen { get; set; }
+    [Parameter] public EventCallback<Guid> OnReject { get; set; }
     [Parameter] public EventCallback<Guid> OnDelete { get; set; }
     [Parameter] public EventCallback<Guid> OnShowUsers { get; set; }
     [Parameter] public EventCallback<Guid> OnAdd { get; set; }
@@ -140,7 +152,6 @@
     private List<SortableColumn> tableColumns = new();
     private string currentSortColumn = "";
     private bool? sortAscending = true;
-    public Guid currentUserId { set; get; }
     public bool IsShowCreateDialog { get; set; } = false;
     private int currentPage = 1;
     private int totalPages = 1;
@@ -151,7 +162,8 @@
     private List<SortableColumn> Columns = new();
     private List<CreateTaskDto> MainAndParentTasks = new List<CreateTaskDto>();
     private List<DefaultColumnsSettingDto> ColumnsList = new();
-
+    private Guid CurrentUser{ get; set; }
+    private int RejectionPeriod { get; set; } = 0;
     public async Task<List<SortableColumn>> GetColumns()
     {
         var columns = await LocalStorageService.GetItemAsync<List<SortableColumn>>("AllColumn");
@@ -247,6 +259,8 @@
         // Filter and order by settings
         tableColumns = tableColumns.Where(c => ColumnsList.Any(s => s.IsActive && string.Equals(s.NameEnglish, c.Field, StringComparison.OrdinalIgnoreCase)))
         .OrderBy(c => ColumnsList.First(s => string.Equals(s.NameEnglish, c.Field, StringComparison.OrdinalIgnoreCase)).Order ?? int.MaxValue).ToList();
+        CurrentUser = Guid.Parse(await LocalStorageService.GetItemAsStringAsync("Id"));
+        RejectionPeriod =await GetRejectionPeriod();
         StateHasChanged();
     }
     // public async Task ResetPage()
@@ -407,25 +421,26 @@
                 builder.AddAttribute(2, "title", task.Title ?? string.Empty);
                 builder.AddContent(3, task.Title);
                 builder.CloseElement();
+                if (task.Dependencies.Count() > 0)
+                {
+                    builder.OpenElement(4, "span");
+                    builder.AddAttribute(5, "class", "task-depancy-number");
 
-                builder.OpenElement(4, "span");
-                builder.AddAttribute(5, "class", "task-depancy-number");
+                    builder.OpenElement(6, "span");
+                    builder.AddAttribute(7, "class", "icon");
 
-                builder.OpenElement(6, "span");
-                builder.AddAttribute(7, "class", "icon");
+                    builder.OpenComponent<SVGCrud>(8);
+                    builder.AddAttribute(9, "SVGType", SVGCrud.SVGTypeEnum.Relation);
+                    builder.CloseComponent();
 
-                builder.OpenComponent<SVGCrud>(8);
-                builder.AddAttribute(9, "SVGType", SVGCrud.SVGTypeEnum.Relation);
-                builder.CloseComponent();
+                    builder.CloseElement();
 
-                builder.CloseElement();
-
-                builder.OpenElement(10, "span");
-                builder.AddAttribute(11, "class", "text");
-                builder.AddContent(12, "2");
-                builder.CloseElement();
-
-                builder.CloseElement();
+                    builder.OpenElement(10, "span");
+                    builder.AddAttribute(11, "class", "text");
+                    builder.AddContent(12, $"{task.Dependencies.Count()}");
+                    builder.CloseElement();
+                    builder.CloseElement();
+                }
                 break;
             case "Priority":
                 builder.AddContent(0, task.PriorityName);
@@ -536,6 +551,45 @@
         }
         StateHasChanged();
     }
+    private async Task<int> GetRejectionPeriod()
+    {
+        var res = await _rejectionSettingConsumer.GetRejectionSetting();
+        int RejectionPeriod = 0;
+        if (res.Success)
+        {
+            var setting = res.Data;
+            if (res.Data is not null)
+            {
+                if (res.Data.CustomDays != null)
+                {
+                    RejectionPeriod = (int)res.Data.CustomDays;
+                }
+                else
+                {
+                    RejectionPeriod = (int)res.Data.PeriodType;
+                }
+            }
+        }
+        return RejectionPeriod;
+    }
+    private bool DisplayRejectButton(CreateTaskDto taskDto)
+    {
+        if (RejectionPeriod == 0)
+        {
+            return false;
+        }
+        else
+        {
+            if ((DateOnly.FromDateTime(taskDto.CreateDate ?? DateTime.Now).AddDays(RejectionPeriod) < DateOnly.FromDateTime(DateTime.Now)) || !(taskDto.AssignedIds.Contains(CurrentUser)))
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+    }
     private async Task OnTaskProgressChanged(CreateTaskDto task, int value)
     {
         task.ActualProcess = value;
@@ -547,12 +601,13 @@
     }
     private async Task Collapse()
     {
-        if (ViewType == (int)ViewTypes.OverAllView)
+        if (ViewType !=(int) ViewTypes.OverAllView)
+        {
+            IsCollapse = !IsCollapse;
+        }
+        if(ViewTypeId is null)
             return;
-        IsCollapse = !IsCollapse;
-        if (ViewTypeId is null)
-            return;
-        var key = IsCompleted ? $"collapse-{ViewTypeId}-c" : $"collapse-{ViewTypeId}";
+        var key = IsCompleted? $"collapse-{ViewTypeId}-c" : $"collapse-{ViewTypeId}";
         await LocalStorageService.SetItemAsStringAsync(key, IsCollapse.ToString());
     }
 }

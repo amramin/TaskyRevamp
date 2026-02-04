@@ -85,7 +85,7 @@ else
 
                                 <li class="dropdown-item">
                                     <a class="drop-link" @onclick="Logout">
-                                        <span class="icon">
+                                        <span class="icon" style="@(CultureInfo.CurrentCulture.Name.StartsWith("ar")? "transform: scaleX(-1);": "")">
                                             <SVGCrud SVGType="SVGCrud.SVGTypeEnum.LogOut"></SVGCrud>
                                         </span>
                                         @Loc["Logout"]

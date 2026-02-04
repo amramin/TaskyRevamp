@@ -148,7 +148,7 @@
     <value>Parent not found</value>
   </data>
   <data name="RecycleBinConfiguration" xml:space="preserve">
-    <value>Recycle bin configuration</value>
+    <value>Recycle bin</value>
   </data>
   <data name="RetentionPeriodOptions" xml:space="preserve">
     <value>Retention period Options</value>
@@ -178,13 +178,13 @@
     <value>3 days</value>
   </data>
   <data name="RejectionConfiguration" xml:space="preserve">
-    <value>Task rejection configuration</value>
+    <value>Task rejection</value>
   </data>
   <data name="RejectionPeriodOptions" xml:space="preserve">
     <value>Rejection period options</value>
   </data>
   <data name="Priority" xml:space="preserve">
-    <value>Tasks priority configuration</value>
+    <value>Task priority</value>
   </data>
   <data name="Added successfully" xml:space="preserve">
     <value>Added successfully</value>
@@ -229,7 +229,7 @@
     <value>Priority options</value>
   </data>
   <data name="StatusConfig" xml:space="preserve">
-    <value>Tasks status configuration </value>
+    <value>Tasks status</value>
   </data>
   <data name="StatusOptions" xml:space="preserve">
     <value>Status options</value>
@@ -262,7 +262,7 @@
     <value>Dashboard</value>
   </data>
   <data name="Tasksviews" xml:space="preserve">
-    <value>Tasks views</value>
+    <value>Task views</value>
   </data>
   <data name="Default View Error" xml:space="preserve">
     <value>The selected default page is no longer active.</value>
@@ -295,7 +295,7 @@
     <value>View options</value>
   </data>
   <data name="WorkingDaysConfiguration" xml:space="preserve">
-    <value>Working days configuration</value>
+    <value>Working days</value>
   </data>
   <data name="workingDaysHint" xml:space="preserve">
     <value>Define the official working days for your organization. This configuration will be used for task scheduling, deadlines, and workload calculations</value>
@@ -358,7 +358,7 @@
     <value>Set the auto deletion period from the system for deleted tasks inside the recycle bin</value>
   </data>
   <data name="SourceConfiguration" xml:space="preserve">
-    <value>Task source configuration</value>
+    <value>Task source</value>
   </data>
   <data name="AddTaskSource" xml:space="preserve">
     <value>Add source</value>
@@ -457,7 +457,7 @@
     <value>Add a new task source to get started.</value>
   </data>
   <data name="TaskTypeConfiguration" xml:space="preserve">
-    <value>Tasks type configuration</value>
+    <value>Task type</value>
   </data>
   <data name="AddTaskType" xml:space="preserve">
     <value>Add type</value>
@@ -499,13 +499,13 @@
     <value>To creation date</value>
   </data>
   <data name="DefaultColumnsConfiguration" xml:space="preserve">
-    <value>Default columns configuration</value>
+    <value>Default columns</value>
   </data>
   <data name="FilterFields" xml:space="preserve">
     <value>Filter fields</value>
   </data>
   <data name="AddTaskFieldsConfiguration" xml:space="preserve">
-    <value>Add task fields configuration</value>
+    <value>Add task fields</value>
   </data>
   <data name="Nodepartmentavailable" xml:space="preserve">
     <value> No department available </value>
@@ -835,7 +835,7 @@
     <value>You can't duplicate the privilege name</value>
   </data>
   <data name="Subtask_Levels" xml:space="preserve">
-    <value>Subtask level</value>
+    <value>Subtask levels</value>
   </data>
   <data name="Select" xml:space="preserve">
     <value>Select</value>
@@ -1359,5 +1359,20 @@ Do you want to restore the original type and merge this one into it? Consider th
   </data>
   <data name="SyncUsers" xml:space="preserve">
     <value>Active Directory Sync</value>
+  </data>
+  <data name="RejectReason" xml:space="preserve">
+    <value>Task rejection reason:/</value>
+  </data>
+  <data name="General" xml:space="preserve">
+    <value>General</value>
+  </data>
+  <data name="Appearance" xml:space="preserve">
+    <value>Appearance</value>
+  </data>
+  <data name="Management" xml:space="preserve">
+    <value>Management</value>
+  </data>
+  <data name="Notifications" xml:space="preserve">
+    <value>Notifications</value>
   </data>
 </root>

@@ -42,7 +42,11 @@ public class TaskController : ControllerBase
     {
         return Ok(await _mediator.Send(new ReopenTaskCommand(TaskCommentDto)));
     }
-
+    [HttpPost("RejectTask")]
+    public async Task<IActionResult> RejectTask([FromBody] TaskCommentDto TaskCommentDto)
+    {
+        return Ok(await _mediator.Send(new RejectTaskCommand(TaskCommentDto)));
+    }
     [HttpPost("UpdateTask")]
     public async Task<IActionResult> UpdateTask([FromBody] CreateTaskDto Task)
     {
