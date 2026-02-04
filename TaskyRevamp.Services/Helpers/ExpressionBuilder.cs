@@ -139,8 +139,22 @@ namespace TaskyRevamp.Services.Helpers
 			if (propertyType == typeof(bool))
 			{
 				var normalized = searchText.Trim().Replace(" ", "").ToLowerInvariant();
-				var trueKeywords = new[] { "yes", "y", "active", "1", "نعم", "ن" };
-				var falseKeywords = new[] { "no", "n", "inactive", "0", "لا", "ل", "غيرنشط" };
+				var currentCulture = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
+				string[] trueKeywords;
+				string[] falseKeywords;
+				if (currentCulture == "ar")
+				{
+					// Arabic keywords only
+					trueKeywords = new[] { "نعم", "ن", "1" };
+					falseKeywords = new[] { "لا", "ل", "غيرنشط", "0" };
+				}
+				else
+				{
+					// English keywords only
+					trueKeywords = new[] { "yes", "y", "active", "1" };
+					falseKeywords = new[] { "no", "n", "inactive", "0" };
+				}
+
 				if (trueKeywords.Any(k => k.StartsWith(normalized) || normalized.StartsWith(k)))
 					return Expression.Equal(member, Expression.Constant(true));
 

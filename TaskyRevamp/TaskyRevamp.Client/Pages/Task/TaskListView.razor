@@ -16,116 +16,119 @@
 @inject DefaultColumnsSettingConsumer _defaultColumnsSettingConsumer
 @inject ILocalStorageService LocalStorageService
 @inject RejectionSettingConsumer _rejectionSettingConsumer
-<div class="card table-card collaped-task-card">
-    <div class="table-caption cursor-pointer @(IsCollapse ? "collapsed" : "")" @onclick="Collapse">
-        @if (ViewType != (int)ViewTypes.OverAllView)
+
+@if (isInitialized)
+{
+    <div class="card table-card collaped-task-card">
+        <div class="table-caption cursor-pointer @(IsCollapse ? "collapsed" : "")" @onclick="Collapse">
+            @if (ViewType != (int)ViewTypes.OverAllView)
+            {
+                <span class="chevron-icon">
+                    <SVGCrud SVGType="@(IsCollapse? SVGCrud.SVGTypeEnum.ChevronEnd : SVGCrud.SVGTypeEnum.ChevronDown)" />
+                </span>
+            }
+            <span class="text"> @Title</span>
+        </div>
+        @if (allTaks != null && allTaks.Any())
         {
-            <span class="chevron-icon">
-                <SVGCrud SVGType="@(IsCollapse? SVGCrud.SVGTypeEnum.ChevronEnd : SVGCrud.SVGTypeEnum.ChevronDown)" />
-            </span>
-        }
-        <span class="text"> @Title</span>
-    </div>
-    @if (allTaks != null && allTaks.Any())
-    {
-        <div style="display:@(IsCollapse ? "none" : "block")">
-            <div class="mb-1">
-                <OverallBar Tasks="allTaks" Width="600"></OverallBar>
-            </div>
-            <div class="table-responsive task-table">
-                <SortableTable TItem="CreateTaskDto" Columns="@Columns.Where(p => p.IsVisible).OrderBy(k => k.Order).ToList()" Items="@allTaks"
-                               SortColumn="@currentSortColumn" SortAscending="@sortAscending" OnSortRequested="HandleSort">
+            <div style="display:@(IsCollapse ? "none" : "block")">
+                <div class="mb-1">
+                    <OverallBar Tasks="allTaks" Width="600"></OverallBar>
+                </div>
+                <div class="table-responsive task-table">
+                    <SortableTable TItem="CreateTaskDto" Columns="@Columns.Where(p => p.IsVisible).OrderBy(k => k.Order).ToList()" Items="@allTaks"
+                                   SortColumn="@currentSortColumn" SortAscending="@sortAscending" OnSortRequested="HandleSort">
 
-                    <RowTemplate>
-                        @foreach (var task in allTaks)
-                        {
-                            <tr>
-                                @foreach (var column in Columns.Where(p => p.IsVisible).OrderBy(k => k.Order).ToList())
-                                {
-                                    <td class="@(column.Field == "Title" ? "d-flex gap-1" : "text-nowrap")">
-                                        @RenderColumnValue(task, column.Field)
+                        <RowTemplate>
+                            @foreach (var task in allTaks)
+                            {
+                                <tr>
+                                    @foreach (var column in Columns.Where(p => p.IsVisible).OrderBy(k => k.Order).ToList())
+                                    {
+                                        <td class="@(column.Field == "Title" ? "d-flex gap-1" : "text-nowrap")">
+                                            @RenderColumnValue(task, column.Field)
+                                        </td>
+                                    }
+                                    <td>
+                                        <div class="dropdown actions">
+                                            <button class="btn btn-action-24" type="button" data-bs-toggle="dropdown"
+                                                    aria-expanded="false">
+                                                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.EllipseVertical"></SVGCrud>
+                                            </button>
+                                            <ul class="dropdown-menu">
+                                                <li>
+                                                    <button class="dropdown-item" @onclick="@(() => ViewTaskDetails(task.Id))">
+                                                        <span class="icon">
+                                                            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.OpenEye"></SVGCrud>
+                                                        </span>
+                                                        @Loc["Taskdetails"]
+                                                    </button>
+                                                </li>
+                                                <li>
+                                                    <button class="dropdown-item" @onclick="@(() => OnEdit.InvokeAsync(task.Id))">
+                                                        <span class="icon">
+                                                            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Edit"></SVGCrud>
+                                                        </span>
+                                                        @Loc["EditTask"]
+                                                    </button>
+                                                </li>
+                                                @if (task.ActualProcess == 100 && task.TaskStatus ==
+                                                                                    Guid.Parse("6EE4574D-C439-45B4-223A-08DE3318A61C"))
+                                                {
+                                                    <li>
+                                                        <button class="dropdown-item" @onclick="@(() => CompleteTask(task.Id))">
+                                                            <span class="icon">
+                                                                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.OpenEye"></SVGCrud>
+                                                            </span>
+                                                            @Loc["Complete"]
+                                                        </button>
+                                                    </li>
+                                                }
+                                                @if (task.ActualProcess == 100 && task.TaskStatus ==
+                                                                                    Guid.Parse("6EE4574D-C439-45B4-223A-08DE3318A61C"))
+                                                {
+                                                    <li>
+                                                        <button class="dropdown-item" @onclick="@(() => OnReopen.InvokeAsync(task.Id))">
+                                                            <span class="icon">
+                                                                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.OpenEye"></SVGCrud>
+                                                            </span>
+                                                            @Loc["ReOpen"]
+                                                        </button>
+                                                    </li>
+                                                }
+                                                @if (DisplayRejectButton(task))
+                                                {
+                                                    <li>
+                                                        <button class="dropdown-item" @onclick="@(() => OnReject.InvokeAsync(task.Id))">
+                                                            <span class="icon">
+                                                                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Reject"></SVGCrud>
+                                                            </span>
+                                                            @Loc["Reject"]
+                                                        </button>
+                                                    </li>
+                                                }
+                                            </ul>
+                                        </div>
                                     </td>
-                                }
-                                <td>
-                                    <div class="dropdown actions">
-                                        <button class="btn btn-action-24" type="button" data-bs-toggle="dropdown"
-                                                aria-expanded="false">
-                                            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.EllipseVertical"></SVGCrud>
-                                        </button>
-                                        <ul class="dropdown-menu">
-                                            <li>
-                                                <button class="dropdown-item" @onclick="@(() => ViewTaskDetails(task.Id))">
-                                                    <span class="icon">
-                                                        <SVGCrud SVGType="SVGCrud.SVGTypeEnum.OpenEye"></SVGCrud>
-                                                    </span>
-                                                    @Loc["Taskdetails"]
-                                                </button>
-                                            </li>
-                                            <li>
-                                                <button class="dropdown-item" @onclick="@(() => OnEdit.InvokeAsync(task.Id))">
-                                                    <span class="icon">
-                                                        <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Edit"></SVGCrud>
-                                                    </span>
-                                                    @Loc["EditTask"]
-                                                </button>
-                                            </li>
-                                            @if (task.ActualProcess == 100 && task.TaskStatus ==
-                                                                                Guid.Parse("6EE4574D-C439-45B4-223A-08DE3318A61C"))
-                                            {
-                                                <li>
-                                                    <button class="dropdown-item" @onclick="@(() => CompleteTask(task.Id))">
-                                                        <span class="icon">
-                                                            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.OpenEye"></SVGCrud>
-                                                        </span>
-                                                        @Loc["Complete"]
-                                                    </button>
-                                                </li>
-                                            }
-                                            @if (task.ActualProcess == 100 && task.TaskStatus ==
-                                                                                Guid.Parse("6EE4574D-C439-45B4-223A-08DE3318A61C"))
-                                            {
-                                                <li>
-                                                    <button class="dropdown-item" @onclick="@(() => OnReopen.InvokeAsync(task.Id))">
-                                                        <span class="icon">
-                                                            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.OpenEye"></SVGCrud>
-                                                        </span>
-                                                        @Loc["ReOpen"]
-                                                    </button>
-                                                </li>
-                                            }
-                                            @if (DisplayRejectButton(task))
-                                                                                                  {
-                                                <li>
-                                                    <button class="dropdown-item" @onclick="@(() => OnReject.InvokeAsync(task.Id))">
-                                                        <span class="icon">
-                                                            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Reject"></SVGCrud>
-                                                        </span>
-                                                        @Loc["Reject"]
-                                                    </button>
-                                                </li>
-                                            }
-                                        </ul>
-                                    </div>
-                                </td>
-                            </tr>
-                        }
-                    </RowTemplate>
-                </SortableTable>
+                                </tr>
+                            }
+                        </RowTemplate>
+                    </SortableTable>
+                </div>
+                <Pagination CurrentPage="@currentPage" TotalPages="@totalPages" TotalCount="@totalCount" PageSize="@pageSize"
+                            PageChanged="ChangePage" PageSizeChangedCallback="ChangePageSize" />
             </div>
-            <Pagination CurrentPage="@currentPage" TotalPages="@totalPages" TotalCount="@totalCount" PageSize="@pageSize"
-                        PageChanged="ChangePage" PageSizeChangedCallback="ChangePageSize" />
-        </div>
-    }
-    else
-    {
-        <div style="display:@(IsCollapse ? "none" : "block")">
-            <NoDataAvailable MessageTitle="@Loc["NoTasks"]" MessageSubtitle="@Loc["AddTaskToStart"]"
-                             ButtonText="@Loc["AddTask"]" OnButtonClick="Add" />
-        </div>
-    }
+        }
+        else
+        {
+            <div style="display:@(IsCollapse ? "none" : "block")">
+                <NoDataAvailable MessageTitle="@Loc["NoTasks"]" MessageSubtitle="@Loc["AddTaskToStart"]"
+                                 ButtonText="@Loc["AddTask"]" OnButtonClick="Add" />
+            </div>
+        }
 
-</div>
-
+    </div>
+}
 @code {
     public bool IsAdmine;// = roleService.IsAllowed(int)Modules., (int)ModuleActions.EditReportPermission) ;//true;//
     [Parameter] public EventCallback<Guid> OnEdit { get; set; }
@@ -158,11 +161,12 @@
     private int totalCount = 0;
     private int pageSize = 10;
     bool IsCollapse = false;
+    private bool isInitialized = false;
     private bool collapseLoadedFromStorage = false;
     private List<SortableColumn> Columns = new();
     private List<CreateTaskDto> MainAndParentTasks = new List<CreateTaskDto>();
     private List<DefaultColumnsSettingDto> ColumnsList = new();
-    private Guid CurrentUser{ get; set; }
+    private Guid CurrentUser { get; set; }
     private int RejectionPeriod { get; set; } = 0;
     public async Task<List<SortableColumn>> GetColumns()
     {
@@ -260,7 +264,8 @@
         tableColumns = tableColumns.Where(c => ColumnsList.Any(s => s.IsActive && string.Equals(s.NameEnglish, c.Field, StringComparison.OrdinalIgnoreCase)))
         .OrderBy(c => ColumnsList.First(s => string.Equals(s.NameEnglish, c.Field, StringComparison.OrdinalIgnoreCase)).Order ?? int.MaxValue).ToList();
         CurrentUser = Guid.Parse(await LocalStorageService.GetItemAsStringAsync("Id"));
-        RejectionPeriod =await GetRejectionPeriod();
+        RejectionPeriod = await GetRejectionPeriod();
+        isInitialized = true;
         StateHasChanged();
     }
     // public async Task ResetPage()
@@ -601,13 +606,13 @@
     }
     private async Task Collapse()
     {
-        if (ViewType !=(int) ViewTypes.OverAllView)
+        if (ViewType != (int)ViewTypes.OverAllView)
         {
             IsCollapse = !IsCollapse;
         }
-        if(ViewTypeId is null)
+        if (ViewTypeId is null)
             return;
-        var key = IsCompleted? $"collapse-{ViewTypeId}-c" : $"collapse-{ViewTypeId}";
+        var key = IsCompleted ? $"collapse-{ViewTypeId}-c" : $"collapse-{ViewTypeId}";
         await LocalStorageService.SetItemAsStringAsync(key, IsCollapse.ToString());
     }
 }
