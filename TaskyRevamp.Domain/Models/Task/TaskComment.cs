@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using TaskyRevamp.Domain.Interfaces;
 using TaskyRevamp.Domain.Models.Users;
+using TaskyRevamp.Dto.Enums;
 using TaskyRevamp.Dto.TaskChecklist;
 using TaskyRevamp.Dto.TaskComment;
 
@@ -19,6 +20,7 @@ public class TaskComment : Entity, IHasCreationMetaData, IHasUpdateMetaData
     public Guid? UpdatedById { get; set; }
     public DateTime? UpdateDate { get; set; }
     public User? UpdatedBy { get; set; }
+    public CommentType Type { get;private set; } = CommentType.General;
 
     //private readonly List<Comment> _comments = new();
     //public IReadOnlyCollection<Comment> Items => _comments.AsReadOnly();
@@ -31,21 +33,22 @@ public class TaskComment : Entity, IHasCreationMetaData, IHasUpdateMetaData
     public TaskComment()
     {
     }
-    public TaskComment(Guid taskid, string content, Guid createdid)
+    public TaskComment(Guid taskid, string content, Guid createdid,CommentType type)
     {
         TaskItemId = taskid;
         Content = content;
         CreateDate = DateTime.UtcNow;
         CreatedById = createdid;
+        Type=type;
     }
     public TaskComment(Guid taskid, string content)
     {
         TaskItemId = taskid;
         Content = content;
     }
-    public void Add(Guid taskid, string content, User by)
+    public void Add(Guid taskid, string content, User by,CommentType type)
     {
-        var comment = new TaskComment(taskid, content, by.Id);
+        var comment = new TaskComment(taskid, content, by.Id,type);
         // comment.Add(comment);
         taskItem.AddHistoryEntry(by, $"added a comment");
     }
@@ -54,6 +57,7 @@ public class TaskComment : Entity, IHasCreationMetaData, IHasUpdateMetaData
         Id = Id;
         TaskItemId = taskCommentDto.TaskItemId;
         Content = taskCommentDto.Content;
+        Type=taskCommentDto.Type;
         //CreatedById = taskCommentDto.CreatedById;
         //CreateDate = taskCommentDto.CreateDate;
         return true;
@@ -69,7 +73,7 @@ public class TaskComment : Entity, IHasCreationMetaData, IHasUpdateMetaData
             CreateDate = CreateDate,
             CreatedById = CreatedById,
             UpdateDate = UpdateDate,
-
+            Type=Type
 
 
         };

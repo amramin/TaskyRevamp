@@ -1,7 +1,9 @@
-﻿@page "/Reopen-Task/{Id:guid}"
+﻿@page "/Reject-Task/{Id:guid}"
+@using Blazored.LocalStorage
 @using TaskyRevamp.Client.Consumer
 @using TaskyRevamp.Client.Services
 @using TaskyRevamp.Dto.TaskComment
+@using TaskyRevamp.Dto.TaskDto
 @inject IStringLocalizer<SharedResources> Loc
 @inject PopupService PopupService
 @inject TaskConsumer _taskConsumer
@@ -38,6 +40,7 @@
 
 @code {
     [Parameter] public Guid Id { get; set; }
+    [Parameter] public CreateTaskDto task{ get; set; }
     public string Content { get; set; }
     public TaskCommentDto comments { get; set; } = new TaskCommentDto();
     [Parameter] public EventCallback OnSaved { get; set; }
@@ -48,8 +51,8 @@
     private async Task HandleValidSubmit(EditContext args)
     {
         comments.TaskItemId = Id;
-        comments.Type = Dto.Enums.CommentType.Reopen;
-        var res = await _taskConsumer.ReopenTask(comments);
+        comments.Type = Dto.Enums.CommentType.Reject;
+        var res = await _taskConsumer.RejectTask(comments);
         if (res.Success)
         {
             await ToastService.ShowToastAsync(Loc["DataSavedSuccessfully"], "success");

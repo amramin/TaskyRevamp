@@ -22,9 +22,6 @@
         <div class="tab-pane fade show active" id="List-view-tab" role="tabpanel" aria-labelledby="List-view-tab">
             <div class="page-header">
                 <div class="title-block">
-                    <div class="cursor-pointer d-flex align-items-center gap-2" @onclick="ToggleCollapse">
-                        <span> @(IsCollapsed ? "▶" : "▼")</span>
-                    </div>
                     <h1 class="page-headline mb-0" style="display:inline-flex">
                         @Loc[((ViewTypes)ViewType).ToString()]
                         @if ((ViewTypes)ViewType == ViewTypes.TimeLineView)
@@ -125,7 +122,7 @@
                             case (int)ViewTypes.OverAllView:
                                 <div>
                                     <TaskListView Title="@Loc[ViewTypes.OverAllView.ToString()]" OnAdd="Add" OnEdit="Edit"
-                                                  OnReopen="Reopen" @ref="@taskListRefs["overall"]"></TaskListView>
+                                                  OnReopen="Reopen" OnReject="Reject" @ref="@taskListRefs["overall"]"></TaskListView>
                                 </div>
                                 break;
                             case (int)ViewTypes.TimeLineView:
@@ -136,7 +133,7 @@
                                     <div>
                                         <TaskListView Title="@Loc[timeview.ToString()]" ViewType="@((int)ViewTypes.TimeLineView)"
                                                       ViewTypeId="@(Guid.Parse(timeview.GetDescription()))" OnAdd="Add" OnEdit="Edit"
-                                                      OnReopen="Reopen" @ref="@taskListRefs[$"timeline-{currentIndex}"]"></TaskListView>
+                                                      OnReopen="Reopen" OnReject="Reject" @ref="@taskListRefs[$"timeline-{currentIndex}"]"></TaskListView>
                                     </div>
 
                                 }
@@ -147,7 +144,7 @@
                                     <TaskListView @key="source.Id"
                                                   Title="@(CultureInfo.CurrentCulture.Name == "ar-EG" ? source.NameArabic : source.NameEnglish)"
                                                   ViewType="@((int)ViewTypes.SourceView)" ViewTypeId="@source.Id" OnAdd="Add" OnEdit="Edit"
-                                                  OnReopen="Reopen" @ref="@taskListRefs[$" source-{source.Id}"]"></TaskListView>
+                                                  OnReopen="Reopen" OnReject="Reject" @ref="@taskListRefs[$" source-{source.Id}"]"></TaskListView>
 
                                 }
                                 <Pagination CurrentPage="@currentPage" TotalPages="@totalPages" TotalCount="@totalCount"
@@ -163,7 +160,7 @@
 
                                     <TaskListView Title="@(CultureInfo.CurrentCulture.Name == "ar-EG" ? status.NameArabic : status.NameEnglish)"
                                                   ViewType="@((int)ViewTypes.StatusView)" ViewTypeId="@status.Id" OnAdd="Add" OnEdit="Edit"
-                                                  OnReopen="Reopen" @ref="@taskListRefs[$" status-{status.Id}"]"></TaskListView>
+                                                  OnReopen="Reopen" OnReject="Reject" @ref="@taskListRefs[$" status-{status.Id}"]"></TaskListView>
                                 }
 
                                 break;
@@ -173,7 +170,7 @@
                                     <TaskListView @key="type.Id"
                                                   Title="@(CultureInfo.CurrentCulture.Name == "ar-EG" ? type.NameArabic : type.NameEnglish)"
                                                   ViewType="@((int)ViewTypes.TypeView)" ViewTypeId="@type.Id" OnAdd="Add" OnEdit="Edit"
-                                                  OnReopen="Reopen" @ref="@taskListRefs[$"type-{type.Id}"]"></TaskListView>
+                                                  OnReopen="Reopen" OnReject="Reject" @ref="@taskListRefs[$"type-{type.Id}"]"></TaskListView>
                                 }
                                 <Pagination CurrentPage="@currentPage" TotalPages="@totalPages" TotalCount="@totalCount"
                                             PageSize="@pageSize" PageSizeOptions="new[] { 5, 8, 10, 15 }" PageChanged="ChangePage"
@@ -303,6 +300,7 @@
     }
     private void Edit(Guid id) => PopupService.ShowNew(@<EditTask Id="id" OnValidSubmit="ReloadAfterSave"></EditTask>, headerText: @Loc["EditTask"]);
     public void Reopen(Guid id) => PopupService.ShowNew(@<ReopenTask Id="id" OnSaved="ReloadAfterSave"></ReopenTask>,Loc["ReOpen"]);
+    public void Reject(Guid id) => PopupService.ShowNew(@<RejectTask Id="id" OnSaved="ReloadAfterSave"></RejectTask>,Loc["Reject"]);
     private async Task ReloadAfterSave()
     {
         foreach (var taskList in taskListRefs.Values.Where(t => t != null))

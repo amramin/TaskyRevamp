@@ -72,6 +72,12 @@ namespace TaskyRevamp.Client.Consumer
             var res = await _taskyService.PostJsonAsync<CommonApiResponse<bool>>(url, taskCommentDto);
             return res.Data;
         }
+        public async Task<CommonApiResponse<bool>> RejectTask(TaskCommentDto taskCommentDto)
+        {
+            var url = $"api/Task/RejectTask";
+            var res = await _taskyService.PostJsonAsync<CommonApiResponse<bool>>(url, taskCommentDto);
+            return res.Data;
+        }
         public async Task<CommonApiResponse<bool>> UpdateTasksDepartment(Guid oldId, Guid newId)
         {
             var url = $"api/Task/UpdateTasksDepartment/{oldId}/{newId}";

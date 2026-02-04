@@ -167,7 +167,9 @@
                                                   Locale="@datePickerLocale"
                                                   EnableRtl="@enableRtl"
                                                   Format="dd-MM-yyyy"
-                                                  Placeholder="@placeholderDate">
+                                                  Placeholder="@placeholderDate"
+                                                  OpenOnFocus="true"
+                                                  >
                                     </SfDatePicker>
                                 </div>
                                 <ValidationMessage class="small text-danger mt-1" For="@(() => taskdto.StartDate)" />
@@ -190,7 +192,8 @@
                                                   Locale="@datePickerLocale"
                                                   EnableRtl="@enableRtl"
                                                   Format="dd-MM-yyyy"
-                                                  Placeholder="@placeholderDate">
+                                                  Placeholder="@placeholderDate"
+                                                  OpenOnFocus="true">
                                     </SfDatePicker>
                                 </div>
                                 <ValidationMessage class="small text-danger mt-1" For="@(() => taskdto.ReminderDate)" />
@@ -212,7 +215,8 @@
                                                   Locale="@datePickerLocale"
                                                   EnableRtl="@enableRtl"
                                                   Format="dd-MM-yyyy"
-                                                  Placeholder="@placeholderDate">
+                                                  Placeholder="@placeholderDate"
+                                                  OpenOnFocus="true">
                                     </SfDatePicker>
                                 </div>
                                 <ValidationMessage class="small text-danger" For="@(() => taskdto.EndDate)" />

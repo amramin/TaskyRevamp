@@ -1,10 +1,13 @@
-﻿@using TaskyRevamp.Client.Consumer
+﻿@using Blazored.LocalStorage
+@using TaskyRevamp.Client.Consumer
 @using TaskyRevamp.Client.Services
 @using TaskyRevamp.Dto.TaskDto
 @inject IStringLocalizer<SharedResources> Loc
 @inject ToastService ToastService
 @inject PopupService PopupService
 @inject TaskConsumer _taskConsumer
+@inject ILocalStorageService LocalStorageService
+@inject RejectionSettingConsumer _rejectionSettingConsumer
 <!-- Progress -->
 <div class="card mb-3">
     <div class="card-body">
@@ -62,14 +65,22 @@
         </button> *@
         @if (Task?.TaskStatus == Guid.Parse("6EE4574D-C439-45B4-223A-08DE3318A61C"))
         {
-            <button class="btn btn-light w-100 text-start mb-2" @onclick="@(() => CompleteTask(Task.Id))">
+            <button class="btn btn-light w-100 text-start mb-2" @onclick="@(() => CompleteTask(Task.Id))" title="@Loc["Complete"]">
                  <span class="icon">
                 <SVGCrud SVGType="SVGCrud.SVGTypeEnum.CompletedList"></SVGCrud> 
                 </span>
             </button>
-            <button class="btn btn-light w-100 text-start" @onclick="@(() => ReopenTask(Task.Id))">
+            <button class="btn btn-light w-100 text-start" @onclick="@(() => ReopenTask(Task.Id))" title="@Loc["ReOpen"]">
                  <span class="icon">
                 <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Repeat"></SVGCrud>
+                </span>
+            </button>
+        }
+        @if (DisplayRejectButton(Task))
+        {
+            <button class="btn btn-light w-100 text-start" @onclick="@(() => RejectTask(Task.Id))" title="@Loc["Reject"]">
+                <span class="icon">
+                    <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Reject"></SVGCrud>
                 </span>
             </button>
         }
@@ -118,7 +129,8 @@
     public CreateTaskDto? Task { get; set; }
     [Parameter] public EventCallback OnConfirmed { get; set; }
     [Parameter] public EventCallback OnReopenTask { get; set; }
-
+    private Guid CurrentUser { get; set; }
+    private int RejectionPeriod { get; set; } = 0;
     int progressold  { get; set; }
     List<Guid> AlllowedToChangeProgress = new List<Guid>()
     {
@@ -145,7 +157,11 @@
 
     // [Parameter]
     // public EventCallback OnReOpenTask { get; set; }
-
+    protected override async Task OnInitializedAsync()
+    {
+        CurrentUser = Guid.Parse(await LocalStorageService.GetItemAsStringAsync("Id"));
+        RejectionPeriod = await GetRejectionPeriod();
+    }
     private bool showChecklist = false;
 
     private void ToggleChecklist()
@@ -217,10 +233,56 @@
         // StateHasChanged();
 
     }
+    public async Task RejectTask(Guid id)
+    {
+        PopupService.ShowNew(@<RejectTask Id="id" OnSaved="ReloadAfterSave"></RejectTask>,Loc["Reject"]);
+
+        // StateHasChanged();
+
+    }
     private async Task ReloadAfterSave()
     {
         await OnReopenTask.InvokeAsync();
         //currentPage = page;
+    }
+    private async Task<int> GetRejectionPeriod()
+    {
+        var res = await _rejectionSettingConsumer.GetRejectionSetting();
+        int RejectionPeriod = 0;
+        if (res.Success)
+        {
+            var setting = res.Data;
+            if (res.Data is not null)
+            {
+                if (res.Data.CustomDays != null)
+                {
+                    RejectionPeriod = (int)res.Data.CustomDays;
+                }
+                else
+                {
+                    RejectionPeriod = (int)res.Data.PeriodType;
+                }
+            }
+        }
+        return RejectionPeriod;
+    }
+    private bool DisplayRejectButton(CreateTaskDto taskDto)
+    {
+        if (RejectionPeriod == 0)
+        {
+            return false;
+        }
+        else
+        {
+            if ((DateOnly.FromDateTime(taskDto.CreateDate ?? DateTime.Now).AddDays(RejectionPeriod) < DateOnly.FromDateTime(DateTime.Now)) || !(taskDto.AssignedIds.Contains(CurrentUser)))
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
     }
     private void OnProgressChanged(ChangeEventArgs args)
     {

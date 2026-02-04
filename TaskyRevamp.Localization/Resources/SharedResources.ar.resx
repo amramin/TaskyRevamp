@@ -1358,14 +1358,29 @@
   <data name="UsersAdded" xml:space="preserve">
     <value>المستخدمون المضافون:</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="Reopenedsuccessfully" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
-  </data>
   <data name="UsersUpdated" xml:space="preserve">
     <value>تم تحديث بيانات المستخدمين</value>
   </data>
   <data name="SyncUsers" xml:space="preserve">
     <value>مزامنة المستخدمين</value>
+  </data>
+  <data name="RejectReason" xml:space="preserve">
+    <value>سبب رفض المهمة :/</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="Reopenedsuccessfully" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="General" xml:space="preserve">
+    <value>عام </value>
+  </data>
+  <data name="Appearance" xml:space="preserve">
+    <value>المظهر</value>
+  </data>
+  <data name="Management" xml:space="preserve">
+    <value>الإدارة</value>
+  </data>
+  <data name="Notifications" xml:space="preserve">
+    <value>الإشعارات</value>
   </data>
 </root>

@@ -19,7 +19,7 @@ namespace TaskyRevamp.Localization.Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "18.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class SharedResources {
@@ -286,7 +286,7 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Add task fields configuration.
+        ///   Looks up a localized string similar to Add task fields.
         /// </summary>
         public static string AddTaskFieldsConfiguration {
             get {
@@ -399,6 +399,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string Anunexpectederroroccurredwhile {
             get {
                 return ResourceManager.GetString("Anunexpectederroroccurredwhile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Appearance.
+        /// </summary>
+        public static string Appearance {
+            get {
+                return ResourceManager.GetString("Appearance", resourceCulture);
             }
         }
         
@@ -853,7 +862,7 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Default columns configuration.
+        ///   Looks up a localized string similar to Default columns.
         /// </summary>
         public static string DefaultColumnsConfiguration {
             get {
@@ -1582,6 +1591,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to General.
+        /// </summary>
+        public static string General {
+            get {
+                return ResourceManager.GetString("General", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to General modules .
         /// </summary>
         public static string GeneralModule {
@@ -1861,6 +1879,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Management.
+        /// </summary>
+        public static string Management {
+            get {
+                return ResourceManager.GetString("Management", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Managers&apos; tasks.
         /// </summary>
         public static string ManagersTasks {
@@ -2086,6 +2113,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Notifications.
+        /// </summary>
+        public static string Notifications {
+            get {
+                return ResourceManager.GetString("Notifications", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Configure notifications.
         /// </summary>
         public static string NotificationTypeTemplateConfiguration {
@@ -2284,7 +2320,7 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tasks priority configuration.
+        ///   Looks up a localized string similar to Task priority.
         /// </summary>
         public static string Priority {
             get {
@@ -2419,7 +2455,7 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Recycle bin configuration.
+        ///   Looks up a localized string similar to Recycle bin.
         /// </summary>
         public static string RecycleBinConfiguration {
             get {
@@ -2446,7 +2482,7 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Task rejection configuration.
+        ///   Looks up a localized string similar to Task rejection.
         /// </summary>
         public static string RejectionConfiguration {
             get {
@@ -2469,6 +2505,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string RejectionPeriodOptions {
             get {
                 return ResourceManager.GetString("RejectionPeriodOptions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Task rejection reason:/.
+        /// </summary>
+        public static string RejectReason {
+            get {
+                return ResourceManager.GetString("RejectReason", resourceCulture);
             }
         }
         
@@ -2761,7 +2806,7 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Task source configuration.
+        ///   Looks up a localized string similar to Task source.
         /// </summary>
         public static string SourceConfiguration {
             get {
@@ -2815,7 +2860,7 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tasks status configuration .
+        ///   Looks up a localized string similar to Tasks status.
         /// </summary>
         public static string StatusConfig {
             get {
@@ -2905,7 +2950,7 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Subtask level.
+        ///   Looks up a localized string similar to Subtask levels.
         /// </summary>
         public static string Subtask_Levels {
             get {
@@ -3103,7 +3148,7 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tasks views.
+        ///   Looks up a localized string similar to Task views.
         /// </summary>
         public static string Tasksviews {
             get {
@@ -3112,7 +3157,7 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tasks type configuration.
+        ///   Looks up a localized string similar to Task type.
         /// </summary>
         public static string TaskTypeConfiguration {
             get {
@@ -3761,7 +3806,7 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Working days configuration.
+        ///   Looks up a localized string similar to Working days.
         /// </summary>
         public static string WorkingDaysConfiguration {
             get {
