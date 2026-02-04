@@ -1358,8 +1358,9 @@
   <data name="UsersAdded" xml:space="preserve">
     <value>المستخدمون المضافون:</value>
   </data>
-  <data name="UsersUpdated" xml:space="preserve">
+	<data name="UsersUpdated" xml:space="preserve">
     <value>تم تحديث بيانات المستخدمين</value>
+	 </data>
   <data name="UsersUpdated" xml:space="preserve">
     <value>تم تحديث بيانات المستخدمين</value>
   </data>
