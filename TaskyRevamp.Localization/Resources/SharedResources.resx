@@ -1345,4 +1345,19 @@ Do you want to restore the original type and merge this one into it? Consider th
   <data name="TimeLineTilte" xml:space="preserve">
     <value>Tasks are grouped based on their end date</value>
   </data>
+  <data name="SelectAll" xml:space="preserve">
+    <value>Select all</value>
+  </data>
+  <data name="Close" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="UsersAdded" xml:space="preserve">
+    <value>Users added:</value>
+  </data>
+  <data name="UsersUpdated" xml:space="preserve">
+    <value>Users data updated</value>
+  </data>
+  <data name="SyncUsers" xml:space="preserve">
+    <value>Active Directory Sync</value>
+  </data>
 </root>

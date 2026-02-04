@@ -19,7 +19,7 @@ namespace TaskyRevamp.Localization.Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "18.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class SharedResources {
@@ -615,6 +615,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string ClearSearch {
             get {
                 return ResourceManager.GetString("ClearSearch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Close.
+        /// </summary>
+        public static string Close {
+            get {
+                return ResourceManager.GetString("Close", resourceCulture);
             }
         }
         
@@ -2635,6 +2644,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Select all.
+        /// </summary>
+        public static string SelectAll {
+            get {
+                return ResourceManager.GetString("SelectAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Select at least one toggle to proceed..
         /// </summary>
         public static string SelectAtLeastOneToggleToProceed {
@@ -2964,6 +2982,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string SureReopenTask {
             get {
                 return ResourceManager.GetString("SureReopenTask", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Active Directory Sync.
+        /// </summary>
+        public static string SyncUsers {
+            get {
+                return ResourceManager.GetString("SyncUsers", resourceCulture);
             }
         }
         
@@ -3527,11 +3554,29 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Users added:.
+        /// </summary>
+        public static string UsersAdded {
+            get {
+                return ResourceManager.GetString("UsersAdded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Users in .
         /// </summary>
         public static string Usersin {
             get {
                 return ResourceManager.GetString("Usersin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Users data updated.
+        /// </summary>
+        public static string UsersUpdated {
+            get {
+                return ResourceManager.GetString("UsersUpdated", resourceCulture);
             }
         }
         

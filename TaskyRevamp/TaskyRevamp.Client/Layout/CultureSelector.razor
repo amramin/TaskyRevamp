@@ -1,6 +1,8 @@
 @using System.Globalization
+@using Blazored.LocalStorage
 @inject IJSRuntime JS
 @inject NavigationManager Navigation
+@inject ILocalStorageService LocalStorageService
 
 <button type="button" class="btn-change-lang btn" @onclick="ToggleLanguage">
     <span class="en">
@@ -63,6 +65,7 @@ new CultureInfo("ar-EG"),
 
     private async Task ToggleLanguage()
     {
+        await LocalStorageService.RemoveItemAsync("AllColumn");
         if (selectedCulture?.Name == "ar-EG")
         {
             Console.WriteLine("Switching to en-US");

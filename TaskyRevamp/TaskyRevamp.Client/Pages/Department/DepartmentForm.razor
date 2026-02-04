@@ -37,7 +37,7 @@
             <div class="filter-single">
                 <SearchableSingleDropdownOffline TInput=DepartmentDto TOutput=Guid TextSelector="(DepartmentDto x) => x.Name"
                     OutputSelector="x => x.Id" Datasource="allDepartments" MinCharacterCount="1"
-                    @bind-SelectedOption="@department.ParentdepartmentId" PlaceHolder="@($"{Loc["Select"]}")" />
+                              SearchInputPlaceHolder="@Loc["Search"]" @bind-SelectedOption="@department.ParentdepartmentId" PlaceHolder="@($"{Loc["Select"]}")" NoMatchPlaceHolder="@Loc["NoResultsFound"]" />
                 <ValidationMessage class="small text-danger" For="@(() => department.ParentdepartmentId)"></ValidationMessage>
             </div>
 

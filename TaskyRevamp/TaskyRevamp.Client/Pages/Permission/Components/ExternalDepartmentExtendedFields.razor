@@ -88,7 +88,9 @@
                 <SearchableMultiDropdownOffline TInput="Permission" TOutput="int" @key="AvailablePermissions"
                                                 Datasource="AvailablePermissions"
                                                 TextSelector="(p => Loc[p.ToString()])" OutputSelector="(p => (int)p)"
-                                                SelectedOptions="Item.PermissionId" SelectedOptionsChanged="OnPermissionsChanged" IsDisabled="IsViewMode" />
+                                                SelectedOptions="Item.PermissionId" SelectedOptionsChanged="OnPermissionsChanged" IsDisabled="IsViewMode" 
+                                                SearchInputPlaceHolder="@Loc["Search"]" PlaceHolder="@($"{Loc["Select"]}")" NoMatchPlaceHolder="@Loc["NoResultsFound"]"
+                                                SelectAllPlaceHolder="@Loc["SelectAll"]" AllowSelectAll="AvailablePermissions.Any()" />
                 @if (IsSaveClicked && (Item.PermissionId == null || !Item.PermissionId.Any()))
                 {
                     <div class="text-danger small mt-1">@Loc["Required"]</div>

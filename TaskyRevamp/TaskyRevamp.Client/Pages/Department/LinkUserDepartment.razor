@@ -20,7 +20,8 @@
             <span class="text-danger">*</span>
         </label>
         <SearchableMultiDropdownOffline TInput=UserDto TOutput="Guid" Datasource=availableUsers
-            TextSelector=@(x=>x.DisplayedName) OutputSelector="x=> x.Id" @bind-SelectedOptions=UsrIds />
+                    TextSelector=@(x=>x.DisplayedName) OutputSelector="x=> x.Id" @bind-SelectedOptions=UsrIds SearchInputPlaceHolder="@Loc["Search"]" PlaceHolder="@($"{Loc["Select"]}")"
+                                        NoMatchPlaceHolder="@Loc["NoResultsFound"]" SelectAllPlaceHolder="@Loc["SelectAll"]" />
         @if (ShowValidationError)
         {
             <div class="text-danger mt-1">

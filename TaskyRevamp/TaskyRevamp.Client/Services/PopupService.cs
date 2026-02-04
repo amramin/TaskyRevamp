@@ -38,7 +38,22 @@ public class PopupService
             })
         });
     }
-
+    public void ShowInfo(
+    string message,
+    string Info,
+    ConfirmationType type = ConfirmationType.Primary)
+    {
+        Show(PopupType.Info, new InfoPopupParams
+        {
+            Message = message,
+            Info=Info,
+            Type = type,
+            OnConfirm = EventCallback.Factory.Create<bool>(this, async (value) =>
+            {
+                Hide();
+            })
+        });
+    }
 
 
     public void ShowInvalid(string message)
@@ -74,6 +89,13 @@ public class ConfirmationPopupParams
 {
     public string Message { get; set; } = "";
     public string ButtonText { get; set; } = "OK";
+    public EventCallback<bool> OnConfirm { get; set; }
+    public ConfirmationType Type { get; set; } = ConfirmationType.Primary;
+}
+public class InfoPopupParams
+{
+    public string Message { get; set; } = "";
+    public string Info { get; set; }
     public EventCallback<bool> OnConfirm { get; set; }
     public ConfirmationType Type { get; set; } = ConfirmationType.Primary;
 }

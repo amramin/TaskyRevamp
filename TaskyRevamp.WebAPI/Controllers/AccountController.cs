@@ -48,10 +48,10 @@ public class AccountController : ControllerBase
 
 
 
-    [HttpPost("SyncUsers")]
-    public async Task<bool> SyncUsers()
+    [HttpGet("SyncUsers/{LogedInUser}")]
+    public async Task<int> SyncUsers(Guid LogedInUser)
     {
-        var data = await _mediator.Send(new SyncAllUsersFt());
+        var data = await _mediator.Send(new SyncAllUsersFt(LogedInUser));
         return data;
     }
 }
