@@ -160,8 +160,9 @@
                                     }
                                 </label>
 
-                                <div class="date-group w-100" dir="@dateGroupDir">
-                                    <SfDatePicker @key="column.Id"
+                                <div class="date-group w-100" dir="@dateGroupDir" style="cursor:pointer" @onclick="OpenStratDatePicker">
+                                    <SfDatePicker @ref="startDatePicker"
+                                                  @key="column.Id"
                                                   TValue="DateTime?"
                                                   @bind-Value="taskdto.StartDate"
                                                   Locale="@datePickerLocale"
@@ -183,8 +184,9 @@
                                     }
                                 </label>
 
-                                <div class="date-group" dir="@dateGroupDir">
-                                    <SfDatePicker @key="column.Id"
+                                <div class="date-group" dir="@dateGroupDir" style="cursor:pointer" @onclick="OpenReminderDatePicker">
+                                    <SfDatePicker @ref="ReminderDatePicker"
+                                                  @key="column.Id"
                                                   TValue="DateTime?"
                                                   @bind-Value="taskdto.ReminderDate"
                                                   Locale="@datePickerLocale"
@@ -205,8 +207,9 @@
                                         <span class="text-danger"> *</span>
                                     }
                                 </label>
-                                <div class="date-group" dir="@dateGroupDir">
-                                    <SfDatePicker @key="column.Id"
+                                <div class="date-group" dir="@dateGroupDir" style="cursor:pointer" @onclick="OpenEndDatePicker">
+                                    <SfDatePicker @ref="EndDatePicker"
+                                                  @key="column.Id"
                                                   TValue="DateTime?"
                                                   @bind-Value="taskdto.EndDate"
                                                   Locale="@datePickerLocale"
@@ -411,6 +414,9 @@
     private InputFile? inputFile;
     private List<IBrowserFile> uploadedFiles = new List<IBrowserFile>();
     private bool _dropZoneInitialized;
+    private SfDatePicker<DateTime?> startDatePicker;
+    private SfDatePicker<DateTime?> ReminderDatePicker;
+    private SfDatePicker<DateTime?> EndDatePicker;
     List<Guid> AlllowedToChangeProgress = new List<Guid>()
     {
         Guid.Parse("547022EA-EF8C-4FBC-2236-08DE3318A61C"),
@@ -418,6 +424,7 @@
         Guid.Parse("753404A6-8B18-43F7-2238-08DE3318A61C"),
         Guid.Parse("270A78EB-C5CA-475D-2239-08DE3318A61C")
     };
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (x && !_dropZoneInitialized)
@@ -466,6 +473,18 @@
         //     messageStore.Clear(field);
         // editContext.NotifyValidationStateChanged();
         StateHasChanged();
+    }
+    private async Task OpenStratDatePicker()
+    {
+        await startDatePicker.ShowPopupAsync();
+    }
+    private async Task OpenReminderDatePicker()
+    {
+        await ReminderDatePicker.ShowPopupAsync();
+    }
+    private async Task OpenEndDatePicker()
+    {
+        await EndDatePicker.ShowPopupAsync();
     }
     private void OnContentChanged(string html)
     {

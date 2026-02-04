@@ -71,8 +71,8 @@
 
     protected override void OnInitialized()
     {
-        // Set the default language to Arabic ('ar-EG') if no culture is set
-        var defaultCulture = "ar-EG"; // Default to Arabic (Egypt)
+        // Set the default language to english ('en-US') if no culture is set
+        var defaultCulture = "en-US";
 
         // Check if the culture cookie is not already set
         if (HttpContext?.Request.Cookies[CookieRequestCultureProvider.DefaultCookieName] == null)

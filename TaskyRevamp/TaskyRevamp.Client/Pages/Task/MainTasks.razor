@@ -142,68 +142,47 @@
                                 }
                                 break;
                             case (int)ViewTypes.SourceView:
-                                @if (sources != null && sources.Any())
+                                @foreach (var source in sources)
                                 {
-                                    @foreach (var source in sources)
-                                    {
-                                        <TaskListView @key="source.Id"
-                                        Title="@(CultureInfo.CurrentCulture.Name == "ar-EG" ? source.NameArabic : source.NameEnglish)"
-                                        ViewType="@((int)ViewTypes.SourceView)" ViewTypeId="@source.Id" OnAdd="Add" OnEdit="Edit"
-                                        OnReopen="Reopen" @ref="@taskListRefs[$" source-{source.Id}"]"></TaskListView>
+                                    <TaskListView @key="source.Id"
+                                                  Title="@(CultureInfo.CurrentCulture.Name == "ar-EG" ? source.NameArabic : source.NameEnglish)"
+                                                  ViewType="@((int)ViewTypes.SourceView)" ViewTypeId="@source.Id" OnAdd="Add" OnEdit="Edit"
+                                                  OnReopen="Reopen" @ref="@taskListRefs[$" source-{source.Id}"]"></TaskListView>
 
-                                    }
-                                    <Pagination CurrentPage="@currentPage" TotalPages="@totalPages" TotalCount="@totalCount"
-                                    PageSize="@pageSize" PageSizeOptions="new[] {5, 8, 10, 15 }" PageChanged="ChangePage"
-                                    PageSizeChangedCallback="ChangePageSize" />
-                                }else
-                                {
-                                    <NoDataAvailable MessageTitle="@Loc["NoTasks"]" MessageSubtitle="@Loc["AddTaskToStart"]"
-                                                     ButtonText="@Loc["AddTask"]" OnButtonClick="Add" />
                                 }
+                                <Pagination CurrentPage="@currentPage" TotalPages="@totalPages" TotalCount="@totalCount"
+                                            PageSize="@pageSize" PageSizeOptions="new[] {5, 8, 10, 15 }" PageChanged="ChangePage"
+                                            PageSizeChangedCallback="ChangePageSize" />
                                 break;
                             case (int)ViewTypes.StatusView:
                                 var statusList = Satuses.Where(s => s.Id != Guid.Parse("D8E94CCE-586A-46D3-223D-08DE3318A61C") && s.Id != Guid.Parse("C8D504C7-9402-4F91-223C-08DE3318A61C")).ToList();
-                                @if (statusList.Any())
+                                @foreach (var status in Satuses.Where(s => s.Id !=
+                                                    Guid.Parse("D8E94CCE-586A-46D3-223D-08DE3318A61C") && s.Id !=
+                                                    Guid.Parse("C8D504C7-9402-4F91-223C-08DE3318A61C")))
                                 {
-                                    @foreach (var status in Satuses.Where(s => s.Id !=
-                                                                                  Guid.Parse("D8E94CCE-586A-46D3-223D-08DE3318A61C") && s.Id !=
-                                                                                  Guid.Parse("C8D504C7-9402-4F91-223C-08DE3318A61C")))
-                                    {
 
-                                        <TaskListView Title="@(CultureInfo.CurrentCulture.Name == "ar-EG" ? status.NameArabic : status.NameEnglish)"
-                                        ViewType="@((int)ViewTypes.StatusView)" ViewTypeId="@status.Id" OnAdd="Add" OnEdit="Edit"
-                                        OnReopen="Reopen" @ref="@taskListRefs[$" status-{status.Id}"]"></TaskListView>
-                                    }
-                                }
-                                else
-                                {
-                                    <NoDataAvailable MessageTitle="@Loc["NoTasks"]" MessageSubtitle="@Loc["AddTaskToStart"]"
-                                                     ButtonText="@Loc["AddTask"]" OnButtonClick="Add" />
+                                    <TaskListView Title="@(CultureInfo.CurrentCulture.Name == "ar-EG" ? status.NameArabic : status.NameEnglish)"
+                                                  ViewType="@((int)ViewTypes.StatusView)" ViewTypeId="@status.Id" OnAdd="Add" OnEdit="Edit"
+                                                  OnReopen="Reopen" @ref="@taskListRefs[$" status-{status.Id}"]"></TaskListView>
                                 }
                                 break;
                             case (int)ViewTypes.TypeView:
-                                if (Types != null && Types.Any())
+                                @foreach (var type in Types)
                                 {
-                                    @foreach (var type in Types)
-                                    {
-                                        <TaskListView @key="type.Id"
-                                        Title="@(CultureInfo.CurrentCulture.Name == "ar-EG" ? type.NameArabic : type.NameEnglish)"
-                                        ViewType="@((int)ViewTypes.TypeView)" ViewTypeId="@type.Id" OnAdd="Add" OnEdit="Edit"
-                                        OnReopen="Reopen" @ref="@taskListRefs[$"type-{type.Id}"]"></TaskListView>
-                                    }
-                                    <Pagination CurrentPage="@currentPage" TotalPages="@totalPages" TotalCount="@totalCount"
-                                    PageSize="@pageSize" PageSizeOptions="new[] { 5, 8, 10, 15 }" PageChanged="ChangePage"
-                                    PageSizeChangedCallback="ChangePageSize" />
+                                    <TaskListView @key="type.Id"
+                                                  Title="@(CultureInfo.CurrentCulture.Name == "ar-EG" ? type.NameArabic : type.NameEnglish)"
+                                                  ViewType="@((int)ViewTypes.TypeView)" ViewTypeId="@type.Id" OnAdd="Add" OnEdit="Edit"
+                                                  OnReopen="Reopen" @ref="@taskListRefs[$"type-{type.Id}"]"></TaskListView>
                                 }
-                                else
-                                {
-                                    <NoDataAvailable MessageTitle="@Loc["NoTasks"]" MessageSubtitle="@Loc["AddTaskToStart"]"
-                                                     ButtonText="@Loc["AddTask"]" OnButtonClick="Add" />
-                                }
+                                <Pagination CurrentPage="@currentPage" TotalPages="@totalPages" TotalCount="@totalCount"
+                                            PageSize="@pageSize" PageSizeOptions="new[] { 5, 8, 10, 15 }" PageChanged="ChangePage"
+                                            PageSizeChangedCallback="ChangePageSize" />
+
                                 break;
                         }
                     </div>
                 }
+
             </div>
 
         </div>
