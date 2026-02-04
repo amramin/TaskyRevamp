@@ -20,49 +20,38 @@
     </span>
 </button>
 
-
-
 @code
 {
     private Dictionary<string, string> cultureDict =
     new()
     {
-{ "en-US", "English (United States)" },
-{ "ar-EG", "العربية" }
+        { "en-US", "English (United States)" },
+        { "ar-EG", "العربية" }
     };
-
     private CultureInfo[] supportedCultures = new[]
     {
-new CultureInfo("en-US"),
-new CultureInfo("ar-EG"),
-};
-
+        new CultureInfo("en-US"),
+        new CultureInfo("ar-EG"),
+    };
     private CultureInfo? selectedCulture;
-
     protected override async Task OnInitializedAsync()
     {
         var culture = await JS.InvokeAsync<string>("blazorCulture.get");
         if (string.IsNullOrEmpty(culture))
         {
-            // Default to Arabic if no culture is stored
             selectedCulture = new CultureInfo("en-US");
         }
         else
         {
             selectedCulture = new CultureInfo(culture);
         }
-
-        // Apply the selected culture to ensure it takes effect
         ApplyCulture(selectedCulture);
     }
-
-
     private void ApplyCulture(CultureInfo culture)
     {
         CultureInfo.CurrentCulture = culture;
         CultureInfo.CurrentUICulture = culture;
     }
-
     private async Task ToggleLanguage()
     {
         await LocalStorageService.RemoveItemAsync("AllColumn");
@@ -82,27 +71,19 @@ new CultureInfo("ar-EG"),
     private async Task ApplySelectedCultureAsync(string cultureName)
     {
         var newCulture = new CultureInfo(cultureName);
-
         if (!Equals(CultureInfo.CurrentCulture, newCulture))
         {
             selectedCulture = newCulture;
-
             // Persist culture in browser storage
             await JS.InvokeVoidAsync("blazorCulture.set", selectedCulture.Name);
-
             // Apply culture immediately in the current session
             CultureInfo.CurrentCulture = selectedCulture;
             CultureInfo.CurrentUICulture = selectedCulture;
 
-
-            var currentPath = new Uri(Navigation.Uri)
-            .GetComponents(UriComponents.PathAndQuery, UriFormat.Unescaped);
-
+            var currentPath = new Uri(Navigation.Uri).GetComponents(UriComponents.PathAndQuery, UriFormat.Unescaped);
             var cultureEscaped = Uri.EscapeDataString(selectedCulture.Name);
             var uriEscaped = Uri.EscapeDataString(currentPath);
-
             Navigation.NavigateTo($"Culture/Set?culture={cultureEscaped}&redirectUri={uriEscaped}", forceLoad: true);
-
         }
     }
 

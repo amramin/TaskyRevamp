@@ -31,7 +31,7 @@ Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("Ngo9BigBOggjHTQx
 builder.Services.Configure<RequestLocalizationOptions>(options =>
 {
     var supportedCultures = new[] { "en-US", "ar-EG" };
-    options.SetDefaultCulture("ar-EG")
+    options.SetDefaultCulture("en-US")
            .AddSupportedCultures(supportedCultures)
            .AddSupportedUICultures(supportedCultures);
 });
@@ -94,7 +94,7 @@ builder.Services.Configure<PaginationSettings>(
 //builder.Services.AddSingleton(typeof(ISyncfusionStringLocalizer), typeof(SyncfusionLocalizer));
 
 var host = builder.Build();
-const string defaultCulture = "ar-EG";
+const string defaultCulture = "en-US";
 var js = host.Services.GetRequiredService<IJSRuntime>();
 var result = await js.InvokeAsync<string>("blazorCulture.get");
 var culture = CultureInfo.GetCultureInfo(result ?? defaultCulture);

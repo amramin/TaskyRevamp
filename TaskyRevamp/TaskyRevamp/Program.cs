@@ -53,7 +53,7 @@ builder.Services.Configure<PaginationSettings>(
 builder.Services.Configure<RequestLocalizationOptions>(options =>
 {
     var supportedCultures = new[] { "en-US", "ar-EG" };
-    options.SetDefaultCulture("ar-EG")
+    options.SetDefaultCulture("en-US")
            .AddSupportedCultures(supportedCultures)
            .AddSupportedUICultures(supportedCultures);
 });
@@ -92,7 +92,7 @@ app.MapControllers();
 
 var supportedCultures = new[] { "ar-EG", "en-US" };
 var localizationOptions = new RequestLocalizationOptions()
-    .SetDefaultCulture("ar-EG")  // Set Arabic (Egypt) as the default culture
+    .SetDefaultCulture("en-US")
     .AddSupportedCultures(supportedCultures)
     .AddSupportedUICultures(supportedCultures);
 

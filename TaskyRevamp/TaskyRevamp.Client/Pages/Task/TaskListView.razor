@@ -30,7 +30,7 @@
     {
         <div style="display:@(IsCollapse ? "none" : "block")">
             <div class="mb-1">
-                <OverallBar Tasks="MainAndParentTasks" Width="600"></OverallBar>
+                <OverallBar Tasks="allTaks" Width="600"></OverallBar>
             </div>
             <div class="table-responsive task-table">
                 <SortableTable TItem="CreateTaskDto" Columns="@Columns.Where(p => p.IsVisible).OrderBy(k => k.Order).ToList()" Items="@allTaks"
@@ -107,10 +107,10 @@
     }
     else
     {
-        
+        <div style="display:@(IsCollapse ? "none" : "block")">
             <NoDataAvailable MessageTitle="@Loc["NoTasks"]" MessageSubtitle="@Loc["AddTaskToStart"]"
                              ButtonText="@Loc["AddTask"]" OnButtonClick="Add" />
-
+        </div>
     }
 
 </div>
@@ -169,7 +169,7 @@
         new() { Field = "Start Date", DisplayName = Loc["StartDate"], Order = 4, IsVisible = true },
         new() { Field = "End Date", DisplayName = Loc["EndDate"], Order = 5, IsVisible = true },
         new() { Field = "weight", DisplayName = Loc["weight"], Order = 6, IsVisible = true },
-        new() { Field = "Assigned To", DisplayName = Loc["AssigneduserNames"], Order = 7, IsVisible = true },
+        new() { Field = "Assigned To", DisplayName = Loc["AssignedTo"], Order = 7, IsVisible = true },
         new() { Field = "Assigned To Department", DisplayName =Loc["AssignedToDepartment"], Order = 8, IsVisible = true },
         new() { Field = "Source", DisplayName =Loc["Source"], Order = 9, IsVisible = true },
         new() { Field = "Dependency", DisplayName = Loc["Dependency"], Order = 10, IsVisible = true },
@@ -204,7 +204,7 @@
         }
         else
         {
-            IsCollapse = false; 
+            IsCollapse = false;
         }
         if (isNewLogin)
         {
@@ -294,7 +294,7 @@
                 {
                     if (confirmed)
                         await CompleteConfirmed(id);
-                },ConfirmationType.Primary);
+                }, ConfirmationType.Primary);
     }
     private async Task DeleteConfirmed(Guid Id)
     {
@@ -318,15 +318,15 @@
         await searchComponent?.SearchSubmit.InvokeAsync("")!;
         await GetTasks(isSearch: false, null);
     }
-    public async Task Add() =>  await OnAdd.InvokeAsync();
+    public async Task Add() => await OnAdd.InvokeAsync();
     private void OnDeleteDelegation(Guid delegationId)
     {
-        PopupService.ShowConfirmation( @Loc["SureDeleteDelegation"], "Yes, Delete",
+        PopupService.ShowConfirmation(@Loc["SureDeleteDelegation"], "Yes, Delete",
             async (confirmed) =>
             {
-            if (confirmed)
-                await DeleteConfirmed(delegationId);
-            },ConfirmationType.Danger);
+                if (confirmed)
+                    await DeleteConfirmed(delegationId);
+            }, ConfirmationType.Danger);
     }
     // public void ShowEditPopup(Guid id)
     // {
@@ -550,9 +550,9 @@
         if (ViewType == (int)ViewTypes.OverAllView)
             return;
         IsCollapse = !IsCollapse;
-        if(ViewTypeId is null)
+        if (ViewTypeId is null)
             return;
-        var key = IsCompleted? $"collapse-{ViewTypeId}-c" : $"collapse-{ViewTypeId}";
+        var key = IsCompleted ? $"collapse-{ViewTypeId}-c" : $"collapse-{ViewTypeId}";
         await LocalStorageService.SetItemAsStringAsync(key, IsCollapse.ToString());
     }
 }
