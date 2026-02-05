@@ -248,6 +248,7 @@
     private int pageSize = 5;
     private bool IsCollapsed = false;
     private string timeLineTitle => $" - {Loc["TimeLineTilte"]}";
+
     protected override void OnInitialized()
     {
         ViewType = (int)ViewTypes.OverAllView;
@@ -363,5 +364,13 @@
         totalCount = res.Data.TotalCount;
         totalPages = res.Data.TotalPages;
     }
-    private void OnViewClick() => PopupService.ShowNew(@<ViewColumn OnValidSubmit="OnInitializedAsync"></ViewColumn>, headerText: @Loc["Viewcolumn"]);
+    private void OnViewClick() => PopupService.ShowNew(@<ViewColumn OnValidSubmit="RefreshAllColumns"></ViewColumn>, headerText: @Loc["Viewcolumn"]);
+    private async Task RefreshAllColumns()
+    {
+        foreach (var taskList in taskListRefs.Values.Where(t => t != null))
+        {
+            await taskList.RefreshColumns();
+        }
+        StateHasChanged();
+    }
 }

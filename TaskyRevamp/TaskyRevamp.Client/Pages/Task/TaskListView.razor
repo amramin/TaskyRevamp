@@ -17,7 +17,7 @@
 @inject ILocalStorageService LocalStorageService
 @inject RejectionSettingConsumer _rejectionSettingConsumer
 
-@if (isInitialized)
+@if (!isLoading)
 {
     <div class="card table-card collaped-task-card">
         <div class="table-caption cursor-pointer @(IsCollapse ? "collapsed" : "")" @onclick="Collapse">
@@ -129,6 +129,8 @@
 
     </div>
 }
+
+
 @code {
     public bool IsAdmine;// = roleService.IsAllowed(int)Modules., (int)ModuleActions.EditReportPermission) ;//true;//
     [Parameter] public EventCallback<Guid> OnEdit { get; set; }
@@ -161,17 +163,37 @@
     private int totalCount = 0;
     private int pageSize = 10;
     bool IsCollapse = false;
-    private bool isInitialized = false;
+    private bool isLoading = true;
     private bool collapseLoadedFromStorage = false;
     private List<SortableColumn> Columns = new();
     private List<CreateTaskDto> MainAndParentTasks = new List<CreateTaskDto>();
     private List<DefaultColumnsSettingDto> ColumnsList = new();
     private Guid CurrentUser { get; set; }
     private int RejectionPeriod { get; set; } = 0;
+
     public async Task<List<SortableColumn>> GetColumns()
     {
         var columns = await LocalStorageService.GetItemAsync<List<SortableColumn>>("AllColumn");
         return columns;
+    }
+    public async Task RefreshColumns()
+    {
+        await LoadColumns();
+        StateHasChanged();
+    }
+
+    private async Task LoadColumns()
+    {
+        var olddata = await GetColumns();
+        if (olddata != null && olddata.Count > 0)
+        {
+            Columns = olddata.OrderBy(c => c.Order).ToList();
+        }
+        else
+        {
+            var all = await GetDefaultColumns();
+            Columns = all.ToList();
+        }
     }
     private async Task<List<SortableColumn>> GetDefaultColumns()
     {
@@ -207,66 +229,74 @@
     }
     protected override async Task OnInitializedAsync()
     {
-        var isNewLogin = await LocalStorageService.GetItemAsync<bool>("IsNewLogin");
-        if (!isNewLogin && ViewTypeId is not null)
+        isLoading = true;
+        try
         {
-            var key = IsCompleted ? $"collapse-{ViewTypeId}-c" : $"collapse-{ViewTypeId}";
-            var value = await LocalStorageService.GetItemAsStringAsync(key);
-            if (bool.TryParse(value, out var result))
+            var isNewLogin = await LocalStorageService.GetItemAsync<bool>("IsNewLogin");
+            if (!isNewLogin && ViewTypeId is not null)
             {
-                IsCollapse = result;
-                collapseLoadedFromStorage = true;
+                var key = IsCompleted ? $"collapse-{ViewTypeId}-c" : $"collapse-{ViewTypeId}";
+                var value = await LocalStorageService.GetItemAsStringAsync(key);
+                if (bool.TryParse(value, out var result))
+                {
+                    IsCollapse = result;
+                    collapseLoadedFromStorage = true;
+                }
             }
-        }
-        else
-        {
-            IsCollapse = false;
-        }
-        if (isNewLogin)
-        {
-            IsCollapse = false;
-            var keys = await LocalStorageService.KeysAsync();
-            foreach (var key in keys.Where(k => k.StartsWith("collapse-")))
+            else
             {
-                await LocalStorageService.RemoveItemAsync(key);
+                IsCollapse = false;
             }
-            await LocalStorageService.RemoveItemAsync("IsNewLogin");
+            if (isNewLogin)
+            {
+                IsCollapse = false;
+                var keys = await LocalStorageService.KeysAsync();
+                foreach (var key in keys.Where(k => k.StartsWith("collapse-")))
+                {
+                    await LocalStorageService.RemoveItemAsync(key);
+                }
+                await LocalStorageService.RemoveItemAsync("IsNewLogin");
+            }
+            await LoadColumns();
+            var statusres = await _statusSettingConsumer.GetStatusConfiguration();
+            if (statusres.Success && statusres != null && statusres.Data != null)
+            {
+                Statuses = statusres.Data;
+            }
+            var olddata = await GetColumns();
+            if (olddata != null && olddata.Count > 0)
+            {
+                Columns = olddata.OrderBy(c => c.Order).ToList();
+            }
+            else
+            {
+                var all = await GetDefaultColumns();
+                Columns = all.ToList();
+            }
+            // var resMainTasks = await _taskConsumer.GetMainAndParentTasks();
+            // if (resMainTasks.Success && resMainTasks.Data != null)
+            // {
+            //     MainAndParentTasks = resMainTasks.Data;
+            // }
+          
+            var res = await _defaultColumnsSettingConsumer.GetDefaultColumnsSettings();
+            if (res.Success)
+            {
+                var settings = res.Data;
+                if (settings != null)
+                    ColumnsList = settings;
+            }
+            // Filter and order by settings
+            tableColumns = tableColumns.Where(c => ColumnsList.Any(s => s.IsActive && string.Equals(s.NameEnglish, c.Field, StringComparison.OrdinalIgnoreCase)))
+            .OrderBy(c => ColumnsList.First(s => string.Equals(s.NameEnglish, c.Field, StringComparison.OrdinalIgnoreCase)).Order ?? int.MaxValue).ToList();
+            CurrentUser = Guid.Parse(await LocalStorageService.GetItemAsStringAsync("Id"));
+            RejectionPeriod = await GetRejectionPeriod();
+            await GetTasks();
         }
-        var statusres = await _statusSettingConsumer.GetStatusConfiguration();
-        if (statusres.Success && statusres != null && statusres.Data != null)
+        finally
         {
-            Statuses = statusres.Data;
+            isLoading = false;
         }
-        var olddata = await GetColumns();
-        if (olddata != null && olddata.Count > 0)
-        {
-            Columns = olddata.OrderBy(c => c.Order).ToList();
-        }
-        else
-        {
-            var all = await GetDefaultColumns();
-            Columns = all.ToList();
-        }
-        var resMainTasks = await _taskConsumer.GetMainAndParentTasks();
-        if (resMainTasks.Success && resMainTasks.Data != null)
-        {
-            MainAndParentTasks = resMainTasks.Data;
-        }
-        await GetTasks();
-        var res = await _defaultColumnsSettingConsumer.GetDefaultColumnsSettings();
-        if (res.Success)
-        {
-            var settings = res.Data;
-            if (settings != null)
-                ColumnsList = settings;
-        }
-        // Filter and order by settings
-        tableColumns = tableColumns.Where(c => ColumnsList.Any(s => s.IsActive && string.Equals(s.NameEnglish, c.Field, StringComparison.OrdinalIgnoreCase)))
-        .OrderBy(c => ColumnsList.First(s => string.Equals(s.NameEnglish, c.Field, StringComparison.OrdinalIgnoreCase)).Order ?? int.MaxValue).ToList();
-        CurrentUser = Guid.Parse(await LocalStorageService.GetItemAsStringAsync("Id"));
-        RejectionPeriod = await GetRejectionPeriod();
-        isInitialized = true;
-        StateHasChanged();
     }
     // public async Task ResetPage()
     // {
@@ -379,7 +409,7 @@
             allTaks[taskIndex] = updatedTask;
         await InvokeAsync(StateHasChanged);
     }
-    public async void OnPageChange(int selectedPage, int pageSize)
+    public async Task OnPageChange(int selectedPage, int pageSize)
     {
         IsShowCreateDialog = false;
         IsShowEditDialog = false;
@@ -543,10 +573,11 @@
     public async Task GetTasks(bool isSearch = false, string searchTerm = null!)
     {
         var res = await _taskConsumer.GetTasks(currentPage, pageSize, currentSortColumn, sortAscending!.Value, isSearch ?
-        searchFields : null!, isSearch ? searchTerm : null!, ViewType, ViewTypeId, IsCompleted);
-        allTaks = res.Data!.Items.ToList();
+            searchFields : null!, isSearch ? searchTerm : null!, ViewType, ViewTypeId, IsCompleted);
+        
         if (!(res?.Success ?? false) || res.Data is null)
             return;
+        allTaks = res.Data!.Items.ToList();
         var data = res.Data;
         totalPages = data.TotalPages;
         totalCount = data.TotalCount;
