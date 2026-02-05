@@ -25,11 +25,20 @@ namespace TaskyRevamp.Services.Helpers
 			var parameter = Expression.Parameter(typeof(TEntity), "x");
 			Expression? body = null;
 
+			bool isDateLike = searchText.All(c => char.IsDigit(c) || c == '/' || c == '-');
 			foreach (var property in properties)
 			{
 				// Get proper member access (handles nested paths like x.CreatedBy.NameEnglish)
 				var member = GetMemberExpression(property.Body, parameter);
 				if (member == null)
+					continue;
+
+				var propertyType = Nullable.GetUnderlyingType(member.Type) ?? member.Type;
+
+				if (isDateLike && propertyType != typeof(DateTime) && propertyType != typeof(DateTime?))
+					continue;
+
+				if (!isDateLike && (propertyType == typeof(DateTime) || propertyType == typeof(DateTime?)))
 					continue;
 
 				var comparison = BuildComparisonExpression(member, searchText);
@@ -76,6 +85,9 @@ namespace TaskyRevamp.Services.Helpers
 				var separators = new[] { "/", "-" };
 				var parts = cleaned.Split(separators, StringSplitOptions.RemoveEmptyEntries);
 
+				if (!parts.All(p => int.TryParse(p, out _)))
+					return null;
+
 				Expression finalExpr = null;
 				Expression IntStartsWith(Expression prop, string part)
 				{
@@ -115,22 +127,25 @@ namespace TaskyRevamp.Services.Helpers
 					}
 				}
 				// Partial match
-				for (int i = 0; i < parts.Length; i++)
+				if (parts.Length >= 2 && parts.Length <= 3)
 				{
-					var part = parts[i].TrimStart('0');
-					if (!int.TryParse(part, out _))
-						continue;
-
-					Expression partExpr = i switch
+					for (int i = 0; i < parts.Length; i++)
 					{
-						0 => IntStartsWith(dayProp, part),
-						1 => IntStartsWith(monthProp, part),
-						2 => IntStartsWith(yearProp, part),
-						_ => null!
-					};
-					
-					if (partExpr != null)
-						finalExpr = finalExpr == null ? partExpr : Expression.AndAlso(finalExpr, partExpr);
+						var part = parts[i].TrimStart('0');
+						if (!int.TryParse(part, out _))
+							continue;
+
+						Expression partExpr = i switch
+						{
+							0 => IntStartsWith(dayProp, part),
+							1 => IntStartsWith(monthProp, part),
+							2 => IntStartsWith(yearProp, part),
+							_ => null!
+						};
+
+						if (partExpr != null)
+							finalExpr = finalExpr == null ? partExpr : Expression.AndAlso(finalExpr, partExpr);
+					}
 				}
 				return finalExpr;
 			}
