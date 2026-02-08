@@ -45,7 +45,7 @@
                                 <tr>
                                     @foreach (var column in Columns.Where(p => p.IsVisible).OrderBy(k => k.Order).ToList())
                                     {
-                                        <td class="@(column.Field == "Title" ? "d-flex gap-1" : "text-nowrap")">
+                                        <td class="@(column.Field == "Title" ? "d-flex gap-1" : "min-w-150")">
                                             @RenderColumnValue(task, column.Field)
                                         </td>
                                     }

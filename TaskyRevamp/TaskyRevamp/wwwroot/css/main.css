@@ -3029,6 +3029,9 @@ fieldset:disabled .btn {
 .table .mx-w-300 {
   max-width: 300px;
 }
+.table .min-w-150 {
+  min-width: 150px;
+}
 .table .task-title {
   display: -webkit-box;
   -webkit-line-clamp: 2;
