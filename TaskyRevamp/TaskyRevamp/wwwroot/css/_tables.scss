@@ -209,16 +209,21 @@
       display: none;
     }
   }
-  .task-depancy-number {
+
+  .task-depancy-number,.task-delayed-icon {
     display: inline-flex;
-    color:var(--dark-700);
+    color: var(--dark-700);
     svg {
       width: 1rem;
       height: 1rem;
     }
   }
+  
   .mx-w-300 {
     max-width: 300px;
+  }
+  .min-w-150 {
+    min-width: 150px;
   }
   .task-title {
     display: -webkit-box;
