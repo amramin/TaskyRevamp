@@ -420,6 +420,16 @@
                 builder.CloseElement();
                 break; *@
             case "Title":
+               
+                    builder.OpenElement(-10, "span");
+                    builder.AddAttribute(-9, "class", "task-delayed-icon");
+
+                    builder.OpenComponent<SVGCrud>(-8);
+                    builder.AddAttribute(-7, "SVGType", SVGCrud.SVGTypeEnum.ClockRewind);
+                    builder.CloseComponent();
+
+                    builder.CloseElement();
+             
 
                 builder.OpenElement(0, "span");
                 builder.AddAttribute(1, "class", "task-title");

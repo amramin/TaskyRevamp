@@ -210,7 +210,7 @@
     }
   }
 
-  .task-depancy-number {
+  .task-depancy-number,.task-delayed-icon {
     display: inline-flex;
     color: var(--dark-700);
     svg {
@@ -218,6 +218,7 @@
       height: 1rem;
     }
   }
+  
   .mx-w-300 {
     max-width: 300px;
   }
