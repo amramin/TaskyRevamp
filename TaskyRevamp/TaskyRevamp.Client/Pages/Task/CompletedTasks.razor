@@ -105,7 +105,7 @@
                             case (int)ViewTypes.OverAllView:
 
                                 <div>
-                                    <TaskListView Title="@Loc[ViewTypes.OverAllView.ToString()]" IsCompleted="true" OnAdd="Add"
+                                    <TaskListView Title="@Loc[ViewTypes.OverAllView.ToString()]" IsCompleted="true" OnAdd="Add" IsCompletedTasks="true"
                                                   OnEdit="Edit" OnReopen="Reopen" @ref="@taskListRefs["overall"]"></TaskListView>
                                 </div>
                                 break;
@@ -115,7 +115,7 @@
                                     @foreach (var source in sources)
                                     {
                                         <div>
-                                            <TaskListView IsCompleted="true" @key="source.Id"
+                                            <TaskListView IsCompleted="true" @key="source.Id" IsCompletedTasks="true"
                                                           Title="@(CultureInfo.CurrentCulture.Name == "ar-EG" ? source.NameArabic : source.NameEnglish)"
                                                           ViewType="@((int)ViewTypes.SourceView)" ViewTypeId="@source.Id" OnAdd="Add" OnEdit="Edit"
                                                           OnReopen="Reopen" @ref="@taskListRefs[$" source-{source.Id}"]"></TaskListView>
@@ -137,7 +137,7 @@
                                     @foreach (var type in Types)
                                     {
                                         <div>
-                                            <TaskListView IsCompleted="true" @key="type.Id"
+                                            <TaskListView IsCompleted="true" @key="type.Id" IsCompletedTasks="true"
                                                           Title="@(CultureInfo.CurrentCulture.Name == "ar-EG" ? type.NameArabic : type.NameEnglish)"
                                                           ViewType="@((int)ViewTypes.TypeView)" ViewTypeId="@type.Id" OnAdd="Add" OnEdit="Edit"
                                                           OnReopen="Reopen" @ref="@taskListRefs[$"type-{type.Id}"]"></TaskListView>
@@ -272,7 +272,7 @@
         totalCount = res.Data.TotalCount;
         totalPages = res.Data.TotalPages;
     }
-    private void OnViewClick() => PopupService.ShowNew(@<ViewColumn OnValidSubmit="RefreshAllColumns"></ViewColumn>, headerText: @Loc["Viewcolumn"]);
+    private void OnViewClick() => PopupService.ShowNew(@<ViewColumn OnValidSubmit="RefreshAllColumns" IsCompleted="true"></ViewColumn>, headerText: @Loc["Viewcolumn"]);
     private async Task RefreshAllColumns()
     {
         foreach (var taskList in taskListRefs.Values.Where(t => t != null))

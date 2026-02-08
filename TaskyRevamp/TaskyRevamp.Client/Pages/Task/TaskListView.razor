@@ -143,6 +143,7 @@
     [Parameter] public Guid? ViewTypeId { get; set; } = null;
     [Parameter] public string Title { get; set; } = string.Empty;
     [Parameter] public bool IsCompleted { get; set; } = false;
+    [Parameter] public bool IsCompletedTasks { get; set; } = false;
     CreateTaskDto taskdto = new CreateTaskDto();
     private List<StatusSettingsDto> Statuses = new();
     List<CreateTaskDto> allTaks = new List<CreateTaskDto>();
@@ -173,7 +174,8 @@
 
     public async Task<List<SortableColumn>> GetColumns()
     {
-        var columns = await LocalStorageService.GetItemAsync<List<SortableColumn>>("AllColumn");
+        var key = IsCompletedTasks ? "CompletedTask_Columns" : "MainTask_Columns";
+        var columns = await LocalStorageService.GetItemAsync<List<SortableColumn>>(key);
         return columns;
     }
     public async Task RefreshColumns()
@@ -199,32 +201,30 @@
     {
         List<SortableColumn> column = new List<SortableColumn>();
         column = new List<SortableColumn>()
-    {
-        new() { Field = "Title", DisplayName  = Loc["Title"], Order = 0, IsVisible = true },
-        new() { Field = "Priority", DisplayName =  Loc["Priority2"], Order = 1, IsVisible = true },
-        new() { Field = "Status", DisplayName =  Loc["TaskStatus"], Order = 2, IsVisible = true },
-        new() { Field = "Actual progress", DisplayName = Loc["ActualProgress"], Order = 3, IsVisible = true },
-        new() { Field = "Start Date", DisplayName = Loc["StartDate"], Order = 4, IsVisible = true },
-        new() { Field = "End Date", DisplayName = Loc["EndDate"], Order = 5, IsVisible = true },
-        new() { Field = "weight", DisplayName = Loc["weight"], Order = 6, IsVisible = true },
-        new() { Field = "Assigned To", DisplayName = Loc["AssignedTo"], Order = 7, IsVisible = true },
-        new() { Field = "Assigned To Department", DisplayName =Loc["AssignedToDepartment"], Order = 8, IsVisible = true },
-        new() { Field = "Source", DisplayName =Loc["Source"], Order = 9, IsVisible = true },
-        new() { Field = "Dependency", DisplayName = Loc["Dependency"], Order = 10, IsVisible = true },
-        new() { Field = "Created By", DisplayName = Loc["CreatedBy"], Order = 11, IsVisible = true },
-        new() { Field = "Duration", DisplayName = Loc["Duration"], Order = 12, IsVisible = true },
-        new() { Field = "Created by department", DisplayName = Loc["Createdbydepartment"], Order = 13, IsVisible = true },
-        new() { Field = "Planned Progress", DisplayName = Loc["PlannedProgress"], Order = 14, IsVisible = true },
-        new() { Field = "Creation Date", DisplayName = Loc["CreationDate"], Order = 15, IsVisible = true },
-        new() { Field = "Type", DisplayName = Loc["Type"], Order = 16, IsVisible = true },
-        new() { Field = "Actual Weight", DisplayName = Loc["ActualWeight"], Order = 17, IsVisible = true },
-        new() { Field = "Planned Weight", DisplayName =Loc["PlannedWeight"], Order = 18, IsVisible = true },
-
-
-    };
-
-        await LocalStorageService.SetItemAsync("AllColumn", column);
-        var all = await LocalStorageService.GetItemAsync<List<SortableColumn>>("AllColumn");
+        {
+            new() { Field = "Title", DisplayName  = Loc["Title"], Order = 0, IsVisible = true },
+            new() { Field = "Priority", DisplayName =  Loc["Priority2"], Order = 1, IsVisible = true },
+            new() { Field = "Status", DisplayName =  Loc["TaskStatus"], Order = 2, IsVisible = true },
+            new() { Field = "Actual progress", DisplayName = Loc["ActualProgress"], Order = 3, IsVisible = true },
+            new() { Field = "Start Date", DisplayName = Loc["StartDate"], Order = 4, IsVisible = true },
+            new() { Field = "End Date", DisplayName = Loc["EndDate"], Order = 5, IsVisible = true },
+            new() { Field = "weight", DisplayName = Loc["weight"], Order = 6, IsVisible = true },
+            new() { Field = "Assigned To", DisplayName = Loc["AssignedTo"], Order = 7, IsVisible = true },
+            new() { Field = "Assigned To Department", DisplayName =Loc["AssignedToDepartment"], Order = 8, IsVisible = true },
+            new() { Field = "Source", DisplayName =Loc["Source"], Order = 9, IsVisible = true },
+            new() { Field = "Dependency", DisplayName = Loc["Dependency"], Order = 10, IsVisible = true },
+            new() { Field = "Created By", DisplayName = Loc["CreatedBy"], Order = 11, IsVisible = true },
+            new() { Field = "Duration", DisplayName = Loc["Duration"], Order = 12, IsVisible = true },
+            new() { Field = "Created by department", DisplayName = Loc["Createdbydepartment"], Order = 13, IsVisible = true },
+            new() { Field = "Planned Progress", DisplayName = Loc["PlannedProgress"], Order = 14, IsVisible = true },
+            new() { Field = "Creation Date", DisplayName = Loc["CreationDate"], Order = 15, IsVisible = true },
+            new() { Field = "Type", DisplayName = Loc["Type"], Order = 16, IsVisible = true },
+            new() { Field = "Actual Weight", DisplayName = Loc["ActualWeight"], Order = 17, IsVisible = true },
+            new() { Field = "Planned Weight", DisplayName =Loc["PlannedWeight"], Order = 18, IsVisible = true },
+        };
+        var key = IsCompletedTasks ? "CompletedTask_Columns" : "MainTask_Columns";
+        await LocalStorageService.SetItemAsync(key, column);
+        var all = await LocalStorageService.GetItemAsync<List<SortableColumn>>(key);
         return all;
     }
     protected override async Task OnInitializedAsync()
@@ -574,7 +574,7 @@
     {
         var res = await _taskConsumer.GetTasks(currentPage, pageSize, currentSortColumn, sortAscending!.Value, isSearch ?
             searchFields : null!, isSearch ? searchTerm : null!, ViewType, ViewTypeId, IsCompleted);
-        
+
         if (!(res?.Success ?? false) || res.Data is null)
             return;
         allTaks = res.Data!.Items.ToList();
@@ -630,9 +630,9 @@
     {
         task.ActualProcess = value;
         await _taskConsumer.ChangeTaskProgress(task.Id, value);
-        var resMainTasks = await _taskConsumer.GetMainAndParentTasks();
-        if (resMainTasks.Success && resMainTasks.Data != null)
-            MainAndParentTasks = resMainTasks.Data;
+        // var resMainTasks = await _taskConsumer.GetMainAndParentTasks();
+        // if (resMainTasks.Success && resMainTasks.Data != null)
+        //     MainAndParentTasks = resMainTasks.Data;
         StateHasChanged();
     }
     private async Task Collapse()
@@ -645,5 +645,9 @@
             return;
         var key = IsCompleted ? $"collapse-{ViewTypeId}-c" : $"collapse-{ViewTypeId}";
         await LocalStorageService.SetItemAsStringAsync(key, IsCollapse.ToString());
+    }
+    private bool IsDelayed(CreateTaskDto task)
+    {
+        return task.TaskStatusName == "Delayed";
     }
 }
