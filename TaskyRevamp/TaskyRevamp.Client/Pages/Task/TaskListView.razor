@@ -183,7 +183,6 @@
         await LoadColumns();
         StateHasChanged();
     }
-
     private async Task LoadColumns()
     {
         var olddata = await GetColumns();
@@ -278,7 +277,7 @@
             // {
             //     MainAndParentTasks = resMainTasks.Data;
             // }
-          
+
             var res = await _defaultColumnsSettingConsumer.GetDefaultColumnsSettings();
             if (res.Success)
             {
@@ -450,7 +449,8 @@
                 builder.CloseElement();
                 break; *@
             case "Title":
-               
+                if (IsDelayed(task))
+                {
                     builder.OpenElement(-10, "span");
                     builder.AddAttribute(-9, "class", "task-delayed-icon");
 
@@ -459,7 +459,7 @@
                     builder.CloseComponent();
 
                     builder.CloseElement();
-             
+                }
 
                 builder.OpenElement(0, "span");
                 builder.AddAttribute(1, "class", "task-title");
