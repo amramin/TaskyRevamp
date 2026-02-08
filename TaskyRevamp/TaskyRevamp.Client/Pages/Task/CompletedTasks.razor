@@ -105,8 +105,8 @@
                             case (int)ViewTypes.OverAllView:
 
                                 <div>
-                                    <TaskListView Title="@Loc[ViewTypes.OverAllView.ToString()]" IsCompleted="true" OnAdd="Add"
-                                                  OnEdit="Edit" OnReopen="Reopen" @ref="taskListRef"></TaskListView>
+                                    <TaskListView Title="@Loc[ViewTypes.OverAllView.ToString()]" IsCompleted="true" OnAdd="Add" IsCompletedTasks="true"
+                                                  OnEdit="Edit" OnReopen="Reopen" @ref="@taskListRefs["overall"]"></TaskListView>
                                 </div>
                                 break;
                             case (int)ViewTypes.SourceView:
@@ -115,15 +115,15 @@
                                     @foreach (var source in sources)
                                     {
                                         <div>
-                                            <TaskListView IsCompleted="true" @key="source.Id"
-                                            Title="@(CultureInfo.CurrentCulture.Name == "ar-EG" ? source.NameArabic : source.NameEnglish)"
-                                            ViewType="@((int)ViewTypes.SourceView)" ViewTypeId="@source.Id" OnAdd="Add" OnEdit="Edit"
-                                            OnReopen="Reopen" @ref="taskListRef"></TaskListView>
+                                            <TaskListView IsCompleted="true" @key="source.Id" IsCompletedTasks="true"
+                                                          Title="@(CultureInfo.CurrentCulture.Name == "ar-EG" ? source.NameArabic : source.NameEnglish)"
+                                                          ViewType="@((int)ViewTypes.SourceView)" ViewTypeId="@source.Id" OnAdd="Add" OnEdit="Edit"
+                                                          OnReopen="Reopen" @ref="@taskListRefs[$" source-{source.Id}"]"></TaskListView>
                                         </div>
                                     }
                                     <Pagination CurrentPage="@currentPage" TotalPages="@totalPages" TotalCount="@totalCount"
-                                    PageSize="@pageSize" PageSizeOptions="new[] { 3, 5, 7, 10 }" PageChanged="ChangePage"
-                                    PageSizeChangedCallback="ChangePageSize" />
+                                                PageSize="@pageSize" PageSizeOptions="new[] { 3, 5, 7, 10 }" PageChanged="ChangePage"
+                                                PageSizeChangedCallback="ChangePageSize" />
                                 }
                                 else
                                 {
@@ -137,15 +137,15 @@
                                     @foreach (var type in Types)
                                     {
                                         <div>
-                                            <TaskListView IsCompleted="true" @key="type.Id"
-                                            Title="@(CultureInfo.CurrentCulture.Name == "ar-EG" ? type.NameArabic : type.NameEnglish)"
-                                            ViewType="@((int)ViewTypes.TypeView)" ViewTypeId="@type.Id" OnAdd="Add" OnEdit="Edit"
-                                            OnReopen="Reopen" @ref="taskListRef"></TaskListView>
+                                            <TaskListView IsCompleted="true" @key="type.Id" IsCompletedTasks="true"
+                                                          Title="@(CultureInfo.CurrentCulture.Name == "ar-EG" ? type.NameArabic : type.NameEnglish)"
+                                                          ViewType="@((int)ViewTypes.TypeView)" ViewTypeId="@type.Id" OnAdd="Add" OnEdit="Edit"
+                                                          OnReopen="Reopen" @ref="@taskListRefs[$"type-{type.Id}"]"></TaskListView>
                                         </div>
                                     }
                                     <Pagination CurrentPage="@currentPage" TotalPages="@totalPages" TotalCount="@totalCount"
-                                    PageSize="@pageSize" PageSizeOptions="new[] { 3, 5, 7, 10 }" PageChanged="ChangePageType"
-                                    PageSizeChangedCallback="ChangePageSizeType" />
+                                                PageSize="@pageSize" PageSizeOptions="new[] { 3, 5, 7, 10 }" PageChanged="ChangePageType"
+                                                PageSizeChangedCallback="ChangePageSizeType" />
                                 }
                                 else
                                 {
@@ -168,7 +168,7 @@
     [Parameter] public EventCallback<Guid> OnDelete { get; set; }
     [Parameter] public EventCallback<Guid> OnShowUsers { get; set; }
     [Parameter] public EventCallback<Guid> OnAdd { get; set; }
-    private TaskListView taskListRef;
+    private Dictionary<string, TaskListView> taskListRefs = new Dictionary<string, TaskListView>();
     public List<SourceDto> sources = new List<SourceDto>();
     public List<TypeDto> Types = new List<TypeDto>();
     public List<StatusSettingsDto> Satuses = new List<StatusSettingsDto>();
@@ -194,6 +194,7 @@
     }
     private async Task changeViewType(int type)
     {
+        taskListRefs.Clear();
         ViewType = type;
         if (ViewType == (int)ViewTypes.SourceView)
         {
@@ -222,8 +223,18 @@
     public async Task Reopen(Guid id) => PopupService.ShowNew(@<ReopenTask Id="id" OnSaved="ReloadAfterSave"></ReopenTask>,Loc["ReOpen"]);
     private async Task ReloadAfterSave()
     {
-        //currentPage = page;
-        await taskListRef.GetTasks();
+        foreach (var taskList in taskListRefs.Values.Where(t => t != null))
+            await taskList.GetTasks();
+        switch (ViewType)
+        {
+            case (int)ViewTypes.SourceView:
+                await LoadSources();
+                break;
+            case (int)ViewTypes.TypeView:
+                await LoadTypes();
+                break;
+        }
+        StateHasChanged();
     }
     private async Task ChangePage(int page)
     {
@@ -261,7 +272,15 @@
         totalCount = res.Data.TotalCount;
         totalPages = res.Data.TotalPages;
     }
-    private void OnViewClick() => PopupService.ShowNew(@<ViewColumn OnValidSubmit="OnInitializedAsync"></ViewColumn>, headerText: @Loc["Viewcolumn"]);
+    private void OnViewClick() => PopupService.ShowNew(@<ViewColumn OnValidSubmit="RefreshAllColumns" IsCompleted="true"></ViewColumn>, headerText: @Loc["Viewcolumn"]);
+    private async Task RefreshAllColumns()
+    {
+        foreach (var taskList in taskListRefs.Values.Where(t => t != null))
+        {
+            await taskList.RefreshColumns();
+        }
+        StateHasChanged();
+    }
     private void ToggleCollapse()
     {
         IsCollapsed = !IsCollapsed;

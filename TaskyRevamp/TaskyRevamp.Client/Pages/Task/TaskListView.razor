@@ -17,7 +17,7 @@
 @inject ILocalStorageService LocalStorageService
 @inject RejectionSettingConsumer _rejectionSettingConsumer
 
-@if (isInitialized)
+@if (!isLoading)
 {
     <div class="card table-card collaped-task-card">
         <div class="table-caption cursor-pointer @(IsCollapse ? "collapsed" : "")" @onclick="Collapse">
@@ -129,6 +129,8 @@
 
     </div>
 }
+
+
 @code {
     public bool IsAdmine;// = roleService.IsAllowed(int)Modules., (int)ModuleActions.EditReportPermission) ;//true;//
     [Parameter] public EventCallback<Guid> OnEdit { get; set; }
@@ -141,6 +143,7 @@
     [Parameter] public Guid? ViewTypeId { get; set; } = null;
     [Parameter] public string Title { get; set; } = string.Empty;
     [Parameter] public bool IsCompleted { get; set; } = false;
+    [Parameter] public bool IsCompletedTasks { get; set; } = false;
     CreateTaskDto taskdto = new CreateTaskDto();
     private List<StatusSettingsDto> Statuses = new();
     List<CreateTaskDto> allTaks = new List<CreateTaskDto>();
@@ -161,82 +164,28 @@
     private int totalCount = 0;
     private int pageSize = 10;
     bool IsCollapse = false;
-    private bool isInitialized = false;
+    private bool isLoading = true;
     private bool collapseLoadedFromStorage = false;
     private List<SortableColumn> Columns = new();
     private List<CreateTaskDto> MainAndParentTasks = new List<CreateTaskDto>();
     private List<DefaultColumnsSettingDto> ColumnsList = new();
     private Guid CurrentUser { get; set; }
     private int RejectionPeriod { get; set; } = 0;
+
     public async Task<List<SortableColumn>> GetColumns()
     {
-        var columns = await LocalStorageService.GetItemAsync<List<SortableColumn>>("AllColumn");
+        var key = IsCompletedTasks ? "CompletedTask_Columns" : "MainTask_Columns";
+        var columns = await LocalStorageService.GetItemAsync<List<SortableColumn>>(key);
         return columns;
     }
-    private async Task<List<SortableColumn>> GetDefaultColumns()
+    public async Task RefreshColumns()
     {
-        List<SortableColumn> column = new List<SortableColumn>();
-        column = new List<SortableColumn>()
-    {
-        new() { Field = "Title", DisplayName  = Loc["Title"], Order = 0, IsVisible = true },
-        new() { Field = "Priority", DisplayName =  Loc["Priority2"], Order = 1, IsVisible = true },
-        new() { Field = "Status", DisplayName =  Loc["TaskStatus"], Order = 2, IsVisible = true },
-        new() { Field = "Actual progress", DisplayName = Loc["ActualProgress"], Order = 3, IsVisible = true },
-        new() { Field = "Start Date", DisplayName = Loc["StartDate"], Order = 4, IsVisible = true },
-        new() { Field = "End Date", DisplayName = Loc["EndDate"], Order = 5, IsVisible = true },
-        new() { Field = "weight", DisplayName = Loc["weight"], Order = 6, IsVisible = true },
-        new() { Field = "Assigned To", DisplayName = Loc["AssignedTo"], Order = 7, IsVisible = true },
-        new() { Field = "Assigned To Department", DisplayName =Loc["AssignedToDepartment"], Order = 8, IsVisible = true },
-        new() { Field = "Source", DisplayName =Loc["Source"], Order = 9, IsVisible = true },
-        new() { Field = "Dependency", DisplayName = Loc["Dependency"], Order = 10, IsVisible = true },
-        new() { Field = "Created By", DisplayName = Loc["CreatedBy"], Order = 11, IsVisible = true },
-        new() { Field = "Duration", DisplayName = Loc["Duration"], Order = 12, IsVisible = true },
-        new() { Field = "Created by department", DisplayName = Loc["Createdbydepartment"], Order = 13, IsVisible = true },
-        new() { Field = "Planned Progress", DisplayName = Loc["PlannedProgress"], Order = 14, IsVisible = true },
-        new() { Field = "Creation Date", DisplayName = Loc["CreationDate"], Order = 15, IsVisible = true },
-        new() { Field = "Type", DisplayName = Loc["Type"], Order = 16, IsVisible = true },
-        new() { Field = "Actual Weight", DisplayName = Loc["ActualWeight"], Order = 17, IsVisible = true },
-        new() { Field = "Planned Weight", DisplayName =Loc["PlannedWeight"], Order = 18, IsVisible = true },
-
-
-    };
-
-        await LocalStorageService.SetItemAsync("AllColumn", column);
-        var all = await LocalStorageService.GetItemAsync<List<SortableColumn>>("AllColumn");
-        return all;
+        await LoadColumns();
+        StateHasChanged();
     }
-    protected override async Task OnInitializedAsync()
+
+    private async Task LoadColumns()
     {
-        var isNewLogin = await LocalStorageService.GetItemAsync<bool>("IsNewLogin");
-        if (!isNewLogin && ViewTypeId is not null)
-        {
-            var key = IsCompleted ? $"collapse-{ViewTypeId}-c" : $"collapse-{ViewTypeId}";
-            var value = await LocalStorageService.GetItemAsStringAsync(key);
-            if (bool.TryParse(value, out var result))
-            {
-                IsCollapse = result;
-                collapseLoadedFromStorage = true;
-            }
-        }
-        else
-        {
-            IsCollapse = false;
-        }
-        if (isNewLogin)
-        {
-            IsCollapse = false;
-            var keys = await LocalStorageService.KeysAsync();
-            foreach (var key in keys.Where(k => k.StartsWith("collapse-")))
-            {
-                await LocalStorageService.RemoveItemAsync(key);
-            }
-            await LocalStorageService.RemoveItemAsync("IsNewLogin");
-        }
-        var statusres = await _statusSettingConsumer.GetStatusConfiguration();
-        if (statusres.Success && statusres != null && statusres.Data != null)
-        {
-            Statuses = statusres.Data;
-        }
         var olddata = await GetColumns();
         if (olddata != null && olddata.Count > 0)
         {
@@ -247,26 +196,107 @@
             var all = await GetDefaultColumns();
             Columns = all.ToList();
         }
-        var resMainTasks = await _taskConsumer.GetMainAndParentTasks();
-        if (resMainTasks.Success && resMainTasks.Data != null)
+    }
+    private async Task<List<SortableColumn>> GetDefaultColumns()
+    {
+        List<SortableColumn> column = new List<SortableColumn>();
+        column = new List<SortableColumn>()
         {
-            MainAndParentTasks = resMainTasks.Data;
-        }
-        await GetTasks();
-        var res = await _defaultColumnsSettingConsumer.GetDefaultColumnsSettings();
-        if (res.Success)
+            new() { Field = "Title", DisplayName  = Loc["Title"], Order = 0, IsVisible = true },
+            new() { Field = "Priority", DisplayName =  Loc["Priority2"], Order = 1, IsVisible = true },
+            new() { Field = "Status", DisplayName =  Loc["TaskStatus"], Order = 2, IsVisible = true },
+            new() { Field = "Actual progress", DisplayName = Loc["ActualProgress"], Order = 3, IsVisible = true },
+            new() { Field = "Start Date", DisplayName = Loc["StartDate"], Order = 4, IsVisible = true },
+            new() { Field = "End Date", DisplayName = Loc["EndDate"], Order = 5, IsVisible = true },
+            new() { Field = "weight", DisplayName = Loc["weight"], Order = 6, IsVisible = true },
+            new() { Field = "Assigned To", DisplayName = Loc["AssignedTo"], Order = 7, IsVisible = true },
+            new() { Field = "Assigned To Department", DisplayName =Loc["AssignedToDepartment"], Order = 8, IsVisible = true },
+            new() { Field = "Source", DisplayName =Loc["Source"], Order = 9, IsVisible = true },
+            new() { Field = "Dependency", DisplayName = Loc["Dependency"], Order = 10, IsVisible = true },
+            new() { Field = "Created By", DisplayName = Loc["CreatedBy"], Order = 11, IsVisible = true },
+            new() { Field = "Duration", DisplayName = Loc["Duration"], Order = 12, IsVisible = true },
+            new() { Field = "Created by department", DisplayName = Loc["Createdbydepartment"], Order = 13, IsVisible = true },
+            new() { Field = "Planned Progress", DisplayName = Loc["PlannedProgress"], Order = 14, IsVisible = true },
+            new() { Field = "Creation Date", DisplayName = Loc["CreationDate"], Order = 15, IsVisible = true },
+            new() { Field = "Type", DisplayName = Loc["Type"], Order = 16, IsVisible = true },
+            new() { Field = "Actual Weight", DisplayName = Loc["ActualWeight"], Order = 17, IsVisible = true },
+            new() { Field = "Planned Weight", DisplayName =Loc["PlannedWeight"], Order = 18, IsVisible = true },
+        };
+        var key = IsCompletedTasks ? "CompletedTask_Columns" : "MainTask_Columns";
+        await LocalStorageService.SetItemAsync(key, column);
+        var all = await LocalStorageService.GetItemAsync<List<SortableColumn>>(key);
+        return all;
+    }
+    protected override async Task OnInitializedAsync()
+    {
+        isLoading = true;
+        try
         {
-            var settings = res.Data;
-            if (settings != null)
-                ColumnsList = settings;
+            var isNewLogin = await LocalStorageService.GetItemAsync<bool>("IsNewLogin");
+            if (!isNewLogin && ViewTypeId is not null)
+            {
+                var key = IsCompleted ? $"collapse-{ViewTypeId}-c" : $"collapse-{ViewTypeId}";
+                var value = await LocalStorageService.GetItemAsStringAsync(key);
+                if (bool.TryParse(value, out var result))
+                {
+                    IsCollapse = result;
+                    collapseLoadedFromStorage = true;
+                }
+            }
+            else
+            {
+                IsCollapse = false;
+            }
+            if (isNewLogin)
+            {
+                IsCollapse = false;
+                var keys = await LocalStorageService.KeysAsync();
+                foreach (var key in keys.Where(k => k.StartsWith("collapse-")))
+                {
+                    await LocalStorageService.RemoveItemAsync(key);
+                }
+                await LocalStorageService.RemoveItemAsync("IsNewLogin");
+            }
+            await LoadColumns();
+            var statusres = await _statusSettingConsumer.GetStatusConfiguration();
+            if (statusres.Success && statusres != null && statusres.Data != null)
+            {
+                Statuses = statusres.Data;
+            }
+            var olddata = await GetColumns();
+            if (olddata != null && olddata.Count > 0)
+            {
+                Columns = olddata.OrderBy(c => c.Order).ToList();
+            }
+            else
+            {
+                var all = await GetDefaultColumns();
+                Columns = all.ToList();
+            }
+            // var resMainTasks = await _taskConsumer.GetMainAndParentTasks();
+            // if (resMainTasks.Success && resMainTasks.Data != null)
+            // {
+            //     MainAndParentTasks = resMainTasks.Data;
+            // }
+          
+            var res = await _defaultColumnsSettingConsumer.GetDefaultColumnsSettings();
+            if (res.Success)
+            {
+                var settings = res.Data;
+                if (settings != null)
+                    ColumnsList = settings;
+            }
+            // Filter and order by settings
+            tableColumns = tableColumns.Where(c => ColumnsList.Any(s => s.IsActive && string.Equals(s.NameEnglish, c.Field, StringComparison.OrdinalIgnoreCase)))
+            .OrderBy(c => ColumnsList.First(s => string.Equals(s.NameEnglish, c.Field, StringComparison.OrdinalIgnoreCase)).Order ?? int.MaxValue).ToList();
+            CurrentUser = Guid.Parse(await LocalStorageService.GetItemAsStringAsync("Id"));
+            RejectionPeriod = await GetRejectionPeriod();
+            await GetTasks();
         }
-        // Filter and order by settings
-        tableColumns = tableColumns.Where(c => ColumnsList.Any(s => s.IsActive && string.Equals(s.NameEnglish, c.Field, StringComparison.OrdinalIgnoreCase)))
-        .OrderBy(c => ColumnsList.First(s => string.Equals(s.NameEnglish, c.Field, StringComparison.OrdinalIgnoreCase)).Order ?? int.MaxValue).ToList();
-        CurrentUser = Guid.Parse(await LocalStorageService.GetItemAsStringAsync("Id"));
-        RejectionPeriod = await GetRejectionPeriod();
-        isInitialized = true;
-        StateHasChanged();
+        finally
+        {
+            isLoading = false;
+        }
     }
     // public async Task ResetPage()
     // {
@@ -379,7 +409,7 @@
             allTaks[taskIndex] = updatedTask;
         await InvokeAsync(StateHasChanged);
     }
-    public async void OnPageChange(int selectedPage, int pageSize)
+    public async Task OnPageChange(int selectedPage, int pageSize)
     {
         IsShowCreateDialog = false;
         IsShowEditDialog = false;
@@ -553,10 +583,11 @@
     public async Task GetTasks(bool isSearch = false, string searchTerm = null!)
     {
         var res = await _taskConsumer.GetTasks(currentPage, pageSize, currentSortColumn, sortAscending!.Value, isSearch ?
-        searchFields : null!, isSearch ? searchTerm : null!, ViewType, ViewTypeId, IsCompleted);
-        allTaks = res.Data!.Items.ToList();
+            searchFields : null!, isSearch ? searchTerm : null!, ViewType, ViewTypeId, IsCompleted);
+
         if (!(res?.Success ?? false) || res.Data is null)
             return;
+        allTaks = res.Data!.Items.ToList();
         var data = res.Data;
         totalPages = data.TotalPages;
         totalCount = data.TotalCount;
@@ -609,9 +640,9 @@
     {
         task.ActualProcess = value;
         await _taskConsumer.ChangeTaskProgress(task.Id, value);
-        var resMainTasks = await _taskConsumer.GetMainAndParentTasks();
-        if (resMainTasks.Success && resMainTasks.Data != null)
-            MainAndParentTasks = resMainTasks.Data;
+        // var resMainTasks = await _taskConsumer.GetMainAndParentTasks();
+        // if (resMainTasks.Success && resMainTasks.Data != null)
+        //     MainAndParentTasks = resMainTasks.Data;
         StateHasChanged();
     }
     private async Task Collapse()
@@ -624,5 +655,9 @@
             return;
         var key = IsCompleted ? $"collapse-{ViewTypeId}-c" : $"collapse-{ViewTypeId}";
         await LocalStorageService.SetItemAsStringAsync(key, IsCollapse.ToString());
+    }
+    private bool IsDelayed(CreateTaskDto task)
+    {
+        return task.TaskStatusName == "Delayed";
     }
 }

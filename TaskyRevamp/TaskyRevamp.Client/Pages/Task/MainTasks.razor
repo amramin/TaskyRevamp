@@ -121,7 +121,7 @@
                         {
                             case (int)ViewTypes.OverAllView:
                                 <div>
-                                    <TaskListView Title="@Loc[ViewTypes.OverAllView.ToString()]" OnAdd="Add" OnEdit="Edit"
+                                    <TaskListView Title="@Loc[ViewTypes.OverAllView.ToString()]" OnAdd="Add" OnEdit="Edit" IsCompletedTasks="false"
                                                   OnReopen="Reopen" OnReject="Reject" @ref="@taskListRefs["overall"]"></TaskListView>
                                 </div>
                                 break;
@@ -131,7 +131,7 @@
                                 {
                                     var currentIndex = timelineIndex;
                                     <div>
-                                        <TaskListView Title="@Loc[timeview.ToString()]" ViewType="@((int)ViewTypes.TimeLineView)"
+                                        <TaskListView Title="@Loc[timeview.ToString()]" ViewType="@((int)ViewTypes.TimeLineView)" IsCompletedTasks="false"
                                                       ViewTypeId="@(Guid.Parse(timeview.GetDescription()))" OnAdd="Add" OnEdit="Edit"
                                                       OnReopen="Reopen" OnReject="Reject" @ref="@taskListRefs[$"timeline-{currentIndex}"]"></TaskListView>
                                     </div>
@@ -141,7 +141,7 @@
                             case (int)ViewTypes.SourceView:
                                 @foreach (var source in sources)
                                 {
-                                    <TaskListView @key="source.Id"
+                                    <TaskListView @key="source.Id" IsCompletedTasks="false"
                                                   Title="@(CultureInfo.CurrentCulture.Name == "ar-EG" ? source.NameArabic : source.NameEnglish)"
                                                   ViewType="@((int)ViewTypes.SourceView)" ViewTypeId="@source.Id" OnAdd="Add" OnEdit="Edit"
                                                   OnReopen="Reopen" OnReject="Reject" @ref="@taskListRefs[$" source-{source.Id}"]"></TaskListView>
@@ -159,14 +159,14 @@
                                 {
 
                                     <TaskListView Title="@(CultureInfo.CurrentCulture.Name == "ar-EG" ? status.NameArabic : status.NameEnglish)"
-                                                  ViewType="@((int)ViewTypes.StatusView)" ViewTypeId="@status.Id" OnAdd="Add" OnEdit="Edit"
+                                                  ViewType="@((int)ViewTypes.StatusView)" ViewTypeId="@status.Id" OnAdd="Add" OnEdit="Edit" IsCompletedTasks="false"
                                                   OnReopen="Reopen" OnReject="Reject" @ref="@taskListRefs[$" status-{status.Id}"]"></TaskListView>
                                 }
                                 break;
                             case (int)ViewTypes.TypeView:
                                 @foreach (var type in Types)
                                 {
-                                    <TaskListView @key="type.Id"
+                                    <TaskListView @key="type.Id" IsCompletedTasks="false" 
                                                   Title="@(CultureInfo.CurrentCulture.Name == "ar-EG" ? type.NameArabic : type.NameEnglish)"
                                                   ViewType="@((int)ViewTypes.TypeView)" ViewTypeId="@type.Id" OnAdd="Add" OnEdit="Edit"
                                                   OnReopen="Reopen" OnReject="Reject" @ref="@taskListRefs[$"type-{type.Id}"]"></TaskListView>
@@ -248,6 +248,7 @@
     private int pageSize = 5;
     private bool IsCollapsed = false;
     private string timeLineTitle => $" - {Loc["TimeLineTilte"]}";
+
     protected override void OnInitialized()
     {
         ViewType = (int)ViewTypes.OverAllView;
@@ -363,5 +364,13 @@
         totalCount = res.Data.TotalCount;
         totalPages = res.Data.TotalPages;
     }
-    private void OnViewClick() => PopupService.ShowNew(@<ViewColumn OnValidSubmit="OnInitializedAsync"></ViewColumn>, headerText: @Loc["Viewcolumn"]);
+    private void OnViewClick() => PopupService.ShowNew(@<ViewColumn OnValidSubmit="RefreshAllColumns" IsCompleted="false"></ViewColumn>, headerText: @Loc["Viewcolumn"]);
+    private async Task RefreshAllColumns()
+    {
+        foreach (var taskList in taskListRefs.Values.Where(t => t != null))
+        {
+            await taskList.RefreshColumns();
+        }
+        StateHasChanged();
+    }
 }
