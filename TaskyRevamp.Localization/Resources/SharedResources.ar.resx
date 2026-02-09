@@ -1358,9 +1358,9 @@
 	<data name="UsersAdded" xml:space="preserve">
     <value>المستخدمون المضافون:</value>
   </data>
-	<data name="UsersUpdated" xml:space="preserve">
+  <data name="UsersUpdated" xml:space="preserve">
     <value>تم تحديث بيانات المستخدمين</value>
-	 </data>
+  </data>
 	<data name="SyncUsers" xml:space="preserve">
     <value>مزامنة المستخدمين</value>
   </data>
@@ -1387,4 +1387,7 @@
 	<data name="Reopenedsuccessfully" type="System.Resources.ResXNullRef, System.Windows.Forms">
 		<value />
 	</data>
+  <data name="DependencyError" xml:space="preserve">
+    <value>لا يمكن تعيين نسبة التقدم إلى 100% لوجود مهمة أو أكثر من المهام المعتمدة ما زالت غير مكتملة، متأخرة، أو تم إعادة فتحها.</value>
+  </data>
 </root>

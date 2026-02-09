@@ -316,7 +316,7 @@
         }
         else
         {
-            await ToastService.ShowToastAsync(Loc["DependencyError"], "danger");
+            await ToastService.ShowToastAsync(Loc["DependencyError"], "error");
             await OnConfirmed.InvokeAsync();
         }
 

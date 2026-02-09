@@ -247,7 +247,7 @@ public class GetTasksHandler : IRequestHandler<GetTasksQuery, PagedResult<Create
                 return sortAscending
                     ? q => q.OrderBy(u => u.Type)
                     : q => q.OrderByDescending(u => u.Type);
-            case "Actual Progress":
+            case "Actual progress":
                 return sortAscending
                     ? q => q.OrderBy(u => u.Progress)
                     : q => q.OrderByDescending(u => u.Progress);

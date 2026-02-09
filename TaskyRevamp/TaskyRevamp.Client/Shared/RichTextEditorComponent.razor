@@ -43,6 +43,9 @@ else{
                   MaxLength="3000"
                   CssClass="@(EnableRtl ? "arabic-rte" : "")">
    <RichTextEditorToolbarSettings Items="@Tools" />
+        <RichTextEditorPasteCleanupSettings Prompt="false"
+           PlainText="false"
+                                            KeepFormat="true" DeniedTags="@DeniedTags" />
 <RichTextEditorQuickToolbarSettings Link="@Link"/>
 </SfRichTextEditor>
 }
@@ -68,6 +71,7 @@ else{
     private bool IsLoading;
     private SfRichTextEditor rte;
     [Parameter] public string ButtonText { get; set; } = "Add text...";
+    private string[] DeniedTags = { "p", "div" };
     private List<ToolbarItemModel> Tools = new()
 {
         new ToolbarItemModel() { Command = ToolbarCommand.OrderedList },
