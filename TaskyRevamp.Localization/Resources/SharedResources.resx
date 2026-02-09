@@ -1375,4 +1375,7 @@ Do you want to restore the original type and merge this one into it? Consider th
   <data name="Notifications" xml:space="preserve">
     <value>Notifications</value>
   </data>
+  <data name="DependencyError" xml:space="preserve">
+    <value>Progress cannot be set to 100% because one or more dependent tasks are still open, delayed, or have been reopened.</value>
+  </data>
 </root>
