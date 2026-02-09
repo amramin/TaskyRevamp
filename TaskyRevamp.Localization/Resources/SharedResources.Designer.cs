@@ -1024,6 +1024,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Progress cannot be set to 100% because one or more dependent tasks are still open, delayed, or have been reopened..
+        /// </summary>
+        public static string DependencyError {
+            get {
+                return ResourceManager.GetString("DependencyError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Description.
         /// </summary>
         public static string Description {

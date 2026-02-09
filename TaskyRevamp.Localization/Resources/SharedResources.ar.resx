@@ -1358,9 +1358,6 @@
   <data name="UsersAdded" xml:space="preserve">
     <value>المستخدمون المضافون:</value>
   </data>
-	<data name="UsersUpdated" xml:space="preserve">
-    <value>تم تحديث بيانات المستخدمين</value>
-	 </data>
   <data name="UsersUpdated" xml:space="preserve">
     <value>تم تحديث بيانات المستخدمين</value>
   </data>
@@ -1369,10 +1366,6 @@
   </data>
   <data name="RejectReason" xml:space="preserve">
     <value>سبب رفض المهمة :/</value>
-  </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="Reopenedsuccessfully" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
   </data>
   <data name="General" xml:space="preserve">
     <value>عام </value>
@@ -1389,5 +1382,8 @@
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="Reopenedsuccessfully" type="System.Resources.ResXNullRef, System.Windows.Forms">
     <value />
+  </data>
+  <data name="DependencyError" xml:space="preserve">
+    <value>لا يمكن تعيين نسبة التقدم إلى 100% لوجود مهمة أو أكثر من المهام المعتمدة ما زالت غير مكتملة، متأخرة، أو تم إعادة فتحها.</value>
   </data>
 </root>
