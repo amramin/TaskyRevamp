@@ -5,17 +5,19 @@
     <div class="d-flex align-items-center mb-3">
         <div class="flex-grow-1"></div>
 
-        <div class="progress"
+        <div class="progress position-relative"
              style="width:@($"{Width}px"); height:22px; cursor:@(IsEditable ? "pointer" : "default")"
              @onmousedown="OnMouseDown">
             <div class="progress-bar bg-primary"
                  role="progressbar"
-                 style="width:@ProgressValue%;"
+                 style="width:@($"{ProgressValue}%")"
                  aria-valuenow="@ProgressValue"
                  aria-valuemin="0"
                  aria-valuemax="100">
-                @ProgressValue%
             </div>
+            <span class="position-absolute top-50 start-50 translate-middle fw-bold text-dark">
+                @ProgressValue%
+            </span>
         </div>
     </div>
 }

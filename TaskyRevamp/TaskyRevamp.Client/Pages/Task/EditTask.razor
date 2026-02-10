@@ -25,8 +25,7 @@
 @code {
     [Parameter] public Guid Id { get; set; }
     CreateTaskDto Taskdto = new CreateTaskDto();
-    [Parameter]
-    public bool IsAdmine { set; get; }
+    [Parameter] public bool IsAdmine { set; get; }
     [Parameter] public EventCallback<CreateTaskDto> OnValidSubmit { get; set; }
     [Parameter] public EventCallback OnCancel { get; set; }
 
@@ -49,22 +48,12 @@
         Taskdto.UpdatedBy = current;
         var rs = await _taskonsumer.UpdateTask(Taskdto);
         //await ToastService.ShowToastAsync(Loc[MessagesMap.DataSavedSuccessfully], "success");
-        if (rs.Success && string.IsNullOrEmpty(rs.ErrorMessage))
+        if (rs.Success && rs.Data)
         {
-            await ToastService.ShowToastAsync(Loc["Edited successfully"], "success");
+            Console.WriteLine("Task updated successfully");
+            await ToastService.ShowToastAsync(Loc["Editedsuccessfully"], "success");
             await OnValidSubmit.InvokeAsync(Taskdto);
             PopupService.Hide();
-
-        }
-        else if (!rs.Success)
-        {
-            await ToastService.ShowToastAsync(Loc[rs.ErrorMessage], "error");
-            return;
-        }
-        else
-        {
-            await ToastService.ShowToastAsync(Loc["Erroroccurred"], "error");
-            return;
         }
     }
     private void Cancel()

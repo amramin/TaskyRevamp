@@ -69,7 +69,7 @@
                                                         <span class="icon">
                                                             <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Edit"></SVGCrud>
                                                         </span>
-                                                        @Loc["EditTask"]
+                                                        @Loc["Edit"]
                                                     </button>
                                                 </li>
                                                 @if (task.ActualProcess == 100 && task.TaskStatus ==
@@ -209,18 +209,18 @@
             new() { Field = "Start Date", DisplayName = Loc["StartDate"], Order = 4, IsVisible = true },
             new() { Field = "End Date", DisplayName = Loc["EndDate"], Order = 5, IsVisible = true },
             new() { Field = "weight", DisplayName = Loc["weight"], Order = 6, IsVisible = true },
-        new() { Field = "Assigned To", DisplayName = Loc["AssignedTo"], Order = 7, IsVisible = true,IsSortable=false },
-        new() { Field = "Assigned To Department", DisplayName =Loc["AssignedToDepartment"], Order = 8, IsVisible = true,IsSortable=false },
+            new() { Field = "Assigned To", DisplayName = Loc["AssignedTo"], Order = 7, IsVisible = true,IsSortable=false },
+            new() { Field = "Assigned To Department", DisplayName =Loc["AssignedToDepartment"], Order = 8, IsVisible = true,IsSortable=false },
             new() { Field = "Source", DisplayName =Loc["Source"], Order = 9, IsVisible = true },
-        new() { Field = "Dependency", DisplayName = Loc["Dependency"], Order = 10, IsVisible = true,IsSortable=false },
+            new() { Field = "Dependency", DisplayName = Loc["Dependency"], Order = 10, IsVisible = true,IsSortable=false },
             new() { Field = "Created By", DisplayName = Loc["CreatedBy"], Order = 11, IsVisible = true },
-        new() { Field = "Duration", DisplayName = Loc["Duration"], Order = 12, IsVisible = true,IsSortable=false },
+            new() { Field = "Duration", DisplayName = Loc["Duration"], Order = 12, IsVisible = true,IsSortable=false },
             new() { Field = "Created by department", DisplayName = Loc["Createdbydepartment"], Order = 13, IsVisible = true },
-        new() { Field = "Planned Progress", DisplayName = Loc["PlannedProgress"], Order = 14, IsVisible = true,IsSortable=false },
+            new() { Field = "Planned Progress", DisplayName = Loc["PlannedProgress"], Order = 14, IsVisible = true,IsSortable=false },
             new() { Field = "Creation Date", DisplayName = Loc["CreationDate"], Order = 15, IsVisible = true },
             new() { Field = "Type", DisplayName = Loc["Type"], Order = 16, IsVisible = true },
-        new() { Field = "Actual Weight", DisplayName = Loc["ActualWeight"], Order = 17, IsVisible = true,IsSortable=false },
-        new() { Field = "Planned Weight", DisplayName =Loc["PlannedWeight"], Order = 18, IsVisible = true,IsSortable=false },
+            new() { Field = "Actual Weight", DisplayName = Loc["ActualWeight"], Order = 17, IsVisible = true,IsSortable=false },
+            new() { Field = "Planned Weight", DisplayName =Loc["PlannedWeight"], Order = 18, IsVisible = true,IsSortable=false },
         };
         var key = IsCompletedTasks ? "CompletedTask_Columns" : "MainTask_Columns";
         await LocalStorageService.SetItemAsync(key, column);
@@ -384,14 +384,9 @@
                     await DeleteConfirmed(delegationId);
             }, ConfirmationType.Danger);
     }
-    // public void ShowEditPopup(Guid id)
-    // {
-    //     PopupService.ShowNew(@<Edit UserDelegationId="@id.ToString()" IsAdmine="@IsAdmine" OnValidSubmit="GetTasks"></Edit>,
-    //         headerText: @Loc["EditDelegation"]);
-    // }
     private async Task OnConfirmDelete(bool confirmed)
     {
-        if (confirmed && itemToDelete != null!)
+        if (confirmed && itemToDelete == Guid.Empty)
         {
             var res = await _taskConsumer.DeleteTask(itemToDelete);
             if (res.Success)
@@ -449,32 +444,22 @@
     {
         switch (field)
         {
-            @* case "Title":
-                builder.OpenElement(0, "span");
-                builder.AddAttribute(1, "class", "task-title");
-                builder.AddAttribute(2, "title", task.Title ?? string.Empty);
-                builder.AddContent(3, task.Title);
-                builder.CloseElement();
-                break; *@
             case "Title":
                 if (IsDelayed(task))
                 {
                     builder.OpenElement(-10, "span");
                     builder.AddAttribute(-9, "class", "task-delayed-icon");
-
                     builder.OpenComponent<SVGCrud>(-8);
                     builder.AddAttribute(-7, "SVGType", SVGCrud.SVGTypeEnum.ClockRewind);
                     builder.CloseComponent();
-
                     builder.CloseElement();
                 }
-
                 builder.OpenElement(0, "span");
                 builder.AddAttribute(1, "class", "task-title");
                 builder.AddAttribute(2, "title", task.Title ?? string.Empty);
                 builder.AddContent(3, task.Title);
                 builder.CloseElement();
-                if (task.Dependencies.Count() > 0)
+                if (task.Dependencies!.Count() > 0)
                 {
                     builder.OpenElement(4, "span");
                     builder.AddAttribute(5, "class", "task-depancy-number");
@@ -490,7 +475,7 @@
 
                     builder.OpenElement(10, "span");
                     builder.AddAttribute(11, "class", "text");
-                    builder.AddContent(12, $"{task.Dependencies.Count()}");
+                    builder.AddContent(12, $"{task.Dependencies!.Count()}");
                     builder.CloseElement();
                     builder.CloseElement();
                 }

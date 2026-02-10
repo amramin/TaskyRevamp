@@ -475,6 +475,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Assignee department.
+        /// </summary>
+        public static string AssignedToDepartmentForm {
+            get {
+                return ResourceManager.GetString("AssignedToDepartmentForm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Assignee.
         /// </summary>
         public static string AssigneduserNames {
@@ -1114,7 +1123,7 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Drag and Drop or.
+        ///   Looks up a localized string similar to Drag and drop or.
         /// </summary>
         public static string Drag_and_Drop_or {
             get {

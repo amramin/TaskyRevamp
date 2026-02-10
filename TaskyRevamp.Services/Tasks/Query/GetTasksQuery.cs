@@ -41,12 +41,8 @@ public class GetTasksHandler : IRequestHandler<GetTasksQuery, PagedResult<Create
     {
         List<CreateTaskDto> alltasks = new List<CreateTaskDto>();
         string currentCulture = System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
-
-
-
         var orderBy = GetOrderBy(request.sortByColumnName, request.sortAscending);
-
-        Expression<Func<TaskItem, bool>> searchExpression = null;
+        Expression<Func<TaskItem, bool>> searchExpression = null!;
         if (request.SearchFields != null && request.SearchFields.Any())
         {
             var predicates = request.SearchFields.Select(x => TaskSearchFieldMap.Map[x]).ToList();
@@ -90,26 +86,18 @@ public class GetTasksHandler : IRequestHandler<GetTasksQuery, PagedResult<Create
                 var endOfWeek = startOfWeek.AddDays(7);
                 // First day of current month
                 var startOfMonth = new DateTime(today.Year, today.Month, 1);
-
                 // First day of next month
                 var startOfNextMonth = startOfMonth.AddMonths(1);
-
                 // Expression for EF Core
-                searchExpression = searchExpression.And(t =>
-                    t.EndDate > endOfWeek &&
-                    t.EndDate < startOfNextMonth);
+                searchExpression = searchExpression.And(t =>t.EndDate > endOfWeek && t.EndDate < startOfNextMonth);
             }
             else if (request.viewTypeId == Guid.Parse(TimeLineView.NextMonths.GetDescription()))
             {
                 var today = DateTime.Today;
-
                 // First day of next month
                 var startOfNextMonth = new DateTime(today.Year, today.Month, 1).AddMonths(1);
-
                 // Expression: EndDate >= start of next month
-                searchExpression = searchExpression.And(t =>
-                    t.EndDate >= startOfNextMonth);
-
+                searchExpression = searchExpression.And(t => t.EndDate >= startOfNextMonth);
             }
         }
         else if (request.viewType == (int)ViewTypes.StatusView)
@@ -132,7 +120,6 @@ public class GetTasksHandler : IRequestHandler<GetTasksQuery, PagedResult<Create
             if (request.viewTypeId == Guid.Empty)
             {
                 searchExpression = searchExpression.And(t => t.TaskTypeId == null);
-
             }
             else
             {
@@ -151,7 +138,7 @@ public class GetTasksHandler : IRequestHandler<GetTasksQuery, PagedResult<Create
         foreach (var tsk in res.Items)
         {
             var assgnedusr = await _userRepository.FindBy(k => tsk.AssignedIds.Contains(k.Id));
-            var CreatorDepartment =  _departmenRepository.FirstOrDefaultAsNoTracking(k => k.Id == (tsk.CreatedBy.DepartmentId??Guid.Empty));
+            var CreatorDepartment =  _departmenRepository.FirstOrDefaultAsNoTracking(k => k.Id == (tsk.CreatedBy!.DepartmentId??Guid.Empty));
             tsk.ActualWeight=new Weight(tsk.Weight ?? 0);
             tsk.PlannedWeight = new Weight(tsk.Weight ?? 0);
             CreateTaskDto tasky = tsk.CopyToDto();
@@ -159,8 +146,8 @@ public class GetTasksHandler : IRequestHandler<GetTasksQuery, PagedResult<Create
             tasky.SourceName = currentCulture == "ar" ? tsk.Source?.NameArabic??"" : tsk.Source?.NameEnglish ?? "";
             tasky.PriorityName = currentCulture == "ar" ? tsk.Priority?.NameArabic??"" : tsk.Priority?.NameEnglish ?? "";
             var departments = await _departmenRepository.FindBy(k => tsk.AssignedDepartmentIds.Contains(k.Id));
-            var depsName = currentCulture == "ar" ? departments.Value.Select(k => k.NameArabic): departments.Value.Select(k => k.NameEnglish);
-            tasky.AssignedDepartmentName = string.Join(" ", depsName);
+            var depsName = currentCulture == "ar" ? departments.Value!.Select(k => k.NameArabic): departments.Value!.Select(k => k.NameEnglish);
+            tasky.AssignedDepartmentName = string.Join(", ", depsName);
             var dependencies = await _taskDependincesRepository.FindBy(p => p.TaskItemId == tasky.Id);
             if (dependencies is not null)
             {
@@ -253,8 +240,8 @@ public class GetTasksHandler : IRequestHandler<GetTasksQuery, PagedResult<Create
                     : q => q.OrderByDescending(u => u.Progress);
             case "Created by department":
                 return sortAscending
-                    ? q => q.OrderBy(u => currentCulture == "ar" ? u.CreatedBy.Department.NameArabic : u.CreatedBy.Department.NameEnglish)
-                    : q => q.OrderByDescending(u => currentCulture == "ar" ? u.CreatedBy.Department.NameArabic : u.CreatedBy.Department.NameEnglish);
+                    ? q => q.OrderBy(u => currentCulture == "ar" ? u.CreatedBy.Department!.NameArabic : u.CreatedBy.Department!.NameEnglish)
+                    : q => q.OrderByDescending(u => currentCulture == "ar" ? u.CreatedBy.Department!.NameArabic : u.CreatedBy.Department!.NameEnglish);
             default:
                 return q => q.OrderBy(u => u.CreateDate);
         }
