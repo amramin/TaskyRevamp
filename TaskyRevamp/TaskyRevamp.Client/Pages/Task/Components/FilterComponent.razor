@@ -1,0 +1,329 @@
+﻿@using Stingray.Components.MultiSelectComponent
+@using Syncfusion.Blazor.Calendars
+@using System.Globalization
+@using TaskyRevamp.Client.Consumer
+@using TaskyRevamp.Client.Services
+@using TaskyRevamp.Dto.Account
+@using TaskyRevamp.Dto.Department
+@using TaskyRevamp.Dto.SystemConfiguration
+@using TaskyRevamp.Dto.TaskDto
+@inject IStringLocalizer<SharedResources> Loc
+@inject FilterFieldsSettingConsumer _filterFieldsSettingConsumer
+@inject ToastService ToastService
+@inject TypeSettingConsumer _typeSettingConsumer
+@inject DepartmentConsumer _departmentConsumer
+@inject PrioritySettingConsumer _prioritySettingConsumer
+@inject SourceSettingConsumer _sourceSettingConsumer
+@inject UserConsumer _userConsumer
+@inject StatusSettingConsumer _statusSettingConsumer
+
+<div class="p-2">
+    <EditForm Model="FilterDTO" OnValidSubmit="Filter">
+        <div class="row m-1">
+            @foreach(var field in FilterFieldsSettings)
+            {
+                switch (field.NameEnglish)
+                {
+                    case"Title":
+                        <div class="col-md-3">
+                            <label class="form-label">@field.Name</label>
+                            <InputText class="form-control" @bind-Value="@FilterDTO.Title" placeholder="@Loc["TitleEnglish"]"></InputText>
+                        </div>
+                    break;
+                    case "Priority":
+                        <div class="col-md-3">
+                            <label class="form-label">@field.Name</label>
+                            <SearchableMultiDropdownOffline TInput=PriorityDto TOutput="Guid" Datasource=Priorities
+                                                            TextSelector=@(x=>x.Name) OutputSelector="x=> x.Id"
+                                                            @bind-SelectedOptions="@FilterDTO.Priority"
+                                                            SearchInputPlaceHolder="@Loc["Search"]" PlaceHolder="@($"{Loc["Select"]}")" NoMatchPlaceHolder="@Loc["NoResultsFound"]"
+                                                            SelectAllPlaceHolder="@Loc["SelectAll"]" AllowSelectAll="Priorities.Any()" />
+                        </div>
+                        break;
+                    case "Status":
+                        <div class="col-md-3">
+                            <label class="form-label">@field.Name</label>
+                            <SearchableMultiDropdownOffline TInput=StatusSettingsDto TOutput="Guid?" Datasource=Status
+                                                            TextSelector=@(x=>x.Name) OutputSelector="x=> x.Id"
+                                                            @bind-SelectedOptions="@FilterDTO.Status"
+                                                            SearchInputPlaceHolder="@Loc["Search"]" PlaceHolder="@($"{Loc["Select"]}")" NoMatchPlaceHolder="@Loc["NoResultsFound"]"
+                                                            SelectAllPlaceHolder="@Loc["SelectAll"]" AllowSelectAll="Status.Any()" />
+                        </div>
+                        break;
+                    case "From start date":
+                    <div class="col-md-3">
+                            <div class="date-group w-100" dir="@dateGroupDir" style="cursor:pointer">
+                                <label class="form-label">@field.Name</label>
+                                <SfDatePicker @ref="FromStartDatePicker"
+                                              @key="field.Id"
+                                              TValue="DateTime?"
+                                              @bind-Value="FilterDTO.FromStartDate"
+                                              Locale="@datePickerLocale"
+                                              EnableRtl="@enableRtl"
+                                              Format="dd-MM-yyyy"
+                                              Placeholder="@placeholderDate"
+                                              OpenOnFocus="true">
+                                </SfDatePicker>
+                            </div>
+                    </div>
+                        break;
+                    case "To start date":
+                    <div class="col-md-3">
+                            <div class="date-group w-100" dir="@dateGroupDir" style="cursor:pointer">
+                                <label class="form-label">@field.Name</label>
+                                <SfDatePicker @ref="ToStartDatePicker"
+                                              @key="field.Id"
+                                              TValue="DateTime?"
+                                              @bind-Value="FilterDTO.ToStartDate"
+                                              Locale="@datePickerLocale"
+                                              EnableRtl="@enableRtl"
+                                              Format="dd-MM-yyyy"
+                                              Placeholder="@placeholderDate"
+                                              OpenOnFocus="true">
+                                </SfDatePicker>
+                            </div>
+                    </div>
+                        break;
+                    case "From end date":
+                    <div class="col-md-3">
+                            <div class="date-group w-100" dir="@dateGroupDir" style="cursor:pointer">
+                                <label class="form-label">@field.Name</label>
+                                <SfDatePicker @ref="FromEndDatePicker"
+                                              @key="field.Id"
+                                              TValue="DateTime?"
+                                              @bind-Value="FilterDTO.FromEndDate"
+                                              Locale="@datePickerLocale"
+                                              EnableRtl="@enableRtl"
+                                              Format="dd-MM-yyyy"
+                                              Placeholder="@placeholderDate"
+                                              OpenOnFocus="true">
+                                </SfDatePicker>
+                            </div>
+                    </div>
+                        break;
+                    case "To end date":
+                    <div class="col-md-3">
+                            <div class="date-group w-100" dir="@dateGroupDir" style="cursor:pointer">
+                                <label class="form-label">@field.Name</label>
+                                <SfDatePicker @ref="ToEndDatePicker"
+                                              @key="field.Id"
+                                              TValue="DateTime?"
+                                              @bind-Value="FilterDTO.ToEndDate"
+                                              Locale="@datePickerLocale"
+                                              EnableRtl="@enableRtl"
+                                              Format="dd-MM-yyyy"
+                                              Placeholder="@placeholderDate"
+                                              OpenOnFocus="true">
+                                </SfDatePicker>
+                            </div>
+                    </div>
+                        break;
+                    case "Assigned to":
+                        <div class="col-md-3">
+                            <label class="form-label">@field.Name</label>
+                            <SearchableMultiDropdownOffline TInput=UserDto TOutput="Guid" Datasource=userDtos
+                                                            TextSelector=@(x=>x.DisplayedName) OutputSelector="x=> x.Id"
+                                                            @bind-SelectedOptions="@FilterDTO.AssignedTo"
+                                                            SearchInputPlaceHolder="@Loc["Search"]" PlaceHolder="@($"{Loc["Select"]}")" NoMatchPlaceHolder="@Loc["NoResultsFound"]"
+                                                            SelectAllPlaceHolder="@Loc["SelectAll"]" AllowSelectAll="userDtos.Any()" />
+                        </div>
+                        break;
+                    case "Assigned to department":
+                        <div class="col-md-3">
+                            <label class="form-label">@field.Name</label>
+                            <SearchableMultiDropdownOffline TInput=DepartmentDto TOutput="Guid" Datasource=departmentDtos
+                                                            TextSelector=@(x=>x.NameEnglish) OutputSelector="x=> x.Id"
+                                                            @bind-SelectedOptions="@FilterDTO.AssignedToDepartment"
+                                                            SearchInputPlaceHolder="@Loc["Search"]" PlaceHolder="@($"{Loc["Select"]}")" NoMatchPlaceHolder="@Loc["NoResultsFound"]"
+                                                            SelectAllPlaceHolder="@Loc["SelectAll"]" AllowSelectAll="departmentDtos.Any()" />
+                        </div>
+                        break;
+                    case "Created by":
+                        <div class="col-md-3">
+                            <label class="form-label">@field.Name</label>
+                            <SearchableMultiDropdownOffline TInput=UserDto TOutput="Guid" Datasource=userDtos
+                                                            TextSelector=@(x=>x.DisplayedName) OutputSelector="x=> x.Id"
+                                                            @bind-SelectedOptions="@FilterDTO.CreatedBy"
+                                                            SearchInputPlaceHolder="@Loc["Search"]" PlaceHolder="@($"{Loc["Select"]}")" NoMatchPlaceHolder="@Loc["NoResultsFound"]"
+                                                            SelectAllPlaceHolder="@Loc["SelectAll"]" AllowSelectAll="userDtos.Any()" />
+                        </div>
+                        break;
+                    case "Created by department":
+                        <div class="col-md-3">
+                            <label class="form-label">@field.Name</label>
+                            <SearchableMultiDropdownOffline TInput=DepartmentDto TOutput="Guid" Datasource=departmentDtos
+                                                            TextSelector=@(x=>x.NameEnglish) OutputSelector="x=> x.Id"
+                                                            @bind-SelectedOptions="@FilterDTO.CreatedByDepartment"
+                                                            SearchInputPlaceHolder="@Loc["Search"]" PlaceHolder="@($"{Loc["Select"]}")" NoMatchPlaceHolder="@Loc["NoResultsFound"]"
+                                                            SelectAllPlaceHolder="@Loc["SelectAll"]" AllowSelectAll="departmentDtos.Any()" />
+                        </div>
+                        break;
+                    case "From creation date":
+                    <div class="col-md-3">
+                            <div class="date-group w-100" dir="@dateGroupDir" style="cursor:pointer">
+                                <label class="form-label">@field.Name</label>
+                                <SfDatePicker @ref="FromCreationDatePicker"
+                                              @key="field.Id"
+                                              TValue="DateTime?"
+                                              @bind-Value="FilterDTO.FromCreationDate"
+                                              Locale="@datePickerLocale"
+                                              EnableRtl="@enableRtl"
+                                              Format="dd-MM-yyyy"
+                                              Placeholder="@placeholderDate"
+                                              OpenOnFocus="true">
+                                </SfDatePicker>
+                            </div>
+                    </div>
+                        break;
+                    case "To creation date":
+                    <div class="col-md-3">
+                            <div class="date-group w-100" dir="@dateGroupDir" style="cursor:pointer">
+                                <label class="form-label">@field.Name</label>
+                                <SfDatePicker @ref="ToCreationDatePicker"
+                                              @key="field.Id"
+                                              TValue="DateTime?"
+                                              @bind-Value="FilterDTO.ToCreationDate"
+                                              Locale="@datePickerLocale"
+                                              EnableRtl="@enableRtl"
+                                              Format="dd-MM-yyyy"
+                                              Placeholder="@placeholderDate"
+                                              OpenOnFocus="true">
+                                </SfDatePicker>
+                            </div>
+                    </div>
+                        break;
+                    case "Type":
+                        <div class="col-md-3">
+                            <label class="form-label">@field.Name</label>
+                            <SearchableMultiDropdownOffline TInput=TypeDto TOutput="Guid?" Datasource=taskTypeDtos
+                                                            TextSelector=@(x=>x.DisplayedName) OutputSelector="x=> x.Id"
+                                                            @bind-SelectedOptions="@FilterDTO.Type"
+                                                            SearchInputPlaceHolder="@Loc["Search"]" PlaceHolder="@($"{Loc["Select"]}")" NoMatchPlaceHolder="@Loc["NoResultsFound"]"
+                                                            SelectAllPlaceHolder="@Loc["SelectAll"]" AllowSelectAll="taskTypeDtos.Any()" />
+                        </div>
+                        break;
+                    case "Source":
+                        <div class="col-md-3">
+                            <label class="form-label">@field.Name</label>
+                            <SearchableMultiDropdownOffline TInput=SourceDto TOutput="Guid?" Datasource=taskSourceDtos
+                                                            TextSelector=@(x=>x.DisplayedName) OutputSelector="x=> x.Id"
+                                                            @bind-SelectedOptions="@FilterDTO.Source"
+                                                            SearchInputPlaceHolder="@Loc["Search"]" PlaceHolder="@($"{Loc["Select"]}")" NoMatchPlaceHolder="@Loc["NoResultsFound"]"
+                                                            SelectAllPlaceHolder="@Loc["SelectAll"]" AllowSelectAll="taskSourceDtos.Any()" />
+                        </div>
+                        break;
+                }
+            }
+            <div class="col-md-3">
+                <button class="btn btn-primary mt-4" type="submit">Search</button>
+                <button class="btn btn-primary mt-4" @onclick="Clear">Clear</button>
+            </div>
+        </div>
+    </EditForm>
+</div>
+
+@code {
+    [Parameter] public bool IsCompleted { get; set; } = false;
+    [Parameter] public EventCallback<TaskFilterComponent> OnFilter { get; set; }
+    [Parameter] public EventCallback<TaskFilterComponent> OnClear { get; set; }
+    TaskFilterComponent FilterDTO { get; set; } = new TaskFilterComponent();
+    public List<FilterFieldsSettingDto> FilterFieldsSettings { get; set; } = new List<FilterFieldsSettingDto>();
+    public List<PriorityDto> Priorities = new List<PriorityDto>();
+    List<TypeDto> taskTypeDtos = new List<TypeDto>();
+    List<SourceDto> taskSourceDtos = new List<SourceDto>();
+    List<DepartmentDto> departmentDtos = new List<DepartmentDto>();
+    List<UserDto> userDtos = new List<UserDto>();
+    private List<StatusSettingsDto> Status = new();
+    private SfDatePicker<DateTime?> FromEndDatePicker;
+    private SfDatePicker<DateTime?> ToEndDatePicker;
+    private SfDatePicker<DateTime?> FromStartDatePicker;
+    private SfDatePicker<DateTime?> ToStartDatePicker;
+    private SfDatePicker<DateTime?> FromCreationDatePicker;
+    private SfDatePicker<DateTime?> ToCreationDatePicker;
+    private bool isRtlCulture;
+    private string datePickerLocale = "en";
+    private bool enableRtl = false;
+    private string dateGroupDir = "ltr";
+    string placeholderDate = CultureInfo.CurrentCulture.Name.StartsWith("ar") ? "yyyy-mm-dd" : "dd-mm-yyyy";
+    protected async override Task OnInitializedAsync()
+    {
+        isRtlCulture = CultureInfo.CurrentCulture.TwoLetterISOLanguageName.Equals("ar", StringComparison.OrdinalIgnoreCase);
+        datePickerLocale = isRtlCulture ? "ar" : "en";
+        enableRtl = isRtlCulture;
+        dateGroupDir = isRtlCulture ? "rtl" : "ltr";
+        var res = await _filterFieldsSettingConsumer.GetFilterFieldsSettings();
+        if (res.Success)
+        {
+            var settings = res.Data;
+            if (settings != null)
+            {
+                if(!IsCompleted)
+                {
+                    FilterFieldsSettings = settings.Where(f => f.IsActive).OrderBy(f => f.Order).ToList();
+                }else
+                {
+                    FilterFieldsSettings = settings.Where(f => f.IsActive && f.NameEnglish != "Status").OrderBy(f => f.Order).ToList();
+                }
+            }
+
+        }
+        var taskTypesTask = _typeSettingConsumer.GetTaskTypesForDDL();
+        var taskSourcesTask = _sourceSettingConsumer.GetTaskSourcesForDDL();
+        var usersTask = _userConsumer.GetUsers();
+        var departmentsTask = _departmentConsumer.GetDepartmentsForDDL();
+        var prioritiesTask = _prioritySettingConsumer.GetPriorities();
+        var StatusList = _statusSettingConsumer.GetStatusConfiguration();
+        // Run all in parallel
+        await Task.WhenAll(
+            taskTypesTask,
+            taskSourcesTask,
+            usersTask,
+            departmentsTask,
+            prioritiesTask,
+            StatusList
+        );
+        taskTypeDtos = (await taskTypesTask).Data!.Where(k => k.IsDeleted != true).ToList();
+        taskSourceDtos = (await taskSourcesTask).Data!.Where(k => k.IsDeleted != true).ToList();
+        userDtos = (await usersTask).Data!;
+        departmentDtos = (await departmentsTask).Data!;
+        var prioritiesRes = await prioritiesTask;
+        if (prioritiesRes.Success && prioritiesRes.Data != null)
+        {
+            Priorities = prioritiesRes.Data.Where(k => k.IsDeleted != true).ToList().OrderBy(q => q.Order).ToList();
+        }
+        Status = StatusList.Result.Data.Where(s => s.Id != Guid.Parse("D8E94CCE-586A-46D3-223D-08DE3318A61C") && s.Id != Guid.Parse("C8D504C7-9402-4F91-223C-08DE3318A61C")).ToList();
+    }
+    private async Task OpenFromStratDatePicker()
+    {
+        await FromStartDatePicker.ShowPopupAsync();
+    }
+    private async Task OpenToStratDatePicker()
+    {
+        await ToStartDatePicker.ShowPopupAsync();
+    }
+    private async Task OpenFromEndDatePicker()
+    {
+        await FromEndDatePicker.ShowPopupAsync();
+    }
+    private async Task OpenToEndDatePicker()
+    {
+        await ToEndDatePicker.ShowPopupAsync();
+    }
+    private async Task OpenFromCreationDatePicker()
+    {
+        await FromCreationDatePicker.ShowPopupAsync();
+    }
+    private async Task OpenToCreationDatePicker()
+    {
+        await ToCreationDatePicker.ShowPopupAsync();
+    }
+    private async Task Filter(EditContext args)
+    {
+        await OnFilter.InvokeAsync(FilterDTO);
+    }
+    private async Task Clear(MouseEventArgs args)
+    {
+        FilterDTO = new();
+        await OnClear.InvokeAsync(null);
+    }
+}

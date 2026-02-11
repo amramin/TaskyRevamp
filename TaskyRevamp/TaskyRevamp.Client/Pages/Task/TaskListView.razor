@@ -145,6 +145,7 @@
     [Parameter] public bool IsCompleted { get; set; } = false;
     [Parameter] public bool IsCompletedTasks { get; set; } = false;
     [Parameter] public bool? IsCollapseAll { get; set; } = null;
+    [Parameter] public TaskFilterComponent TaskFilter { get; set; } = null;
     CreateTaskDto taskdto = new CreateTaskDto();
     private List<StatusSettingsDto> Statuses = new();
     List<CreateTaskDto> allTaks = new List<CreateTaskDto>();
@@ -279,7 +280,7 @@
             // {
             //     MainAndParentTasks = resMainTasks.Data;
             // }
-          
+
             var res = await _defaultColumnsSettingConsumer.GetDefaultColumnsSettings();
             if (res.Success)
             {
@@ -299,12 +300,13 @@
             isLoading = false;
         }
     }
-    protected override void OnParametersSet()
+    protected override async Task OnParametersSetAsync()
     {
         if (IsCollapseAll.HasValue)
         {
             CollapseAll((bool)IsCollapseAll.Value);
         }
+            await GetTasks();
     }
     // public async Task ResetPage()
     // {
@@ -591,7 +593,7 @@
     public async Task GetTasks(bool isSearch = false, string searchTerm = null!)
     {
         var res = await _taskConsumer.GetTasks(currentPage, pageSize, currentSortColumn, sortAscending!.Value, isSearch ?
-            searchFields : null!, isSearch ? searchTerm : null!, ViewType, ViewTypeId, IsCompleted);
+            searchFields : null!, isSearch ? searchTerm : null!, ViewType, ViewTypeId, IsCompleted,TaskFilter);
 
         if (!(res?.Success ?? false) || res.Data is null)
             return;

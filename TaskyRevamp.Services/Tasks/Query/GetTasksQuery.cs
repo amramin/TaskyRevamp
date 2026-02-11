@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using MimeKit.Cryptography;
 using System.Linq.Expressions;
 using TaskyRevamp.Domain.Interfaces.Repositeries;
 using TaskyRevamp.Domain.Models.Task;
@@ -8,6 +9,7 @@ using TaskyRevamp.Dto.Department;
 using TaskyRevamp.Dto.Enums;
 using TaskyRevamp.Dto.Enums.SearchFields;
 using TaskyRevamp.Dto.GeneralDto;
+using TaskyRevamp.Dto.SystemConfiguration;
 using TaskyRevamp.Dto.TaskDto;
 
 using TaskyRevamp.Services.Helpers;
@@ -15,7 +17,7 @@ using TaskyRevamp.Services.SearchMappings;
 
 namespace TaskyRevamp.Services.Tasks.Query;
 
-public record GetTasksQuery(int pageNumber, int pageSize, string sortByColumnName, bool sortAscending, List<SearchFieldTask> SearchFields, string SearchText, int viewType, Guid? viewTypeId, bool IsCompleted = false) : IRequest<PagedResult<CreateTaskDto>>;
+public record GetTasksQuery(int pageNumber, int pageSize, string sortByColumnName, bool sortAscending, List<SearchFieldTask> SearchFields, string SearchText, int viewType, Guid? viewTypeId, bool IsCompleted = false,TaskFilterComponent TaskFilter=null) : IRequest<PagedResult<CreateTaskDto>>;
 
 public class GetTasksHandler : IRequestHandler<GetTasksQuery, PagedResult<CreateTaskDto>>
 {
@@ -47,11 +49,6 @@ public class GetTasksHandler : IRequestHandler<GetTasksQuery, PagedResult<Create
         var orderBy = GetOrderBy(request.sortByColumnName, request.sortAscending);
 
         Expression<Func<TaskItem, bool>> searchExpression = null;
-        if (request.SearchFields != null && request.SearchFields.Any())
-        {
-            var predicates = request.SearchFields.Select(x => TaskSearchFieldMap.Map[x]).ToList();
-            searchExpression = ExpressionBuilder.BuildLikeExpression(predicates, request.SearchText);
-        }
         if (request.IsCompleted)
         {
             searchExpression = t => t.StatusId == Guid.Parse("C8D504C7-9402-4F91-223C-08DE3318A61C");
@@ -61,85 +58,213 @@ public class GetTasksHandler : IRequestHandler<GetTasksQuery, PagedResult<Create
             searchExpression = t => t.StatusId != Guid.Parse("D8E94CCE-586A-46D3-223D-08DE3318A61C") && t.StatusId != Guid.Parse("C8D504C7-9402-4F91-223C-08DE3318A61C");
 
         }
-        if (request.viewType == (int)ViewTypes.TimeLineView)
+        if(request.TaskFilter is null)
         {
-            if (request.viewTypeId == Guid.Parse(TimeLineView.Delayed.GetDescription()))
+            if (request.viewType == (int)ViewTypes.TimeLineView)
             {
-                searchExpression = searchExpression.And(t => t.EndDate < DateTime.Now.Date);
+                if (request.viewTypeId == Guid.Parse(TimeLineView.Delayed.GetDescription()))
+                {
+                    searchExpression = searchExpression.And(t => t.EndDate < DateTime.Now.Date);
+                }
+                else if (request.viewTypeId == Guid.Parse(TimeLineView.Today.GetDescription()))
+                {
+                    searchExpression = searchExpression.And(t => t.EndDate == DateTime.Now.Date);
+                }
+                else if (request.viewTypeId == Guid.Parse(TimeLineView.ThisWeek.GetDescription()))
+                {
+                    var today = DateTime.Today;
+
+                    var startOfWeek = today.AddDays(-(int)today.DayOfWeek);
+                    var endOfWeek = startOfWeek.AddDays(7);
+
+                    searchExpression = searchExpression.And(t =>
+                        t.EndDate > today &&
+                        t.EndDate >= startOfWeek &&
+                        t.EndDate < endOfWeek);
+                }
+                else if (request.viewTypeId == Guid.Parse(TimeLineView.ThisMonth.GetDescription()))
+                {
+                    var today = DateTime.Today;
+                    var startOfWeek = today.AddDays(-(int)today.DayOfWeek);
+                    var endOfWeek = startOfWeek.AddDays(7);
+                    // First day of current month
+                    var startOfMonth = new DateTime(today.Year, today.Month, 1);
+
+                    // First day of next month
+                    var startOfNextMonth = startOfMonth.AddMonths(1);
+
+                    // Expression for EF Core
+                    searchExpression = searchExpression.And(t =>
+                        t.EndDate > endOfWeek &&
+                        t.EndDate < startOfNextMonth);
+                }
+                else if (request.viewTypeId == Guid.Parse(TimeLineView.NextMonths.GetDescription()))
+                {
+                    var today = DateTime.Today;
+
+                    // First day of next month
+                    var startOfNextMonth = new DateTime(today.Year, today.Month, 1).AddMonths(1);
+
+                    // Expression: EndDate >= start of next month
+                    searchExpression = searchExpression.And(t =>
+                        t.EndDate >= startOfNextMonth);
+
+                }
             }
-            else if (request.viewTypeId == Guid.Parse(TimeLineView.Today.GetDescription()))
+            else if (request.viewType == (int)ViewTypes.StatusView)
             {
-                searchExpression = searchExpression.And(t => t.EndDate == DateTime.Now.Date);
+                searchExpression = searchExpression.And(t => t.StatusId == request.viewTypeId);
             }
-            else if (request.viewTypeId == Guid.Parse(TimeLineView.ThisWeek.GetDescription()))
+            else if (request.viewType == (int)ViewTypes.SourceView)
             {
-                var today = DateTime.Today;
-
-                var startOfWeek = today.AddDays(-(int)today.DayOfWeek);
-                var endOfWeek = startOfWeek.AddDays(7);
-
-                searchExpression = searchExpression.And(t =>
-                    t.EndDate > today &&
-                    t.EndDate >= startOfWeek &&
-                    t.EndDate < endOfWeek);
+                if (request.viewTypeId == Guid.Empty)
+                {
+                    searchExpression = searchExpression.And(t => t.TaskSourceId == null);
+                }
+                else
+                {
+                    searchExpression = searchExpression.And(t => t.TaskSourceId == request.viewTypeId);
+                }
             }
-            else if (request.viewTypeId == Guid.Parse(TimeLineView.ThisMonth.GetDescription()))
+            else if (request.viewType == (int)ViewTypes.TypeView)
             {
-                var today = DateTime.Today;
-                var startOfWeek = today.AddDays(-(int)today.DayOfWeek);
-                var endOfWeek = startOfWeek.AddDays(7);
-                // First day of current month
-                var startOfMonth = new DateTime(today.Year, today.Month, 1);
+                if (request.viewTypeId == Guid.Empty)
+                {
+                    searchExpression = searchExpression.And(t => t.TaskTypeId == null);
 
-                // First day of next month
-                var startOfNextMonth = startOfMonth.AddMonths(1);
-
-                // Expression for EF Core
-                searchExpression = searchExpression.And(t =>
-                    t.EndDate > endOfWeek &&
-                    t.EndDate < startOfNextMonth);
-            }
-            else if (request.viewTypeId == Guid.Parse(TimeLineView.NextMonths.GetDescription()))
-            {
-                var today = DateTime.Today;
-
-                // First day of next month
-                var startOfNextMonth = new DateTime(today.Year, today.Month, 1).AddMonths(1);
-
-                // Expression: EndDate >= start of next month
-                searchExpression = searchExpression.And(t =>
-                    t.EndDate >= startOfNextMonth);
-
+                }
+                else
+                {
+                    searchExpression = searchExpression.And(t => t.TaskTypeId == request.viewTypeId);
+                }
             }
         }
-        else if (request.viewType == (int)ViewTypes.StatusView)
+        else
         {
-            searchExpression = searchExpression.And(t => t.StatusId == request.viewTypeId);
-        }
-        else if (request.viewType == (int)ViewTypes.SourceView)
-        {
-            if (request.viewTypeId == Guid.Empty)
+            if (request.viewType == (int)ViewTypes.TimeLineView)
             {
-                searchExpression = searchExpression.And(t => t.TaskSourceId == null);
-            }
-            else
-            {
-                searchExpression = searchExpression.And(t => t.TaskSourceId == request.viewTypeId);
-            }
-        }
-        else if (request.viewType == (int)ViewTypes.TypeView)
-        {
-            if (request.viewTypeId == Guid.Empty)
-            {
-                searchExpression = searchExpression.And(t => t.TaskTypeId == null);
+                if (request.viewTypeId == Guid.Parse(TimeLineView.Delayed.GetDescription()))
+                {
+                    searchExpression = searchExpression.And(t => t.EndDate < DateTime.Now.Date);
+                }
+                else if (request.viewTypeId == Guid.Parse(TimeLineView.Today.GetDescription()))
+                {
+                    searchExpression = searchExpression.And(t => t.EndDate == DateTime.Now.Date);
+                }
+                else if (request.viewTypeId == Guid.Parse(TimeLineView.ThisWeek.GetDescription()))
+                {
+                    var today = DateTime.Today;
 
+                    var startOfWeek = today.AddDays(-(int)today.DayOfWeek);
+                    var endOfWeek = startOfWeek.AddDays(7);
+
+                    searchExpression = searchExpression.And(t =>
+                        t.EndDate > today &&
+                        t.EndDate >= startOfWeek &&
+                        t.EndDate < endOfWeek);
+                }
+                else if (request.viewTypeId == Guid.Parse(TimeLineView.ThisMonth.GetDescription()))
+                {
+                    var today = DateTime.Today;
+                    var startOfWeek = today.AddDays(-(int)today.DayOfWeek);
+                    var endOfWeek = startOfWeek.AddDays(7);
+                    // First day of current month
+                    var startOfMonth = new DateTime(today.Year, today.Month, 1);
+
+                    // First day of next month
+                    var startOfNextMonth = startOfMonth.AddMonths(1);
+
+                    // Expression for EF Core
+                    searchExpression = searchExpression.And(t =>
+                        t.EndDate > endOfWeek &&
+                        t.EndDate < startOfNextMonth);
+                }
+                else if (request.viewTypeId == Guid.Parse(TimeLineView.NextMonths.GetDescription()))
+                {
+                    var today = DateTime.Today;
+
+                    // First day of next month
+                    var startOfNextMonth = new DateTime(today.Year, today.Month, 1).AddMonths(1);
+
+                    // Expression: EndDate >= start of next month
+                    searchExpression = searchExpression.And(t =>
+                        t.EndDate >= startOfNextMonth);
+
+                }
             }
-            else
+            else if (request.viewType == (int)ViewTypes.StatusView)
             {
-                searchExpression = searchExpression.And(t => t.TaskTypeId == request.viewTypeId);
+                if(request.TaskFilter.Status is null)
+                {
+                    request.TaskFilter.Status=new List<Guid?> { request.viewTypeId };
+                }
+                else
+                {
+                    if (request.TaskFilter.Status.Contains(request.viewTypeId))
+                    {
+                        request.TaskFilter.Status = new List<Guid?> { request.viewTypeId };
+                    }
+                    else
+                    {
+                        request.TaskFilter.Status = new List<Guid?> { null };
+                    }
+                }
             }
+            else if (request.viewType == (int)ViewTypes.SourceView)
+            {
+                if(request.TaskFilter.Source is null)
+                {
+                    if(request.viewTypeId == Guid.Empty)
+                    {
+                        request.TaskFilter.Source=new List<Guid?> { null};
+                    }
+                    else
+                    {
+                        request.TaskFilter.Source=new List<Guid?> { request.viewTypeId };
+                    }
+                }
+                else
+                {
+                    if (request.TaskFilter.Source.Contains(request.viewTypeId))
+                    {
+                        request.TaskFilter.Source = new List<Guid?> { request.viewTypeId };
+                    }
+                    else
+                    {
+                        request.TaskFilter.Source = new List<Guid?> { Guid.Empty };
+                    }
+                }
+            }
+            else if (request.viewType == (int)ViewTypes.TypeView)
+            {
+                if(request.TaskFilter.Type is null)
+                {
+                    if (request.viewTypeId == Guid.Empty)
+                    {
+                        request.TaskFilter.Type = new List<Guid?> { null };
+
+                    }
+                    else
+                    {
+                        request.TaskFilter.Type = new List<Guid?> { request.viewTypeId };
+                    }
+                }
+                else
+                {
+                    if (request.TaskFilter.Type.Contains(request.viewTypeId))
+                    {
+                        request.TaskFilter.Type = new List<Guid?> { request.viewTypeId };
+                    }
+                    else
+                    {
+                        request.TaskFilter.Type = new List<Guid?> { Guid.Empty };
+                    }
+                    
+                }
+            }
+            var searchexpression = SearchDelegate(request.TaskFilter);
+            searchExpression = searchexpression is null ? searchExpression : searchExpression.And(searchexpression);
         }
-        
             var res = await _taskRepository.GetPagedAsync(
                                 request.pageNumber,
                                 request.pageSize,
@@ -258,5 +383,23 @@ public class GetTasksHandler : IRequestHandler<GetTasksQuery, PagedResult<Create
             default:
                 return q => q.OrderBy(u => u.CreateDate);
         }
+    }
+    private Expression<Func<TaskItem, bool>> SearchDelegate(TaskFilterComponent taskFilter)
+    {
+        Expression<Func<TaskItem, bool>> Expression = null;
+        if (taskFilter != null)
+        {
+            Expression = t => (string.IsNullOrEmpty(taskFilter.Title) || t.Title.Contains(taskFilter.Title)) &&
+            (taskFilter.Priority == null || taskFilter.Priority.Contains(t.PriorityId)) &&
+            (taskFilter.Status == null || taskFilter.Status.Contains(t.StatusId)) &&
+            (taskFilter.Source == null || taskFilter.Source.Contains(t.TaskSourceId)) &&
+            (taskFilter.Type == null || taskFilter.Type.Contains(t.TaskTypeId)) &&
+            (taskFilter.AssignedTo == null || (t.AssignedIds != null && t.AssignedIds.Any(id => taskFilter.AssignedTo.Contains(id)))) &&
+            (taskFilter.AssignedToDepartment == null || (t.AssignedDepartmentIds != null && t.AssignedDepartmentIds.Any(id => taskFilter.AssignedToDepartment.Contains(id)))) &&
+            (taskFilter.CreatedBy==null||taskFilter.CreatedBy.Contains(t.CreatedById))&&
+            (taskFilter.CreatedByDepartment == null || taskFilter.CreatedByDepartment.Contains(t.CreatedBy.Department.Id))
+            ;
+        }
+        return Expression;
     }
 }

@@ -63,7 +63,7 @@
                         @Loc["AddTask"]
                     </button>
                     <Search SearchSubmit="Search" CssClass="form-control"></Search>
-                    <button type="button" data-bs-toggle="tooltip" data-bs-placement="top" title="Filter"
+                    <button type="button" data-bs-toggle="tooltip" data-bs-placement="top" title="Filter" @onclick="ExpandFilter"
                             class="btn btn-action-40 btn-outline-light-pimary">
                         <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Filter"></SVGCrud>
                     </button>
@@ -110,6 +110,9 @@
                 </div>
                     <!-- MAIN CONTENT -->
                     <div class="page-body">
+                    <div class="card table-card collaped-task-card table-caption border border-1 @(DisplayFilter ? "d-block " : "d-none")">
+                        <FilterComponent IsCompleted="true"/>
+                    </div>
                         @switch (ViewType)
                         {
                             case (int)ViewTypes.OverAllView:
@@ -190,6 +193,7 @@
     private int totalCount = 0;
     private int pageSize = 5;
     private bool? IsCollapsedAll = null;
+    bool DisplayFilter = false;
 
     private async Task ClearSearch()
     {
@@ -295,5 +299,9 @@
     {
         IsCollapsedAll = expand;
         StateHasChanged();
+    }
+    private void ExpandFilter(MouseEventArgs args)
+    {
+        DisplayFilter = !DisplayFilter;
     }
 }
