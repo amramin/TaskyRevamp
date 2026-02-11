@@ -54,10 +54,10 @@ namespace TaskyRevamp.Client.Consumer
             return res;
         }
 
-        public async Task<CommonApiResponse<Guid>> UpdateTask(CreateTaskDto CreateTaskDto)
+        public async Task<CommonApiResponse<bool>> UpdateTask(CreateTaskDto CreateTaskDto)
         {
             var url = $"api/Task/UpdateTask";
-            var res = await _taskyService.PostJsonAsync<Guid>(url, CreateTaskDto);
+            var res = await _taskyService.PostJsonAsync<bool>(url, CreateTaskDto);
             return res;
         }
         public async Task<CommonApiResponse<bool>> CompleteTask(Guid TaskId)

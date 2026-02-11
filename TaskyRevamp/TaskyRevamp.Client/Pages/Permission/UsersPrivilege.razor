@@ -146,7 +146,7 @@ else
         currentPage = 1;
         await LoadUsers();
     }
-    private void Add() => PopupService.ShowNew(@<LinkUsersToPrivilege Id="Id" OnSaved="ReloadAfterSave"></LinkUsersToPrivilege>,Loc["LinkUser"]);
+    private void Add() => PopupService.ShowNew(@<LinkUsersToPrivilege Id="Id" OnSaved="ReloadAfterSave"></LinkUsersToPrivilege>,Loc["Addusers"]);
     private void ViewPrivilege(Guid? id)
     {
         var currentUrl = navigationManager.Uri;

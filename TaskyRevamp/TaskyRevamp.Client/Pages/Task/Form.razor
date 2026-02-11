@@ -129,7 +129,7 @@
                                 </label>
                                 <SearchableSingleDropdownOffline TInput=TypeDto TOutput=Guid? TextSelector="(TypeDto x) => x.DisplayedName"
                                                                  OutputSelector="x => x.Id" Datasource="taskTypeDtos" MinCharacterCount="1"
-                                                                 @bind-SelectedOption="@taskdto.TypeId"
+                                                                 SelectedOption="@taskdto.TypeId" SelectedOptionChanged="OnTypeChanged"
                                                                  SearchInputPlaceHolder="@Loc["Search"]" PlaceHolder="@($"{Loc["Select"]}")" NoMatchPlaceHolder="@Loc["NoResultsFound"]" />
                                 <ValidationMessage class="small text-danger" For="@(() => taskdto.TypeId)" />
                             </div>
@@ -144,8 +144,8 @@
                             </label>
                             <div class="mb-3">
                                 <SearchableSingleDropdownOffline TInput=SourceDto TOutput=Guid? TextSelector="(SourceDto x) => x.DisplayedName"
-                                                                 OutputSelector="x => x.Id" Datasource="taskSourceDtos"
-                                                                 MinCharacterCount="1" @bind-SelectedOption="@taskdto.SourceId"
+                                                                 OutputSelector="x => x.Id" Datasource="taskSourceDtos"  MinCharacterCount="1" 
+                                                                 SelectedOption="@taskdto.SourceId" SelectedOptionChanged="OnSourceChanged"
                                                                  SearchInputPlaceHolder="@Loc["Search"]" PlaceHolder="@($"{Loc["Select"]}")" NoMatchPlaceHolder="@Loc["NoResultsFound"]" />
                                 <ValidationMessage class="small text-danger" For="@(() => taskdto.SourceId)"></ValidationMessage>
                             </div>
@@ -170,7 +170,7 @@
                                                   Format="dd-MM-yyyy"
                                                   Placeholder="@placeholderDate"
                                                   OpenOnFocus="true"
-                                                  >
+                                                  ShowClearButton="true">
                                     </SfDatePicker>
                                 </div>
                                 <ValidationMessage class="small text-danger mt-1" For="@(() => taskdto.StartDate)" />
@@ -195,7 +195,8 @@
                                                   EnableRtl="@enableRtl"
                                                   Format="dd-MM-yyyy"
                                                   Placeholder="@placeholderDate"
-                                                  OpenOnFocus="true">
+                                                  OpenOnFocus="true"
+                                                  ShowClearButton="true">
                                     </SfDatePicker>
                                 </div>
                                 <ValidationMessage class="small text-danger mt-1" For="@(() => taskdto.ReminderDate)" />
@@ -219,7 +220,8 @@
                                                   EnableRtl="@enableRtl"
                                                   Format="dd-MM-yyyy"
                                                   Placeholder="@placeholderDate"
-                                                  OpenOnFocus="true">
+                                                  OpenOnFocus="true"
+                                                  ShowClearButton="true">
                                     </SfDatePicker>
                                 </div>
                                 <ValidationMessage class="small text-danger" For="@(() => taskdto.EndDate)" />
@@ -228,7 +230,7 @@
                         case "Department":
                             <div class="mb-3">
                                 <label class="form-label">
-                                    @Loc["AssignedToDepartment"]
+                                    @Loc["AssignedToDepartmentForm"]
                                     @if (column.IsMandatory)
                                     {
                                         <span class="text-danger">*</span>
@@ -236,7 +238,7 @@
                                 </label>
                                 <SearchableMultiDropdownOffline TInput=DepartmentDto TOutput="Guid" Datasource=departmentDtos
                                                                 TextSelector=@(x=>x.NameEnglish) OutputSelector="x=> x.Id"
-                                                                 @bind-SelectedOptions="@taskdto.AssignedDepartmentIds"
+                                                                SelectedOptions="@taskdto.AssignedDepartmentIds" SelectedOptionsChanged="OnDepartmentsChanged"
                                                                 SearchInputPlaceHolder="@Loc["Search"]" PlaceHolder="@($"{Loc["Select"]}")" NoMatchPlaceHolder="@Loc["NoResultsFound"]" 
                                                                 SelectAllPlaceHolder="@Loc["SelectAll"]" AllowSelectAll="departmentDtos.Any()" />
                                 <ValidationMessage class="small text-danger mt-1" For="@(() => taskdto.AssignedDepartmentIds)"></ValidationMessage>
@@ -252,8 +254,8 @@
                                     }
                                 </label>
                                 <SearchableMultiDropdownOffline TInput=CreateTaskDto TOutput="Guid" Datasource=allTaskDtos
-                                                                 TextSelector=@(x=>x.Title)
-                                                                OutputSelector="x=> x.Id" @bind-SelectedOptions="@taskdto.Dependencies"
+                                                                TextSelector=@(x=>x.Title) OutputSelector="x=> x.Id" 
+                                                                SelectedOptions="@taskdto.Dependencies" SelectedOptionsChanged="OnDependenciesChanged"
                                                                 SearchInputPlaceHolder="@Loc["Search"]" PlaceHolder="@($"{Loc["Select"]}")" NoMatchPlaceHolder="@Loc["NoResultsFound"]"
                                                                 SelectAllPlaceHolder="@Loc["SelectAll"]" AllowSelectAll="allTaskDtos.Any()"/>
                                 <ValidationMessage class="small text-danger mt-1" For="@(() => taskdto.Dependencies)"></ValidationMessage>
@@ -270,7 +272,7 @@
                                 </label>
                                 <SearchableMultiDropdownOffline TInput=UserDto TOutput="Guid" Datasource=userDtos 
                                                                 TextSelector=@(x=>x.DisplayedName) OutputSelector="x=> x.Id"
-                                                                @bind-SelectedOptions="@taskdto.AssignedIds"
+                                                                SelectedOptions="@taskdto.AssignedIds" SelectedOptionsChanged="OnAssigneesChanged"
                                                                  SearchInputPlaceHolder="@Loc["Search"]" PlaceHolder="@($"{Loc["Select"]}")" NoMatchPlaceHolder="@Loc["NoResultsFound"]"
                                                                 SelectAllPlaceHolder="@Loc["SelectAll"]" AllowSelectAll="userDtos.Any()" />
                                 <ValidationMessage class="small text-danger mt-1" For="@(() => taskdto.AssignedIds)" />
@@ -313,7 +315,7 @@
                                 </label>
                                 <SearchableSingleDropdownOffline TInput=PriorityDto TOutput=Guid TextSelector=" (PriorityDto x)=> x.Name"
                                                                  OutputSelector="x => x.Id" Datasource="Priorities" MinCharacterCount="1"
-                                                                 @bind-SelectedOption="@taskdto.Priority"
+                                                                 SelectedOption="@taskdto.Priority" SelectedOptionChanged="OnPriorityChanged"
                                                                  SearchInputPlaceHolder="@Loc["Search"]" PlaceHolder="@($"{Loc["Select"]}")" NoMatchPlaceHolder="@Loc["NoResultsFound"]"                                       />
                                 <ValidationMessage class="small text-danger mt-1" For="@(() => taskdto.Priority)" />
                             </div>
