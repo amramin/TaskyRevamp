@@ -1268,7 +1268,7 @@ Do you want to restore the original type and merge this one into it? Consider th
     <value>Completed successfully</value>
   </data>
   <data name="SureCompleteTask" xml:space="preserve">
-    <value>Are you sure to complete task</value>
+    <value>Are you sure you want to complete the task?</value>
   </data>
   <data name="ValueMustBeGreaterThanOrEqualTo1" xml:space="preserve">
     <value>Value must be greater than or equal to 1.</value>

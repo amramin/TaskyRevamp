@@ -186,15 +186,13 @@
     }
     private void CompleteTask(Guid id)
     {
-        PopupService.ShowConfirmation(
-                @Loc["SureCompleteTask"],
-                "Yes, Complete",
+        PopupService.ShowConfirmation(@Loc["SureCompleteTask"], @Loc["Confirm"],
                 async (confirmed) =>
                 {
                     if (confirmed)
                         await CompleteConfirmed(id);
                 },
-                ConfirmationType.Primary
+                ConfirmationType.Other
             );
     }
     // private async Task ReopenConfirmed(Guid id)
@@ -287,9 +285,7 @@
     private void OnProgressChanged(ChangeEventArgs args)
     {
         var progress = Task.ActualProcess;
-        PopupService.ShowConfirmation(
-        @Loc["SureChangeProgress"],
-        "Yes, Changeprgreess",
+        PopupService.ShowConfirmation(@Loc["SureChangeProgress"], @Loc["Confirm"],
         async (confirmed) =>
         {
             if (confirmed)
@@ -302,7 +298,7 @@
                 StateHasChanged();
             }
         },
-        ConfirmationType.Primary
+        ConfirmationType.Other
     );
     }
     private async Task ChangeProgressConfirmed(int progress)

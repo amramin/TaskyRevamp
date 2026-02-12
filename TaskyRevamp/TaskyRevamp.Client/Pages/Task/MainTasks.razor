@@ -188,8 +188,8 @@
                                               OnReopen="Reopen" OnReject="Reject" TaskFilter="TaskFilter" IsCollapseAll="IsCollapsedAll" @ref="@taskListRefs[$"type-{type.Id}"]"></TaskListView>
                                 }
                                 <Pagination CurrentPage="@currentPage" TotalPages="@totalPages" TotalCount="@totalCount"
-                                            PageSize="@pageSize" PageSizeOptions="new[] { 5, 8, 10, 15 }" PageChanged="ChangePage"
-                                            PageSizeChangedCallback="ChangePageSize" />
+                                            PageSize="@pageSize" PageSizeOptions="new[] { 5, 8, 10, 15 }" PageChanged="ChangePageType"
+                                            PageSizeChangedCallback="ChangePageSizeType" />
 
                                 break;
                         }

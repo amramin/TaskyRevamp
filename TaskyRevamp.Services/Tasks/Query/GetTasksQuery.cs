@@ -399,6 +399,45 @@ public class GetTasksHandler : IRequestHandler<GetTasksQuery, PagedResult<Create
             (taskFilter.CreatedBy==null||taskFilter.CreatedBy.Contains(t.CreatedById))&&
             (taskFilter.CreatedByDepartment == null || taskFilter.CreatedByDepartment.Contains(t.CreatedBy.Department.Id))
             ;
+            //to Task Start Date
+            if(taskFilter.FromStartDate.HasValue && taskFilter.ToStartDate.HasValue)
+            {
+                Expression=Expression.And(t => (taskFilter.FromStartDate <= t.StartDate && taskFilter.ToStartDate >= t.StartDate));
+            }else if (taskFilter.FromStartDate.HasValue && !taskFilter.ToStartDate.HasValue)
+            {
+                Expression = Expression.And(t => taskFilter.FromStartDate <= t.StartDate);
+            }else if(!taskFilter.FromStartDate.HasValue && taskFilter.ToStartDate.HasValue)
+            {
+                Expression = Expression.And(t => taskFilter.ToStartDate >= t.StartDate);
+            }
+
+            //To Task End Date
+            if (taskFilter.FromEndDate.HasValue && taskFilter.ToEndDate.HasValue)
+            {
+                Expression = Expression.And(t => (taskFilter.FromEndDate <= t.EndDate && taskFilter.ToEndDate >= t.EndDate));
+            }
+            else if (taskFilter.FromEndDate.HasValue && !taskFilter.ToEndDate.HasValue)
+            {
+                Expression = Expression.And(t => taskFilter.FromEndDate <= t.EndDate);
+            }
+            else if (!taskFilter.FromEndDate.HasValue && taskFilter.ToEndDate.HasValue)
+            {
+                Expression = Expression.And(t => taskFilter.ToEndDate >= t.EndDate);
+            }
+
+            //To Task CreationDate Date
+            if (taskFilter.FromCreationDate.HasValue && taskFilter.ToCreationDate.HasValue)
+            {
+                Expression = Expression.And(t => (taskFilter.FromCreationDate <= t.CreateDate && taskFilter.ToCreationDate >= t.CreateDate));
+            }
+            else if (taskFilter.FromCreationDate.HasValue && !taskFilter.ToCreationDate.HasValue)
+            {
+                Expression = Expression.And(t => taskFilter.FromCreationDate <= t.CreateDate);
+            }
+            else if (!taskFilter.FromCreationDate.HasValue && taskFilter.ToCreationDate.HasValue)
+            {
+                Expression = Expression.And(t => taskFilter.ToCreationDate >= t.CreateDate);
+            }
         }
         return Expression;
     }

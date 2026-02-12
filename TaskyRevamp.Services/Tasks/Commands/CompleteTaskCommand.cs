@@ -30,9 +30,9 @@ namespace TaskyRevamp.Services.Tasks.Commands
             {
                 throw new Exception("Task not found");
             }
-            if (task.Progress == 100&&task.StatusId== TaskSatuses.Value.FirstOrDefault(s => s.NameEnglish == "Pending review").Id)
+            if (task.Progress == 100&&task.StatusId== Guid.Parse("6EE4574D-C439-45B4-223A-08DE3318A61C"))
             {
-                task.StatusId = TaskSatuses.Value.FirstOrDefault(s => s.NameEnglish == "Completed").Id;
+                task.StatusId = Guid.Parse("C8D504C7-9402-4F91-223C-08DE3318A61C");
                 await _taskRepository.UpdateTask(task);
             }
             else

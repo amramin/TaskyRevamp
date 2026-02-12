@@ -29,7 +29,7 @@
             }
             <span class="text"> @Title</span>
         </div>
-        @if (allTaks != null && allTaks.Any())
+        @if (allTaks != null&& allTaks.Any())
         {
             <div style="display:@(IsCollapse ? "none" : "block")">
                 <div class="mb-1">
@@ -353,7 +353,7 @@
                 {
                     if (confirmed)
                         await CompleteConfirmed(id);
-                }, ConfirmationType.Primary);
+                }, ConfirmationType.Other);
     }
     private async Task DeleteConfirmed(Guid Id)
     {
@@ -385,7 +385,7 @@
             {
                 if (confirmed)
                     await DeleteConfirmed(delegationId);
-            }, ConfirmationType.Danger);
+            }, ConfirmationType.Other);
     }
     // public void ShowEditPopup(Guid id)
     // {
@@ -460,16 +460,16 @@
                 builder.CloseElement();
                 break; *@
             case "Title":
-               
-                    builder.OpenElement(-10, "span");
-                    builder.AddAttribute(-9, "class", "task-delayed-icon");
 
-                    builder.OpenComponent<SVGCrud>(-8);
-                    builder.AddAttribute(-7, "SVGType", SVGCrud.SVGTypeEnum.ClockRewind);
-                    builder.CloseComponent();
+                builder.OpenElement(-10, "span");
+                builder.AddAttribute(-9, "class", "task-delayed-icon");
 
-                    builder.CloseElement();
-             
+                builder.OpenComponent<SVGCrud>(-8);
+                builder.AddAttribute(-7, "SVGType", SVGCrud.SVGTypeEnum.ClockRewind);
+                builder.CloseComponent();
+
+                builder.CloseElement();
+
 
                 builder.OpenElement(0, "span");
                 builder.AddAttribute(1, "class", "task-title");
@@ -603,7 +603,10 @@
         totalCount = data.TotalCount;
         if (!collapseLoadedFromStorage)
         {
-            IsCollapse = allTaks == null || !allTaks.Any();
+            if (ViewType != (int)ViewTypes.OverAllView)
+            {
+                IsCollapse = allTaks == null || !allTaks.Any();
+            }
         }
         StateHasChanged();
     }

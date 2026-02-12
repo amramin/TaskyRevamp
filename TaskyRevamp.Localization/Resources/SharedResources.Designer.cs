@@ -3004,7 +3004,7 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Are you sure to complete task.
+        ///   Looks up a localized string similar to Are you sure you want to complete the task?.
         /// </summary>
         public static string SureCompleteTask {
             get {

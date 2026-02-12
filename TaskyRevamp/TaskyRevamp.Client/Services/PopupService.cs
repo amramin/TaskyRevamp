@@ -102,7 +102,8 @@ public class InfoPopupParams
 public enum ConfirmationType
 {
     Primary,
-    Danger
+    Danger,
+    Other
 }
 
 public class InvalidPopupParams
