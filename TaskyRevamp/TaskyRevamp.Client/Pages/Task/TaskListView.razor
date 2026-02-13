@@ -305,19 +305,10 @@
             CollapseAll((bool)IsCollapseAll.Value);
         }
     }
-    // public async Task ResetPage()
-    // {
-    //     await GetTasks();
-    //     IsShowCreateDialog = false;
-    //     IsShowEditDialog = false;
-    //     isPopupVisible = false;
-    //     StateHasChanged();
-    // }
     public async Task Search(string searchTerm)
     {
         currentPage = 1;
         await GetTasks(true, searchTerm);
-        // await LoadSources(true, searchTerm);
     }
     private async Task ChangePage(int page)
     {
@@ -619,7 +610,7 @@
         }
         else
         {
-            if ((DateOnly.FromDateTime(taskDto.CreateDate ?? DateTime.Now).AddDays(RejectionPeriod) < DateOnly.FromDateTime(DateTime.Now)) || !(taskDto.AssignedIds.Contains(CurrentUser)))
+            if ((DateOnly.FromDateTime(taskDto.CreateDate ?? DateTime.Now).AddDays(RejectionPeriod) < DateOnly.FromDateTime(DateTime.Now)) || !(taskDto.AssignedIds!.Contains(CurrentUser)))
             {
                 return false;
             }
@@ -651,7 +642,7 @@
     }
     private bool IsDelayed(CreateTaskDto task)
     {
-        return task.TaskStatusName == "Delayed";
+        return task.TaskStatusName == "Delayed" || task.TaskStatusName == "متأخرة";
     }
     private async Task CollapseAll(bool collapse)
     {

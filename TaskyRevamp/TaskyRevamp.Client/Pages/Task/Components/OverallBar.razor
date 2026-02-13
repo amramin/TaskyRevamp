@@ -15,8 +15,15 @@
                  aria-valuemin="0"
                  aria-valuemax="100">
             </div>
-            <span class="position-absolute top-50 start-50 translate-middle fw-bold text-dark">
-                @ProgressValue%
+            <span class="position-absolute fw-bold text-dark"
+                  style="
+              inset:0;
+              display:flex;
+              align-items:center;
+              justify-content:center;
+              direction:ltr;
+              white-space:nowrap;">
+                @($"{ProgressValue}%")
             </span>
         </div>
     </div>

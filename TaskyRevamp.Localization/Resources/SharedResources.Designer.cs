@@ -2626,7 +2626,7 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Retention period Options.
+        ///   Looks up a localized string similar to Retention period options.
         /// </summary>
         public static string RetentionPeriodOptions {
             get {
