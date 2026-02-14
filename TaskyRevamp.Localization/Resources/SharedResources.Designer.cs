@@ -412,6 +412,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Apply.
+        /// </summary>
+        public static string Apply {
+            get {
+                return ResourceManager.GetString("Apply", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Approve and reject the request change end date.
         /// </summary>
         public static string ApproveAndRejectTheRequestChangeEndDate {
@@ -1555,6 +1564,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Must be less than to creation date.
+        /// </summary>
+        public static string FromCreationDateValidation {
+            get {
+                return ResourceManager.GetString("FromCreationDateValidation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Start date .
         /// </summary>
         public static string FromDate {
@@ -1573,11 +1591,47 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Must be less than to end date.
+        /// </summary>
+        public static string FromEndDateValidation {
+            get {
+                return ResourceManager.GetString("FromEndDateValidation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to From start date.
         /// </summary>
         public static string FromStartDate {
             get {
                 return ResourceManager.GetString("FromStartDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Must be less than to start date.
+        /// </summary>
+        public static string FromStartDateValidation {
+            get {
+                return ResourceManager.GetString("FromStartDateValidation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to From end date must be less than to end date.
+        /// </summary>
+        public static string FromToEndDate {
+            get {
+                return ResourceManager.GetString("FromToEndDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to From start date must be less than to start date.
+        /// </summary>
+        public static string FromToStartDate {
+            get {
+                return ResourceManager.GetString("FromToStartDate", resourceCulture);
             }
         }
         
@@ -2617,6 +2671,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Reset.
+        /// </summary>
+        public static string Reset {
+            get {
+                return ResourceManager.GetString("Reset", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Retention period Options.
         /// </summary>
         public static string RetentionPeriodOptions {
@@ -3347,6 +3410,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Must be greater than from creation date.
+        /// </summary>
+        public static string ToCreationDateValidation {
+            get {
+                return ResourceManager.GetString("ToCreationDateValidation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to End date.
         /// </summary>
         public static string ToDate {
@@ -3374,11 +3446,29 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Must be greater than from end date.
+        /// </summary>
+        public static string ToEndDateValidation {
+            get {
+                return ResourceManager.GetString("ToEndDateValidation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to To start date.
         /// </summary>
         public static string ToStartDate {
             get {
                 return ResourceManager.GetString("ToStartDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Must be greater than from start date.
+        /// </summary>
+        public static string ToStartDateValidation {
+            get {
+                return ResourceManager.GetString("ToStartDateValidation", resourceCulture);
             }
         }
         

@@ -111,7 +111,7 @@
                     <!-- MAIN CONTENT -->
                     <div class="page-body">
                     <div class="card table-card collaped-task-card table-caption border border-1 @(DisplayFilter ? "d-block " : "d-none")">
-                        <FilterComponent IsCompleted="true" OnClear="ApplyClear" OnFilter="ApplyFilter" />
+                        <FilterComponent IsCompleted="true" OnClear="ApplyClear" OnFilter="ApplyFilter" FilterDTO="TaskFilter" />
                     </div>
                         @switch (ViewType)
                         {

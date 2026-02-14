@@ -18,7 +18,8 @@
 @inject StatusSettingConsumer _statusSettingConsumer
 
 <div class="p-2">
-    <EditForm Model="FilterDTO" OnValidSubmit="Filter">
+    <EditForm EditContext="editContext" OnValidSubmit="Filter">
+        <DataAnnotationsValidator/>
         <div class="row m-1">
             @foreach(var field in FilterFieldsSettings)
             {
@@ -64,6 +65,8 @@
                                               Placeholder="@placeholderDate"
                                               OpenOnFocus="true">
                                 </SfDatePicker>
+                                <ValidationMessage class="small text-danger mt-1" For="@(() => FilterDTO.FromStartDate)" />
+
                             </div>
                     </div>
                         break;
@@ -81,6 +84,8 @@
                                               Placeholder="@placeholderDate"
                                               OpenOnFocus="true">
                                 </SfDatePicker>
+                                <ValidationMessage class="small text-danger mt-1" For="@(() => FilterDTO.ToStartDate)" />
+
                             </div>
                     </div>
                         break;
@@ -98,6 +103,8 @@
                                               Placeholder="@placeholderDate"
                                               OpenOnFocus="true">
                                 </SfDatePicker>
+                                <ValidationMessage class="small text-danger mt-1" For="@(() => FilterDTO.FromEndDate)" />
+
                             </div>
                     </div>
                         break;
@@ -115,6 +122,8 @@
                                               Placeholder="@placeholderDate"
                                               OpenOnFocus="true">
                                 </SfDatePicker>
+                                <ValidationMessage class="small text-danger mt-1" For="@(() => FilterDTO.ToEndDate)" />
+
                             </div>
                     </div>
                         break;
@@ -172,6 +181,7 @@
                                               Placeholder="@placeholderDate"
                                               OpenOnFocus="true">
                                 </SfDatePicker>
+                                <ValidationMessage class="small text-danger mt-1" For="@(() => FilterDTO.FromCreationDate)" />
                             </div>
                     </div>
                         break;
@@ -189,6 +199,8 @@
                                               Placeholder="@placeholderDate"
                                               OpenOnFocus="true">
                                 </SfDatePicker>
+                                <ValidationMessage class="small text-danger mt-1" For="@(() => FilterDTO.ToCreationDate)" />
+
                             </div>
                     </div>
                         break;
@@ -215,8 +227,8 @@
                 }
             }
             <div class="col-md-3">
-                <button class="btn btn-primary mt-4" type="submit">Search</button>
-                <button class="btn btn-primary mt-4" @onclick="Clear">Clear</button>
+                <button class="btn btn-primary mt-4" type="submit">@Loc["Apply"]</button>
+                <button class="btn btn-primary mt-4" @onclick="Clear">@Loc["Reset"]</button>
             </div>
         </div>
     </EditForm>
@@ -226,7 +238,7 @@
     [Parameter] public bool IsCompleted { get; set; } = false;
     [Parameter] public EventCallback<TaskFilterComponent> OnFilter { get; set; }
     [Parameter] public EventCallback<TaskFilterComponent> OnClear { get; set; }
-    TaskFilterComponent FilterDTO { get; set; } = new TaskFilterComponent();
+    [Parameter] public TaskFilterComponent? FilterDTO { get; set; }
     public List<FilterFieldsSettingDto> FilterFieldsSettings { get; set; } = new List<FilterFieldsSettingDto>();
     public List<PriorityDto> Priorities = new List<PriorityDto>();
     List<TypeDto> taskTypeDtos = new List<TypeDto>();
@@ -240,6 +252,9 @@
     private SfDatePicker<DateTime?> ToStartDatePicker;
     private SfDatePicker<DateTime?> FromCreationDatePicker;
     private SfDatePicker<DateTime?> ToCreationDatePicker;
+    private EditContext editContext;
+    private ValidationMessageStore messageStore;
+
     private bool isRtlCulture;
     private string datePickerLocale = "en";
     private bool enableRtl = false;
@@ -293,6 +308,23 @@
         }
         Status = StatusList.Result.Data.Where(s => s.Id != Guid.Parse("D8E94CCE-586A-46D3-223D-08DE3318A61C") && s.Id != Guid.Parse("C8D504C7-9402-4F91-223C-08DE3318A61C")).ToList();
     }
+    protected override void OnParametersSet()
+    {
+    if (FilterDTO == null)
+        FilterDTO = new TaskFilterComponent();
+
+    if (editContext == null || editContext.Model != FilterDTO)
+    {
+        editContext = new EditContext(FilterDTO);
+        messageStore = new ValidationMessageStore(editContext);
+
+        editContext.OnFieldChanged += (sender, eventArgs) =>
+        {
+            messageStore.Clear(eventArgs.FieldIdentifier);
+        };
+            editContext.OnValidationRequested += ValidateDynamicFields;
+    }
+    }
     private async Task OpenFromStratDatePicker()
     {
         await FromStartDatePicker.ShowPopupAsync();
@@ -317,6 +349,31 @@
     {
         await ToCreationDatePicker.ShowPopupAsync();
     }
+    private void ValidateDynamicFields(object sender, ValidationRequestedEventArgs e)
+    {
+        messageStore.Clear();
+        if (FilterDTO is not null)
+        {
+            if (FilterDTO.FromStartDate.HasValue && FilterDTO.ToStartDate.HasValue && FilterDTO.FromStartDate > FilterDTO.ToStartDate)
+            {
+                messageStore.Add(new FieldIdentifier(FilterDTO, nameof(FilterDTO.FromStartDate)), Loc["FromStartDateValidation"]);
+                messageStore.Add(new FieldIdentifier(FilterDTO, nameof(FilterDTO.ToStartDate)), Loc["ToStartDateValidation"]);
+                editContext.NotifyValidationStateChanged();
+            }
+            if (FilterDTO.FromEndDate.HasValue && FilterDTO.ToEndDate.HasValue && FilterDTO.FromEndDate > FilterDTO.ToEndDate)
+            {
+                messageStore.Add(new FieldIdentifier(FilterDTO, nameof(FilterDTO.FromEndDate)), Loc["FromEndDateValidation"]);
+                messageStore.Add(new FieldIdentifier(FilterDTO, nameof(FilterDTO.ToEndDate)), Loc["ToEndDateValidation"]);
+                editContext.NotifyValidationStateChanged();
+            }
+            if (FilterDTO.FromCreationDate.HasValue && FilterDTO.FromCreationDate.HasValue && FilterDTO.FromCreationDate > FilterDTO.ToCreationDate)
+            {
+                messageStore.Add(new FieldIdentifier(FilterDTO, nameof(FilterDTO.FromCreationDate)), Loc["FromCreationDateValidation"]);
+                messageStore.Add(new FieldIdentifier(FilterDTO, nameof(FilterDTO.ToCreationDate)), Loc["ToCreationDateValidation"]);
+                editContext.NotifyValidationStateChanged();
+            }
+        }
+    }
     private async Task Filter(EditContext args)
     {
         await OnFilter.InvokeAsync(FilterDTO);
@@ -324,6 +381,13 @@
     private async Task Clear(MouseEventArgs args)
     {
         FilterDTO = new();
-        await OnClear.InvokeAsync(null);
+        await OnClear.InvokeAsync();
+    }
+    public void Dispose()
+    {
+        if (editContext != null)
+        {
+            editContext.OnValidationRequested -= ValidateDynamicFields;
+        }
     }
 }

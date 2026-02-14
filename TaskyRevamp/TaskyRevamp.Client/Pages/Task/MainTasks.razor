@@ -132,7 +132,7 @@
                     <!-- MAIN CONTENT -->
                     <div class="page-body">
                     <div class="card table-card collaped-task-card table-caption border border-1 @(DisplayFilter ? "d-block " : "d-none")">
-                        <FilterComponent OnFilter="ApplyFilter" OnClear="ApplyClear" />
+                        <FilterComponent OnFilter="ApplyFilter" OnClear="ApplyClear" FilterDTO="TaskFilter" />
                     </div>
                         @switch (ViewType)
                         {
@@ -251,7 +251,7 @@
     [Parameter] public EventCallback<Guid> OnDelete { get; set; }
     [Parameter] public EventCallback<Guid> OnShowUsers { get; set; }
     [Parameter] public EventCallback<Guid> OnAdd { get; set; }
-    public TaskFilterComponent TaskFilter { get; set; } = null;
+    public TaskFilterComponent TaskFilter { get; set; }
     private Dictionary<string, TaskListView> taskListRefs = new Dictionary<string, TaskListView>();
     public List<SourceDto> sources = new List<SourceDto>();
     public List<TypeDto> Types = new List<TypeDto>();
