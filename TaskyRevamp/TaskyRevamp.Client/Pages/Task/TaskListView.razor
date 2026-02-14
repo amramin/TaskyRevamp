@@ -29,7 +29,7 @@
             }
             <span class="text"> @Title</span>
         </div>
-        @if (allTaks != null && allTaks.Any())
+        @if (allTaks != null&& allTaks.Any())
         {
             <div style="display:@(IsCollapse ? "none" : "block")">
                 <div class="mb-1">
@@ -69,7 +69,7 @@
                                                         <span class="icon">
                                                             <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Edit"></SVGCrud>
                                                         </span>
-                                                        @Loc["Edit"]
+                                                        @Loc["EditTask"]
                                                     </button>
                                                 </li>
                                                 @if (task.ActualProcess == 100 && task.TaskStatus ==
@@ -145,6 +145,7 @@
     [Parameter] public bool IsCompleted { get; set; } = false;
     [Parameter] public bool IsCompletedTasks { get; set; } = false;
     [Parameter] public bool? IsCollapseAll { get; set; } = null;
+    [Parameter] public TaskFilterComponent TaskFilter { get; set; } = null;
     CreateTaskDto taskdto = new CreateTaskDto();
     private List<StatusSettingsDto> Statuses = new();
     List<CreateTaskDto> allTaks = new List<CreateTaskDto>();
@@ -184,6 +185,7 @@
         await LoadColumns();
         StateHasChanged();
     }
+
     private async Task LoadColumns()
     {
         var olddata = await GetColumns();
@@ -209,18 +211,18 @@
             new() { Field = "Start Date", DisplayName = Loc["StartDate"], Order = 4, IsVisible = true },
             new() { Field = "End Date", DisplayName = Loc["EndDate"], Order = 5, IsVisible = true },
             new() { Field = "weight", DisplayName = Loc["weight"], Order = 6, IsVisible = true },
-            new() { Field = "Assigned To", DisplayName = Loc["AssignedTo"], Order = 7, IsVisible = true,IsSortable=false },
-            new() { Field = "Assigned To Department", DisplayName =Loc["AssignedToDepartment"], Order = 8, IsVisible = true,IsSortable=false },
+        new() { Field = "Assigned To", DisplayName = Loc["AssignedTo"], Order = 7, IsVisible = true,IsSortable=false },
+        new() { Field = "Assigned To Department", DisplayName =Loc["AssignedToDepartment"], Order = 8, IsVisible = true,IsSortable=false },
             new() { Field = "Source", DisplayName =Loc["Source"], Order = 9, IsVisible = true },
-            new() { Field = "Dependency", DisplayName = Loc["Dependency"], Order = 10, IsVisible = true,IsSortable=false },
+        new() { Field = "Dependency", DisplayName = Loc["Dependency"], Order = 10, IsVisible = true,IsSortable=false },
             new() { Field = "Created By", DisplayName = Loc["CreatedBy"], Order = 11, IsVisible = true },
-            new() { Field = "Duration", DisplayName = Loc["Duration"], Order = 12, IsVisible = true,IsSortable=false },
+        new() { Field = "Duration", DisplayName = Loc["Duration"], Order = 12, IsVisible = true,IsSortable=false },
             new() { Field = "Created by department", DisplayName = Loc["Createdbydepartment"], Order = 13, IsVisible = true },
-            new() { Field = "Planned Progress", DisplayName = Loc["PlannedProgress"], Order = 14, IsVisible = true,IsSortable=false },
+        new() { Field = "Planned Progress", DisplayName = Loc["PlannedProgress"], Order = 14, IsVisible = true,IsSortable=false },
             new() { Field = "Creation Date", DisplayName = Loc["CreationDate"], Order = 15, IsVisible = true },
             new() { Field = "Type", DisplayName = Loc["Type"], Order = 16, IsVisible = true },
-            new() { Field = "Actual Weight", DisplayName = Loc["ActualWeight"], Order = 17, IsVisible = true,IsSortable=false },
-            new() { Field = "Planned Weight", DisplayName =Loc["PlannedWeight"], Order = 18, IsVisible = true,IsSortable=false },
+        new() { Field = "Actual Weight", DisplayName = Loc["ActualWeight"], Order = 17, IsVisible = true,IsSortable=false },
+        new() { Field = "Planned Weight", DisplayName =Loc["PlannedWeight"], Order = 18, IsVisible = true,IsSortable=false },
         };
         var key = IsCompletedTasks ? "CompletedTask_Columns" : "MainTask_Columns";
         await LocalStorageService.SetItemAsync(key, column);
@@ -298,12 +300,13 @@
             isLoading = false;
         }
     }
-    protected override void OnParametersSet()
+    protected override async Task OnParametersSetAsync()
     {
         if (IsCollapseAll.HasValue)
         {
             CollapseAll((bool)IsCollapseAll.Value);
         }
+            await GetTasks();
     }
     // public async Task ResetPage()
     // {
@@ -350,7 +353,7 @@
                 {
                     if (confirmed)
                         await CompleteConfirmed(id);
-                }, ConfirmationType.Primary);
+                }, ConfirmationType.Other);
     }
     private async Task DeleteConfirmed(Guid Id)
     {
@@ -382,11 +385,16 @@
             {
                 if (confirmed)
                     await DeleteConfirmed(delegationId);
-            }, ConfirmationType.Danger);
+            }, ConfirmationType.Other);
     }
+    // public void ShowEditPopup(Guid id)
+    // {
+    //     PopupService.ShowNew(@<Edit UserDelegationId="@id.ToString()" IsAdmine="@IsAdmine" OnValidSubmit="GetTasks"></Edit>,
+    //         headerText: @Loc["EditDelegation"]);
+    // }
     private async Task OnConfirmDelete(bool confirmed)
     {
-        if (confirmed && itemToDelete == Guid.Empty)
+        if (confirmed && itemToDelete != null!)
         {
             var res = await _taskConsumer.DeleteTask(itemToDelete);
             if (res.Success)
@@ -444,22 +452,31 @@
     {
         switch (field)
         {
-            case "Title":
-                if (IsDelayed(task))
-                {
-                    builder.OpenElement(-10, "span");
-                    builder.AddAttribute(-9, "class", "task-delayed-icon");
-                    builder.OpenComponent<SVGCrud>(-8);
-                    builder.AddAttribute(-7, "SVGType", SVGCrud.SVGTypeEnum.ClockRewind);
-                    builder.CloseComponent();
-                    builder.CloseElement();
-                }
+            @* case "Title":
                 builder.OpenElement(0, "span");
                 builder.AddAttribute(1, "class", "task-title");
                 builder.AddAttribute(2, "title", task.Title ?? string.Empty);
                 builder.AddContent(3, task.Title);
                 builder.CloseElement();
-                if (task.Dependencies!.Count() > 0)
+                break; *@
+            case "Title":
+
+                builder.OpenElement(-10, "span");
+                builder.AddAttribute(-9, "class", "task-delayed-icon");
+
+                builder.OpenComponent<SVGCrud>(-8);
+                builder.AddAttribute(-7, "SVGType", SVGCrud.SVGTypeEnum.ClockRewind);
+                builder.CloseComponent();
+
+                builder.CloseElement();
+
+
+                builder.OpenElement(0, "span");
+                builder.AddAttribute(1, "class", "task-title");
+                builder.AddAttribute(2, "title", task.Title ?? string.Empty);
+                builder.AddContent(3, task.Title);
+                builder.CloseElement();
+                if (task.Dependencies.Count() > 0)
                 {
                     builder.OpenElement(4, "span");
                     builder.AddAttribute(5, "class", "task-depancy-number");
@@ -475,7 +492,7 @@
 
                     builder.OpenElement(10, "span");
                     builder.AddAttribute(11, "class", "text");
-                    builder.AddContent(12, $"{task.Dependencies!.Count()}");
+                    builder.AddContent(12, $"{task.Dependencies.Count()}");
                     builder.CloseElement();
                     builder.CloseElement();
                 }
@@ -576,7 +593,7 @@
     public async Task GetTasks(bool isSearch = false, string searchTerm = null!)
     {
         var res = await _taskConsumer.GetTasks(currentPage, pageSize, currentSortColumn, sortAscending!.Value, isSearch ?
-            searchFields : null!, isSearch ? searchTerm : null!, ViewType, ViewTypeId, IsCompleted);
+            searchFields : null!, isSearch ? searchTerm : null!, ViewType, ViewTypeId, IsCompleted,TaskFilter);
 
         if (!(res?.Success ?? false) || res.Data is null)
             return;
@@ -586,7 +603,10 @@
         totalCount = data.TotalCount;
         if (!collapseLoadedFromStorage)
         {
-            IsCollapse = allTaks == null || !allTaks.Any();
+            if (ViewType != (int)ViewTypes.OverAllView)
+            {
+                IsCollapse = allTaks == null || !allTaks.Any();
+            }
         }
         StateHasChanged();
     }

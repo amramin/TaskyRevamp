@@ -36,9 +36,9 @@ namespace TaskyRevamp.Services.Tasks.Commands
             {
                 throw new Exception("Task not found");
             }
-            if (task.StatusId == TaskSatuses.Value.FirstOrDefault(s => s.NameEnglish == "Pending review").Id)
+            if (task.StatusId == Guid.Parse("6EE4574D-C439-45B4-223A-08DE3318A61C"))
             {
-                task.StatusId = TaskSatuses.Value.FirstOrDefault(s => s.NameEnglish == "Reopened").Id;
+                task.StatusId = Guid.Parse("C8D504C7-9402-4F91-223C-08DE3318A61C");
                 task.Progress = 50;
                 await _taskRepository.UpdateTask(task);
                 TaskComments taskComment = new TaskComments(request.TaskCommentDto.TaskItemId, request.TaskCommentDto.Content, Guid.Parse(_httpContextAccessor.GetUserId()), request.TaskCommentDto.Type);

@@ -63,7 +63,7 @@
                         @Loc["AddTask"]
                     </button>
                     <Search SearchSubmit="Search" CssClass="form-control"></Search>
-                    <button type="button" data-bs-toggle="tooltip" data-bs-placement="top" title="Filter"
+                    <button type="button" data-bs-toggle="tooltip" data-bs-placement="top" title="Filter" @onclick="ExpandFilter"
                             class="btn btn-action-40 btn-outline-light-pimary">
                         <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Filter"></SVGCrud>
                     </button>
@@ -110,13 +110,16 @@
                 </div>
                     <!-- MAIN CONTENT -->
                     <div class="page-body">
+                    <div class="card table-card collaped-task-card table-caption border border-1 @(DisplayFilter ? "d-block " : "d-none")">
+                        <FilterComponent IsCompleted="true" OnClear="ApplyClear" OnFilter="ApplyFilter" FilterDTO="TaskFilter" />
+                    </div>
                         @switch (ViewType)
                         {
                             case (int)ViewTypes.OverAllView:
 
                                 <div>
                                     <TaskListView Title="@Loc[ViewTypes.OverAllView.ToString()]" IsCompleted="true" OnAdd="Add" IsCompletedTasks="true"
-                                                  OnEdit="Edit" OnReopen="Reopen" @ref="@taskListRefs["overall"]"></TaskListView>
+                                              OnEdit="Edit" OnReopen="Reopen" TaskFilter="TaskFilter" @ref="@taskListRefs["overall"]"></TaskListView>
                                 </div>
                                 break;
                             case (int)ViewTypes.SourceView:
@@ -128,7 +131,7 @@
                                             <TaskListView IsCompleted="true" @key="source.Id" IsCompletedTasks="true"
                                                           Title="@(CultureInfo.CurrentCulture.Name == "ar-EG" ? source.NameArabic : source.NameEnglish)"
                                                           ViewType="@((int)ViewTypes.SourceView)" ViewTypeId="@source.Id" OnAdd="Add" OnEdit="Edit"
-                                                          OnReopen="Reopen" IsCollapseAll="IsCollapsedAll" @ref="@taskListRefs[$" source-{source.Id}"]"></TaskListView>
+                                                      OnReopen="Reopen" IsCollapseAll="IsCollapsedAll" TaskFilter="TaskFilter" @ref="@taskListRefs[$" source-{source.Id}"]"></TaskListView>
                                         </div>
                                     }
                                     <Pagination CurrentPage="@currentPage" TotalPages="@totalPages" TotalCount="@totalCount"
@@ -150,7 +153,7 @@
                                             <TaskListView IsCompleted="true" @key="type.Id" IsCompletedTasks="true"
                                                           Title="@(CultureInfo.CurrentCulture.Name == "ar-EG" ? type.NameArabic : type.NameEnglish)"
                                                           ViewType="@((int)ViewTypes.TypeView)" ViewTypeId="@type.Id" OnAdd="Add" OnEdit="Edit"
-                                                          OnReopen="Reopen" IsCollapseAll="IsCollapsedAll" @ref="@taskListRefs[$"type-{type.Id}"]"></TaskListView>
+                                                      OnReopen="Reopen" IsCollapseAll="IsCollapsedAll" TaskFilter="TaskFilter" @ref="@taskListRefs[$"type-{type.Id}"]"></TaskListView>
                                         </div>
                                     }
                                     <Pagination CurrentPage="@currentPage" TotalPages="@totalPages" TotalCount="@totalCount"
@@ -178,6 +181,7 @@
     [Parameter] public EventCallback<Guid> OnDelete { get; set; }
     [Parameter] public EventCallback<Guid> OnShowUsers { get; set; }
     [Parameter] public EventCallback<Guid> OnAdd { get; set; }
+    public TaskFilterComponent TaskFilter { get; set; } = null;
     private Dictionary<string, TaskListView> taskListRefs = new Dictionary<string, TaskListView>();
     public List<SourceDto> sources = new List<SourceDto>();
     public List<TypeDto> Types = new List<TypeDto>();
@@ -190,6 +194,7 @@
     private int totalCount = 0;
     private int pageSize = 5;
     private bool? IsCollapsedAll = null;
+    bool DisplayFilter = false;
 
     private async Task ClearSearch()
     {
@@ -294,6 +299,20 @@
     private void ExpandOrCollapse(bool expand)
     {
         IsCollapsedAll = expand;
+        StateHasChanged();
+    }
+    private void ExpandFilter(MouseEventArgs args)
+    {
+        DisplayFilter = !DisplayFilter;
+    }
+    private async Task ApplyFilter(TaskFilterComponent filter)
+    {
+        TaskFilter = filter;
+        StateHasChanged();
+    }
+    private async Task ApplyClear(TaskFilterComponent filter)
+    {
+        TaskFilter = filter;
         StateHasChanged();
     }
 }

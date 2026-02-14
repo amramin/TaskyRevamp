@@ -1268,7 +1268,7 @@ Do you want to restore the original type and merge this one into it? Consider th
     <value>Completed successfully</value>
   </data>
   <data name="SureCompleteTask" xml:space="preserve">
-    <value>Are you sure to complete task</value>
+    <value>Are you sure you want to complete the task?</value>
   </data>
   <data name="ValueMustBeGreaterThanOrEqualTo1" xml:space="preserve">
     <value>Value must be greater than or equal to 1.</value>
@@ -1380,5 +1380,35 @@ Do you want to restore the original type and merge this one into it? Consider th
   </data>
   <data name="AssignedToDepartmentForm" xml:space="preserve">
     <value>Assignee department</value>
+  </data>
+  <data name="Apply" xml:space="preserve">
+    <value>Apply</value>
+  </data>
+  <data name="Reset" xml:space="preserve">
+    <value>Reset</value>
+  </data>
+  <data name="FromToStartDate" xml:space="preserve">
+    <value>From start date must be less than to start date</value>
+  </data>
+  <data name="FromToEndDate" xml:space="preserve">
+    <value>From end date must be less than to end date</value>
+  </data>
+  <data name="FromStartDateValidation" xml:space="preserve">
+    <value>Must be less than to start date</value>
+  </data>
+  <data name="ToStartDateValidation" xml:space="preserve">
+    <value>Must be greater than from start date</value>
+  </data>
+  <data name="FromEndDateValidation" xml:space="preserve">
+    <value>Must be less than to end date</value>
+  </data>
+  <data name="ToEndDateValidation" xml:space="preserve">
+    <value>Must be greater than from end date</value>
+  </data>
+  <data name="FromCreationDateValidation" xml:space="preserve">
+    <value>Must be less than to creation date</value>
+  </data>
+  <data name="ToCreationDateValidation" xml:space="preserve">
+    <value>Must be greater than from creation date</value>
   </data>
 </root>

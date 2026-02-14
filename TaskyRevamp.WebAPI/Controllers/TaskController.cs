@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using TaskyRevamp.Dto.Enums;
 using TaskyRevamp.Dto.Enums.SearchFields;
 using TaskyRevamp.Dto.GeneralDto;
+using TaskyRevamp.Dto.SystemConfiguration;
 using TaskyRevamp.Dto.TaskComment;
 using TaskyRevamp.Dto.TaskDto;
 using TaskyRevamp.Services.Departments.Query;
@@ -82,7 +83,7 @@ public class TaskController : ControllerBase
         return Ok(await _mediator.Send(new DeleteTaskCommand(Guid.Parse(id))));
     }
 
-    [HttpGet("GetAllTask")]
+    [HttpPost("GetAllTask")]
     public async Task<IActionResult> GetAllTask(
          [FromServices] IOptions<PaginationSettings> paginationSettings,
          [FromQuery] int pageNumber = 1,
@@ -91,12 +92,14 @@ public class TaskController : ControllerBase
          [FromQuery] bool sortAscending = true,
          [FromQuery] List<SearchFieldTask> searchFields = null,
          [FromQuery] string searchText = null,
-         [FromQuery] int viewType=(int) ViewTypes.OverAllView,
-        [FromQuery] Guid? viewTypeId= null,bool IsCompleted=false)
+         [FromQuery] int viewType = (int)ViewTypes.OverAllView,
+        [FromQuery] Guid? viewTypeId = null,
+        [FromQuery] bool IsCompleted = false,
+        [FromBody] TaskFilterComponent taskFilter=null)
     {
 
         var size = pageSize ?? paginationSettings.Value.DefaultPageSize;
-        var all = await _mediator.Send(new GetTasksQuery(pageNumber, size, sortByColumnName, sortAscending, searchFields, searchText,viewType,viewTypeId,IsCompleted));
+        var all = await _mediator.Send(new GetTasksQuery(pageNumber, size, sortByColumnName, sortAscending, searchFields, searchText,viewType,viewTypeId,IsCompleted,taskFilter));
 
         return Ok(all);
     }
