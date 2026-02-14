@@ -1394,13 +1394,9 @@
   <data name="FromToEndDate" xml:space="preserve">
     <value>من تاريخ الانتهاء يجب ان يكون اقل من الى تاريخ ال</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="Reopenedsuccessfully" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
-  </data>
   <data name="AssignedToDepartmentForm" xml:space="preserve">
     <value>إدارة المسند إليه</value>
+  </data>
   <data name="FromStartDateValidation" xml:space="preserve">
     <value>يجب ان تكون اقل من الى تاريخ البدايه</value>
   </data>
