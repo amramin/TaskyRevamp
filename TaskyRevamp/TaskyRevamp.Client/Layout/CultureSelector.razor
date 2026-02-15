@@ -54,7 +54,9 @@
     }
     private async Task ToggleLanguage()
     {
-        await LocalStorageService.RemoveItemAsync("AllColumn");
+        await LocalStorageService.RemoveItemAsync("CompletedTask_Columns");
+        await LocalStorageService.RemoveItemAsync("MainTask_Columns");
+
         if (selectedCulture?.Name == "ar-EG")
         {
             Console.WriteLine("Switching to en-US");

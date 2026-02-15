@@ -49,16 +49,21 @@
                                     {
                                         <SVGCrud SVGType="SVGCrud.SVGTypeEnum.InfoCircleDanger"></SVGCrud>
                                     }
-                                    else
+                                    else if (confirmParams.Type == ConfirmationType.Primary)
                                     {
                                         <SVGCrud SVGType="SVGCrud.SVGTypeEnum.RecycleVectore"></SVGCrud>
+                                    }
+                                    else
+                                    {
+                                        <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Info"></SVGCrud>
+
                                     }
                                 </span>
                                 @if (confirmParams.Type == ConfirmationType.Danger)
                                 {
                                     @* <h6 class="modal-title headline-6">Sure to Delete ?</h6> *@
                                 }
-                                else
+                                else if (confirmParams.Type == ConfirmationType.Primary)
                                 {
                                     <h6 class="modal-title headline-6"> Move to trash ?</h6>
                                 }

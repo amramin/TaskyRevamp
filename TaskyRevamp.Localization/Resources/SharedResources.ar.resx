@@ -1272,7 +1272,7 @@
     <value>نجحت عملية اكمال المهمة</value>
   </data>
   <data name="SureCompleteTask" xml:space="preserve">
-    <value>هل انت متأكد انك تريد اكمال المهمة؟</value>
+    <value>هل انت متأكد انك تريد إكمال المهمة؟</value>
   </data>
   <data name="ValueMustBeGreaterThanOrEqualTo1" xml:space="preserve">
     <value>يجب أن تكون القيمة أكبر من أو تساوي 1</value>
@@ -1382,11 +1382,37 @@
   <data name="DependencyError" xml:space="preserve">
     <value>لا يمكن تعيين نسبة التقدم إلى 100% لوجود مهمة أو أكثر من المهام المعتمدة ما زالت غير مكتملة، متأخرة، أو تم إعادة فتحها.</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="Reopenedsuccessfully" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="Apply" xml:space="preserve">
+    <value>تطبيق</value>
+  </data>
+  <data name="Reset" xml:space="preserve">
+    <value>مسح</value>
+  </data>
+  <data name="FromToStartDate" xml:space="preserve">
+    <value>من تاريخ البدء يجب ان يكون اقل من الى تاريخ البدء</value>
+  </data>
+  <data name="FromToEndDate" xml:space="preserve">
+    <value>من تاريخ الانتهاء يجب ان يكون اقل من الى تاريخ ال</value>
   </data>
   <data name="AssignedToDepartmentForm" xml:space="preserve">
     <value>إدارة المسند إليه</value>
+  </data>
+  <data name="FromStartDateValidation" xml:space="preserve">
+    <value>يجب ان تكون اقل من الى تاريخ البدايه</value>
+  </data>
+  <data name="ToStartDateValidation" xml:space="preserve">
+    <value>يجب ان تكون اكبر من تاريخ البدايه</value>
+  </data>
+  <data name="FromEndDateValidation" xml:space="preserve">
+    <value>يجب ان تكون اقل من الى تاريخ الانتهاء</value>
+  </data>
+  <data name="ToEndDateValidation" xml:space="preserve">
+    <value>يجب ان تكون اكبر من تاريخ الانتهاء</value>
+  </data>
+  <data name="FromCreationDateValidation" xml:space="preserve">
+    <value>يجب ان تكون اقل من الى تاريخ الانشاء</value>
+  </data>
+  <data name="ToCreationDateValidation" xml:space="preserve">
+    <value>يجب ان تكون اكبر من تاريخ الانشاء</value>
   </data>
 </root>
