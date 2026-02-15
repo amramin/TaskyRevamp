@@ -528,9 +528,7 @@
         Console.WriteLine("Departments Values Changed");
         taskdto.AssignedDepartmentIds = values != null ? new List<Guid>(values) : new List<Guid>();
         var field = new FieldIdentifier(taskdto, nameof(taskdto.AssignedDepartmentIds));
-        messageStore.Clear(field);
-        editContext.NotifyFieldChanged(field);
-        editContext.Validate();
+        Notify(field);
     }
     private void OnAssigneesChanged(List<Guid> values)
     {
@@ -632,6 +630,10 @@
     private void ValidateDynamicFields(object sender, ValidationRequestedEventArgs e)
     {
         messageStore.Clear();
+        if (taskdto.AssignedDepartmentIds == null || !taskdto.AssignedDepartmentIds.Any())
+            messageStore.Add(new FieldIdentifier(taskdto, nameof(taskdto.AssignedDepartmentIds)), Loc["Required"]);
+        if (taskdto.AssignedIds == null || !taskdto.AssignedIds.Any())
+            messageStore.Add(new FieldIdentifier(taskdto, nameof(taskdto.AssignedIds)), Loc["Required"]);
         foreach (var column in AddTaskSettings.Where(c => c.IsMandatory))
         {
             switch (column.NameEnglish)
@@ -695,6 +697,12 @@
     {
         taskdto.Description = RichTextEditorComponentRefDescriptionEnglish.GetContent();
         taskdto.Content = RichTextEditorComponentRefComment.GetContent();
+        var isValid = editContext.Validate();
+        if (!isValid)
+        {
+            StateHasChanged();
+            return;
+        }
         await OnValidSubmit.InvokeAsync(context);
     }
     private async Task OnCancelClick() => await OnCancel.InvokeAsync();

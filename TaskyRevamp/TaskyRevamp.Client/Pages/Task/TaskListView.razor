@@ -16,6 +16,7 @@
 @inject DefaultColumnsSettingConsumer _defaultColumnsSettingConsumer
 @inject ILocalStorageService LocalStorageService
 @inject RejectionSettingConsumer _rejectionSettingConsumer
+@inject AddTaskSettingConsumer _addTaskSettingConsumer
 
 @if (!isLoading)
 {
@@ -29,7 +30,7 @@
             }
             <span class="text"> @Title</span>
         </div>
-        @if (allTaks != null&& allTaks.Any())
+        @if (allTaks != null && allTaks.Any())
         {
             <div style="display:@(IsCollapse ? "none" : "block")">
                 <div class="mb-1">
@@ -148,6 +149,7 @@
     [Parameter] public TaskFilterComponent TaskFilter { get; set; } = null;
     CreateTaskDto taskdto = new CreateTaskDto();
     private List<StatusSettingsDto> Statuses = new();
+    private List<AddTaskSettingDto> addTaskSettingDtos = new();
     List<CreateTaskDto> allTaks = new List<CreateTaskDto>();
     private bool isPopupVisible = false;
     public bool IsShowEditDialog { get; set; } = false;
@@ -173,6 +175,7 @@
     private List<DefaultColumnsSettingDto> ColumnsList = new();
     private Guid CurrentUser { get; set; }
     private int RejectionPeriod { get; set; } = 0;
+    private Dictionary<string, bool> activeFields = new();
 
     public async Task<List<SortableColumn>> GetColumns()
     {
@@ -185,7 +188,6 @@
         await LoadColumns();
         StateHasChanged();
     }
-
     private async Task LoadColumns()
     {
         var olddata = await GetColumns();
@@ -211,18 +213,18 @@
             new() { Field = "Start Date", DisplayName = Loc["StartDate"], Order = 4, IsVisible = true },
             new() { Field = "End Date", DisplayName = Loc["EndDate"], Order = 5, IsVisible = true },
             new() { Field = "weight", DisplayName = Loc["weight"], Order = 6, IsVisible = true },
-        new() { Field = "Assigned To", DisplayName = Loc["AssignedTo"], Order = 7, IsVisible = true,IsSortable=false },
-        new() { Field = "Assigned To Department", DisplayName =Loc["AssignedToDepartment"], Order = 8, IsVisible = true,IsSortable=false },
+            new() { Field = "Assigned To", DisplayName = Loc["AssignedTo"], Order = 7, IsVisible = true,IsSortable=false },
+            new() { Field = "Assigned To Department", DisplayName =Loc["AssignedToDepartment"], Order = 8, IsVisible = true,IsSortable=false },
             new() { Field = "Source", DisplayName =Loc["Source"], Order = 9, IsVisible = true },
-        new() { Field = "Dependency", DisplayName = Loc["Dependency"], Order = 10, IsVisible = true,IsSortable=false },
+            new() { Field = "Dependency", DisplayName = Loc["Dependency"], Order = 10, IsVisible = true,IsSortable=false },
             new() { Field = "Created By", DisplayName = Loc["CreatedBy"], Order = 11, IsVisible = true },
-        new() { Field = "Duration", DisplayName = Loc["Duration"], Order = 12, IsVisible = true,IsSortable=false },
+            new() { Field = "Duration", DisplayName = Loc["Duration"], Order = 12, IsVisible = true,IsSortable=false },
             new() { Field = "Created by department", DisplayName = Loc["Createdbydepartment"], Order = 13, IsVisible = true },
-        new() { Field = "Planned Progress", DisplayName = Loc["PlannedProgress"], Order = 14, IsVisible = true,IsSortable=false },
+            new() { Field = "Planned Progress", DisplayName = Loc["PlannedProgress"], Order = 14, IsVisible = true,IsSortable=false },
             new() { Field = "Creation Date", DisplayName = Loc["CreationDate"], Order = 15, IsVisible = true },
             new() { Field = "Type", DisplayName = Loc["Type"], Order = 16, IsVisible = true },
-        new() { Field = "Actual Weight", DisplayName = Loc["ActualWeight"], Order = 17, IsVisible = true,IsSortable=false },
-        new() { Field = "Planned Weight", DisplayName =Loc["PlannedWeight"], Order = 18, IsVisible = true,IsSortable=false },
+            new() { Field = "Actual Weight", DisplayName = Loc["ActualWeight"], Order = 17, IsVisible = true,IsSortable=false },
+            new() { Field = "Planned Weight", DisplayName =Loc["PlannedWeight"], Order = 18, IsVisible = true,IsSortable=false },
         };
         var key = IsCompletedTasks ? "CompletedTask_Columns" : "MainTask_Columns";
         await LocalStorageService.SetItemAsync(key, column);
@@ -288,6 +290,12 @@
                 if (settings != null)
                     ColumnsList = settings;
             }
+            var addTasksSettingRes = await _addTaskSettingConsumer.GetAddTaskSettings();
+            if(addTasksSettingRes.Success && addTasksSettingRes.Data != null)
+            {
+                addTaskSettingDtos = addTasksSettingRes.Data;
+                BuildActiveFieldsDictionary();
+            }
             // Filter and order by settings
             tableColumns = tableColumns.Where(c => ColumnsList.Any(s => s.IsActive && string.Equals(s.NameEnglish, c.Field, StringComparison.OrdinalIgnoreCase)))
             .OrderBy(c => ColumnsList.First(s => string.Equals(s.NameEnglish, c.Field, StringComparison.OrdinalIgnoreCase)).Order ?? int.MaxValue).ToList();
@@ -298,13 +306,14 @@
         finally
         {
             isLoading = false;
+            StateHasChanged();
         }
     }
     protected override async Task OnParametersSetAsync()
     {
         if (IsCollapseAll.HasValue)
         {
-            CollapseAll((bool)IsCollapseAll.Value);
+            await CollapseAll((bool)IsCollapseAll.Value);
         }
             await GetTasks();
     }
@@ -378,11 +387,6 @@
                     await DeleteConfirmed(delegationId);
             }, ConfirmationType.Other);
     }
-    // public void ShowEditPopup(Guid id)
-    // {
-    //     PopupService.ShowNew(@<Edit UserDelegationId="@id.ToString()" IsAdmine="@IsAdmine" OnValidSubmit="GetTasks"></Edit>,
-    //         headerText: @Loc["EditDelegation"]);
-    // }
     private async Task OnConfirmDelete(bool confirmed)
     {
         if (confirmed && itemToDelete != null!)
@@ -439,35 +443,39 @@
         SearchFieldTask.UpdateDate,
         SearchFieldTask.PlannedProgress
     };
+    private void BuildActiveFieldsDictionary()
+    {
+        activeFields = addTaskSettingDtos.DistinctBy(c => c.NameEnglish, StringComparer.OrdinalIgnoreCase)
+            .ToDictionary(c => c.NameEnglish, c => c.IsActive, StringComparer.OrdinalIgnoreCase);
+    }
+    private bool IsFieldActive(string fieldName)
+    {
+        var isactiveField = activeFields.FirstOrDefault(s => s.Key == fieldName);
+        return isactiveField.Value;
+    }
     private RenderFragment RenderColumnValue(CreateTaskDto task, string field) => builder =>
     {
         switch (field)
         {
-            @* case "Title":
-                builder.OpenElement(0, "span");
-                builder.AddAttribute(1, "class", "task-title");
-                builder.AddAttribute(2, "title", task.Title ?? string.Empty);
-                builder.AddContent(3, task.Title);
-                builder.CloseElement();
-                break; *@
             case "Title":
+                if (IsDelayed(task))
+                {
+                    builder.OpenElement(-10, "span");
+                    builder.AddAttribute(-9, "class", "task-delayed-icon");
 
-                builder.OpenElement(-10, "span");
-                builder.AddAttribute(-9, "class", "task-delayed-icon");
+                    builder.OpenComponent<SVGCrud>(-8);
+                    builder.AddAttribute(-7, "SVGType", SVGCrud.SVGTypeEnum.ClockRewind);
+                    builder.CloseComponent();
 
-                builder.OpenComponent<SVGCrud>(-8);
-                builder.AddAttribute(-7, "SVGType", SVGCrud.SVGTypeEnum.ClockRewind);
-                builder.CloseComponent();
-
-                builder.CloseElement();
-
+                    builder.CloseElement();
+                }
 
                 builder.OpenElement(0, "span");
                 builder.AddAttribute(1, "class", "task-title");
                 builder.AddAttribute(2, "title", task.Title ?? string.Empty);
                 builder.AddContent(3, task.Title);
                 builder.CloseElement();
-                if (task.Dependencies.Count() > 0)
+                if (task.Dependencies!.Count() > 0)
                 {
                     builder.OpenElement(4, "span");
                     builder.AddAttribute(5, "class", "task-depancy-number");
@@ -483,7 +491,7 @@
 
                     builder.OpenElement(10, "span");
                     builder.AddAttribute(11, "class", "text");
-                    builder.AddContent(12, $"{task.Dependencies.Count()}");
+                    builder.AddContent(12, $"{task.Dependencies!.Count()}");
                     builder.CloseElement();
                     builder.CloseElement();
                 }
@@ -511,7 +519,10 @@
                 builder.AddContent(0, task.EndDate?.ToString(Loc["LocalizeDate"]));
                 break;
             case "weight":
-                builder.AddContent(0, task.weight);
+                if (IsFieldActive("Weight"))
+                    builder.AddContent(0, task.weight);
+                else
+                    builder.AddContent(0, 0);
                 break;
             case "Assigned To":
                 builder.AddContent(0, (RenderFragment)(b =>
@@ -558,10 +569,16 @@
                 builder.AddContent(0, task.TypeName);
                 break;
             case "Actual Weight":
-                builder.AddContent(0, $"{task.ActualWeight}%");
+                if (IsFieldActive("Weight"))
+                    builder.AddContent(0, $"{task.ActualWeight}%");
+                else
+                    builder.AddContent(0, $"{0}%");
                 break;
             case "Planned Weight":
-                builder.AddContent(0, $"{task.Plannedweight}%");
+                if (IsFieldActive("Weight"))
+                    builder.AddContent(0, $"{task.Plannedweight}%");
+                else
+                    builder.AddContent(0, $"{0}%");
                 break;
             case "Action":
                 builder.AddContent(0, "...");
@@ -584,7 +601,7 @@
     public async Task GetTasks(bool isSearch = false, string searchTerm = null!)
     {
         var res = await _taskConsumer.GetTasks(currentPage, pageSize, currentSortColumn, sortAscending!.Value, isSearch ?
-            searchFields : null!, isSearch ? searchTerm : null!, ViewType, ViewTypeId, IsCompleted,TaskFilter);
+            searchFields : null!, isSearch ? searchTerm : null!, ViewType, ViewTypeId, IsCompleted, TaskFilter);
 
         if (!(res?.Success ?? false) || res.Data is null)
             return;
