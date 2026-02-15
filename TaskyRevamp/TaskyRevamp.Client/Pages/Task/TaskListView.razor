@@ -146,6 +146,7 @@
     [Parameter] public bool IsCompletedTasks { get; set; } = false;
     [Parameter] public bool? IsCollapseAll { get; set; } = null;
     [Parameter] public TaskFilterComponent TaskFilter { get; set; } = null;
+    [Parameter] public bool IsFilter { get; set; } = false;
     CreateTaskDto taskdto = new CreateTaskDto();
     private List<StatusSettingsDto> Statuses = new();
     List<CreateTaskDto> allTaks = new List<CreateTaskDto>();
@@ -302,11 +303,15 @@
     }
     protected override async Task OnParametersSetAsync()
     {
+        if (IsFilter)
+        {
+            await GetTasks();
+        }
+
         if (IsCollapseAll.HasValue)
         {
             CollapseAll((bool)IsCollapseAll.Value);
         }
-            await GetTasks();
     }
     // public async Task ResetPage()
     // {
@@ -461,47 +466,66 @@
                 break; *@
             case "Title":
 
-                builder.OpenElement(-10, "span");
-                builder.AddAttribute(-9, "class", "task-delayed-icon");
+                builder.OpenElement(0, "span");
+                builder.AddAttribute(1, "class", "task-delayed-icon");
 
-                builder.OpenComponent<SVGCrud>(-8);
-                builder.AddAttribute(-7, "SVGType", SVGCrud.SVGTypeEnum.ClockRewind);
+                builder.OpenComponent<SVGCrud>(2);
+                builder.AddAttribute(3, "SVGType", SVGCrud.SVGTypeEnum.ClockRewind);
                 builder.CloseComponent();
 
                 builder.CloseElement();
 
 
-                builder.OpenElement(0, "span");
-                builder.AddAttribute(1, "class", "task-title");
-                builder.AddAttribute(2, "title", task.Title ?? string.Empty);
-                builder.AddContent(3, task.Title);
+                builder.OpenElement(4, "span");
+                builder.AddAttribute(5, "class", "task-title");
+                builder.AddAttribute(6, "title", task.Title ?? string.Empty);
+                builder.AddAttribute(7, "style", "cursor:pointer;");
+                builder.AddAttribute(8, "onclick",
+                    EventCallback.Factory.Create(this, () => ViewTaskDetails(task.Id)));
+
+                builder.AddContent(9, task.Title);
                 builder.CloseElement();
+
                 if (task.Dependencies.Count() > 0)
                 {
-                    builder.OpenElement(4, "span");
-                    builder.AddAttribute(5, "class", "task-depancy-number");
+                    builder.OpenElement(10, "span");
+                    builder.AddAttribute(11, "class", "task-depancy-number");
 
-                    builder.OpenElement(6, "span");
-                    builder.AddAttribute(7, "class", "icon");
+                    builder.OpenElement(12, "span");
+                    builder.AddAttribute(13, "class", "icon");
 
-                    builder.OpenComponent<SVGCrud>(8);
-                    builder.AddAttribute(9, "SVGType", SVGCrud.SVGTypeEnum.Relation);
+                    builder.OpenComponent<SVGCrud>(14);
+                    builder.AddAttribute(15, "SVGType", SVGCrud.SVGTypeEnum.Relation);
                     builder.CloseComponent();
 
                     builder.CloseElement();
 
-                    builder.OpenElement(10, "span");
-                    builder.AddAttribute(11, "class", "text");
-                    builder.AddContent(12, $"{task.Dependencies.Count()}");
+                    builder.OpenElement(16, "span");
+                    builder.AddAttribute(17, "class", "text");
+                    builder.AddContent(18, $"{task.Dependencies.Count()}");
                     builder.CloseElement();
+
                     builder.CloseElement();
                 }
+
                 break;
             case "Priority":
-                builder.AddContent(0, task.PriorityName);
+                builder.OpenElement(0, "span");
+                builder.AddAttribute(1, "style",
+                    $"background-color:{task.PriorityBackgroundColor};" +
+                    $"color:{task.PriorityColor};" +
+                    "padding:4px 8px;border-radius:6px;font-size:12px;");
+                builder.AddContent(2, task.PriorityName);
+                builder.CloseElement();
                 break;
             case "Status":
+                builder.OpenElement(0, "span");
+                builder.AddAttribute(1, "style",
+                    $"background-color:{task.TaskStatusBackgroundColor};" +
+                    $"color:{task.TaskStatusColor};" +
+                    "padding:4px 8px;border-radius:6px;font-size:12px;");
                 builder.AddContent(0, (task.TaskStatusName)?.ToString());
+                builder.CloseElement();
                 break;
             case "Actual progress":
                 builder.AddContent(0, (RenderFragment)(b =>
@@ -651,11 +675,38 @@
     }
     private async Task OnTaskProgressChanged(CreateTaskDto task, int value)
     {
+        var progressold = task.ActualProcess;
+        PopupService.ShowConfirmation(@Loc["SureChangeProgress"], @Loc["Confirm"],
+        async (confirmed) =>
+        {
+            if (confirmed)
+            {
+                await ChangeProgressConfirmed(task,value);
+            }
+            else
+            {
+                task.ActualProcess = progressold;
+                StateHasChanged();
+            }
+        },
+        ConfirmationType.Other
+    );
+    }
+    private async Task ChangeProgressConfirmed(CreateTaskDto task, int value)
+    {
         task.ActualProcess = value;
-        await _taskConsumer.ChangeTaskProgress(task.Id, value);
-        // var resMainTasks = await _taskConsumer.GetMainAndParentTasks();
-        // if (resMainTasks.Success && resMainTasks.Data != null)
-        //     MainAndParentTasks = resMainTasks.Data;
+        var result= await _taskConsumer.ChangeTaskProgress(task.Id, value);
+        if (result.Success && result.Data)
+        {
+            await ToastService.ShowToastAsync(Loc["progressChangedsuccessfully"], "success");
+            await GetTasks();
+        }
+        else
+        {
+            await ToastService.ShowToastAsync(Loc["DependencyError"], "error");
+            await GetTasks();
+        }
+
         StateHasChanged();
     }
     private async Task Collapse()
