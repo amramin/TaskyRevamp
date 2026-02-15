@@ -33,17 +33,21 @@
     [Parameter] public int? ActualProgress { get; set; }
     [Parameter] public EventCallback<int> OnProgressChanged { get; set; }
     [Parameter] public int Width { get; set; } = 400;
-    private bool IsEditable => ActualProgress.HasValue;
-    private bool ShouldRenderBar => IsEditable || (Tasks != null && Tasks.Any());
+    private bool IsEditable = true;
+    private bool ShouldRenderBar => ActualProgress.HasValue || (Tasks != null && Tasks.Any());
     private int ProgressValue
     {
         get
         {
-            if (IsEditable)
+            if (IsEditable || (Tasks == null || !Tasks.Any()))
                 return Math.Clamp(ActualProgress!.Value, 0, 100);
             if (Tasks == null || !Tasks.Any()) return 0;
             return (int)Math.Round(Tasks.Sum(t => t.ActualProcess) / (double)Tasks.Count);
         }
+    }
+    protected override void OnParametersSet()
+    {
+        IsEditable = ActualProgress.HasValue && ActualProgress < 100;
     }
     // private string ProgressColor => ProgressValue < 40 ? "bg-danger" : ProgressValue < 70 ? "bg-warning" : "bg-success";
     private async Task OnMouseDown(MouseEventArgs e)

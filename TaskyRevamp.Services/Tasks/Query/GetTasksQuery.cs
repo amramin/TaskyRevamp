@@ -283,6 +283,8 @@ public class GetTasksHandler : IRequestHandler<GetTasksQuery, PagedResult<Create
             tasky.TypeName = currentCulture == "ar" ? tsk.Type?.NameArabic??"" : tsk.Type?.NameEnglish??"";
             tasky.SourceName = currentCulture == "ar" ? tsk.Source?.NameArabic??"" : tsk.Source?.NameEnglish ?? "";
             tasky.PriorityName = currentCulture == "ar" ? tsk.Priority?.NameArabic??"" : tsk.Priority?.NameEnglish ?? "";
+            tasky.PriorityBackgroundColor = tsk.Priority?.BackgroundColor;
+            tasky.PriorityColor = tsk.Priority?.NameColor;
             var departments = await _departmenRepository.FindBy(k => tsk.AssignedDepartmentIds.Contains(k.Id));
             var depsName = currentCulture == "ar" ? departments.Value.Select(k => k.NameArabic): departments.Value.Select(k => k.NameEnglish);
             tasky.AssignedDepartmentName = string.Join(" ", depsName);
@@ -297,6 +299,8 @@ public class GetTasksHandler : IRequestHandler<GetTasksQuery, PagedResult<Create
             }
 
             tasky.TaskStatusName = currentCulture == "ar" ? tsk.status?.NameArabic ?? "" : tsk.status?.NameEnglish ?? "";
+            tasky.TaskStatusBackgroundColor = tsk.status?.BackgroundColor;
+            tasky.TaskStatusColor = tsk.status?.NameColor;
             tasky.CreatedByName = currentCulture == "ar" ? tsk.CreatedBy?.NameArabic : tsk.CreatedBy?.NameEnglish;
             tasky.Createdbydepartment = currentCulture == "ar" ? CreatorDepartment?.NameArabic! : CreatorDepartment?.NameEnglish!;
             tasky.UpdatedBy = currentCulture == "ar" ? tsk.UpdatedBy?.NameArabic : tsk.UpdatedBy?.NameEnglish;
@@ -389,7 +393,7 @@ public class GetTasksHandler : IRequestHandler<GetTasksQuery, PagedResult<Create
         Expression<Func<TaskItem, bool>> Expression = null;
         if (taskFilter != null)
         {
-            Expression = t => (string.IsNullOrEmpty(taskFilter.Title) || t.Title.Contains(taskFilter.Title)) &&
+            Expression = t => (string.IsNullOrEmpty(taskFilter.Title) ||(t.Title != null &&t.Title.ToLower().Contains(taskFilter.Title.ToLower()))) &&
             (taskFilter.Priority == null || taskFilter.Priority.Contains(t.PriorityId)) &&
             (taskFilter.Status == null || taskFilter.Status.Contains(t.StatusId)) &&
             (taskFilter.Source == null || taskFilter.Source.Contains(t.TaskSourceId)) &&
