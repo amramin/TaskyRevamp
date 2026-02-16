@@ -66,7 +66,11 @@ public class TaskController : ControllerBase
     {
         return Ok(await _mediator.Send(new ChangeTaskProgressCommand(taskId, progress)));
     }
-
+    [HttpGet("UpdateTaskPriority/{taskId}/{PriorityId}")]
+    public async Task<IActionResult> UpdateTaskPriority(Guid taskId, Guid PriorityId)
+    {
+        return Ok(await _mediator.Send(new UpdateTaskPriorityCommand(taskId, PriorityId)));
+    }
     [HttpGet("CheckOpenedTaskForUser/{userId}")]
     public async Task<IActionResult> CheckOpenedTaskForUser(Guid userId)
     {
