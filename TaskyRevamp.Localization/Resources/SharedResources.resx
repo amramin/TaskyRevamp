@@ -1411,4 +1411,10 @@ Do you want to restore the original type and merge this one into it? Consider th
   <data name="ToCreationDateValidation" xml:space="preserve">
     <value>Must be greater than from creation date</value>
   </data>
+  <data name="SureChangePriority" xml:space="preserve">
+    <value>Are you sure you want to change priority</value>
+  </data>
+  <data name="PriorityChangedsuccessfully" xml:space="preserve">
+    <value>Priority changed successfully</value>
+  </data>
 </root>
