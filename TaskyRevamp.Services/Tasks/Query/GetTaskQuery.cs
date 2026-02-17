@@ -21,14 +21,17 @@ public class GetTaskByIdHandler : IRequestHandler<GetTaskQuery, CreateTaskDto>
     private readonly IRepository<User> _userRepository;
     private readonly IRepository<Department> _departmentRepository;
     private readonly IRepository<TaskViews> _taskViewsRepository;
-	private string currentCulture = System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
-	public GetTaskByIdHandler(ITaskRepository taskRepository, IRepository<User> userRepository,IRepository<TaskDependencies> taskDependincesRepository, IRepository<Department> departmentRepository, IRepository<TaskViews> taskViewsRepository)
+    private readonly IRepository<TaskItem> _taskitemRepository;
+
+    private string currentCulture = System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
+	public GetTaskByIdHandler(ITaskRepository taskRepository, IRepository<User> userRepository,IRepository<TaskDependencies> taskDependincesRepository, IRepository<Department> departmentRepository, IRepository<TaskViews> taskViewsRepository, IRepository<TaskItem> taskitemrepo)
 	{
 		_taskRepository = taskRepository;
 		_userRepository = userRepository;
 		_departmentRepository = departmentRepository;
 		_taskViewsRepository = taskViewsRepository;
 		_taskDependincesRepository = taskDependincesRepository;
+		_taskitemRepository = taskitemrepo;
 	}
 
 	public async Task<CreateTaskDto> Handle(GetTaskQuery request, CancellationToken cancellationToken)
@@ -42,13 +45,19 @@ public class GetTaskByIdHandler : IRequestHandler<GetTaskQuery, CreateTaskDto>
 		{
 			await TrackTaskView(request.Id, request.currentUserId);
 		}
-		var taskDto = res.CopyToDto();
-		var dependencies=await _taskDependincesRepository.FindBy(p=>p.TaskItemId==taskDto.Id);
-		if (dependencies is not null)
-		{
-			taskDto.Dependencies = dependencies.Value.Select(p => p.DependentId).ToList();
+        res.ActualWeight = new Weight(res.Weight ?? 0);
+        res.PlannedWeight = new Weight(res.Weight ?? 0);
+        var taskDto = res.CopyToDto();
+        var dependencies = await _taskDependincesRepository.FindBy(p => p.TaskItemId == taskDto.Id);
+        if (dependencies is not null)
+        {
+            var dependenciesids = dependencies.Value!.Select(p => p.DependentId);
+            var tasksdependent = await _taskitemRepository.FindBy(p => dependenciesids.Contains(p.Id));
+            var DependencyNames = string.Join(", ", tasksdependent.Value!.Select(d => d.Title));
+            taskDto.DependencyNames = DependencyNames;
+            taskDto.Dependencies = dependenciesids.ToList();
         }
-		taskDto.TypeName = currentCulture == "ar" ? res.Type?.NameArabic : res.Type?.NameEnglish;
+        taskDto.TypeName = currentCulture == "ar" ? res.Type?.NameArabic : res.Type?.NameEnglish;
 		taskDto.SourceName = currentCulture == "ar" ? res.Source?.NameArabic : res.Source?.NameEnglish;
 		taskDto.PriorityName = currentCulture == "ar" ? res.Priority?.NameArabic : res.Priority?.NameEnglish;
 		taskDto.PriorityBackgroundColor =  res.Priority?.BackgroundColor;
