@@ -47,7 +47,10 @@ namespace TaskyRevamp.Services.Tasks.Commands
                         }
                         else if (task.Progress > 0 && task.Progress < 100)
                         {
-                            task.StatusId = Guid.Parse("753404A6-8B18-43F7-2238-08DE3318A61C");
+                            if (task.StatusId !=Guid.Parse("270A78EB-C5CA-475D-2239-08DE3318A61C"))
+                            {
+                                task.StatusId = Guid.Parse("753404A6-8B18-43F7-2238-08DE3318A61C");
+                            }
                         }
                         else if (task.Progress == 100)
                         {
