@@ -2410,6 +2410,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Priority changed successfully.
+        /// </summary>
+        public static string PriorityChangedsuccessfully {
+            get {
+                return ResourceManager.GetString("PriorityChangedsuccessfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Priority configuration.
         /// </summary>
         public static string PriorityConfiguration {
@@ -3063,6 +3072,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string Sure {
             get {
                 return ResourceManager.GetString("Sure", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to change priority.
+        /// </summary>
+        public static string SureChangePriority {
+            get {
+                return ResourceManager.GetString("SureChangePriority", resourceCulture);
             }
         }
         

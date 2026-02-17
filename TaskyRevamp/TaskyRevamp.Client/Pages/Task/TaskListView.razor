@@ -1,4 +1,5 @@
 ﻿@using Blazored.LocalStorage
+@using Stingray.Components.MultiSelectComponent
 @using TaskyRevamp.Client.Consumer
 @using TaskyRevamp.Client.Pages.Task.Components
 @using TaskyRevamp.Client.Services
@@ -16,6 +17,7 @@
 @inject DefaultColumnsSettingConsumer _defaultColumnsSettingConsumer
 @inject ILocalStorageService LocalStorageService
 @inject RejectionSettingConsumer _rejectionSettingConsumer
+@inject PrioritySettingConsumer _prioritySettingConsumer
 @inject AddTaskSettingConsumer _addTaskSettingConsumer
 
 @if (!isLoading)
@@ -176,6 +178,8 @@
     private List<DefaultColumnsSettingDto> ColumnsList = new();
     private Guid CurrentUser { get; set; }
     private int RejectionPeriod { get; set; } = 0;
+    public List<PriorityDto> Priorities = new List<PriorityDto>();
+    PriorityDto? selectedPriority = new PriorityDto();
     private Dictionary<string, bool> activeFields = new();
 
     public async Task<List<SortableColumn>> GetColumns()
@@ -283,7 +287,12 @@
             // {
             //     MainAndParentTasks = resMainTasks.Data;
             // }
-
+            var prioritiesTask = _prioritySettingConsumer.GetPriorities();
+            var prioritiesRes = await prioritiesTask;
+            if (prioritiesRes.Success && prioritiesRes.Data != null)
+            {
+                Priorities = prioritiesRes.Data.Where(k => k.IsDeleted != true).ToList().OrderBy(q => q.Order).ToList();
+            }
             var res = await _defaultColumnsSettingConsumer.GetDefaultColumnsSettings();
             if (res.Success)
             {
@@ -508,16 +517,75 @@
 
                 break;
             case "Priority":
-                builder.OpenElement(0, "span");
-                builder.AddAttribute(1, "style",
-                    $"background-color:{task.PriorityBackgroundColor};" +
-                    $"color:{task.PriorityColor};" +
-                    "padding:4px 8px;border-radius:6px;font-size:12px;");
-                builder.AddContent(2, task.PriorityName);
-                builder.CloseElement();
+                // // 1️⃣ Show current priority badge
+                if (IsCompleted)
+                {
+                    builder.OpenElement(0, "div");
+                    builder.AddAttribute(1, "style",
+                        $"background-color:{task.PriorityBackgroundColor};" +
+                        $"color:{task.PriorityColor};" +
+                        "padding:4px 8px;border-radius:6px;font-size:12px;margin-right:6px;");
+                    builder.AddContent(2, task.PriorityName);
+                    builder.CloseElement();
+                }
+                else
+                {
+
+                    // 2️⃣ Get selected priority colors
+                    selectedPriority = Priorities?
+                        .FirstOrDefault(p => p.Id == task.Priority);
+
+                    var bgColor = selectedPriority?.BackgroundColor ?? "#ffffff";
+                    var textColor = selectedPriority?.NameColor ?? "#000000";
+
+                    // 3️⃣ Wrapper with fixed width
+                    builder.OpenElement(3, "div");
+                    builder.AddAttribute(4, "style",
+                        $"display:inline-block;" +
+                        $"width:200px;" +                // 👈 fixed width here
+                        $"min-width:200px;" +
+                        $"background-color:{bgColor};" +
+                        $"color:{textColor};" +
+                        $"border-radius:6px;");
+
+                    builder.OpenComponent<SearchableSingleDropdownOffline<PriorityDto, Guid>>(5);
+                    builder.SetKey($"{task.Id}-priority");
+
+                    builder.AddAttribute(6, "TextSelector",
+                        (Func<PriorityDto, string>)(x => x.Name));
+
+                    builder.AddAttribute(7, "OutputSelector",
+                        (Func<PriorityDto, Guid>)(x => x.Id));
+
+                    builder.AddAttribute(8, "Datasource", Priorities);
+
+                    builder.AddAttribute(9, "SelectedOption", task.Priority);
+
+                    builder.AddAttribute(10, "SelectedOptionChanged",
+                        EventCallback.Factory.Create<Guid>(this,
+                            value => OnPriorityChanged(task, value)));
+                    builder.AddAttribute(11, "ItemTemplate",
+                        (RenderFragment<PriorityDto>)((context) => (itemBuilder) =>
+                        {
+                            itemBuilder.OpenElement(0, "div");
+                            itemBuilder.AddAttribute(1, "class", "d-flex align-items-center");
+
+                            itemBuilder.OpenElement(2, "span");
+                            // itemBuilder.AddAttribute(3, "class", "p-1");
+                            itemBuilder.AddAttribute(4, "style",
+                            $"background-color:{context.BackgroundColor};color:{context.NameColor};padding:4px 8px;");
+
+                            itemBuilder.AddContent(5, context.Name);
+
+                            itemBuilder.CloseElement(); // span
+                            itemBuilder.CloseElement(); // div
+                        }));
+                    builder.CloseComponent();
+                    builder.CloseElement();
+                }
                 break;
             case "Status":
-                builder.OpenElement(0, "span");
+                builder.OpenElement(0, "div");
                 builder.AddAttribute(1, "style",
                     $"background-color:{task.TaskStatusBackgroundColor};" +
                     $"color:{task.TaskStatusColor};" +
@@ -661,6 +729,46 @@
             }
         }
         return RejectionPeriod;
+    }
+    private void OnPriorityChanged(CreateTaskDto task,Guid value)
+    {
+       // task.Priority = value;
+
+        // 2️⃣ Update display fields (important!)
+        var selected = Priorities?.FirstOrDefault(p => p.Id == value);
+        PopupService.ShowConfirmation(@Loc["SureChangePriority"], @Loc["Confirm"],
+                async (confirmed) =>
+                {
+                    if (confirmed)
+                    {
+                        if (selected != null)
+                        {
+                            task.PriorityName = selected.Name;
+                            task.PriorityBackgroundColor = selected.BackgroundColor;
+                            task.PriorityColor = selected.NameColor;
+                        }
+                        await ChangePriorityConfirmed(task, value);
+                    }
+                },
+                ConfirmationType.Other
+                );
+    }
+    private async Task ChangePriorityConfirmed(CreateTaskDto task, Guid value)
+    {
+        task.Priority = value;
+        var result = await _taskConsumer.UpdateTaskPriority(task.Id, value);
+        if (result.Success && result.Data)
+        {
+            await ToastService.ShowToastAsync(Loc["PriorityChangedsuccessfully"], "success");
+            await GetTasks();
+        }
+        else
+        {
+            await ToastService.ShowToastAsync(Loc["Erroroccurred"], "error");
+            await GetTasks();
+        }
+
+        StateHasChanged();
     }
     private bool DisplayRejectButton(CreateTaskDto taskDto)
     {

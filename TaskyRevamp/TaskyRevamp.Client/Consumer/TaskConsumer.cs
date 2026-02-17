@@ -90,6 +90,12 @@ namespace TaskyRevamp.Client.Consumer
             var res = await _taskyService.GetFromJsonAsync<CommonApiResponse<bool>>(url);
             return res;
         }
+        public async Task<CommonApiResponse<bool>> UpdateTaskPriority(Guid TaskId, Guid PriorityId)
+        {
+            var url = $"api/Task/UpdateTaskPriority/{TaskId}/{PriorityId}";
+            var res = await _taskyService.GetFromJsonAsync<CommonApiResponse<bool>>(url);
+            return res;
+        }
         public async Task<CommonApiResponse<bool>> CheckOpenedTaskForUser(Guid userId)
         {
             var url = $"api/Task/CheckOpenedTaskForUser/{userId}";

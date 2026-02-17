@@ -1382,6 +1382,9 @@
   <data name="DependencyError" xml:space="preserve">
     <value>لا يمكن تعيين نسبة التقدم إلى 100% لوجود مهمة أو أكثر من المهام المعتمدة ما زالت غير مكتملة، متأخرة، أو تم إعادة فتحها.</value>
   </data>
+  <data name="AssignedToDepartmentForm" xml:space="preserve">
+    <value>إدارة المسند إليه</value>
+  </data>
   <data name="Apply" xml:space="preserve">
     <value>تطبيق</value>
   </data>
@@ -1393,9 +1396,6 @@
   </data>
   <data name="FromToEndDate" xml:space="preserve">
     <value>من تاريخ الانتهاء يجب ان يكون اقل من الى تاريخ ال</value>
-  </data>
-  <data name="AssignedToDepartmentForm" xml:space="preserve">
-    <value>إدارة المسند إليه</value>
   </data>
   <data name="FromStartDateValidation" xml:space="preserve">
     <value>يجب ان تكون اقل من الى تاريخ البدايه</value>
@@ -1414,5 +1414,11 @@
   </data>
   <data name="ToCreationDateValidation" xml:space="preserve">
     <value>يجب ان تكون اكبر من تاريخ الانشاء</value>
+  </data>
+  <data name="SureChangePriority" xml:space="preserve">
+    <value>هل انت متأكد انك تريد تغيير اولوية المهمة</value>
+  </data>
+  <data name="PriorityChangedsuccessfully" xml:space="preserve">
+    <value>تم تغيير اواوية المهمة بنجاح</value>
   </data>
 </root>
