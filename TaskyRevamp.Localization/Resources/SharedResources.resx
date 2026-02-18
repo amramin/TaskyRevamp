@@ -1417,4 +1417,7 @@ Do you want to restore the original type and merge this one into it? Consider th
   <data name="PriorityChangedsuccessfully" xml:space="preserve">
     <value>Priority changed successfully</value>
   </data>
+  <data name="AddFileAttachment" xml:space="preserve">
+    <value>add attachment</value>
+  </data>
 </root>

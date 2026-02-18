@@ -82,6 +82,7 @@ public interface IRepository<TEntity> where TEntity : Entity
     Task DetachEntity(TEntity entity);
     Task Delete(Guid id);
     Task DeleteRang(List<Guid> id);
+    Task DeleteAll();
 
     Task<DbResponse<List<TEntity>>> FindBy
     (Expression<Func<TEntity, bool>> predicate,
