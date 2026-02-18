@@ -5,34 +5,14 @@
 
 @if (!IsLoaded)
 {
-    <!-- Lightweight placeholder -->
-    <textarea class="form-control"
-              rows="4"
-              placeholder="@ButtonText"
-              readonly
-              @onclick="LoadEditor">
-                @InternalContent
-        </textarea>
-@*     <button type="button"
-            class="btn btn-primary w-100 text-start"
-            @onclick="LoadEditor"
-            disabled="@IsLoading">
-        @if (IsLoading)
-        {
-            <span class="spinner-border spinner-border-sm me-2"></span>
-            <span class="sr-only">@Loc["LoadEditor"]</span>
-        }
-        else
-        {
-            <i class="fas fa-pen me-2"></i>
-            @ButtonText
-        }
-    </button> *@
+    <div class="form-control"
+         style="min-height:120px; cursor:text;"
+         @onclick="LoadEditor">
+        @((MarkupString)(InternalContent ?? $"<span class='text-muted'>{ButtonText}</span>"))
+    </div>
 }
 else{
-@* <SfRichTextEditor @ref="rte" ID="@EditorId" SaveInterval="5000" @bind-Value="InternalContent" EnablePersistence="false" ShowCharCount="true" MaxLength="3000" CssClass="@(EnableRtl? "arabic-rte" : "")" >
-   *@ 
-   <SfRichTextEditor @ref="rte"
+    <SfRichTextEditor @ref="rte"
                   ID="@EditorId"
                   SaveInterval="0"
                   Value="@InternalContent"
@@ -42,12 +22,10 @@ else{
                   ShowCharCount="true"
                   MaxLength="3000"
                   CssClass="@(EnableRtl ? "arabic-rte" : "")">
-   <RichTextEditorToolbarSettings Items="@Tools" />
-        <RichTextEditorPasteCleanupSettings Prompt="false"
-           PlainText="false"
-                                            KeepFormat="true" DeniedTags="@DeniedTags" />
-<RichTextEditorQuickToolbarSettings Link="@Link"/>
-</SfRichTextEditor>
+        <RichTextEditorToolbarSettings Items="@Tools" />
+        <RichTextEditorPasteCleanupSettings Prompt="false" PlainText="false" KeepFormat="true" DeniedTags="@DeniedTags" />
+        <RichTextEditorQuickToolbarSettings Link="@Link"/>
+    </SfRichTextEditor>
 }
 <style>
     .arabic-rte .e-rte-content{
@@ -57,16 +35,10 @@ else{
 
 
 @code {
-    [Parameter]
-    public string EditorId { get; set; }
-    [Parameter]
-    public string Content { set; get; }
-
-    [Parameter]
-    public EventCallback<string> ContentChanged { get; set; }
-
-    [Parameter]
-    public bool EnableRtl { get; set; } = CultureInfo.CurrentCulture.Name == "ar-EG" ? true : false;
+    [Parameter] public string EditorId { get; set; }
+    [Parameter] public string Content { set; get; }
+    [Parameter] public EventCallback<string> ContentChanged { get; set; }
+    [Parameter] public bool EnableRtl { get; set; } = CultureInfo.CurrentCulture.Name == "ar-EG" ? true : false;
     private bool IsLoaded;
     private bool IsLoading;
     private SfRichTextEditor rte;
@@ -99,15 +71,13 @@ else{
         // new ToolbarItemModel() { Command = ToolbarCommand.Redo },
 
     };
-    //void LoadEditor() => IsLoaded = true;
     private List<LinkToolbarItemModel> Link = new List<LinkToolbarItemModel>()
     {
         new LinkToolbarItemModel() { Command = LinkToolbarCommand.Open },
         new LinkToolbarItemModel() { Command = LinkToolbarCommand.Edit },
         new LinkToolbarItemModel() { Command = LinkToolbarCommand.UnLink }
     };
-    public async Task<string> GetValueAsync()
-    => IsLoaded ? await rte.GetXhtmlAsync() : InternalContent;
+    public async Task<string> GetValueAsync() => IsLoaded ? await rte.GetXhtmlAsync() : InternalContent;
     private string InternalContent
     {
         get => Content;
@@ -124,9 +94,7 @@ else{
     {
         IsLoading = true;
         await InvokeAsync(StateHasChanged);
-
         await Task.Yield();
-
         IsLoaded = true;
         IsLoading = false;
     }
@@ -134,7 +102,6 @@ else{
     private async Task OnValueChange(string args)
     {
         var newValue = args;
-
         if (Content != newValue)
         {
             Content = newValue;

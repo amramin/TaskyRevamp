@@ -480,18 +480,9 @@
         // editContext.NotifyValidationStateChanged();
         StateHasChanged();
     }
-    private async Task OpenStratDatePicker()
-    {
-        await startDatePicker.ShowPopupAsync();
-    }
-    private async Task OpenReminderDatePicker()
-    {
-        await ReminderDatePicker.ShowPopupAsync();
-    }
-    private async Task OpenEndDatePicker()
-    {
-        await EndDatePicker.ShowPopupAsync();
-    }
+    private async Task OpenStratDatePicker() => await startDatePicker.ShowPopupAsync();
+    private async Task OpenReminderDatePicker() => await ReminderDatePicker.ShowPopupAsync();
+    private async Task OpenEndDatePicker() =>  await EndDatePicker.ShowPopupAsync();
     private void OnContentChanged(string html)
     {
         taskdto.Content = html;
@@ -534,13 +525,15 @@
     }
     private void OnDepartmentsChanged(List<Guid> values)
     {
-        taskdto.AssignedDepartmentIds = values;
+        Console.WriteLine("Departments Values Changed");
+        taskdto.AssignedDepartmentIds = values != null ? new List<Guid>(values) : new List<Guid>();
         var field = new FieldIdentifier(taskdto, nameof(taskdto.AssignedDepartmentIds));
         Notify(field);
     }
     private void OnAssigneesChanged(List<Guid> values)
     {
-        taskdto.AssignedIds = values;
+        Console.WriteLine("Assignees Values Changed");
+        taskdto.AssignedIds = values != null ? new List<Guid>(values) : new List<Guid>();
         var field = new FieldIdentifier(taskdto, nameof(taskdto.AssignedIds));
         Notify(field);
     }
@@ -563,6 +556,7 @@
     {
         messageStore.Clear(field);
         editContext.NotifyFieldChanged(field);
+        editContext.Validate();
     }
     protected async override Task OnInitializedAsync()
     {
@@ -636,7 +630,11 @@
     private void ValidateDynamicFields(object sender, ValidationRequestedEventArgs e)
     {
         messageStore.Clear();
-        foreach (var column in AddTaskSettings.Where(c => c.IsMandatory || true))
+        if (taskdto.AssignedDepartmentIds == null || !taskdto.AssignedDepartmentIds.Any())
+            messageStore.Add(new FieldIdentifier(taskdto, nameof(taskdto.AssignedDepartmentIds)), Loc["Required"]);
+        if (taskdto.AssignedIds == null || !taskdto.AssignedIds.Any())
+            messageStore.Add(new FieldIdentifier(taskdto, nameof(taskdto.AssignedIds)), Loc["Required"]);
+        foreach (var column in AddTaskSettings.Where(c => c.IsMandatory))
         {
             switch (column.NameEnglish)
             {
@@ -649,11 +647,11 @@
                         messageStore.Add(new FieldIdentifier(taskdto, nameof(taskdto.Description)), Loc["Required"]);
                     break;
                 case "Type":
-                    if (column.IsMandatory && taskdto.TypeId == Guid.Empty)
+                    if (column.IsMandatory && !taskdto.TypeId.HasValue)
                         messageStore.Add(new FieldIdentifier(taskdto, nameof(taskdto.TypeId)), Loc["Required"]);
                     break;
                 case "Source":
-                    if (column.IsMandatory && taskdto.SourceId == Guid.Empty)
+                    if (column.IsMandatory && !taskdto.SourceId.HasValue)
                         messageStore.Add(new FieldIdentifier(taskdto, nameof(taskdto.SourceId)), Loc["Required"]);
                     break;
                 case "Priority":
@@ -699,6 +697,12 @@
     {
         taskdto.Description = RichTextEditorComponentRefDescriptionEnglish.GetContent();
         taskdto.Content = RichTextEditorComponentRefComment.GetContent();
+        var isValid = editContext.Validate();
+        if (!isValid)
+        {
+            StateHasChanged();
+            return;
+        }
         await OnValidSubmit.InvokeAsync(context);
     }
     private async Task OnCancelClick() => await OnCancel.InvokeAsync();
@@ -706,8 +710,8 @@
     {
         if (editContext != null)
         {
-            editContext.OnValidationRequested -= ValidateDynamicFields;
-            editContext.OnFieldChanged -= OnFieldChanged;
+            editContext.OnValidationRequested -= ValidateDynamicFields!;
+            editContext.OnFieldChanged -= OnFieldChanged!;
         }
     }
 }
