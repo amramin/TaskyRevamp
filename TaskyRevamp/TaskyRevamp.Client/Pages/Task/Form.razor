@@ -56,7 +56,7 @@
                                     <p class="mb-2">
                                         @Loc["Drag and Drop or"],
                                         <label for="fileInput" class="text-primary" style="cursor: pointer; text-decoration: underline;">
-                                            @Loc["AddAttachment"]
+                                            @Loc["AddFileAttachment"]
                                         </label>
                                     </p>
                                     <InputFile id="fileInput"
@@ -384,6 +384,8 @@
 
     </EditForm>
 }
+
+
 @code {
     [Parameter] public CreateTaskDto taskdto { set; get; }
     [Parameter] public EventCallback<EditContext> OnValidSubmit { get; set; }

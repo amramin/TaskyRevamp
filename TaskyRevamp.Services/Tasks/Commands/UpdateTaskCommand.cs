@@ -19,6 +19,7 @@ public class UpdateTaskCommandHandler : IRequestHandler<UpdateTaskCommand, bool>
     private readonly ITaskRepository _taskRepository;
     private readonly IRepository<StatusSettings> _statusSettings;
     private readonly IRepository<TaskDependencies> _taskDependincesRepository;
+    private readonly IRepository<AddTaskSettings> _addTaskSettingRepository;
     private readonly IRepository<TaskItem> _taskrepo;
     private readonly IRepository<TaskComments> _taskCommentRepository;
     private readonly IRepository<Attachment> _attachmentRepository;
@@ -27,19 +28,20 @@ public class UpdateTaskCommandHandler : IRequestHandler<UpdateTaskCommand, bool>
         { ".pdf", ".doc", ".docx", ".xls", ".xlsx", ".ppt", ".pptx", ".txt", ".csv", ".jpg", ".jpeg", ".png" };
     private readonly IFileManagement _fileManagement;
 
-    public UpdateTaskCommandHandler(ITaskRepository taskRepository, IFileManagement fileManagement, IRepository<Attachment> attachmentRepository, IRepository<TaskAttachment> taskAttachmentRepository, IRepository<StatusSettings> statusSettings, IRepository<TaskDependencies> taskDependincesRepository, IRepository<TaskItem> taskrepo, IRepository<TaskComments> taskCommentRepository)
-    {
-        _taskRepository = taskRepository;
-        _statusSettings = statusSettings;
-        _taskDependincesRepository = taskDependincesRepository;
-        _taskrepo = taskrepo;
-        _taskCommentRepository = taskCommentRepository;
-        _attachmentRepository = attachmentRepository;
-        _taskAttachmentRepository = taskAttachmentRepository;
-        _fileManagement = fileManagement;
-    }
+	public UpdateTaskCommandHandler(ITaskRepository taskRepository, IFileManagement fileManagement, IRepository<Attachment> attachmentRepository, IRepository<TaskAttachment> taskAttachmentRepository, IRepository<StatusSettings> statusSettings, IRepository<TaskDependencies> taskDependincesRepository, IRepository<TaskItem> taskrepo, IRepository<TaskComments> taskCommentRepository, IRepository<AddTaskSettings> addTaskSettingRepository)
+	{
+		_taskRepository = taskRepository;
+		_statusSettings = statusSettings;
+		_taskDependincesRepository = taskDependincesRepository;
+		_taskrepo = taskrepo;
+		_taskCommentRepository = taskCommentRepository;
+		_attachmentRepository = attachmentRepository;
+		_taskAttachmentRepository = taskAttachmentRepository;
+		_fileManagement = fileManagement;
+		_addTaskSettingRepository = addTaskSettingRepository;
+	}
 
-    public async Task<bool> Handle(UpdateTaskCommand request, CancellationToken cancellationToken)
+	public async Task<bool> Handle(UpdateTaskCommand request, CancellationToken cancellationToken)
     {
         var task = await _taskRepository.GetTaskById(request.Task.Id);
         var TaskSatuses = await _statusSettings.All();
@@ -83,11 +85,13 @@ public class UpdateTaskCommandHandler : IRequestHandler<UpdateTaskCommand, bool>
                 }
                 else if (request.Task.ActualProcess == 100)
                 {
-                    if(task.Dependencies is  not null&&task.Dependencies.Count>0)
+                    var res = await _addTaskSettingRepository.FindBy(t => t.NameEnglish == "Dependency");
+                    var dependencySetting = res.Value?.FirstOrDefault();
+					if (task.Dependencies is  not null && task.Dependencies.Count > 0 && dependencySetting!.IsActive)
                     {
                         var dependencies = task.Dependencies?.Select(p => p.DependentId).ToList();
-                        var tasksnotcompleted = await _taskrepo.FindBy(d => dependencies.Contains(d.Id));
-                        if(tasksnotcompleted.Value.Any(p => p.StatusId != Guid.Parse("C8D504C7-9402-4F91-223C-08DE3318A61C"))){
+                        var tasksnotcompleted = await _taskrepo.FindBy(d => dependencies!.Contains(d.Id));
+                        if(tasksnotcompleted.Value!.Any(p => p.StatusId != Guid.Parse("C8D504C7-9402-4F91-223C-08DE3318A61C"))){
                             throw new Exception("DependencyError");
                         }
                         else

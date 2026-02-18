@@ -1421,4 +1421,7 @@
   <data name="PriorityChangedsuccessfully" xml:space="preserve">
     <value>تم تغيير اواوية المهمة بنجاح</value>
   </data>
+  <data name="AddFileAttachment" xml:space="preserve">
+    <value>إضافة ملف</value>
+  </data>
 </root>

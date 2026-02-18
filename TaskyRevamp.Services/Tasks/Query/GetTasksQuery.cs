@@ -43,11 +43,7 @@ public class GetTasksHandler : IRequestHandler<GetTasksQuery, PagedResult<Create
     {
         List<CreateTaskDto> alltasks = new List<CreateTaskDto>();
         string currentCulture = System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
-
-
-
         var orderBy = GetOrderBy(request.sortByColumnName, request.sortAscending);
-
         Expression<Func<TaskItem, bool>> searchExpression = null;
         if (request.IsCompleted)
         {
@@ -276,7 +272,7 @@ public class GetTasksHandler : IRequestHandler<GetTasksQuery, PagedResult<Create
         foreach (var tsk in res.Items)
         {
             var assgnedusr = await _userRepository.FindBy(k => tsk.AssignedIds.Contains(k.Id));
-            var CreatorDepartment =  _departmenRepository.FirstOrDefaultAsNoTracking(k => k.Id == (tsk.CreatedBy.DepartmentId??Guid.Empty));
+            var CreatorDepartment =  _departmenRepository.FirstOrDefaultAsNoTracking(k => k.Id == (tsk.CreatedBy!.DepartmentId??Guid.Empty));
             tsk.ActualWeight=new Weight(tsk.Weight ?? 0);
             tsk.PlannedWeight = new Weight(tsk.Weight ?? 0);
             CreateTaskDto tasky = tsk.CopyToDto();
@@ -286,8 +282,8 @@ public class GetTasksHandler : IRequestHandler<GetTasksQuery, PagedResult<Create
             tasky.PriorityBackgroundColor = tsk.Priority?.BackgroundColor;
             tasky.PriorityColor = tsk.Priority?.NameColor;
             var departments = await _departmenRepository.FindBy(k => tsk.AssignedDepartmentIds.Contains(k.Id));
-            var depsName = currentCulture == "ar" ? departments.Value.Select(k => k.NameArabic): departments.Value.Select(k => k.NameEnglish);
-            tasky.AssignedDepartmentName = string.Join(" ", depsName);
+            var depsName = currentCulture == "ar" ? departments.Value!.Select(k => k.NameArabic): departments.Value!.Select(k => k.NameEnglish);
+            tasky.AssignedDepartmentName = string.Join(", ", depsName);
             var dependencies = await _taskDependincesRepository.FindBy(p => p.TaskItemId == tasky.Id);
             if (dependencies is not null)
             {
@@ -382,8 +378,8 @@ public class GetTasksHandler : IRequestHandler<GetTasksQuery, PagedResult<Create
                     : q => q.OrderByDescending(u => u.Progress);
             case "Created by department":
                 return sortAscending
-                    ? q => q.OrderBy(u => currentCulture == "ar" ? u.CreatedBy.Department.NameArabic : u.CreatedBy.Department.NameEnglish)
-                    : q => q.OrderByDescending(u => currentCulture == "ar" ? u.CreatedBy.Department.NameArabic : u.CreatedBy.Department.NameEnglish);
+                    ? q => q.OrderBy(u => currentCulture == "ar" ? u.CreatedBy!.Department!.NameArabic : u.CreatedBy.Department!.NameEnglish)
+                    : q => q.OrderByDescending(u => currentCulture == "ar" ? u.CreatedBy.Department!.NameArabic : u.CreatedBy.Department!.NameEnglish);
             default:
                 return q => q.OrderBy(u => u.CreateDate);
         }
@@ -401,7 +397,7 @@ public class GetTasksHandler : IRequestHandler<GetTasksQuery, PagedResult<Create
             (taskFilter.AssignedTo == null || (t.AssignedIds != null && t.AssignedIds.Any(id => taskFilter.AssignedTo.Contains(id)))) &&
             (taskFilter.AssignedToDepartment == null || (t.AssignedDepartmentIds != null && t.AssignedDepartmentIds.Any(id => taskFilter.AssignedToDepartment.Contains(id)))) &&
             (taskFilter.CreatedBy==null||taskFilter.CreatedBy.Contains(t.CreatedById))&&
-            (taskFilter.CreatedByDepartment == null || taskFilter.CreatedByDepartment.Contains(t.CreatedBy.Department.Id))
+            (taskFilter.CreatedByDepartment == null || taskFilter.CreatedByDepartment.Contains(t.CreatedBy.Department!.Id))
             ;
             //to Task Start Date
             if(taskFilter.FromStartDate.HasValue && taskFilter.ToStartDate.HasValue)
