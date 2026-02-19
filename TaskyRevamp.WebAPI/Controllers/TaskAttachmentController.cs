@@ -21,9 +21,9 @@ namespace TaskyRevamp.WebAPI.Controllers
 		}
 
 		[HttpPost("AddTaskAttachment/{taskItemId}")]
-		public async Task<ActionResult<bool>> AddTaskAttachment([FromBody] List<UploadAttachmentDto> attachmentsDto, Guid taskItemId)
+		public async Task<ActionResult<bool>> AddTaskAttachment([FromForm] List<IFormFile> files, Guid taskItemId)
 		{
-			return Ok(await _mediator.Send(new AddTaskAttachmentCommand(attachmentsDto, taskItemId)));
+			return Ok(await _mediator.Send(new AddTaskAttachmentCommand(files, taskItemId)));
 		}
 
 		[HttpGet("GetTaskAttachments/{taskItemId}")]
