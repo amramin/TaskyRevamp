@@ -28,7 +28,8 @@
     [Parameter] public bool IsAdmine { set; get; }
     [Parameter] public EventCallback<CreateTaskDto> OnValidSubmit { get; set; }
     [Parameter] public EventCallback OnCancel { get; set; }
-
+    private readonly HashSet<string> AllowedUploadedExtensions = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+        { ".pdf", ".doc", ".docx", ".xls", ".xlsx", ".ppt", ".pptx", ".txt", ".csv", ".jpg", ".jpeg", ".png" };
     bool IsLoaded = false;
     protected override async Task OnInitializedAsync()
     {
@@ -46,7 +47,8 @@
     {
         var current = await LocalStorageService.GetItemAsStringAsync("Id");
         Taskdto.UpdatedBy = current;
-        var rs = await _taskonsumer.UpdateTask(Taskdto);
+        var browserFiles = Taskdto.BrowserFiles.ToList();
+        var rs = await _taskonsumer.UpdateTask(Taskdto, browserFiles, AllowedUploadedExtensions);
         //await ToastService.ShowToastAsync(Loc[MessagesMap.DataSavedSuccessfully], "success");
         if (rs.Success && rs.Data)
         {

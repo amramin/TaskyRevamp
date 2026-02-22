@@ -14,7 +14,7 @@ using TaskAttachment = TaskyRevamp.Domain.Models.Task.TaskAttachments;
 
 namespace TaskyRevamp.Services.TaskAttachments.Command
 {
-	public record AddTaskAttachmentCommand(List<IFormFile> Files, Guid taskItemId) : IRequest<bool>;
+	public record AddTaskAttachmentCommand(List<IFormFile> Files, Guid taskItemId, HashSet<string> AllowedExtensuins = null) : IRequest<bool>;
 	public class AddTaskAttachmentHandler : IRequestHandler<AddTaskAttachmentCommand, bool>
 	{
 		private readonly IRepository<TaskAttachment> _taskAttachmentRepository;
@@ -41,11 +41,11 @@ namespace TaskyRevamp.Services.TaskAttachments.Command
 			}
 			else
 				taskAttachments = taskAttachmentsResult.Value.FirstOrDefault()!;
-
+			var allowedExtensions = request.AllowedExtensuins != null && request.AllowedExtensuins.Any() ? request.AllowedExtensuins : SupportedAttachmentExtensions;
 			foreach (var file in request.Files)
 			{
 				var extension = Path.GetExtension(file.FileName)?.ToLower();
-				if (!SupportedAttachmentExtensions.Contains(extension!))
+				if (!allowedExtensions.Contains(extension!))
 					continue;
 				var fileType = _fileManagement.ResolveFileType(file.FileName);
 				using var ms = new MemoryStream();

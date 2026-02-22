@@ -66,7 +66,7 @@
                                                accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.csv,.jpg,.jpeg,.png" />
 
                                 </div>
-                                <ValidationMessage class="small text-danger" For="@(() => taskdto.uploadAttachmentDtos)"></ValidationMessage>
+                                <ValidationMessage class="small text-danger" For="@(() => taskdto.BrowserFiles)"></ValidationMessage>
                                 @if (uploadedFiles.Any())
                                 {
                                     <div class="mt-3">
@@ -441,16 +441,16 @@
             await fileManagementService.InitDropZone("dropZone", "fileInput");
         }
     }
-    private async Task LoadFile(InputFileChangeEventArgs args)
+    private Task LoadFile(InputFileChangeEventArgs args)
     {
         var files = args.GetMultipleFiles(int.MaxValue).ToList();
-        await UploadFiles(files);
+        return UploadFiles(files);
     }
-    private async Task UploadFiles(List<IBrowserFile> files)
+    private  Task UploadFiles(List<IBrowserFile> files)
     {
-        if (!files.Any()) return;
+        if (!files.Any()) return Task.CompletedTask;
         var validFiles = new List<IBrowserFile>();
-        var field = new FieldIdentifier(taskdto, nameof(taskdto.uploadAttachmentDtos));
+        var field = new FieldIdentifier(taskdto, nameof(taskdto.BrowserFiles));
         messageStore.Clear(field);
         const long maxFileSize = 26214400;
         foreach (var file in files)
@@ -466,21 +466,11 @@
             uploadedFiles.Add(file);
         }
         if (!validFiles.Any())
-            return;
-        StateHasChanged();
-        var attachmentDtos = new List<UploadAttachmentDto>();
+            return Task.CompletedTask;
         foreach (var file in validFiles)
-        {
-            StateHasChanged();
-            var (bytes, name, type) = await fileManagementService.ReadFileAsync(file);
-            if (bytes != null && bytes.Length > 0)
-                attachmentDtos.Add(new UploadAttachmentDto { FileName = name, Bytes = bytes, Size = bytes.LongLength });
-        }
-        taskdto.uploadAttachmentDtos = attachmentDtos;
-        // if (attachmentDtos.Any())
-        //     messageStore.Clear(field);
-        // editContext.NotifyValidationStateChanged();
+            taskdto.BrowserFiles.Add(file);
         StateHasChanged();
+        return Task.CompletedTask;
     }
     private async Task OpenStratDatePicker() => await startDatePicker.ShowPopupAsync();
     private async Task OpenReminderDatePicker() => await ReminderDatePicker.ShowPopupAsync();
@@ -641,8 +631,8 @@
             switch (column.NameEnglish)
             {
                 case "File upload":
-                    if (column.IsMandatory && (taskdto.uploadAttachmentDtos == null || !taskdto.uploadAttachmentDtos.Any()))
-                        messageStore.Add(new FieldIdentifier(taskdto, nameof(taskdto.uploadAttachmentDtos)), Loc["Required"]);
+                    if (column.IsMandatory && (taskdto.BrowserFiles == null || !taskdto.BrowserFiles.Any()))
+                        messageStore.Add(new FieldIdentifier(taskdto, nameof(taskdto.BrowserFiles)), Loc["Required"]);
                     break;
                 case "Description":
                     if (column.IsMandatory && string.IsNullOrWhiteSpace(taskdto.Description))
