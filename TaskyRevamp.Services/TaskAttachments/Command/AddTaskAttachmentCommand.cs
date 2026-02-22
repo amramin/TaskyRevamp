@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +14,7 @@ using TaskAttachment = TaskyRevamp.Domain.Models.Task.TaskAttachments;
 
 namespace TaskyRevamp.Services.TaskAttachments.Command
 {
-	public record AddTaskAttachmentCommand(List<UploadAttachmentDto> AttachmentsDto, Guid taskItemId) : IRequest<bool>;
+	public record AddTaskAttachmentCommand(List<IFormFile> Files, Guid taskItemId, HashSet<string> AllowedExtensuins = null) : IRequest<bool>;
 	public class AddTaskAttachmentHandler : IRequestHandler<AddTaskAttachmentCommand, bool>
 	{
 		private readonly IRepository<TaskAttachment> _taskAttachmentRepository;
@@ -40,15 +41,18 @@ namespace TaskyRevamp.Services.TaskAttachments.Command
 			}
 			else
 				taskAttachments = taskAttachmentsResult.Value.FirstOrDefault()!;
-
-			foreach (var dto in request.AttachmentsDto)
+			var allowedExtensions = request.AllowedExtensuins != null && request.AllowedExtensuins.Any() ? request.AllowedExtensuins : SupportedAttachmentExtensions;
+			foreach (var file in request.Files)
 			{
-				var extension = Path.GetExtension(dto.FileName)?.ToLower();
-				if (!SupportedAttachmentExtensions.Contains(extension!))
+				var extension = Path.GetExtension(file.FileName)?.ToLower();
+				if (!allowedExtensions.Contains(extension!))
 					continue;
-				var fileType = _fileManagement.ResolveFileType(dto.FileName);
-				var fileId = await _fileManagement.UploadFile(dto.Bytes, dto.FileName, fileType);
-				var attachment = new Attachment(Guid.NewGuid(), dto.FileName, fileId, dto.Size, taskAttachments.Id, fileType);
+				var fileType = _fileManagement.ResolveFileType(file.FileName);
+				using var ms = new MemoryStream();
+				await file.CopyToAsync(ms);
+				var bytes = ms.ToArray();
+				var fileId = await _fileManagement.UploadFile(bytes, file.FileName, fileType);
+				var attachment = new Attachment(Guid.NewGuid(), file.FileName, fileId, file.Length, taskAttachments.Id, fileType);
 				await _attachmentRepository.Insert(attachment);
 			}
 			return true;

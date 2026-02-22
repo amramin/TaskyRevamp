@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
 using Microsoft.JSInterop;
+using TaskyRevamp.Client.Consumer;
 using TaskyRevamp.Client.Services;
 using TaskyRevamp.Client.Shared;
 using TaskyRevamp.Localization.Resources;
@@ -19,18 +20,20 @@ namespace TaskyRevamp.Client
 		IStringLocalizer<SharedResources> Loc;
 		private IOptions<MySettings> _mySettings;
 		private readonly ILocalStorageService _localStorage;
+		private readonly TaskAttachmentConsumer _taskAttachmentConsumer;
 		private readonly HashSet<string> SupportedAttachmentExtensions = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
 		{ ".pdf", ".docx", ".doc", ".ppt", ".pptx", ".jpeg", ".jpg", ".png", ".txt", ".csv", ".json", ".xml"};
 		private readonly HashSet<string> PreviewableExtensions = new(StringComparer.OrdinalIgnoreCase)
 		{".pdf", ".jpeg", ".jpg", ".png", ".txt", ".csv", ".json", ".xml"};
 		private readonly HashSet<string> AllowedUploadedExtensions = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
 		{ ".pdf", ".doc", ".docx", ".xls", ".xlsx", ".ppt", ".pptx", ".txt", ".csv", ".jpg", ".jpeg", ".png" };
-		public FileManagementService(IOptions<MySettings> mySettings, IJSRuntime js, ILocalStorageService localStorage, IStringLocalizer<SharedResources> loc)
+		public FileManagementService(IOptions<MySettings> mySettings, IJSRuntime js, ILocalStorageService localStorage, IStringLocalizer<SharedResources> loc, TaskAttachmentConsumer taskAttachmentConsumer)
 		{
 			JS = js;
 			_localStorage = localStorage;
 			_mySettings = mySettings;
 			Loc = loc;
+			_taskAttachmentConsumer = taskAttachmentConsumer;
 		}
 		public ValidationResult ValidateAttachment(IBrowserFile file, long maxSize)
 		{
@@ -74,7 +77,22 @@ namespace TaskyRevamp.Client
 			}
 			return new ValidationResult { NotValid = false };
 		}
-
+		public async Task UploadStreamFiles(Guid taskId, List<IBrowserFile> files, HashSet<string>? AllowedExtensions = null)
+		{
+			using var content = new MultipartFormDataContent();
+			foreach (var file in files)
+			{
+				var sc = new StreamContent(file.OpenReadStream(maxAllowedSize: 26214400));
+				sc.Headers.ContentType = new(string.IsNullOrEmpty(file.ContentType)? "application/octet-stream" : file.ContentType);
+				content.Add(sc, "Files", file.Name);
+			}
+			if (AllowedExtensions != null && AllowedExtensions.Any())
+			{
+				foreach (var ext in AllowedExtensions)
+					content.Add(new StringContent(ext), "allowedExtensions");
+			}
+			await _taskAttachmentConsumer.AddTaskAttachment(content, taskId);
+		}
 		public bool CanPreview(string fileName)
 		{
 			var ext = Path.GetExtension(fileName);

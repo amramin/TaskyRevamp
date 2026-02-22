@@ -40,14 +40,26 @@
             </div>
         </div>
 
+        @if (uploadErrors.Any())
+        {
+            <div>
+                @foreach (var error in uploadErrors)
+                {
+                    <p class="text-danger">@error</p>
+                }
+            </div>
+        }
         @if (isUploading)
         {
-            <div class="d-flex align-items-center mb-4" role="alert">
+            <div class="d-flex align-items-center mb-2" role="alert">
                 <div class="spinner-border spinner-border-sm me-2" role="status">
                 </div>
             </div>
             <div>
-                 @Loc["Uploading"] @if (!string.IsNullOrEmpty(uploadingFileName)) { <strong>@uploadingFileName</strong> }
+                @Loc["Uploading"] 
+                @if (!string.IsNullOrEmpty(uploadingFileName)) {
+                    <strong class="me-1">@uploadingFileName</strong>
+                }
             </div>
         }
         @if (!attachmentsDto.Any())
@@ -112,6 +124,7 @@
                 }
             </div>
         }
+ 
     </div>
 </div>
 
@@ -120,12 +133,11 @@
     [Parameter] public EventCallback OnAttachmentChanged { get; set; }
     private List<AttachmentWithNameDto> attachmentsDto = new List<AttachmentWithNameDto>();
     private bool isUploading = false;
-    private const long MaxFileSize = 50 * 1024 * 1024; // 50MB
     private bool showConfirm;
     private string uploadingFileName = string.Empty;
     private AttachmentWithNameDto? selectedAttachment;
     private bool isDragging = false;
-
+    private List<string> uploadErrors = new();
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
@@ -153,47 +165,36 @@
     }
     private async Task UploadFiles(IEnumerable<IBrowserFile> files)
     {
+        uploadErrors.Clear();
         if (!files.Any()) return;
         var validFiles = new List<IBrowserFile>();
-        var hasErrors = false;
+        const long maxFileSize = 26214400;
         foreach (var file in files)
         {
-            var validationRes = _fileManagementService.ValidateAttachment(file, MaxFileSize);
+            var validationRes = _fileManagementService.ValidateAttachment(file, maxFileSize);
             if (validationRes.NotValid)
             {
-                await ToastService.ShowToastAsync($"{file.Name}: {validationRes.ValidationMessage}", "error");
-                hasErrors = true;
+                uploadErrors.Add($"{file.Name}: {validationRes.ValidationMessage}");
                 continue;
             }
             validFiles.Add(file);
         }
-        if (!validFiles.Any())
-        {
-            return;
-        }
-        isUploading = true;
         StateHasChanged();
 
-        var attachmentDtos = new List<UploadAttachmentDto>();
+        if (!validFiles.Any()) return;
+        isUploading = true;
+        StateHasChanged();
+        var content = new MultipartFormDataContent();
         foreach (var file in validFiles)
         {
             uploadingFileName = file.Name;
             StateHasChanged();
-            var (bytes, name, type) = await _fileManagementService.ReadFileAsync(file);
-            if (bytes != null && bytes.Length > 0)
-            {
-                attachmentDtos.Add(new UploadAttachmentDto
-                    {
-                        FileName = name,
-                        Bytes = bytes,
-                        Size = bytes.LongLength
-                    });
-            }
+            var stream = file.OpenReadStream(maxFileSize);
+            content.Add(new StreamContent(stream), "files", file.Name);
         }
-
-        if (attachmentDtos.Any())
+        if (validFiles.Any())
         {
-            var res = await _taskAttachmentConsumer.AddTaskAttachment(attachmentDtos, TaskId);
+            var res = await _taskAttachmentConsumer.AddTaskAttachment(content, TaskId);
             if (res.Success)
             {
                 await LoadAttachments();
@@ -206,6 +207,7 @@
         uploadingFileName = string.Empty;
         StateHasChanged();
     }
+
     private async Task DownloadFile(AttachmentDto attachment)
     {
         var res = await _taskAttachmentConsumer.GetAttachmentInfo(attachment.FileId);

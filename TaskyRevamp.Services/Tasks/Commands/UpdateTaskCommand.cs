@@ -107,41 +107,12 @@ public class UpdateTaskCommandHandler : IRequestHandler<UpdateTaskCommand, bool>
             }
         }
         await _taskRepository.UpdateTask(task);
-        if (request.Task.uploadAttachmentDtos is not null)
-        {
-            var attachmnentsDto = request.Task.uploadAttachmentDtos.ToList();
-            if (attachmnentsDto != null)
-            {
-                await uploadTaskFiles(attachmnentsDto, task.Id);
-            }
-        }
+
         if (!string.IsNullOrEmpty(request.Task.Content))
         {
             TaskComments taskComment = new TaskComments(task.Id, request.Task.Content);
             await _taskCommentRepository.Insert(taskComment);
         }
         return true;
-    }
-    public async Task uploadTaskFiles(List<UploadAttachmentDto> uploadAttachmentDtos, Guid taskId)
-    {
-        var taskAttachmentsResult = await _taskAttachmentRepository.FindBy(t => t.TaskItemId == taskId);
-        TaskAttachment taskAttachments;
-        if (!taskAttachmentsResult.Success || taskAttachmentsResult.Value == null || !taskAttachmentsResult.Value.Any())
-        {
-            taskAttachments = new TaskAttachment { Id = Guid.NewGuid(), TaskItemId = taskId };
-            await _taskAttachmentRepository.Insert(taskAttachments);
-        }
-        else
-            taskAttachments = taskAttachmentsResult.Value.FirstOrDefault()!;
-        foreach (var dto in uploadAttachmentDtos)
-        {
-            var extension = Path.GetExtension(dto.FileName)?.ToLower();
-            if (!AllowedUploadedExtensions.Contains(extension!))
-                continue;
-            var fileType = _fileManagement.ResolveFileType(dto.FileName);
-            var fileId = await _fileManagement.UploadFile(dto.Bytes, dto.FileName, fileType);
-            var attachment = new Attachment(Guid.NewGuid(), dto.FileName, fileId, dto.Size, taskAttachments.Id, fileType);
-            await _attachmentRepository.Insert(attachment);
-        }
     }
 }

@@ -1,20 +1,24 @@
 ﻿using DocumentFormat.OpenXml.Office2010.Excel;
+using Microsoft.AspNetCore.Components.Forms;
 using TaskyRevamp.Dto.Enums.SearchFields;
 using TaskyRevamp.Dto.GeneralDto;
 using TaskyRevamp.Dto.SystemConfiguration;
 using TaskyRevamp.Dto.TaskComment;
 using TaskyRevamp.Dto.TaskDto;
 
+
 namespace TaskyRevamp.Client.Consumer
 {
     public class TaskConsumer
     {
         private readonly TaskyService _taskyService;
-        public TaskConsumer(TaskyService taskyService)
-        {
-            _taskyService = taskyService;
-        }
-        public async Task<CommonApiResponse<List<CreateTaskDto>>> GetTasksForDDL(Guid tskid)
+        private readonly FileManagementService _fileManagementService;
+		public TaskConsumer(TaskyService taskyService, FileManagementService fileManagementService)
+		{
+			_taskyService = taskyService;
+			_fileManagementService = fileManagementService;
+		}
+		public async Task<CommonApiResponse<List<CreateTaskDto>>> GetTasksForDDL(Guid tskid)
         {
             var url = $"api/Task/GetTasksForDDL/{tskid}";
             var res = await _taskyService.GetFromJsonAsync<CommonApiResponse<List<CreateTaskDto>>>(url);
@@ -47,18 +51,27 @@ namespace TaskyRevamp.Client.Consumer
             return res;
         }
 
-        public async Task<CommonApiResponse<string>> AddTask(CreateTaskDto CreateTaskDto)
+        public async Task<CommonApiResponse<string>> AddTask(CreateTaskDto CreateTaskDto, List<IBrowserFile>? browserFilesAddedTask = null,HashSet<string>? allowedExtensions = null)
         {
             var url = $"api/Task/CreateTask";
             var res = await _taskyService.PostJsonAsync<string>(url, CreateTaskDto);
-            return res;
+			if (!res.Success) return res;
+            if (browserFilesAddedTask != null && browserFilesAddedTask.Any())
+            {
+                var taskId = Guid.Parse(res.Data!);
+				await _fileManagementService.UploadStreamFiles(taskId, browserFilesAddedTask, allowedExtensions);
+            }
+			return res;
         }
 
-        public async Task<CommonApiResponse<bool>> UpdateTask(CreateTaskDto CreateTaskDto)
+        public async Task<CommonApiResponse<bool>> UpdateTask(CreateTaskDto CreateTaskDto, List<IBrowserFile>? browserFiles = null, HashSet<string>? allowedExtensions = null)
         {
             var url = $"api/Task/UpdateTask";
             var res = await _taskyService.PostJsonAsync<bool>(url, CreateTaskDto);
-            return res;
+            if(!res.Success) return res;
+            if(browserFiles != null && browserFiles.Any())
+				await _fileManagementService.UploadStreamFiles(CreateTaskDto.Id ,browserFiles, allowedExtensions);
+			return res;
         }
         public async Task<CommonApiResponse<bool>> CompleteTask(Guid TaskId)
         {

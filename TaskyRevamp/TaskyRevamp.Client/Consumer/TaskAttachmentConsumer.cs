@@ -1,4 +1,5 @@
-﻿using TaskyRevamp.Dto.GeneralDto;
+﻿using Microsoft.AspNetCore.Http;
+using TaskyRevamp.Dto.GeneralDto;
 using TaskyRevamp.Dto.TaskAttachment;
 using TaskyRevamp.Dto.TaskDto;
 
@@ -12,11 +13,11 @@ namespace TaskyRevamp.Client.Consumer
 		{
 			_taskyService = taskyService;
 		}
-		public async Task<CommonApiResponse<bool>> AddTaskAttachment(List<UploadAttachmentDto> attachmentsDto, Guid taskItemDto)
+		public async Task<CommonApiResponse<bool>> AddTaskAttachment(MultipartFormDataContent content, Guid taskItemDto)
 		{
 			var url = $"api/TaskAttachment/AddTaskAttachment/{taskItemDto}";
-			var res = await _taskyService.PostJsonAsync<CommonApiResponse<bool>>(url,attachmentsDto);
-			return res.Data;
+			var res = await _taskyService.PostFileAsync<CommonApiResponse<bool>>(url,content);
+			return res.Data!;
 		}
 		public async Task<CommonApiResponse<List<AttachmentWithNameDto>>> GetTaskAttachments(Guid taskItemDto)
 		{
