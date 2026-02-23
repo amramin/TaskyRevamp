@@ -87,6 +87,7 @@
                 <label class="form-label fw-bold">@Loc["Permissions"] <span class="text-danger">*</span></label>
                 <SearchableMultiDropdownOffline TInput="Permission" TOutput="int" @key="AvailablePermissions"
                                                 Datasource="AvailablePermissions"
+                                                MinCharacterCount="1"
                                                 TextSelector="(p => Loc[p.ToString()])" OutputSelector="(p => (int)p)"
                                                 SelectedOptions="Item.PermissionId" SelectedOptionsChanged="OnPermissionsChanged" IsDisabled="IsViewMode" 
                                                 SearchInputPlaceHolder="@Loc["Search"]" PlaceHolder="@($"{Loc["Select"]}")" NoMatchPlaceHolder="@Loc["NoResultsFound"]"

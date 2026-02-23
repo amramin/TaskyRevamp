@@ -18,7 +18,7 @@
 @inject ILocalStorageService LocalStorageService
 @inject RejectionSettingConsumer _rejectionSettingConsumer
 @inject PrioritySettingConsumer _prioritySettingConsumer
-
+@inject DefaultColumnsSettingConsumer _defaultColumnsSettingConsumer
 @if (!isLoading)
 {
     <div class="card table-card collaped-task-card">
@@ -214,21 +214,28 @@
             new() { Field = "Actual progress", DisplayName = Loc["ActualProgress"], Order = 3, IsVisible = true },
             new() { Field = "Start Date", DisplayName = Loc["StartDate"], Order = 4, IsVisible = true },
             new() { Field = "End Date", DisplayName = Loc["EndDate"], Order = 5, IsVisible = true },
-            new() { Field = "weight", DisplayName = Loc["weight"], Order = 6, IsVisible = false },
+            new() { Field = "weight", DisplayName = Loc["weight"], Order = 6, IsVisible = true },
         new() { Field = "Assigned To", DisplayName = Loc["AssignedTo"], Order = 7, IsVisible = true,IsSortable=false },
-        new() { Field = "Assigned To Department", DisplayName =Loc["AssignedToDepartment"], Order = 8, IsVisible = false,IsSortable=false },
-            new() { Field = "Source", DisplayName =Loc["Source"], Order = 9, IsVisible = false },
-        new() { Field = "Dependency", DisplayName = Loc["Dependency"], Order = 10, IsVisible = false,IsSortable=false },
-            new() { Field = "Created By", DisplayName = Loc["CreatedBy"], Order = 11, IsVisible = false },
-        new() { Field = "Duration", DisplayName = Loc["Duration"], Order = 12, IsVisible = false,IsSortable=false },
-            new() { Field = "Created by department", DisplayName = Loc["Createdbydepartment"], Order = 13, IsVisible = false },
-        new() { Field = "Planned Progress", DisplayName = Loc["PlannedProgress"], Order = 14, IsVisible = false,IsSortable=false },
-            new() { Field = "Creation Date", DisplayName = Loc["CreationDate"], Order = 15, IsVisible = false },
-            new() { Field = "Type", DisplayName = Loc["Type"], Order = 16, IsVisible = false },
-        new() { Field = "Actual Weight", DisplayName = Loc["ActualWeight"], Order = 17, IsVisible = false,IsSortable=false },
-        new() { Field = "Planned Weight", DisplayName =Loc["PlannedWeight"], Order = 18, IsVisible = false,IsSortable=false },
+        new() { Field = "Assigned To Department", DisplayName =Loc["AssignedToDepartment"], Order = 8, IsVisible = true,IsSortable=false },
+            new() { Field = "Source", DisplayName =Loc["Source"], Order = 9, IsVisible = true },
+        new() { Field = "Dependency", DisplayName = Loc["Dependency"], Order = 10, IsVisible = true,IsSortable=false },
+            new() { Field = "Created By", DisplayName = Loc["CreatedBy"], Order = 11, IsVisible = true },
+        new() { Field = "Duration", DisplayName = Loc["Duration"], Order = 12, IsVisible = true,IsSortable=false },
+            new() { Field = "Created by department", DisplayName = Loc["Createdbydepartment"], Order = 13, IsVisible = true },
+        new() { Field = "Planned Progress", DisplayName = Loc["PlannedProgress"], Order = 14, IsVisible = true,IsSortable=false },
+            new() { Field = "Creation Date", DisplayName = Loc["CreationDate"], Order = 15, IsVisible = true },
+            new() { Field = "Type", DisplayName = Loc["Type"], Order = 16, IsVisible = true },
+        new() { Field = "Actual Weight", DisplayName = Loc["ActualWeight"], Order = 17, IsVisible = true,IsSortable=false },
+        new() { Field = "Planned Weight", DisplayName =Loc["PlannedWeight"], Order = 18, IsVisible = true,IsSortable=false },
         };
         var key = IsCompletedTasks ? "CompletedTask_Columns" : "MainTask_Columns";
+        if (await LocalStorageService.GetItemAsync<List<SortableColumn>>(key) is null)
+        {
+            foreach(var col in column)
+            {
+                col.IsVisible = ColumnsList.FirstOrDefault(s => string.Equals(s.NameEnglish, col.Field, StringComparison.OrdinalIgnoreCase))?.IsDisplay ?? col.IsVisible;
+            }
+        }
         await LocalStorageService.SetItemAsync(key, column);
         var all = await LocalStorageService.GetItemAsync<List<SortableColumn>>(key);
         return all;
@@ -238,6 +245,13 @@
         isLoading = true;
         try
         {
+            var res = await _defaultColumnsSettingConsumer.GetDefaultColumnsSettings();
+            if (res.Success)
+            {
+                var settings = res.Data;
+                if (settings != null)
+                    ColumnsList = settings;
+            }
             var isNewLogin = await LocalStorageService.GetItemAsync<bool>("IsNewLogin");
             if (!isNewLogin && ViewTypeId is not null)
             {
@@ -290,13 +304,7 @@
             {
                 Priorities = prioritiesRes.Data.Where(k => k.IsDeleted != true).ToList().OrderBy(q => q.Order).ToList();
             }
-            var res = await _defaultColumnsSettingConsumer.GetDefaultColumnsSettings();
-            if (res.Success)
-            {
-                var settings = res.Data;
-                if (settings != null)
-                    ColumnsList = settings;
-            }
+
             // Filter and order by settings
             tableColumns = tableColumns.Where(c => ColumnsList.Any(s => s.IsActive && string.Equals(s.NameEnglish, c.Field, StringComparison.OrdinalIgnoreCase)))
             .OrderBy(c => ColumnsList.First(s => string.Equals(s.NameEnglish, c.Field, StringComparison.OrdinalIgnoreCase)).Order ?? int.MaxValue).ToList();

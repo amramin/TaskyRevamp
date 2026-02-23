@@ -1,5 +1,6 @@
 ﻿@page "/DefaultColumnsConfiguration"
 
+@using Blazored.LocalStorage
 @using TaskyRevamp.Client.Consumer
 @using TaskyRevamp.Client.Services
 @using TaskyRevamp.Dto.Enums;
@@ -7,6 +8,7 @@
 @inject DefaultColumnsSettingConsumer _defaultColumnsSettingConsumer
 @inject IStringLocalizer<SharedResources> Loc
 @inject ToastService ToastService
+@inject ILocalStorageService LocalStorageService
 
 <div class="page-header">
     <div class="title-block">
@@ -24,6 +26,7 @@
 
                     <div class="card-order-header d-flex justify-content-between align-items-center">
                         <div class="title  small-medium-text"> @Loc["FieldNames"]</div>
+                        <div class="toggle small-medium-text"> @Loc["IsDisplay"]</div>
                         <div class="toggle small-medium-text"> @Loc["active"]</div>
                         <div class="order small-medium-text"></div>
                     </div>
@@ -42,8 +45,20 @@
                                     </div>
                                     <div class="toggle">
                                         <div class="form-switch custom ">
+                                            <input type="checkbox" id="IsDisplay@(setting.Id)" disabled="@(!setting.IsActive)" class="form-check-input"
+                                                   @bind="setting.IsDisplay"
+                                                    />
+
+                                            <label for="IsDisplay@(setting.Id)">
+                                                <span class="toggler-icon"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="toggle">
+                                        <div class="form-switch custom ">
                                             <input type="checkbox" id="IsActive@(setting.Id)" class="form-check-input"
-                                                @bind="setting.IsActive" />
+                                                @bind="setting.IsActive"
+                                                   @bind:after="() => { if (!setting.IsActive) setting.IsDisplay = false; }" />
 
                                             <label for="IsActive@(setting.Id)">
                                                 <span class="toggler-icon"></span>
@@ -105,7 +120,13 @@
 
         }
     }
-
+    private void OnActiveChanged(DefaultColumnsSettingDto setting)
+    {
+        if (!setting.IsActive)
+        {
+            setting.IsDisplay = false;
+        }
+    }
     private void MoveUp(DefaultColumnsSettingDto setting)
     {
         if (setting.Order >= 1)
@@ -138,6 +159,24 @@
         var res = await _defaultColumnsSettingConsumer.UpdateDefaultColumnsSettings(DefaultColumnsSettings);
         if (res.Success)
         {
+            var column = await LocalStorageService.GetItemAsync<List<SortableColumn>>("CompletedTask_Columns");
+            if (column is not null)
+            {
+                foreach (var col in column)
+                {
+                    col.IsVisible = DefaultColumnsSettings.FirstOrDefault(s => string.Equals(s.NameEnglish, col.Field, StringComparison.OrdinalIgnoreCase))?.IsDisplay ?? col.IsVisible;
+                }
+            }
+            await LocalStorageService.SetItemAsync("CompletedTask_Columns", column);
+            var columns = await LocalStorageService.GetItemAsync<List<SortableColumn>>("MainTask_Columns");
+            if (columns is not null)
+            {
+                foreach (var col in columns)
+                {
+                    col.IsVisible = DefaultColumnsSettings.FirstOrDefault(s => string.Equals(s.NameEnglish, col.Field, StringComparison.OrdinalIgnoreCase))?.IsDisplay ?? col.IsVisible;
+                }
+            }
+            await LocalStorageService.SetItemAsync("MainTask_Columns", columns);
             await ToastService.ShowToastAsync(Loc["EditSuccess"], "success");
         }
     }

@@ -51,8 +51,8 @@ public class UpdateTaskCommandHandler : IRequestHandler<UpdateTaskCommand, bool>
         int oldprogress = task.Progress;
         var oldstatus = task.StatusId;
         task.SetData(request.Task);
-        if (oldprogress != request.Task.ActualProcess)
-        {
+        //if (oldprogress != request.Task.ActualProcess)
+        //{
             if (TaskSatuses is not null)
             {
                 if (request.Task.ActualProcess == 0 && (request.Task.StartDate > DateTime.Now))
@@ -101,7 +101,12 @@ public class UpdateTaskCommandHandler : IRequestHandler<UpdateTaskCommand, bool>
                     }
                 }
             }
-        }
+        //}
+        //if (task.EndDate < DateTime.Now && (task.StatusId!= Guid.Parse("270A78EB-C5CA-475D-2239-08DE3318A61C")||
+        //    task.StatusId!= Guid.Parse("6EE4574D-C439-45B4-223A-08DE3318A61C")|| task.StatusId != Guid.Parse("C8D504C7-9402-4F91-223C-08DE3318A61C")))
+        //{
+        //    task.StatusId = Guid.Parse("270A78EB-C5CA-475D-2239-08DE3318A61C");
+        //}
         await _taskRepository.UpdateTask(task);
         if (request.Task.uploadAttachmentDtos is not null)
         {

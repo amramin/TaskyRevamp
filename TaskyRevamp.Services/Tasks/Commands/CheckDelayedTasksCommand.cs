@@ -32,7 +32,7 @@ namespace TaskyRevamp.Services.Tasks.Commands
             };
             if (res.Success && res.Value != null)
             {
-                var tasks = res.Value.Where(t => t.EndDate?.Date < DateTime.UtcNow.Date && !NotAllowDelayStatuses.Any(p => p == t.StatusId)).ToList();
+                var tasks = res.Value.Where(t => DateOnly.FromDateTime(t.EndDate?.Date??default) < DateOnly.FromDateTime(DateTime.UtcNow.Date) && !NotAllowDelayStatuses.Any(p => p == t.StatusId)).ToList();
                 foreach (var task in tasks)
                 {
                     task.StatusId = Guid.Parse("270A78EB-C5CA-475D-2239-08DE3318A61C");
