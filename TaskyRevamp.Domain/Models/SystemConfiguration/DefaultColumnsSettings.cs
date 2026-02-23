@@ -13,6 +13,8 @@ namespace TaskyRevamp.Domain.Models.SystemConfiguration
         public string NameEnglish { get; set; }
         public string NameArabic { get; set; }
         public bool IsActive { get; set; }
+        public bool IsDisplay { get; set; }
+
         public int? Order { get; set; }
 
         public void Update(DefaultColumnsSettingDto defaultColumnsSettingDto)
@@ -21,6 +23,7 @@ namespace TaskyRevamp.Domain.Models.SystemConfiguration
             NameArabic = defaultColumnsSettingDto.NameArabic;
             IsActive = defaultColumnsSettingDto.IsActive;
             Order = defaultColumnsSettingDto.Order;
+            IsDisplay = defaultColumnsSettingDto.IsDisplay;
         }
 
         public DefaultColumnsSettingDto CopyToDto()
@@ -31,6 +34,7 @@ namespace TaskyRevamp.Domain.Models.SystemConfiguration
                 NameEnglish = NameEnglish,
                 NameArabic = NameArabic,
                 IsActive = IsActive,
+                IsDisplay = IsDisplay,
                 Order = Order
             };
         }

@@ -37,6 +37,7 @@
                             <SearchableMultiDropdownOffline TInput=PriorityDto TOutput="Guid" Datasource=Priorities
                                                             TextSelector=@(x=>x.Name) OutputSelector="x=> x.Id"
                                                             @bind-SelectedOptions="@FilterDTO.Priority"
+                                                            MinCharacterCount="1"
                                                             SearchInputPlaceHolder="@Loc["Search"]" PlaceHolder="@($"{Loc["Select"]}")" NoMatchPlaceHolder="@Loc["NoResultsFound"]"
                                                             SelectAllPlaceHolder="@Loc["SelectAll"]" AllowSelectAll="Priorities.Any()" />
                         </div>
@@ -133,6 +134,7 @@
                             <SearchableMultiDropdownOffline TInput=UserDto TOutput="Guid" Datasource=userDtos
                                                             TextSelector=@(x=>x.DisplayedName) OutputSelector="x=> x.Id"
                                                             @bind-SelectedOptions="@FilterDTO.AssignedTo"
+                                                            MinCharacterCount="1"
                                                             SearchInputPlaceHolder="@Loc["Search"]" PlaceHolder="@($"{Loc["Select"]}")" NoMatchPlaceHolder="@Loc["NoResultsFound"]"
                                                             SelectAllPlaceHolder="@Loc["SelectAll"]" AllowSelectAll="userDtos.Any()" />
                         </div>
@@ -143,6 +145,7 @@
                             <SearchableMultiDropdownOffline TInput=DepartmentDto TOutput="Guid" Datasource=departmentDtos
                                                             TextSelector=@(x=>x.NameEnglish) OutputSelector="x=> x.Id"
                                                             @bind-SelectedOptions="@FilterDTO.AssignedToDepartment"
+                                                            MinCharacterCount="1"
                                                             SearchInputPlaceHolder="@Loc["Search"]" PlaceHolder="@($"{Loc["Select"]}")" NoMatchPlaceHolder="@Loc["NoResultsFound"]"
                                                             SelectAllPlaceHolder="@Loc["SelectAll"]" AllowSelectAll="departmentDtos.Any()" />
                         </div>
@@ -153,6 +156,7 @@
                             <SearchableMultiDropdownOffline TInput=UserDto TOutput="Guid" Datasource=userDtos
                                                             TextSelector=@(x=>x.DisplayedName) OutputSelector="x=> x.Id"
                                                             @bind-SelectedOptions="@FilterDTO.CreatedBy"
+                                                            MinCharacterCount="1"
                                                             SearchInputPlaceHolder="@Loc["Search"]" PlaceHolder="@($"{Loc["Select"]}")" NoMatchPlaceHolder="@Loc["NoResultsFound"]"
                                                             SelectAllPlaceHolder="@Loc["SelectAll"]" AllowSelectAll="userDtos.Any()" />
                         </div>
@@ -163,6 +167,7 @@
                             <SearchableMultiDropdownOffline TInput=DepartmentDto TOutput="Guid" Datasource=departmentDtos
                                                             TextSelector=@(x=>x.NameEnglish) OutputSelector="x=> x.Id"
                                                             @bind-SelectedOptions="@FilterDTO.CreatedByDepartment"
+                                                            MinCharacterCount="1"
                                                             SearchInputPlaceHolder="@Loc["Search"]" PlaceHolder="@($"{Loc["Select"]}")" NoMatchPlaceHolder="@Loc["NoResultsFound"]"
                                                             SelectAllPlaceHolder="@Loc["SelectAll"]" AllowSelectAll="departmentDtos.Any()" />
                         </div>
@@ -210,6 +215,7 @@
                             <SearchableMultiDropdownOffline TInput=TypeDto TOutput="Guid?" Datasource=taskTypeDtos
                                                             TextSelector=@(x=>x.DisplayedName) OutputSelector="x=> x.Id"
                                                             @bind-SelectedOptions="@FilterDTO.Type"
+                                                            MinCharacterCount="1"
                                                             SearchInputPlaceHolder="@Loc["Search"]" PlaceHolder="@($"{Loc["Select"]}")" NoMatchPlaceHolder="@Loc["NoResultsFound"]"
                                                             SelectAllPlaceHolder="@Loc["SelectAll"]" AllowSelectAll="taskTypeDtos.Any()" />
                         </div>
@@ -220,6 +226,7 @@
                             <SearchableMultiDropdownOffline TInput=SourceDto TOutput="Guid?" Datasource=taskSourceDtos
                                                             TextSelector=@(x=>x.DisplayedName) OutputSelector="x=> x.Id"
                                                             @bind-SelectedOptions="@FilterDTO.Source"
+                                                            MinCharacterCount="1"
                                                             SearchInputPlaceHolder="@Loc["Search"]" PlaceHolder="@($"{Loc["Select"]}")" NoMatchPlaceHolder="@Loc["NoResultsFound"]"
                                                             SelectAllPlaceHolder="@Loc["SelectAll"]" AllowSelectAll="taskSourceDtos.Any()" />
                         </div>

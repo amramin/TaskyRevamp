@@ -52,6 +52,7 @@
                     <SearchableMultiDropdownOffline @key="AvailableDepartments" TInput="DepartmentDto" TOutput="Guid" Datasource="AvailableDepartments"
                                                     TextSelector="(d => d.Name)" OutputSelector="(d => d.Id)" SelectedOptions="@SelectedDepartments"
                                                     SelectedOptionsChanged="@OnDepartmentsChanged" IsDisabled="IsViewMode" 
+                                                    MinCharacterCount="1"
                                                     SearchInputPlaceHolder="@Loc["Search"]" PlaceHolder="@($"{Loc["Select"]}")" NoMatchPlaceHolder="@Loc["NoResultsFound"]" 
                                                     SelectAllPlaceHolder="@Loc["SelectAll"]" />
                 </div>

@@ -20,6 +20,7 @@
 @inject PrioritySettingConsumer _prioritySettingConsumer
 @inject AddTaskSettingConsumer _addTaskSettingConsumer
 
+@inject DefaultColumnsSettingConsumer _defaultColumnsSettingConsumer
 @if (!isLoading)
 {
     <div class="card table-card collaped-task-card">
@@ -232,6 +233,13 @@
             new() { Field = "Planned Weight", DisplayName =Loc["PlannedWeight"], Order = 18, IsVisible = true,IsSortable=false },
         };
         var key = IsCompletedTasks ? "CompletedTask_Columns" : "MainTask_Columns";
+        if (await LocalStorageService.GetItemAsync<List<SortableColumn>>(key) is null)
+        {
+            foreach(var col in column)
+            {
+                col.IsVisible = ColumnsList.FirstOrDefault(s => string.Equals(s.NameEnglish, col.Field, StringComparison.OrdinalIgnoreCase))?.IsDisplay ?? col.IsVisible;
+            }
+        }
         await LocalStorageService.SetItemAsync(key, column);
         var all = await LocalStorageService.GetItemAsync<List<SortableColumn>>(key);
         return all;
@@ -241,6 +249,13 @@
         isLoading = true;
         try
         {
+            var res = await _defaultColumnsSettingConsumer.GetDefaultColumnsSettings();
+            if (res.Success)
+            {
+                var settings = res.Data;
+                if (settings != null)
+                    ColumnsList = settings;
+            }
             var isNewLogin = await LocalStorageService.GetItemAsync<bool>("IsNewLogin");
             if (!isNewLogin && ViewTypeId is not null)
             {
@@ -306,6 +321,7 @@
                 addTaskSettingDtos = addTasksSettingRes.Data;
                 BuildActiveFieldsDictionary();
             }
+
             // Filter and order by settings
             tableColumns = tableColumns.Where(c => ColumnsList.Any(s => s.IsActive && string.Equals(s.NameEnglish, c.Field, StringComparison.OrdinalIgnoreCase)))
             .OrderBy(c => ColumnsList.First(s => string.Equals(s.NameEnglish, c.Field, StringComparison.OrdinalIgnoreCase)).Order ?? int.MaxValue).ToList();
