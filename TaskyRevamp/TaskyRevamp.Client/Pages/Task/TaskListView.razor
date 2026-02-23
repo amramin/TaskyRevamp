@@ -308,13 +308,6 @@
             {
                 Priorities = prioritiesRes.Data.Where(k => k.IsDeleted != true).ToList().OrderBy(q => q.Order).ToList();
             }
-            var res = await _defaultColumnsSettingConsumer.GetDefaultColumnsSettings();
-            if (res.Success)
-            {
-                var settings = res.Data;
-                if (settings != null)
-                    ColumnsList = settings;
-            }
             var addTasksSettingRes = await _addTaskSettingConsumer.GetAddTaskSettings();
             if(addTasksSettingRes.Success && addTasksSettingRes.Data != null)
             {
