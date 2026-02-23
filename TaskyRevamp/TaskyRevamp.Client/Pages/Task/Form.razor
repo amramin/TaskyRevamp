@@ -237,7 +237,7 @@
                                                                 TextSelector=@(x=>x.NameEnglish) OutputSelector="x=> x.Id"
                                                                 SelectedOptions="@taskdto.AssignedDepartmentIds" SelectedOptionsChanged="OnDepartmentsChanged"
                                                                 SearchInputPlaceHolder="@Loc["Search"]" PlaceHolder="@($"{Loc["Select"]}")" NoMatchPlaceHolder="@Loc["NoResultsFound"]" 
-                                                                SelectAllPlaceHolder="@Loc["SelectAll"]" AllowSelectAll="departmentDtos.Any()" />
+                                                                SelectAllPlaceHolder="@Loc["SelectAll"]" AllowSelectAll="departmentDtos.Any()" MinCharacterCount="1"/>
                                 <ValidationMessage class="small text-danger mt-1" For="@(() => taskdto.AssignedDepartmentIds)"></ValidationMessage>
                             </div>
                             break;
@@ -251,7 +251,7 @@
                                     }
                                 </label>
                                 <SearchableMultiDropdownOffline TInput=CreateTaskDto TOutput="Guid" Datasource=allTaskDtos
-                                                                TextSelector=@(x=>x.Title) OutputSelector="x=> x.Id" 
+                                                                TextSelector=@(x=>x.Title) OutputSelector="x=> x.Id" MinCharacterCount="1"
                                                                 SelectedOptions="@taskdto.Dependencies" SelectedOptionsChanged="OnDependenciesChanged"
                                                                 SearchInputPlaceHolder="@Loc["Search"]" PlaceHolder="@($"{Loc["Select"]}")" NoMatchPlaceHolder="@Loc["NoResultsFound"]"
                                                                 SelectAllPlaceHolder="@Loc["SelectAll"]" AllowSelectAll="allTaskDtos.Any()"/>
@@ -267,8 +267,8 @@
                                         <span class="text-danger">*</span>
                                     }
                                 </label>
-                                <SearchableMultiDropdownOffline TInput=UserDto TOutput="Guid" Datasource=userDtos 
-                                                                TextSelector=@(x=>x.DisplayedName) OutputSelector="x=> x.Id"
+                                <SearchableMultiDropdownOffline TInput=UserDto TOutput="Guid" Datasource=userDtos
+                                                                TextSelector=@(x=>x.DisplayedName) OutputSelector="x=> x.Id" MinCharacterCount="1"
                                                                 SelectedOptions="@taskdto.AssignedIds" SelectedOptionsChanged="OnAssigneesChanged"
                                                                  SearchInputPlaceHolder="@Loc["Search"]" PlaceHolder="@($"{Loc["Select"]}")" NoMatchPlaceHolder="@Loc["NoResultsFound"]"
                                                                 SelectAllPlaceHolder="@Loc["SelectAll"]" AllowSelectAll="userDtos.Any()" />

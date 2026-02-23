@@ -11,6 +11,7 @@
                                         TInput="SourceDto" TOutput="Guid" Datasource="AvailableSources"
                                         TextSelector="(s => s.DisplayedName)" OutputSelector="(s => s.Id)"
                                         SelectedOptions="SelectedSources"
+                                    MinCharacterCount="1"
                                         SelectedOptionsChanged="OnSelectedChanged"
                                         IsDisabled="IsViewMode" 
                                     SearchInputPlaceHolder="@Loc["Search"]" PlaceHolder="@($"{Loc["Select"]}")" NoMatchPlaceHolder="@Loc["NoResultsFound"]"

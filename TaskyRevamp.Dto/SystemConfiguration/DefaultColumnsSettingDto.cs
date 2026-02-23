@@ -25,6 +25,8 @@ namespace TaskyRevamp.Dto.SystemConfiguration
             }
         }
         public bool IsActive { get; set; }
+        public bool IsDisplay { get; set; }
+
         public int? Order { get; set; }
     }
 }
