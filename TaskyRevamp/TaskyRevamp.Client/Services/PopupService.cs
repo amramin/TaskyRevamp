@@ -32,9 +32,10 @@ public class PopupService
             Type = type,
             OnConfirm = EventCallback.Factory.Create<bool>(this, async (value) =>
             {
-                if (onConfirm != null)
+				Hide();
+				if (onConfirm != null)
                     await onConfirm(value);
-                Hide();
+                
             })
         });
     }

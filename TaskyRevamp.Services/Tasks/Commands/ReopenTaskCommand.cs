@@ -38,7 +38,7 @@ namespace TaskyRevamp.Services.Tasks.Commands
             }
             if (task.StatusId == Guid.Parse("6EE4574D-C439-45B4-223A-08DE3318A61C"))
             {
-                task.StatusId = Guid.Parse("C8D504C7-9402-4F91-223C-08DE3318A61C");
+                task.StatusId = Guid.Parse("e1319fc1-8cb8-495c-223b-08de3318a61c"); //to check
                 task.Progress = 50;
                 await _taskRepository.UpdateTask(task);
                 TaskComments taskComment = new TaskComments(request.TaskCommentDto.TaskItemId, request.TaskCommentDto.Content, Guid.Parse(_httpContextAccessor.GetUserId()), request.TaskCommentDto.Type);

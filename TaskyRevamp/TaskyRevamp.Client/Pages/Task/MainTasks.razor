@@ -142,7 +142,7 @@
                             case (int)ViewTypes.OverAllView:
                                 <div>
                                     <TaskListView Title="@Loc[ViewTypes.OverAllView.ToString()]" OnAdd="Add" OnEdit="Edit" IsCompletedTasks="false"
-                                                  OnReopen="Reopen" OnReject="Reject" TaskFilter="TaskFilter" IsFilter="IsFilter"  @ref="@taskListRefs["overall"]"></TaskListView>
+                                                  OnReopen="OnConfirmReopen" OnReject="Reject" TaskFilter="TaskFilter" IsFilter="IsFilter"  @ref="@taskListRefs["overall"]"></TaskListView>
                                 </div>
                                 break;
                             case (int)ViewTypes.TimeLineView:
@@ -153,7 +153,7 @@
                                     <div>
                                         <TaskListView Title="@Loc[timeview.ToString()]" ViewType="@((int)ViewTypes.TimeLineView)" IsCompletedTasks="false"
                                                       ViewTypeId="@(Guid.Parse(timeview.GetDescription()))" OnAdd="Add" OnEdit="Edit"
-                                                  OnReopen="Reopen" OnReject="Reject" TaskFilter="TaskFilter" IsFilter="IsFilter" IsCollapseAll="IsCollapsedAll" @ref="@taskListRefs[$"timeline-{currentIndex}"]"></TaskListView>
+                                                  OnReopen="OnConfirmReopen" OnReject="Reject" TaskFilter="TaskFilter" IsFilter="IsFilter" IsCollapseAll="IsCollapsedAll" @ref="@taskListRefs[$"timeline-{currentIndex}"]"></TaskListView>
                                     </div>
 
                                 }
@@ -164,7 +164,7 @@
                                     <TaskListView @key="source.Id" IsCompletedTasks="false"
                                                   Title="@(CultureInfo.CurrentCulture.Name == "ar-EG" ? source.NameArabic : source.NameEnglish)"
                                                   ViewType="@((int)ViewTypes.SourceView)" ViewTypeId="@source.Id" OnAdd="Add" OnEdit="Edit"
-                                              OnReopen="Reopen" OnReject="Reject" TaskFilter="TaskFilter" IsFilter="IsFilter" IsCollapseAll="IsCollapsedAll" @ref="@taskListRefs[$" source-{source.Id}"]"></TaskListView>
+                                              OnReopen="OnConfirmReopen" OnReject="Reject" TaskFilter="TaskFilter" IsFilter="IsFilter" IsCollapseAll="IsCollapsedAll" @ref="@taskListRefs[$" source-{source.Id}"]"></TaskListView>
 
                                 }
                                 <Pagination CurrentPage="@currentPage" TotalPages="@totalPages" TotalCount="@totalCount"
@@ -179,7 +179,7 @@
                                 {
 
                                     <TaskListView Title="@(CultureInfo.CurrentCulture.Name == "ar-EG" ? status.NameArabic : status.NameEnglish)" ViewType="@((int)ViewTypes.StatusView)" ViewTypeId="@status.Id" OnAdd="Add" OnEdit="Edit"
-                                              OnReopen="Reopen" OnReject="Reject" TaskFilter="TaskFilter" IsFilter="IsFilter" IsCollapseAll="IsCollapsedAll" @ref="@taskListRefs[$" status-{status.Id}"]"></TaskListView>
+                                              OnReopen="OnConfirmReopen" OnReject="Reject" TaskFilter="TaskFilter" IsFilter="IsFilter" IsCollapseAll="IsCollapsedAll" @ref="@taskListRefs[$" status-{status.Id}"]"></TaskListView>
                                 }
                                 break;
                             case (int)ViewTypes.TypeView:
@@ -188,7 +188,7 @@
                                     <TaskListView @key="type.Id" IsCompletedTasks="false" 
                                                   Title="@(CultureInfo.CurrentCulture.Name == "ar-EG" ? type.NameArabic : type.NameEnglish)"
                                                   ViewType="@((int)ViewTypes.TypeView)" ViewTypeId="@type.Id" OnAdd="Add" OnEdit="Edit"
-                                              OnReopen="Reopen" OnReject="Reject" TaskFilter="TaskFilter" IsFilter="IsFilter" IsCollapseAll="IsCollapsedAll" @ref="@taskListRefs[$"type-{type.Id}"]"></TaskListView>
+                                              OnReopen="OnConfirmReopen" OnReject="Reject" TaskFilter="TaskFilter" IsFilter="IsFilter" IsCollapseAll="IsCollapsedAll" @ref="@taskListRefs[$"type-{type.Id}"]"></TaskListView>
                                 }
                                 <Pagination CurrentPage="@currentPage" TotalPages="@totalPages" TotalCount="@totalCount"
                                             PageSize="@pageSize" PageSizeOptions="new[] { 5, 8, 10, 15 }" PageChanged="ChangePageType"
@@ -317,9 +317,22 @@
         //await taskListRef.GetTasks(true, searchTerm);
         //await taskListRef.LoadSources(true, searchTerm);
     }
+    private void OnConfirmReopen(Guid id)
+    {
+        PopupService.ShowConfirmation(@Loc["SureReopenTask"], @Loc["Confirm"],
+            async (confirmed) =>
+            {
+                if (confirmed)
+                    await Reopen(id);
+            }, ConfirmationType.Other);
+    }
     public void Add() => PopupService.ShowNew(@<Create OnValidSubmit="OnInitializedAsync"></Create>,Loc["AddTask"]);
     private void Edit(Guid id) => PopupService.ShowNew(@<EditTask Id="id" OnValidSubmit="ReloadAfterSave"></EditTask>, headerText: @Loc["EditTask"]);
-    public void Reopen(Guid id) => PopupService.ShowNew(@<ReopenTask Id="id" OnSaved="ReloadAfterSave"></ReopenTask>,Loc["ReOpen"]);
+    public async Task Reopen(Guid id)
+    {
+        Console.WriteLine("Reopen Task with ID: " + id);
+        PopupService.ShowNew(@<ReopenTask Id="id" OnSaved="ReloadAfterSave"></ReopenTask>,Loc["ReOpen"]);
+    }
     public void Reject(Guid id) => PopupService.ShowNew(@<RejectTask Id="id" OnSaved="ReloadAfterSave"></RejectTask>,Loc["Reject"]);
     private async Task ReloadAfterSave()
     {
