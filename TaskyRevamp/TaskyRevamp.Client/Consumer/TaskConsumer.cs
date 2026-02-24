@@ -44,6 +44,12 @@ namespace TaskyRevamp.Client.Consumer
             var res = await _taskyService.GetFromJsonAsync<CommonApiResponse<CreateTaskDto>>(url);
             return res;
         }
+        public async Task<CommonApiResponse<CreateTaskDto>> GetTaskById(Guid id)
+        {
+            var url = $"api/Task/GetTaskById/{id}";
+            var res = await _taskyService.GetFromJsonAsync<CommonApiResponse<CreateTaskDto>>(url);
+            return res;
+        }
         public async Task<CommonApiResponse<List<CreateTaskDto>>> GetMainAndParentTasks()
         {
             var url = $"api/Task/GetMainAndParentTasks";
