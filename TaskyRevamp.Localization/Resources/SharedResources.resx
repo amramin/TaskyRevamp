@@ -1225,7 +1225,7 @@
     <value>Privileges</value>
   </data>
   <data name="hisprioritynam" xml:space="preserve">
-    <value>his priority name was previously deleted and linked to a completed task. Do you want to use it again?</value>
+    <value>This priority name was previously deleted and linked to a completed task. Do you want to use it again?</value>
   </data>
   <data name="Thisprioritycannotb" xml:space="preserve">
     <value> This priority cannot be deleted because it is currently used in active tasks</value>
@@ -1419,5 +1419,8 @@ Do you want to restore the original type and merge this one into it? Consider th
   </data>
   <data name="AddFileAttachment" xml:space="preserve">
     <value>add attachment</value>
+  </data>
+  <data name="maxCharacter500Validation" xml:space="preserve">
+    <value>Maximum allowed length is 500 characters</value>
   </data>
 </root>

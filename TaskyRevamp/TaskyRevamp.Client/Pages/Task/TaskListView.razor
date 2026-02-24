@@ -68,16 +68,19 @@
                                                         @Loc["Taskdetails"]
                                                     </button>
                                                 </li>
-                                                <li>
-                                                    <button class="dropdown-item" @onclick="@(() => OnEdit.InvokeAsync(task.Id))">
-                                                        <span class="icon">
-                                                            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Edit"></SVGCrud>
-                                                        </span>
-                                                        @Loc["Edit"]
-                                                    </button>
-                                                </li>
-                                                @if (task.ActualProcess == 100 && task.TaskStatus ==
-                                                                                    Guid.Parse("6EE4574D-C439-45B4-223A-08DE3318A61C"))
+                                                @if (!IsCompletedTask(task))
+                                                {
+                                                    <li>
+                                                        <button class="dropdown-item" @onclick="@(() => OnEdit.InvokeAsync(task.Id))">
+                                                            <span class="icon">
+                                                                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Edit"></SVGCrud>
+                                                            </span>
+                                                            @Loc["Edit"]
+                                                        </button>
+                                                    </li>
+                                                }
+                                                @if ((task.ActualProcess == 100 && task.TaskStatus ==
+                                                                                    Guid.Parse("6EE4574D-C439-45B4-223A-08DE3318A61C")))
                                                 {
                                                     <li>
                                                         <button class="dropdown-item" @onclick="@(() => CompleteTask(task.Id))">
@@ -847,6 +850,10 @@
     private bool IsDelayed(CreateTaskDto task)
     {
         return task.TaskStatusName == "Delayed" || task.TaskStatusName == "متأخرة";
+    }
+    private bool IsCompletedTask(CreateTaskDto task)
+    {
+        return task.TaskStatusName == "Completed" || task.TaskStatusName == "مكتملة";
     }
     private async Task CollapseAll(bool collapse)
     {

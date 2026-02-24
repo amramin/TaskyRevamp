@@ -45,8 +45,9 @@
         {
             // retrve
             var result = await _prioritySettingConsumer.RetrivePriority(selectedPriority);
-            if (result.Data)
+            if (result.Success && result.Data)
             {
+                await OnValidSubmit.InvokeAsync(selectedPriority);
                 showConfirm = false;
                 StateHasChanged();
                 await ToastService.ShowToastAsync(Loc["Retrived successfully"], "success");
@@ -59,8 +60,8 @@
     private async Task Save(EditContext editContext)
     {
         var alloldPriorty = await _prioritySettingConsumer.GetPriorities();
-        var allOldActivePriorty = alloldPriorty.Data.Where(k =>  k.IsDeleted != true).ToList();
-        var alloldDeletedPriority = alloldPriorty.Data.Where(k => k.IsDeleted == true).ToList();
+        var allOldActivePriorty = alloldPriorty.Data!.Where(k =>  k.IsDeleted != true).ToList();
+        var alloldDeletedPriority = alloldPriorty.Data!.Where(k => k.IsDeleted == true).ToList();
         if (allOldActivePriorty.Any(m => m.NameEnglish == _newPriority.NameEnglish) || allOldActivePriorty.Any(m => m.NameArabic == _newPriority.NameArabic))
         {
             await ToastService.ShowToastAsync(Loc["AnactivePrioritywith"], "error");
@@ -71,16 +72,19 @@
             var relatedwithcompleted = await _prioritySettingConsumer.CheckRelatedComplatedTaskitemPriority(_newPriority);
             if (relatedwithcompleted.Data)
             {
-                PopupService.ShowConfirmation(@Loc["ThisPrioritynamewas"], @Loc["Confirm"], OnSavedConfirmed, type: ConfirmationType.Danger);
+                PopupService.ShowConfirmation(@Loc["ThisPrioritynamewas"], @Loc["Save"], OnSavedConfirmed, type: ConfirmationType.Danger);
                 selectedPriority = _newPriority;
                 showConfirm = true;
             }
             else
             {
                 var result = await _prioritySettingConsumer.RetrivePriority(_newPriority);
-                await ToastService.ShowToastAsync(Loc["Added successfully"], "success");
-                StateHasChanged();
-                PopupService.Hide();
+                if(result.Success && result.Data)
+                {
+                    await OnValidSubmit.InvokeAsync(_newPriority);
+                    await ToastService.ShowToastAsync(Loc["Added successfully"], "success");
+                    PopupService.Hide();
+                }
             }
         }
         else

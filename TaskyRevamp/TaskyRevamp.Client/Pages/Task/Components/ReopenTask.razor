@@ -8,17 +8,26 @@
 @inject ToastService ToastService
 @inject NavigationManager navigationManager
 
-<EditForm Model="comments" OnValidSubmit="HandleValidSubmit" OnInvalidSubmit="HandleInvalidSubmit">
+<EditForm EditContext="editContext" OnValidSubmit="HandleValidSubmit" OnInvalidSubmit="HandleInvalidSubmit">
     <DataAnnotationsValidator />
 
     <div class="offcanvas-body">
         <label class="form-label">@Loc["Enterthereason"] <span class="text-danger">*</span></label>
         <InputTextArea class="form-control"
                        placeholder="@Loc["Enterthereason"]"
-                       @bind-value="comments.Content" maxlength="500"
+                       @bind-Value="comments.Content"
+                       @oninput="OnContentInput"
                        rows="5"></InputTextArea>
-        <ValidationMessage For="() => comments.Content" class="text-danger"></ValidationMessage>
+        <div class="d-flex justify-content-between mt-1">
+            <div class="flex-grow-1">
+                <ValidationMessage For="() => comments.Content" class="small text-danger" />
+            </div>
+            <span class="small flex-shrink-0 ms-2 @(IsOverLimit ? "text-danger fw-bold" : "text-muted")">
+                @charCount / @MaxLength
+            </span>
+        </div>
     </div>
+    
     <div class="offcanvas-footer">
         <div class="row g-2">
             <div class="col-6">
@@ -38,15 +47,47 @@
 
 @code {
     [Parameter] public Guid Id { get; set; }
-    public string Content { get; set; }
-    public TaskCommentDto comments { get; set; } = new TaskCommentDto();
     [Parameter] public EventCallback OnSaved { get; set; }
-    private void Cancel()
+    public TaskCommentDto comments { get; set; } = new TaskCommentDto();
+    private const int MaxLength = 500;
+    private EditContext editContext;
+    private ValidationMessageStore messageStore;
+    private int charCount => comments.Content?.Length ?? 0;
+    private bool IsOverLimit => charCount > MaxLength;
+
+    protected override void OnInitialized()
     {
-        PopupService.Hide();
+        editContext = new EditContext(comments);
+        messageStore = new ValidationMessageStore(editContext);
     }
+    private void OnContentInput(ChangeEventArgs e)
+    {
+        comments.Content = e.Value?.ToString() ?? "";
+        var field = editContext.Field(nameof(comments.Content));
+        messageStore.Clear(field);
+        if (IsOverLimit)
+            messageStore.Add(field, Loc["maxCharacter500Validation"]);
+        editContext.NotifyFieldChanged(field);
+        editContext.NotifyValidationStateChanged();
+        StateHasChanged();
+    }
+    private void Cancel() => PopupService.Hide();
     private async Task HandleValidSubmit(EditContext args)
     {
+        messageStore.Clear();
+        if (string.IsNullOrWhiteSpace(comments.Content))
+        {
+            StateHasChanged();
+            return;
+        }
+        if (IsOverLimit)
+        {
+            var field = editContext.Field(nameof(comments.Content));
+            messageStore.Add(field, Loc["maxCharacter500Validation"]);
+            editContext.NotifyValidationStateChanged();
+            return;
+        }
+
         comments.TaskItemId = Id;
         comments.Type = Dto.Enums.CommentType.Reopen;
         var res = await _taskConsumer.ReopenTask(comments);

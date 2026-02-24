@@ -1,8 +1,10 @@
 ﻿@using TaskyRevamp.Client.Consumer
 @using TaskyRevamp.Client.Services
 @using TaskyRevamp.Dto.TaskAttachment
+@using TaskyRevamp.Dto.TaskDto
 @inject FileManagementService _fileManagementService
 @inject TaskAttachmentConsumer _taskAttachmentConsumer
+@inject TaskConsumer _taskConsumer
 @inject PopupService PopupService
 @inject ToastService ToastService
 @inject IStringLocalizer<SharedResources> Loc
@@ -56,19 +58,14 @@
                 </div>
             </div>
             <div>
-                @Loc["Uploading"] 
-                @if (!string.IsNullOrEmpty(uploadingFileName)) {
+                @Loc["Uploading"]
+                @if (!string.IsNullOrEmpty(uploadingFileName))
+                {
                     <strong class="me-1">@uploadingFileName</strong>
                 }
             </div>
         }
-        @if (!attachmentsDto.Any())
-        {
-            <div class="text-center text-muted py-4">
-                <p class="mb-0">@Loc["NoAttachmentsYet"]</p>
-            </div>
-        }
-        else
+        @if (attachmentsDto.Any())
         {
             <h6 class="mb-3">@Loc["Uploads"]</h6>
             <div class="list-group">
@@ -112,19 +109,21 @@
                                     <SVGCrud SVGType="SVGCrud.SVGTypeEnum.ArrowDown"></SVGCrud>
                                 </span>
                             </button>
-                            <button class="btn btn-link text-danger p-1"
-                                    @onclick="() => DeleteFile(attachment)"
-                                    title="@Loc["Delete"]">
-                                <span class="icon">
-                                    <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Reject"></SVGCrud>
-                                </span>
-                            </button>
+                            @if (taskDto.TaskStatus != Guid.Parse("C8D504C7-9402-4F91-223C-08DE3318A61C"))
+                            {
+                                <button class="btn btn-link text-danger p-1"
+                                @onclick="() => DeleteFile(attachment)"
+                                title="@Loc["Delete"]">
+                                    <span class="icon">
+                                        <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Reject"></SVGCrud>
+                                    </span>
+                                </button>
+                            }
                         </div>
                     </div>
                 }
             </div>
         }
- 
     </div>
 </div>
 
@@ -138,6 +137,8 @@
     private AttachmentWithNameDto? selectedAttachment;
     private bool isDragging = false;
     private List<string> uploadErrors = new();
+    private CreateTaskDto taskDto = new CreateTaskDto();
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
@@ -153,10 +154,10 @@
     {
         var res = await _taskAttachmentConsumer.GetTaskAttachments(TaskId);
         if (res.Success && res.Data != null)
-        {
             attachmentsDto = res.Data;
-            StateHasChanged();
-        }
+        var taskRes = await _taskConsumer.GetTaskById(TaskId);
+        if(taskRes.Success && taskRes.Data != null)
+            taskDto = taskRes.Data;
     }
     private async Task HandleFileSelected(InputFileChangeEventArgs args)
     {
@@ -207,7 +208,6 @@
         uploadingFileName = string.Empty;
         StateHasChanged();
     }
-
     private async Task DownloadFile(AttachmentDto attachment)
     {
         var res = await _taskAttachmentConsumer.GetAttachmentInfo(attachment.FileId);

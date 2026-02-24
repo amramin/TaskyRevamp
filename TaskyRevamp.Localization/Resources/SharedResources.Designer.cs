@@ -1708,7 +1708,7 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to his priority name was previously deleted and linked to a completed task. Do you want to use it again?.
+        ///   Looks up a localized string similar to This priority name was previously deleted and linked to a completed task. Do you want to use it again?.
         /// </summary>
         public static string hisprioritynam {
             get {
@@ -1983,6 +1983,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string Mandatory {
             get {
                 return ResourceManager.GetString("Mandatory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Maximum allowed length is 500 characters.
+        /// </summary>
+        public static string maxCharacter500Validation {
+            get {
+                return ResourceManager.GetString("maxCharacter500Validation", resourceCulture);
             }
         }
         

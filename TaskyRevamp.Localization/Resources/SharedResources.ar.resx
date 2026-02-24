@@ -1228,7 +1228,7 @@
     <value>صلاحيات</value>
   </data>
   <data name="hisprioritynam" xml:space="preserve">
-    <value />
+    <value>تم حذف اسم هذه الأولوية سابقًا وربطها بمهمة مكتملة. هل ترغب في استخدامها مرة أخرى؟</value>
   </data>
   <data name="Thisprioritycannotb" xml:space="preserve">
     <value>لا يمكن حذف هذه الأولوية لأنها مستخدمة حاليًا في المهام النشطة</value>
@@ -1423,5 +1423,8 @@
   </data>
   <data name="AddFileAttachment" xml:space="preserve">
     <value>إضافة ملف</value>
+  </data>
+  <data name="maxCharacter500Validation" xml:space="preserve">
+    <value>الحد الأقصى المسموح به هو 500 حرف</value>
   </data>
 </root>
