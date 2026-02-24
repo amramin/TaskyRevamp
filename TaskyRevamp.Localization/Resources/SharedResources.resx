@@ -1420,4 +1420,25 @@ Do you want to restore the original type and merge this one into it? Consider th
   <data name="AddFileAttachment" xml:space="preserve">
     <value>add attachment</value>
   </data>
+  <data name="Subtasks" xml:space="preserve">
+    <value>Subtasks </value>
+  </data>
+  <data name="Dependencies" xml:space="preserve">
+    <value>Dependencies</value>
+  </data>
+  <data name="ChangeEndDatesRequests" xml:space="preserve">
+    <value>Change End Dates Requests</value>
+  </data>
+  <data name="Escalation" xml:space="preserve">
+    <value>Escalation</value>
+  </data>
+  <data name="History" xml:space="preserve">
+    <value>History</value>
+  </data>
+  <data name="UpdateComment" xml:space="preserve">
+    <value>Update Comment</value>
+  </data>
+  <data name="NoComments" xml:space="preserve">
+    <value>No comments have been added</value>
+  </data>
 </root>

@@ -1424,4 +1424,25 @@
   <data name="AddFileAttachment" xml:space="preserve">
     <value>إضافة ملف</value>
   </data>
+  <data name="Subtasks" xml:space="preserve">
+    <value>المهام الفرعية</value>
+  </data>
+  <data name="Dependencies" xml:space="preserve">
+    <value>الاعتماديات </value>
+  </data>
+  <data name="ChangeEndDatesRequests" xml:space="preserve">
+    <value>طلبات تغيير تاريخ الإنتهاء</value>
+  </data>
+  <data name="Escalation" xml:space="preserve">
+    <value>التصعيد </value>
+  </data>
+  <data name="History" xml:space="preserve">
+    <value>السجل </value>
+  </data>
+  <data name="UpdateComment" xml:space="preserve">
+    <value>تعديل تعليق</value>
+  </data>
+  <data name="NoComments" xml:space="preserve">
+    <value>لم تتم إضافة أي تعليقات</value>
+  </data>
 </root>

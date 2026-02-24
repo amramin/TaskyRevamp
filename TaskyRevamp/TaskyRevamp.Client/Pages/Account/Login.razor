@@ -14,11 +14,14 @@
 @using TaskyRevamp.Client.Layout
 @using TaskyRevamp.Client.Shared
 @using TaskyRevamp.Dto.Account
+@using TaskyRevamp.Dto.Enums
+@using TaskyRevamp.Dto.SystemConfiguration
 @using TaskyRevamp.Localization.Resources
 @using Microsoft.Extensions.Localization
 @inject IJSRuntime JS
 @* @rendermode InteractiveServer *@
-
+@inject DefaultViewSettingConsumer _defaultViewSettingConsumer
+@inject ViewTaskSettingConsumer _viewTaskSettingConsumer
 <section class="auth">
 
     <div class="row row-cols-1 row-cols-lg-2 g-4 align-items-center">
@@ -163,7 +166,11 @@
     [SupplyParameterFromQuery]
     [Parameter]
     public string returnUrl { get; set; }
-
+    public ViewTaskSettingsDto ViewTaskSetting { get; set; } = new ViewTaskSettingsDto
+    {
+        ViewType = ViewType.List_Timeline
+    };
+    public DefaultViewSettingsDto defaultViewSettingsDto = new DefaultViewSettingsDto();
     protected async override Task OnInitializedAsync()
     {
         var identity = await taskyService.GetSystemIdentity();
@@ -230,7 +237,10 @@
             var isManualLogout = await LocalStorageService.GetItemAsync<bool>("IsManualLogout");
             await LocalStorageService.RemoveItemAsync("IsManualLogout");
             if (isManualLogout)
-                NavigationManager.NavigateTo("/");
+            {
+                var uri =await RedirectURI();
+                NavigationManager.NavigateTo(string.IsNullOrEmpty(uri) ? "/" : uri, true);
+            }
             else
             {
                 var returnUrl = await JS.InvokeAsync<string>("navigationTracker.getReturnUrl");
@@ -243,6 +253,46 @@
             ApiError=true;
             StateHasChanged();
         }
+    }
+
+    private async Task<string> RedirectURI()
+    {
+        ViewType returnedview = ViewType.List_Overall;
+        string url = "/";
+        var res = await _defaultViewSettingConsumer.GetDefaultViewSetting();
+        if (res?.Success == true && res.Data != null)
+        {
+            returnedview =(ViewType) res.Data.DefaultSelected;
+
+        }
+        else
+        {
+            returnedview = ViewType.List_Timeline;
+        }
+        switch (returnedview)
+        {
+            case ViewType.Dashboard:
+                url = "/tasks";
+                break;
+            case ViewType.List_Overall:
+                url = "/MainTasks";
+                await LocalStorageService.SetItemAsync("TaskListViewType",(int) ViewTypes.OverAllView);
+                break;
+            case ViewType.List_Timeline:
+                url = "/MainTasks";
+                await LocalStorageService.SetItemAsync("TaskListViewType", (int) ViewTypes.TimeLineView);
+                break;
+            case ViewType.List_Source:
+                url = "/MainTasks";
+                await LocalStorageService.SetItemAsync("TaskListViewType", (int)ViewTypes.SourceView);
+                break;
+            case ViewType.List_Type:
+                url = "/MainTasks";
+                await LocalStorageService.SetItemAsync("TaskListViewType", (int)ViewTypes.TypeView);
+                break;
+        }
+
+        return url;
     }
 
 }

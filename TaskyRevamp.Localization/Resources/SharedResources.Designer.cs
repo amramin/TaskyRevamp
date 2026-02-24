@@ -610,6 +610,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Change End Dates Requests.
+        /// </summary>
+        public static string ChangeEndDatesRequests {
+            get {
+                return ResourceManager.GetString("ChangeEndDatesRequests", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Change prgreess.
         /// </summary>
         public static string Changeprgreess {
@@ -1038,6 +1047,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string Departments {
             get {
                 return ResourceManager.GetString("Departments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dependencies.
+        /// </summary>
+        public static string Dependencies {
+            get {
+                return ResourceManager.GetString("Dependencies", resourceCulture);
             }
         }
         
@@ -1474,6 +1492,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Escalation.
+        /// </summary>
+        public static string Escalation {
+            get {
+                return ResourceManager.GetString("Escalation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to External department.
         /// </summary>
         public static string ExternalDepartment {
@@ -1713,6 +1740,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string hisprioritynam {
             get {
                 return ResourceManager.GetString("hisprioritynam", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to History.
+        /// </summary>
+        public static string History {
+            get {
+                return ResourceManager.GetString("History", resourceCulture);
             }
         }
         
@@ -2127,6 +2163,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string NoAttachmentsYet {
             get {
                 return ResourceManager.GetString("NoAttachmentsYet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No comments have been added.
+        /// </summary>
+        public static string NoComments {
+            get {
+                return ResourceManager.GetString("NoComments", resourceCulture);
             }
         }
         
@@ -3058,6 +3103,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Subtasks .
+        /// </summary>
+        public static string Subtasks {
+            get {
+                return ResourceManager.GetString("Subtasks", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Sunday.
         /// </summary>
         public static string Sunday {
@@ -3622,6 +3676,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string Update {
             get {
                 return ResourceManager.GetString("Update", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Update Comment.
+        /// </summary>
+        public static string UpdateComment {
+            get {
+                return ResourceManager.GetString("UpdateComment", resourceCulture);
             }
         }
         

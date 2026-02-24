@@ -1,5 +1,6 @@
 ﻿@page "/MainTasks"
 @using System.Globalization
+@using Blazored.LocalStorage
 @using TaskyRevamp.Client.Consumer
 @using TaskyRevamp.Client.Services
 @using TaskyRevamp.Dto.Enums
@@ -16,6 +17,7 @@
 @inject StatusSettingConsumer _statusSettingConsumer
 @inject TypeSettingConsumer _typeSettingConsumer
 @inject SourceSettingConsumer _sourceSettingConsumer
+@inject ILocalStorageService LocalStorageService
 
 <div class="tab-pills flex-grow-1">
     <div class="tab-content" id="myTabContent">
@@ -271,10 +273,28 @@
     private bool? IsCollapsedAll = null;
     private string timeLineTitle => $" - {Loc["TimeLineTilte"]}";
 
-    protected override void OnInitialized()
+
+
+    protected override async Task OnInitializedAsync()
     {
-        ViewType = (int)ViewTypes.OverAllView;
+        var viewtype =await LocalStorageService.GetItemAsync<int>("TaskListViewType");
+        if (viewtype == 0)
+            {
+                viewtype = 1;
+            }
+            ViewType = viewtype;
+           await changeViewType(ViewType);
     }
+    // override on
+    // overr
+    // {
+    //     var viewtype =await LocalStorageService.GetItemAsync<int>("TaskListViewType");
+    //     if (viewtype == 0)
+    //     {
+    //         viewtype = 1;
+    //     }
+    //     ViewType = viewtype;
+    // }
     protected override void OnAfterRender(bool firstRender)
     {
         base.OnAfterRender(firstRender);

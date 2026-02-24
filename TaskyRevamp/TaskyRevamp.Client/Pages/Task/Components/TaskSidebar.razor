@@ -11,12 +11,12 @@
 <!-- Progress -->
 <div class="card mb-3">
     <div class="card-body">
-        <small class="text-muted fw-semibold d-block mb-3">Progress</small>
+@*         <small class="text-muted fw-semibold d-block mb-3">@lo</small> *@
 
         <!-- Actual Progress -->
         <div class="mb-3">
             <div class="d-flex justify-content-between mb-2">
-                <small class="text-muted">Actual Progress</small>
+                <small class="text-muted">@Loc["ActualProgress"]</small>
                 <span class="fw-semibold">@Task?.ActualProcess%</span>
             </div>
             <div class="progress" style="height: 10px;">
@@ -63,27 +63,45 @@
                 <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Delete"></SVGCrud>
             </span>Delete task
         </button> *@
+        @if (Task.ActualProcess < 100)
+        {
+            <button class="btn btn-light w-100 text-start mb-2" @onclick="FullProgrssChange" title="@Loc["FullProgress"]">
+                <span class="icon">
+                    <SVGCrud SVGType="SVGCrud.SVGTypeEnum.CloseArrow"></SVGCrud>  @Loc["FullProgress"]
+                </span>
+            </button>
+        }
         @if (Task?.TaskStatus == Guid.Parse("6EE4574D-C439-45B4-223A-08DE3318A61C"))
         {
             <button class="btn btn-light w-100 text-start mb-2" @onclick="@(() => CompleteTask(Task.Id))" title="@Loc["Complete"]">
                  <span class="icon">
-                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.CompletedList"></SVGCrud> 
+                    <SVGCrud SVGType="SVGCrud.SVGTypeEnum.CompletedList"></SVGCrud>  @Loc["Complete"]
                 </span>
             </button>
-            <button class="btn btn-light w-100 text-start" @onclick="@(() => ReopenTask(Task.Id))" title="@Loc["ReOpen"]">
+            <button class="btn btn-light w-100 text-start mb-2" @onclick="@(() => ReopenTask(Task.Id))" title="@Loc["ReOpen"]">
                  <span class="icon">
-                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Repeat"></SVGCrud>
+                    <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Repeat"></SVGCrud>  @Loc["ReOpen"]
                 </span>
             </button>
         }
         @if (DisplayRejectButton(Task))
         {
-            <button class="btn btn-light w-100 text-start" @onclick="@(() => RejectTask(Task.Id))" title="@Loc["Reject"]">
+            <button class="btn btn-light w-100 text-start mb-2" @onclick="@(() => RejectTask(Task.Id))" title="@Loc["Reject"]">
                 <span class="icon">
-                    <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Reject"></SVGCrud>
+                    <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Reject"></SVGCrud>  @Loc["Reject"]
                 </span>
             </button>
         }
+        <button class="btn btn-light w-100 text-start mb-2" @onclick="@(() => Edit(Task.Id))" title="@Loc["Edit"]">
+            <span class="icon">
+                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Edit"></SVGCrud>  @Loc["Edit"]
+            </span>
+        </button>
+        <button class="btn btn-light w-100 text-start mb-2" title="@Loc["Delete"]">
+            <span class="icon">
+                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Delete"></SVGCrud>  @Loc["Delete"]
+            </span>
+        </button>
     </div>
 </div>
 
@@ -238,6 +256,8 @@
         // StateHasChanged();
 
     }
+    private void Edit(Guid id) => PopupService.ShowNew(@<EditTask Id="id" OnValidSubmit="ReloadAfterSave"></EditTask>, headerText: @Loc["EditTask"]);
+
     private async Task ReloadAfterSave()
     {
         await OnReopenTask.InvokeAsync();
@@ -281,6 +301,26 @@
                 return true;
             }
         }
+    }
+    private void FullProgrssChange()
+    {
+        Task.ActualProcess = 100;
+        var progress = Task.PlannedProgress;
+        PopupService.ShowConfirmation(@Loc["SureChangeProgress"], @Loc["Confirm"],
+        async (confirmed) =>
+        {
+            if (confirmed)
+            {
+                await ChangeProgressConfirmed(progress);
+            }
+            else
+            {
+                Task.ActualProcess = progressold;
+                StateHasChanged();
+            }
+        },
+        ConfirmationType.Other
+    );
     }
     private void OnProgressChanged(ChangeEventArgs args)
     {
