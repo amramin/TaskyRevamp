@@ -22,7 +22,10 @@ namespace TaskyRevamp.Services.SystemConfiguration.SourceConfiguration.Command
         }
         public async Task<bool> Handle(CreateSourceCommand request, CancellationToken cancellationToken)
         {
-            var source = new Source
+            var res = await _sourceRepository.FindBy(x => x.NameEnglish == request.SourceDto.NameEnglish || x.NameArabic == request.SourceDto.NameArabic);
+            if(res.Success && res.Value != null && res.Value.Any())
+                throw new Exception("Source with the same name already exists.");
+			var source = new Source
             {
                 NameEnglish = request.SourceDto.NameEnglish,
                 NameArabic = request.SourceDto.NameArabic,

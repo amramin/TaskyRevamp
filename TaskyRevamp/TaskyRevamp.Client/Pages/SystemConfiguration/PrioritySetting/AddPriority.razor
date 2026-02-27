@@ -8,18 +8,9 @@
 @inject PrioritySettingConsumer _prioritySettingConsumer
 @inject ToastService ToastService
 
-
-
-       <PriorityForm
-           @ref="form"
-           OnCancel="Cancel" 
-           OnValidSubmit="@Save"
-           Priority="_newPriority" 
-           SubmitButtonText="Save" />
-
+<PriorityForm @ref="form" OnCancel="Cancel" OnValidSubmit="@Save" Priority="_newPriority"  SubmitButtonText="Save" />
 
 @code {
-
     private PriorityDto _newPriority = new PriorityDto();
     public List<PriorityDto> Priorities = new List<PriorityDto>();
     [Parameter] public EventCallback<PriorityDto> OnValidSubmit { get; set; }
@@ -50,7 +41,7 @@
                 await OnValidSubmit.InvokeAsync(selectedPriority);
                 showConfirm = false;
                 StateHasChanged();
-                await ToastService.ShowToastAsync(Loc["Retrived successfully"], "success");
+                await ToastService.ShowToastAsync(Loc["RetrivedSuccessfully"], "success");
             }
             else
                 return;

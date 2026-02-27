@@ -23,7 +23,10 @@ namespace TaskyRevamp.Services.SystemConfiguration.TypeConfigurarion.Command
         }
         public async Task<bool> Handle(CreateTypeCommand request, CancellationToken cancellationToken)
         {
-            var type = new Types
+            var res = await _typeRepository.FindBy(x => x.NameEnglish == request.TypeDto.NameEnglish || x.NameArabic == request.TypeDto.NameArabic);
+            if(res.Success && res.Value != null && res.Value.Any())
+                throw new Exception("type with the same name already exists.");
+			var type = new Types
             {
                 NameEnglish = request.TypeDto.NameEnglish,
                 NameArabic = request.TypeDto.NameArabic,
@@ -31,7 +34,6 @@ namespace TaskyRevamp.Services.SystemConfiguration.TypeConfigurarion.Command
                 CreatedById = request.TypeDto.CreatedById
             };
             await _typeRepository.Insert(type);
-            //await _typeRepository.SaveChangesAsync();
             return true;
         }
     }

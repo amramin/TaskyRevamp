@@ -1427,4 +1427,7 @@
   <data name="maxCharacter500Validation" xml:space="preserve">
     <value>الحد الأقصى المسموح به هو 500 حرف</value>
   </data>
+  <data name="RetrivedSuccessfully" xml:space="preserve">
+    <value>تم الاسترداد بنجاح</value>
+  </data>
 </root>

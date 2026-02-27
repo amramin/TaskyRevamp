@@ -2725,6 +2725,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Retrieved successfully.
+        /// </summary>
+        public static string RetrivedSuccessfully {
+            get {
+                return ResourceManager.GetString("RetrivedSuccessfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Same department.
         /// </summary>
         public static string SameDepartment {

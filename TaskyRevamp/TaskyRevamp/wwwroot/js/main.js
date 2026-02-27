@@ -202,35 +202,38 @@ window.saveFileFromBytes = (fileName, bytesBase64) => {
 
 window.previewFileFromBytes = (fileName, base64Content, contentType) => {
     const byteCharacters = atob(base64Content);
-    const byteNumbers = new Array(byteCharacters.length);
-    for (let i = 0; i < byteCharacters.length; i++) {
-        byteNumbers[i] = byteCharacters.charCodeAt(i);
-    }
-    const byteArray = new Uint8Array(byteNumbers);
+    const byteArray = Uint8Array.from(byteCharacters, c => c.charCodeAt(0));
     const blob = new Blob([byteArray], { type: contentType });
+
+    if (contentType === "text/csv") {
+        const reader = new FileReader();
+        reader.onload = function () {
+            const csv = reader.result;
+            const rows = csv.split("\n").map(r => r.split(","));
+
+            let table = "<table border='1' style='border-collapse:collapse;width:100%'>";
+            rows.forEach(row => {
+                table += "<tr>";
+                row.forEach(cell => {
+                    table += `<td style="padding:6px">${cell}</td>`;
+                });
+                table += "</tr>";
+            });
+            table += "</table>";
+            const win = window.open("", "_blank");
+            win.document.write(`
+                <html>
+                <head><title>${fileName}</title></head>
+                <body>${table}</body>
+                </html>
+            `);
+            win.document.close();
+        };
+        reader.readAsText(blob);
+        return;
+    }
     const blobUrl = URL.createObjectURL(blob);
-    const newWindow = window.open("", "_blank");
-    if (!newWindow) return;
-    newWindow.document.write(`
-        <!DOCTYPE html>
-        <html>
-        <head>
-            <meta charset="UTF-8">
-            <title>${fileName}</title>
-            <style>
-                body { margin: 0; padding: 0; overflow: hidden; }
-                iframe { width: 100%; height: 100vh; border: none; }
-            </style>
-        </head>
-        <body>
-            <iframe src="${blobUrl}"></iframe>
-        </body>
-        </html>
-    `);
-    newWindow.document.close();
-    newWindow.addEventListener("unload", () => {
-        URL.revokeObjectURL(blobUrl);
-    });
+    window.open(blobUrl, "_blank");
 };
 
 window.fileService = {
