@@ -1423,4 +1423,7 @@ Do you want to restore the original type and merge this one into it? Consider th
   <data name="maxCharacter500Validation" xml:space="preserve">
     <value>Maximum allowed length is 500 characters</value>
   </data>
+  <data name="RetrivedSuccessfully" xml:space="preserve">
+    <value>Retrieved successfully</value>
+  </data>
 </root>

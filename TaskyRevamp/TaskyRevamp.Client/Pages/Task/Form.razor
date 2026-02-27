@@ -583,8 +583,8 @@
         {
             AddTaskSettings = addTaskSettingsRes.Data;
         }
-        taskTypeDtos = (await taskTypesTask).Data!.Where(k => k.IsDeleted != true).ToList();
-        taskSourceDtos = (await taskSourcesTask).Data!.Where(k => k.IsDeleted != true).ToList();
+        taskTypeDtos = (await taskTypesTask).Data!.Where(k => (k.IsDeleted != true && k.IsActive)).ToList();
+        taskSourceDtos = (await taskSourcesTask).Data!.Where(k => (k.IsDeleted != true && k.IsActive)).ToList();
         userDtos = (await usersTask).Data!;
         departmentDtos = (await departmentsTask).Data!;
         allTaskDtos = (await tasksTask).Data!;

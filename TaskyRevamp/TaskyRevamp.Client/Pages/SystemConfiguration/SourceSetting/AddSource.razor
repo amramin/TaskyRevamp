@@ -7,19 +7,11 @@
 @inject NavigationManager navigationManager
 @inject IStringLocalizer<SharedResources> Loc
 @inject ILocalStorageService LocalStorageService
-
 @inject ToastService ToastService
 @inject PopupService PopupService
 @inject SourceSettingConsumer _sourceSettingConsumer
 
-
-
-       <SourceForm @ref="form"
-                   OnCancel="Cancel" 
-                   OnValidSubmit="@Save"
-                   source="_newSource" 
-                   SubmitButtonText="Save" />
-
+<SourceForm @ref="form" OnCancel="Cancel"  OnValidSubmit="@Save" source="_newSource"  SubmitButtonText="Save" />
 
 @code {
     private SourceDto _newSource = new SourceDto { IsActive = true};
@@ -40,44 +32,33 @@
             var result = await _sourceSettingConsumer.RetriveSource(selectedSource);
             if (result.Data)
             {
-
+                await OnValidSubmit.InvokeAsync(selectedSource);
                 showConfirm = false;
                 StateHasChanged();
-                await ToastService.ShowToastAsync(Loc["Retrived successfully"], "success");
+                await ToastService.ShowToastAsync(Loc["RetrivedSuccessfully"], "success");
             }
             else
             {
-
                 return;
             }
         }
         selectedSource = null;
-
     }
 
     private async Task Save(EditContext editContext)
     {
-
         // var current = await LocalStorageService.GetItemAsStringAsync("Id");
         //_newSource.CreatedById = Guid.Parse(current);
-
         var alloldSources = await _sourceSettingConsumer.GetTaskSourcesForDDL();
-        var allOldActiveSource = alloldSources.Data
-            .Where(k => k.IsActive == true && k.IsDeleted != true)
-            .ToList();
-
-        var alloldDeletedSource = alloldSources.Data
-            .Where(k => k.IsDeleted == true)
-            .ToList(); 
-            if (allOldActiveSource.Any(m => m.NameEnglish == _newSource.NameEnglish) || allOldActiveSource.Any(m => m.NameArabic == _newSource.NameArabic))
+        var allOldActiveSource = alloldSources.Data!.Where(k => k.IsActive == true && k.IsDeleted != true).ToList();
+        var alloldDeletedSource = alloldSources.Data!.Where(k => k.IsDeleted == true).ToList(); 
+        if (allOldActiveSource.Any(m => m.NameEnglish == _newSource.NameEnglish) || allOldActiveSource.Any(m => m.NameArabic == _newSource.NameArabic))
         {
             await ToastService.ShowToastAsync(Loc["Anactivesourcewith"], "error");
-
             return;
         }
         else if (alloldDeletedSource.Any(m => m.NameEnglish == _newSource.NameEnglish) || alloldDeletedSource.Any(m => m.NameArabic == _newSource.NameArabic))
         {
-
             var relatedwithcompleted = await _sourceSettingConsumer.CheckRelatedComplatedTaskitemSource(_newSource);
             if (relatedwithcompleted.Data)
             {
@@ -99,9 +80,7 @@
             {
                 await OnValidSubmit.InvokeAsync(_newSource);
                 await ToastService.ShowToastAsync(Loc["Added successfully"], "success");
-
                 PopupService.Hide();
-
             }
         }
     }
