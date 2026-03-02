@@ -54,7 +54,7 @@
             var relatedwithcompleted = await _typeSettingConsumer.CheckRelatedComplatedTaskitemType(_newType);
             if (relatedwithcompleted.Data)
             {
-                PopupService.ShowConfirmation(@Loc["ThisTypenamewas"], @Loc["Confirm"], OnSavedConfirmed, type: ConfirmationType.Danger);
+                PopupService.ShowConfirmation(@Loc["ThisTypenamewas"], @Loc["Confirm"], OnSavedConfirmed, type: ConfirmationType.Other);
                 selectedType = _newType;
                 showConfirm = true;
             }
@@ -89,6 +89,7 @@
             {
 
                 showConfirm = false;
+                await OnValidSubmit.InvokeAsync(_newType);
                 StateHasChanged();
                 await ToastService.ShowToastAsync(Loc["Retrieved successfully"], "success");
             }

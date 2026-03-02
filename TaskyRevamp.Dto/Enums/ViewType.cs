@@ -24,15 +24,15 @@ namespace TaskyRevamp.Dto.Enums
 		[LocalizedDescription("List_Type", typeof(SharedResources))]
 		[Order(5)]
 		List_Type = 14,
-		[LocalizedDescription("Card", typeof(SharedResources))]
+		[LocalizedDescription("List_Status", typeof(SharedResources))]
 		[Order(6)]
-		Card = 2,
+        List_Status = 15,
 		[LocalizedDescription("Kanban", typeof(SharedResources))]
 		[Order(7)]
-		Kanban = 3,
+		Kanban = 2,
 		[LocalizedDescription("Gantt", typeof(SharedResources))]
 		[Order(8)]
-		Gantt = 4
+		Gantt = 3
 	}
 
 }

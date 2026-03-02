@@ -19,7 +19,7 @@ namespace TaskyRevamp.Localization.Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "18.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class SharedResources {
@@ -565,6 +565,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You cannot deactivate the system’s default login page..
+        /// </summary>
+        public static string cannotdeactivate {
+            get {
+                return ResourceManager.GetString("cannotdeactivate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to You can&apos;t delete this privilege, it&apos;s linked to a user.
         /// </summary>
         public static string CannotDeletePrivilege {
@@ -822,6 +831,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string Day {
             get {
                 return ResourceManager.GetString("Day", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Days.
+        /// </summary>
+        public static string Days {
+            get {
+                return ResourceManager.GetString("Days", resourceCulture);
             }
         }
         
@@ -1573,6 +1591,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Filter.
+        /// </summary>
+        public static string Filter {
+            get {
+                return ResourceManager.GetString("Filter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Filter field with Id {id} not found..
         /// </summary>
         public static string FilterFieldNotFound {
@@ -1798,6 +1825,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Is displayed.
+        /// </summary>
+        public static string IsDisplay {
+            get {
+                return ResourceManager.GetString("IsDisplay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Is a manager.
         /// </summary>
         public static string IsManager {
@@ -1911,6 +1947,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string List_Source {
             get {
                 return ResourceManager.GetString("List_Source", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Status View.
+        /// </summary>
+        public static string List_Status {
+            get {
+                return ResourceManager.GetString("List_Status", resourceCulture);
             }
         }
         
@@ -3391,7 +3436,7 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to his source name was previously deleted and linked to a completed task. Do you want to use it again?.
+        ///   Looks up a localized string similar to This source name was previously deleted and linked to a completed task. Do you want to use it again?.
         /// </summary>
         public static string Thissourcenamewas {
             get {
@@ -3400,8 +3445,7 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This type name was previously deleted and linked to completed tasks.
-        ///Do you want to restore the original type and merge this one into it? Consider that the current type will be permanently deleted..
+        ///   Looks up a localized string similar to This type name was previously deleted and linked to a completed task. Do you want to use it again?.
         /// </summary>
         public static string ThisTypenamewas {
             get {

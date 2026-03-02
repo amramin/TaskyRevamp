@@ -245,6 +245,7 @@
             {
                 var returnUrl = await JS.InvokeAsync<string>("navigationTracker.getReturnUrl");
                 await JS.InvokeVoidAsync("navigationTracker.clearReturnUrl");
+                if (string.IsNullOrEmpty(returnUrl)) { returnUrl = await RedirectURI(); }
                 NavigationManager.NavigateTo(string.IsNullOrEmpty(returnUrl) ? "/" : returnUrl, true);
             }
         }
@@ -289,6 +290,18 @@
             case ViewType.List_Type:
                 url = "/MainTasks";
                 await LocalStorageService.SetItemAsync("TaskListViewType", (int)ViewTypes.TypeView);
+                break;
+            case ViewType.List_Status:
+                url = "/MainTasks";
+                await LocalStorageService.SetItemAsync("TaskListViewType", (int)ViewTypes.StatusView);
+                break;
+            case ViewType.Kanban:
+                url = "/MainTasks";
+                await LocalStorageService.SetItemAsync("TaskListViewType", 6);
+                break;
+            case ViewType.Gantt:
+                url = "/MainTasks";
+                await LocalStorageService.SetItemAsync("TaskListViewType", 7);
                 break;
         }
 

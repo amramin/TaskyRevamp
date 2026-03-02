@@ -42,6 +42,7 @@
             {
 
                 showConfirm = false;
+                await OnValidSubmit.InvokeAsync(_newSource);
                 StateHasChanged();
                 await ToastService.ShowToastAsync(Loc["Retrived successfully"], "success");
             }
@@ -81,7 +82,7 @@
             var relatedwithcompleted = await _sourceSettingConsumer.CheckRelatedComplatedTaskitemSource(_newSource);
             if (relatedwithcompleted.Data)
             {
-                PopupService.ShowConfirmation(@Loc["Thissourcenamewas"], @Loc["Confirm"], OnSavedConfirmed, type: ConfirmationType.Danger);
+                PopupService.ShowConfirmation(@Loc["Thissourcenamewas"], @Loc["Confirm"], OnSavedConfirmed, type: ConfirmationType.Other);
                 selectedSource = _newSource;
                 showConfirm = true;
             }

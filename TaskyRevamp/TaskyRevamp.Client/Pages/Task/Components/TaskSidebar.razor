@@ -88,7 +88,7 @@
         {
             <button class="btn btn-light w-100 text-start mb-2" @onclick="@(() => RejectTask(Task.Id))" title="@Loc["Reject"]">
                 <span class="icon">
-                    <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Reject"></SVGCrud>  @Loc["Reject"]
+                    <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Reject"></SVGCrud>  @Loc["Reject"] - @GetRemainingDays(Task)
                 </span>
             </button>
         }
@@ -292,7 +292,8 @@
         }
         else
         {
-            if ((DateOnly.FromDateTime(taskDto.CreateDate ?? DateTime.Now).AddDays(RejectionPeriod) < DateOnly.FromDateTime(DateTime.Now)) || !(taskDto.AssignedIds.Contains(CurrentUser)))
+            if ((DateOnly.FromDateTime(taskDto.CreateDate ?? DateTime.Now).AddDays(RejectionPeriod) < DateOnly.FromDateTime(DateTime.Now)) || !(taskDto.AssignedIds.Contains(CurrentUser))
+           || taskDto.TaskStatus == Guid.Parse("6EE4574D-C439-45B4-223A-08DE3318A61C") || taskDto.TaskStatus == Guid.Parse("C8D504C7-9402-4F91-223C-08DE3318A61C"))
             {
                 return false;
             }
@@ -305,7 +306,7 @@
     private void FullProgrssChange()
     {
         Task.ActualProcess = 100;
-        var progress = Task.PlannedProgress;
+        var progress = Task.ActualProcess;
         PopupService.ShowConfirmation(@Loc["SureChangeProgress"], @Loc["Confirm"],
         async (confirmed) =>
         {
@@ -357,5 +358,20 @@
         }
 
         StateHasChanged();
+    }
+    private string GetRemainingDays(CreateTaskDto task)
+    {
+        var today = DateOnly.FromDateTime(DateTime.Now).DayNumber;
+        var expiry = DateOnly.FromDateTime(task.CreateDate ?? DateTime.Now)
+                             .AddDays(RejectionPeriod).DayNumber;
+        var res = expiry - today;
+        if (res ==1)
+        {
+            return $"({res} {Loc["Day"]})";
+        }
+        else
+        {
+            return $"({res} {Loc["Days"]})";
+        }
     }
 }

@@ -18,7 +18,7 @@ namespace TaskyRevamp.Infrastructure.Seeders
             {
                 new NotificationTypeTemplate{
                    NameEnglish = "Task creation",
-                   IsEnable=true,
+                   IsEnable=false,
                    NameArabic = "إنشاء مهمة",
                    moduleType= Dto.Enums.ModuleType.SystemNotification,
 
@@ -26,7 +26,7 @@ namespace TaskyRevamp.Infrastructure.Seeders
                },
                new NotificationTypeTemplate{
                    NameEnglish = "Change task progress",
-                    IsEnable=true,
+                    IsEnable=false,
                    NameArabic = "تغيير تططور المهمه",
                 moduleType= Dto.Enums.ModuleType.SystemNotification,
 
@@ -34,7 +34,7 @@ namespace TaskyRevamp.Infrastructure.Seeders
                },
                new NotificationTypeTemplate{
                    NameEnglish = "Return task",
-                    IsEnable=true,
+                    IsEnable=false,
                    NameArabic = "ارجاع المهمة",
                moduleType= Dto.Enums.ModuleType.SystemNotification,
 
@@ -42,7 +42,7 @@ namespace TaskyRevamp.Infrastructure.Seeders
                },
                new NotificationTypeTemplate{
                    NameEnglish = "Complete task",
-                    IsEnable=true,
+                    IsEnable=false,
                    NameArabic = "اتمام المهمة",
             moduleType= Dto.Enums.ModuleType.SystemNotification,
 
@@ -51,7 +51,7 @@ namespace TaskyRevamp.Infrastructure.Seeders
 
                new NotificationTypeTemplate{
                    NameEnglish = "Delayed task",
-                    IsEnable=true,
+                    IsEnable=false,
                    NameArabic = "تاخير المهمه",
                 moduleType= Dto.Enums.ModuleType.SystemNotification,
 
@@ -59,28 +59,28 @@ namespace TaskyRevamp.Infrastructure.Seeders
                },
                new NotificationTypeTemplate{
                    NameEnglish = "Pending review",
-                    IsEnable=true,
+                    IsEnable=false,
                    NameArabic = "مراجعه موقفه",
                moduleType= Dto.Enums.ModuleType.SystemNotification,
 
                },
                new NotificationTypeTemplate{
                    NameEnglish = "Request end date change",
-                   IsEnable=true,
+                   IsEnable=false,
                    NameArabic = "طلب تغيير تاريخ الانهاء",
                   moduleType= Dto.Enums.ModuleType.SystemNotification,
 
                },
                new NotificationTypeTemplate{
                    NameEnglish = "Approve or reject request end date change",
-                 IsEnable=true,
+                 IsEnable=false,
                    NameArabic = "قبول او رفض تغيير تاريخ الانهاء",
                   moduleType= Dto.Enums.ModuleType.SystemNotification,
 
                },
                   new NotificationTypeTemplate{
                    NameEnglish = "Send support request",
-                   IsEnable=true,
+                   IsEnable=false,
                    NameArabic = "ارسال طلب مساعده",
                    moduleType= Dto.Enums.ModuleType.SystemNotification,
 
@@ -88,7 +88,7 @@ namespace TaskyRevamp.Infrastructure.Seeders
                },
                new NotificationTypeTemplate{
                    NameEnglish = "Edit task",
-                   IsEnable=true,
+                   IsEnable=false,
                    NameArabic = "تعديل المهمه",
                 moduleType= Dto.Enums.ModuleType.SystemNotification,
 
@@ -96,28 +96,28 @@ namespace TaskyRevamp.Infrastructure.Seeders
                },
                new NotificationTypeTemplate{
                    NameEnglish = "Reject task",
-                   IsEnable=true,
+                   IsEnable=false,
                    NameArabic = "رفض المهمه",
                     moduleType= Dto.Enums.ModuleType.SystemNotification,
 
                },
                 new NotificationTypeTemplate{
                    NameEnglish = "Change task priority",
-                   IsEnable=true,
+                   IsEnable=false,
                    NameArabic = "تغيير اولويه المهمه",
                                       moduleType= Dto.Enums.ModuleType.SystemNotification,
 
                },
                new NotificationTypeTemplate{
                    NameEnglish = "Escalate task",
-                     IsEnable=true,
+                     IsEnable=false,
                    NameArabic = "جدوله المهمه",
                 moduleType= Dto.Enums.ModuleType.SystemNotification,
 
 
                }, new NotificationTypeTemplate{
                    NameEnglish = "Delete task ",
-                     IsEnable=true,
+                     IsEnable=false,
                    NameArabic = "حذف المهمه",
                 moduleType= Dto.Enums.ModuleType.SystemNotification,
 
@@ -125,25 +125,25 @@ namespace TaskyRevamp.Infrastructure.Seeders
                },
                new NotificationTypeTemplate{
                    NameEnglish = "Mention user in comment",
-                    IsEnable = true,
+                    IsEnable = false,
                    NameArabic = "تذكير مستخدم فى التعليقات",
                    moduleType= Dto.Enums.ModuleType.SystemNotification,
 
                }, new NotificationTypeTemplate{
                    NameEnglish = "Add Delegation",
-                   IsEnable = true, NameArabic = "اضافه تفويض",
+                   IsEnable = false, NameArabic = "اضافه تفويض",
                    moduleType= Dto.Enums.ModuleType.SystemNotification,
 
                },
                new NotificationTypeTemplate{
                    NameEnglish = "Delete delegation",
-                   IsEnable=true,
+                   IsEnable=false,
                    NameArabic = "حذف تفويض",
                    moduleType= Dto.Enums.ModuleType.SystemNotification,
 
                }, new NotificationTypeTemplate{
                    NameEnglish = "Edit delegation",
-                     IsEnable=true,
+                     IsEnable=false,
                    NameArabic = "تعديل تفويض",
                   moduleType= Dto.Enums.ModuleType.SystemNotification,
 
@@ -151,13 +151,13 @@ namespace TaskyRevamp.Infrastructure.Seeders
                },
                new NotificationTypeTemplate{
                    NameEnglish = "Add escalation",
-                   IsEnable=true,
+                   IsEnable=false,
                    NameArabic = "اضافه جدوله",
                     moduleType= Dto.Enums.ModuleType.SystemNotification,
 
                }, new NotificationTypeTemplate{
                    NameEnglish = "Delete escalation",
-                     IsEnable=true,
+                     IsEnable=false,
                    NameArabic = "حذف جدوله",
                     moduleType= Dto.Enums.ModuleType.SystemNotification,
 
@@ -165,7 +165,7 @@ namespace TaskyRevamp.Infrastructure.Seeders
                },
                new NotificationTypeTemplate{
                    NameEnglish = "Edit escalation",
-                        IsEnable=true,
+                        IsEnable=false,
                    NameArabic = "تعديل جدوله",
                   moduleType= Dto.Enums.ModuleType.SystemNotification,
 
@@ -177,7 +177,7 @@ namespace TaskyRevamp.Infrastructure.Seeders
             
                 new NotificationTypeTemplate{
                    NameEnglish = "Task creation",
-                   IsEnable=true,
+                   IsEnable=false,
                    NameArabic = "إنشاء مهمة",
                    moduleType= Dto.Enums.ModuleType.Email,
 
@@ -189,7 +189,7 @@ namespace TaskyRevamp.Infrastructure.Seeders
                },
                new NotificationTypeTemplate{
                    NameEnglish = "Change task progress",
-                    IsEnable=true,
+                    IsEnable=false,
                    NameArabic = "تغيير تطور المهمه",
                 moduleType= Dto.Enums.ModuleType.Email,
                 SubjectArabic="[TaskName] – تم تحديث تقدم المهمة",
@@ -201,7 +201,7 @@ namespace TaskyRevamp.Infrastructure.Seeders
                },
                new NotificationTypeTemplate{
                    NameEnglish = "Return task",
-                    IsEnable=true,
+                    IsEnable=false,
                    NameArabic = "ارجاع المهمة",
                moduleType= Dto.Enums.ModuleType.Email,
                 SubjectArabic="[TaskName] – تم إعادة المهمة",
@@ -212,7 +212,7 @@ namespace TaskyRevamp.Infrastructure.Seeders
                },
                new NotificationTypeTemplate{
                    NameEnglish = "Complete task",
-                    IsEnable=true,
+                    IsEnable=false,
                    NameArabic = "اتمام المهمة",
             moduleType= Dto.Enums.ModuleType.Email,
             SubjectArabic="تم إكمال المهمة  [TaskName]",
@@ -225,7 +225,7 @@ namespace TaskyRevamp.Infrastructure.Seeders
 
                new NotificationTypeTemplate{
                    NameEnglish = "Delayed task",
-                    IsEnable=true,
+                    IsEnable=false,
                    NameArabic = "تاخير المهمه",
                 moduleType= Dto.Enums.ModuleType.Email,
                 SubjectArabic="[TaskName] – مهمة متأخرة",
@@ -236,7 +236,7 @@ namespace TaskyRevamp.Infrastructure.Seeders
                },
                new NotificationTypeTemplate{
                    NameEnglish = "Pending review",
-                    IsEnable=true,
+                    IsEnable=false,
                    NameArabic = "مراجعه موقفه",
                moduleType= Dto.Enums.ModuleType.Email,
                SubjectArabic="",
@@ -247,7 +247,7 @@ namespace TaskyRevamp.Infrastructure.Seeders
                },
                new NotificationTypeTemplate{
                    NameEnglish = "Request end date change",
-                   IsEnable=true,
+                   IsEnable=false,
                    NameArabic = "طلب تغيير تاريخ الانهاء",
                   moduleType= Dto.Enums.ModuleType.Email,
                   SubjectArabic="[TaskName] – طلب تغيير تاريخ الانتهاء",
@@ -258,7 +258,7 @@ namespace TaskyRevamp.Infrastructure.Seeders
                },
                new NotificationTypeTemplate{
                    NameEnglish = "Approve or reject request end date change",
-                 IsEnable=true,
+                 IsEnable=false,
                    NameArabic = "قبول او رفض تغيير تاريخ الانهاء",
                   moduleType= Dto.Enums.ModuleType.Email,
                   SubjectArabic="[TaskName] – قرار بشأن تغيير تاريخ الانتهاء",
@@ -269,7 +269,7 @@ namespace TaskyRevamp.Infrastructure.Seeders
                },
                   new NotificationTypeTemplate{
                    NameEnglish = "Reject the end date change request",
-                   IsEnable=true,
+                   IsEnable=false,
                    NameArabic = "رفض طلب تغيير تاريخ الانتهاء",
                    moduleType= Dto.Enums.ModuleType.Email,
                     SubjectArabic="[TaskName] – قرار بشأن تغيير تاريخ الانتهاء",
@@ -280,7 +280,7 @@ namespace TaskyRevamp.Infrastructure.Seeders
                },
                    new NotificationTypeTemplate{
                    NameEnglish = "Weekly report",
-                   IsEnable=true,
+                   IsEnable=false,
                    NameArabic = "تقرير اسبوعى",
                    moduleType= Dto.Enums.ModuleType.Email,
                   SubjectArabic="التقرير الأسبوعي للمهام",
@@ -291,7 +291,7 @@ namespace TaskyRevamp.Infrastructure.Seeders
                },
                new NotificationTypeTemplate{
                    NameEnglish = "Edit task",
-                   IsEnable=true,
+                   IsEnable=false,
                    NameArabic = "تعديل المهمه",
                 moduleType= Dto.Enums.ModuleType.Email,
                 SubjectArabic="[TaskName] – تم تحديث المهمة",
@@ -302,7 +302,7 @@ namespace TaskyRevamp.Infrastructure.Seeders
                },
                new NotificationTypeTemplate{
                    NameEnglish = "Reject task",
-                   IsEnable=true,
+                   IsEnable=false,
                    NameArabic = "رفض المهمه",
                     moduleType= Dto.Enums.ModuleType.Email,
                     SubjectArabic=" [TaskName] – تم رفض المهمة",
@@ -314,7 +314,7 @@ namespace TaskyRevamp.Infrastructure.Seeders
                },
                 new NotificationTypeTemplate{
                    NameEnglish = "Change task priority",
-                   IsEnable=true,
+                   IsEnable=false,
                    NameArabic = "تغيير اولويه المهمه",
                    moduleType= Dto.Enums.ModuleType.Email,
                    SubjectArabic="[TaskName] – تم تحديث أولوية المهمة",
@@ -324,7 +324,7 @@ namespace TaskyRevamp.Infrastructure.Seeders
                },
                new NotificationTypeTemplate{
                    NameEnglish = "Escalate task",
-                     IsEnable=true,
+                     IsEnable=false,
                    NameArabic = "جدوله المهمه",
                 moduleType= Dto.Enums.ModuleType.Email,
                 SubjectArabic=" [TaskName] – تم تصعيد المهمة",
@@ -335,7 +335,7 @@ namespace TaskyRevamp.Infrastructure.Seeders
 
                }, new NotificationTypeTemplate{
                    NameEnglish = "Delete task ",
-                     IsEnable=true,
+                     IsEnable=false,
                    NameArabic = "حذف المهمه",
                 moduleType= Dto.Enums.ModuleType.Email,
                  SubjectArabic="[TaskName] – تم حذف المهمة",
@@ -346,7 +346,7 @@ namespace TaskyRevamp.Infrastructure.Seeders
                },
                new NotificationTypeTemplate{
                    NameEnglish = "Mention user in comment",
-                    IsEnable = true,
+                    IsEnable = false,
                    NameArabic = "تذكير مستخدم فى التعليقات",
                    moduleType= Dto.Enums.ModuleType.Email,
                     SubjectArabic="[TaskName] – تم ذكرك في تعليق",
@@ -356,7 +356,7 @@ namespace TaskyRevamp.Infrastructure.Seeders
 
                }, new NotificationTypeTemplate{
                    NameEnglish = "Add delegation",
-                   IsEnable = true, NameArabic = "اضافه تفويض",
+                   IsEnable = false, NameArabic = "اضافه تفويض",
                    moduleType= Dto.Enums.ModuleType.Email,
                     SubjectArabic="تم إضافة تفويض",
                SubjectEnglish="Delegation added",
@@ -366,7 +366,7 @@ namespace TaskyRevamp.Infrastructure.Seeders
                },
                new NotificationTypeTemplate{
                    NameEnglish = "Delete delegation",
-                   IsEnable=true,
+                   IsEnable=false,
                    NameArabic = "حذف تفويض",
                    moduleType= Dto.Enums.ModuleType.Email,
                     SubjectArabic="تم حذف التفويض",
@@ -376,7 +376,7 @@ namespace TaskyRevamp.Infrastructure.Seeders
 
                }, new NotificationTypeTemplate{
                    NameEnglish = "Edit delegation",
-                     IsEnable=true,
+                     IsEnable=false,
                    NameArabic = "تعديل تفويض",
                   moduleType= Dto.Enums.ModuleType.Email,
                    SubjectArabic="تم تعديل التفويض",
@@ -387,7 +387,7 @@ namespace TaskyRevamp.Infrastructure.Seeders
                },
                new NotificationTypeTemplate{
                    NameEnglish = "Add escalation",
-                   IsEnable=true,
+                   IsEnable=false,
                    NameArabic = "اضافه جدوله",
                     moduleType= Dto.Enums.ModuleType.Email,
                      SubjectArabic="تم إضافة تصعيد",
@@ -397,7 +397,7 @@ namespace TaskyRevamp.Infrastructure.Seeders
 
                }, new NotificationTypeTemplate{
                    NameEnglish = "Delete escalation",
-                     IsEnable=true,
+                     IsEnable=false,
                    NameArabic = "حذف جدوله",
                     moduleType= Dto.Enums.ModuleType.Email,
                      SubjectArabic="حذف الجدوله",
@@ -408,7 +408,7 @@ namespace TaskyRevamp.Infrastructure.Seeders
                },
                new NotificationTypeTemplate{
                    NameEnglish = "Edit escalation",
-                        IsEnable=true,
+                        IsEnable=false,
                    NameArabic = "تعديل جدوله",
                   moduleType= Dto.Enums.ModuleType.Email,
                   SubjectArabic="حذف الجدوله",

@@ -1,7 +1,11 @@
 ﻿@using Blazored.LocalStorage
+@using TaskyRevamp.Client.Consumer
+@using TaskyRevamp.Dto.Enums
+@using TaskyRevamp.Dto.SystemConfiguration
 @inject IStringLocalizer<SharedResources> Loc
 @inject NavigationManager NavigationManager
 @inject ILocalStorageService LocalStorageService
+@inject ViewTaskSettingConsumer _viewTaskSettingConsumer
 
 <aside
     class="side-nav side-nav @(IsSettingOpen ? "setting-nav-open" : "")  @(isMobileNavOpen ? "side-nav-open-mobile" : "")">
@@ -24,17 +28,20 @@
 
     <div class="sid-nav-body">
         <ul class="nav menu flex-column">
-            <li class="nav-item">
-                <NavLink href="/tasks" class="nav-link" Match="NavLinkMatch.All"
-                    @onclick="() => { CloseSettingsNav(); ToggleMobileNav(); }">
-                    <div class="icon-text">
-                        <span class="nav-icon">
-                            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Dashboard"></SVGCrud>
-                        </span>
-                        <span class="text"> Dashboard </span>
-                    </div>
-                </NavLink>
-            </li>
+            @if (TaskViews.Any(p => p.ViewType == ViewType.Dashboard && p.IsActive))
+            {
+                <li class="nav-item">
+                    <NavLink href="/tasks" class="nav-link" Match="NavLinkMatch.All"
+                             @onclick="() => { CloseSettingsNav(); ToggleMobileNav(); }">
+                        <div class="icon-text">
+                            <span class="nav-icon">
+                                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Dashboard"></SVGCrud>
+                            </span>
+                            <span class="text"> Dashboard </span>
+                        </div>
+                    </NavLink>
+                </li>
+            }
 
             <li class="nav-item">
                 <NavLink href="/MainTasks" class="nav-link" Match="NavLinkMatch.All"
@@ -128,6 +135,8 @@
 
 @code {
     private bool IsSettingOpen { get; set; } = false;
+    private List<ViewTaskSettingsDto> TaskViews = new List<ViewTaskSettingsDto>();
+
     private async Task SettingNav()
     {
         if (IsSettingOpen)
@@ -249,7 +258,14 @@ new ChildItem { Text = "TaskHistory", Url = "/TaskHistory", Icon = SVGCrud.SVGTy
 
     protected override async Task OnInitializedAsync()
     {
-
+        var res = await _viewTaskSettingConsumer.GetViewTaskSetting();
+        if (res.Success && res.Data != null)
+        {
+            var orderedEnums = EnumExtensions.GetOrderedValues<ViewType>();
+            TaskViews = orderedEnums.Select(enumVal => res.Data.FirstOrDefault(d => d.ViewType == enumVal))
+            .Where(d => d != null)
+            .ToList()!;
+        }
         SetMenu();
         var value = await LocalStorageService.GetItemAsStringAsync("IsSettingOpen");
         IsSettingOpen = bool.TryParse(value, out var result) && result;

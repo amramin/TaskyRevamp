@@ -1249,9 +1249,7 @@
     <value>يوجد نوع نشط بهذا الاسم مسبقًا. يرجى اختيار اسم مختلف</value>
   </data>
   <data name="ThisTypenamewas" xml:space="preserve">
-    <value>تم حذف هذا النوع سابقًا وهو مرتبط بمهام مكتملة.
-هل ترغب في استعادة النوع الأصلي ودمج هذا النوع  معه؟ يُرجى العلم أن النوع الحالي سيُحذف نهائيًا.
-</value>
+    <value>تم حذف اسم هذا النوع سابقًا وربطه بمهمة مكتملة. هل ترغب في استخدامه مرة أخرى؟</value>
   </data>
   <data name="AnactivePrioritywith" xml:space="preserve">
     <value>يوجد اولويه نشطه بهذا الاسم مسبقًا. يرجى اختيار اسم مختلف</value>
@@ -1444,5 +1442,20 @@
   </data>
   <data name="NoComments" xml:space="preserve">
     <value>لم تتم إضافة أي تعليقات</value>
+  </data>
+  <data name="cannotdeactivate" xml:space="preserve">
+    <value>لا يمكنك إلغاء تنشيط صفحة تسجيل الدخول الافتراضية للنظام</value>
+  </data>
+  <data name="List_Status" xml:space="preserve">
+    <value>عرض الحاله</value>
+  </data>
+  <data name="IsDisplay" xml:space="preserve">
+    <value>عرض</value>
+  </data>
+  <data name="Days" xml:space="preserve">
+    <value>أيام</value>
+  </data>
+  <data name="Filter" xml:space="preserve">
+    <value>بحث</value>
   </data>
 </root>
