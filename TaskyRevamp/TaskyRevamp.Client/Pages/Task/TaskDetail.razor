@@ -13,10 +13,14 @@
     <TaskTabs @bind-ActiveTab="activeTab" Task="task" />
 
     <div class="row">
-        <div class="col-lg-7">
+        <div class="col-lg-8">
             @if(activeTab == "attachment")
             {
                 <TaskAttachments TaskId="TaskId" />
+            }
+            else if (activeTab == "dependency")
+            {
+                <TaskDependency Task="task" />
             }
             else if(activeTab == "details")
             {
@@ -26,7 +30,7 @@
             }
         </div>
 
-        <div class="col-lg-5">
+        <div class="col-lg-4">
             <TaskSidebar Task="task" OnConfirmed="LoadTask" OnReopenTask="AfterReopen" />
         </div>
     </div>

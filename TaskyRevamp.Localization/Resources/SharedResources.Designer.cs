@@ -1060,6 +1060,33 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to dependency.
+        /// </summary>
+        public static string dependencyTitle {
+            get {
+                return ResourceManager.GetString("dependencyTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to dependent tasks.
+        /// </summary>
+        public static string dependenTasks {
+            get {
+                return ResourceManager.GetString("dependenTasks", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Depending on.
+        /// </summary>
+        public static string DependingOn {
+            get {
+                return ResourceManager.GetString("DependingOn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Description.
         /// </summary>
         public static string Description {
@@ -2154,6 +2181,24 @@ namespace TaskyRevamp.Localization.Resources {
         public static string Nodepartmentavailable {
             get {
                 return ResourceManager.GetString("Nodepartmentavailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No dependent tasks are available.
+        /// </summary>
+        public static string NoDependentTasks {
+            get {
+                return ResourceManager.GetString("NoDependentTasks", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No parent tasks available .
+        /// </summary>
+        public static string NoDependingOnTasks {
+            get {
+                return ResourceManager.GetString("NoDependingOnTasks", resourceCulture);
             }
         }
         

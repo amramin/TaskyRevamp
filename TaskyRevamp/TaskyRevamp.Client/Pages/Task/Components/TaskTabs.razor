@@ -1,4 +1,5 @@
 ﻿@using TaskyRevamp.Dto.TaskDto
+@inject IStringLocalizer<SharedResources> Loc
 
 <div class="card mb-3">
     <div class="card-body p-0">
@@ -6,18 +7,18 @@
             <li class="nav-item">
                 <a class="nav-link @(ActiveTab == "details" ? "active" : "")"
                    @onclick='() => OnTabClick("details")'
-                   style="cursor: pointer;">Details</a>
+                   style="cursor: pointer;">@Loc["Details"]</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link @(ActiveTab == "attachment" ? "active" : "")"
                    @onclick='() => OnTabClick("attachment")'
-                   style="cursor: pointer;">Attachment</a>
+                   style="cursor: pointer;">@Loc["Attachments"]</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link @(ActiveTab == "subtasks" ? "active" : "")"
                    @onclick='() => OnTabClick("subtasks")'
                    style="cursor: pointer;">
-                    Sub Tasks 
+                    @Loc["SubTasks"]
                     <span class="badge bg-primary ms-1"></span>
                 </a>
             </li>
@@ -25,20 +26,20 @@
                 <a class="nav-link @(ActiveTab == "dependency" ? "active" : "")"
                    @onclick='() => OnTabClick("dependency")'
                    style="cursor: pointer;">
-                    Dependency 
+                    @Loc["dependencyTitle"]
                     <span class="badge bg-primary ms-1"></span>
                 </a>
             </li>
             <li class="nav-item">
                 <a class="nav-link @(ActiveTab == "enddate" ? "active" : "")"
                    @onclick='() => OnTabClick("enddate")'
-                   style="cursor: pointer;">End Date Request</a>
+                   style="cursor: pointer;">@Loc["EndDateRequest"]</a>
             </li>
             <li class="nav-item ms-auto">
-                <button class="btn btn-link nav-link"><i class="bi bi-clock-history"></i> History</button>
+                <button class="btn btn-link nav-link"><i class="bi bi-clock-history"></i>@Loc["History"]</button>
             </li>
             <li class="nav-item">
-                <button class="btn btn-link nav-link"><i class="bi bi-people"></i> Escalation</button>
+                <button class="btn btn-link nav-link"><i class="bi bi-people"></i>@Loc["Escalation"]</button>
             </li>
         </ul>
     </div>

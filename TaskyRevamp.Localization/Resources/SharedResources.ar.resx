@@ -1430,4 +1430,19 @@
   <data name="RetrivedSuccessfully" xml:space="preserve">
     <value>تم الاسترداد بنجاح</value>
   </data>
+  <data name="DependingOn" xml:space="preserve">
+    <value>تعتمد على</value>
+  </data>
+  <data name="NoDependingOnTasks" xml:space="preserve">
+    <value>لا توجد مهام رئيسية متاحة </value>
+  </data>
+  <data name="dependenTasks" xml:space="preserve">
+    <value>المهام التابعة</value>
+  </data>
+  <data name="NoDependentTasks" xml:space="preserve">
+    <value>لا توجد مهام تابعة متاحة</value>
+  </data>
+  <data name="dependencyTitle" xml:space="preserve">
+    <value>الإعتمادية</value>
+  </data>
 </root>
