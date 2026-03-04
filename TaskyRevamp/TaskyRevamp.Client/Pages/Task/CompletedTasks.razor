@@ -66,7 +66,7 @@
                         @Loc["AddTask"]
                     </button>
 @*                     <Search SearchSubmit="Search" CssClass="form-control"></Search>
- *@                    <button type="button" data-bs-toggle="tooltip" data-bs-placement="top" title="Filter" @onclick="ExpandFilter"
+ *@                    <button type="button" data-bs-toggle="tooltip" data-bs-placement="top" title="@Loc["Filter"]" @onclick="ExpandFilter"
                             class="btn btn-action-40 btn-outline-light-pimary">
                         <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Filter"></SVGCrud>
                     </button>
@@ -122,7 +122,7 @@
 
                                 <div>
                                     <TaskListView Title="@Loc[ViewTypes.OverAllView.ToString()]" IsCompleted="true" OnAdd="Add" IsCompletedTasks="true"
-                                              OnEdit="Edit" OnReopen="Reopen" TaskFilter="TaskFilter" IsFilter="IsFilter" @ref="@taskListRefs["overall"]"></TaskListView>
+                                              OnEdit="Edit" OnReopen="Reopen" TaskFilterChanged="ApplyClear" TaskFilter="TaskFilter" IsFilter="IsFilter" @ref="@taskListRefs["overall"]"></TaskListView>
                                 </div>
                                 break;
                             case (int)ViewTypes.SourceView:
@@ -134,7 +134,7 @@
                                             <TaskListView IsCompleted="true" @key="source.Id" IsCompletedTasks="true"
                                                           Title="@(CultureInfo.CurrentCulture.Name == "ar-EG" ? source.NameArabic : source.NameEnglish)"
                                                           ViewType="@((int)ViewTypes.SourceView)" ViewTypeId="@source.Id" OnAdd="Add" OnEdit="Edit"
-                                                      OnReopen="Reopen" IsCollapseAll="IsCollapsedAll" IsFilter="IsFilter" TaskFilter="TaskFilter" @ref="@taskListRefs[$" source-{source.Id}"]"></TaskListView>
+                                                      OnReopen="Reopen" IsCollapseAll="IsCollapsedAll" TaskFilterChanged="ApplyClear" IsFilter="IsFilter" TaskFilter="TaskFilter" @ref="@taskListRefs[$" source-{source.Id}"]"></TaskListView>
                                         </div>
                                     }
                                     <Pagination CurrentPage="@currentPage" TotalPages="@totalPages" TotalCount="@totalCount"
@@ -156,7 +156,7 @@
                                             <TaskListView IsCompleted="true" @key="type.Id" IsCompletedTasks="true"
                                                           Title="@(CultureInfo.CurrentCulture.Name == "ar-EG" ? type.NameArabic : type.NameEnglish)"
                                                           ViewType="@((int)ViewTypes.TypeView)" ViewTypeId="@type.Id" OnAdd="Add" OnEdit="Edit"
-                                                      OnReopen="Reopen" IsCollapseAll="IsCollapsedAll" IsFilter="IsFilter" TaskFilter="TaskFilter" @ref="@taskListRefs[$"type-{type.Id}"]"></TaskListView>
+                                                      OnReopen="Reopen" IsCollapseAll="IsCollapsedAll" TaskFilterChanged="ApplyClear" IsFilter="IsFilter" TaskFilter="TaskFilter" @ref="@taskListRefs[$"type-{type.Id}"]"></TaskListView>
                                         </div>
                                     }
                                     <Pagination CurrentPage="@currentPage" TotalPages="@totalPages" TotalCount="@totalCount"

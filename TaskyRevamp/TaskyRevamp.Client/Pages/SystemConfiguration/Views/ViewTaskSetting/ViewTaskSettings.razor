@@ -5,6 +5,8 @@
 @using TaskyRevamp.Dto.Enums
 @using TaskyRevamp.Dto.SystemConfiguration
 @inject ViewTaskSettingConsumer _viewTaskSettingConsumer
+@inject DefaultViewSettingConsumer _defaultviewTaskSettingConsumer
+@inject NavigationManager navigationManager
 @inject IStringLocalizer<SharedResources> Loc
 @inject ToastService ToastService
 
@@ -26,7 +28,7 @@
                         var inputId = $"view_{view.ViewType}_{index}";
                         index++;
 
-                        if ((int)view.ViewType >= 11 && (int)view.ViewType <= 14)
+                        if ((int)view.ViewType >= 11 && (int)view.ViewType <= 15)
                         {
                             if (!isListView)
                             {
@@ -73,10 +75,16 @@
 @code {
     private List<ViewTaskSettingsDto> TaskViews = new List<ViewTaskSettingsDto>();
     private List<ViewTaskSettingsDto> originalViews = new();
+    int DefaultSelected = 0;
     private bool isChanged = false;
 
     protected override async Task OnInitializedAsync()
     {
+        var defaultview = await _defaultviewTaskSettingConsumer.GetDefaultViewSetting();
+        if (defaultview.Success)
+        {
+            DefaultSelected = defaultview?.Data?.DefaultSelected??0;
+        }
         var res = await _viewTaskSettingConsumer.GetViewTaskSetting();
         if (res.Success && res.Data != null)
         {
@@ -91,6 +99,7 @@
                 IsActive = t.IsActive
             }).ToList();
         }
+
     }
     private void Cancel(MouseEventArgs args)
     {
@@ -102,6 +111,12 @@
     }
     private async void Save(MouseEventArgs args)
     {
+        if (TaskViews.Any(p => !p.IsActive && (int)p.ViewType == DefaultSelected))
+        {
+            TaskViews.FirstOrDefault(p => !p.IsActive && (int)p.ViewType == DefaultSelected).IsActive=true;
+            await ToastService.ShowToastAsync(Loc["cannotdeactivate"], "error");
+            return;
+        }
         var res = await _viewTaskSettingConsumer.UpdateTaskViewSetting(TaskViews);
         if (res.Success)
         {
@@ -112,6 +127,11 @@
             }).ToList();
 
             await ToastService.ShowToastAsync(Loc["EditSuccess"], "success");
+            navigationManager.NavigateTo(navigationManager.Uri, true);
+        }
+        else
+        {
+            await ToastService.ShowToastAsync(Loc["cannotdeactivate"], "error");
         }
     }
 

@@ -19,7 +19,7 @@ namespace TaskyRevamp.Localization.Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "18.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class SharedResources {
@@ -565,6 +565,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You cannot deactivate the system’s default login page..
+        /// </summary>
+        public static string cannotdeactivate {
+            get {
+                return ResourceManager.GetString("cannotdeactivate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to You can&apos;t delete this privilege, it&apos;s linked to a user.
         /// </summary>
         public static string CannotDeletePrivilege {
@@ -606,6 +615,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string ChangeEndDate {
             get {
                 return ResourceManager.GetString("ChangeEndDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Change End Dates Requests.
+        /// </summary>
+        public static string ChangeEndDatesRequests {
+            get {
+                return ResourceManager.GetString("ChangeEndDatesRequests", resourceCulture);
             }
         }
         
@@ -813,6 +831,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string Day {
             get {
                 return ResourceManager.GetString("Day", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Days.
+        /// </summary>
+        public static string Days {
+            get {
+                return ResourceManager.GetString("Days", resourceCulture);
             }
         }
         
@@ -1042,6 +1069,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Dependencies.
+        /// </summary>
+        public static string Dependencies {
+            get {
+                return ResourceManager.GetString("Dependencies", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Dependency.
         /// </summary>
         public static string Dependency {
@@ -1083,6 +1119,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string DescriptionEnglish {
             get {
                 return ResourceManager.GetString("DescriptionEnglish", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Deselect all.
+        /// </summary>
+        public static string Deslectall {
+            get {
+                return ResourceManager.GetString("Deslectall", resourceCulture);
             }
         }
         
@@ -1474,6 +1519,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Escalation.
+        /// </summary>
+        public static string Escalation {
+            get {
+                return ResourceManager.GetString("Escalation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to External department.
         /// </summary>
         public static string ExternalDepartment {
@@ -1542,6 +1596,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string filesSuccess {
             get {
                 return ResourceManager.GetString("filesSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Filter.
+        /// </summary>
+        public static string Filter {
+            get {
+                return ResourceManager.GetString("Filter", resourceCulture);
             }
         }
         
@@ -1717,6 +1780,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to History.
+        /// </summary>
+        public static string History {
+            get {
+                return ResourceManager.GetString("History", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 24 hours.
         /// </summary>
         public static string Hours24 {
@@ -1758,6 +1830,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string InvaildUserNameOrPassWord {
             get {
                 return ResourceManager.GetString("InvaildUserNameOrPassWord", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Is displayed.
+        /// </summary>
+        public static string IsDisplay {
+            get {
+                return ResourceManager.GetString("IsDisplay", resourceCulture);
             }
         }
         
@@ -1875,6 +1956,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string List_Source {
             get {
                 return ResourceManager.GetString("List_Source", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Status View.
+        /// </summary>
+        public static string List_Status {
+            get {
+                return ResourceManager.GetString("List_Status", resourceCulture);
             }
         }
         
@@ -2136,6 +2226,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string NoAttachmentsYet {
             get {
                 return ResourceManager.GetString("NoAttachmentsYet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No comments have been added.
+        /// </summary>
+        public static string NoComments {
+            get {
+                return ResourceManager.GetString("NoComments", resourceCulture);
             }
         }
         
@@ -3076,6 +3175,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Subtasks .
+        /// </summary>
+        public static string Subtasks {
+            get {
+                return ResourceManager.GetString("Subtasks", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Sunday.
         /// </summary>
         public static string Sunday {
@@ -3355,7 +3463,7 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to his source name was previously deleted and linked to a completed task. Do you want to use it again?.
+        ///   Looks up a localized string similar to This source name was previously deleted and linked to a completed task. Do you want to use it again?.
         /// </summary>
         public static string Thissourcenamewas {
             get {
@@ -3364,8 +3472,7 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This type name was previously deleted and linked to completed tasks.
-        ///Do you want to restore the original type and merge this one into it? Consider that the current type will be permanently deleted..
+        ///   Looks up a localized string similar to This type name was previously deleted and linked to a completed task. Do you want to use it again?.
         /// </summary>
         public static string ThisTypenamewas {
             get {
@@ -3640,6 +3747,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string Update {
             get {
                 return ResourceManager.GetString("Update", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Update Comment.
+        /// </summary>
+        public static string UpdateComment {
+            get {
+                return ResourceManager.GetString("UpdateComment", resourceCulture);
             }
         }
         

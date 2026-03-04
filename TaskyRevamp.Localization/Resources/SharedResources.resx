@@ -1240,14 +1240,13 @@
     <value>An active source with this name already exists. Please choose a different name</value>
   </data>
   <data name="Thissourcenamewas" xml:space="preserve">
-    <value>his source name was previously deleted and linked to a completed task. Do you want to use it again?</value>
+    <value>This source name was previously deleted and linked to a completed task. Do you want to use it again?</value>
   </data>
   <data name="AnactiveTypewith" xml:space="preserve">
     <value> An active type with this name already exists. Please choose a different name</value>
   </data>
   <data name="ThisTypenamewas" xml:space="preserve">
-    <value>This type name was previously deleted and linked to completed tasks.
-Do you want to restore the original type and merge this one into it? Consider that the current type will be permanently deleted.</value>
+    <value>This type name was previously deleted and linked to a completed task. Do you want to use it again?</value>
   </data>
   <data name="AnactivePrioritywith" xml:space="preserve">
     <value> An active Priority with this name already exists. Please choose a different name</value>
@@ -1425,5 +1424,44 @@ Do you want to restore the original type and merge this one into it? Consider th
   </data>
   <data name="RetrivedSuccessfully" xml:space="preserve">
     <value>Retrieved successfully</value>
+  </data>
+  <data name="Subtasks" xml:space="preserve">
+    <value>Subtasks </value>
+  </data>
+  <data name="Dependencies" xml:space="preserve">
+    <value>Dependencies</value>
+  </data>
+  <data name="ChangeEndDatesRequests" xml:space="preserve">
+    <value>Change End Dates Requests</value>
+  </data>
+  <data name="Escalation" xml:space="preserve">
+    <value>Escalation</value>
+  </data>
+  <data name="History" xml:space="preserve">
+    <value>History</value>
+  </data>
+  <data name="UpdateComment" xml:space="preserve">
+    <value>Update Comment</value>
+  </data>
+  <data name="NoComments" xml:space="preserve">
+    <value>No comments have been added</value>
+  </data>
+  <data name="cannotdeactivate" xml:space="preserve">
+    <value>You cannot deactivate the system’s default login page.</value>
+  </data>
+  <data name="List_Status" xml:space="preserve">
+    <value>Status View</value>
+  </data>
+  <data name="IsDisplay" xml:space="preserve">
+    <value>Is displayed</value>
+  </data>
+  <data name="Days" xml:space="preserve">
+    <value>Days</value>
+  </data>
+  <data name="Filter" xml:space="preserve">
+    <value>Filter</value>
+  </data>
+  <data name="Deslectall" xml:space="preserve">
+    <value>Deselect all</value>
   </data>
 </root>
