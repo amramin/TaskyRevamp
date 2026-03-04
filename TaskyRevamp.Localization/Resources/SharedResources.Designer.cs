@@ -1123,6 +1123,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Deselect all.
+        /// </summary>
+        public static string Deslectall {
+            get {
+                return ResourceManager.GetString("Deslectall", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Details .
         /// </summary>
         public static string Details {

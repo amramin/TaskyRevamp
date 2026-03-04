@@ -1458,4 +1458,7 @@
   <data name="Filter" xml:space="preserve">
     <value>بحث</value>
   </data>
+  <data name="Deslectall" xml:space="preserve">
+    <value>إلغاء تحديد الكل</value>
+  </data>
 </root>

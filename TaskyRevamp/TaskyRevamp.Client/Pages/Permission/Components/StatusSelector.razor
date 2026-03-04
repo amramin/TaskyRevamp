@@ -23,17 +23,21 @@
     }
     @if (SelectedStatuses != null && SelectedStatuses.Any())
     {
+        <div class="my-2">
+            <button class="btn btn-primary" @onclick="RemoveAll">@Loc["Deslectall"]</button>
+        </div>
+
         <div class="mt-2 d-flex flex-wrap gap-1">
             @foreach (var statusId in SelectedStatuses)
             {
                 var statusItem = StatusList.FirstOrDefault(s => s.Id == statusId);
                 if (statusItem != null)
                 {
-                    <span class="badge bg-primary d-flex align-items-center gap-1 py-1 px-2 small">
+                    <span class="badge bg-white text-black border border-dark d-flex align-items-center gap-1 py-1 px-2 small">
                         @statusItem.Name
                         @if (!IsViewMode)
                         {
-                            <button type="button" class="btn-close btn-close-white btn-close-sm ms-1"
+                            <button type="button" class="btn-close btn-close-black btn-close-sm ms-1"
                                     aria-label="Remove" style="height:0.9rem; width:0.9rem;"
                                     @onclick="() => RemoveStatus(statusId)"></button>
                         }
@@ -74,6 +78,11 @@
     private void RemoveStatus(Guid id)
     {
         SelectedStatuses.Remove(id);
+        StateHasChanged();
+    }
+    private void RemoveAll(MouseEventArgs args)
+    {
+        SelectedStatuses = new List<Guid>();
         StateHasChanged();
     }
     

@@ -1455,4 +1455,7 @@
   <data name="Filter" xml:space="preserve">
     <value>Filter</value>
   </data>
+  <data name="Deslectall" xml:space="preserve">
+    <value>Deselect all</value>
+  </data>
 </root>
