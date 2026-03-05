@@ -1288,6 +1288,9 @@ Do you want to restore the original type and merge this one into it? Consider th
   <data name="Taskdetails" xml:space="preserve">
     <value>Task details</value>
   </data>
+   <data name="Overall progress" xml:space="preserve">
+    <value>Overall progress</value>
+  </data>
   <data name="EditTask" xml:space="preserve">
     <value>Edit task</value>
   </data>

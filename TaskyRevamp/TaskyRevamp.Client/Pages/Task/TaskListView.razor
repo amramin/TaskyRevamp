@@ -24,23 +24,26 @@
 @if (!isLoading)
 {
     <div class="card table-card collaped-task-card">
-        <div class="table-caption cursor-pointer @(IsCollapse ? "collapsed" : "")" @onclick="Collapse">
-            @if (ViewType != (int)ViewTypes.OverAllView)
-            {
-                <span class="chevron-icon">
-                    <SVGCrud SVGType="@(IsCollapse? SVGCrud.SVGTypeEnum.ChevronEnd : SVGCrud.SVGTypeEnum.ChevronDown)" />
-                </span>
-            }
-            <span class="text"> @Title</span>
+        <div class="table-caption cursor-pointer justify-content-between @(IsCollapse ? "collapsed" : "")"
+             @onclick="Collapse">
+            <div class="d-flex align-items-center gap-1">
+                @if (ViewType != (int)ViewTypes.OverAllView)
+                {
+                    <span class="chevron-icon">
+                        <SVGCrud SVGType="@(IsCollapse? SVGCrud.SVGTypeEnum.ChevronEnd : SVGCrud.SVGTypeEnum.ChevronDown)" />
+                    </span>
+                }
+                <span class="text"> @Title</span>
+            </div>
+            <OverallBar Tasks="allTaks" Width="300"></OverallBar>
         </div>
         @if (allTaks != null && allTaks.Any())
         {
             <div style="display:@(IsCollapse ? "none" : "block")">
-                <div class="mb-1">
-                    <OverallBar Tasks="allTaks" Width="600"></OverallBar>
-                </div>
+
                 <div class="table-responsive task-table">
-                    <SortableTable TItem="CreateTaskDto" Columns="@Columns.Where(p => p.IsVisible).OrderBy(k => k.Order).ToList()" Items="@allTaks"
+                    <SortableTable TItem="CreateTaskDto"
+                                   Columns="@Columns.Where(p => p.IsVisible).OrderBy(k => k.Order).ToList()" Items="@allTaks"
                                    SortColumn="@currentSortColumn" SortAscending="@sortAscending" OnSortRequested="HandleSort">
 
                         <RowTemplate>
@@ -80,7 +83,7 @@
                                                     </li>
                                                 }
                                                 @if ((task.ActualProcess == 100 && task.TaskStatus ==
-                                                                                    Guid.Parse("6EE4574D-C439-45B4-223A-08DE3318A61C")))
+                                                                                                                                                                                    Guid.Parse("6EE4574D-C439-45B4-223A-08DE3318A61C")))
                                                 {
                                                     <li>
                                                         <button class="dropdown-item" @onclick="@(() => CompleteTask(task.Id))">
@@ -92,7 +95,7 @@
                                                     </li>
                                                 }
                                                 @if (task.ActualProcess == 100 && task.TaskStatus ==
-                                                                                    Guid.Parse("6EE4574D-C439-45B4-223A-08DE3318A61C"))
+                                                                                                                                                                                    Guid.Parse("6EE4574D-C439-45B4-223A-08DE3318A61C"))
                                                 {
                                                     <li>
                                                         <button class="dropdown-item" @onclick="@(() => OnReopen.InvokeAsync(task.Id))">
@@ -215,21 +218,23 @@
         List<SortableColumn> column = new List<SortableColumn>();
         column = new List<SortableColumn>()
         {
-            new() { Field = "Title", DisplayName  = Loc["Title"], Order = 0, IsVisible = true },
-            new() { Field = "Priority", DisplayName =  Loc["Priority2"], Order = 1, IsVisible = true },
-            new() { Field = "Status", DisplayName =  Loc["TaskStatus"], Order = 2, IsVisible = true },
+            new() { Field = "Title", DisplayName = Loc["Title"], Order = 0, IsVisible = true },
+            new() { Field = "Priority", DisplayName = Loc["Priority2"], Order = 1, IsVisible = true },
+            new() { Field = "Status", DisplayName = Loc["TaskStatus"], Order = 2, IsVisible = true },
             new() { Field = "Actual progress", DisplayName = Loc["ActualProgress"], Order = 3, IsVisible = true },
             new() { Field = "Start Date", DisplayName = Loc["StartDate"], Order = 4, IsVisible = true },
             new() { Field = "End Date", DisplayName = Loc["EndDate"], Order = 5, IsVisible = true },
             new() { Field = "weight", DisplayName = Loc["weight"], Order = 6, IsVisible = true },
             new() { Field = "Assigned To", DisplayName = Loc["AssignedTo"], Order = 7, IsVisible = true,IsSortable=false },
-            new() { Field = "Assigned To Department", DisplayName =Loc["AssignedToDepartment"], Order = 8, IsVisible = true,IsSortable=false },
+            new() { Field = "Assigned To Department", DisplayName =Loc["AssignedToDepartment"], Order = 8, IsVisible =
+true,IsSortable=false },
             new() { Field = "Source", DisplayName =Loc["Source"], Order = 9, IsVisible = true },
             new() { Field = "Dependency", DisplayName = Loc["Dependency"], Order = 10, IsVisible = true,IsSortable=false },
             new() { Field = "Created By", DisplayName = Loc["CreatedBy"], Order = 11, IsVisible = true },
             new() { Field = "Duration", DisplayName = Loc["Duration"], Order = 12, IsVisible = true,IsSortable=false },
             new() { Field = "Created by department", DisplayName = Loc["Createdbydepartment"], Order = 13, IsVisible = true },
-            new() { Field = "Planned Progress", DisplayName = Loc["PlannedProgress"], Order = 14, IsVisible = true,IsSortable=false },
+            new() { Field = "Planned Progress", DisplayName = Loc["PlannedProgress"], Order = 14, IsVisible = true,IsSortable=false
+},
             new() { Field = "Creation Date", DisplayName = Loc["CreationDate"], Order = 15, IsVisible = true },
             new() { Field = "Type", DisplayName = Loc["Type"], Order = 16, IsVisible = true },
             new() { Field = "Actual Weight", DisplayName = Loc["ActualWeight"], Order = 17, IsVisible = true,IsSortable=false },
@@ -238,9 +243,10 @@
         var key = IsCompletedTasks ? "CompletedTask_Columns" : "MainTask_Columns";
         if (await LocalStorageService.GetItemAsync<List<SortableColumn>>(key) is null)
         {
-            foreach(var col in column)
+            foreach (var col in column)
             {
-                col.IsVisible = ColumnsList.FirstOrDefault(s => string.Equals(s.NameEnglish, col.Field, StringComparison.OrdinalIgnoreCase))?.IsDisplay ?? col.IsVisible;
+                col.IsVisible = ColumnsList.FirstOrDefault(s => string.Equals(s.NameEnglish, col.Field,
+StringComparison.OrdinalIgnoreCase))?.IsDisplay ?? col.IsVisible;
             }
         }
         await LocalStorageService.SetItemAsync(key, column);
@@ -303,7 +309,7 @@
             // var resMainTasks = await _taskConsumer.GetMainAndParentTasks();
             // if (resMainTasks.Success && resMainTasks.Data != null)
             // {
-            //     MainAndParentTasks = resMainTasks.Data;
+            // MainAndParentTasks = resMainTasks.Data;
             // }
             var prioritiesTask = _prioritySettingConsumer.GetPriorities();
             var prioritiesRes = await prioritiesTask;
@@ -312,15 +318,17 @@
                 Priorities = prioritiesRes.Data.Where(k => k.IsDeleted != true).ToList().OrderBy(q => q.Order).ToList();
             }
             var addTasksSettingRes = await _addTaskSettingConsumer.GetAddTaskSettings();
-            if(addTasksSettingRes.Success && addTasksSettingRes.Data != null)
+            if (addTasksSettingRes.Success && addTasksSettingRes.Data != null)
             {
                 addTaskSettingDtos = addTasksSettingRes.Data;
                 BuildActiveFieldsDictionary();
             }
 
             // Filter and order by settings
-            tableColumns = tableColumns.Where(c => ColumnsList.Any(s => s.IsActive && string.Equals(s.NameEnglish, c.Field, StringComparison.OrdinalIgnoreCase)))
-            .OrderBy(c => ColumnsList.First(s => string.Equals(s.NameEnglish, c.Field, StringComparison.OrdinalIgnoreCase)).Order ?? int.MaxValue).ToList();
+            tableColumns = tableColumns.Where(c => ColumnsList.Any(s => s.IsActive && string.Equals(s.NameEnglish, c.Field,
+StringComparison.OrdinalIgnoreCase)))
+            .OrderBy(c => ColumnsList.First(s => string.Equals(s.NameEnglish, c.Field, StringComparison.OrdinalIgnoreCase)).Order ??
+int.MaxValue).ToList();
             CurrentUser = Guid.Parse(await LocalStorageService.GetItemAsStringAsync("Id"));
             RejectionPeriod = await GetRejectionPeriod();
             await GetTasks();
@@ -554,7 +562,7 @@
                     builder.OpenElement(3, "div");
                     builder.AddAttribute(4, "style",
                         $"display:inline-block;" +
-                        $"width:200px;" +                // 👈 fixed width here
+                        $"width:200px;" + // 👈 fixed width here
                         $"min-width:200px;" +
                         $"background-color:{bgColor};" +
                         $"color:{textColor};" +
@@ -611,7 +619,8 @@
                     b.OpenComponent<OverallBar>(0);
                     b.AddAttribute(1, "ActualProgress", task.ActualProcess);
                     b.AddAttribute(2, "Width", 150);
-                    b.AddAttribute(3, "OnProgressChanged", EventCallback.Factory.Create<int>(this, value => OnTaskProgressChanged(task, value)));
+                    b.AddAttribute(3, "OnProgressChanged", EventCallback.Factory.Create<int>(this, value => OnTaskProgressChanged(task,
+value)));
                     b.CloseComponent();
                 }));
                 break;
@@ -742,9 +751,9 @@
         }
         return RejectionPeriod;
     }
-    private void OnPriorityChanged(CreateTaskDto task,Guid value)
+    private void OnPriorityChanged(CreateTaskDto task, Guid value)
     {
-       // task.Priority = value;
+        // task.Priority = value;
 
         // 2️⃣ Update display fields (important!)
         var selected = Priorities?.FirstOrDefault(p => p.Id == value);
@@ -790,7 +799,8 @@
         }
         else
         {
-            if ((DateOnly.FromDateTime(taskDto.CreateDate ?? DateTime.Now).AddDays(RejectionPeriod) < DateOnly.FromDateTime(DateTime.Now)) || !(taskDto.AssignedIds!.Contains(CurrentUser)))
+            if ((DateOnly.FromDateTime(taskDto.CreateDate ?? DateTime.Now).AddDays(RejectionPeriod) <
+DateOnly.FromDateTime(DateTime.Now)) || !(taskDto.AssignedIds!.Contains(CurrentUser)))
             {
                 return false;
             }
@@ -808,7 +818,7 @@
         {
             if (confirmed)
             {
-                await ChangeProgressConfirmed(task,value);
+                await ChangeProgressConfirmed(task, value);
             }
             else
             {
@@ -822,7 +832,7 @@
     private async Task ChangeProgressConfirmed(CreateTaskDto task, int value)
     {
         task.ActualProcess = value;
-        var result= await _taskConsumer.ChangeTaskProgress(task.Id, value);
+        var result = await _taskConsumer.ChangeTaskProgress(task.Id, value);
         if (result.Success && result.Data)
         {
             await ToastService.ShowToastAsync(Loc["progressChangedsuccessfully"], "success");

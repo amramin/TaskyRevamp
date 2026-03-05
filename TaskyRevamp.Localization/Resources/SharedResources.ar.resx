@@ -1292,6 +1292,9 @@
   <data name="Taskdetails" xml:space="preserve">
     <value>تفاصيل المهمة</value>
   </data>
+  <data name="Overall progress" xml:space="preserve">
+    <value>الإنجاز العام</value>
+  </data>
   <data name="EditTask" xml:space="preserve">
     <value>تعديل المهمة</value>
   </data>

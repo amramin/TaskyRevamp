@@ -142,7 +142,7 @@
                             case (int)ViewTypes.OverAllView:
                                 <div>
                                     <TaskListView Title="@Loc[ViewTypes.OverAllView.ToString()]" OnAdd="Add" OnEdit="Edit" IsCompletedTasks="false"
-                                                  OnReopen="OnConfirmReopen" OnReject="Reject" TaskFilter="TaskFilter" IsFilter="IsFilter"  @ref="@taskListRefs["overall"]"></TaskListView>
+                                                OnReopen="OnConfirmReopen" OnReject="Reject" TaskFilter="TaskFilter" IsFilter="IsFilter"  @ref="@taskListRefs["overall"]"></TaskListView>
                                 </div>
                                 break;
                             case (int)ViewTypes.TimeLineView:
@@ -152,8 +152,8 @@
                                     var currentIndex = timelineIndex;
                                     <div>
                                         <TaskListView Title="@Loc[timeview.ToString()]" ViewType="@((int)ViewTypes.TimeLineView)" IsCompletedTasks="false"
-                                                      ViewTypeId="@(Guid.Parse(timeview.GetDescription()))" OnAdd="Add" OnEdit="Edit"
-                                                  OnReopen="OnConfirmReopen" OnReject="Reject" TaskFilter="TaskFilter" IsFilter="IsFilter" IsCollapseAll="IsCollapsedAll" @ref="@taskListRefs[$"timeline-{currentIndex}"]"></TaskListView>
+                                                ViewTypeId="@(Guid.Parse(timeview.GetDescription()))" OnAdd="Add" OnEdit="Edit"
+                                                OnReopen="OnConfirmReopen" OnReject="Reject" TaskFilter="TaskFilter" IsFilter="IsFilter" IsCollapseAll="IsCollapsedAll" @ref="@taskListRefs[$"timeline-{currentIndex}"]"></TaskListView>
                                     </div>
 
                                 }
@@ -162,9 +162,9 @@
                                 @foreach (var source in sources)
                                 {
                                     <TaskListView @key="source.Id" IsCompletedTasks="false"
-                                                  Title="@(CultureInfo.CurrentCulture.Name == "ar-EG" ? source.NameArabic : source.NameEnglish)"
-                                                  ViewType="@((int)ViewTypes.SourceView)" ViewTypeId="@source.Id" OnAdd="Add" OnEdit="Edit"
-                                              OnReopen="OnConfirmReopen" OnReject="Reject" TaskFilter="TaskFilter" IsFilter="IsFilter" IsCollapseAll="IsCollapsedAll" @ref="@taskListRefs[$" source-{source.Id}"]"></TaskListView>
+                                                Title="@(CultureInfo.CurrentCulture.Name == "ar-EG" ? source.NameArabic : source.NameEnglish)"
+                                                ViewType="@((int)ViewTypes.SourceView)" ViewTypeId="@source.Id" OnAdd="Add" OnEdit="Edit"
+                                                OnReopen="OnConfirmReopen" OnReject="Reject" TaskFilter="TaskFilter" IsFilter="IsFilter" IsCollapseAll="IsCollapsedAll" @ref="@taskListRefs[$" source-{source.Id}"]"></TaskListView>
 
                                 }
                                 <Pagination CurrentPage="@currentPage" TotalPages="@totalPages" TotalCount="@totalCount"
@@ -179,28 +179,24 @@
                                 {
 
                                     <TaskListView Title="@(CultureInfo.CurrentCulture.Name == "ar-EG" ? status.NameArabic : status.NameEnglish)" ViewType="@((int)ViewTypes.StatusView)" ViewTypeId="@status.Id" OnAdd="Add" OnEdit="Edit"
-                                              OnReopen="OnConfirmReopen" OnReject="Reject" TaskFilter="TaskFilter" IsFilter="IsFilter" IsCollapseAll="IsCollapsedAll" @ref="@taskListRefs[$" status-{status.Id}"]"></TaskListView>
+                                            OnReopen="OnConfirmReopen" OnReject="Reject" TaskFilter="TaskFilter" IsFilter="IsFilter" IsCollapseAll="IsCollapsedAll" @ref="@taskListRefs[$" status-{status.Id}"]"></TaskListView>
                                 }
                                 break;
                             case (int)ViewTypes.TypeView:
                                 @foreach (var type in Types)
                                 {
                                     <TaskListView @key="type.Id" IsCompletedTasks="false" 
-                                                  Title="@(CultureInfo.CurrentCulture.Name == "ar-EG" ? type.NameArabic : type.NameEnglish)"
-                                                  ViewType="@((int)ViewTypes.TypeView)" ViewTypeId="@type.Id" OnAdd="Add" OnEdit="Edit"
-                                              OnReopen="OnConfirmReopen" OnReject="Reject" TaskFilter="TaskFilter" IsFilter="IsFilter" IsCollapseAll="IsCollapsedAll" @ref="@taskListRefs[$"type-{type.Id}"]"></TaskListView>
+                                                Title="@(CultureInfo.CurrentCulture.Name == "ar-EG" ? type.NameArabic : type.NameEnglish)"
+                                                ViewType="@((int)ViewTypes.TypeView)" ViewTypeId="@type.Id" OnAdd="Add" OnEdit="Edit"
+                                                OnReopen="OnConfirmReopen" OnReject="Reject" TaskFilter="TaskFilter" IsFilter="IsFilter" IsCollapseAll="IsCollapsedAll" @ref="@taskListRefs[$"type-{type.Id}"]"></TaskListView>
                                 }
                                 <Pagination CurrentPage="@currentPage" TotalPages="@totalPages" TotalCount="@totalCount"
                                             PageSize="@pageSize" PageSizeOptions="new[] { 5, 8, 10, 15 }" PageChanged="ChangePageType"
                                             PageSizeChangedCallback="ChangePageSizeType" />
-
                                 break;
                         }
                     </div>
-
-
             </div>
-
         </div>
         <div class="tab-pane fade" id="kanban-view-tab" role="tabpanel" aria-labelledby="kanban-tab">
             <div class="page-header">
@@ -208,7 +204,7 @@
                     @* <h1 class="page-headline">@Loc["taskOverall"]</h1> *@
                     <div class="view-scope-toggle" role="group" aria-label="Basic radio toggle button group">
                         <input type="radio" class="btn-check" name="btnradio" id="mineRadio" autocomplete="off"
-                               checked />
+                            checked />
                         <label class="btn" for="mineRadio">
                             <SVGCrud SVGType="SVGCrud.SVGTypeEnum.User"></SVGCrud>
                             <span>Mine</span>
@@ -217,7 +213,6 @@
                         <input type="radio" class="btn-check" name="btnradio" id="teamRadio" autocomplete="off" />
                         <label class="btn" for="teamRadio">
                             <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Users"></SVGCrud>
-
                             <span>Team</span>
                         </label>
                     </div>

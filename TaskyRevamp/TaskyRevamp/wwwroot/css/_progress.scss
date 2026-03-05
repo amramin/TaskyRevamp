@@ -1,0 +1,61 @@
+/* progress-overall-bar */
+.progress-overall-bar {
+  .content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-weight: 500;
+    color: var(--dark-900);
+    font-size: 0.75rem;
+    margin-bottom: 0.25rem;
+  }
+  .progress {
+    min-width: 100px;
+    border-radius: 9999rem;
+    height: 0.5rem;
+    background-color: var(--light-300);
+    overflow: visible;
+    .progress-bar {
+      border-radius: 9999rem;
+      background-color: var(--primary-color);
+      &.completed {
+        background-color: var(--progress-complete-color);
+      }
+    }
+    .progress-value {
+      position: absolute;
+      font-size: 0.75rem;
+      background-color: var(--dark-900);
+      color: var(--bs-white);
+      padding: 0.125rem 0.5rem;
+      border-radius: 2px;
+      top: -1.75rem;
+      display: none;
+    }
+    .circle {
+      position: absolute;
+      background-color: var(--bs-white);
+      width: 1rem;
+      height: 1rem;
+      border-radius: 50%;
+      box-shadow: 0px 4px 8px 0px rgba(167, 177, 195, 1);
+      top: 50%;
+      transform: translateY(-50%) translateX(-0.25rem);
+      pointer-events: none;
+    }
+  }
+}
+.table {
+  .progress-overall-bar {
+    .content {
+      display: none;
+    }
+  }
+  .progress {
+    &:hover {
+      .progress-value {
+        display: block;
+      }
+    }
+  }
+}
