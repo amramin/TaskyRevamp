@@ -3178,13 +3178,15 @@ fieldset:disabled .btn {
 .table .td-content .no-desc {
   display: none;
 }
-.table .task-depancy-number, .table .task-delayed-icon {
+.table .task-depancy-number,
+.table .task-delayed-icon {
   display: -webkit-inline-box;
   display: -ms-inline-flexbox;
   display: inline-flex;
   color: var(--dark-700);
 }
-.table .task-depancy-number svg, .table .task-delayed-icon svg {
+.table .task-depancy-number svg,
+.table .task-delayed-icon svg {
   width: 1rem;
   height: 1rem;
 }
