@@ -19,8 +19,8 @@
 @inject RejectionSettingConsumer _rejectionSettingConsumer
 @inject PrioritySettingConsumer _prioritySettingConsumer
 @inject AddTaskSettingConsumer _addTaskSettingConsumer
-
 @inject DefaultColumnsSettingConsumer _defaultColumnsSettingConsumer
+
 @if (!isLoading)
 {
     <div class="card table-card collaped-task-card">
@@ -114,6 +114,14 @@
                                                         </button>
                                                     </li>
                                                 }
+                                                <li>
+                                                    <button class="dropdown-item text-danger" @onclick="@(() => DeleteTask(task.Id))">
+                                                        <span class="icon">
+                                                            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Delete"></SVGCrud>
+                                                        </span>
+                                                        @Loc["Delete"]
+                                                    </button>
+                                                </li>
                                             </ul>
                                         </div>
                                     </td>
@@ -245,7 +253,7 @@
         var key = IsCompletedTasks ? "CompletedTask_Columns" : "MainTask_Columns";
         if (await LocalStorageService.GetItemAsync<List<SortableColumn>>(key) is null)
         {
-            foreach(var col in column)
+            foreach (var col in column)
             {
                 col.IsVisible = ColumnsList.FirstOrDefault(s => string.Equals(s.NameEnglish, col.Field, StringComparison.OrdinalIgnoreCase))?.IsDisplay ?? col.IsVisible;
             }
@@ -319,7 +327,7 @@
                 Priorities = prioritiesRes.Data.Where(k => k.IsDeleted != true).ToList().OrderBy(q => q.Order).ToList();
             }
             var addTasksSettingRes = await _addTaskSettingConsumer.GetAddTaskSettings();
-            if(addTasksSettingRes.Success && addTasksSettingRes.Data != null)
+            if (addTasksSettingRes.Success && addTasksSettingRes.Data != null)
             {
                 addTaskSettingDtos = addTasksSettingRes.Data;
                 BuildActiveFieldsDictionary();
@@ -389,24 +397,34 @@
                         await CompleteConfirmed(id);
                 }, ConfirmationType.Other);
     }
+    private void DeleteTask(Guid id)
+    {
+        PopupService.ShowConfirmation(@Loc["SureDeleteTask"], @Loc["Confirm"],
+                async (confirmed) =>
+                {
+                    if (confirmed)
+                        await DeleteConfirmed(id);
+                }, ConfirmationType.Danger);
+    }
     private async Task DeleteConfirmed(Guid Id)
     {
-        var result = await _taskConsumer.DeleteTask(Id);
-        if (result.Success)
+        var result = await _taskConsumer.SoftDeleteTask(Id, CurrentUser);
+        if (result.Success && result.Data)
         {
             var toRemove = allTaks.FirstOrDefault(d => d.Id == Id);
             if (toRemove != null)
                 allTaks.Remove(toRemove);
             await ToastService.ShowToastAsync(Loc["Deletedsuccessfully"], "success");
+            await GetTasks();
         }
         else
-            await ToastService.ShowToastAsync(Loc["DeleteFailed"], "danger");
+            await ToastService.ShowToastAsync(Loc["PreventTaskDeletion"], "error");
+
         StateHasChanged();
     }
-    private Search? searchComponent;
     private async Task ClearSearch()
     {
-        TaskFilter=null;
+        TaskFilter = null;
         await TaskFilterChanged.InvokeAsync(null);
         await GetTasks();
         StateHasChanged();
@@ -421,20 +439,20 @@
                     await DeleteConfirmed(delegationId);
             }, ConfirmationType.Other);
     }
-    private async Task OnConfirmDelete(bool confirmed)
-    {
-        if (confirmed && itemToDelete != null!)
-        {
-            var res = await _taskConsumer.DeleteTask(itemToDelete);
-            if (res.Success)
-            {
-                allTaks.Remove(allTaks.FirstOrDefault(x => x.Id == itemToDelete)!);
-                await GetTasks();
-            }
-        }
-        isPopupVisible = false;
-        StateHasChanged();
-    }
+    // private async Task OnConfirmDelete(bool confirmed)
+    // {
+    //     if (confirmed && itemToDelete != null!)
+    //     {
+    //         var res = await _taskConsumer.SoftDeleteTask(itemToDelete, CurrentUser);
+    //         if (res.Success)
+    //         {
+    //             allTaks.Remove(allTaks.FirstOrDefault(x => x.Id == itemToDelete)!);
+    //             await GetTasks();
+    //         }
+    //     }
+    //     isPopupVisible = false;
+    //     StateHasChanged();
+    // }
     public void ShowConfirmation(Guid Id)
     {
         itemToDelete = Id;
@@ -750,9 +768,9 @@
         }
         return RejectionPeriod;
     }
-    private void OnPriorityChanged(CreateTaskDto task,Guid value)
+    private void OnPriorityChanged(CreateTaskDto task, Guid value)
     {
-       // task.Priority = value;
+        // task.Priority = value;
 
         // 2️⃣ Update display fields (important!)
         var selected = Priorities?.FirstOrDefault(p => p.Id == value);
@@ -817,7 +835,7 @@
         {
             if (confirmed)
             {
-                await ChangeProgressConfirmed(task,value);
+                await ChangeProgressConfirmed(task, value);
             }
             else
             {
@@ -831,7 +849,7 @@
     private async Task ChangeProgressConfirmed(CreateTaskDto task, int value)
     {
         task.ActualProcess = value;
-        var result= await _taskConsumer.ChangeTaskProgress(task.Id, value);
+        var result = await _taskConsumer.ChangeTaskProgress(task.Id, value);
         if (result.Success && result.Data)
         {
             await ToastService.ShowToastAsync(Loc["progressChangedsuccessfully"], "success");

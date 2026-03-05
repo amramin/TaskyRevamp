@@ -1467,4 +1467,29 @@
   <data name="Deslectall" xml:space="preserve">
     <value>إلغاء تحديد الكل</value>
   </data>
+  <data name="SureDeleteTask" xml:space="preserve">
+    <value>هل أنت متأكد من حذف هذه المهمة؟ سيتم نقلها إلى سلة المحذوفات، ويمكنك استعادتها لاحقًا أو حذفها نهائيًا</value>
+  </data>
+  <data name="PreventTaskDeletion" xml:space="preserve">
+    <value>تحتوي هذه المهمة على مهام تابعة لها. يرجى إزالة تبعية المهام الأخرى قبل المتابعة بالحذف</value>
+  </data>
+  <data name="taskDeleted" xml:space="preserve">
+    <value>تم حذف المهمة بنجاح</value>
+  </data>
+  <data name="RecycleBin" xml:space="preserve">
+    <value>سلة المحذوفات</value>
+  </data>
+  <data name="DeletionDate" xml:space="preserve">
+    <value>تاريخ الحذف </value>
+  </data>
+  <data name="DeletedBy" xml:space="preserve">
+    <value>تم الحذف بواسطة</value>
+  </data>
+  <data name="Restore" xml:space="preserve">
+    <value>استعادة</value>
+  </data>
+  <data name="RecycleBinRetentionMessage" xml:space="preserve">
+    <value>سيتم حذف المهام الموجودة في سلة المحذوفات تلقائيًا بعد {0} يومًا
+إذا كنت بحاجة إلى هذه المهمة، يرجى استعادتها قبل حذفها بشكل دائم</value>
+  </data>
 </root>

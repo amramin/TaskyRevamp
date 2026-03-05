@@ -1464,4 +1464,29 @@
   <data name="Deslectall" xml:space="preserve">
     <value>Deselect all</value>
   </data>
+  <data name="SureDeleteTask" xml:space="preserve">
+    <value>Are you sure you want to delete this task?
+This task will be moved to the Recycle Bin and can be restored later or permanently deleted</value>
+  </data>
+  <data name="PreventTaskDeletion" xml:space="preserve">
+    <value>This task has tasks depend on it. Please remove the dependency of other tasks before proceeding with deletion</value>
+  </data>
+  <data name="taskDeleted" xml:space="preserve">
+    <value>Task deleted successfully</value>
+  </data>
+  <data name="RecycleBin" xml:space="preserve">
+    <value>Recycle bin</value>
+  </data>
+  <data name="DeletionDate" xml:space="preserve">
+    <value>Deletion Date</value>
+  </data>
+  <data name="DeletedBy" xml:space="preserve">
+    <value>Deleted By</value>
+  </data>
+  <data name="Restore" xml:space="preserve">
+    <value>Restore</value>
+  </data>
+  <data name="RecycleBinRetentionMessage" xml:space="preserve">
+    <value>Tasks in the Recycle Bin will be automatically deleted after {0} days</value>
+  </data>
 </root>

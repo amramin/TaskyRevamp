@@ -19,7 +19,7 @@ namespace TaskyRevamp.Localization.Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "18.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class SharedResources {
@@ -970,6 +970,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Deleted By.
+        /// </summary>
+        public static string DeletedBy {
+            get {
+                return ResourceManager.GetString("DeletedBy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Deleted successfully.
         /// </summary>
         public static string Deletedsuccessfully {
@@ -984,6 +993,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string DeleteTaskSource {
             get {
                 return ResourceManager.GetString("DeleteTaskSource", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Deletion Date.
+        /// </summary>
+        public static string DeletionDate {
+            get {
+                return ResourceManager.GetString("DeletionDate", resourceCulture);
             }
         }
         
@@ -2491,6 +2509,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to This task has tasks depend on it. Please remove the dependency of other tasks before proceeding with deletion.
+        /// </summary>
+        public static string PreventTaskDeletion {
+            get {
+                return ResourceManager.GetString("PreventTaskDeletion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Primary active color.
         /// </summary>
         public static string Primary_Active_Color {
@@ -2655,9 +2682,27 @@ namespace TaskyRevamp.Localization.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Recycle bin.
         /// </summary>
+        public static string RecycleBin {
+            get {
+                return ResourceManager.GetString("RecycleBin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Recycle bin.
+        /// </summary>
         public static string RecycleBinConfiguration {
             get {
                 return ResourceManager.GetString("RecycleBinConfiguration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tasks in the Recycle Bin will be automatically deleted after {0} days.
+        /// </summary>
+        public static string RecycleBinRetentionMessage {
+            get {
+                return ResourceManager.GetString("RecycleBinRetentionMessage", resourceCulture);
             }
         }
         
@@ -2811,6 +2856,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string Reset {
             get {
                 return ResourceManager.GetString("Reset", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Restore.
+        /// </summary>
+        public static string Restore {
+            get {
+                return ResourceManager.GetString("Restore", resourceCulture);
             }
         }
         
@@ -3256,6 +3310,16 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to delete this task?
+        ///This task will be moved to the Recycle Bin and can be restored later or permanently deleted.
+        /// </summary>
+        public static string SureDeleteTask {
+            get {
+                return ResourceManager.GetString("SureDeleteTask", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Are you sure you want to reopen the task?.
         /// </summary>
         public static string SureReopenTask {
@@ -3333,6 +3397,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string SystemNotifications {
             get {
                 return ResourceManager.GetString("SystemNotifications", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Task deleted successfully.
+        /// </summary>
+        public static string taskDeleted {
+            get {
+                return ResourceManager.GetString("taskDeleted", resourceCulture);
             }
         }
         

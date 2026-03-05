@@ -25,6 +25,7 @@ public class TaskItem : Entity, IHasCreationMetaData, IHasUpdateMetaData
 	public Reminder? Reminder { get; set; }
 	public PrioritySettings Priority { get; set; }
 	public int? Weight { get; set; }
+	public bool IsDeleted { get; set; }
 	public int Progress { get; set; }
 	Weight _plannedWeight;
 	public Weight PlannedWeight
@@ -143,6 +144,9 @@ public class TaskItem : Entity, IHasCreationMetaData, IHasUpdateMetaData
 	public Guid? UpdatedById { get; set; }
 	public DateTime? UpdateDate { get; set; }
 	public User? UpdatedBy { get; set; }
+	public Guid? DeletedById { get; set; }
+	public DateTime? DeleteDate { get; set; }
+	public User? DeletedBy { get; set; }
 	public Guid FileId { get; set; }
 	public TaskItem() { }
 	public TaskItem(Guid id, string title, string desc, Guid? type, Guid? source, DateTime? start, DateTime? end, Guid priority, Weight plannedWeight, Guid creatorid, List<Department> assgndep, List<Guid> assigids, DateTime? rmind, int actualprocess, int? wight, List<Guid> dependcy)
@@ -241,6 +245,8 @@ public class TaskItem : Entity, IHasCreationMetaData, IHasUpdateMetaData
 			UpdateDate = UpdateDate,
 			StartDate = StartDate,
 			EndDate = EndDate,
+			DeletionDate = DeleteDate,
+			DeletedBy = DeletedBy?.Username,
 			Priority = PriorityId,
 			CreatedByName = CreatedBy?.Username,
 			UpdatedBy = UpdatedBy?.Username,
@@ -389,18 +395,6 @@ public class TaskItem : Entity, IHasCreationMetaData, IHasUpdateMetaData
 		//    Assignees.Add(Creator, by);
 		//}
 	}
-
-	public void SoftDelete(User by)
-	{
-		if (_subtasks.Any())
-		{
-			throw new InvalidOperationException("A parent task with subtasks cannot be deleted. Please delete all subtasks first.");
-		}
-
-		// _status = TaskStatus.Returned;
-		AddHistoryEntry(by, $"deleted the task");
-	}
-
 	public void Restore(bool reassignToCreator, User by)
 	{
 		//if (Parent is { Status: TaskStatus.Closed or TaskStatus.Returned })
@@ -416,11 +410,12 @@ public class TaskItem : Entity, IHasCreationMetaData, IHasUpdateMetaData
 		AddHistoryEntry(by, $"restored the task");
 	}
 
-	public void PermanentlyDelete(User by)
+	public void SoftDelete(Guid deletedbyId)
 	{
-		AddHistoryEntry(by, $"permanently deleted the task");
+		IsDeleted = true;
+		DeleteDate = DateTime.UtcNow;
+		DeletedById = deletedbyId;
 	}
-
 	public void AddHistoryEntry(User by, string action)
 	{
 		var entry = new TaskHistoryEntry(Guid.NewGuid(), this, by, action, DateTime.UtcNow);

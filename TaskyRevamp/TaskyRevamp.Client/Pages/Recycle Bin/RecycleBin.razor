@@ -1,0 +1,167 @@
+﻿@page "/recycle-bin"
+@using TaskyRevamp.Client.Consumer
+@using TaskyRevamp.Dto.Enums
+@using TaskyRevamp.Dto.Enums.SearchFields
+@using TaskyRevamp.Dto.SystemConfiguration
+@using TaskyRevamp.Dto.TaskDto
+@inject IStringLocalizer<SharedResources> Loc
+@inject TaskConsumer _taskConsumer
+@inject RecycleBinSettingConsumer _recycleBinSettingConsumer
+
+@if (retentionDays.HasValue)
+{
+    <div class="alert alert-warning mt-4 mb-2 ms-3 me-3">
+        @Loc["RecycleBinRetentionMessage", retentionDays.Value]
+    </div>
+}
+<div class="page-body">
+    <div class="table-responsive task-table">
+        @if (allDeletedTasks != null && allDeletedTasks.Any())
+        {
+            <SortableTable TItem="CreateTaskDto" Columns="@Columns.Where(p => p.IsVisible).OrderBy(k => k.Order).ToList()" Items="@allDeletedTasks"
+                           SortColumn="@currentSortColumn" SortAscending="@sortAscending" OnSortRequested="HandleSort">
+                <RowTemplate>
+                    @foreach (var task in allDeletedTasks)
+                    {
+                        <tr>
+                            <td>@task.Title</td>
+                            <td>@task.DeletedByName</td>
+                            <td>@task.DeletionDate?.ToLocalTime().ToString(Loc["LocalizeDate"])</td>
+                            <td>@task.StartDate?.ToLocalTime().ToString(Loc["LocalizeDate"])</td>
+                            <td>@task.EndDate?.ToLocalTime().ToString(Loc["LocalizeDate"])</td>
+                            <td>@task.PriorityName</td>
+                            <td>
+                                <div class="dropdown actions">
+                                    <button class="btn btn-action-24" type="button" data-bs-toggle="dropdown"
+                                            aria-expanded="false">
+                                        <SVGCrud SVGType="SVGCrud.SVGTypeEnum.EllipseVertical"></SVGCrud>
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li>
+                                            <button class="dropdown-item" @onclick="@(() => RestoreTask(task.Id))">
+                                                <span class="icon">
+                                                    <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Repeat"></SVGCrud>
+                                                </span>
+                                                @Loc["Restore"]
+                                            </button>
+                                        </li>
+                                        <li>
+                                            <button class="dropdown-item text-danger" @onclick="@(() => DeleteTask(task.Id))">
+                                                <span class="icon">
+                                                    <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Delete"></SVGCrud>
+                                                </span>
+                                                @Loc["Delete"]
+                                            </button>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </RowTemplate>
+            </SortableTable>
+        }
+    </div>
+    <Pagination CurrentPage="@currentPage" TotalPages="@totalPages" TotalCount="@totalCount" PageSize="@pageSize"
+                PageChanged="ChangePage" PageSizeChangedCallback="ChangePageSize" />
+</div>
+
+
+@code {
+    private List<SortableColumn> Columns = new();
+    private List<CreateTaskDto> allDeletedTasks = new List<CreateTaskDto>();
+    private RecycleBinSettingDto RecycleBinSetting = new RecycleBinSettingDto();
+    private string currentSortColumn = "";
+    private bool? sortAscending = true;
+    private int currentPage = 1;
+    private int totalPages = 1;
+    private int totalCount = 0;
+    private int pageSize = 10;
+    private Search? searchComponent;
+    private string? lastSearchTerm = null;
+    private long? retentionDays;
+
+    protected override async Task OnInitializedAsync()
+    {
+        Columns = new List<SortableColumn>
+        {
+            new SortableColumn { DisplayName = Loc["Title"], Field = "Title", IsVisible = true, Order = 0 },
+            new SortableColumn { DisplayName = Loc["StartDate"], Field = "Start Date", IsVisible = true, Order = 3 },
+            new SortableColumn { DisplayName = Loc["EndDate"], Field = "End Date", IsVisible = true, Order = 4 },
+            new SortableColumn { DisplayName = Loc["DeletionDate"], Field = "Deletion Date", IsVisible = true, Order = 2 },
+            new SortableColumn { DisplayName = Loc["DeletedBy"], Field = "Deleted By", IsVisible = true, Order = 1 },
+            new SortableColumn { DisplayName = Loc["Priority2"], Field = "Priority", IsVisible = true, Order = 5 },
+            new SortableColumn { DisplayName = Loc["Action"], Field = "Action", IsVisible = true, IsSortable = false, Order = 6 }
+        };
+        await GetDeletedTasks();
+        var res = await _recycleBinSettingConsumer.GetRecycleBinSetting();
+        if(res.Success && res.Data != null)
+        {
+            RecycleBinSetting = res.Data;
+        }
+        retentionDays = GetRetentionDays();
+    }
+    private async Task ChangePage(int page)
+    {
+        currentPage = page;
+        await GetDeletedTasks();
+    }
+    private async Task ChangePageSize(int newSize)
+    {
+        pageSize = newSize;
+        currentPage = 1;
+        await GetDeletedTasks();
+    }
+    private async Task GetDeletedTasks()
+    {
+        var res = await _taskConsumer.GetDeletedTasks(currentPage, pageSize, currentSortColumn, sortAscending!.Value, searchFields);
+        if (res.Success && res.Data != null && res.Data.Items != null)
+        {
+            allDeletedTasks = res.Data.Items.ToList();
+            totalPages = res.Data.TotalPages;
+            totalCount = res.Data.TotalCount;
+        }
+        StateHasChanged();
+    }
+    public List<SearchFieldDeletedTask> searchFields = new List<SearchFieldDeletedTask>() {
+            SearchFieldDeletedTask.Title,
+            SearchFieldDeletedTask.StartDate,
+            SearchFieldDeletedTask.EndDate,
+            SearchFieldDeletedTask.DeletionDate,
+            SearchFieldDeletedTask.DeletedBy,
+            SearchFieldDeletedTask.Priority
+    };
+    private async Task HandleSort((string Column, bool? Ascending) sortInfo)
+    {
+        currentSortColumn = sortInfo.Column;
+        sortAscending = sortInfo.Ascending;
+        if (sortAscending == null)
+        {
+            // third click → reset to default sorting
+            currentSortColumn = ""; // or whatever your default column is
+            sortAscending = true;
+        }
+        await GetDeletedTasks();
+    }
+    private long? GetRetentionDays()
+    {
+        if (RecycleBinSetting == null)
+            return null;
+
+        if (RecycleBinSetting.PeriodType == PeriodType.Never)
+            return null;
+
+        if (RecycleBinSetting.PeriodType == PeriodType.Custom)
+            return RecycleBinSetting.CustomDays;
+
+        return (long)RecycleBinSetting.PeriodType;
+    }
+    private async Task RestoreTask(Guid taskId)
+    {
+
+    }
+    private async Task DeleteTask(Guid taskId)
+    {
+
+    }
+}
