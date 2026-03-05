@@ -52,6 +52,9 @@ public class CreateTaskDto
     public DateTime? CreateDate { get; set; }
     public string? UpdatedBy { get; set; }
     public DateTime? UpdateDate { get; set; }
+    public string? DeletedBy { get; set; }
+    public string? DeletedByName { get; set; }
+    public DateTime? DeletionDate { get; set; }
     public string? Content { get; set; }
     public string? SourceName { get; set; }
     public string? TypeName { get; set; }

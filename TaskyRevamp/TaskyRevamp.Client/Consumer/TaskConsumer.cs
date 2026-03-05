@@ -31,6 +31,13 @@ namespace TaskyRevamp.Client.Consumer
             var res = await _taskyService.PostJsonAsyncWithJsonConvert<PagedResult<CreateTaskDto>,TaskFilterComponent>(url,taskFilter);
             return res;
         }
+        public async Task<CommonApiResponse<PagedResult<CreateTaskDto>>> GetDeletedTasks(int pageNumber, int pageSize, string sortByColumnName, bool sortAscending, List<SearchFieldDeletedTask> searchFields = null, string searchText = null)
+        {
+            var queryString = _taskyService.PreparePaginatedSearchQueryString(pageNumber, pageSize, sortByColumnName, sortAscending, searchFields, searchText);
+            var url = $"api/Task/GetDeletedTasks{queryString}";
+            var res = await _taskyService.GetFromJsonAsync<CommonApiResponse<PagedResult<CreateTaskDto>>>(url);
+            return res;
+        }
         public async Task<CommonApiResponse<List<CreateTaskDto>>> GetTasksNoPagnation(List<SearchFieldTask> searchFields = null, string searchText = null)
         {
             var queryString = _taskyService.PrepareNoPaginatedSearchQueryString(searchFields, searchText);
@@ -121,9 +128,9 @@ namespace TaskyRevamp.Client.Consumer
             var res = await _taskyService.GetFromJsonAsync<CommonApiResponse<bool>>(url);
             return res;
         }
-        public async Task<CommonApiResponse<bool>> DeleteTask(Guid id)
+        public async Task<CommonApiResponse<bool>> SoftDeleteTask(Guid id, Guid userId)
         {
-            var url = $"api/Task/{id}";
+            var url = $"api/Task/SoftDeleteTask/{id}/{userId}";
             var res = await _taskyService.DeleteFromJsonAsync<CommonApiResponse<bool>>(url);
             return res;
         }

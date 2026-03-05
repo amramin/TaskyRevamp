@@ -264,7 +264,7 @@ public class GetTasksHandler : IRequestHandler<GetTasksQuery, PagedResult<Create
             var res = await _taskRepository.GetPagedAsync(
                                 request.pageNumber,
                                 request.pageSize,
-                                null,
+                                t => t.IsDeleted == false,
                                 searchExpression,
                                 orderBy: orderBy,
                                 includeProperties: $"{nameof(TaskItem.CreatedBy)},{nameof(TaskItem.Priority)},{nameof(TaskItem.ActualWeight)},{nameof(TaskItem.Type)},{nameof(TaskItem.Source)},{nameof(TaskItem.status)},{nameof(TaskItem.UpdatedBy)},{nameof(TaskItem.Assignees)}.{nameof(TaskyRevamp.Domain.Models.Task.TaskAssignees.User)}");
