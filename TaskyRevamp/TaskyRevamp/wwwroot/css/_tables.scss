@@ -210,7 +210,8 @@
     }
   }
 
-  .task-depancy-number,.task-delayed-icon {
+  .task-depancy-number,
+  .task-delayed-icon {
     display: inline-flex;
     color: var(--dark-700);
     svg {
@@ -218,7 +219,7 @@
       height: 1rem;
     }
   }
-  
+
   .mx-w-300 {
     max-width: 300px;
   }
@@ -233,6 +234,9 @@
     text-overflow: ellipsis;
     word-break: break-word;
     width: 300px;
+  }
+  .dependency-cell {
+    min-width: 300px;
   }
   thead {
     th {
@@ -345,14 +349,14 @@
           background-color: transparent;
           border: 1px solid var(--light-300);
         }
-        td {
-          vertical-align: middle;
-        }
       }
     }
     thead th {
       padding-block: 0;
     }
+  }
+  td {
+    vertical-align: middle;
   }
 }
 

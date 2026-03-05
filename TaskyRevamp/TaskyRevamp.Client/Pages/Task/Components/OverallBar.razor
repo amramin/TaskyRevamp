@@ -7,20 +7,22 @@
             <span class="title"> @Loc["Overall progress"] </span>
             <span class="value">@ProgressValue %</span>
         </div>
+        <div class="d-flex align-items-center gap-2">
 
+            <div class="progress position-relative" style="width:@($"{Width}px");
+                cursor:@(IsEditable ? "pointer" : "default")" @onmousedown="OnMouseDown">
+                <div class="progress-bar  @(IsComplete ? "completed" : "")" role="progressbar"
+                     style="width:@($"{ProgressValue}%")" aria-valuemin="0" aria-valuemax="100">
+                </div>
 
-        <div class="progress position-relative" style="width:@($"{Width}px");
-            cursor:@(IsEditable ? "pointer" : "default")" @onmousedown="OnMouseDown">
-            <div class="progress-bar  @(IsComplete ? "completed" : "")" role="progressbar"
-                 style="width:@($"{ProgressValue}%")" aria-valuemin="0" aria-valuemax="100">
+                @if (IsEditable)
+                {
+                    <span class="circle" style="inset-inline-start:@($"{ProgressValue}%");"></span>
+                }
             </div>
-             <span class="progress-value" style="inset-inline-start:@($"{ProgressValue}%");">
+            <div class="progress-value">
                 @($"{ProgressValue}%")
-            </span> 
-            @if (IsEditable)
-            {
-                <span class="circle" style="inset-inline-start:@($"{ProgressValue}%");"></span>
-            }
+            </div>
         </div>
     </div>
 }

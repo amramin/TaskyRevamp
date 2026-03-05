@@ -22,16 +22,7 @@
         background-color: var(--progress-complete-color);
       }
     }
-    .progress-value {
-      position: absolute;
-      font-size: 0.75rem;
-      background-color: var(--dark-900);
-      color: var(--bs-white);
-      padding: 0.125rem 0.5rem;
-      border-radius: 2px;
-      top: -1.75rem;
-      display: none;
-    }
+    
     .circle {
       position: absolute;
       background-color: var(--bs-white);
@@ -44,6 +35,16 @@
       pointer-events: none;
     }
   }
+  .progress-value {
+      font-size: 0.65rem;
+      background-color: var(--light-200);
+      color: var(--dark-700);
+      padding: 0.125rem 0.25rem;
+      text-align:center;
+      width:2rem;
+      border-radius: 2px;
+      display:none
+    }
 }
 .table {
   .progress-overall-bar {
@@ -52,10 +53,9 @@
     }
   }
   .progress {
-    &:hover {
-      .progress-value {
+    display:flex;
+  }
+  .progress-value {
         display: block;
       }
-    }
-  }
 }
