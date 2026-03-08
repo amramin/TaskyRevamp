@@ -130,3 +130,11 @@
       }
     }
 }
+.dependency-dropdown{
+  .dropdown-menu{
+    width:400px;
+    .dropdown-item{
+      text-wrap:wrap;
+    }
+  }
+}

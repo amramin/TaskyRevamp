@@ -83,7 +83,7 @@
                                                     </li>
                                                 }
                                                 @if ((task.ActualProcess == 100 && task.TaskStatus ==
-                                                                                                                                                                                                                                                                                                                                    Guid.Parse("6EE4574D-C439-45B4-223A-08DE3318A61C")))
+                                                                                                                                                                                                                                                                                                                                                                                    Guid.Parse("6EE4574D-C439-45B4-223A-08DE3318A61C")))
                                                 {
                                                     <li>
                                                         <button class="dropdown-item" @onclick="@(() => CompleteTask(task.Id))">
@@ -95,7 +95,7 @@
                                                     </li>
                                                 }
                                                 @if (task.ActualProcess == 100 && task.TaskStatus ==
-                                                                                                                                                                                                                                                                                                                                    Guid.Parse("6EE4574D-C439-45B4-223A-08DE3318A61C"))
+                                                                                                                                                                                                                                                                                                                                                                                    Guid.Parse("6EE4574D-C439-45B4-223A-08DE3318A61C"))
                                                 {
                                                     <li>
                                                         <button class="dropdown-item" @onclick="@(() => OnReopen.InvokeAsync(task.Id))">
@@ -618,7 +618,7 @@ int.MaxValue).ToList();
                 builder.AddAttribute(1, "style",
                     $"background-color:{task.TaskStatusBackgroundColor};" +
                     $"color:{task.TaskStatusColor};");
-                      builder.AddAttribute(3, "class", "badge");
+                builder.AddAttribute(3, "class", "badge");
                 builder.AddContent(0, (task.TaskStatusName)?.ToString());
                 builder.CloseElement();
                 break;
@@ -662,7 +662,49 @@ value)));
                 builder.AddContent(0, task.SourceName);
                 break;
             case "Dependency":
-                builder.AddContent(0, task.DependencyNames);
+
+                var dependencies = task.DependencyNames?
+                    .Split(',', StringSplitOptions.RemoveEmptyEntries)
+                    .ToList() ?? new List<string>();
+
+                if (dependencies.Any())
+                {
+                    var first = dependencies.First();
+                    var rest = dependencies.Skip(1).ToList();
+
+                    builder.OpenElement(0, "span");
+                    builder.AddAttribute(1, "class", "dependency-main");
+                    builder.AddContent(2, first);
+                    builder.CloseElement();
+
+                    if (rest.Any())
+                    {
+                        builder.OpenElement(3, "div");
+                        builder.AddAttribute(4, "class", "dropdown dependency-dropdown d-inline ms-1");
+
+                        builder.OpenElement(5, "button");
+                        builder.AddAttribute(6, "class", "btn btn-sm btn-light");
+                        builder.AddAttribute(7, "data-bs-toggle", "dropdown");
+                        builder.AddContent(8, $"+{rest.Count}");
+                        builder.CloseElement();
+
+                        builder.OpenElement(9, "ul");
+                        builder.AddAttribute(10, "class", "dropdown-menu");
+
+                        int seq = 11;
+                        foreach (var dep in rest)
+                        {
+                            builder.OpenElement(seq++, "li");
+                            builder.AddAttribute(seq++, "class", "dropdown-item");
+                            builder.AddContent(seq++, dep);
+                            builder.CloseElement();
+                        }
+
+                        builder.CloseElement();
+                        builder.CloseElement();
+                    }
+                }
+
                 break;
             case "Created by department":
                 builder.AddContent(0, task.Createdbydepartment);
