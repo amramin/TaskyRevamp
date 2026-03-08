@@ -83,7 +83,7 @@
                                                     </li>
                                                 }
                                                 @if ((task.ActualProcess == 100 && task.TaskStatus ==
-                                                                                                                                                                                                                                                                                                                                                                                    Guid.Parse("6EE4574D-C439-45B4-223A-08DE3318A61C")))
+                                                                                    Guid.Parse("6EE4574D-C439-45B4-223A-08DE3318A61C")))
                                                 {
                                                     <li>
                                                         <button class="dropdown-item" @onclick="@(() => CompleteTask(task.Id))">
@@ -95,7 +95,7 @@
                                                     </li>
                                                 }
                                                 @if (task.ActualProcess == 100 && task.TaskStatus ==
-                                                                                                                                                                                                                                                                                                                                                                                    Guid.Parse("6EE4574D-C439-45B4-223A-08DE3318A61C"))
+                                                                                    Guid.Parse("6EE4574D-C439-45B4-223A-08DE3318A61C"))
                                                 {
                                                     <li>
                                                         <button class="dropdown-item" @onclick="@(() => OnReopen.InvokeAsync(task.Id))">
@@ -217,36 +217,36 @@
     {
         List<SortableColumn> column = new List<SortableColumn>();
         column = new List<SortableColumn>()
-        {
-            new() { Field = "Title", DisplayName = Loc["Title"], Order = 0, IsVisible = true },
-            new() { Field = "Priority", DisplayName = Loc["Priority2"], Order = 1, IsVisible = true },
-            new() { Field = "Status", DisplayName = Loc["TaskStatus"], Order = 2, IsVisible = true },
-            new() { Field = "Actual progress", DisplayName = Loc["ActualProgress"], Order = 3, IsVisible = true },
-            new() { Field = "Start Date", DisplayName = Loc["StartDate"], Order = 4, IsVisible = true },
-            new() { Field = "End Date", DisplayName = Loc["EndDate"], Order = 5, IsVisible = true },
-            new() { Field = "weight", DisplayName = Loc["weight"], Order = 6, IsVisible = true },
-            new() { Field = "Assigned To", DisplayName = Loc["AssignedTo"], Order = 7, IsVisible = true,IsSortable=false },
-            new() { Field = "Assigned To Department", DisplayName =Loc["AssignedToDepartment"], Order = 8, IsVisible =
+{
+new() { Field = "Title", DisplayName = Loc["Title"], Order = 0, IsVisible = true },
+new() { Field = "Priority", DisplayName = Loc["Priority2"], Order = 1, IsVisible = true },
+new() { Field = "Status", DisplayName = Loc["TaskStatus"], Order = 2, IsVisible = true },
+new() { Field = "Actual progress", DisplayName = Loc["ActualProgress"], Order = 3, IsVisible = true },
+new() { Field = "Start Date", DisplayName = Loc["StartDate"], Order = 4, IsVisible = true },
+new() { Field = "End Date", DisplayName = Loc["EndDate"], Order = 5, IsVisible = true },
+new() { Field = "weight", DisplayName = Loc["weight"], Order = 6, IsVisible = true },
+new() { Field = "Assigned To", DisplayName = Loc["AssignedTo"], Order = 7, IsVisible = true,IsSortable=false },
+new() { Field = "Assigned To Department", DisplayName =Loc["AssignedToDepartment"], Order = 8, IsVisible =
 true,IsSortable=false },
-            new() { Field = "Source", DisplayName =Loc["Source"], Order = 9, IsVisible = true },
-            new() { Field = "Dependency", DisplayName = Loc["Dependency"], Order = 10, IsVisible = true,IsSortable=false },
-            new() { Field = "Created By", DisplayName = Loc["CreatedBy"], Order = 11, IsVisible = true },
-            new() { Field = "Duration", DisplayName = Loc["Duration"], Order = 12, IsVisible = true,IsSortable=false },
-            new() { Field = "Created by department", DisplayName = Loc["Createdbydepartment"], Order = 13, IsVisible = true },
-            new() { Field = "Planned Progress", DisplayName = Loc["PlannedProgress"], Order = 14, IsVisible = true,IsSortable=false
+new() { Field = "Source", DisplayName =Loc["Source"], Order = 9, IsVisible = true },
+new() { Field = "Dependency", DisplayName = Loc["Dependency"], Order = 10, IsVisible = true,IsSortable=false },
+new() { Field = "Created By", DisplayName = Loc["CreatedBy"], Order = 11, IsVisible = true },
+new() { Field = "Duration", DisplayName = Loc["Duration"], Order = 12, IsVisible = true,IsSortable=false },
+new() { Field = "Created by department", DisplayName = Loc["Createdbydepartment"], Order = 13, IsVisible = true },
+new() { Field = "Planned Progress", DisplayName = Loc["PlannedProgress"], Order = 14, IsVisible = true,IsSortable=false
 },
-            new() { Field = "Creation Date", DisplayName = Loc["CreationDate"], Order = 15, IsVisible = true },
-            new() { Field = "Type", DisplayName = Loc["Type"], Order = 16, IsVisible = true },
-            new() { Field = "Actual Weight", DisplayName = Loc["ActualWeight"], Order = 17, IsVisible = true,IsSortable=false },
-            new() { Field = "Planned Weight", DisplayName =Loc["PlannedWeight"], Order = 18, IsVisible = true,IsSortable=false },
-        };
+new() { Field = "Creation Date", DisplayName = Loc["CreationDate"], Order = 15, IsVisible = true },
+new() { Field = "Type", DisplayName = Loc["Type"], Order = 16, IsVisible = true },
+new() { Field = "Actual Weight", DisplayName = Loc["ActualWeight"], Order = 17, IsVisible = true,IsSortable=false },
+new() { Field = "Planned Weight", DisplayName =Loc["PlannedWeight"], Order = 18, IsVisible = true,IsSortable=false },
+};
         var key = IsCompletedTasks ? "CompletedTask_Columns" : "MainTask_Columns";
         if (await LocalStorageService.GetItemAsync<List<SortableColumn>>(key) is null)
         {
             foreach (var col in column)
             {
                 col.IsVisible = ColumnsList.FirstOrDefault(s => string.Equals(s.NameEnglish, col.Field,
-StringComparison.OrdinalIgnoreCase))?.IsDisplay ?? col.IsVisible;
+                StringComparison.OrdinalIgnoreCase))?.IsDisplay ?? col.IsVisible;
             }
         }
         await LocalStorageService.SetItemAsync(key, column);
@@ -259,6 +259,7 @@ StringComparison.OrdinalIgnoreCase))?.IsDisplay ?? col.IsVisible;
         {
             "Title" => "d-flex gap-1",
             "Dependency" => "dependency-cell",
+
             "Status" => "status-cell",
             _ => "min-w-150"
         };
@@ -336,9 +337,9 @@ StringComparison.OrdinalIgnoreCase))?.IsDisplay ?? col.IsVisible;
 
             // Filter and order by settings
             tableColumns = tableColumns.Where(c => ColumnsList.Any(s => s.IsActive && string.Equals(s.NameEnglish, c.Field,
-StringComparison.OrdinalIgnoreCase)))
+            StringComparison.OrdinalIgnoreCase)))
             .OrderBy(c => ColumnsList.First(s => string.Equals(s.NameEnglish, c.Field, StringComparison.OrdinalIgnoreCase)).Order ??
-int.MaxValue).ToList();
+            int.MaxValue).ToList();
             CurrentUser = Guid.Parse(await LocalStorageService.GetItemAsStringAsync("Id"));
             RejectionPeriod = await GetRejectionPeriod();
             await GetTasks();
@@ -393,11 +394,11 @@ int.MaxValue).ToList();
     private void CompleteTask(Guid id)
     {
         PopupService.ShowConfirmation(@Loc["SureCompleteTask"], @Loc["Confirm"],
-                async (confirmed) =>
-                {
-                    if (confirmed)
-                        await CompleteConfirmed(id);
-                }, ConfirmationType.Other);
+        async (confirmed) =>
+        {
+            if (confirmed)
+                await CompleteConfirmed(id);
+        }, ConfirmationType.Other);
     }
     private async Task DeleteConfirmed(Guid Id)
     {
@@ -425,11 +426,11 @@ int.MaxValue).ToList();
     private void OnDeleteDelegation(Guid delegationId)
     {
         PopupService.ShowConfirmation(@Loc["SureDeleteDelegation"], "Yes, Delete",
-            async (confirmed) =>
-            {
-                if (confirmed)
-                    await DeleteConfirmed(delegationId);
-            }, ConfirmationType.Other);
+        async (confirmed) =>
+        {
+            if (confirmed)
+                await DeleteConfirmed(delegationId);
+        }, ConfirmationType.Other);
     }
     private async Task OnConfirmDelete(bool confirmed)
     {
@@ -474,23 +475,23 @@ int.MaxValue).ToList();
         StateHasChanged();
     }
     public List<SearchFieldTask> searchFields = new List<SearchFieldTask>() {
-        SearchFieldTask.Title,
-        SearchFieldTask.Priority,
-        SearchFieldTask.TaskStatus,
-        SearchFieldTask.StartDate,
-        SearchFieldTask.EndDate,
-        SearchFieldTask.weight,
-        SearchFieldTask.AssigneduserNames,
-        SearchFieldTask.CreatedBy,
-        SearchFieldTask.CreateDate,
-        SearchFieldTask.UpdatedBy,
-        SearchFieldTask.UpdateDate,
-        SearchFieldTask.PlannedProgress
-    };
+SearchFieldTask.Title,
+SearchFieldTask.Priority,
+SearchFieldTask.TaskStatus,
+SearchFieldTask.StartDate,
+SearchFieldTask.EndDate,
+SearchFieldTask.weight,
+SearchFieldTask.AssigneduserNames,
+SearchFieldTask.CreatedBy,
+SearchFieldTask.CreateDate,
+SearchFieldTask.UpdatedBy,
+SearchFieldTask.UpdateDate,
+SearchFieldTask.PlannedProgress
+};
     private void BuildActiveFieldsDictionary()
     {
         activeFields = addTaskSettingDtos.DistinctBy(c => c.NameEnglish, StringComparer.OrdinalIgnoreCase)
-            .ToDictionary(c => c.NameEnglish, c => c.IsActive, StringComparer.OrdinalIgnoreCase);
+        .ToDictionary(c => c.NameEnglish, c => c.IsActive, StringComparer.OrdinalIgnoreCase);
     }
     private bool IsFieldActive(string fieldName)
     {
@@ -519,7 +520,7 @@ int.MaxValue).ToList();
                 builder.AddAttribute(6, "title", task.Title ?? string.Empty);
                 builder.AddAttribute(7, "style", "cursor:pointer;");
                 builder.AddAttribute(8, "onclick",
-                    EventCallback.Factory.Create(this, () => ViewTaskDetails(task.Id)));
+            EventCallback.Factory.Create(this, () => ViewTaskDetails(task.Id)));
 
                 builder.AddContent(9, task.Title);
                 builder.CloseElement();
@@ -552,8 +553,8 @@ int.MaxValue).ToList();
                 {
                     builder.OpenElement(0, "div");
                     builder.AddAttribute(1, "style",
-                        $"background-color:{task.PriorityBackgroundColor};" +
-                        $"color:{task.PriorityColor};");
+                $"background-color:{task.PriorityBackgroundColor};" +
+                $"color:{task.PriorityColor};");
                     builder.AddAttribute(2, "class", "badge");
                     builder.AddContent(3, task.PriorityName);
                     builder.CloseElement();
@@ -563,7 +564,7 @@ int.MaxValue).ToList();
 
                     // 2️⃣ Get selected priority colors
                     selectedPriority = Priorities?
-                        .FirstOrDefault(p => p.Id == task.Priority);
+                .FirstOrDefault(p => p.Id == task.Priority);
 
                     var bgColor = selectedPriority?.BackgroundColor ?? "#ffffff";
                     var textColor = selectedPriority?.NameColor ?? "#000000";
@@ -572,43 +573,43 @@ int.MaxValue).ToList();
                     builder.OpenElement(4, "div");
                     builder.AddAttribute(5, "class", "priority-drop-down");
                     builder.AddAttribute(6, "style",
-                      $"width:130px;" + // 👈 fixed width here
-                        $"background-color:{bgColor};" +
-                        $"color:{textColor};"
-                        );
+                $"width:130px;" + // 👈 fixed width here
+                $"background-color:{bgColor};" +
+                $"color:{textColor};"
+                );
 
                     builder.OpenComponent<SearchableSingleDropdownOffline<PriorityDto, Guid>>(7);
                     builder.SetKey($"{task.Id}-priority");
 
                     builder.AddAttribute(8, "TextSelector",
-                        (Func<PriorityDto, string>)(x => x.Name));
+                (Func<PriorityDto, string>)(x => x.Name));
 
                     builder.AddAttribute(9, "OutputSelector",
-                        (Func<PriorityDto, Guid>)(x => x.Id));
+                (Func<PriorityDto, Guid>)(x => x.Id));
 
                     builder.AddAttribute(10, "Datasource", Priorities);
 
                     builder.AddAttribute(11, "SelectedOption", task.Priority);
 
                     builder.AddAttribute(12, "SelectedOptionChanged",
-                        EventCallback.Factory.Create<Guid>(this,
-                            value => OnPriorityChanged(task, value)));
+                EventCallback.Factory.Create<Guid>(this,
+                value => OnPriorityChanged(task, value)));
                     builder.AddAttribute(13, "ItemTemplate",
-                        (RenderFragment<PriorityDto>)((context) => (itemBuilder) =>
-                        {
-                            itemBuilder.OpenElement(0, "div");
-                            itemBuilder.AddAttribute(1, "class", "");
+                (RenderFragment<PriorityDto>)((context) => (itemBuilder) =>
+                {
+        itemBuilder.OpenElement(0, "div");
+        itemBuilder.AddAttribute(1, "class", "");
 
-                            itemBuilder.OpenElement(2, "span");
-                            itemBuilder.AddAttribute(3, "class", "badge");
-                            itemBuilder.AddAttribute(4, "style",
-                            $"background-color:{context.BackgroundColor};color:{context.NameColor};");
+        itemBuilder.OpenElement(2, "span");
+        itemBuilder.AddAttribute(3, "class", "badge");
+        itemBuilder.AddAttribute(4, "style",
+    $"background-color:{context.BackgroundColor};color:{context.NameColor};");
 
-                            itemBuilder.AddContent(5, context.Name);
+        itemBuilder.AddContent(5, context.Name);
 
-                            itemBuilder.CloseElement(); // span
-                            itemBuilder.CloseElement(); // div
-                        }));
+        itemBuilder.CloseElement(); // span
+        itemBuilder.CloseElement(); // div
+    }));
                     builder.CloseComponent();
                     builder.CloseElement();
                 }
@@ -616,22 +617,22 @@ int.MaxValue).ToList();
             case "Status":
                 builder.OpenElement(0, "div");
                 builder.AddAttribute(1, "style",
-                    $"background-color:{task.TaskStatusBackgroundColor};" +
-                    $"color:{task.TaskStatusColor};");
+            $"background-color:{task.TaskStatusBackgroundColor};" +
+            $"color:{task.TaskStatusColor};");
                 builder.AddAttribute(3, "class", "badge");
                 builder.AddContent(0, (task.TaskStatusName)?.ToString());
                 builder.CloseElement();
                 break;
             case "Actual progress":
                 builder.AddContent(0, (RenderFragment)(b =>
-                {
-                    b.OpenComponent<OverallBar>(0);
-                    b.AddAttribute(1, "ActualProgress", task.ActualProcess);
-                    b.AddAttribute(2, "Width", 150);
-                    b.AddAttribute(3, "OnProgressChanged", EventCallback.Factory.Create<int>(this, value => OnTaskProgressChanged(task,
-value)));
-                    b.CloseComponent();
-                }));
+            {
+        b.OpenComponent<OverallBar>(0);
+        b.AddAttribute(1, "ActualProgress", task.ActualProcess);
+        b.AddAttribute(2, "Width", 150);
+        b.AddAttribute(3, "OnProgressChanged", EventCallback.Factory.Create<int>(this, value => OnTaskProgressChanged(task,
+    value)));
+        b.CloseComponent();
+    }));
                 break;
             case "Start Date":
                 builder.AddContent(0, task.StartDate?.ToString(Loc["LocalizeDate"]));
@@ -647,16 +648,76 @@ value)));
                 break;
             case "Assigned To":
                 builder.AddContent(0, (RenderFragment)(b =>
-                {
-                    b.OpenComponent<Initials>(0);
-                    b.AddAttribute(1, "Names", task.AssigneduserNames);
-                    b.AddAttribute(2, "Size", 32);
-                    b.AddAttribute(3, "Black", true);
-                    b.CloseComponent();
-                }));
+            {
+        b.OpenComponent<Initials>(0);
+        b.AddAttribute(1, "Names", task.AssigneduserNames);
+        b.AddAttribute(2, "Size", 32);
+        b.AddAttribute(3, "Black", true);
+        b.CloseComponent();
+    }));
                 break;
             case "Assigned To Department":
-                builder.AddContent(0, task.AssignedDepartmentName);
+
+                var departments = task.AssignedDepartmentName?
+            .Split(',', StringSplitOptions.RemoveEmptyEntries)
+            .Select(x => x.Trim())
+            .ToList() ?? new List<string>();
+
+                if (departments.Any())
+                {
+                    var firstTwo = departments.Take(1).ToList();
+                    var rest = departments.Skip(1).ToList();
+
+                    int seq = 0;
+                    int count = firstTwo.Count;
+
+                    for (int i = 0; i < count; i++)
+                    {
+                        var dep = firstTwo[i];
+
+                        builder.OpenElement(seq++, "span");
+                        builder.AddAttribute(seq++, "class", "department-main");
+                        builder.AddContent(seq++, dep);
+                        builder.CloseElement();
+
+
+                        if (i < count - 1)
+                        {
+                            builder.AddContent(seq++, ", ");
+                        }
+                    }
+
+
+                    if (rest.Any())
+                    {
+                        builder.OpenElement(seq++, "div");
+                        builder.AddAttribute(seq++, "class", "dropdown department-dropdown d-inline ms-1");
+
+                        builder.OpenElement(seq++, "button");
+                        builder.AddAttribute(seq++, "class", "btn btn-sm btn-light ");
+                        builder.AddAttribute(seq++, "type", "button");
+                        builder.AddAttribute(seq++, "data-bs-toggle", "dropdown");
+                        builder.AddContent(seq++, $"+{rest.Count}");
+                        builder.CloseElement();
+
+                        builder.OpenElement(seq++, "ul");
+                        builder.AddAttribute(seq++, "class", "dropdown-menu");
+
+                        foreach (var item in rest)
+                        {
+                            builder.OpenElement(seq++, "li");
+                            builder.OpenElement(seq++, "span");
+                            builder.AddAttribute(seq++, "class", "dropdown-item");
+                            builder.AddContent(seq++, item);
+                            builder.CloseElement();
+                            builder.CloseElement();
+                        }
+
+                        builder.CloseElement(); // ul
+                        builder.CloseElement(); // div
+                    }
+                }
+
                 break;
             case "Source":
                 builder.AddContent(0, task.SourceName);
@@ -664,8 +725,8 @@ value)));
             case "Dependency":
 
                 var dependencies = task.DependencyNames?
-                    .Split(',', StringSplitOptions.RemoveEmptyEntries)
-                    .ToList() ?? new List<string>();
+            .Split(',', StringSplitOptions.RemoveEmptyEntries)
+            .ToList() ?? new List<string>();
 
                 if (dependencies.Any())
                 {
@@ -711,13 +772,13 @@ value)));
                 break;
             case "Created By":
                 builder.AddContent(0, (RenderFragment)(b =>
-                {
-                    b.OpenComponent<Initials>(0);
-                    b.AddAttribute(1, "Names", task.CreatedByName);
-                    b.AddAttribute(2, "Size", 32);
-                    b.AddAttribute(3, "Black", true);
-                    b.CloseComponent();
-                }));
+            {
+        b.OpenComponent<Initials>(0);
+        b.AddAttribute(1, "Names", task.CreatedByName);
+        b.AddAttribute(2, "Size", 32);
+        b.AddAttribute(3, "Black", true);
+        b.CloseComponent();
+    }));
                 break;
             case "Duration":
                 builder.AddContent(0, task.Duration);
@@ -764,7 +825,7 @@ value)));
     public async Task GetTasks(bool isSearch = false, string searchTerm = null!)
     {
         var res = await _taskConsumer.GetTasks(currentPage, pageSize, currentSortColumn, sortAscending!.Value, isSearch ?
-            searchFields : null!, isSearch ? searchTerm : null!, ViewType, ViewTypeId, IsCompleted, TaskFilter);
+        searchFields : null!, isSearch ? searchTerm : null!, ViewType, ViewTypeId, IsCompleted, TaskFilter);
 
         if (!(res?.Success ?? false) || res.Data is null)
             return;
@@ -809,21 +870,21 @@ value)));
         // 2️⃣ Update display fields (important!)
         var selected = Priorities?.FirstOrDefault(p => p.Id == value);
         PopupService.ShowConfirmation(@Loc["SureChangePriority"], @Loc["Confirm"],
-                async (confirmed) =>
+        async (confirmed) =>
+        {
+            if (confirmed)
+            {
+                if (selected != null)
                 {
-                    if (confirmed)
-                    {
-                        if (selected != null)
-                        {
-                            task.PriorityName = selected.Name;
-                            task.PriorityBackgroundColor = selected.BackgroundColor;
-                            task.PriorityColor = selected.NameColor;
-                        }
-                        await ChangePriorityConfirmed(task, value);
-                    }
-                },
-                ConfirmationType.Other
-                );
+                    task.PriorityName = selected.Name;
+                    task.PriorityBackgroundColor = selected.BackgroundColor;
+                    task.PriorityColor = selected.NameColor;
+                }
+                await ChangePriorityConfirmed(task, value);
+            }
+        },
+        ConfirmationType.Other
+        );
     }
     private async Task ChangePriorityConfirmed(CreateTaskDto task, Guid value)
     {
@@ -851,7 +912,7 @@ value)));
         else
         {
             if ((DateOnly.FromDateTime(taskDto.CreateDate ?? DateTime.Now).AddDays(RejectionPeriod) <
-DateOnly.FromDateTime(DateTime.Now)) || !(taskDto.AssignedIds!.Contains(CurrentUser)))
+            DateOnly.FromDateTime(DateTime.Now)) || !(taskDto.AssignedIds!.Contains(CurrentUser)))
             {
                 return false;
             }
@@ -878,7 +939,7 @@ DateOnly.FromDateTime(DateTime.Now)) || !(taskDto.AssignedIds!.Contains(CurrentU
             }
         },
         ConfirmationType.Other
-    );
+        );
     }
     private async Task ChangeProgressConfirmed(CreateTaskDto task, int value)
     {
