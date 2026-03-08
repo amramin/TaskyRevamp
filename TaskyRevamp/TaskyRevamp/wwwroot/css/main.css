@@ -3216,6 +3216,9 @@ fieldset:disabled .btn {
   word-break: break-word;
   max-width: 300px;
 }
+.table .task-title {
+  width: 300px;
+}
 .table .dependency-cell,
 .table .department-cell {
   min-width: 320px;
