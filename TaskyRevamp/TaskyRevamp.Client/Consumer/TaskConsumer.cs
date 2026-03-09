@@ -140,6 +140,13 @@ namespace TaskyRevamp.Client.Consumer
             var res = await _taskyService.DeleteFromJsonAsync<CommonApiResponse<bool>>(url);
             return res;
         }
+        public async Task<CommonApiResponse<bool>> DeleteTasks(List<Guid> ids)
+        {
+			var query = string.Join("&", ids.Select(id => $"ids={id}"));
+			var url = $"api/Task/DeleteTasks?{query}";
+			var res = await _taskyService.DeleteFromJsonAsync<CommonApiResponse<bool>>(url);
+            return res;
+        }
         public async Task<CommonApiResponse<bool>> RestoreTask(Guid id, int resoreOption)
         {
             var url = $"api/Task/RestoreTask/{id}/{resoreOption}";

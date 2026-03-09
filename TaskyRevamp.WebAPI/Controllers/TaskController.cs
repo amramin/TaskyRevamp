@@ -96,6 +96,11 @@ public class TaskController : ControllerBase
     {
         return Ok(await _mediator.Send(new DeleteTaskCommand(id)));
     }
+    [HttpDelete("DeleteTasks")]
+    public async Task<IActionResult> DeleteTasks([FromQuery] List<Guid> ids)
+    {
+        return Ok(await _mediator.Send(new DeleteTasksCommand(ids)));
+    }
 
     [HttpPost("GetAllTask")]
     public async Task<IActionResult> GetAllTask(

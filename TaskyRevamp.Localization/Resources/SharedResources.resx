@@ -1504,4 +1504,10 @@ This task will be moved to the Recycle Bin and can be restored later or permanen
   <data name="ReassignToCreator" xml:space="preserve">
     <value>Reassign to the task creator</value>
   </data>
+  <data name="RemoveSelectedItems" xml:space="preserve">
+    <value>Remove selected Items</value>
+  </data>
+  <data name="TasksSure" xml:space="preserve">
+    <value>Are you sure you want to delete these tasks? </value>
+  </data>
 </root>

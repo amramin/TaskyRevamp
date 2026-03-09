@@ -2797,6 +2797,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Remove selected Items.
+        /// </summary>
+        public static string RemoveSelectedItems {
+            get {
+                return ResourceManager.GetString("RemoveSelectedItems", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Re-open.
         /// </summary>
         public static string ReOpen {
@@ -3478,6 +3487,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string taskOverall {
             get {
                 return ResourceManager.GetString("taskOverall", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to delete these tasks? .
+        /// </summary>
+        public static string TasksSure {
+            get {
+                return ResourceManager.GetString("TasksSure", resourceCulture);
             }
         }
         

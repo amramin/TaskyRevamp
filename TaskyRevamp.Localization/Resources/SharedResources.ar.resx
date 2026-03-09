@@ -1507,4 +1507,10 @@
   <data name="ReassignToCreator" xml:space="preserve">
     <value>إعادة التعيين إلى مُنشئ المهمة</value>
   </data>
+  <data name="RemoveSelectedItems" xml:space="preserve">
+    <value>إزالة العناصر المحددة</value>
+  </data>
+  <data name="TasksSure" xml:space="preserve">
+    <value>هل أنت متأكد أنك تريد حذف هذه المهام؟</value>
+  </data>
 </root>
