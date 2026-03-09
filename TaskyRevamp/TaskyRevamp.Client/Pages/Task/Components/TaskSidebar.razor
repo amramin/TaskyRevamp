@@ -4,16 +4,15 @@
 @using TaskyRevamp.Dto.TaskDto
 @inject IStringLocalizer<SharedResources> Loc
 @inject ToastService ToastService
+@inject NavigationManager navigationManager
 @inject PopupService PopupService
 @inject TaskConsumer _taskConsumer
 @inject ILocalStorageService LocalStorageService
 @inject RejectionSettingConsumer _rejectionSettingConsumer
+
 <!-- Progress -->
 <div class="card mb-3">
     <div class="card-body">
-@*         <small class="text-muted fw-semibold d-block mb-3">@lo</small> *@
-
-        <!-- Actual Progress -->
         <div class="mb-3">
             <div class="d-flex justify-content-between mb-2">
                 <small class="text-muted">@Loc["ActualProgress"]</small>
@@ -27,102 +26,74 @@
                      aria-valuemin="0"
                      aria-valuemax="100"></div>
             </div>
-            <input type="range"
-                   class="form-range"
-                   min="0"
-                   max="100"
-                   @bind-value="Task.ActualProcess"
-                   @bind-value:event="oninput"
-                   @onchange="OnProgressChanged"
-                   disabled="@(Task.ActualProcess >= 100 && !AlllowedToChangeProgress.Any(p=>p==Task.TaskStatus))" />
+            <input type="range" class="form-range" min="0" max="100"@bind-value="Task.ActualProcess" @bind-value:event="oninput"
+                   @onchange="OnProgressChanged" disabled="@(Task.ActualProcess >= 100 && !AlllowedToChangeProgress.Any(p => p == Task.TaskStatus))" />
         </div>
-   
-       @*  <small class="text-muted fw-semibold d-block mb-3">Add to card</small>
-        <button class="btn btn-light w-100 text-start mb-2" @* @onclick="OnEditTask" >
-            <span class="icon">
-                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Menu"></SVGCrud>
-            </span> Checklist
-        </button>
-        <button class="btn btn-light w-100 text-start mb-2"  @onclick="OnCompleteTask ">
-            <span class="icon">
-                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.ArrowsUp"></SVGCrud>
-            </span> Done
-        </button>
-        <button class="btn btn-light w-100 text-start mb-2" @* @onclick="OnReOpenTask" >
-            <span class="icon">
-                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Edit"></SVGCrud>
-            </span>Edit a task
-        </button>
-        <button class="btn btn-light w-100 text-start mb-2" @* @onclick="OnRejectTask" >
-            <span class="icon">
-                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Reject"></SVGCrud>
-            </span> Reject task
-        </button>
-        <button class="btn btn-light w-100 text-start mb-2" @* @onclick="OnDeleteTask" >
-            <span class="icon">
-                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Delete"></SVGCrud>
-            </span>Delete task
-        </button> *@
         @if (Task.ActualProcess < 100)
         {
             <button class="btn btn-light w-100 text-start mb-2" @onclick="FullProgrssChange" title="@Loc["FullProgress"]">
                 <span class="icon">
-                    <SVGCrud SVGType="SVGCrud.SVGTypeEnum.CloseArrow"></SVGCrud>  @Loc["FullProgress"]
+                    <SVGCrud SVGType="SVGCrud.SVGTypeEnum.CloseArrow"></SVGCrud>
+                    <span class="ms-1">
+                        @Loc["FullProgress"]
+                    </span>
                 </span>
             </button>
         }
         @if (Task?.TaskStatus == Guid.Parse("6EE4574D-C439-45B4-223A-08DE3318A61C"))
         {
             <button class="btn btn-light w-100 text-start mb-2" @onclick="@(() => CompleteTask(Task.Id))" title="@Loc["Complete"]">
-                 <span class="icon">
-                    <SVGCrud SVGType="SVGCrud.SVGTypeEnum.CompletedList"></SVGCrud>  @Loc["Complete"]
+                <span class="icon">
+                    <SVGCrud SVGType="SVGCrud.SVGTypeEnum.CompletedList"></SVGCrud>
+                    <span class="ms-1">
+                        @Loc["Complete"]
+                    </span>
                 </span>
             </button>
             <button class="btn btn-light w-100 text-start mb-2" @onclick="@(() => ReopenTask(Task.Id))" title="@Loc["ReOpen"]">
-                 <span class="icon">
-                    <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Repeat"></SVGCrud>  @Loc["ReOpen"]
+                <span class="icon">
+                    <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Repeat"></SVGCrud>
+                    <span class="ms-1">
+                        @Loc["ReOpen"]
+                    </span>
                 </span>
             </button>
         }
-        @if (DisplayRejectButton(Task))
+        @if (Task != null && DisplayRejectButton(Task))
         {
             <button class="btn btn-light w-100 text-start mb-2" @onclick="@(() => RejectTask(Task.Id))" title="@Loc["Reject"]">
                 <span class="icon">
-                    <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Reject"></SVGCrud>  @Loc["Reject"] - @GetRemainingDays(Task)
+                    <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Reject"></SVGCrud>
+                    <span class="ms-1">
+                        @Loc["Reject"] - @GetRemainingDays(Task)
+                    </span>
                 </span>
             </button>
         }
-        <button class="btn btn-light w-100 text-start mb-2" @onclick="@(() => Edit(Task.Id))" title="@Loc["Edit"]">
+        <button class="btn btn-light w-100 text-start mb-2" @onclick="@(() => Edit(Task!.Id))" title="@Loc["Edit"]">
             <span class="icon">
-                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Edit"></SVGCrud>  @Loc["Edit"]
+                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Edit"></SVGCrud> <span class="ms-1"> @Loc["Edit"]</span>
             </span>
         </button>
-        <button class="btn btn-light w-100 text-start mb-2" title="@Loc["Delete"]">
-            <span class="icon">
-                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Delete"></SVGCrud>  @Loc["Delete"]
-            </span>
-        </button>
+        @if (Task!.IsDeleted)
+        {
+            <button class="btn btn-light w-100 text-start mb-2" @onclick="@(() => ShowRestorePopup(Task.Id))" title="@Loc["Restore"]">
+                <span class="icon">
+                    <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Repeat"></SVGCrud> <span class="ms-1"> @Loc["Restore"]</span>
+                </span>
+            </button>
+        }
+        @if (!Task.IsDeleted)
+        {
+            <button class="btn btn-light w-100 text-start mb-2 text-danger" title="@Loc["Delete"]" @onclick="@(() => DeleteTask(Task.Id))">
+                <span class="icon">
+                    <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Delete"></SVGCrud>  <span class="ms-1">@Loc["Delete"]</span>
+                </span>
+            </button>
+        }
     </div>
 </div>
-
-@* <!-- Add to card -->
-<div class="card mb-3">
-    <div class="card-body">
-        <small class="text-muted text-uppercase fw-semibold d-block mb-3">Quick Actions</small>
-        <button class="btn btn-light w-100 text-start mb-2" @onclick="ToggleChecklist">
-            <i class="bi bi-check-square me-2"></i> Checklist
-        </button>
-        <button class="btn btn-light w-100 text-start mb-2" @onclick="SetReminder">
-            <i class="bi bi-alarm me-2"></i> Set Reminder
-        </button>
-        <button class="btn btn-light w-100 text-start" @onclick="RequestEndDateChange">
-            <i class="bi bi-calendar-event me-2"></i> Request End Date Change
-        </button>
-    </div>
-</div> *@
-
-
-<!-- Checklist Section -->
+<RestoreTaskPopup Show="@showRestorePopup" ShowChanged="@(v => showRestorePopup = v)" TaskId="@restoreTaskId" OnRestored="ReloadAfterSave" />
 @if (showChecklist)
 {
     <div class="card mb-3 border-primary">
@@ -133,7 +104,6 @@
                     <i class="bi bi-x-lg"></i>
                 </button>
             </div>
-
             <div class="text-center text-muted py-3">
                 <i class="bi bi-list-check fs-3 d-block mb-2"></i>
                 Checklist feature coming soon
@@ -143,13 +113,15 @@
 }
 
 @code {
-    [Parameter]
-    public CreateTaskDto? Task { get; set; }
+    [Parameter] public CreateTaskDto? Task { get; set; }
     [Parameter] public EventCallback OnConfirmed { get; set; }
     [Parameter] public EventCallback OnReopenTask { get; set; }
     private Guid CurrentUser { get; set; }
     private int RejectionPeriod { get; set; } = 0;
-    int progressold  { get; set; }
+    int progressold { get; set; }
+    private bool showChecklist = false;
+    bool showRestorePopup = false;
+    Guid restoreTaskId;
     List<Guid> AlllowedToChangeProgress = new List<Guid>()
     {
         Guid.Parse("547022EA-EF8C-4FBC-2236-08DE3318A61C"),
@@ -157,31 +129,17 @@
         Guid.Parse("753404A6-8B18-43F7-2238-08DE3318A61C"),
         Guid.Parse("270A78EB-C5CA-475D-2239-08DE3318A61C")
     };
+
     protected override void OnParametersSet()
     {
-        progressold = Task.ActualProcess;
+        if (Task != null)
+            progressold = Task.ActualProcess;
     }
-    // [Parameter]
-    // public EventCallback OnEditTask { get; set; }
-
-    // [Parameter]
-    // public EventCallback OnRejectTask { get; set; }
-
-    // [Parameter]
-    // public EventCallback OnDeleteTask { get; set; }
-
-    // [Parameter]
-    // public EventCallback OnCompleteTask { get; set; }
-
-    // [Parameter]
-    // public EventCallback OnReOpenTask { get; set; }
     protected override async Task OnInitializedAsync()
     {
         CurrentUser = Guid.Parse(await LocalStorageService.GetItemAsStringAsync("Id"));
         RejectionPeriod = await GetRejectionPeriod();
     }
-    private bool showChecklist = false;
-
     private void ToggleChecklist()
     {
         showChecklist = !showChecklist;
@@ -193,13 +151,11 @@
         {
             await ToastService.ShowToastAsync(Loc["Completedsuccessfully"], "success");
             await OnConfirmed.InvokeAsync();
-
         }
         else
         {
             await ToastService.ShowToastAsync(Loc["CompleteFailed"], "danger");
         }
-
         StateHasChanged();
     }
     private void CompleteTask(Guid id)
@@ -213,55 +169,38 @@
                 ConfirmationType.Other
             );
     }
-    // private async Task ReopenConfirmed(Guid id)
-    // {
-    //     var result = await _taskConsumer.ReopenTask(new Dto.TaskComment.TaskCommentDto{TaskItemId=id,Content="comment"});
-    //     if (result.Success && result.Data)
-    //     {
-    //         await ToastService.ShowToastAsync(Loc["Reopenedsuccessfully"], "success");
-    //         await OnConfirmed.InvokeAsync();
-
-    //     }
-    //     else
-    //     {
-    //         await ToastService.ShowToastAsync(Loc["ReopenFailed"], "danger");
-    //     }
-
-    //     StateHasChanged();
-    // }
-    // private void ReopenTask(Guid id)
-    // {
-    //     PopupService.ShowConfirmation(
-    //             @Loc["SureReopenTask"],
-    //             "Yes, Reopen",
-    //             async (confirmed) =>
-    //             {
-    //                 if (confirmed)
-    //                     await ReopenConfirmed(id);
-    //             },
-    //             ConfirmationType.Primary
-    //         );
-    // }
-    public async Task ReopenTask(Guid id)
-    {
-        PopupService.ShowNew(@<ReopenTask Id="id" OnSaved="ReloadAfterSave"></ReopenTask>,Loc["ReOpen"]);
-
-        // StateHasChanged();
-
-    }
-    public async Task RejectTask(Guid id)
-    {
-        PopupService.ShowNew(@<RejectTask Id="id" OnSaved="ReloadAfterSave"></RejectTask>,Loc["Reject"]);
-
-        // StateHasChanged();
-
-    }
+    public void ReopenTask(Guid id) => PopupService.ShowNew(@<ReopenTask Id="id" OnSaved="ReloadAfterSave"></ReopenTask>,Loc["ReOpen"]);
+    public async Task RejectTask(Guid id) =>  PopupService.ShowNew(@<RejectTask Id="id" OnSaved="ReloadAfterSave"></RejectTask>,Loc["Reject"]);
     private void Edit(Guid id) => PopupService.ShowNew(@<EditTask Id="id" OnValidSubmit="ReloadAfterSave"></EditTask>, headerText: @Loc["EditTask"]);
-
+    private void DeleteTask(Guid id)
+    {
+        PopupService.ShowConfirmation(@Loc["SureDeleteTask"], @Loc["Confirm"],
+                async (confirmed) =>
+                {
+                    if (confirmed)
+                        await DeleteConfirmed(id);
+                }, ConfirmationType.Danger);
+    }
+    private async Task DeleteConfirmed(Guid Id)
+    {
+        var result = await _taskConsumer.SoftDeleteTask(Id, CurrentUser);
+        if (result.Success && result.Data)
+        { 
+            await ToastService.ShowToastAsync(Loc["taskDeleted"], "success");;
+            navigationManager.NavigateTo("/MainTasks");
+        }
+        else
+            await ToastService.ShowToastAsync(Loc["PreventTaskDeletion"], "error");
+        StateHasChanged();
+    }
+    void ShowRestorePopup(Guid id)
+    {
+        restoreTaskId = id;
+        showRestorePopup = true;
+    }
     private async Task ReloadAfterSave()
     {
         await OnReopenTask.InvokeAsync();
-        //currentPage = page;
     }
     private async Task<int> GetRejectionPeriod()
     {
@@ -273,13 +212,9 @@
             if (res.Data is not null)
             {
                 if (res.Data.CustomDays != null)
-                {
                     RejectionPeriod = (int)res.Data.CustomDays;
-                }
                 else
-                {
                     RejectionPeriod = (int)res.Data.PeriodType;
-                }
             }
         }
         return RejectionPeriod;
@@ -292,8 +227,9 @@
         }
         else
         {
-            if ((DateOnly.FromDateTime(taskDto.CreateDate ?? DateTime.Now).AddDays(RejectionPeriod) < DateOnly.FromDateTime(DateTime.Now)) || !(taskDto.AssignedIds.Contains(CurrentUser))
-           || taskDto.TaskStatus == Guid.Parse("6EE4574D-C439-45B4-223A-08DE3318A61C") || taskDto.TaskStatus == Guid.Parse("C8D504C7-9402-4F91-223C-08DE3318A61C"))
+            if ((DateOnly.FromDateTime(taskDto.CreateDate ?? DateTime.Now).AddDays(RejectionPeriod) < DateOnly.FromDateTime(DateTime.Now)) 
+                || !(taskDto.AssignedIds?.Contains(CurrentUser)) == true || taskDto.TaskStatus == Guid.Parse("6EE4574D-C439-45B4-223A-08DE3318A61C")
+                || taskDto.TaskStatus == Guid.Parse("C8D504C7-9402-4F91-223C-08DE3318A61C"))
             {
                 return false;
             }
@@ -305,7 +241,7 @@
     }
     private void FullProgrssChange()
     {
-        Task.ActualProcess = 100;
+        Task!.ActualProcess = 100;
         var progress = Task.ActualProcess;
         PopupService.ShowConfirmation(@Loc["SureChangeProgress"], @Loc["Confirm"],
         async (confirmed) =>
@@ -325,7 +261,7 @@
     }
     private void OnProgressChanged(ChangeEventArgs args)
     {
-        var progress = Task.ActualProcess;
+        var progress = Task!.ActualProcess;
         PopupService.ShowConfirmation(@Loc["SureChangeProgress"], @Loc["Confirm"],
         async (confirmed) =>
         {
@@ -344,7 +280,7 @@
     }
     private async Task ChangeProgressConfirmed(int progress)
     {
-        var result = await _taskConsumer.ChangeTaskProgress(Task.Id,progress);
+        var result = await _taskConsumer.ChangeTaskProgress(Task!.Id, progress);
         if (result.Success && result.Data)
         {
             await ToastService.ShowToastAsync(Loc["progressChangedsuccessfully"], "success");
@@ -356,22 +292,16 @@
             await ToastService.ShowToastAsync(Loc["DependencyError"], "error");
             await OnConfirmed.InvokeAsync();
         }
-
         StateHasChanged();
     }
     private string GetRemainingDays(CreateTaskDto task)
     {
         var today = DateOnly.FromDateTime(DateTime.Now).DayNumber;
-        var expiry = DateOnly.FromDateTime(task.CreateDate ?? DateTime.Now)
-                             .AddDays(RejectionPeriod).DayNumber;
+        var expiry = DateOnly.FromDateTime(task.CreateDate ?? DateTime.Now).AddDays(RejectionPeriod).DayNumber;
         var res = expiry - today;
-        if (res ==1)
-        {
+        if (res == 1)
             return $"({res} {Loc["Day"]})";
-        }
         else
-        {
             return $"({res} {Loc["Days"]})";
-        }
     }
 }

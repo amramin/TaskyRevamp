@@ -414,7 +414,7 @@
             var toRemove = allTaks.FirstOrDefault(d => d.Id == Id);
             if (toRemove != null)
                 allTaks.Remove(toRemove);
-            await ToastService.ShowToastAsync(Loc["Deletedsuccessfully"], "success");
+            await ToastService.ShowToastAsync(Loc["taskDeleted"], "success");
             await GetTasks();
         }
         else

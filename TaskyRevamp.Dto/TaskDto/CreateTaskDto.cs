@@ -64,6 +64,7 @@ public class CreateTaskDto
     public string? AssigneduserNames { get; set; }
     public List<TaskViewsDto>? ViewdByNames { get; set; }
     public string? CreatorDepartment { get; set; }
+    public bool IsDeleted { get; set; }
 	//public List<UploadAttachmentDto>? uploadAttachmentDtos { get; set; }
 	[System.Text.Json.Serialization.JsonIgnore]
 	public List<IBrowserFile> BrowserFiles { get; set; } = new();

@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using FluentValidation.Validators;
+using Hangfire;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -25,12 +26,12 @@ using TaskyRevamp.Infrastructure.Seeders;
 using TaskyRevamp.Infrastructure.Services.Notification;
 using TaskyRevamp.Services;
 using TaskyRevamp.Services.Account.Commands;
+using TaskyRevamp.Services.BackgroundJobs;
 using TaskyRevamp.WebAPI;
+using TaskyRevamp.WebAPI.Controllers;
 using TaskyRevamp.WebAPI.Exeptions;
 using TaskyRevamp.WebAPI.Middleware;
 using TaskyRevamp.WebAPI.Pipeline;
-using Hangfire;
-using TaskyRevamp.WebAPI.Controllers;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -65,14 +66,14 @@ builder.Services.AddDbContext<EfDbContext>(options =>
         }));
 builder.Services.AddHangfire(x => x.UseSqlServerStorage(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddHangfireServer();
-builder.Services.AddScoped<ITaskRepository, TaskRepository>();
 
+builder.Services.AddScoped<ITaskRepository, TaskRepository>();
 
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<HttpContextAccessor>();
 builder.Services.AddTransient<DbContext, EfDbContext>();
 builder.Services.AddTransient<IFileManagement, FileManagement>();
-
+builder.Services.AddScoped<RecycleBinCleanupService>();
 builder.Services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
 builder.Services.AddScoped(typeof(IPipelineBehavior<,>), typeof(LoggingBehaviour<,>));
 builder.Services.AddScoped(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
@@ -217,6 +218,8 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.UseHangfireDashboard("/HangFiredashborad");
+RecurringJob.AddOrUpdate<RecycleBinCleanupService>(
+	"recycle-bin-cleanup", service => service.DeleteExpiredTasks(), Cron.Daily);
 app.MapControllers();
 
 app.UseMiddleware<ExceptionHandlingMiddleware>();

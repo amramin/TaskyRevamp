@@ -1492,4 +1492,19 @@
     <value>سيتم حذف المهام الموجودة في سلة المحذوفات تلقائيًا بعد {0} يومًا
 إذا كنت بحاجة إلى هذه المهمة، يرجى استعادتها قبل حذفها بشكل دائم</value>
   </data>
+  <data name="TaskSure" xml:space="preserve">
+    <value>هل أنت متأكد أنك تريد حذف هذه المهمة؟</value>
+  </data>
+  <data name="SureRestore" xml:space="preserve">
+    <value>هل أنت متأكد أنك تريد استعادة هذه المهمة؟</value>
+  </data>
+  <data name="restoredsuccessfully" xml:space="preserve">
+    <value>تم استعادة المهمة بنجاح</value>
+  </data>
+  <data name="KeepOriginalAssignee" xml:space="preserve">
+    <value>الاحتفاظ بالمسند إليه الأصلي</value>
+  </data>
+  <data name="ReassignToCreator" xml:space="preserve">
+    <value>إعادة التعيين إلى مُنشئ المهمة</value>
+  </data>
 </root>

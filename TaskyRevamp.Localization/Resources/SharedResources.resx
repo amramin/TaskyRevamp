@@ -1489,4 +1489,19 @@ This task will be moved to the Recycle Bin and can be restored later or permanen
   <data name="RecycleBinRetentionMessage" xml:space="preserve">
     <value>Tasks in the Recycle Bin will be automatically deleted after {0} days</value>
   </data>
+  <data name="TaskSure" xml:space="preserve">
+    <value>Are you sure you want to delete this task? </value>
+  </data>
+  <data name="SureRestore" xml:space="preserve">
+    <value>Are you sure you want to restore this task? </value>
+  </data>
+  <data name="restoredsuccessfully" xml:space="preserve">
+    <value>Task restored successfully</value>
+  </data>
+  <data name="KeepOriginalAssignee" xml:space="preserve">
+    <value>Keep the original assignee</value>
+  </data>
+  <data name="ReassignToCreator" xml:space="preserve">
+    <value>Reassign to the task creator</value>
+  </data>
 </root>
