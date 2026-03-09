@@ -210,7 +210,8 @@
     }
   }
 
-  .task-depancy-number,.task-delayed-icon {
+  .task-depancy-number,
+  .task-delayed-icon {
     display: inline-flex;
     color: var(--dark-700);
     svg {
@@ -218,21 +219,33 @@
       height: 1rem;
     }
   }
-  
+
   .mx-w-300 {
     max-width: 300px;
   }
   .min-w-150 {
     min-width: 150px;
   }
-  .task-title {
+  .task-title,
+  .dependency-main,
+  .department-main {
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
     word-break: break-word;
+    max-width: 300px;
+  }
+  .task-title{
     width: 300px;
+
+  }
+  .dependency-cell,
+  .department-cell {
+    min-width: 320px;
+    display: flex;
+    align-items: start;
   }
   thead {
     th {
@@ -345,14 +358,14 @@
           background-color: transparent;
           border: 1px solid var(--light-300);
         }
-        td {
-          vertical-align: middle;
-        }
       }
     }
     thead th {
       padding-block: 0;
     }
+  }
+  td {
+    vertical-align: middle;
   }
 }
 

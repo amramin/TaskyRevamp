@@ -1287,6 +1287,9 @@
   <data name="Taskdetails" xml:space="preserve">
     <value>Task details</value>
   </data>
+   <data name="Overall progress" xml:space="preserve">
+    <value>Overall progress</value>
+  </data>
   <data name="EditTask" xml:space="preserve">
     <value>Edit task</value>
   </data>

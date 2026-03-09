@@ -10,6 +10,7 @@
 @use "dropDowns";
 @use "tabs";
 @use "tables";
+@use "progress";
 
 @font-face {
   font-family: "Almarai";
@@ -23,8 +24,8 @@
 @font-face {
   font-family: "Indivisible";
   src:
-    url("../fonts/Almarai/Indivisible-Regular.woff2") format("woff2"),
-    url("../fonts/Almarai/Indivisible-Regular.woff") format("woff");
+    url("../fonts/Indivisible/Indivisible-Regular.woff2") format("woff2"),
+    url("../fonts/Indivisible/Indivisible-Regular.woff") format("woff");
   font-weight: normal;
   font-style: normal;
   font-display: swap;

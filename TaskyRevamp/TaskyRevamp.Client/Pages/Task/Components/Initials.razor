@@ -1,50 +1,72 @@
 ﻿@using System
 
-<svg xmlns="http://www.w3.org/2000/svg"
-     width="@TotalWidth"
-     height="@Size"
-     style="overflow: visible;">
-
-    @for (int i = 0; i < NamesList.Count; i++)
+<ul class="initials-list">
+    @for (int i = 0; i < VisibleNames.Count; i++)
     {
-        <g transform="translate(@(i * (Size + Spacing)), 0)">
-            <title>@NamesList[i]</title>
-            <circle cx="@Half"
-                    cy="@Half"
-                    r="@(Half - 1)"
-                    fill="none"
-                    stroke="@StrokeColor"
-                    stroke-width="1" />
-            <text x="@Half"
-                  y="@Half"
-                  dominant-baseline="middle"
-                  text-anchor="middle"
-                  fill="@StrokeColor"
-                  font-size="@FontSize">
-                @GetInitials(NamesList[i])
-            </text>
-        </g>
+        <li class="initial" title="@VisibleNames[i]">
+            @GetInitials(VisibleNames[i])
+        </li>
     }
-</svg>
+
+    @if (RemainingCount > 0)
+    {
+        <li class="dropdown more-user">
+            <button class="btn btn-more" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                +@RemainingCount
+            </button>
+
+            <ul class="dropdown-menu">
+                @foreach (var name in HiddenNames)
+                {
+                    <li class="dropdown-item">
+                        <span class="initial">@GetInitials(name)</span>
+                        <span class="name">@name</span>
+                    </li>
+                }
+            </ul>
+
+        </li>
+    }
+</ul>
 
 @code {
     [Parameter] public string? Names { get; set; }
     [Parameter] public int Size { get; set; } = 40;
     [Parameter] public bool Black { get; set; } = false;
+
     private const int Spacing = 6;
     private int Half => Size / 2;
     private int TotalWidth => NamesList.Count * (Size + Spacing);
-    private string StrokeColor => Black ? "#000000" : "#6c757d";
+    private string StrokeColor => Black ? "#000000" : "#00f";
     private int FontSize => Size / 2;
+
+
+
     private List<string> NamesList =>
-        string.IsNullOrWhiteSpace(Names) ? new() : Names.Split(',', StringSplitOptions.RemoveEmptyEntries).Select(n => n.Trim()).ToList();
+        string.IsNullOrWhiteSpace(Names)
+            ? new()
+            : Names.Split(',', StringSplitOptions.RemoveEmptyEntries)
+                .Select(n => n.Trim())
+                .ToList();
+
+    private List<string> VisibleNames => NamesList.Take(4).ToList();
+
+    private List<string> HiddenNames => NamesList.Skip(4).ToList();
+
+    private int RemainingCount => HiddenNames.Count;
+
+
+
     private static string GetInitials(string fullName)
     {
         if (string.IsNullOrWhiteSpace(fullName))
             return "";
+
         var parts = fullName.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+
         if (parts.Length == 1)
             return parts[0][0].ToString().ToUpper();
+
         return $"{char.ToUpper(parts[0][0])}{char.ToUpper(parts[^1][0])}";
     }
 }
