@@ -1,14 +1,14 @@
 ﻿@using TaskyRevamp.Dto.TaskDto
 @inject IStringLocalizer<SharedResources> Loc
 
-<div class="card mb-3">
+<div class="page-header">
     <div class="card-body d-flex align-items-center gap-3">
         <button class="btn btn-link text-dark p-0" @onclick="OnGoBack">
             <span class="icon">
                 <SVGCrud SVGType="SVGCrud.SVGTypeEnum.BackArrow"></SVGCrud>
             </span>
         </button>
-        <h1 class="flex-grow-1 mb-0 fs-5 fw-bold">@Task?.Title</h1>
+        <h1 class="page-title">@Task?.Title</h1>
         @if (ShowViewedBy && Task?.ViewdByNames != null && Task.ViewdByNames.Any())
         {
             <div class="d-flex align-items-center gap-2">
@@ -22,19 +22,17 @@
                     {
                         <div class="d-flex align-items-center justify-content-center rounded-circle bg-primary text-white fw-semibold position-relative @(viewer.IsActive ? "" : "bg-secondary opacity-75")"
                              style="width: 32px; height: 32px; font-size: 12px; margin-left: -8px; border: 2px solid white; z-index: @(visibleViewers.IndexOf(viewer));"
-                             title="@viewer.FullName - @viewer.ViewdAt.ToLocalTime().ToString("g")"
-                             data-bs-toggle="tooltip">
+                             title="@viewer.FullName - @viewer.ViewdAt.ToLocalTime().ToString("g")" data-bs-toggle="tooltip">
                             <span>@GetInitials(viewer.FullName)</span>
                         </div>
                     }
 
                     @if (remainingCount > 0)
                     {
-                        <button class="btn btn-sm d-flex align-items-center justify-content-center rounded-circle bg-light text-dark border-0 position-relative"
-                                style="width: 32px; height: 32px; font-size: 11px; margin-left: -8px; border: 2px solid white !important;"
-                                @onclick="ShowAllViewers"
-                                title="@Loc["ViewMore"]"
-                                data-bs-toggle="tooltip">
+                        <button
+                            class="btn btn-sm d-flex align-items-center justify-content-center rounded-circle bg-light text-dark border-0 position-relative"
+                            style="width: 32px; height: 32px; font-size: 11px; margin-left: -8px; border: 2px solid white !important;"
+                            @onclick="ShowAllViewers" title="@Loc["ViewMore"]" data-bs-toggle="tooltip">
                             <span class="fw-semibold">+@remainingCount</span>
                         </button>
                     }
@@ -46,7 +44,8 @@
 
 @if (showViewersPopup && Task?.ViewdByNames != null)
 {
-    <div class="modal fade show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.5);" @onclick="CloseViewersPopup">
+    <div class="modal fade show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.5);"
+         @onclick="CloseViewersPopup">
         <div class="modal-dialog modal-dialog-centered" @onclick:stopPropagation="true">
             <div class="modal-content">
                 <div class="modal-header">
@@ -57,7 +56,8 @@
                     <div class="list-group list-group-flush">
                         @foreach (var viewer in Task.ViewdByNames.OrderByDescending(v => v.ViewdAt))
                         {
-                            <div class="list-group-item d-flex align-items-center gap-3 @(viewer.IsActive ? "" : "text-muted bg-light")">
+                            <div
+                                class="list-group-item d-flex align-items-center gap-3 @(viewer.IsActive ? "" : "text-muted bg-light")">
                                 <div class="d-flex align-items-center justify-content-center rounded-circle bg-primary text-white fw-semibold flex-shrink-0 @(viewer.IsActive ? "" : "bg-secondary opacity-75")"
                                      style="width: 48px; height: 48px; font-size: 16px;">
                                     <span>@GetInitials(viewer.FullName)</span>

@@ -7,7 +7,7 @@
 @inject TaskConsumer _taskConsumer
 @inject Blazored.LocalStorage.ILocalStorageService LocalStorage
 
-<div class="container-fluid min-vh-100 py-3">
+<div class="task-detail-page">
     <TaskHeader Task="task" @key="task.Id" OnGoBack="GoBack" ShowViewedBy="@isCreator" />
     <TaskMeta Task="task" />
     <TaskTabs @bind-ActiveTab="activeTab" Task="task" />
