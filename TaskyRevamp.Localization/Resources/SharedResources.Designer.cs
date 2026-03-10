@@ -19,7 +19,7 @@ namespace TaskyRevamp.Localization.Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "18.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class SharedResources {
@@ -615,6 +615,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string ChangeEndDate {
             get {
                 return ResourceManager.GetString("ChangeEndDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Change end date requests.
+        /// </summary>
+        public static string ChangeEndDateRequests {
+            get {
+                return ResourceManager.GetString("ChangeEndDateRequests", resourceCulture);
             }
         }
         
@@ -2221,6 +2230,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to New end date.
+        /// </summary>
+        public static string newenddate {
+            get {
+                return ResourceManager.GetString("newenddate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Next months.
         /// </summary>
         public static string NextMonths {
@@ -2271,6 +2289,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string Nodepartmentavailable {
             get {
                 return ResourceManager.GetString("Nodepartmentavailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No change end date requests available.
+        /// </summary>
+        public static string NoEndDateRequests {
+            get {
+                return ResourceManager.GetString("NoEndDateRequests", resourceCulture);
             }
         }
         
@@ -2833,6 +2860,60 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Request change end date.
+        /// </summary>
+        public static string RequestDueDate {
+            get {
+                return ResourceManager.GetString("RequestDueDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Requested end date.
+        /// </summary>
+        public static string RequestedEndDate {
+            get {
+                return ResourceManager.GetString("RequestedEndDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Requested successfully.
+        /// </summary>
+        public static string RequestedSuccesfully {
+            get {
+                return ResourceManager.GetString("RequestedSuccesfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Requester.
+        /// </summary>
+        public static string Requester {
+            get {
+                return ResourceManager.GetString("Requester", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Request reason.
+        /// </summary>
+        public static string RequestReason {
+            get {
+                return ResourceManager.GetString("RequestReason", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Request status.
+        /// </summary>
+        public static string RequestStatus {
+            get {
+                return ResourceManager.GetString("RequestStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to This field is required.
         /// </summary>
         public static string Required {
@@ -3054,6 +3135,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string setAsManager {
             get {
                 return ResourceManager.GetString("setAsManager", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The new end date should be equal to or greater than the start date.
+        /// </summary>
+        public static string smallerrequesteddate {
+            get {
+                return ResourceManager.GetString("smallerrequesteddate", resourceCulture);
             }
         }
         
@@ -3460,6 +3550,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string Tasksviews {
             get {
                 return ResourceManager.GetString("Tasksviews", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Task title.
+        /// </summary>
+        public static string Tasktitle {
+            get {
+                return ResourceManager.GetString("Tasktitle", resourceCulture);
             }
         }
         

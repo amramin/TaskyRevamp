@@ -92,6 +92,15 @@
                 </span>
             </button>
         }
+        @if (IsRequestNewEndDate(Task))
+        {
+            <button class="btn btn-light w-100 text-start mb-2" @onclick="@(() => RequestChangeDueDate(Task))">
+                    <span class="icon">
+                    <SVGCrud SVGType="SVGCrud.SVGTypeEnum.CalnderPluse"></SVGCrud> @Loc["RequestDueDate"]
+
+                    </span>
+                </button>
+        }
         <button class="btn btn-light w-100 text-start mb-2" @onclick="@(() => Edit(Task.Id))" title="@Loc["Edit"]">
             <span class="icon">
                 <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Edit"></SVGCrud>  @Loc["Edit"]
@@ -256,6 +265,13 @@
         // StateHasChanged();
 
     }
+    public async Task RequestChangeDueDate(CreateTaskDto task)
+    {
+        PopupService.ShowNew(@<RequestChangeDueDate task="task" OnSaved="ReloadAfterSave"></RequestChangeDueDate>,Loc["RequestDueDate"]);
+
+        // StateHasChanged();
+
+    }
     private void Edit(Guid id) => PopupService.ShowNew(@<EditTask Id="id" OnValidSubmit="ReloadAfterSave"></EditTask>, headerText: @Loc["EditTask"]);
 
     private async Task ReloadAfterSave()
@@ -292,8 +308,8 @@
         }
         else
         {
-            if ((DateOnly.FromDateTime(taskDto.CreateDate ?? DateTime.Now).AddDays(RejectionPeriod) < DateOnly.FromDateTime(DateTime.Now)) || !(taskDto.AssignedIds.Contains(CurrentUser))
-           || taskDto.TaskStatus == Guid.Parse("6EE4574D-C439-45B4-223A-08DE3318A61C") || taskDto.TaskStatus == Guid.Parse("C8D504C7-9402-4F91-223C-08DE3318A61C"))
+            if ((DateOnly.FromDateTime(taskDto?.CreateDate ?? DateTime.Now).AddDays(RejectionPeriod) < DateOnly.FromDateTime(DateTime.Now)) || !(taskDto.AssignedIds is not null&& taskDto.AssignedIds.Contains(CurrentUser))
+           || taskDto?.TaskStatus == Guid.Parse("6EE4574D-C439-45B4-223A-08DE3318A61C") || taskDto?.TaskStatus == Guid.Parse("C8D504C7-9402-4F91-223C-08DE3318A61C"))
             {
                 return false;
             }
@@ -301,6 +317,19 @@
             {
                 return true;
             }
+        }
+    }
+    private bool IsRequestNewEndDate(CreateTaskDto taskDto)
+    {
+        if (!(taskDto.AssignedIds is not null && taskDto.AssignedIds!.Contains(CurrentUser))
+            || taskDto?.TaskStatus == Guid.Parse("6EE4574D-C439-45B4-223A-08DE3318A61C") || taskDto?.TaskStatus == Guid.Parse("C8D504C7-9402-4F91-223C-08DE3318A61C") ||
+        (taskDto.ChangeEndDateRequestCount>0))
+        {
+            return false;
+        }
+        else
+        {
+            return true;
         }
     }
     private void FullProgrssChange()

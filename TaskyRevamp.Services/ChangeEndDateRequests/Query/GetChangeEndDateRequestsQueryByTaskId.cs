@@ -1,46 +1,42 @@
 ﻿using DocumentFormat.OpenXml.Bibliography;
+using DocumentFormat.OpenXml.Spreadsheet;
+using MailKit.Search;
 using MediatR;
 using System.Linq.Expressions;
 using TaskyRevamp.Domain.Models.Task;
+using TaskyRevamp.Domain.Models.Users;
 using TaskyRevamp.Domain.Repositeries;
 using TaskyRevamp.Dto.ChangeEndDateRequest;
-using TaskyRevamp.Dto.Enums.SearchFields;
 using TaskyRevamp.Dto.GeneralDto;
-using TaskyRevamp.Services.Helpers;
-using TaskyRevamp.Services.SearchMappings;
+using TaskyRevamp.Dto.SystemConfiguration;
 
 namespace TaskyRevamp.Services.ChangeEndDateRequests.Query;
 
-public record GetChangeEndDateRequestsQuery(int pageNumber, int pageSize, string sortByColumnName, bool sortAscending, List<SearchFieldChangeDueDate> SearchFields, string SearchText) : IRequest<PagedResult<ChangeEndDateRequestDto>>;
+public record GetChangeEndDateRequestsQueryByTaskId(Guid id, int pageNumber, int? pageSize, string sortByColumnName, bool sortAscending) : IRequest<PagedResult<ChangeEndDateRequestDto>>;
 
 public class
-    GetChangeEndDateRequestsHandler : IRequestHandler<GetChangeEndDateRequestsQuery, PagedResult<ChangeEndDateRequestDto>>
+    GetChangeEndDateRequestsByTaskIdHandler : IRequestHandler<GetChangeEndDateRequestsQueryByTaskId, PagedResult<ChangeEndDateRequestDto>>
 {
     private readonly IRepository<ChangeEndDateRequest> _changeEndDateRequestRepository;
-    string currentCulture = System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
+    private readonly IRepository<User> _userRepository;
 
 
-    public GetChangeEndDateRequestsHandler(IRepository<ChangeEndDateRequest> changeEndDateRequestRepository)
+    public GetChangeEndDateRequestsByTaskIdHandler(IRepository<ChangeEndDateRequest> changeEndDateRequestRepository, IRepository<User> userRepository)
     {
         _changeEndDateRequestRepository = changeEndDateRequestRepository;
+        _userRepository = userRepository;
     }
 
-    public async Task<PagedResult<ChangeEndDateRequestDto>> Handle(GetChangeEndDateRequestsQuery request,
+    public async Task<PagedResult<ChangeEndDateRequestDto>> Handle(GetChangeEndDateRequestsQueryByTaskId request,
         CancellationToken cancellationToken)
     {
         var changeEndDateRequestsDto = new List<ChangeEndDateRequestDto>();
-        var orderBy = GetOrderBy(request.sortByColumnName, request.sortAscending);
         Expression<Func<ChangeEndDateRequest, bool>> searchExpression = null;
-        if (request.SearchFields != null && request.SearchFields.Any())
-        {
-           var map = RequestChangeDueDateSearchFieldMap.Map(currentCulture);
-            var predicates = request.SearchFields.Select(x => map[x]).ToList();
-            searchExpression = ExpressionBuilder.BuildLikeExpression(predicates, request.SearchText);
-        }
+        var orderBy = GetOrderBy(request.sortByColumnName, request.sortAscending);
         var res = await _changeEndDateRequestRepository.GetPagedAsync(
                     request.pageNumber,
-                    request.pageSize,
-                        u=>u.Status==ChangeRequestStatus.Pending,
+                    request.pageSize??10,
+                        u => u.TaskItemId == request.id,
                     searchExpression,
                     orderBy: orderBy,
                     includeProperties: $"{nameof(ChangeEndDateRequest.CreatedBy)},{nameof(ChangeEndDateRequest.Task)}");
@@ -50,9 +46,10 @@ public class
             Items = items.ToList(),
             TotalCount = res.TotalCount,
             PageNumber = request.pageNumber,
-            PageSize = request.pageSize
+            PageSize = request.pageSize??10
         };
     }
+
     private Func<IQueryable<ChangeEndDateRequest>, IOrderedQueryable<ChangeEndDateRequest>> GetOrderBy(string sortByColumn, bool sortAscending)
     {
         string currentCulture = System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;

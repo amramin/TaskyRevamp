@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TaskyRevamp.Infrastructure;
 
@@ -11,9 +12,11 @@ using TaskyRevamp.Infrastructure;
 namespace TaskyRevamp.Infrastructure.Migrations
 {
     [DbContext(typeof(EfDbContext))]
-    partial class EfDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260305230938_savechanges")]
+    partial class savechanges
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -748,7 +751,10 @@ namespace TaskyRevamp.Infrastructure.Migrations
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
-                    b.Property<Guid>("TaskItemId")
+                    b.Property<Guid>("TaskId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("TaskItemId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
@@ -756,6 +762,8 @@ namespace TaskyRevamp.Infrastructure.Migrations
                     b.HasIndex("CreatedById");
 
                     b.HasIndex("RequesterId");
+
+                    b.HasIndex("TaskId");
 
                     b.HasIndex("TaskItemId");
 
@@ -1491,10 +1499,14 @@ namespace TaskyRevamp.Infrastructure.Migrations
                         .IsRequired();
 
                     b.HasOne("TaskyRevamp.Domain.Models.Task.TaskItem", "Task")
-                        .WithMany("ChangeEndDateRequests")
-                        .HasForeignKey("TaskItemId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .WithMany()
+                        .HasForeignKey("TaskId")
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
+
+                    b.HasOne("TaskyRevamp.Domain.Models.Task.TaskItem", null)
+                        .WithMany("ChangeRequests")
+                        .HasForeignKey("TaskItemId");
 
                     b.Navigation("CreatedBy");
 
@@ -1961,7 +1973,7 @@ namespace TaskyRevamp.Infrastructure.Migrations
 
                     b.Navigation("Attachments");
 
-                    b.Navigation("ChangeEndDateRequests");
+                    b.Navigation("ChangeRequests");
 
                     b.Navigation("Checklist");
 

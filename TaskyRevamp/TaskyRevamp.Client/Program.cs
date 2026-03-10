@@ -59,6 +59,7 @@ builder.Services.Configure<MySettings>(builder.Configuration.GetSection("MySetti
 
 builder.Services.AddTransient<DepartmentConsumer>();
 builder.Services.AddTransient<TaskConsumer>();
+builder.Services.AddTransient<RequestChangeDueDateConsumer>();
 builder.Services.AddTransient<UserConsumer>();
 builder.Services.AddTransient<UserDelegationConsumer>();
 

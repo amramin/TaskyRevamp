@@ -1,6 +1,7 @@
 using TaskyRevamp.Domain.Interfaces;
 using TaskyRevamp.Domain.Models.SystemConfiguration;
 using TaskyRevamp.Domain.Models.Users;
+using TaskyRevamp.Dto.ChangeEndDateRequest;
 using TaskyRevamp.Dto.Enums;
 using TaskyRevamp.Dto.SystemConfiguration;
 using TaskyRevamp.Dto.TaskDto;
@@ -133,8 +134,9 @@ public class TaskItem : Entity, IHasCreationMetaData, IHasUpdateMetaData
 	public TaskAttachments? Attachments { get; set; }
 	readonly List<TaskHistoryEntry> _history = new();
 	public IReadOnlyCollection<TaskHistoryEntry> History => _history.AsReadOnly();
-	readonly List<ChangeEndDateRequest> _changeRequests = new();
-	public IReadOnlyCollection<ChangeEndDateRequest> ChangeRequests => _changeRequests.AsReadOnly();
+	//readonly List<ChangeEndDateRequest> _changeRequests = new();
+	//public IReadOnlyCollection<ChangeEndDateRequest> ChangeRequests => _changeRequests.AsReadOnly();
+	public List<ChangeEndDateRequest> ChangeEndDateRequests=new List<ChangeEndDateRequest>();
 	readonly List<TaskEscalation> _escalations = new();
 	public IReadOnlyCollection<TaskEscalation> Escalations => _escalations.AsReadOnly();
 	public int Level => GetLevel();
@@ -349,7 +351,7 @@ public class TaskItem : Entity, IHasCreationMetaData, IHasUpdateMetaData
 			throw new InvalidOperationException("Cannot request an end date change for a parent task. End dates for parent tasks are typically derived from their subtasks.");
 		}
 
-		if (_changeRequests.Any(r => r.Status == ChangeRequestStatus.Pending))
+		if (ChangeEndDateRequests.Any(r => r.Status == ChangeRequestStatus.Pending))
 		{
 			throw new InvalidOperationException("An end date change request is already pending for this task.");
 		}
@@ -360,7 +362,7 @@ public class TaskItem : Entity, IHasCreationMetaData, IHasUpdateMetaData
 		}
 
 		var request = new ChangeEndDateRequest(Guid.NewGuid(), Id, newEnd, reason, requester.Id);
-		_changeRequests.Add(request);
+        ChangeEndDateRequests.Add(request);
 		AddHistoryEntry(requester, $"requested end-date change to {newEnd:yyyy-MM-dd}");
 		// Comments.Add($"End date request reason: {reason}", requester);
 		return request;

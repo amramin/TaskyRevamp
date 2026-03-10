@@ -1492,4 +1492,37 @@ This task will be moved to the Recycle Bin and can be restored later or permanen
   <data name="RecycleBinRetentionMessage" xml:space="preserve">
     <value>Tasks in the Recycle Bin will be automatically deleted after {0} days</value>
   </data>
+  <data name="RequestDueDate" xml:space="preserve">
+    <value>Request change end date</value>
+  </data>
+  <data name="newenddate" xml:space="preserve">
+    <value>New end date</value>
+  </data>
+  <data name="smallerrequesteddate" xml:space="preserve">
+    <value>The new end date should be equal to or greater than the start date</value>
+  </data>
+  <data name="RequestedSuccesfully" xml:space="preserve">
+    <value>Requested successfully</value>
+  </data>
+  <data name="ChangeEndDateRequests" xml:space="preserve">
+    <value>Change end date requests</value>
+  </data>
+  <data name="Tasktitle" xml:space="preserve">
+    <value>Task title</value>
+  </data>
+  <data name="RequestedEndDate" xml:space="preserve">
+    <value>Requested end date</value>
+  </data>
+  <data name="Requester" xml:space="preserve">
+    <value>Requester</value>
+  </data>
+  <data name="RequestReason" xml:space="preserve">
+    <value>Request reason</value>
+  </data>
+  <data name="NoEndDateRequests" xml:space="preserve">
+    <value>No change end date requests available</value>
+  </data>
+  <data name="RequestStatus" xml:space="preserve">
+    <value>Request status</value>
+  </data>
 </root>
