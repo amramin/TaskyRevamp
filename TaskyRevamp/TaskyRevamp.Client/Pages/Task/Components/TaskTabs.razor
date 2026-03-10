@@ -1,49 +1,47 @@
 ﻿@using TaskyRevamp.Dto.TaskDto
 @inject IStringLocalizer<SharedResources> Loc
 
-<div class="card mb-3">
-    <div class="card-body p-0">
-        <ul class="nav nav-tabs border-0 px-3">
-            <li class="nav-item">
-                <a class="nav-link @(ActiveTab == "details" ? "active" : "")"
-                   @onclick='() => OnTabClick("details")'
-                   style="cursor: pointer;">@Loc["Details"]</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link @(ActiveTab == "attachment" ? "active" : "")"
-                   @onclick='() => OnTabClick("attachment")'
-                   style="cursor: pointer;">@Loc["Attachments"]</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link @(ActiveTab == "subtasks" ? "active" : "")"
-                   @onclick='() => OnTabClick("subtasks")'
-                   style="cursor: pointer;">
-                    @Loc["Subtasks"]
-                    <span class="badge bg-primary ms-1"></span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link @(ActiveTab == "dependency" ? "active" : "")"
-                   @onclick='() => OnTabClick("dependency")'
-                   style="cursor: pointer;">
-                    @Loc["Dependencies"]
-                    <span class="badge bg-primary ms-1"></span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link @(ActiveTab == "enddate" ? "active" : "")"
-                   @onclick='() => OnTabClick("enddate")'
-                   style="cursor: pointer;">@Loc["ChangeEndDatesRequests"]</a>
-            </li>
-            <li class="nav-item ms-auto">
-                <button class="btn btn-link nav-link"><i class="bi bi-clock-history"></i> @Loc["History"]</button>
-            </li>
-            <li class="nav-item">
-                <button class="btn btn-link nav-link"><i class="bi bi-people"></i> @Loc["Escalation"]</button>
-            </li>
-        </ul>
-    </div>
-</div>
+
+<ul class="nav nav-pills ">
+    <li class="nav-item">
+        <a class="nav-link @(ActiveTab == "details" ? "active" : "")"                   @onclick='() => OnTabClick("details")'
+           style="cursor: pointer;">@Loc["Details"]</a>
+    </li>
+
+    <li class="nav-item">
+        <a class="nav-link @(ActiveTab == "attachment" ? "active" : "")" @onclick='() => OnTabClick("attachment")'
+           style="cursor: pointer;">@Loc["Attachments"]</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link @(ActiveTab == "subtasks" ? "active" : "")"               @onclick='() => OnTabClick("subtasks")'
+               style="cursor: pointer;">
+            @Loc["Subtasks"]
+            <span class="badge bg-primary ms-1"></span>
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link @(ActiveTab == "dependency" ? "active" : "")"              @onclick='() => OnTabClick("dependency")'
+               style="cursor: pointer;">
+            @Loc["Dependencies"]
+            <span class="badge bg-primary ms-1"></span>
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link @(ActiveTab == "enddate" ? "active" : "")"            @onclick='() => OnTabClick("enddate")'
+           style="cursor: pointer;">@Loc["ChangeEndDatesRequests"]</a>
+    </li>
+    <li class="nav-item ms-auto">
+        <button class="btn btn-link nav-link"> <span class="icon">
+            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.List"></SVGCrud>
+        </span> @Loc["History"]</button>
+    </li>
+    <li class="nav-item">
+        <button class="btn btn-link nav-link"> <span class="icon">
+            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.List"></SVGCrud>
+        </span> @Loc["Escalation"]</button>
+    </li>
+</ul>
+
 
 @code {
     [Parameter] public string ActiveTab { get; set; } = "details";

@@ -2836,6 +2836,8 @@ fieldset:disabled .btn {
   gap: 0.25rem;
   padding: 0.5rem;
   color: var(--dark-700);
+  font-size: 0.875rem;
+  font-weight: 500;
 }
 .tab-pills .nav .nav-link svg {
   width: 1rem;
@@ -3762,6 +3764,21 @@ ul {
   z-index: 1080;
   width: 100%;
   height: 100vh;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+.task-detail-page .tab-pills {
+  -webkit-border-end: 1px solid var(--light-300);
+          border-inline-end: 1px solid var(--light-300);
+}
+.task-detail-page .page-body {
+  max-height: calc(100vh - 10rem);
+  padding: 1rem !important;
 }
 
 /* start .task-detail-page */

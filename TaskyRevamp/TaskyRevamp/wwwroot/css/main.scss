@@ -42,8 +42,8 @@
 .logo {
   max-height: 3.5rem;
 }
-.cursor-pointer{
- cursor: pointer;
+.cursor-pointer {
+  cursor: pointer;
 }
 .dropdown-divider {
   border-top-color: var(--light-300);
@@ -342,6 +342,15 @@ html {
   z-index: 1080;
   width: 100%;
   height: 100vh;
+  display: flex;
+  flex-direction: column;
+  .tab-pills {
+    border-inline-end: 1px solid var(--light-300);
+  }
+  .page-body {
+    max-height: calc(100vh - 10rem);
+    padding: 1rem !important;
+  }
 }
 
 /* start .task-detail-page */

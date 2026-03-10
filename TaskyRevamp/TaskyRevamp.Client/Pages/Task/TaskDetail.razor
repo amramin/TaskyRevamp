@@ -10,24 +10,31 @@
 <div class="task-detail-page">
     <TaskHeader Task="task" @key="task.Id" OnGoBack="GoBack" ShowViewedBy="@isCreator" />
     <TaskMeta Task="task" />
-    <TaskTabs @bind-ActiveTab="activeTab" Task="task" />
 
-    <div class="row">
-        <div class="col-lg-7">
-            @if(activeTab == "attachment")
-            {
-                <TaskAttachments TaskId="TaskId" />
-            }
-            else if(activeTab == "details")
-            {
-                <TaskDescription @bind-ShowSection="showDescription" Task="task" />
-                <TaskDetails @bind-ShowSection="showDetails" Task="task" />
-                <TaskComments @bind-ShowSection="showComments" TaskId="TaskId" @ref="commentssection"/>
-            }
+
+    <div class="row g-0">
+        <div class="col-lg-8">
+            <div class="tab-pills flex-grow-1">
+                <TaskTabs @bind-ActiveTab="activeTab" Task="task" />
+                <div class="page-body">
+                    @if (activeTab == "attachment")
+                    {
+                        <TaskAttachments TaskId="TaskId" />
+                    }
+                    else if (activeTab == "details")
+                    {
+                        <TaskDescription @bind-ShowSection="showDescription" Task="task" />
+                        <TaskDetails @bind-ShowSection="showDetails" Task="task" />
+                        <TaskComments @bind-ShowSection="showComments" TaskId="TaskId" @ref="commentssection" />
+                    }
+                </div>
+            </div>
         </div>
 
-        <div class="col-lg-5">
-            <TaskSidebar Task="task" OnConfirmed="LoadTask" OnReopenTask="AfterReopen" />
+        <div class="col-lg-4">
+            <div class="page-body">
+                <TaskSidebar Task="task" OnConfirmed="LoadTask" OnReopenTask="AfterReopen" />
+            </div>
         </div>
     </div>
 </div>
