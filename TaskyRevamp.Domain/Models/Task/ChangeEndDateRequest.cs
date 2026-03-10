@@ -9,7 +9,7 @@ public class ChangeEndDateRequest : Entity, IHasCreationMetaData
 {
     private ChangeEndDateRequest() { }
 
-    public Guid TaskId { get; set; }
+    public Guid TaskItemId { get; set; }
     public Guid RequesterId { get; set; }
     public TaskItem Task { get; private set; }
     public DateTime NewEndDate { get; private set; }
@@ -25,7 +25,7 @@ public class ChangeEndDateRequest : Entity, IHasCreationMetaData
     public bool SetData(ChangeEndDateRequestDto changeEndDateRequestDto)
     {
         Id = Id;
-        TaskId = changeEndDateRequestDto.TaskId;
+        TaskItemId = changeEndDateRequestDto.TaskId;
         Reason = changeEndDateRequestDto.Reason;
         CreateDate=DateTime.Now;
         NewEndDate=changeEndDateRequestDto.NewEndDate;
@@ -38,26 +38,30 @@ public class ChangeEndDateRequest : Entity, IHasCreationMetaData
     }
     public ChangeEndDateRequestDto CopyToDto()
     {
+        string currentCulture = System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
+
         return new ChangeEndDateRequestDto
         {
             Id = Id,
 
             CreateDate = CreateDate,
             CreatedById = CreatedById,
-            TaskId = TaskId,
-            Reason = Reason,    
-            Status=(int)Status,
-
-            IsAproved= IsAproved,
+            TaskId = TaskItemId,
+            Reason = Reason,
+            Status = Status,
+            Requester = RequesterId,
+            IsAproved = IsAproved,
             NewEndDate = NewEndDate,
-
-
+            RequesterName = currentCulture=="ar" ?CreatedBy.NameArabic??"": CreatedBy.NameEnglish ?? "",
+            oldEndDate=Task.EndDate??DateTime.Now,
+            TaskTitle=Task.Title
+            
         };
     }
     public ChangeEndDateRequest(Guid id, Guid task, DateTime newEnd, string reason, Guid requester)
     {
         Id = id;
-        TaskId = task;
+        TaskItemId = task;
         NewEndDate = newEnd;
         Reason = reason;
         RequesterId = requester;

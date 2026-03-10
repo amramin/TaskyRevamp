@@ -12,6 +12,7 @@
     <TaskMeta Task="task" />
 
 
+
     <div class="row g-0">
         <div class="col-lg-8">
             <div class="tab-pills flex-grow-1">
@@ -27,8 +28,30 @@
                         <TaskDetails @bind-ShowSection="showDetails" Task="task" />
                         <TaskComments @bind-ShowSection="showComments" TaskId="TaskId" @ref="commentssection" />
                     }
+                     else if (activeTab == "enddate")
+            {
+                <RequestNewEndDateTaskHistory @bind-ShowSection="showDetails" Task="task" />
+            }
                 </div>
             </div>
+
+    <div class="row">
+        <div class="col-lg-7">
+            @if(activeTab == "attachment")
+            {
+                <TaskAttachments TaskId="TaskId" />
+            }
+            else if(activeTab == "details")
+            {
+                <TaskDescription @bind-ShowSection="showDescription" Task="task" />
+                <TaskDetails @bind-ShowSection="showDetails" Task="task" />
+                <TaskComments @bind-ShowSection="showComments" TaskId="TaskId" @ref="commentssection"/>
+            }
+            else if (activeTab == "enddate")
+            {
+                <RequestNewEndDateTaskHistory @bind-ShowSection="showDetails" Task="task" />
+            }
+>>>>>>> abb06361968f5eb71d4fdb53ab9624cf7de3ca9d
         </div>
 
         <div class="col-lg-4">

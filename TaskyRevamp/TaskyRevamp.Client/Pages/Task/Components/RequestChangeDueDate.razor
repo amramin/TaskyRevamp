@@ -1,0 +1,135 @@
+﻿@using Blazored.LocalStorage
+@using Syncfusion.Blazor.Calendars
+@using System.Globalization
+@using TaskyRevamp.Client.Consumer
+@using TaskyRevamp.Client.Services
+@using TaskyRevamp.Dto.ChangeEndDateRequest
+@using TaskyRevamp.Dto.TaskDto
+@inject IStringLocalizer<SharedResources> Loc
+@inject PopupService PopupService
+@inject TaskConsumer _taskConsumer
+@inject ToastService ToastService
+@inject NavigationManager navigationManager
+@inject ILocalStorageService LocalStorageService
+@inject TaskConsumer _taskConsumer
+<EditForm EditContext="editContext" OnValidSubmit="HandleValidSubmit" OnInvalidSubmit="HandleInvalidSubmit">
+        <DataAnnotationsValidator />
+
+        <div class="offcanvas-body">
+            <div class="date-group w-100" dir="@dateGroupDir" style="cursor:pointer" @onclick="OpenStratDatePicker">
+                <label class="form-label">@Loc["newenddate"]<span class="text-danger">*</span></label>
+                <SfDatePicker @ref="RequestEndDatePiker"
+                              TValue="DateTime"
+                              @bind-Value="changeEndDateRequestDto.NewEndDate"
+                              Locale="@datePickerLocale"
+                              EnableRtl="@enableRtl"
+                              Format="dd-MM-yyyy"
+                              Placeholder="@placeholderDate"
+                              ShowClearButton="true">
+                </SfDatePicker>
+            <ValidationMessage For="() => changeEndDateRequestDto.NewEndDate" class="text-danger"></ValidationMessage>
+            </div>
+            <div class="mb-2">
+                <label class="form-label">@Loc["Enterthereason"]<span class="text-danger">*</span></label>
+                <InputTextArea class="form-control"
+                               placeholder="@Loc["Enterthereason"]"
+                               @bind-value="changeEndDateRequestDto.Reason"
+                               rows="3"></InputTextArea>
+                <ValidationMessage For="() => changeEndDateRequestDto.Reason" class="text-danger"></ValidationMessage>
+            </div>
+        </div>
+        <div class="offcanvas-footer">
+            <div class="row g-2">
+                <div class="col-6">
+                    <div class="d-grid">
+                        <button type="button" class="btn btn-lg btn-light" @onclick="Cancel">@Loc["Cancel"]</button>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-lg btn-primary">@Loc["Save"]</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </EditForm>
+
+@code {
+    [Parameter] public CreateTaskDto task { get; set; }
+    [Parameter] public EventCallback OnSaved { get; set; }
+    private SfDatePicker<DateTime> RequestEndDatePiker;
+    private bool isRtlCulture;
+    private string datePickerLocale = "en";
+    private bool enableRtl = false;
+    private string dateGroupDir = "ltr";
+    public ChangeEndDateRequestDto changeEndDateRequestDto { get; set; } = new ChangeEndDateRequestDto();
+    string placeholderDate = CultureInfo.CurrentCulture.Name.StartsWith("ar") ? "yyyy-mm-dd" : "dd-mm-yyyy";
+    private EditContext editContext;
+    private ValidationMessageStore messageStore;
+    protected override void OnInitialized()
+    {
+        isRtlCulture = CultureInfo.CurrentCulture.TwoLetterISOLanguageName.Equals("ar", StringComparison.OrdinalIgnoreCase);
+        datePickerLocale = isRtlCulture ? "ar" : "en";
+        enableRtl = isRtlCulture;
+        dateGroupDir = isRtlCulture ? "rtl" : "ltr";
+        changeEndDateRequestDto.NewEndDate = DateTime.Now;
+    }
+    private void Cancel()
+    {
+        PopupService.Hide();
+    }
+    protected override void OnParametersSet()
+    {
+        if (changeEndDateRequestDto == null)
+            changeEndDateRequestDto = new ChangeEndDateRequestDto();
+
+        if (editContext == null || editContext.Model != changeEndDateRequestDto)
+        {
+            editContext = new EditContext(changeEndDateRequestDto);
+            messageStore = new ValidationMessageStore(editContext);
+
+            editContext.OnFieldChanged += (sender, eventArgs) =>
+            {
+                messageStore.Clear(eventArgs.FieldIdentifier);
+            };
+            editContext.OnValidationRequested += ValidateDynamicFields;
+        }
+    }
+    private async Task OpenStratDatePicker() => await RequestEndDatePiker.ShowPopupAsync();
+    private void ValidateDynamicFields(object sender, ValidationRequestedEventArgs e)
+    {
+        messageStore.Clear();
+        if (changeEndDateRequestDto is not null)
+        {
+            if (changeEndDateRequestDto.NewEndDate <= DateTime.Now || changeEndDateRequestDto.NewEndDate <= task.StartDate)
+            {
+                messageStore.Add(new FieldIdentifier(changeEndDateRequestDto, nameof(changeEndDateRequestDto.NewEndDate)), Loc["smallerrequesteddate"]);
+                editContext.NotifyValidationStateChanged();
+            }
+        }
+    }
+    private async Task HandleValidSubmit(EditContext args)
+    {
+        var CurrentUser = Guid.Parse(await LocalStorageService.GetItemAsStringAsync("Id"));
+        changeEndDateRequestDto.CreatedById = CurrentUser;
+        changeEndDateRequestDto.Requester = CurrentUser;
+        changeEndDateRequestDto.TaskId = task.Id;
+        var res = await _taskConsumer.RequestChangeDueDate(changeEndDateRequestDto);
+        if (res.Success)
+        {
+            await ToastService.ShowToastAsync(Loc["RequestedSuccesfully"], "success");
+            await OnSaved.InvokeAsync();
+            PopupService.Hide();
+        }
+        else
+        {
+            await ToastService.ShowToastAsync(Loc["Erroroccurred"], "error");
+            return;
+        }
+    }
+    private void HandleInvalidSubmit(EditContext args)
+    {
+        throw new NotImplementedException();
+    }
+}

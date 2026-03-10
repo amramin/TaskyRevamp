@@ -6,6 +6,7 @@ using TaskyRevamp.Domain.Models;
 using TaskyRevamp.Domain.Models.Task;
 using TaskyRevamp.Domain.Models.Users;
 using TaskyRevamp.Domain.Repositeries;
+using TaskyRevamp.Dto.ChangeEndDateRequest;
 using TaskyRevamp.Dto.TaskDto;
 using TaskyRevamp.Dto.TaskViews;
 
@@ -22,7 +23,6 @@ public class GetTaskByIdHandler : IRequestHandler<GetTaskQuery, CreateTaskDto>
     private readonly IRepository<Department> _departmentRepository;
     private readonly IRepository<TaskViews> _taskViewsRepository;
     private readonly IRepository<TaskItem> _taskitemRepository;
-
     private string currentCulture = System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
 	public GetTaskByIdHandler(ITaskRepository taskRepository, IRepository<User> userRepository,IRepository<TaskDependencies> taskDependincesRepository, IRepository<Department> departmentRepository, IRepository<TaskViews> taskViewsRepository, IRepository<TaskItem> taskitemrepo)
 	{
@@ -32,7 +32,7 @@ public class GetTaskByIdHandler : IRequestHandler<GetTaskQuery, CreateTaskDto>
 		_taskViewsRepository = taskViewsRepository;
 		_taskDependincesRepository = taskDependincesRepository;
 		_taskitemRepository = taskitemrepo;
-	}
+    }
 
 	public async Task<CreateTaskDto> Handle(GetTaskQuery request, CancellationToken cancellationToken)
     {
@@ -69,8 +69,8 @@ public class GetTaskByIdHandler : IRequestHandler<GetTaskQuery, CreateTaskDto>
 		taskDto.CreatedByName = currentCulture == "ar" ? res.CreatedBy?.NameArabic : res.CreatedBy?.NameEnglish;
 		taskDto.UpdatedBy = currentCulture == "ar" ? res.UpdatedBy?.NameArabic : res.UpdatedBy?.NameEnglish;
 		taskDto.CreatorDepartment = currentCulture == "ar" ? res.CreatedBy?.Department?.NameArabic : res.CreatedBy?.Department?.NameEnglish;
-
-		var assignedUserIds = res.AssignedIds ?? res.Assignees?.Select(a => a.User.Id).ToList() ?? new List<Guid>();
+		taskDto.ChangeEndDateRequestCount = res.ChangeEndDateRequests?.Count(c => c.Status == ChangeRequestStatus.Pending)??0;
+        var assignedUserIds = res.AssignedIds ?? res.Assignees?.Select(a => a.User.Id).ToList() ?? new List<Guid>();
 		List<User> assignedUsers;
 		if (res.Assignees != null && res.Assignees.Any() && res.Assignees.First().User != null)
 		{

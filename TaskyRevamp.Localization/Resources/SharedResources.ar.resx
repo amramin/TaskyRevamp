@@ -1495,4 +1495,37 @@
     <value>سيتم حذف المهام الموجودة في سلة المحذوفات تلقائيًا بعد {0} يومًا
 إذا كنت بحاجة إلى هذه المهمة، يرجى استعادتها قبل حذفها بشكل دائم</value>
   </data>
+  <data name="RequestDueDate" xml:space="preserve">
+    <value>طلب تغيير تاريخ الإنتهاء</value>
+  </data>
+  <data name="newenddate" xml:space="preserve">
+    <value>تاريخ الانتهاء الجديد</value>
+  </data>
+  <data name="smallerrequesteddate" xml:space="preserve">
+    <value>يجب أن يكون تاريخ الانتهاء الجديد مساويًا أو أكبر من تاريخ البدء</value>
+  </data>
+  <data name="RequestedSuccesfully" xml:space="preserve">
+    <value>تم الطلب بنجاح</value>
+  </data>
+  <data name="ChangeEndDateRequests" xml:space="preserve">
+    <value>طلبات تغيير تاريخ الانتهاء</value>
+  </data>
+  <data name="Tasktitle" xml:space="preserve">
+    <value>عنوان المهمة</value>
+  </data>
+  <data name="RequestedEndDate" xml:space="preserve">
+    <value>تاريخ الإنتهاء المطلوب</value>
+  </data>
+  <data name="Requester" xml:space="preserve">
+    <value>مقدم الطلب</value>
+  </data>
+  <data name="RequestReason" xml:space="preserve">
+    <value>سبب الطلب</value>
+  </data>
+  <data name="NoEndDateRequests" xml:space="preserve">
+    <value>لا توجد طلبات تغيير تاريخ انتهاء متاحة</value>
+  </data>
+  <data name="RequestStatus" xml:space="preserve">
+    <value>حالة الطلب </value>
+  </data>
 </root>

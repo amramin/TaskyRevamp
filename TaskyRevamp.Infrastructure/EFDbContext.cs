@@ -127,6 +127,12 @@ public class EfDbContext : DbContext
             .WithMany()
             .HasForeignKey(p => p.UpdatedById)
             .OnDelete(DeleteBehavior.Restrict);
+        modelBuilder.Entity<ChangeEndDateRequest>()
+            .HasOne(r => r.Task)
+            .WithMany(c=>c.ChangeEndDateRequests)
+            .HasForeignKey(r => r.TaskItemId)
+            .OnDelete(DeleteBehavior.Restrict);
+
 
         //var serverTimeZone = TimeZoneInfo.Local; // Your server's timezone
 
