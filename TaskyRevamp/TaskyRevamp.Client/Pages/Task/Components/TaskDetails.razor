@@ -1,12 +1,21 @@
 ﻿@using TaskyRevamp.Dto.TaskDto
 @inject IStringLocalizer<SharedResources> Loc
 
-<div class="card mb-3">
-    <div class="card-header bg-white d-flex justify-content-between align-items-center"
-         style="cursor: pointer;"
-         @onclick="ToggleSection">
-        <h5 class="mb-0">@Loc["Details"]</h5>
-        <span>@(ShowSection ? "▼" : "▲")</span>
+<div class="card collapse-card mb-3">
+    <div class="card-header " style="cursor: pointer;" @onclick="ToggleSection">
+        <button type="button" class="btn colapse-btn ">
+            <h6 class="headline-6 mb-0">@Loc["Details"]</h6>
+            <span class="icon"> @if (ShowSection)
+                {
+                    <SVGCrud SVGType="SVGCrud.SVGTypeEnum.ChevronDown"></SVGCrud>
+                }
+    else
+                {
+                    <SVGCrud SVGType="SVGCrud.SVGTypeEnum.ChevronUp"></SVGCrud>
+                }
+            </span>
+        </button>
+
     </div>
     @if (ShowSection)
     {
@@ -90,11 +99,12 @@
                         <div>
                             <small class="text-muted d-block">@Loc["AssignedTo"]</small>
                             <div class="d-flex gap-2 flex-wrap">
-                                @foreach (var name in (Task?.AssigneduserNames ?? "").Split(",", StringSplitOptions.RemoveEmptyEntries).Select(n => n.Trim()))
+                                @foreach (var name in (Task?.AssigneduserNames ?? "").Split(",",
+                                                                                            StringSplitOptions.RemoveEmptyEntries).Select(n => n.Trim()))
                                 {
                                     <div style="width:35px; height:35px; border-radius:50%;border:1px solid gray; display:flex; align-items:center; justify-content:center; font-weight:bold;"
                                          title="@name">
-                                            @GetInitials(name)
+                                        @GetInitials(name)
                                     </div>
                                 }
                             </div>
@@ -158,7 +168,8 @@
                         </div>
                     </div>
                 </div>
-                @if (Task?.ActualProcess == 100 && (Task?.TaskStatusName == "Pending Review" || Task?.TaskStatusName == "Completed"))
+                @if (Task?.ActualProcess == 100 && (Task?.TaskStatusName == "Pending Review" || Task?.TaskStatusName ==
+                                            "Completed"))
                 {
                     <div class="col-md-6">
                         <div class="d-flex gap-3">
