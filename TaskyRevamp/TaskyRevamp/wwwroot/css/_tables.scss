@@ -237,15 +237,16 @@
     word-break: break-word;
     max-width: 300px;
   }
-  .task-title{
+  .task-title {
     width: 300px;
-
   }
   .dependency-cell,
   .department-cell {
-    min-width: 320px;
+    min-width: 160px;
+    max-width: 320px;
     display: flex;
-    align-items: start;
+    align-items: center;
+    gap: 0.25rem;
   }
   thead {
     th {

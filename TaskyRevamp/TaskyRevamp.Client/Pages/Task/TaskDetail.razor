@@ -7,14 +7,18 @@
 @inject TaskConsumer _taskConsumer
 @inject Blazored.LocalStorage.ILocalStorageService LocalStorage
 
-<div class="container-fluid min-vh-100 py-3">
+<div class="task-detail-page">
     <TaskHeader Task="task" @key="task.Id" OnGoBack="GoBack" ShowViewedBy="@isCreator" />
     <TaskMeta Task="task" />
-    <TaskTabs @bind-ActiveTab="activeTab" Task="task" />
 
-    <div class="row">
-        <div class="col-lg-7">
-            @if(activeTab == "attachment")
+
+
+    <div class="row g-0">
+        <div class="col-lg-8">
+            <div class="tab-pills flex-grow-1">
+                <TaskTabs @bind-ActiveTab="activeTab" Task="task" />
+                <div class="page-body">
+                    @if(activeTab == "attachment")
             {
                 <TaskAttachments TaskId="TaskId" />
             }
@@ -28,14 +32,18 @@
             {
                 <RequestNewEndDateTaskHistory @bind-ShowSection="showDetails" Task="task" />
             }
+                </div>
+            </div>
+        </div>
+             <div class="col-lg-4">
+            <div class="page-body">
+                <TaskSidebar Task="task" OnConfirmed="LoadTask" OnReopenTask="AfterReopen" />
+            </div>
         </div>
 
-        <div class="col-lg-5">
-            <TaskSidebar Task="task" OnConfirmed="LoadTask" OnReopenTask="AfterReopen" />
-        </div>
-    </div>
-</div>
+   
 
+</div></div>
 @code {
     [Parameter] public Guid TaskId { get; set; }
     private string activeTab = "details";

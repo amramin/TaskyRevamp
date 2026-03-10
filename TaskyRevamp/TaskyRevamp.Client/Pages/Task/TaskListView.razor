@@ -83,7 +83,7 @@
                                                     </li>
                                                 }
                                                 @if ((task.ActualProcess == 100 && task.TaskStatus ==
-                                                                                    Guid.Parse("6EE4574D-C439-45B4-223A-08DE3318A61C")))
+                                                                                                                                    Guid.Parse("6EE4574D-C439-45B4-223A-08DE3318A61C")))
                                                 {
                                                     <li>
                                                         <button class="dropdown-item" @onclick="@(() => CompleteTask(task.Id))">
@@ -95,7 +95,7 @@
                                                     </li>
                                                 }
                                                 @if (task.ActualProcess == 100 && task.TaskStatus ==
-                                                                                    Guid.Parse("6EE4574D-C439-45B4-223A-08DE3318A61C"))
+                                                                                                                                    Guid.Parse("6EE4574D-C439-45B4-223A-08DE3318A61C"))
                                                 {
                                                     <li>
                                                         <button class="dropdown-item" @onclick="@(() => OnReopen.InvokeAsync(task.Id))">
@@ -130,7 +130,8 @@
                                                     </li>
                                                 }
                                                 <li>
-                                                    <button class="dropdown-item text-danger" @onclick="@(() => DeleteTask(task.Id))">
+                                                    <button class="dropdown-item text-danger"
+                                                            @onclick="@(() => DeleteTask(task.Id))">
                                                         <span class="icon">
                                                             <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Delete"></SVGCrud>
                                                         </span>
@@ -473,17 +474,17 @@ new() { Field = "Planned Weight", DisplayName =Loc["PlannedWeight"], Order = 18,
     }
     // private async Task OnConfirmDelete(bool confirmed)
     // {
-    //     if (confirmed && itemToDelete != null!)
-    //     {
-    //         var res = await _taskConsumer.SoftDeleteTask(itemToDelete, CurrentUser);
-    //         if (res.Success)
-    //         {
-    //             allTaks.Remove(allTaks.FirstOrDefault(x => x.Id == itemToDelete)!);
-    //             await GetTasks();
-    //         }
-    //     }
-    //     isPopupVisible = false;
-    //     StateHasChanged();
+    // if (confirmed && itemToDelete != null!)
+    // {
+    // var res = await _taskConsumer.SoftDeleteTask(itemToDelete, CurrentUser);
+    // if (res.Success)
+    // {
+    // allTaks.Remove(allTaks.FirstOrDefault(x => x.Id == itemToDelete)!);
+    // await GetTasks();
+    // }
+    // }
+    // isPopupVisible = false;
+    // StateHasChanged();
     // }
     public void ShowConfirmation(Guid Id)
     {
@@ -636,19 +637,19 @@ SearchFieldTask.PlannedProgress
                     builder.AddAttribute(13, "ItemTemplate",
                 (RenderFragment<PriorityDto>)((context) => (itemBuilder) =>
                 {
-        itemBuilder.OpenElement(0, "div");
-        itemBuilder.AddAttribute(1, "class", "");
+                    itemBuilder.OpenElement(0, "div");
+                    itemBuilder.AddAttribute(1, "class", "");
 
-        itemBuilder.OpenElement(2, "span");
-        itemBuilder.AddAttribute(3, "class", "badge");
-        itemBuilder.AddAttribute(4, "style",
-    $"background-color:{context.BackgroundColor};color:{context.NameColor};");
+                    itemBuilder.OpenElement(2, "span");
+                    itemBuilder.AddAttribute(3, "class", "badge");
+                    itemBuilder.AddAttribute(4, "style",
+                $"background-color:{context.BackgroundColor};color:{context.NameColor};");
 
-        itemBuilder.AddContent(5, context.Name);
+                    itemBuilder.AddContent(5, context.Name);
 
-        itemBuilder.CloseElement(); // span
-        itemBuilder.CloseElement(); // div
-    }));
+                    itemBuilder.CloseElement(); // span
+                    itemBuilder.CloseElement(); // div
+                }));
                     builder.CloseComponent();
                     builder.CloseElement();
                 }
@@ -665,13 +666,13 @@ SearchFieldTask.PlannedProgress
             case "Actual progress":
                 builder.AddContent(0, (RenderFragment)(b =>
             {
-        b.OpenComponent<OverallBar>(0);
-        b.AddAttribute(1, "ActualProgress", task.ActualProcess);
-        b.AddAttribute(2, "Width", 150);
-        b.AddAttribute(3, "OnProgressChanged", EventCallback.Factory.Create<int>(this, value => OnTaskProgressChanged(task,
-    value)));
-        b.CloseComponent();
-    }));
+                b.OpenComponent<OverallBar>(0);
+                b.AddAttribute(1, "ActualProgress", task.ActualProcess);
+                b.AddAttribute(2, "Width", 150);
+                b.AddAttribute(3, "OnProgressChanged", EventCallback.Factory.Create<int>(this, value => OnTaskProgressChanged(task,
+            value)));
+                b.CloseComponent();
+            }));
                 break;
             case "Start Date":
                 builder.AddContent(0, task.StartDate?.ToString(Loc["LocalizeDate"]));
@@ -688,26 +689,29 @@ SearchFieldTask.PlannedProgress
             case "Assigned To":
                 builder.AddContent(0, (RenderFragment)(b =>
             {
-        b.OpenComponent<Initials>(0);
-        b.AddAttribute(1, "Names", task.AssigneduserNames);
-        b.AddAttribute(2, "Size", 32);
-        b.AddAttribute(3, "Black", true);
-        b.CloseComponent();
-    }));
+                b.OpenComponent<Initials>(0);
+                b.AddAttribute(1, "Names", task.AssigneduserNames);
+                b.AddAttribute(2, "Size", 32);
+                b.AddAttribute(3, "Black", true);
+                b.CloseComponent();
+            }));
                 break;
             case "Assigned To Department":
 
+                builder.OpenElement(0, "div");
+                builder.AddAttribute(1, "class", "department-cell");
+
                 var departments = task.AssignedDepartmentName?
-            .Split(',', StringSplitOptions.RemoveEmptyEntries)
-            .Select(x => x.Trim())
-            .ToList() ?? new List<string>();
+                    .Split(',', StringSplitOptions.RemoveEmptyEntries)
+                    .Select(x => x.Trim())
+                    .ToList() ?? new List<string>();
 
                 if (departments.Any())
                 {
                     var firstTwo = departments.Take(1).ToList();
                     var rest = departments.Skip(1).ToList();
 
-                    int seq = 0;
+                    int seq = 2;
                     int count = firstTwo.Count;
 
                     for (int i = 0; i < count; i++)
@@ -719,13 +723,11 @@ SearchFieldTask.PlannedProgress
                         builder.AddContent(seq++, dep);
                         builder.CloseElement();
 
-
                         if (i < count - 1)
                         {
                             builder.AddContent(seq++, ", ");
                         }
                     }
-
 
                     if (rest.Any())
                     {
@@ -733,7 +735,7 @@ SearchFieldTask.PlannedProgress
                         builder.AddAttribute(seq++, "class", "dropdown department-dropdown d-inline ms-1");
 
                         builder.OpenElement(seq++, "button");
-                        builder.AddAttribute(seq++, "class", "btn btn-sm btn-light ");
+                        builder.AddAttribute(seq++, "class", "btn btn-sm btn-light");
                         builder.AddAttribute(seq++, "type", "button");
                         builder.AddAttribute(seq++, "data-bs-toggle", "dropdown");
                         builder.AddContent(seq++, $"+{rest.Count}");
@@ -756,6 +758,8 @@ SearchFieldTask.PlannedProgress
                         builder.CloseElement(); // div
                     }
                 }
+
+                builder.CloseElement(); // department-cell
 
                 break;
             case "Source":
@@ -812,12 +816,12 @@ SearchFieldTask.PlannedProgress
             case "Created By":
                 builder.AddContent(0, (RenderFragment)(b =>
             {
-        b.OpenComponent<Initials>(0);
-        b.AddAttribute(1, "Names", task.CreatedByName);
-        b.AddAttribute(2, "Size", 32);
-        b.AddAttribute(3, "Black", true);
-        b.CloseComponent();
-    }));
+                b.OpenComponent<Initials>(0);
+                b.AddAttribute(1, "Names", task.CreatedByName);
+                b.AddAttribute(2, "Size", 32);
+                b.AddAttribute(3, "Black", true);
+                b.CloseComponent();
+            }));
                 break;
             case "Duration":
                 builder.AddContent(0, task.Duration);
@@ -951,8 +955,10 @@ SearchFieldTask.PlannedProgress
         else
         {
 
-            if ((DateOnly.FromDateTime(taskDto.CreateDate ?? DateTime.Now).AddDays(RejectionPeriod) < DateOnly.FromDateTime(DateTime.Now)) || !(taskDto.AssignedIds!.Contains(CurrentUser))
-            || taskDto.TaskStatus == Guid.Parse("6EE4574D-C439-45B4-223A-08DE3318A61C") || taskDto.TaskStatus == Guid.Parse("C8D504C7-9402-4F91-223C-08DE3318A61C"))
+            if ((DateOnly.FromDateTime(taskDto.CreateDate ?? DateTime.Now).AddDays(RejectionPeriod) <
+DateOnly.FromDateTime(DateTime.Now)) || !(taskDto.AssignedIds!.Contains(CurrentUser))
+            || taskDto.TaskStatus == Guid.Parse("6EE4574D-C439-45B4-223A-08DE3318A61C") || taskDto.TaskStatus ==
+Guid.Parse("C8D504C7-9402-4F91-223C-08DE3318A61C"))
 
             {
                 return false;

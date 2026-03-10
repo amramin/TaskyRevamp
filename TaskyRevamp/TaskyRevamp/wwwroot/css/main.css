@@ -1560,8 +1560,9 @@ html[dir=rtl] .progress-overall-bar .circle {
   height: 1.25rem;
 }
 .btn:first-child:active, .btn:active {
-  background-color: var(--primary-color);
+  background-color: var(--light-btn);
   border-color: var(--primary-color);
+  color: var(--primary-color);
 }
 .btn.btn-lg {
   font-size: 0.875rem;
@@ -2803,6 +2804,11 @@ fieldset:disabled .btn {
   font-size: 0.75rem;
 }
 
+.dependency-dropdown .btn-sm,
+.department-dropdown .btn-sm {
+  font-size: 0.75rem;
+  padding: 0.125rem 0.5rem;
+}
 .dependency-dropdown .dropdown-menu,
 .department-dropdown .dropdown-menu {
   width: 400px;
@@ -2831,6 +2837,8 @@ fieldset:disabled .btn {
   gap: 0.25rem;
   padding: 0.5rem;
   color: var(--dark-700);
+  font-size: 0.875rem;
+  font-weight: 500;
 }
 .tab-pills .nav .nav-link svg {
   width: 1rem;
@@ -3221,13 +3229,15 @@ fieldset:disabled .btn {
 }
 .table .dependency-cell,
 .table .department-cell {
-  min-width: 320px;
+  min-width: 160px;
+  max-width: 320px;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-align: start;
-      -ms-flex-align: start;
-          align-items: start;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  gap: 0.25rem;
 }
 .table thead th {
   font-size: 0.75rem;
@@ -3382,7 +3392,7 @@ fieldset:disabled .btn {
   color: var(--dark-700);
   padding: 0.125rem 0.25rem;
   text-align: center;
-  width: 2rem;
+  min-width: 2.125rem;
   border-radius: 2px;
   display: none;
 }
@@ -3745,6 +3755,46 @@ ul {
   background-color: var(--light-200);
 }
 
+/* endtreelist*/
+/* start .task-detail-page */
+.task-detail-page {
+  position: fixed;
+  top: 0;
+  inset-inline-start: 0;
+  background-color: var(--bs-white);
+  z-index: 1030;
+  width: 100%;
+  height: 100vh;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+.task-detail-page .tab-pills {
+  -webkit-border-end: 1px solid var(--light-300);
+          border-inline-end: 1px solid var(--light-300);
+}
+.task-detail-page .page-body {
+  height: calc(100vh - 10rem);
+  padding: 1rem !important;
+}
+.task-detail-page .card.collapse-card .card-header {
+  -webkit-padding-end: 0;
+          padding-inline-end: 0;
+}
+.task-detail-page .card.collapse-card .card-header .colapse-btn {
+  -webkit-margin-end: 0;
+          margin-inline-end: 0;
+  padding: 0.75rem 1rem;
+}
+.task-detail-page .card.collapse-card .card-header .colapse-btn::after {
+  display: none;
+}
+
+/* start .task-detail-page */
 * ::-webkit-scrollbar {
   width: 0.5rem;
   height: 0.5rem;
