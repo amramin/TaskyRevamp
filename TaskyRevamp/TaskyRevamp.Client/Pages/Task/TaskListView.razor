@@ -114,6 +114,18 @@
                                                         </button>
                                                     </li>
                                                 }
+          
+                                                @if (IsRequestNewEndDate(task))
+                                                {
+                                                    <li>
+                                                        <button class="dropdown-item" @onclick="@(() => OnRequestChangeDueDate.InvokeAsync(task))">
+                                                            <span class="icon">
+                                                                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.CalnderPluse"></SVGCrud>
+                                                            </span>
+                                                            @Loc["RequestDueDate"]
+                                                        </button>
+                                                    </li>
+                                                }
                                                 <li>
                                                     <button class="dropdown-item text-danger" @onclick="@(() => DeleteTask(task.Id))">
                                                         <span class="icon">
@@ -156,6 +168,7 @@
     [Parameter] public EventCallback<Guid> OnEdit { get; set; }
     [Parameter] public EventCallback<Guid> OnReopen { get; set; }
     [Parameter] public EventCallback<Guid> OnReject { get; set; }
+    [Parameter] public EventCallback<CreateTaskDto> OnRequestChangeDueDate { get; set; }
     [Parameter] public EventCallback<Guid> OnDelete { get; set; }
     [Parameter] public EventCallback<Guid> OnShowUsers { get; set; }
     [Parameter] public EventCallback<Guid> OnAdd { get; set; }
@@ -826,6 +839,15 @@
                 return true;
             }
         }
+    }
+    private bool IsRequestNewEndDate(CreateTaskDto taskDto){
+        if(!(taskDto.AssignedIds!.Contains(CurrentUser))
+            || taskDto.TaskStatus == Guid.Parse("6EE4574D-C439-45B4-223A-08DE3318A61C") || taskDto.TaskStatus == Guid.Parse("C8D504C7-9402-4F91-223C-08DE3318A61C")||
+        taskDto.ChangeEndDateRequestCount>0){
+                return false;
+            }else{
+                return true;
+            }
     }
     private async Task OnTaskProgressChanged(CreateTaskDto task, int value)
     {

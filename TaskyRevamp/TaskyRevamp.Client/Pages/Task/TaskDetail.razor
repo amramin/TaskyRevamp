@@ -24,6 +24,10 @@
                 <TaskDetails @bind-ShowSection="showDetails" Task="task" />
                 <TaskComments @bind-ShowSection="showComments" TaskId="TaskId" @ref="commentssection"/>
             }
+            else if (activeTab == "enddate")
+            {
+                <RequestNewEndDateTaskHistory @bind-ShowSection="showDetails" Task="task" />
+            }
         </div>
 
         <div class="col-lg-5">

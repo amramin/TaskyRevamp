@@ -1,5 +1,6 @@
 ﻿using DocumentFormat.OpenXml.Office2010.Excel;
 using Microsoft.AspNetCore.Components.Forms;
+using TaskyRevamp.Dto.ChangeEndDateRequest;
 using TaskyRevamp.Dto.Enums.SearchFields;
 using TaskyRevamp.Dto.GeneralDto;
 using TaskyRevamp.Dto.SystemConfiguration;
@@ -102,6 +103,12 @@ namespace TaskyRevamp.Client.Consumer
         {
             var url = $"api/Task/RejectTask";
             var res = await _taskyService.PostJsonAsync<CommonApiResponse<bool>>(url, taskCommentDto);
+            return res.Data;
+        }
+        public async Task<CommonApiResponse<bool>> RequestChangeDueDate(ChangeEndDateRequestDto changeEndDateRequest)
+        {
+            var url = $"api/Task/RequestChangeDueDate";
+            var res = await _taskyService.PostJsonAsync<CommonApiResponse<bool>>(url, changeEndDateRequest);
             return res.Data;
         }
         public async Task<CommonApiResponse<bool>> UpdateTasksDepartment(Guid oldId, Guid newId)

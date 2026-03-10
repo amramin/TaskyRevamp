@@ -2,12 +2,15 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using System.Threading.Tasks;
+using TaskyRevamp.Domain.Models.Task;
+using TaskyRevamp.Dto.ChangeEndDateRequest;
 using TaskyRevamp.Dto.Enums;
 using TaskyRevamp.Dto.Enums.SearchFields;
 using TaskyRevamp.Dto.GeneralDto;
 using TaskyRevamp.Dto.SystemConfiguration;
 using TaskyRevamp.Dto.TaskComment;
 using TaskyRevamp.Dto.TaskDto;
+using TaskyRevamp.Services.ChangeEndDateRequests.Commands;
 using TaskyRevamp.Services.Departments.Query;
 using TaskyRevamp.Services.Tasks.Commands;
 using TaskyRevamp.Services.Tasks.Query;
@@ -47,6 +50,11 @@ public class TaskController : ControllerBase
     public async Task<IActionResult> RejectTask([FromBody] TaskCommentDto TaskCommentDto)
     {
         return Ok(await _mediator.Send(new RejectTaskCommand(TaskCommentDto)));
+    }
+    [HttpPost("RequestChangeDueDate")]
+    public async Task<IActionResult> RequestChangeDueDate([FromBody] ChangeEndDateRequestDto changeEndDateRequest)
+    {
+         return Ok(await _mediator.Send(new CreateChangeEndDateRequestCommand(changeEndDateRequest)));
     }
     [HttpPost("UpdateTask")]
     public async Task<IActionResult> UpdateTask([FromBody] CreateTaskDto Task)
