@@ -37,8 +37,10 @@
                 </div>
             </div>
         </div>
-        <div class="col-lg-5">
-            <TaskSidebar Task="task" OnConfirmed="LoadTask" OnReopenTask="AfterReopen" OnRequestNewEndDate="AfterRequestNewDate" />
+        <div class="col-lg-4">
+            <div class="page-body">
+                <TaskSidebar Task="task" OnConfirmed="LoadTask" OnReopenTask="AfterReopen" OnRequestNewEndDate="AfterRequestNewDate" />
+           </div>
             </div>
         </div>
 </div>
@@ -73,7 +75,10 @@
             }
         }
         await LoadTask();
-        await enddatesection.LoadSources();
+        if(task.Id != Guid.Empty)
+        {
+            await enddatesection.LoadSources();
+        }
         //await commentssection.LoadComments();
     }
     private async Task LoadTask()
