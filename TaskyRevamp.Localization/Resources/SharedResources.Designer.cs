@@ -2446,6 +2446,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Overall progress.
+        /// </summary>
+        public static string Overall_progress {
+            get {
+                return ResourceManager.GetString("Overall progress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Overall.
         /// </summary>
         public static string OverAllView {
@@ -3355,6 +3364,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to approve this request.
+        /// </summary>
+        public static string Sureapprovestatus {
+            get {
+                return ResourceManager.GetString("Sureapprovestatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Are you sure you want to change priority.
         /// </summary>
         public static string SureChangePriority {
@@ -3406,6 +3424,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string SureDeleteTask {
             get {
                 return ResourceManager.GetString("SureDeleteTask", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to reject this request.
+        /// </summary>
+        public static string Surerejectstatus {
+            get {
+                return ResourceManager.GetString("Surerejectstatus", resourceCulture);
             }
         }
         

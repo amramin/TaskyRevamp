@@ -1,11 +1,13 @@
 ﻿@using Blazored.LocalStorage
 @using TaskyRevamp.Client.Consumer
+@using TaskyRevamp.Client.Services
 @using TaskyRevamp.Dto.ChangeEndDateRequest
 @using TaskyRevamp.Dto.TaskDto
 @inject IStringLocalizer<SharedResources> Loc
 @inject RequestChangeDueDateConsumer _requestChangeDueDateConsumer
 @inject ILocalStorageService LocalStorageService
-
+@inject PopupService PopupService
+@inject ToastService ToastService
     <div class="page-body">
         <div class="table-responsive sticky-header-custom">
 
@@ -28,12 +30,12 @@
                         @if (Task.CreatedBy == CurrentUser && p.Status == ChangeRequestStatus.Pending)
                         {
                             <div class="dropdown actions d-flex">
-                                <button class="btn btn-action-24 btn-edit">
+                                    <button class="btn btn-action-24 btn-edit" @onclick="@(() => OnTaskUpdateStatus(p.Id,ChangeRequestStatus.Approved))">
                                     <span class="icon">
                                         <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Approve"></SVGCrud>
                                     </span>
                                 </button>
-                                <button class="btn btn-action-24 btn-delete">
+                                    <button class="btn btn-action-24 btn-delete" @onclick="@(() => OnTaskUpdateStatus(p.Id, ChangeRequestStatus.Rejected))">
                                     <span class="icon">
                                         <SVGCrud SVGType="SVGCrud.SVGTypeEnum.False"></SVGCrud>
                                     </span>
@@ -62,6 +64,7 @@
     [Parameter]
     public CreateTaskDto? Task { get; set; }
     private List<SortableColumn> tableColumns = new();
+    [Parameter] public EventCallback OnRequestChanged { get; set; }
     public List<ChangeEndDateRequestDto> changeEndDateRequestDtos { get; set; } = new List<ChangeEndDateRequestDto>();
     private Guid CurrentUser { get; set; }
     private int currentPage = 1;
@@ -102,7 +105,7 @@
         currentPage = 1;
         await LoadSources();
     }
-    private async Task LoadSources(bool isSearch = false, string searchTerm = null)
+    public async Task LoadSources(bool isSearch = false, string searchTerm = null)
     {
         var encodedTerm = searchTerm != null ? Uri.EscapeDataString(searchTerm) : null;
         var resp =await _requestChangeDueDateConsumer.GetDueDateRequestsByTaskId(Task.Id,currentPage, pageSize, currentSortColumn, sortAscending.Value,
@@ -159,5 +162,48 @@
         }
 
         await LoadSources();
+    }
+    private async Task OnTaskUpdateStatus(Guid requestid, ChangeRequestStatus status)
+    {
+        string text="";
+        if (status == ChangeRequestStatus.Approved)
+        {
+            text = "Sureapprovestatus";
+        }
+        else if (status == ChangeRequestStatus.Rejected)
+        {
+            text = "Surerejectstatus";
+        }
+        PopupService.ShowConfirmation(@Loc[text], @Loc["Confirm"],
+        async (confirmed) =>
+        {
+            if (confirmed)
+            {
+                await OnTaskUpdateStatusConfirmed(requestid, status);
+            }
+        },
+        ConfirmationType.Other
+        );
+    }
+    private async Task OnTaskUpdateStatusConfirmed(Guid requestid, ChangeRequestStatus status)
+    {
+        var result = await _requestChangeDueDateConsumer.UpdateRequestStatus(requestid, status);
+        if (result.Success && result.Data)
+        {
+            if (status == ChangeRequestStatus.Approved)
+            {
+                await ToastService.ShowToastAsync(Loc["approvedsuccessfully"], "success");
+            }else if (status == ChangeRequestStatus.Rejected)
+            {
+                await ToastService.ShowToastAsync(Loc["rejectedsuccessfully"], "success");
+            }
+        }
+        else
+        {
+            await ToastService.ShowToastAsync(Loc["Erroroccurred"], "error");
+        }
+        await LoadSources();
+        await OnRequestChanged.InvokeAsync();
+        StateHasChanged();
     }
 }

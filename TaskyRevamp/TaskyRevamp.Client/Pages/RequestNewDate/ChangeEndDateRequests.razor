@@ -38,7 +38,7 @@
                         @foreach (var item in DueDasteRequests)
                         {
                             <tr>
-                                <td>@item.TaskTitle</td>
+                                <td @onclick="@(() => ViewTaskDetails(item.TaskId))" style="cursor:pointer;">@item.TaskTitle</td>
                                 <td>@item.oldEndDate.ToLocalTime().ToString(Loc["LocalizeDate"])</td>
                                 <td>@item.NewEndDate.ToLocalTime().ToString(Loc["LocalizeDate"])</td>
                                 <td>@item.RequesterName</td>
@@ -47,16 +47,16 @@
                                 <td>
 
                                         <div class="dropdown actions d-flex">
-                                            <button class="btn btn-action-24 btn-edit">
-                                                <span class="icon">
-                                                    <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Approve"></SVGCrud>
-                                                </span>
-                                            </button>
-                                            <button class="btn btn-action-24 btn-delete">
-                                                <span class="icon">
-                                                    <SVGCrud SVGType="SVGCrud.SVGTypeEnum.False"></SVGCrud>
-                                                </span>
-                                            </button>
+                                        <button class="btn btn-action-24 btn-edit" @onclick="@(() => OnTaskUpdateStatus(item.Id, ChangeRequestStatus.Approved))">
+                                            <span class="icon">
+                                                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Approve"></SVGCrud>
+                                            </span>
+                                        </button>
+                                        <button class="btn btn-action-24 btn-delete" @onclick="@(() => OnTaskUpdateStatus(item.Id, ChangeRequestStatus.Rejected))">
+                                            <span class="icon">
+                                                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.False"></SVGCrud>
+                                            </span>
+                                        </button>
                                         </div>
                                     
 
@@ -222,4 +222,50 @@ else
 
         await LoadSources();
     }
+    private async Task OnTaskUpdateStatus(Guid requestid, ChangeRequestStatus status)
+    {
+        string text = "";
+        if (status == ChangeRequestStatus.Approved)
+        {
+            text = "Sureapprovestatus";
+        }
+        else if (status == ChangeRequestStatus.Rejected)
+        {
+            text = "Surerejectstatus";
+        }
+        PopupService.ShowConfirmation(@Loc[text], @Loc["Confirm"],
+        async (confirmed) =>
+        {
+            if (confirmed)
+            {
+                await OnTaskUpdateStatusConfirmed(requestid, status);
+            }
+        },
+        ConfirmationType.Other
+        );
+    }
+    private async Task OnTaskUpdateStatusConfirmed(Guid requestid, ChangeRequestStatus status)
+    {
+        var result = await _requestChangeDueDateConsumer.UpdateRequestStatus(requestid, status);
+        if (result.Success && result.Data)
+        {
+            if (status == ChangeRequestStatus.Approved)
+            {
+                await ToastService.ShowToastAsync(Loc["approvedsuccessfully"], "success");
+            }
+            else if (status == ChangeRequestStatus.Rejected)
+            {
+                await ToastService.ShowToastAsync(Loc["rejectedsuccessfully"], "success");
+            }
+        }
+        else
+        {
+            await ToastService.ShowToastAsync(Loc["Erroroccurred"], "error");
+        }
+        await LoadSources();
+        initialDueDasteRequests = DueDasteRequests;
+        StateHasChanged();
+    }
+    private void ViewTaskDetails(Guid id) => navigationManager.NavigateTo($"/task/details/{id}/{"enddate"}?returnUrl=/ChangeDueDateRequests");
+
 }
