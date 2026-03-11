@@ -75,7 +75,8 @@ public class TaskyService
         _localStorage.RemoveItemAsync("Email");
         _localStorage.RemoveItemAsync("Id");
         _localStorage.RemoveItemAsync("DelegatedUsersId");
-        _localStorage.RemoveItemAsync("AllColumn");
+        _localStorage.RemoveItemAsync("MainTask_Columns");
+        _localStorage.RemoveItemAsync("CompletedTask_Columns");
 
     }
 

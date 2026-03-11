@@ -1,0 +1,209 @@
+﻿@using Blazored.LocalStorage
+@using TaskyRevamp.Client.Consumer
+@using TaskyRevamp.Client.Services
+@using TaskyRevamp.Dto.ChangeEndDateRequest
+@using TaskyRevamp.Dto.TaskDto
+@inject IStringLocalizer<SharedResources> Loc
+@inject RequestChangeDueDateConsumer _requestChangeDueDateConsumer
+@inject ILocalStorageService LocalStorageService
+@inject PopupService PopupService
+@inject ToastService ToastService
+    <div class="page-body">
+        <div class="table-responsive sticky-header-custom">
+
+    <SortableTable TItem="ChangeEndDateRequestDto"
+                   Columns="@tableColumns"
+                   Items="@changeEndDateRequestDtos"
+                   SortColumn="@currentSortColumn" SortAscending="@sortAscending" OnSortRequested="HandleSort">
+
+        <RowTemplate>
+
+            @foreach (var p in changeEndDateRequestDtos)
+            {
+                <tr>
+                    <td>@p.oldEndDate.ToString(Loc["LocalizeDate"])</td>
+                    <td>@p.NewEndDate.ToString(Loc["LocalizeDate"])</td>
+                    <td>@p.Reason</td>
+                    <td>@p.RequesterName</td>
+                    <td>@p.Status.ToString()</td>
+                    <td class="sticky-end-action">
+                        @if (Task.CreatedBy == CurrentUser && p.Status == ChangeRequestStatus.Pending)
+                        {
+                            <div class="dropdown actions d-flex">
+                                    <button class="btn btn-action-24 btn-edit" @onclick="@(() => OnTaskUpdateStatus(p.Id,ChangeRequestStatus.Approved))">
+                                    <span class="icon">
+                                        <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Approve"></SVGCrud>
+                                    </span>
+                                </button>
+                                    <button class="btn btn-action-24 btn-delete" @onclick="@(() => OnTaskUpdateStatus(p.Id, ChangeRequestStatus.Rejected))">
+                                    <span class="icon">
+                                        <SVGCrud SVGType="SVGCrud.SVGTypeEnum.False"></SVGCrud>
+                                    </span>
+                                </button>
+                            </div>
+                        }
+                    </td>
+                </tr>
+            }
+
+        </RowTemplate>
+    </SortableTable>
+    </div>
+    <Pagination CurrentPage="@currentPage" TotalPages="@totalPages" TotalCount="@totalCount" PageSize="@pageSize"
+                PageChanged="ChangePage" PageSizeChangedCallback="ChangePageSize" />
+
+</div>
+
+@code {
+    [Parameter]
+    public bool ShowSection { get; set; }
+
+    [Parameter]
+    public EventCallback<bool> ShowSectionChanged { get; set; }
+
+    [Parameter]
+    public CreateTaskDto? Task { get; set; }
+    private List<SortableColumn> tableColumns = new();
+    [Parameter] public EventCallback OnRequestChanged { get; set; }
+    public List<ChangeEndDateRequestDto> changeEndDateRequestDtos { get; set; } = new List<ChangeEndDateRequestDto>();
+    private Guid CurrentUser { get; set; }
+    private int currentPage = 1;
+    private int totalPages = 1;
+    private int totalCount = 0;
+    private int pageSize = 10;
+    private string currentSortColumn = "";
+    private bool? sortAscending = true;
+    protected override async Task OnInitializedAsync()
+    {
+        //var res = await _requestChangeDueDateConsumer.GetDueDateRequestsByTaskId(Task.Id);
+        // if(res.Data is not null)
+        // {
+        //     changeEndDateRequestDtos = res.Data;
+        // }
+        await LoadSources();
+        CurrentUser = Guid.Parse(await LocalStorageService.GetItemAsStringAsync("Id"));
+        tableColumns = new()
+        {
+            new() { Field = "Enddate", DisplayName = Loc["EndDate"]},
+            new() { Field = "NewEndDate", DisplayName = Loc["RequestedEndDate"] },
+            new() { Field = "Reason", DisplayName = Loc["RequestReason"] },
+            new() { Field = "Requester", DisplayName = Loc["Requester"] },
+            new() { Field = "Status", DisplayName = Loc["RequestStatus"] },
+            new() { Field = "Action", DisplayName = Loc["Action"] ,IsSortable = false},
+        };
+        StateHasChanged();
+    }
+    private async Task ChangePage(int page)
+    {
+        currentPage = page;
+        await LoadSources();
+    }
+
+    private async Task ChangePageSize(int newSize)
+    {
+        pageSize = newSize;
+        currentPage = 1;
+        await LoadSources();
+    }
+    public async Task LoadSources(bool isSearch = false, string searchTerm = null)
+    {
+        var encodedTerm = searchTerm != null ? Uri.EscapeDataString(searchTerm) : null;
+        var resp =await _requestChangeDueDateConsumer.GetDueDateRequestsByTaskId(Task.Id,currentPage, pageSize, currentSortColumn, sortAscending.Value,
+        null, isSearch ? encodedTerm : null);
+
+        if (!(resp?.Success ?? false) || resp.Data is null)
+            return;
+
+        var data = resp.Data;
+        changeEndDateRequestDtos = data.Items.ToList();
+        totalPages = data.TotalPages;
+        totalCount = data.TotalCount;
+    }
+    private async Task SortBy(string columnName)
+    {
+        if (currentSortColumn == columnName)
+        {
+            sortAscending = !sortAscending;
+        }
+        else
+        {
+            currentSortColumn = columnName;
+            sortAscending = true;
+        }
+        await LoadSources();
+    }
+    private async Task ToggleSection()
+    {
+        ShowSection = !ShowSection;
+        await ShowSectionChanged.InvokeAsync(ShowSection);
+    }
+    private string GetInitials(string? fullName)
+    {
+        if (string.IsNullOrWhiteSpace(fullName))
+            return "";
+        var parts = fullName.Trim().Split(' ', StringSplitOptions.RemoveEmptyEntries);
+        if (parts.Length == 1)
+            return parts[0][0].ToString().ToUpper();
+        var first = parts[0][0];
+        var last = parts[^1][0];
+        return $"{char.ToUpper(first)}{char.ToUpper(last)}";
+    }
+    private async Task HandleSort((string Column, bool? Ascending) sortInfo)
+    {
+        currentSortColumn = sortInfo.Column;
+        sortAscending = sortInfo.Ascending;
+
+
+        if (sortAscending == null)
+        {
+            // third click → reset to default sorting
+            currentSortColumn = ""; // or whatever your default column is
+            sortAscending = true;
+        }
+
+        await LoadSources();
+    }
+    private async Task OnTaskUpdateStatus(Guid requestid, ChangeRequestStatus status)
+    {
+        string text="";
+        if (status == ChangeRequestStatus.Approved)
+        {
+            text = "Sureapprovestatus";
+        }
+        else if (status == ChangeRequestStatus.Rejected)
+        {
+            text = "Surerejectstatus";
+        }
+        PopupService.ShowConfirmation(@Loc[text], @Loc["Confirm"],
+        async (confirmed) =>
+        {
+            if (confirmed)
+            {
+                await OnTaskUpdateStatusConfirmed(requestid, status);
+            }
+        },
+        ConfirmationType.Other
+        );
+    }
+    private async Task OnTaskUpdateStatusConfirmed(Guid requestid, ChangeRequestStatus status)
+    {
+        var result = await _requestChangeDueDateConsumer.UpdateRequestStatus(requestid, status);
+        if (result.Success && result.Data)
+        {
+            if (status == ChangeRequestStatus.Approved)
+            {
+                await ToastService.ShowToastAsync(Loc["approvedsuccessfully"], "success");
+            }else if (status == ChangeRequestStatus.Rejected)
+            {
+                await ToastService.ShowToastAsync(Loc["rejectedsuccessfully"], "success");
+            }
+        }
+        else
+        {
+            await ToastService.ShowToastAsync(Loc["Erroroccurred"], "error");
+        }
+        await LoadSources();
+        await OnRequestChanged.InvokeAsync();
+        StateHasChanged();
+    }
+}

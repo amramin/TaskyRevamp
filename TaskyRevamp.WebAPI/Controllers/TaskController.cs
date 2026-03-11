@@ -2,12 +2,15 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using System.Threading.Tasks;
+using TaskyRevamp.Domain.Models.Task;
+using TaskyRevamp.Dto.ChangeEndDateRequest;
 using TaskyRevamp.Dto.Enums;
 using TaskyRevamp.Dto.Enums.SearchFields;
 using TaskyRevamp.Dto.GeneralDto;
 using TaskyRevamp.Dto.SystemConfiguration;
 using TaskyRevamp.Dto.TaskComment;
 using TaskyRevamp.Dto.TaskDto;
+using TaskyRevamp.Services.ChangeEndDateRequests.Commands;
 using TaskyRevamp.Services.Departments.Query;
 using TaskyRevamp.Services.Tasks.Commands;
 using TaskyRevamp.Services.Tasks.Query;
@@ -48,6 +51,11 @@ public class TaskController : ControllerBase
     {
         return Ok(await _mediator.Send(new RejectTaskCommand(TaskCommentDto)));
     }
+    [HttpPost("RequestChangeDueDate")]
+    public async Task<IActionResult> RequestChangeDueDate([FromBody] ChangeEndDateRequestDto changeEndDateRequest)
+    {
+         return Ok(await _mediator.Send(new CreateChangeEndDateRequestCommand(changeEndDateRequest)));
+    }
     [HttpPost("UpdateTask")]
     public async Task<IActionResult> UpdateTask([FromBody] CreateTaskDto Task)
     {
@@ -81,10 +89,10 @@ public class TaskController : ControllerBase
     {
         return Ok(await _mediator.Send(new CheckDelayedTasksCommand()));
     }
-    [HttpDelete("{id}")]
-    public async Task<IActionResult> Delete(string id)
+    [HttpDelete("SoftDeleteTask/{id}/{userId}")]
+    public async Task<IActionResult> SoftDelete(Guid id, Guid userId)
     {
-        return Ok(await _mediator.Send(new DeleteTaskCommand(Guid.Parse(id))));
+        return Ok(await _mediator.Send(new SoftDeleteTaskCommand(id, userId)));
     }
 
     [HttpPost("GetAllTask")]
@@ -105,6 +113,18 @@ public class TaskController : ControllerBase
         var size = pageSize ?? paginationSettings.Value.DefaultPageSize;
         var all = await _mediator.Send(new GetTasksQuery(pageNumber, size, sortByColumnName, sortAscending, searchFields, searchText,viewType,viewTypeId,IsCompleted,taskFilter));
 
+        return Ok(all);
+    }
+    [HttpGet("GetDeletedTasks")]
+    public async Task<IActionResult> GetDeletedTasks(
+         [FromQuery] int pageNumber = 1,
+         [FromQuery] int pageSize = 10,
+         [FromQuery] string sortByColumnName = " ",
+         [FromQuery] bool sortAscending = true,
+         [FromQuery] List<SearchFieldDeletedTask> searchFields = null,
+		 [FromQuery] string searchText = null)
+    {
+        var all = await _mediator.Send(new GetDeletedTasksQuery(pageNumber, pageSize, sortByColumnName, sortAscending, searchFields, searchText));
         return Ok(all);
     }
 

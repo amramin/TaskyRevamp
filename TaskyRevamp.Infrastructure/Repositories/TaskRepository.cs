@@ -56,7 +56,7 @@ public class TaskRepository : ITaskRepository
 			.Include(x => x.Attachments)
 			.Include(x => x.History)
 			.Include(x => x.Dependencies)//.ThenInclude(d => d!.Items)
-			.Include(x => x.ChangeRequests)
+			.Include(x => x.ChangeEndDateRequests)
 			.Include(x => x.Escalations);
 		return tasks;
 	}

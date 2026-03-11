@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TaskyRevamp.Dto.ChangeEndDateRequest;
 using TaskyRevamp.Dto.GeneralDto;
 using TaskyRevamp.Dto.TaskAttachment;
 using TaskyRevamp.Dto.TaskViews;
@@ -52,6 +53,9 @@ public class CreateTaskDto
     public DateTime? CreateDate { get; set; }
     public string? UpdatedBy { get; set; }
     public DateTime? UpdateDate { get; set; }
+    public string? DeletedBy { get; set; }
+    public string? DeletedByName { get; set; }
+    public DateTime? DeletionDate { get; set; }
     public string? Content { get; set; }
     public string? SourceName { get; set; }
     public string? TypeName { get; set; }
@@ -60,6 +64,7 @@ public class CreateTaskDto
     public string? PriorityBackgroundColor { get; set; }
     public string? AssigneduserNames { get; set; }
     public List<TaskViewsDto>? ViewdByNames { get; set; }
+    public int ChangeEndDateRequestCount {  get; set; }
     public string? CreatorDepartment { get; set; }
 	//public List<UploadAttachmentDto>? uploadAttachmentDtos { get; set; }
 	[System.Text.Json.Serialization.JsonIgnore]

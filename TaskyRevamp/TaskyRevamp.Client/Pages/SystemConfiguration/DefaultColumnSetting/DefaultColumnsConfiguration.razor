@@ -45,7 +45,7 @@
                                     </div>
                                     <div class="toggle">
                                         <div class="form-switch custom ">
-                                            <input type="checkbox" id="IsDisplay@(setting.Id)" disabled="@(!setting.IsActive)" class="form-check-input"
+                                            <input type="checkbox" id="IsDisplay@(setting.Id)" disabled="@(!setting.IsActive || setting.NameEnglish == "Title")" class="form-check-input"
                                                    @bind="setting.IsDisplay"
                                                     />
 
@@ -56,7 +56,7 @@
                                     </div>
                                     <div class="toggle">
                                         <div class="form-switch custom ">
-                                            <input type="checkbox" id="IsActive@(setting.Id)" class="form-check-input"
+                                            <input type="checkbox" id="IsActive@(setting.Id)" class="form-check-input" disabled="@(setting.NameEnglish == "Title")"
                                                 @bind="setting.IsActive"
                                                    @bind:after="() => { if (!setting.IsActive) setting.IsDisplay = false; }" />
 

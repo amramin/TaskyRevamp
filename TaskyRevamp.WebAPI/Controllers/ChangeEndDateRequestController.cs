@@ -1,9 +1,13 @@
-﻿using MediatR;
+﻿using MailKit.Search;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using TaskyRevamp.Dto.ChangeEndDateRequest;
+using TaskyRevamp.Dto.Enums.SearchFields;
 using TaskyRevamp.Dto.GeneralDto;
 using TaskyRevamp.Services.ChangeEndDateRequests.Commands;
 using TaskyRevamp.Services.ChangeEndDateRequests.Query;
+using TaskyRevamp.Services.Tasks.Commands;
 
 namespace ChangeEndDateRequestRevamp.WebAPI.Controllers;
 
@@ -39,19 +43,42 @@ public class ChangeEndDateRequestController : ControllerBase
     {
         return Ok(await _mediator.Send(new DeleteChangeEndDateRequestCommand(Guid.Parse(id))));
     }
-    [HttpPost("GetAllChangeEndDateRequests")]
-    public async Task<IActionResult> AllTask([FromBody] QueryModel? query = null)
+    [HttpGet("GetAllChangeEndDateRequests")]
+    public async Task<IActionResult> GetAllChangeEndDateRequests([FromServices] IOptions<PaginationSettings> paginationSettings,
+            [FromQuery] int pageNumber = 1,
+            [FromQuery] int? pageSize = null,
+            [FromQuery] string sortByColumnName = "CreateDate",
+            [FromQuery] bool sortAscending = true,
+            [FromQuery] List<SearchFieldChangeDueDate> searchFields = null,
+            [FromQuery] string searchText = null)
     {
 
-
-        var all = await _mediator.Send(new GetChangeEndDateRequestsQuery(query));
+        var size = pageSize ?? paginationSettings.Value.DefaultPageSize;
+        var all = await _mediator.Send(new GetChangeEndDateRequestsQuery(pageNumber, size, sortByColumnName, sortAscending, searchFields, searchText));
 
         return Ok(all);
     }
 
+    [HttpGet("GetAllChangeEndDateRequestsByTaskId/{id}")]
+    public async Task<IActionResult> GetAllChangeEndDateRequestsByTaskId(Guid id, [FromServices] IOptions<PaginationSettings> paginationSettings,
+            [FromQuery] int pageNumber = 1,
+            [FromQuery] int? pageSize = null,
+            [FromQuery] string sortByColumnName = "CreateDate",
+            [FromQuery] bool sortAscending = true)
+    {
 
+        var size = pageSize ?? paginationSettings.Value.DefaultPageSize;
+        var all = await _mediator.Send(new GetChangeEndDateRequestsQueryByTaskId(id,pageNumber,size,sortByColumnName,sortAscending));
 
+        return Ok(all);
+    }
 
+    [HttpGet("UpdateRequestStatus/{RequestId}/{Status}")]
+    public async Task<IActionResult> UpdateTasksDepartment(Guid RequestId, ChangeRequestStatus Status)
+    {
+        var res = await _mediator.Send(new UpdateRequestStatusCommand(RequestId, Status));
+        return Ok(res);
+    }
     [HttpGet("{id}")]
     public async Task<IActionResult> GetOne(string id)
     {

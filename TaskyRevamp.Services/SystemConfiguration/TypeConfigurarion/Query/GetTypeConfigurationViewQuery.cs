@@ -45,7 +45,7 @@ namespace TaskyRevamp.Services.SystemConfiguration.TypeConfigurarion.Query
             }
             else
             {
-                typeids = _taskRepository.AllAsNoTracking().Result.Value.Select(p => p.TaskTypeId).Distinct().ToList();
+                typeids = _taskRepository.AllAsNoTracking().Result.Value.Where(t => t.StatusId != Guid.Parse("C8D504C7-9402-4F91-223C-08DE3318A61C")).Select(p => p.TaskTypeId).Distinct().ToList();
                 IsNoType = _taskRepository.AllAsNoTracking().Result.Value.Where(p => p.TaskTypeId == null).Any();
             }
                 Expression<Func<Types, bool>> searchExpression = null;
@@ -54,7 +54,7 @@ namespace TaskyRevamp.Services.SystemConfiguration.TypeConfigurarion.Query
             var res = await _typeRepository.GetPagedAsync(
                                 request.PageNumber,
                                 request.pageSize,
-                                u => u.IsDeleted == false,
+                                request.IsCompleted?null: u => u.IsDeleted == false,
                                 searchExpression,
                                 orderBy: orderBy,
                                 includeProperties: $"{nameof(Types.CreatedBy)},{nameof(Types.UpdatedBy)}");

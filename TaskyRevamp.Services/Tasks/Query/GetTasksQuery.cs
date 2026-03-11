@@ -5,6 +5,7 @@ using TaskyRevamp.Domain.Interfaces.Repositeries;
 using TaskyRevamp.Domain.Models.Task;
 using TaskyRevamp.Domain.Models.Users;
 using TaskyRevamp.Domain.Repositeries;
+using TaskyRevamp.Dto.ChangeEndDateRequest;
 using TaskyRevamp.Dto.Department;
 using TaskyRevamp.Dto.Enums;
 using TaskyRevamp.Dto.Enums.SearchFields;
@@ -28,7 +29,6 @@ public class GetTasksHandler : IRequestHandler<GetTasksQuery, PagedResult<Create
     private readonly IRepository<TaskItem> _taskRepository;
     private readonly IRepository<Department> _departmenRepository;
     private readonly IRepository<TaskDependencies> _taskDependincesRepository;
-
     public GetTasksHandler(IRepository<TaskItem> taskRepository, IRepository<User> userRepository, IRepository<TaskDependencies> taskDependincesRepository, IRepository<Department> departmentRepository)
     {
         _taskRepository = taskRepository;
@@ -36,7 +36,6 @@ public class GetTasksHandler : IRequestHandler<GetTasksQuery, PagedResult<Create
         _userRepository = userRepository;
         _currentLanguage = Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName;
         _taskDependincesRepository = taskDependincesRepository;
-
     }
 
     public async Task<PagedResult<CreateTaskDto>> Handle(GetTasksQuery request, CancellationToken cancellationToken)
@@ -264,10 +263,10 @@ public class GetTasksHandler : IRequestHandler<GetTasksQuery, PagedResult<Create
             var res = await _taskRepository.GetPagedAsync(
                                 request.pageNumber,
                                 request.pageSize,
-                                null,
+                                t => t.IsDeleted == false,
                                 searchExpression,
                                 orderBy: orderBy,
-                                includeProperties: $"{nameof(TaskItem.CreatedBy)},{nameof(TaskItem.Priority)},{nameof(TaskItem.ActualWeight)},{nameof(TaskItem.Type)},{nameof(TaskItem.Source)},{nameof(TaskItem.status)},{nameof(TaskItem.UpdatedBy)},{nameof(TaskItem.Assignees)}.{nameof(TaskyRevamp.Domain.Models.Task.TaskAssignees.User)}");
+                                includeProperties: $"{nameof(TaskItem.CreatedBy)},{nameof(TaskItem.Priority)},{nameof(TaskItem.ActualWeight)},{nameof(TaskItem.Type)},{nameof(TaskItem.Source)},{nameof(TaskItem.status)},{nameof(TaskItem.UpdatedBy)},{nameof(TaskItem.Assignees)}.{nameof(TaskyRevamp.Domain.Models.Task.TaskAssignees.User)},{nameof(TaskItem.ChangeEndDateRequests)}");
 
         foreach (var tsk in res.Items)
         {
@@ -293,7 +292,7 @@ public class GetTasksHandler : IRequestHandler<GetTasksQuery, PagedResult<Create
                 tasky.DependencyNames= DependencyNames;
                 tasky.Dependencies = dependenciesids.ToList();
             }
-
+            tasky.ChangeEndDateRequestCount = tsk.ChangeEndDateRequests?.Count(c=>c.Status==ChangeRequestStatus.Pending) ?? 0;
             tasky.TaskStatusName = currentCulture == "ar" ? tsk.status?.NameArabic ?? "" : tsk.status?.NameEnglish ?? "";
             tasky.TaskStatusBackgroundColor = tsk.status?.BackgroundColor;
             tasky.TaskStatusColor = tsk.status?.NameColor;
@@ -326,8 +325,8 @@ public class GetTasksHandler : IRequestHandler<GetTasksQuery, PagedResult<Create
                     : q => q.OrderByDescending(u => currentCulture == "ar" ? u.Title : u.Title);
             case "Priority":
                 return sortAscending
-                    ? q => q.OrderBy(u => u.Priority)
-                    : q => q.OrderByDescending(u => u.Priority);
+                    ? q => q.OrderBy(u => u.Priority.Order)
+                    : q => q.OrderByDescending(u => u.Priority.Order);
             //case "Planned Progress":
             //    return sortAscending
             //        ? q => q.OrderBy(u => u.Priority)

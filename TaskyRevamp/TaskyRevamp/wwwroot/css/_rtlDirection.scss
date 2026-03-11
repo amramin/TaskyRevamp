@@ -42,6 +42,13 @@ html[dir="rtl"] {
   .badge {
     line-height: 125%;
   }
+  .progress-overall-bar {
+ 
+  
+  .circle {
+     transform: translateY(-50%) translateX(0.25rem);
+  }
+}
 }
 
 /* end rtl*/

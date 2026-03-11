@@ -1249,9 +1249,7 @@
     <value>يوجد نوع نشط بهذا الاسم مسبقًا. يرجى اختيار اسم مختلف</value>
   </data>
   <data name="ThisTypenamewas" xml:space="preserve">
-    <value>تم حذف هذا النوع سابقًا وهو مرتبط بمهام مكتملة.
-هل ترغب في استعادة النوع الأصلي ودمج هذا النوع  معه؟ يُرجى العلم أن النوع الحالي سيُحذف نهائيًا.
-</value>
+    <value>تم حذف اسم هذا النوع سابقًا وربطه بمهمة مكتملة. هل ترغب في استخدامه مرة أخرى؟</value>
   </data>
   <data name="AnactivePrioritywith" xml:space="preserve">
     <value>يوجد اولويه نشطه بهذا الاسم مسبقًا. يرجى اختيار اسم مختلف</value>
@@ -1291,6 +1289,9 @@
   </data>
   <data name="Taskdetails" xml:space="preserve">
     <value>تفاصيل المهمة</value>
+  </data>
+  <data name="Overall progress" xml:space="preserve">
+    <value>الإنجاز العام</value>
   </data>
   <data name="EditTask" xml:space="preserve">
     <value>تعديل المهمة</value>
@@ -1444,5 +1445,114 @@
   </data>
   <data name="dependencyTitle" xml:space="preserve">
     <value>الإعتمادية</value>
+  </data>
+  <data name="Subtasks" xml:space="preserve">
+    <value>المهام الفرعية</value>
+  </data>
+  <data name="Dependencies" xml:space="preserve">
+    <value>الاعتماديات </value>
+  </data>
+  <data name="ChangeEndDatesRequests" xml:space="preserve">
+    <value>طلبات تغيير تاريخ الإنتهاء</value>
+  </data>
+  <data name="Escalation" xml:space="preserve">
+    <value>التصعيد </value>
+  </data>
+  <data name="History" xml:space="preserve">
+    <value>السجل </value>
+  </data>
+  <data name="UpdateComment" xml:space="preserve">
+    <value>تعديل تعليق</value>
+  </data>
+  <data name="NoComments" xml:space="preserve">
+    <value>لم تتم إضافة أي تعليقات</value>
+  </data>
+  <data name="cannotdeactivate" xml:space="preserve">
+    <value>لا يمكنك إلغاء تنشيط صفحة تسجيل الدخول الافتراضية للنظام</value>
+  </data>
+  <data name="List_Status" xml:space="preserve">
+    <value>عرض الحاله</value>
+  </data>
+  <data name="IsDisplay" xml:space="preserve">
+    <value>عرض</value>
+  </data>
+  <data name="Days" xml:space="preserve">
+    <value>أيام</value>
+  </data>
+  <data name="Filter" xml:space="preserve">
+    <value>بحث</value>
+  </data>
+  <data name="Deslectall" xml:space="preserve">
+    <value>إلغاء تحديد الكل</value>
+  </data>
+  <data name="SureDeleteTask" xml:space="preserve">
+    <value>هل أنت متأكد من حذف هذه المهمة؟ سيتم نقلها إلى سلة المحذوفات، ويمكنك استعادتها لاحقًا أو حذفها نهائيًا</value>
+  </data>
+  <data name="PreventTaskDeletion" xml:space="preserve">
+    <value>تحتوي هذه المهمة على مهام تابعة لها. يرجى إزالة تبعية المهام الأخرى قبل المتابعة بالحذف</value>
+  </data>
+  <data name="taskDeleted" xml:space="preserve">
+    <value>تم حذف المهمة بنجاح</value>
+  </data>
+  <data name="RecycleBin" xml:space="preserve">
+    <value>سلة المحذوفات</value>
+  </data>
+  <data name="DeletionDate" xml:space="preserve">
+    <value>تاريخ الحذف </value>
+  </data>
+  <data name="DeletedBy" xml:space="preserve">
+    <value>تم الحذف بواسطة</value>
+  </data>
+  <data name="Restore" xml:space="preserve">
+    <value>استعادة</value>
+  </data>
+  <data name="RecycleBinRetentionMessage" xml:space="preserve">
+    <value>سيتم حذف المهام الموجودة في سلة المحذوفات تلقائيًا بعد {0} يومًا
+إذا كنت بحاجة إلى هذه المهمة، يرجى استعادتها قبل حذفها بشكل دائم</value>
+  </data>
+  <data name="RequestDueDate" xml:space="preserve">
+    <value>طلب تغيير تاريخ الإنتهاء</value>
+  </data>
+  <data name="newenddate" xml:space="preserve">
+    <value>تاريخ الانتهاء الجديد</value>
+  </data>
+  <data name="smallerrequesteddate" xml:space="preserve">
+    <value>يجب أن يكون تاريخ الانتهاء الجديد مساويًا أو أكبر من تاريخ البدء</value>
+  </data>
+  <data name="RequestedSuccesfully" xml:space="preserve">
+    <value>تم الطلب بنجاح</value>
+  </data>
+  <data name="ChangeEndDateRequests" xml:space="preserve">
+    <value>طلبات تغيير تاريخ الانتهاء</value>
+  </data>
+  <data name="Tasktitle" xml:space="preserve">
+    <value>عنوان المهمة</value>
+  </data>
+  <data name="RequestedEndDate" xml:space="preserve">
+    <value>تاريخ الإنتهاء المطلوب</value>
+  </data>
+  <data name="Requester" xml:space="preserve">
+    <value>مقدم الطلب</value>
+  </data>
+  <data name="RequestReason" xml:space="preserve">
+    <value>سبب الطلب</value>
+  </data>
+  <data name="NoEndDateRequests" xml:space="preserve">
+    <value>لا توجد طلبات تغيير تاريخ انتهاء متاحة</value>
+  </data>
+  <data name="RequestStatus" xml:space="preserve">
+    <value>حالة الطلب </value>
+  </data>
+  <data name="approvedsuccessfully" xml:space="preserve">
+    <value>تم الموافقة على تاريخ الطلب بنجاح</value>
+  </data>
+  <data name="rejectedsuccessfully" xml:space="preserve">
+    <value>تم رفض تاريخ الطلب بنجاح</value>
+  </data>
+  <data name="Sureapprovestatus" xml:space="preserve">
+    <value>هل انت متاكد من قبول هذا الطلب</value>
+  </data>
+  <data name="Surerejectstatus" xml:space="preserve">
+    <value>هل انت متاكد من رفض هذا الطلب</value>
   </data>
 </root>

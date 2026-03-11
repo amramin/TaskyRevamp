@@ -748,10 +748,7 @@ namespace TaskyRevamp.Infrastructure.Migrations
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
-                    b.Property<Guid>("TaskId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("TaskItemId")
+                    b.Property<Guid>("TaskItemId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
@@ -759,8 +756,6 @@ namespace TaskyRevamp.Infrastructure.Migrations
                     b.HasIndex("CreatedById");
 
                     b.HasIndex("RequesterId");
-
-                    b.HasIndex("TaskId");
 
                     b.HasIndex("TaskItemId");
 
@@ -1130,6 +1125,12 @@ namespace TaskyRevamp.Infrastructure.Migrations
                     b.Property<Guid>("CreatedById")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<DateTime?>("DeleteDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("DeletedById")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
@@ -1138,6 +1139,9 @@ namespace TaskyRevamp.Infrastructure.Migrations
 
                     b.Property<Guid>("FileId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<Guid?>("ParentId")
                         .HasColumnType("uniqueidentifier");
@@ -1181,6 +1185,8 @@ namespace TaskyRevamp.Infrastructure.Migrations
                     b.HasIndex("CommentsId");
 
                     b.HasIndex("CreatedById");
+
+                    b.HasIndex("DeletedById");
 
                     b.HasIndex("ParentId");
 
@@ -1485,14 +1491,10 @@ namespace TaskyRevamp.Infrastructure.Migrations
                         .IsRequired();
 
                     b.HasOne("TaskyRevamp.Domain.Models.Task.TaskItem", "Task")
-                        .WithMany()
-                        .HasForeignKey("TaskId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .WithMany("ChangeEndDateRequests")
+                        .HasForeignKey("TaskItemId")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
-
-                    b.HasOne("TaskyRevamp.Domain.Models.Task.TaskItem", null)
-                        .WithMany("ChangeRequests")
-                        .HasForeignKey("TaskItemId");
 
                     b.Navigation("CreatedBy");
 
@@ -1729,6 +1731,11 @@ namespace TaskyRevamp.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("TaskyRevamp.Domain.Models.Users.User", "DeletedBy")
+                        .WithMany()
+                        .HasForeignKey("DeletedById")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.HasOne("TaskyRevamp.Domain.Models.Task.TaskItem", "Parent")
                         .WithMany("Subtasks")
                         .HasForeignKey("ParentId");
@@ -1820,6 +1827,8 @@ namespace TaskyRevamp.Infrastructure.Migrations
                     b.Navigation("Comments");
 
                     b.Navigation("CreatedBy");
+
+                    b.Navigation("DeletedBy");
 
                     b.Navigation("Parent");
 
@@ -1952,7 +1961,7 @@ namespace TaskyRevamp.Infrastructure.Migrations
 
                     b.Navigation("Attachments");
 
-                    b.Navigation("ChangeRequests");
+                    b.Navigation("ChangeEndDateRequests");
 
                     b.Navigation("Checklist");
 

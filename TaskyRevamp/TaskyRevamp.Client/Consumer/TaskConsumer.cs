@@ -1,5 +1,6 @@
 ﻿using DocumentFormat.OpenXml.Office2010.Excel;
 using Microsoft.AspNetCore.Components.Forms;
+using TaskyRevamp.Dto.ChangeEndDateRequest;
 using TaskyRevamp.Dto.Enums.SearchFields;
 using TaskyRevamp.Dto.GeneralDto;
 using TaskyRevamp.Dto.SystemConfiguration;
@@ -29,6 +30,13 @@ namespace TaskyRevamp.Client.Consumer
             var queryString = _taskyService.PreparePaginatedSearchQueryString(pageNumber, pageSize, sortByColumnName, sortAscending, searchFields, searchText,ViewType,ViewTypeId,IsCompleted);
             var url = $"api/Task/GetAllTask{queryString}";
             var res = await _taskyService.PostJsonAsyncWithJsonConvert<PagedResult<CreateTaskDto>,TaskFilterComponent>(url,taskFilter);
+            return res;
+        }
+        public async Task<CommonApiResponse<PagedResult<CreateTaskDto>>> GetDeletedTasks(int pageNumber, int pageSize, string sortByColumnName, bool sortAscending, List<SearchFieldDeletedTask> searchFields = null, string searchText = null)
+        {
+            var queryString = _taskyService.PreparePaginatedSearchQueryString(pageNumber, pageSize, sortByColumnName, sortAscending, searchFields, searchText);
+            var url = $"api/Task/GetDeletedTasks{queryString}";
+            var res = await _taskyService.GetFromJsonAsync<CommonApiResponse<PagedResult<CreateTaskDto>>>(url);
             return res;
         }
         public async Task<CommonApiResponse<List<CreateTaskDto>>> GetTasksNoPagnation(List<SearchFieldTask> searchFields = null, string searchText = null)
@@ -97,6 +105,12 @@ namespace TaskyRevamp.Client.Consumer
             var res = await _taskyService.PostJsonAsync<CommonApiResponse<bool>>(url, taskCommentDto);
             return res.Data;
         }
+        public async Task<CommonApiResponse<bool>> RequestChangeDueDate(ChangeEndDateRequestDto changeEndDateRequest)
+        {
+            var url = $"api/Task/RequestChangeDueDate";
+            var res = await _taskyService.PostJsonAsync<CommonApiResponse<bool>>(url, changeEndDateRequest);
+            return res.Data;
+        }
         public async Task<CommonApiResponse<bool>> UpdateTasksDepartment(Guid oldId, Guid newId)
         {
             var url = $"api/Task/UpdateTasksDepartment/{oldId}/{newId}";
@@ -121,9 +135,9 @@ namespace TaskyRevamp.Client.Consumer
             var res = await _taskyService.GetFromJsonAsync<CommonApiResponse<bool>>(url);
             return res;
         }
-        public async Task<CommonApiResponse<bool>> DeleteTask(Guid id)
+        public async Task<CommonApiResponse<bool>> SoftDeleteTask(Guid id, Guid userId)
         {
-            var url = $"api/Task/{id}";
+            var url = $"api/Task/SoftDeleteTask/{id}/{userId}";
             var res = await _taskyService.DeleteFromJsonAsync<CommonApiResponse<bool>>(url);
             return res;
         }

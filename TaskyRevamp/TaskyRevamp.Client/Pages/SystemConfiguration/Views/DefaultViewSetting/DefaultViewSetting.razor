@@ -8,7 +8,12 @@
 @inject ToastService ToastService
 @inject DefaultViewSettingConsumer _defaultViewSettingConsumer
 @inject ViewTaskSettingConsumer _viewTaskSettingConsumer
-
+<style>
+    .no-after::after {
+        content: none !important;
+        display: none !important;
+    }
+</style>
 <div class="card setting-card">
     <div class="card-body">
         <div class="row justify-content-center">
@@ -19,13 +24,48 @@
                 </div>
                 <InputRadioGroup TValue="ViewType" Value="ViewTaskSetting.ViewType" ValueChanged="OnSettingChange"
                     ValueExpression="() => ViewTaskSetting.ViewType">
+                    @{
+                        bool isListView = false;
+                    }
                     @foreach (var value in ViewTypes)
                     {
                         var radioId = $"ViewType_{value}";
+@*                          <div class="d-flex align-items-center gap-2 mb-2 ">
+
+                        <SVGCrud SVGType="SVGCrud.SVGTypeEnum.CiArrow"></SVGCrud>
                         <div class="form-check-card">
                             <InputRadio id="@radioId" Value="@value" />
                             <label for="@radioId">   @(value == ViewType.Kanban ? @Loc["KanbanView"] : value.GetDescription()) </label>
                         </div>
+                        </div> *@
+                        if ((int)value >= 11 && (int)value <= 15)
+                        {
+                            if (!isListView)
+                            {
+                                <div class="fw-bold text-dark mb-2">@Loc["List"]</div>
+                                isListView = true;
+                            }
+                            <div class="d-flex align-items-center gap-2 mb-2 ">
+                                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.CiArrow"></SVGCrud>
+                                <div class="form-check-card switch flex-grow-1">
+                                    <InputRadio id="@radioId" Value="@value" style="display:none;" />
+                                    <label for="@radioId" class="no-after">
+                                        @Loc[value.ToString()]
+                                        <span class="toggler-icon"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="form-check-card switch flex-grow-1">
+                                <InputRadio id="@radioId" Value="@value" style="display:none;" />
+                                <label for="@radioId" class="no-after">
+                                    @Loc[value.ToString()]
+                                    <span class="toggler-icon"></span>
+                                </label>
+                            </div>
+                        }
                     }
                 </InputRadioGroup>
             </div>

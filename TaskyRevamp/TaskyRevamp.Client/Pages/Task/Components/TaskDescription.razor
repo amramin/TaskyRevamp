@@ -1,10 +1,21 @@
 ﻿@using TaskyRevamp.Dto.TaskDto
-<div class="card mb-3">
-    <div class="card-header bg-white d-flex justify-content-between align-items-center"
-         style="cursor: pointer;"
-         @onclick="ToggleSection">
-        <h5 class="mb-0">Description</h5>
-        <span>@(ShowSection ? "▼" : "▲")</span>
+@inject IStringLocalizer<SharedResources> Loc
+
+<div class="card collapse-card mb-3">
+    <div class="card-header" @onclick="ToggleSection">
+        <button type="button" class="btn colapse-btn ">
+            <h6 class="headline-6 mb-0">@Loc["Description"]</h6>
+            <span class="icon"> @if (ShowSection)
+                {
+                    <SVGCrud SVGType="SVGCrud.SVGTypeEnum.ChevronDown"></SVGCrud>
+                }
+    else
+                {
+                    <SVGCrud SVGType="SVGCrud.SVGTypeEnum.ChevronUp"></SVGCrud>
+                }
+            </span>
+        </button>
+
     </div>
     @if (ShowSection)
     {
@@ -23,7 +34,7 @@
 
     [Parameter]
     public CreateTaskDto? Task { get; set; }
-
+   
     private async Task ToggleSection()
     {
         ShowSection = !ShowSection;

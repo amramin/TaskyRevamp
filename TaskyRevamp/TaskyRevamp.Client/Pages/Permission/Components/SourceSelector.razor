@@ -22,18 +22,22 @@
         }
         @if (SelectedSources != null && SelectedSources.Any())
         {
-            <button class="btn btn-primary">Deselect</button>
-            <div class="mt-2 d-flex flex-wrap gap-1">
+        <div class="my-2">
+            <button class="btn btn-primary" @onclick="RemoveAll">@Loc["Deslectall"]</button>
+        </div>
+        <div class="mt-2 d-flex flex-wrap gap-1">
                 @foreach (var sourceId in SelectedSources)
                 {
                     var sourceItem = SourceList.FirstOrDefault(s => s.Id == sourceId);
                     if (sourceItem != null)
                     {
-                        <span class="badge bg-primary d-flex align-items-center gap-1 py-1 px-2 small">
+                    <div class="my-2">
+                    </div>
+                    <span class="badge bg-white text-black border border-dark d-flex align-items-center gap-1 py-1 px-2 small">
                             @sourceItem.DisplayedName
                             @if (!IsViewMode)
                             {
-                                <button type="button" class="btn-close btn-close-white btn-close-sm ms-1"
+                                <button type="button" class="btn-close btn-close-black btn-close-sm ms-1"
                                         aria-label="Remove" style="height:0.9rem; width:0.9rem;"
                                         @onclick="() => RemoveSource(sourceId)"></button>
                             }
@@ -74,6 +78,11 @@
     private void RemoveSource(Guid id)
     {
         SelectedSources.Remove(id);
+        StateHasChanged();
+    }
+    private void RemoveAll(MouseEventArgs args)
+    {
+        SelectedSources = new List<Guid>();
         StateHasChanged();
     }
 }
