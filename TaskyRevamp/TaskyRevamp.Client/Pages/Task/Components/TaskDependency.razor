@@ -1,0 +1,125 @@
+﻿@using TaskyRevamp.Client.Consumer
+@using TaskyRevamp.Dto.TaskDto
+@inject IStringLocalizer<SharedResources> Loc
+@inject TaskDependencyConsumer _taskDependencyConsumer
+
+<TaskDependencyTable Columns="tableColumns" CurrentPage="currentPage" PageSize="pageSize" TotalCount="totalCount"
+                     TotalPages="totalPages" PageChanged="ChangePage" PageSizeChanged="ChangePageSize" Tasks="allDependOnTasks"
+                     EmptyMessage="@Loc["NoDependingOnTasks"]" SortAscending="sortAscending" SortColumn="currentSortColumn"
+                     OnSortRequested="HandleSort" Title="@Loc["DependingOn"]"></TaskDependencyTable>
+
+<TaskDependencyTable Columns="tableColumns" CurrentPage="dependent_currentPage" PageSize="dependent_pageSize" TotalCount="dependent_totalCount"
+                     TotalPages="dependent_totalPages" PageChanged="ChangePageDependent" PageSizeChanged="ChangePageSizeDependent" Tasks="allDependentTasks"
+                     EmptyMessage="@Loc["NoDependentTasks"]" SortAscending="dependent_sortAscending" SortColumn="dependent_currentSortColumn"
+                     OnSortRequested="HandleSortDependent" Title="@Loc["dependenTasks"]"></TaskDependencyTable>
+
+@code {
+    [Parameter] public CreateTaskDto? Task { get; set; }
+    public List<CreateTaskDto>? allDependOnTasks { get; set; }
+    public List<CreateTaskDto>? allDependentTasks { get; set; }
+    private List<SortableColumn> tableColumns = new();
+    private string currentSortColumn = "";
+    private bool? sortAscending = true;
+    private int currentPage = 1;
+    private int totalPages = 1;
+    private int totalCount = 0;
+    private int pageSize = 10;
+    private string dependent_currentSortColumn = "";
+    private bool? dependent_sortAscending = true;
+    private int dependent_currentPage = 1;
+    private int dependent_totalPages = 1;
+    private int dependent_totalCount = 0;
+    private int dependent_pageSize = 10;
+
+    protected override async Task OnInitializedAsync()
+    {
+        tableColumns = new()
+        {
+            new() { Field = "Title", DisplayName  = Loc["Title"], Order = 0, IsVisible = true },
+            new() { Field = "Status", DisplayName =  Loc["TaskStatus"], Order = 1, IsVisible = true },
+            new() { Field = "Priority", DisplayName =  Loc["Priority2"], Order = 2, IsVisible = true },
+            new() { Field = "Assigned To", DisplayName = Loc["AssignedTo"], Order = 3, IsVisible = true,IsSortable=false },
+            new() { Field = "End Date", DisplayName = Loc["EndDate"], Order = 4, IsVisible = true },
+            new() { Field = "Actual progress", DisplayName = Loc["ActualProgress"], Order = 5, IsVisible = true },
+        };
+        await LoadDependOnTasks();
+        await LoadDependentTasks();
+    }
+    private async Task ChangePage(int page)
+    {
+        currentPage = page;
+        await LoadDependOnTasks();
+    }
+    private async Task ChangePageDependent(int page)
+    {
+        dependent_currentPage = page;
+        await LoadDependentTasks();
+    }
+
+    private async Task ChangePageSize(int newSize)
+    {
+        pageSize = newSize;
+        currentPage = 1;
+        await LoadDependOnTasks();
+    }
+    private async Task ChangePageSizeDependent(int newSize)
+    {
+        dependent_pageSize = newSize;
+        dependent_currentPage = 1;
+        await LoadDependentTasks();
+    }
+    private async Task LoadDependOnTasks()
+    {
+        if (Task != null)
+        {
+            var res = await _taskDependencyConsumer.GetDependOnTasks(Task.Id, currentPage, pageSize, currentSortColumn, sortAscending);
+            if (res.Success && res.Data != null)
+            {
+                var data = res.Data;
+                allDependOnTasks = res.Data.Items.ToList();
+                totalPages = data.TotalPages;
+                totalCount = data.TotalCount;
+            }
+        }
+    }
+    private async Task LoadDependentTasks()
+    {
+        if (Task != null)
+        {
+            var res = await _taskDependencyConsumer.GetDependentTasks(Task.Id, dependent_currentPage, dependent_pageSize, dependent_currentSortColumn, dependent_sortAscending);
+            if (res.Success && res.Data != null)
+            {
+                var data = res.Data;
+                allDependentTasks = res.Data.Items.ToList();
+                dependent_totalPages = data.TotalPages;
+                dependent_totalCount = data.TotalCount;
+            }
+        }
+    }
+    private async Task HandleSort((string Column, bool? Ascending) sortInfo)
+    {
+        if (currentSortColumn == sortInfo.Column)
+            sortAscending = sortAscending == true ? false : sortAscending == false ? null : true;
+        else
+        {
+            currentSortColumn = sortInfo.Column;
+            sortAscending = true;
+        }
+        if (sortAscending == null)
+            currentSortColumn = "";
+        await LoadDependOnTasks();
+    }
+    private async Task HandleSortDependent((string Column, bool? Ascending) sortInfo)
+    {
+        if (dependent_currentSortColumn == sortInfo.Column)
+            dependent_sortAscending = dependent_sortAscending == true ? false : dependent_sortAscending == false ? null : true;
+        else
+        {
+            dependent_currentSortColumn = sortInfo.Column;
+            dependent_sortAscending = true;
+        }
+        if (dependent_sortAscending == null)
+            dependent_currentSortColumn = "";
+        await LoadDependentTasks();
+    }
+}

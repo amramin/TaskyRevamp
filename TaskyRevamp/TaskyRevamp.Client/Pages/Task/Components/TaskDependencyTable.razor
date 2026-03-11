@@ -1,0 +1,60 @@
+﻿@using TaskyRevamp.Dto.TaskDto
+@inject IStringLocalizer<SharedResources> Loc
+
+<div class="container">
+    <div class="card-body d-flex justify-content-between align-items-center">
+        <small class="fw-bold d-block mb-2">@Title</small>
+    </div>
+
+    @if (Tasks == null || !Tasks.Any())
+    {
+        <div class="card border-1 rounded-3 mb-1">
+            <div class="card-body text-center py-4">
+                <h5 class="fw-bold  m-2">
+                    @EmptyMessage
+                </h5>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="page-body">
+            <div class="table-responsive task-table mt-2">
+                <SortableTable TItem="CreateTaskDto" Columns="@Columns" Items="@Tasks" SortColumn="@SortColumn" SortAscending="@SortAscending" OnSortRequested="OnSortRequested">
+                    <RowTemplate>
+                        @foreach (var task in Tasks)
+                        {
+                            <tr>
+                                <td>@task.Title</td>
+                                <td><span class="badge" style="background-color:@task.TaskStatusBackgroundColor;color:@task.TaskStatusColor">@task.TaskStatusName</span> </td>
+                                <td><span class="badge" style="background-color:@task.PriorityBackgroundColor;color:@task.PriorityColor">@task.PriorityName</span></td>
+                                <td><Initials Names="@task.AssigneduserNames" Size="32" Black="true" /></td>
+                                <td>@task.EndDate?.ToLocalTime().ToString(Loc["LocalizeDate"])</td>
+                                <td> <OverallBar ActualProgress="@task.ActualProcess" Width="250" /></td>
+                            </tr>
+                        }
+                    </RowTemplate>
+                </SortableTable>
+            </div>
+            <Pagination CurrentPage="@CurrentPage" TotalPages="@TotalPages" TotalCount="@TotalCount" PageSize="@PageSize"
+                            PageChanged="PageChanged" PageSizeChangedCallback="PageSizeChanged" />
+        </div>
+    }
+</div>
+
+@code {
+
+    [Parameter] public string Title { get; set; } = "";
+    [Parameter] public string EmptyMessage { get; set; } = "";
+    [Parameter] public List<CreateTaskDto>? Tasks { get; set; }
+    [Parameter] public List<SortableColumn> Columns { get; set; } = new();
+    [Parameter] public string SortColumn { get; set; } = "";
+    [Parameter] public bool? SortAscending { get; set; }
+    [Parameter] public int CurrentPage { get; set; }
+    [Parameter] public int TotalPages { get; set; }
+    [Parameter] public int TotalCount { get; set; }
+    [Parameter] public int PageSize { get; set; }
+    [Parameter] public EventCallback<(string Column, bool? Ascending)> OnSortRequested { get; set; }
+    [Parameter] public EventCallback<int> PageChanged { get; set; }
+    [Parameter] public EventCallback<int> PageSizeChanged { get; set; }
+}

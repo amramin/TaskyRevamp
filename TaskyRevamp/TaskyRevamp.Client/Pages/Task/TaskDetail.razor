@@ -11,8 +11,6 @@
     <TaskHeader Task="task" @key="task.Id" OnGoBack="GoBack" ShowViewedBy="@isCreator" />
     <TaskMeta Task="task" />
 
-
-
     <div class="row g-0">
         <div class="col-lg-8">
             <div class="tab-pills flex-grow-1">
@@ -21,6 +19,10 @@
                     @if(activeTab == "attachment")
             {
                 <TaskAttachments TaskId="TaskId" />
+            }
+            else if (activeTab == "dependency")
+            {
+                <TaskDependency Task="task" />
             }
             else if(activeTab == "details")
             {
@@ -39,10 +41,8 @@
             <TaskSidebar Task="task" OnConfirmed="LoadTask" OnReopenTask="AfterReopen" OnRequestNewEndDate="AfterRequestNewDate" />
             </div>
         </div>
+</div>
 
-   
-
-</div></div>
 @code {
     [Parameter] public Guid TaskId { get; set; }
     [Parameter]

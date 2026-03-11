@@ -79,6 +79,7 @@ builder.Services.AddTransient<PrivilegeConsumer>();
 builder.Services.AddTransient<SystemIdentityConsumer>();
 builder.Services.AddTransient<TaskCommentConsumer>();
 builder.Services.AddTransient<TaskAttachmentConsumer>();
+builder.Services.AddTransient<TaskDependencyConsumer>();
 
 var configuration = builder.Configuration;
 

@@ -1428,6 +1428,21 @@
   <data name="RetrivedSuccessfully" xml:space="preserve">
     <value>Retrieved successfully</value>
   </data>
+  <data name="DependingOn" xml:space="preserve">
+    <value>Depending on</value>
+  </data>
+  <data name="NoDependingOnTasks" xml:space="preserve">
+    <value>No parent tasks available </value>
+  </data>
+  <data name="dependenTasks" xml:space="preserve">
+    <value>dependent tasks</value>
+  </data>
+  <data name="NoDependentTasks" xml:space="preserve">
+    <value>No dependent tasks are available</value>
+  </data>
+  <data name="dependencyTitle" xml:space="preserve">
+    <value>dependency</value>
+  </data>
   <data name="Subtasks" xml:space="preserve">
     <value>Subtasks </value>
   </data>
