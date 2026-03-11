@@ -13,6 +13,7 @@
   --light-500: #eff4fe;
   --light-400: #cfd8ea;
   --light-300: #dee6f6;
+  --bs-border-color:var(--light-300);
   --light-200: #f8f9ff;
   --light-btn: #dfe7f9;
   --transtion-3ms-e-out: all 0.3s ease-in-out;
@@ -23,4 +24,6 @@
   --warning-light: #fcf6ed;
   --bs-border-color: var(var(--light-300)) !important;
   --progress-complete-color: #54c07f;
+  --modal-bg: 223, 229, 239;
+  --shadow-modal: 8px 8px 24px 0px rgba(24, 26, 31, 0.2)
 }

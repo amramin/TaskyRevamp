@@ -99,6 +99,19 @@ html {
     }
   }
 }
+.squer-medium-icon{
+  background-color:var(--light-200);
+  border:1px solid var(--light-300);
+  border-radius:calc(var(--bs-border-radius) - 2);
+  color:var(--dark-500);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  svg{
+    width:1rem;
+    height:1rem;
+  }
+}
 /* end Global */
 /* start .auth */
 .auth {
@@ -361,7 +374,22 @@ html {
       }
     }
   }
+  .task-action-buttons{
+  display:flex;
+  flex-direction:column;
+  gap:0.5rem;
+  margin-bottom:0.5rem;
+  .btn {
+    display:flex;
+    padding: 0.5rem 1rem;
+    gap:0.5rem;
+    .icon{
+opacity:var(--dark-500);
+    }
+  }
 }
+}
+
 
 /* start .task-detail-page */
 * {

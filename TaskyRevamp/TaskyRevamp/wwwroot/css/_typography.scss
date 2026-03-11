@@ -42,8 +42,17 @@
   font-size: 0.875rem;
   font-weight: 600;
 }
+.headline-8 {
+  font-size: 0.75rem;
+  font-weight: 600;
+}
 .small-medium-text {
   font-size: 0.875rem;
+  color: var(--dark-600);
+  font-weight: 500;
+}
+.x-small-medium-text {
+  font-size: 0.75rem;
   color: var(--dark-600);
   font-weight: 500;
 }
