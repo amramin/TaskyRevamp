@@ -7,6 +7,7 @@ using TaskyRevamp.Dto.Enums.SearchFields;
 using TaskyRevamp.Dto.GeneralDto;
 using TaskyRevamp.Services.ChangeEndDateRequests.Commands;
 using TaskyRevamp.Services.ChangeEndDateRequests.Query;
+using TaskyRevamp.Services.Tasks.Commands;
 
 namespace ChangeEndDateRequestRevamp.WebAPI.Controllers;
 
@@ -66,13 +67,18 @@ public class ChangeEndDateRequestController : ControllerBase
             [FromQuery] bool sortAscending = true)
     {
 
-
-        var all = await _mediator.Send(new GetChangeEndDateRequestsQueryByTaskId(id,pageNumber,pageSize,sortByColumnName,sortAscending));
+        var size = pageSize ?? paginationSettings.Value.DefaultPageSize;
+        var all = await _mediator.Send(new GetChangeEndDateRequestsQueryByTaskId(id,pageNumber,size,sortByColumnName,sortAscending));
 
         return Ok(all);
     }
 
-
+    [HttpGet("UpdateRequestStatus/{RequestId}/{Status}")]
+    public async Task<IActionResult> UpdateTasksDepartment(Guid RequestId, ChangeRequestStatus Status)
+    {
+        var res = await _mediator.Send(new UpdateRequestStatusCommand(RequestId, Status));
+        return Ok(res);
+    }
     [HttpGet("{id}")]
     public async Task<IActionResult> GetOne(string id)
     {

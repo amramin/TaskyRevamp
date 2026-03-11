@@ -1,4 +1,4 @@
-﻿@page "/task/details/{TaskId:guid}"
+﻿@page "/task/details/{TaskId:guid}/{activeTab?}"
 
 @using TaskyRevamp.Client.Consumer
 @using TaskyRevamp.Client.Pages.Task.Components
@@ -30,14 +30,13 @@
             }
             else if (activeTab == "enddate")
             {
-                <RequestNewEndDateTaskHistory @bind-ShowSection="showDetails" Task="task" />
+                <RequestNewEndDateTaskHistory OnRequestChanged="OnRequestChanged" @bind-ShowSection="showrequest" @ref="enddatesection" Task="task" />
             }
                 </div>
             </div>
         </div>
-             <div class="col-lg-4">
-            <div class="page-body">
-                <TaskSidebar Task="task" OnConfirmed="LoadTask" OnReopenTask="AfterReopen" />
+        <div class="col-lg-5">
+            <TaskSidebar Task="task" OnConfirmed="LoadTask" OnReopenTask="AfterReopen" OnRequestNewEndDate="AfterRequestNewDate" />
             </div>
         </div>
 
@@ -46,11 +45,18 @@
 </div></div>
 @code {
     [Parameter] public Guid TaskId { get; set; }
-    private string activeTab = "details";
+    [Parameter]
+    [SupplyParameterFromQuery]
+    public string? returnUrl { get; set; }
+    [Parameter]
+    public string? activeTab{ get; set; } = "details";
     private CreateTaskDto task = new CreateTaskDto();
     private bool showDescription = true;
     private TaskComments commentssection;
+    private RequestNewEndDateTaskHistory enddatesection;
     private bool showDetails = false;
+    private bool showrequest = false;
+
     private bool showComments = true;
     private Guid currentUserId;
     private bool isCreator = false;
@@ -67,6 +73,8 @@
             }
         }
         await LoadTask();
+        await enddatesection.LoadSources();
+        //await commentssection.LoadComments();
     }
     private async Task LoadTask()
     {
@@ -78,19 +86,25 @@
             StateHasChanged();
         }
     }
+    public async Task OnRequestChanged(){
+        await LoadTask();
+    }
     private void GoBack()
     {
-        navigationManager.NavigateTo("/MainTasks");
+        if (!string.IsNullOrEmpty(returnUrl))
+            navigationManager.NavigateTo(returnUrl);
+        else
+            navigationManager.NavigateTo("/MainTasks");
     }
     public async Task AfterReopen()
     {
-        var res = await _taskConsumer.GetTaskById(TaskId, currentUserId);
-        if (res.Success && res.Data != null)
-        {
-            task = res.Data;
-            isCreator = task.CreatedBy == currentUserId;
-            StateHasChanged();
-        }
+        await LoadTask();
+        await commentssection.LoadComments();
+    }
+    public async Task AfterRequestNewDate()
+    {
+        await LoadTask();
+        await enddatesection.LoadSources();
         await commentssection.LoadComments();
     }
 

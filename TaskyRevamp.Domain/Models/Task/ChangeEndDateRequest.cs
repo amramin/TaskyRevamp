@@ -11,10 +11,10 @@ public class ChangeEndDateRequest : Entity, IHasCreationMetaData
 
     public Guid TaskItemId { get; set; }
     public Guid RequesterId { get; set; }
-    public TaskItem Task { get; private set; }
+    public TaskItem Task { get; set; }
     public DateTime NewEndDate { get; private set; }
     public string Reason { get; private set; }
-    public ChangeRequestStatus Status { get; private set; }
+    public ChangeRequestStatus Status { get; set; }
     public User Requester { get; private set; }
     public DateTime RequestedAt { get; private set; }
     public bool IsAproved { get; private set; }

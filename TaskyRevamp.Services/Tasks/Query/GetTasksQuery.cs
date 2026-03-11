@@ -325,8 +325,8 @@ public class GetTasksHandler : IRequestHandler<GetTasksQuery, PagedResult<Create
                     : q => q.OrderByDescending(u => currentCulture == "ar" ? u.Title : u.Title);
             case "Priority":
                 return sortAscending
-                    ? q => q.OrderBy(u => currentCulture == "ar"? u.Priority.NameArabic:u.Priority.NameEnglish)
-                    : q => q.OrderByDescending(u => currentCulture == "ar" ? u.Priority.NameArabic : u.Priority.NameEnglish);
+                    ? q => q.OrderBy(u => u.Priority.Order)
+                    : q => q.OrderByDescending(u => u.Priority.Order);
             //case "Planned Progress":
             //    return sortAscending
             //        ? q => q.OrderBy(u => u.Priority)

@@ -12,7 +12,7 @@ using TaskyRevamp.Dto.SystemConfiguration;
 
 namespace TaskyRevamp.Services.ChangeEndDateRequests.Query;
 
-public record GetChangeEndDateRequestsQueryByTaskId(Guid id, int pageNumber, int? pageSize, string sortByColumnName, bool sortAscending) : IRequest<PagedResult<ChangeEndDateRequestDto>>;
+public record GetChangeEndDateRequestsQueryByTaskId(Guid id, int pageNumber, int pageSize, string sortByColumnName, bool sortAscending) : IRequest<PagedResult<ChangeEndDateRequestDto>>;
 
 public class
     GetChangeEndDateRequestsByTaskIdHandler : IRequestHandler<GetChangeEndDateRequestsQueryByTaskId, PagedResult<ChangeEndDateRequestDto>>
@@ -35,7 +35,7 @@ public class
         var orderBy = GetOrderBy(request.sortByColumnName, request.sortAscending);
         var res = await _changeEndDateRequestRepository.GetPagedAsync(
                     request.pageNumber,
-                    request.pageSize??10,
+                    request.pageSize,
                         u => u.TaskItemId == request.id,
                     searchExpression,
                     orderBy: orderBy,
@@ -46,7 +46,7 @@ public class
             Items = items.ToList(),
             TotalCount = res.TotalCount,
             PageNumber = request.pageNumber,
-            PageSize = request.pageSize??10
+            PageSize = request.pageSize
         };
     }
 

@@ -1287,7 +1287,7 @@
   <data name="Taskdetails" xml:space="preserve">
     <value>Task details</value>
   </data>
-   <data name="Overall progress" xml:space="preserve">
+  <data name="Overall progress" xml:space="preserve">
     <value>Overall progress</value>
   </data>
   <data name="EditTask" xml:space="preserve">
@@ -1524,5 +1524,11 @@ This task will be moved to the Recycle Bin and can be restored later or permanen
   </data>
   <data name="RequestStatus" xml:space="preserve">
     <value>Request status</value>
+  </data>
+  <data name="Sureapprovestatus" xml:space="preserve">
+    <value>Are you sure you want to approve this request</value>
+  </data>
+  <data name="Surerejectstatus" xml:space="preserve">
+    <value>Are you sure you want to reject this request</value>
   </data>
 </root>

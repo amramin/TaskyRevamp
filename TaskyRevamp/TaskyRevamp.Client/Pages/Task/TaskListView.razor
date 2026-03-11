@@ -669,7 +669,7 @@ SearchFieldTask.PlannedProgress
                 b.OpenComponent<OverallBar>(0);
                 b.AddAttribute(1, "ActualProgress", task.ActualProcess);
                 b.AddAttribute(2, "Width", 150);
-                b.AddAttribute(3, "OnProgressChanged", EventCallback.Factory.Create<int>(this, value => OnTaskProgressChanged(task,
+                b.AddAttribute(3, "OnProgressChanged", EventCallback.Factory.Create<int>(this, value => ChangeProgressConfirmed(task,
             value)));
                 b.CloseComponent();
             }));
@@ -978,25 +978,25 @@ Guid.Parse("C8D504C7-9402-4F91-223C-08DE3318A61C"))
                 return true;
             }
     }
-    private async Task OnTaskProgressChanged(CreateTaskDto task, int value)
-    {
-        var progressold = task.ActualProcess;
-        PopupService.ShowConfirmation(@Loc["SureChangeProgress"], @Loc["Confirm"],
-        async (confirmed) =>
-        {
-            if (confirmed)
-            {
-                await ChangeProgressConfirmed(task, value);
-            }
-            else
-            {
-                task.ActualProcess = progressold;
-                StateHasChanged();
-            }
-        },
-        ConfirmationType.Other
-        );
-    }
+    // private async Task OnTaskProgressChanged(CreateTaskDto task, int value)
+    // {
+    //     var progressold = task.ActualProcess;
+    //     PopupService.ShowConfirmation(@Loc["SureChangeProgress"], @Loc["Confirm"],
+    //     async (confirmed) =>
+    //     {
+    //         if (confirmed)
+    //         {
+    //             await ChangeProgressConfirmed(task, value);
+    //         }
+    //         else
+    //         {
+    //             task.ActualProcess = progressold;
+    //             StateHasChanged();
+    //         }
+    //     },
+    //     ConfirmationType.Other
+    //     );
+    // }
     private async Task ChangeProgressConfirmed(CreateTaskDto task, int value)
     {
         task.ActualProcess = value;

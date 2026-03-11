@@ -1528,4 +1528,16 @@
   <data name="RequestStatus" xml:space="preserve">
     <value>حالة الطلب </value>
   </data>
+  <data name="approvedsuccessfully" xml:space="preserve">
+    <value>تم الموافقة على تاريخ الطلب بنجاح</value>
+  </data>
+  <data name="rejectedsuccessfully" xml:space="preserve">
+    <value>تم رفض تاريخ الطلب بنجاح</value>
+  </data>
+  <data name="Sureapprovestatus" xml:space="preserve">
+    <value>هل انت متاكد من قبول هذا الطلب</value>
+  </data>
+  <data name="Surerejectstatus" xml:space="preserve">
+    <value>هل انت متاكد من رفض هذا الطلب</value>
+  </data>
 </root>

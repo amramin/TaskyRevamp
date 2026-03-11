@@ -156,6 +156,8 @@
     public CreateTaskDto? Task { get; set; }
     [Parameter] public EventCallback OnConfirmed { get; set; }
     [Parameter] public EventCallback OnReopenTask { get; set; }
+    [Parameter] public EventCallback OnRequestNewEndDate{ get; set; }
+
     private Guid CurrentUser { get; set; }
     private int RejectionPeriod { get; set; } = 0;
     int progressold  { get; set; }
@@ -267,7 +269,7 @@
     }
     public async Task RequestChangeDueDate(CreateTaskDto task)
     {
-        PopupService.ShowNew(@<RequestChangeDueDate task="task" OnSaved="ReloadAfterSave"></RequestChangeDueDate>,Loc["RequestDueDate"]);
+        PopupService.ShowNew(@<RequestChangeDueDate task="task" OnSaved="ReloadRequestAfterSave"></RequestChangeDueDate>,Loc["RequestDueDate"]);
 
         // StateHasChanged();
 
@@ -277,6 +279,11 @@
     private async Task ReloadAfterSave()
     {
         await OnReopenTask.InvokeAsync();
+        //currentPage = page;
+    }
+    private async Task ReloadRequestAfterSave()
+    {
+        await OnRequestNewEndDate.InvokeAsync();
         //currentPage = page;
     }
     private async Task<int> GetRejectionPeriod()
