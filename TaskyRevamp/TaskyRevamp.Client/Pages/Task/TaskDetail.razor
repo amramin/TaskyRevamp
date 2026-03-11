@@ -16,53 +16,58 @@
             <div class="tab-pills flex-grow-1">
                 <TaskTabs @bind-ActiveTab="activeTab" Task="task" />
                 <div class="page-body">
-                    @if(activeTab == "attachment")
-            {
-                <TaskAttachments TaskId="TaskId" />
-            }
-            else if (activeTab == "dependency")
-            {
-                <TaskDependency Task="task" />
-            }
-            else if(activeTab == "details")
-            {
-                <TaskDescription @bind-ShowSection="showDescription" Task="task" />
-                <TaskDetails @bind-ShowSection="showDetails" Task="task" />
-                <TaskComments @bind-ShowSection="showComments" TaskId="TaskId" @ref="commentssection"/>
-            }
-            else if (activeTab == "enddate")
-            {
-                <RequestNewEndDateTaskHistory OnRequestChanged="OnRequestChanged" @bind-ShowSection="showrequest" @ref="enddatesection" Task="task" />
-            }
+                    @if (activeTab == "attachment")
+                    {
+                        <TaskAttachments TaskId="TaskId" />
+                    }
+                    else if (activeTab == "dependency")
+                    {
+                        <TaskDependency Task="task" />
+                    }
+                    else if (activeTab == "details")
+                    {
+                        <TaskDescription @bind-ShowSection="showDescription" Task="task" />
+                        <TaskDetails @bind-ShowSection="showDetails" Task="task" />
+                        <TaskComments @bind-ShowSection="showComments" TaskId="TaskId" @ref="commentssection" />
+                    }
+                    else if (activeTab == "enddate")
+                    {
+                        <RequestNewEndDateTaskHistory OnRequestChanged="OnRequestChanged" @bind-ShowSection="showrequest" @ref="enddatesection" Task="task" />
+                    }
                 </div>
             </div>
         </div>
         <div class="col-lg-4">
             <div class="page-body">
                 <TaskSidebar Task="task" OnConfirmed="LoadTask" OnReopenTask="AfterReopen" OnRequestNewEndDate="AfterRequestNewDate" />
-           </div>
             </div>
         </div>
+    </div>
 </div>
 
 @code {
     [Parameter] public Guid TaskId { get; set; }
-    [Parameter]
-    [SupplyParameterFromQuery]
-    public string? returnUrl { get; set; }
-    [Parameter]
-    public string? activeTab{ get; set; } = "details";
+    [Parameter] [SupplyParameterFromQuery]public string? returnUrl { get; set; }
+    [Parameter] public string? activeTab { get; set; } = "details";
     private CreateTaskDto task = new CreateTaskDto();
     private bool showDescription = true;
     private TaskComments commentssection;
     private RequestNewEndDateTaskHistory enddatesection;
     private bool showDetails = false;
     private bool showrequest = false;
-
     private bool showComments = true;
     private Guid currentUserId;
     private bool isCreator = false;
+    private bool firstRenderCompleted = false;
 
+    override protected async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender && task.Id != Guid.Empty && enddatesection != null)
+        {
+            firstRenderCompleted = true;
+            await enddatesection.LoadSources();
+        }
+    }
     override protected async Task OnInitializedAsync()
     {
         var userIdString = await LocalStorage.GetItemAsStringAsync("Id");
@@ -75,11 +80,6 @@
             }
         }
         await LoadTask();
-        if(task.Id != Guid.Empty)
-        {
-            await enddatesection.LoadSources();
-        }
-        //await commentssection.LoadComments();
     }
     private async Task LoadTask()
     {
@@ -91,7 +91,8 @@
             StateHasChanged();
         }
     }
-    public async Task OnRequestChanged(){
+    public async Task OnRequestChanged()
+    {
         await LoadTask();
     }
     private void GoBack()

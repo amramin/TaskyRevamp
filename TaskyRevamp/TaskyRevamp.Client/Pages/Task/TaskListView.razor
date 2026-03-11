@@ -871,7 +871,7 @@ SearchFieldTask.PlannedProgress
         }
         await GetTasks();
     }
-    private void ViewTaskDetails(Guid id) => navigationManager.NavigateTo($"/task/details/{id}");
+    private void ViewTaskDetails(Guid id) => navigationManager.NavigateTo($"/task/details/{id}/details");
     public async Task GetTasks(bool isSearch = false, string searchTerm = null!)
     {
         var res = await _taskConsumer.GetTasks(currentPage, pageSize, currentSortColumn, sortAscending!.Value, isSearch ?
