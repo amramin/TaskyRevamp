@@ -1933,6 +1933,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Keep the original assignee.
+        /// </summary>
+        public static string KeepOriginalAssignee {
+            get {
+                return ResourceManager.GetString("KeepOriginalAssignee", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to You can select the report language that will be sent via email..
         /// </summary>
         public static string languageHint {
@@ -2761,6 +2770,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Reassign to the task creator.
+        /// </summary>
+        public static string ReassignToCreator {
+            get {
+                return ResourceManager.GetString("ReassignToCreator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Recycle bin.
         /// </summary>
         public static string RecycleBin {
@@ -2856,6 +2874,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string ReminderDateBetweenStartAndEnd {
             get {
                 return ResourceManager.GetString("ReminderDateBetweenStartAndEnd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remove selected Items.
+        /// </summary>
+        public static string RemoveSelectedItems {
+            get {
+                return ResourceManager.GetString("RemoveSelectedItems", resourceCulture);
             }
         }
         
@@ -3000,6 +3027,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string Restore {
             get {
                 return ResourceManager.GetString("Restore", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Task restored successfully.
+        /// </summary>
+        public static string restoredsuccessfully {
+            get {
+                return ResourceManager.GetString("restoredsuccessfully", resourceCulture);
             }
         }
         
@@ -3491,6 +3527,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to restore this task? .
+        /// </summary>
+        public static string SureRestore {
+            get {
+                return ResourceManager.GetString("SureRestore", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Active Directory Sync.
         /// </summary>
         public static string SyncUsers {
@@ -3608,11 +3653,29 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to delete these tasks? .
+        /// </summary>
+        public static string TasksSure {
+            get {
+                return ResourceManager.GetString("TasksSure", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Task status.
         /// </summary>
         public static string TaskStatus {
             get {
                 return ResourceManager.GetString("TaskStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to delete this task? .
+        /// </summary>
+        public static string TaskSure {
+            get {
+                return ResourceManager.GetString("TaskSure", resourceCulture);
             }
         }
         

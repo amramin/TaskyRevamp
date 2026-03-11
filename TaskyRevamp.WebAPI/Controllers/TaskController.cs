@@ -46,6 +46,11 @@ public class TaskController : ControllerBase
     {
         return Ok(await _mediator.Send(new ReopenTaskCommand(TaskCommentDto)));
     }
+    [HttpGet("RestoreTask/{taskId}/{restoreOption}")]
+    public async Task<IActionResult> RestoreTask(Guid taskId, int restoreOption)
+    {
+        return Ok(await _mediator.Send(new RestoreTaskCommand(taskId, restoreOption)));
+    }
     [HttpPost("RejectTask")]
     public async Task<IActionResult> RejectTask([FromBody] TaskCommentDto TaskCommentDto)
     {
@@ -93,6 +98,16 @@ public class TaskController : ControllerBase
     public async Task<IActionResult> SoftDelete(Guid id, Guid userId)
     {
         return Ok(await _mediator.Send(new SoftDeleteTaskCommand(id, userId)));
+    }
+    [HttpDelete("DeleteTask/{id}")]
+    public async Task<IActionResult> DeleteTask(Guid id)
+    {
+        return Ok(await _mediator.Send(new DeleteTaskCommand(id)));
+    }
+    [HttpDelete("DeleteTasks")]
+    public async Task<IActionResult> DeleteTasks([FromQuery] List<Guid> ids)
+    {
+        return Ok(await _mediator.Send(new DeleteTasksCommand(ids)));
     }
 
     [HttpPost("GetAllTask")]

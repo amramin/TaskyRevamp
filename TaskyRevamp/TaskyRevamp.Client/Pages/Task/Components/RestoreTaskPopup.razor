@@ -1,0 +1,80 @@
+﻿@using TaskyRevamp.Client.Consumer
+@using TaskyRevamp.Client.Services
+@inject TaskConsumer _taskConsumer
+@inject ToastService ToastService
+@inject PopupService PopupService
+@inject IStringLocalizer<SharedResources> Loc
+
+@if (Show)
+{
+    <div class="modal fade show d-block" style="background: rgba(0,0,0,.5);">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button class="btn-close" @onclick="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <InputRadioGroup @bind-Value="selectedRestoreOption">
+                        <div class="form-check mb-3">
+                            <InputRadio class="form-check-input" Value="@RestoreOption.KeepOriginalAssignee" />
+                            <label class="form-check-label">
+                                <b>@Loc["KeepOriginalAssignee"]</b>
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <InputRadio class="form-check-input" Value="@RestoreOption.ReassignToCreator" />
+                            <label class="form-check-label">
+                                <b>@Loc["ReassignToCreator"]</b>
+                            </label>
+                        </div>
+                    </InputRadioGroup>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" @onclick="Close">@Loc["Cancel"]</button>
+                    <button class="btn btn-primary" @onclick="RestoreTask">@Loc["Restore"]</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+
+    [Parameter] public bool Show { get; set; }
+    [Parameter] public Guid TaskId { get; set; }
+    [Parameter] public EventCallback<bool> ShowChanged { get; set; }
+    [Parameter] public EventCallback OnRestored { get; set; }
+    private RestoreOption selectedRestoreOption = RestoreOption.KeepOriginalAssignee;
+
+    private async Task RestoreTask()
+    {
+        Show = false;
+        PopupService.ShowConfirmation(@Loc["SureRestore"], @Loc["Restore"],
+                async (confirmed) =>
+                {
+                    if (confirmed)
+                        await ConfirmRestore();
+                }, ConfirmationType.Other);
+    }
+    private async Task ConfirmRestore()
+    {
+        var res = await _taskConsumer.RestoreTask(TaskId, (int)selectedRestoreOption);
+        if (res.Success)
+        {
+            await ToastService.ShowToastAsync(Loc["restoredsuccessfully"], "success");
+            await OnRestored.InvokeAsync();
+        }
+        await Close();
+    }
+    private async Task Close()
+    {
+        Show = false;
+        await ShowChanged.InvokeAsync(false);
+    }
+    public enum RestoreOption
+    {
+        KeepOriginalAssignee = 1,
+        ReassignToCreator = 2
+    }
+}

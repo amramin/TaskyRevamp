@@ -2,15 +2,17 @@
 @inject IStringLocalizer<SharedResources> Loc
 
 
-    <div class="card empty-page">
-        <div class="card-body">
-            <span class="vector">
-                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.EmptyPageVector"></SVGCrud>
-            </span>
-            <div class="content">
-                <h5 class="headline-5">@MessageTitle</h5>
-                <p class="small-medium-text">@MessageSubtitle</p>
-            </div>
+<div class="card empty-page">
+    <div class="card-body">
+        <span class="vector">
+            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.EmptyPageVector"></SVGCrud>
+        </span>
+        <div class="content">
+            <h5 class="headline-5">@MessageTitle</h5>
+            <p class="small-medium-text">@MessageSubtitle</p>
+        </div>
+        @if (!string.IsNullOrEmpty(ButtonText))
+        {
             <div class="action-btn-list">
                 <button class="btn btn-lg btn-primary" @onclick="OnButtonClick">
                     <span class="icon">
@@ -19,8 +21,9 @@
                     @ButtonText
                 </button>
             </div>
-        </div>
+        }
     </div>
+</div>
 
 
 @code {

@@ -258,7 +258,8 @@ public class TaskItem : Entity, IHasCreationMetaData, IHasUpdateMetaData
 			SourceId = TaskSourceId,
 			TypeId = TaskTypeId,
 			AssignedIds = AssignedIds?.ToList() ?? new List<Guid>(),
-			AssignedDepartmentIds = AssignedDepartmentIds?.ToList() ?? new List<Guid>()
+			AssignedDepartmentIds = AssignedDepartmentIds?.ToList() ?? new List<Guid>(),
+			IsDeleted = IsDeleted
 		};
 	}
 	public void UpdateDescription(string desc, User by)
