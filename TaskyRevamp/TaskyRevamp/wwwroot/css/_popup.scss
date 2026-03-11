@@ -100,35 +100,55 @@
     --bs-offcanvas-width: 90vw;
   }
 }
+.offcanvas-backdrop {
+  background-color: rgba(var(--modal-bg), 1);
+  opacity: 0.7;
+}
 /* end offcabvas popup */
 /* start confirmation-popup*/
 .modal {
-  .modal-content.confirmation-popup {
+  background-color: rgba(var(--modal-bg), 0.7);
+  .modal-content {
     margin: auto;
     border-radius: 1rem;
-    .modal-body {
-      padding: 2.5rem 1.5rem;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-      .confirm-icon {
-        svg {
-          width: 4.5rem;
-          height: 4.5rem;
-          color: var(--primary-color);
-        }
-        margin-bottom: 1rem;
+    border: 0;
+    box-shadow: var(--shadow-modal);
+    .modal-header {
+      border-bottom: 0;
+      .btn-close{
+background-size:0.75rem;
       }
-      border-radius: 1rem;
+      .modal-title {
+        font-weight: 600;
+        color: var(--dark-800);
+      }
     }
+    &.confirmation-popup {
+      .modal-body {
+        padding: 2.5rem 1.5rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        .confirm-icon {
+          svg {
+            width: 4.5rem;
+            height: 4.5rem;
+            color: var(--primary-color);
+          }
+          margin-bottom: 1rem;
+        }
+        border-radius: 1rem;
+      }
+      @media (min-width: 400px) {
+        max-width: 330px;
+      }
+    }
+
     .modal-footer {
       border-top: 0;
 
       padding-bottom: 2.5rem;
-    }
-    @media (min-width: 400px) {
-      max-width: 330px;
     }
   }
 }

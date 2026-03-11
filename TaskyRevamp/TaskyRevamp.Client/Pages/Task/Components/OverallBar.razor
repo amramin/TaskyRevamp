@@ -9,7 +9,7 @@
         </div>
         <div class="d-flex align-items-center gap-2">
 
-            <div class="progress position-relative" style="width:@($"{Width}px");
+            <div class="progress position-relative" style="width:@($"{Width}%");
                 cursor:@(IsEditable ? "pointer" : "default")" @onmousedown="OnMouseDown">
                 <div class="progress-bar  @(IsComplete ? "completed" : "")" role="progressbar"
                      style="width:@($"{ProgressValue}%")" aria-valuemin="0" aria-valuemax="100">

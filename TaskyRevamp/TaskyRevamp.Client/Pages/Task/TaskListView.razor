@@ -26,16 +26,21 @@
     <div class="card table-card collaped-task-card">
         <div class="table-caption cursor-pointer justify-content-between @(IsCollapse ? "collapsed" : "")"
              @onclick="Collapse">
-            <div class="d-flex align-items-center gap-1">
-                @if (ViewType != (int)ViewTypes.OverAllView)
-                {
-                    <span class="chevron-icon">
-                        <SVGCrud SVGType="@(IsCollapse? SVGCrud.SVGTypeEnum.ChevronEnd : SVGCrud.SVGTypeEnum.ChevronDown)" />
-                    </span>
-                }
-                <span class="text"> @Title</span>
+            <div class="col-md-8">
+                <div class="d-flex align-items-center gap-1">
+                    @if (ViewType != (int)ViewTypes.OverAllView)
+                    {
+                        <span class="chevron-icon">
+                            <SVGCrud
+                            SVGType="@(IsCollapse? SVGCrud.SVGTypeEnum.ChevronEnd : SVGCrud.SVGTypeEnum.ChevronDown)" />
+                        </span>
+                    }
+                    <span class="text"> @Title</span>
+                </div>
             </div>
-            <OverallBar Tasks="allTaks" Width="300"></OverallBar>
+            <div class="col-md-3">
+                <OverallBar Tasks="allTaks" Width="100"></OverallBar>
+            </div>
         </div>
         @if (allTaks != null && allTaks.Any())
         {
@@ -83,7 +88,7 @@
                                                     </li>
                                                 }
                                                 @if ((task.ActualProcess == 100 && task.TaskStatus ==
-                                                                                                                                    Guid.Parse("6EE4574D-C439-45B4-223A-08DE3318A61C")))
+                                                                                    Guid.Parse("6EE4574D-C439-45B4-223A-08DE3318A61C")))
                                                 {
                                                     <li>
                                                         <button class="dropdown-item" @onclick="@(() => CompleteTask(task.Id))">
@@ -95,7 +100,7 @@
                                                     </li>
                                                 }
                                                 @if (task.ActualProcess == 100 && task.TaskStatus ==
-                                                                                                                                    Guid.Parse("6EE4574D-C439-45B4-223A-08DE3318A61C"))
+                                                                                    Guid.Parse("6EE4574D-C439-45B4-223A-08DE3318A61C"))
                                                 {
                                                     <li>
                                                         <button class="dropdown-item" @onclick="@(() => OnReopen.InvokeAsync(task.Id))">
@@ -117,11 +122,12 @@
                                                         </button>
                                                     </li>
                                                 }
-          
+
                                                 @if (IsRequestNewEndDate(task))
                                                 {
                                                     <li>
-                                                        <button class="dropdown-item" @onclick="@(() => OnRequestChangeDueDate.InvokeAsync(task))">
+                                                        <button class="dropdown-item"
+                                                                @onclick="@(() => OnRequestChangeDueDate.InvokeAsync(task))">
                                                             <span class="icon">
                                                                 <SVGCrud SVGType="SVGCrud.SVGTypeEnum.CalnderPluse"></SVGCrud>
                                                             </span>
@@ -433,11 +439,11 @@ new() { Field = "Planned Weight", DisplayName =Loc["PlannedWeight"], Order = 18,
     private void DeleteTask(Guid id)
     {
         PopupService.ShowConfirmation(@Loc["SureDeleteTask"], @Loc["Confirm"],
-                async (confirmed) =>
-                {
-                    if (confirmed)
-                        await DeleteConfirmed(id);
-                }, ConfirmationType.Danger);
+        async (confirmed) =>
+        {
+            if (confirmed)
+                await DeleteConfirmed(id);
+        }, ConfirmationType.Danger);
     }
     private async Task DeleteConfirmed(Guid Id)
     {
@@ -637,19 +643,19 @@ SearchFieldTask.PlannedProgress
                     builder.AddAttribute(13, "ItemTemplate",
                 (RenderFragment<PriorityDto>)((context) => (itemBuilder) =>
                 {
-                    itemBuilder.OpenElement(0, "div");
-                    itemBuilder.AddAttribute(1, "class", "");
+        itemBuilder.OpenElement(0, "div");
+        itemBuilder.AddAttribute(1, "class", "");
 
-                    itemBuilder.OpenElement(2, "span");
-                    itemBuilder.AddAttribute(3, "class", "badge");
-                    itemBuilder.AddAttribute(4, "style",
-                $"background-color:{context.BackgroundColor};color:{context.NameColor};");
+        itemBuilder.OpenElement(2, "span");
+        itemBuilder.AddAttribute(3, "class", "badge");
+        itemBuilder.AddAttribute(4, "style",
+    $"background-color:{context.BackgroundColor};color:{context.NameColor};");
 
-                    itemBuilder.AddContent(5, context.Name);
+        itemBuilder.AddContent(5, context.Name);
 
-                    itemBuilder.CloseElement(); // span
-                    itemBuilder.CloseElement(); // div
-                }));
+        itemBuilder.CloseElement(); // span
+        itemBuilder.CloseElement(); // div
+    }));
                     builder.CloseComponent();
                     builder.CloseElement();
                 }
@@ -666,13 +672,14 @@ SearchFieldTask.PlannedProgress
             case "Actual progress":
                 builder.AddContent(0, (RenderFragment)(b =>
             {
-                b.OpenComponent<OverallBar>(0);
-                b.AddAttribute(1, "ActualProgress", task.ActualProcess);
-                b.AddAttribute(2, "Width", 150);
+        b.OpenComponent<OverallBar>(0);
+        b.AddAttribute(1, "ActualProgress", task.ActualProcess);
+        b.AddAttribute(2, "Width", 150);
                 b.AddAttribute(3, "OnProgressChanged", EventCallback.Factory.Create<int>(this, value => ChangeProgressConfirmed(task,
-            value)));
-                b.CloseComponent();
-            }));
+
+    value)));
+        b.CloseComponent();
+    }));
                 break;
             case "Start Date":
                 builder.AddContent(0, task.StartDate?.ToString(Loc["LocalizeDate"]));
@@ -689,12 +696,12 @@ SearchFieldTask.PlannedProgress
             case "Assigned To":
                 builder.AddContent(0, (RenderFragment)(b =>
             {
-                b.OpenComponent<Initials>(0);
-                b.AddAttribute(1, "Names", task.AssigneduserNames);
-                b.AddAttribute(2, "Size", 32);
-                b.AddAttribute(3, "Black", true);
-                b.CloseComponent();
-            }));
+        b.OpenComponent<Initials>(0);
+        b.AddAttribute(1, "Names", task.AssigneduserNames);
+        b.AddAttribute(2, "Size", 32);
+        b.AddAttribute(3, "Black", true);
+        b.CloseComponent();
+    }));
                 break;
             case "Assigned To Department":
 
@@ -702,9 +709,9 @@ SearchFieldTask.PlannedProgress
                 builder.AddAttribute(1, "class", "department-cell");
 
                 var departments = task.AssignedDepartmentName?
-                    .Split(',', StringSplitOptions.RemoveEmptyEntries)
-                    .Select(x => x.Trim())
-                    .ToList() ?? new List<string>();
+            .Split(',', StringSplitOptions.RemoveEmptyEntries)
+            .Select(x => x.Trim())
+            .ToList() ?? new List<string>();
 
                 if (departments.Any())
                 {
@@ -816,12 +823,12 @@ SearchFieldTask.PlannedProgress
             case "Created By":
                 builder.AddContent(0, (RenderFragment)(b =>
             {
-                b.OpenComponent<Initials>(0);
-                b.AddAttribute(1, "Names", task.CreatedByName);
-                b.AddAttribute(2, "Size", 32);
-                b.AddAttribute(3, "Black", true);
-                b.CloseComponent();
-            }));
+        b.OpenComponent<Initials>(0);
+        b.AddAttribute(1, "Names", task.CreatedByName);
+        b.AddAttribute(2, "Size", 32);
+        b.AddAttribute(3, "Black", true);
+        b.CloseComponent();
+    }));
                 break;
             case "Duration":
                 builder.AddContent(0, task.Duration);
@@ -956,9 +963,9 @@ SearchFieldTask.PlannedProgress
         {
 
             if ((DateOnly.FromDateTime(taskDto.CreateDate ?? DateTime.Now).AddDays(RejectionPeriod) <
-DateOnly.FromDateTime(DateTime.Now)) || !(taskDto.AssignedIds!.Contains(CurrentUser))
+            DateOnly.FromDateTime(DateTime.Now)) || !(taskDto.AssignedIds!.Contains(CurrentUser))
             || taskDto.TaskStatus == Guid.Parse("6EE4574D-C439-45B4-223A-08DE3318A61C") || taskDto.TaskStatus ==
-Guid.Parse("C8D504C7-9402-4F91-223C-08DE3318A61C"))
+            Guid.Parse("C8D504C7-9402-4F91-223C-08DE3318A61C"))
 
             {
                 return false;
@@ -969,14 +976,19 @@ Guid.Parse("C8D504C7-9402-4F91-223C-08DE3318A61C"))
             }
         }
     }
-    private bool IsRequestNewEndDate(CreateTaskDto taskDto){
-        if(!(taskDto.AssignedIds!.Contains(CurrentUser))
-            || taskDto.TaskStatus == Guid.Parse("6EE4574D-C439-45B4-223A-08DE3318A61C") || taskDto.TaskStatus == Guid.Parse("C8D504C7-9402-4F91-223C-08DE3318A61C")||
-        taskDto.ChangeEndDateRequestCount>0){
-                return false;
-            }else{
-                return true;
-            }
+    private bool IsRequestNewEndDate(CreateTaskDto taskDto)
+    {
+        if (!(taskDto.AssignedIds!.Contains(CurrentUser))
+        || taskDto.TaskStatus == Guid.Parse("6EE4574D-C439-45B4-223A-08DE3318A61C") || taskDto.TaskStatus ==
+        Guid.Parse("C8D504C7-9402-4F91-223C-08DE3318A61C") ||
+        taskDto.ChangeEndDateRequestCount > 0)
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
     }
     // private async Task OnTaskProgressChanged(CreateTaskDto task, int value)
     // {
@@ -1048,7 +1060,7 @@ Guid.Parse("C8D504C7-9402-4F91-223C-08DE3318A61C"))
     {
         var today = DateOnly.FromDateTime(DateTime.Now).DayNumber;
         var expiry = DateOnly.FromDateTime(task.CreateDate ?? DateTime.Now)
-                             .AddDays(RejectionPeriod).DayNumber;
+        .AddDays(RejectionPeriod).DayNumber;
 
         var res = expiry - today;
         if (res == 1)
