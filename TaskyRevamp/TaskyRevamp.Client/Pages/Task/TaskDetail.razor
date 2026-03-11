@@ -47,22 +47,27 @@
 
 @code {
     [Parameter] public Guid TaskId { get; set; }
-    [Parameter]
-    [SupplyParameterFromQuery]
-    public string? returnUrl { get; set; }
-    [Parameter]
-    public string? activeTab { get; set; } = "details";
+    [Parameter] [SupplyParameterFromQuery]public string? returnUrl { get; set; }
+    [Parameter] public string? activeTab { get; set; } = "details";
     private CreateTaskDto task = new CreateTaskDto();
     private bool showDescription = true;
     private TaskComments commentssection;
     private RequestNewEndDateTaskHistory enddatesection;
     private bool showDetails = false;
     private bool showrequest = false;
-
     private bool showComments = true;
     private Guid currentUserId;
     private bool isCreator = false;
+    private bool firstRenderCompleted = false;
 
+    override protected async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender && task.Id != Guid.Empty && enddatesection != null)
+        {
+            firstRenderCompleted = true;
+            await enddatesection.LoadSources();
+        }
+    }
     override protected async Task OnInitializedAsync()
     {
         var userIdString = await LocalStorage.GetItemAsStringAsync("Id");
@@ -75,11 +80,6 @@
             }
         }
         await LoadTask();
-        if (task.Id != Guid.Empty)
-        {
-            await enddatesection.LoadSources();
-        }
-        //await commentssection.LoadComments();
     }
     private async Task LoadTask()
     {

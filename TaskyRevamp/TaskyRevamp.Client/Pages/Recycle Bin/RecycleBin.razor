@@ -141,7 +141,7 @@ else
         }
         retentionDays = GetRetentionDays();
     }
-    private void ViewTaskDetails(Guid id) => navigationManager.NavigateTo($"/task/details/{id}");
+    private void ViewTaskDetails(Guid id) => navigationManager.NavigateTo($"/task/details/{id}/details");
     private async Task ChangePage(int page)
     {
         currentPage = page;
