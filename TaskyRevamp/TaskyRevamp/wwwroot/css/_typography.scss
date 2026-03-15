@@ -60,6 +60,14 @@
   font-size: 0.875rem;
   padding: 0.65rem 0.5rem;
   font-weight: 500;
+  &.badge-sm {
+    font-size: 0.75rem;
+    padding: 0.25rem 0.5rem;
+  }
+  &.badge-light {
+    color: var(--dark-600);
+    background-color: var(--light-200);
+  }
 }
 /* strat alert*/
 /* strat alert*/

@@ -1464,6 +1464,9 @@
   <data name="NoComments" xml:space="preserve">
     <value>No comments have been added</value>
   </data>
+  <data name="Comments will appear after add first comment" xml:space="preserve">
+    <value>Comments will appear after add first comment</value>
+  </data>
   <data name="cannotdeactivate" xml:space="preserve">
     <value>You cannot deactivate the system’s default login page.</value>
   </data>

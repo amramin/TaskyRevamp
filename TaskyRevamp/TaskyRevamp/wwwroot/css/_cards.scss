@@ -415,7 +415,15 @@
     }
   }
 }
-
+.no-comments{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  .icon{
+    color:var(--light-300);
+    margin-bottom:1rem;
+  }
+}
 /* Connecting each child up to the horizontal line */
 // .hierarchy-node:not(:only-child)::before {
 //   content: "";

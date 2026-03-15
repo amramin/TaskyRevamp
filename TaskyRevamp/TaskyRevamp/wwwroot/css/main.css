@@ -1116,6 +1116,9 @@ html[dir=rtl] .progress-overall-bar .circle {
   stroke: var(--primary-color);
 }
 
+.file-uploader {
+  width: 100%;
+}
 .file-uploader input {
   display: none;
 }
@@ -1134,10 +1137,10 @@ html[dir=rtl] .progress-overall-bar .circle {
   gap: 0.75rem;
   width: 100%;
   border: 1px dashed var(--light-400);
-  border-radius: 0.375rem;
+  border-radius: var(--bs-border-radius);
   padding: 1rem;
   text-align: center;
-  font-size: 0.75rem;
+  font-size: 0.875rem;
   font-weight: 500;
   color: var(--dark-900);
 }
@@ -1147,9 +1150,25 @@ html[dir=rtl] .progress-overall-bar .circle {
   display: inline-block;
 }
 .file-uploader input + label .icon {
-  color: var(--dark-700);
-  width: 3rem;
-  height: 3rem;
+  color: var(--dark-800);
+  width: 2.5rem;
+  height: 2.5rem;
+  background-color: var(--light-200);
+  border: 2px solid var(--light-300);
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  border-radius: 50%;
+}
+.file-uploader input + label .icon svg {
+  width: 1rem;
+  height: 1rem;
 }
 
 .form-label {
@@ -1624,11 +1643,11 @@ html[dir=rtl] .progress-overall-bar .circle {
 }
 
 .btn-light {
-  background-color: var(--light-btn);
+  background-color: var(--light-200);
   color: var(--dark-900);
 }
 .btn-light:hover {
-  background-color: var(--light-200);
+  background-color: var(--light-btn);
   border: 1px solid var(--primary-color);
   color: var(--primary-color);
 }
@@ -1644,11 +1663,11 @@ html[dir=rtl] .progress-overall-bar .circle {
 }
 
 .btn-light-pimary {
-  background-color: var(--light-btn);
+  background-color: var(--light-200);
   color: var(--primary-color);
 }
 .btn-light-pimary:hover {
-  background-color: var(--light-200);
+  background-color: var(--light-btn);
   border: 1px solid var(--primary-color);
   color: var(--primary-color);
 }
@@ -1847,6 +1866,14 @@ fieldset:disabled .btn {
   font-size: 0.875rem;
   padding: 0.65rem 0.5rem;
   font-weight: 500;
+}
+.badge.badge-sm {
+  font-size: 0.75rem;
+  padding: 0.25rem 0.5rem;
+}
+.badge.badge-light {
+  color: var(--dark-600);
+  background-color: var(--light-200);
 }
 
 /* strat alert*/
@@ -2692,6 +2719,23 @@ fieldset:disabled .btn {
   border-radius: var(--bs-border-radius);
 }
 
+.no-comments {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+.no-comments .icon {
+  color: var(--light-300);
+  margin-bottom: 1rem;
+}
+
 /* Connecting each child up to the horizontal line */
 .dropdown-menu {
   z-index: 2000;
@@ -2848,6 +2892,8 @@ fieldset:disabled .btn {
 .dependency-dropdown .dropdown-menu,
 .department-dropdown .dropdown-menu {
   width: 400px;
+  max-height: 240px;
+  overflow: auto;
 }
 .dependency-dropdown .dropdown-menu .dropdown-item,
 .department-dropdown .dropdown-menu .dropdown-item {
@@ -2875,6 +2921,7 @@ fieldset:disabled .btn {
   color: var(--dark-700);
   font-size: 0.875rem;
   font-weight: 500;
+  cursor: pointer;
 }
 .tab-pills .nav .nav-link svg {
   width: 1rem;
@@ -3468,6 +3515,11 @@ fieldset:disabled .btn {
   direction: rtl;
 }
 
+.icon-32 svg {
+  width: 2rem;
+  height: 2rem;
+}
+
 /* start Global */
 .logo {
   max-height: 3.5rem;
@@ -3530,10 +3582,23 @@ ul {
   display: block;
 }
 
+.info-item {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  gap: 0.5rem;
+  -webkit-box-align: start;
+      -ms-flex-align: start;
+          align-items: start;
+}
+.info-item .text-content {
+  max-width: calc(100% - 2.75rem);
+}
+
 .squer-medium-icon {
   background-color: var(--light-200);
   border: 1px solid var(--light-300);
-  border-radius: calc(var(--bs-border-radius) - 2);
+  border-radius: var(--bs-border-radius);
   color: var(--dark-500);
   display: -webkit-box;
   display: -ms-flexbox;
@@ -3544,6 +3609,8 @@ ul {
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
 }
 .squer-medium-icon svg {
   width: 1rem;

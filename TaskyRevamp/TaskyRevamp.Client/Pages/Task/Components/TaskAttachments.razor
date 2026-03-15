@@ -11,35 +11,30 @@
 
 <div class="card">
     <div class="card-body">
-        <h5 class="card-title mb-4">@Loc["Attachments"]</h5>
+        <h5 class="headline-6 mb-4">@Loc["Attachments"]</h5>
 
-        <div id="dropZone" class="border border-2 border-dashed rounded p-5 text-center mb-4" style="background-color: #f8f9fa;">
-            <button class="btn btn-link text-secondary p-1">
+        <div id="dropZone" class="file-uploader">
+            <InputFile id="fileInput"
+            OnChange="HandleFileSelected" 
+            multiple                     
+            accept=".pdf,.docx,.doc,.ppt,.pptx,.jpeg,.jpg,.png,.txt,.csv,.json,.xml" />
+            <label for="fileInput">
                 <span class="icon">
                     <SVGCrud SVGType="SVGCrud.SVGTypeEnum.FileUpload"></SVGCrud>
                 </span>
-            </button>
-            <p class="mb-2">
-                @Loc["Drag and Drop or"],
-                <label for="fileInput" class="text-primary" style="cursor: pointer; text-decoration: underline;">
-                    @Loc["AddAttachment"]
-                </label>
-            </p>
-            <InputFile id="fileInput"
-                       OnChange="HandleFileSelected"
-                       multiple
-                       class="d-none"
-                       accept=".pdf,.docx,.doc,.ppt,.pptx,.jpeg,.jpg,.png,.txt,.csv,.json,.xml" />
-            <div class="mt-3">
-                <small class="text-muted d-block mb-1">
-                    <i class="bi bi-info-circle me-1"></i>
-                    @Loc["MaxSize"]: <strong>50 MB</strong>
-                </small>
-                <small class="text-muted">
-                    <i class="bi bi-file-earmark me-1"></i>
-                    @Loc["SupportedTypes"]: PDF, DOCX, DOC, PPT, PPTX, JPEG, PNG, TXT, CSV, JSON, XML
-                </small>
-            </div>
+                <div>
+                    @Loc["Drag and Drop or"],
+                    <span class="primary"> @Loc["AddAttachment"]</span>
+                </div>
+                <div >
+                    <small class="text-muted d-block mb-1">
+                        @Loc["MaxSize"]: <strong>50 MB</strong>
+                    </small>
+                    <small class="text-muted">
+                        @Loc["SupportedTypes"]: PDF, DOCX, DOC, PPT, PPTX, JPEG, PNG, TXT, CSV, JSON, XML
+                    </small>
+                </div>
+            </label>
         </div>
 
         @if (uploadErrors.Any())
@@ -94,8 +89,7 @@
                         <div class="d-flex gap-2">
                             @if (_fileManagementService.CanPreview(attachment.AttachmentDto.FileName))
                             {
-                                <button class="btn btn-link text-primary p-1"
-                                        @onclick="() => PreviewFile(attachment.AttachmentDto)"
+                                <button class="btn btn-link text-primary p-1"                                        @onclick="() => PreviewFile(attachment.AttachmentDto)"
                                         title="@Loc["Preview"]">
                                     <span class="icon">
                                         <SVGCrud SVGType="SVGCrud.SVGTypeEnum.OpenEye"></SVGCrud>
@@ -103,17 +97,15 @@
                                 </button>
                             }
                             <button class="btn btn-link text-secondary p-1"
-                                    @onclick="() => DownloadFile(attachment.AttachmentDto)"
-                                    title="@Loc["Download"]">
+                                    @onclick="() => DownloadFile(attachment.AttachmentDto)"                                    title="@Loc["Download"]">
                                 <span class="icon">
                                     <SVGCrud SVGType="SVGCrud.SVGTypeEnum.ArrowDown"></SVGCrud>
                                 </span>
                             </button>
                             @if (taskDto.TaskStatus != Guid.Parse("C8D504C7-9402-4F91-223C-08DE3318A61C"))
                             {
-                                <button class="btn btn-link text-danger p-1"
-                                @onclick="() => DeleteFile(attachment)"
-                                title="@Loc["Delete"]">
+                                <button class="btn btn-link text-danger p-1"                                @onclick="() => DeleteFile(attachment)"
+                                        title="@Loc["Delete"]">
                                     <span class="icon">
                                         <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Reject"></SVGCrud>
                                     </span>
@@ -156,7 +148,7 @@
         if (res.Success && res.Data != null)
             attachmentsDto = res.Data;
         var taskRes = await _taskConsumer.GetTaskById(TaskId);
-        if(taskRes.Success && taskRes.Data != null)
+        if (taskRes.Success && taskRes.Data != null)
             taskDto = taskRes.Data;
     }
     private async Task HandleFileSelected(InputFileChangeEventArgs args)
@@ -240,7 +232,8 @@
     {
         if (confirmed && selectedAttachment != null)
         {
-            var result = await _taskAttachmentConsumer.DeleteAttachment(selectedAttachment.AttachmentDto.Id, selectedAttachment.AttachmentDto.FileId);
+            var result = await _taskAttachmentConsumer.DeleteAttachment(selectedAttachment.AttachmentDto.Id,
+selectedAttachment.AttachmentDto.FileId);
             if (result.Success)
             {
                 attachmentsDto.Remove(selectedAttachment);

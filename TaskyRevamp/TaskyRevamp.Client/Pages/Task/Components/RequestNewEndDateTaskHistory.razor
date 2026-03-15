@@ -8,7 +8,7 @@
 @inject ILocalStorageService LocalStorageService
 @inject PopupService PopupService
 @inject ToastService ToastService
-    <div class="page-body">
+   
         <div class="table-responsive sticky-header-custom">
 
     <SortableTable TItem="ChangeEndDateRequestDto"
@@ -52,7 +52,7 @@
     <Pagination CurrentPage="@currentPage" TotalPages="@totalPages" TotalCount="@totalCount" PageSize="@pageSize"
                 PageChanged="ChangePage" PageSizeChangedCallback="ChangePageSize" />
 
-</div>
+
 
 @code {
     [Parameter]
