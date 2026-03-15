@@ -10,13 +10,13 @@ using TaskyRevamp.Domain.Models.Task;
 
 namespace TaskyRevamp.Infrastructure.Configurations;
 
-internal class TaskAssigneesConfiguration : IEntityTypeConfiguration<TaskAssignees>
+internal class TaskAssigneesConfiguration : IEntityTypeConfiguration<TaskAssignee>
 {
-    public void Configure(EntityTypeBuilder<TaskAssignees> builder)
+    public void Configure(EntityTypeBuilder<TaskAssignee> builder)
     {
         builder
-   .HasOne(te => te.task)
-   .WithMany(tt => tt.Assignees).HasForeignKey(t => t.taskId)
+   .HasOne(te => te.TaskItem)
+   .WithMany(tt => tt.TaskAssignees).HasForeignKey(t => t.TaskItemId)
    .OnDelete(DeleteBehavior.Restrict); // or NoAction in EF Core 5+
 
         builder

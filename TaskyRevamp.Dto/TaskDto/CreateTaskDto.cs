@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TaskyRevamp.Dto.ChangeEndDateRequest;
 using TaskyRevamp.Dto.GeneralDto;
+using TaskyRevamp.Dto.TaskAssignees;
 using TaskyRevamp.Dto.TaskAttachment;
 using TaskyRevamp.Dto.TaskViews;
 using TaskyRevamp.Localization.Resources;
@@ -47,6 +48,7 @@ public class CreateTaskDto
     public string? AssignedDepartmentName { set; get; }
 	//[Required(ErrorMessageResourceType = typeof(SharedResources), ErrorMessageResourceName = ValidationDto.Required)]
 	public List<Guid>? AssignedIds { set; get; }
+    public List<TaskAssigneeDataDto>? AssigneesData { set; get; }
     public List<Guid>? Dependencies { set; get; }
     public Guid? CreatedBy { get; set; }
     public string? CreatedByName { get; set; }

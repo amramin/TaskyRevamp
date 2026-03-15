@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using TaskyRevamp.Domain.Interfaces;
 using TaskyRevamp.Domain.Models.Users;
@@ -6,10 +7,12 @@ using TaskyRevamp.Dto.TaskAssignees;
 
 namespace TaskyRevamp.Domain.Models.Task;
 
-public class TaskAssignees : Entity, IHasCreationMetaData
+public class TaskAssignee : Entity, IHasCreationMetaData
 {
-    public Guid taskId {  get; set; }
-    public  TaskItem task;
+    [ForeignKey(nameof(TaskItem))]
+    public Guid TaskItemId {  get; set; }
+    public TaskItem TaskItem { get; set; }
+    [ForeignKey(nameof(User))]
 
     public Guid UserId { get; set; }
     public User User { get; set; }
@@ -21,27 +24,30 @@ public class TaskAssignees : Entity, IHasCreationMetaData
     public string? RejectReason { get; set; }
     public Guid CreatedById { get ; set ; }
     public DateTime CreateDate { get ; set ; }
+    public DateTime AssigneeDate { get; set; }
+
     public User CreatedBy { get ; set ; }
 
-    internal TaskAssignees(TaskItem tsk)
+    internal TaskAssignee(TaskItem tsk)
     {
-        task = tsk;
+        TaskItem = tsk;
     }
 
-    public TaskAssignees()
+    public TaskAssignee()
     {
     }
 
     public bool SetData(TaskAssigneesDto TaskAssigneesDto)
     {
         Id = Id;
-        taskId = TaskAssigneesDto.taskId;
+        TaskItemId = TaskAssigneesDto.taskId;
         UserId = TaskAssigneesDto.UserId;
         CreatedById = TaskAssigneesDto.CreatedById;
         CreateDate = TaskAssigneesDto.CreateDate;
         AllowComplete = TaskAssigneesDto.AllowComplete;
         IsRejected = TaskAssigneesDto.IsRejected;
         RejectReason = TaskAssigneesDto.RejectReason;
+        AssigneeDate=DateTime.Now;
         return true;
 
     }
@@ -50,7 +56,7 @@ public class TaskAssignees : Entity, IHasCreationMetaData
         return new TaskAssigneesDto
         {
             Id = Id,
-            taskId = taskId,
+            taskId = TaskItemId,
             IsRejected = IsRejected,
             CreateDate = CreateDate,
             CreatedById = CreatedById,

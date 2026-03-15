@@ -8,9 +8,9 @@ public record UpdateTaskAssigneesCommand(TaskAssigneesDto TaskAssignees) : IRequ
 
 public class UpdateTaskAssigneesCommandHandler : IRequestHandler<UpdateTaskAssigneesCommand, bool>
 {
-    private readonly IRepository<Domain.Models.Task.TaskAssignees> _taskAssigneesRepository;
+    private readonly IRepository<Domain.Models.Task.TaskAssignee> _taskAssigneesRepository;
 
-    public UpdateTaskAssigneesCommandHandler(IRepository<Domain.Models.Task.TaskAssignees> taskAssigneesRepository)
+    public UpdateTaskAssigneesCommandHandler(IRepository<Domain.Models.Task.TaskAssignee> taskAssigneesRepository)
     {
         _taskAssigneesRepository = taskAssigneesRepository;
     }

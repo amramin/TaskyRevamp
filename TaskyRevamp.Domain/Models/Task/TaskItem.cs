@@ -4,6 +4,7 @@ using TaskyRevamp.Domain.Models.Users;
 using TaskyRevamp.Dto.ChangeEndDateRequest;
 using TaskyRevamp.Dto.Enums;
 using TaskyRevamp.Dto.SystemConfiguration;
+using TaskyRevamp.Dto.TaskAssignees;
 using TaskyRevamp.Dto.TaskDto;
 using Type = TaskyRevamp.Domain.Models.SystemConfiguration.Type;
 
@@ -122,9 +123,8 @@ public class TaskItem : Entity, IHasCreationMetaData, IHasUpdateMetaData
 		set => _actualProgress = value;
 	}
 	public StatusSettings status { set; get; }
-	public List<TaskAssignees> Assignees { get; set; }
+	public ICollection<TaskAssignee> TaskAssignees { get; set; } = new List<TaskAssignee>();
 	public List<Guid> AssignedDepartmentIds { set; get; }
-	public List<Guid> AssignedIds { set; get; }
 	public List<TaskDependencies>? Dependencies { get; set; }
 	public TaskItem? Parent { get; set; }
 	readonly List<TaskItem> _subtasks = new();
@@ -158,7 +158,6 @@ public class TaskItem : Entity, IHasCreationMetaData, IHasUpdateMetaData
 		Title = title;
 		//AssignedDepartments = assgndep;
 		AssignedDepartmentIds = assgndep.Select(k => k.Id).ToList();
-		AssignedIds = assigids;
 		Description = desc;
 		TaskTypeId = type;
 		TaskSourceId = source;
@@ -173,10 +172,12 @@ public class TaskItem : Entity, IHasCreationMetaData, IHasUpdateMetaData
 		_actualWeight = new Weight(wight ?? 0);
 		CreatedById = creatorid;
 		Reminder = rmind == null ? null : new Reminder(rmind.Value);
+		TaskAssignees=assigids.Select(userid=> new TaskAssignee { TaskItemId=id,UserId=userid,AssigneeDate=DateTime.Now }).ToList();
 		if (dependcy is not null)
 		{
 			Dependencies = dependcy.Select(d => new TaskDependencies { TaskItemId = id, DependentId = d }).ToList();
 		}
+
 		//  Dependencies = new TaskDependencies(dependcy.Select(id => new TaskItem { Id = id }).ToList()
 		//);
 		//Creator = creator;
@@ -214,10 +215,10 @@ public class TaskItem : Entity, IHasCreationMetaData, IHasUpdateMetaData
 		else
 			_actualWeight = new Weight(0);
 		AssignedDepartmentIds = tsakdto.AssignedDepartmentIds;
-		AssignedIds = tsakdto.AssignedIds;
 		ReminderDate = tsakdto.ReminderDate;
 		Dependencies = tsakdto.Dependencies?.Select(d => new TaskDependencies { TaskItemId = tsakdto.Id, DependentId = d }).ToList();
-		return true;
+        //TaskAssignees = tsakdto.AssignedIds!.Select(userid => new TaskAssignee { TaskItemId = tsakdto.Id, UserId = userid, AssigneeDate = DateTime.Now }).ToList();
+        return true;
 
 	}
 	public void UpdateTitle(string title, User by)
@@ -247,6 +248,8 @@ public class TaskItem : Entity, IHasCreationMetaData, IHasUpdateMetaData
 			UpdateDate = UpdateDate,
 			StartDate = StartDate,
 			EndDate = EndDate,
+			AssignedIds = TaskAssignees?.Select(u => u.UserId).ToList(),
+			AssigneesData = TaskAssignees?.Select(u => new TaskAssigneeDataDto { UserId = u.UserId, AssigneeDate = u.AssigneeDate }).ToList(),
 			DeletionDate = DeleteDate,
 			DeletedBy = DeletedBy?.Username,
 			Priority = PriorityId,
@@ -257,7 +260,6 @@ public class TaskItem : Entity, IHasCreationMetaData, IHasUpdateMetaData
 			TaskStatus = StatusId,
 			SourceId = TaskSourceId,
 			TypeId = TaskTypeId,
-			AssignedIds = AssignedIds?.ToList() ?? new List<Guid>(),
 			AssignedDepartmentIds = AssignedDepartmentIds?.ToList() ?? new List<Guid>()
 		};
 	}

@@ -26,8 +26,9 @@ public class User : Entity, IHasUpdateMetaData
 	public DateTime? UpdateDate { get; set; }
 	public User? UpdatedBy { get; set; }
 	public bool IsDeleted { get; set; } = false;
+    public ICollection<TaskAssignee> TaskAssignees { get; set; } = new List<TaskAssignee>();
 
-	public User()
+    public User()
 	{
 
 	}

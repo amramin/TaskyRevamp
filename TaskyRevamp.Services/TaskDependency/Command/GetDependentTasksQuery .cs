@@ -43,14 +43,14 @@ namespace TaskyRevamp.Services.TaskDependency.Command
 				orderBy: GetOrderBy(request.sortByColumnName, request.sortAscending),
 				includeProperties: $"{nameof(TaskItemss.Priority)}," +
 								   $"{nameof(TaskItemss.status)}," +
-								   $"{nameof(TaskItemss.Assignees)}.{nameof(TaskyRevamp.Domain.Models.Task.TaskAssignees.User)}"
+								   $"{nameof(TaskItemss.TaskAssignees)}.{nameof(TaskyRevamp.Domain.Models.Task.TaskAssignee.User)}"
 			);
 			if (tasks?.Items == null || !tasks.Items.Any())
 				return DependentTassk;
 			var dtoList = new List<CreateTaskDto>();
 			foreach (var task in tasks.Items)
 			{
-				var assgnedusr = await _userRepository.FindBy(k => task.AssignedIds.Contains(k.Id));
+				//var assgnedusr = await _userRepository.FindBy(k => task.AssignedIds.Contains(k.Id));
 				var dto = task.CopyToDto();
 				dto.PriorityName = _currentLanguage == "ar" ? task.Priority?.NameArabic : task.Priority?.NameEnglish;
 				dto.PriorityBackgroundColor = task.Priority?.BackgroundColor;
@@ -58,7 +58,7 @@ namespace TaskyRevamp.Services.TaskDependency.Command
 				dto.TaskStatusName = _currentLanguage == "ar" ? task.status?.NameArabic : task.status?.NameEnglish;
 				dto.TaskStatusBackgroundColor = task.status?.BackgroundColor;
 				dto.TaskStatusColor = task.status?.NameColor;
-				dto.AssigneduserNames = string.Join(",", assgnedusr.Value!.Select(u => _currentLanguage == "ar" ? u.NameArabic : u.NameEnglish));
+				//dto.AssigneduserNames = string.Join(",", assgnedusr.Value!.Select(u => _currentLanguage == "ar" ? u.NameArabic : u.NameEnglish));
 				dtoList.Add(dto);
 			}
 			DependentTassk.Items = dtoList;

@@ -15,7 +15,7 @@
 <!-- Actual Progress -->
 
 <div class="mb-3">
-    <OverallBar ActualProgress="Task?.ActualProcess" Width="100" OnProgressChanged="HandleProgressChanged">
+    <OverallBar ActualProgress="Task?.ActualProcess" Width="605" OnProgressChanged="ChangeProgressConfirmed">
     </OverallBar>
 </div>
 
@@ -338,8 +338,8 @@ private async Task ReloadAfterSave()
         }
         else
         {
-            if ((DateOnly.FromDateTime(taskDto?.CreateDate ?? DateTime.Now).AddDays(RejectionPeriod) <
-            DateOnly.FromDateTime(DateTime.Now)) || !(taskDto.AssignedIds is not null && taskDto.AssignedIds.Contains(CurrentUser))
+            if ((DateOnly.FromDateTime(taskDto.AssigneesData.FirstOrDefault(p => p.UserId == CurrentUser)?.AssigneeDate??DateTime.Now).AddDays(RejectionPeriod) <
+            DateOnly.FromDateTime(DateTime.Now)) || !(taskDto.AssigneesData is not null && taskDto.AssigneesData!.Any(u => u.UserId == CurrentUser))
             || taskDto?.TaskStatus == Guid.Parse("6EE4574D-C439-45B4-223A-08DE3318A61C") || taskDto?.TaskStatus ==
             Guid.Parse("C8D504C7-9402-4F91-223C-08DE3318A61C"))
             {
@@ -353,7 +353,7 @@ private async Task ReloadAfterSave()
     }
     private bool IsRequestNewEndDate(CreateTaskDto taskDto)
     {
-        if (!(taskDto.AssignedIds is not null && taskDto.AssignedIds!.Contains(CurrentUser))
+        if (!(taskDto.AssigneesData is not null && taskDto.AssigneesData!.Any(u => u.UserId == CurrentUser))
         || taskDto?.TaskStatus == Guid.Parse("6EE4574D-C439-45B4-223A-08DE3318A61C") || taskDto?.TaskStatus ==
         Guid.Parse("C8D504C7-9402-4F91-223C-08DE3318A61C") ||
         (taskDto.ChangeEndDateRequestCount > 0))
@@ -388,6 +388,14 @@ private async Task ReloadAfterSave()
 
     private async Task ChangeProgressConfirmed(int progress)
     {
+        if (Task == null)
+            return;
+
+
+        if (Task.ActualProcess >= 100 &&
+            !AlllowedToChangeProgress.Any(p => p == Task.TaskStatus))
+            return;
+
         var result = await _taskConsumer.ChangeTaskProgress(Task.Id, progress);
 
         if (result.Success && result.Data)

@@ -51,7 +51,7 @@
     [SupplyParameterFromQuery]
     public string? returnUrl { get; set; }
     [Parameter]
-    public string? activeTab{ get; set; } = "details";
+    public string activeTab{ get; set; } = "details";
     private CreateTaskDto task = new CreateTaskDto();
     private bool showDescription = true;
     private TaskComments commentssection;
@@ -75,11 +75,18 @@
             }
         }
         await LoadTask();
-        if(task.Id != Guid.Empty)
+        if (activeTab == "enddate")
         {
-            await enddatesection.LoadSources();
+            await enddatesection?.LoadSources();
         }
         //await commentssection.LoadComments();
+    }
+    protected override void OnParametersSet()
+    {
+        if (string.IsNullOrEmpty(activeTab))
+        {
+            activeTab = "details";
+        }
     }
     private async Task LoadTask()
     {

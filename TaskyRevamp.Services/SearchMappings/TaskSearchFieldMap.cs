@@ -21,7 +21,7 @@ namespace TaskyRevamp.Services.SearchMappings
              { SearchFieldTask.StartDate, x => x.StartDate },
              { SearchFieldTask.EndDate, x =>   x.EndDate},
             { SearchFieldTask.weight, x => x.ActualWeight },
-             { SearchFieldTask.AssigneduserNames, x => x.Assignees.Select(k=>k.User.NameEnglish) },
+             { SearchFieldTask.AssigneduserNames, x => x.TaskAssignees.Select(k=>k.User.NameEnglish) },
                          { SearchFieldTask.TaskStatus, x =>   x.status.NameEnglish},
             { SearchFieldTask.CreateDate, x => x.CreateDate },
             { SearchFieldTask.CreatedBy, x => x.CreatedBy.NameEnglish },
