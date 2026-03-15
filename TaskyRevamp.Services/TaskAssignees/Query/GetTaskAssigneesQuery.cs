@@ -8,9 +8,9 @@ public record GetTaskAssigneesQuery(Guid Id) : IRequest<TaskAssigneesDto>;
 
 public class GetTaskAssigneesByIdHandler : IRequestHandler<GetTaskAssigneesQuery, TaskAssigneesDto>
 {
-    private readonly IRepository<Domain.Models.Task.TaskAssignees> _taskAssigneesRepository;
+    private readonly IRepository<Domain.Models.Task.TaskAssignee> _taskAssigneesRepository;
 
-    public GetTaskAssigneesByIdHandler(IRepository<Domain.Models.Task.TaskAssignees> taskAssigneesRepository)
+    public GetTaskAssigneesByIdHandler(IRepository<Domain.Models.Task.TaskAssignee> taskAssigneesRepository)
     {
         _taskAssigneesRepository = taskAssigneesRepository;
     }

@@ -1,4 +1,6 @@
-﻿using MediatR;
+﻿using DocumentFormat.OpenXml.InkML;
+using DocumentFormat.OpenXml.Office2021.DocumentTasks;
+using MediatR;
 using TaskyRevamp.Domain.Interfaces;
 using TaskyRevamp.Domain.Interfaces.Repositeries;
 using TaskyRevamp.Domain.Models.SystemConfiguration;
@@ -6,8 +8,8 @@ using TaskyRevamp.Domain.Models.Task;
 using TaskyRevamp.Domain.Repositeries;
 using TaskyRevamp.Dto.TaskAttachment;
 using TaskyRevamp.Dto.TaskDto;
-using TaskComments = TaskyRevamp.Domain.Models.Task.TaskComment;
 using TaskAttachment = TaskyRevamp.Domain.Models.Task.TaskAttachments;
+using TaskComments = TaskyRevamp.Domain.Models.Task.TaskComment;
 
 
 namespace TaskyRevamp.Services.Tasks.Commands;
@@ -21,6 +23,7 @@ public class UpdateTaskCommandHandler : IRequestHandler<UpdateTaskCommand, bool>
     private readonly IRepository<TaskDependencies> _taskDependincesRepository;
     private readonly IRepository<AddTaskSettings> _addTaskSettingRepository;
     private readonly IRepository<TaskItem> _taskrepo;
+    private readonly IRepository<TaskAssignee> _taskAssigneeRepository;
     private readonly IRepository<TaskComments> _taskCommentRepository;
     private readonly IRepository<Attachment> _attachmentRepository;
     private readonly IRepository<TaskAttachment> _taskAttachmentRepository;
@@ -28,7 +31,7 @@ public class UpdateTaskCommandHandler : IRequestHandler<UpdateTaskCommand, bool>
         { ".pdf", ".doc", ".docx", ".xls", ".xlsx", ".ppt", ".pptx", ".txt", ".csv", ".jpg", ".jpeg", ".png" };
     private readonly IFileManagement _fileManagement;
 
-	public UpdateTaskCommandHandler(ITaskRepository taskRepository, IFileManagement fileManagement, IRepository<Attachment> attachmentRepository, IRepository<TaskAttachment> taskAttachmentRepository, IRepository<StatusSettings> statusSettings, IRepository<TaskDependencies> taskDependincesRepository, IRepository<TaskItem> taskrepo, IRepository<TaskComments> taskCommentRepository, IRepository<AddTaskSettings> addTaskSettingRepository)
+	public UpdateTaskCommandHandler(ITaskRepository taskRepository, IFileManagement fileManagement, IRepository<Attachment> attachmentRepository, IRepository<TaskAttachment> taskAttachmentRepository, IRepository<StatusSettings> statusSettings, IRepository<TaskDependencies> taskDependincesRepository, IRepository<TaskItem> taskrepo, IRepository<TaskComments> taskCommentRepository, IRepository<AddTaskSettings> addTaskSettingRepository, IRepository<TaskAssignee> taskAssigneeRepository)
 	{
 		_taskRepository = taskRepository;
 		_statusSettings = statusSettings;
@@ -39,6 +42,7 @@ public class UpdateTaskCommandHandler : IRequestHandler<UpdateTaskCommand, bool>
 		_taskAttachmentRepository = taskAttachmentRepository;
 		_fileManagement = fileManagement;
 		_addTaskSettingRepository = addTaskSettingRepository;
+        _taskAssigneeRepository= taskAssigneeRepository;
 	}
 
 	public async Task<bool> Handle(UpdateTaskCommand request, CancellationToken cancellationToken)
@@ -112,12 +116,43 @@ public class UpdateTaskCommandHandler : IRequestHandler<UpdateTaskCommand, bool>
         //    task.StatusId = Guid.Parse("270A78EB-C5CA-475D-2239-08DE3318A61C");
         //}
         await _taskRepository.UpdateTask(task);
-
+        await UpdateAssignees(request.Task, task);
         if (!string.IsNullOrEmpty(request.Task.Content))
         {
             TaskComments taskComment = new TaskComments(task.Id, request.Task.Content);
             await _taskCommentRepository.Insert(taskComment);
         }
         return true;
+    }
+    private async System.Threading.Tasks.Task UpdateAssignees(CreateTaskDto taskDto,TaskItem taskItem)
+    {
+
+        var existingAssignees = taskItem.TaskAssignees.ToList(); 
+        var newAssigneesIds = taskDto.AssignedIds ?? new List<Guid>();
+
+        var toRemove = existingAssignees
+            .Where(a => !newAssigneesIds.Contains(a.UserId)).Select(p=>p.Id)
+            .ToList();
+
+        if (toRemove.Any())
+        {
+            await _taskAssigneeRepository.DeleteRang(toRemove);
+        }
+
+        var toAdd = newAssigneesIds
+            .Where(id => !existingAssignees.Any(a => a.UserId == id))
+            .Select(id => new TaskAssignee
+            {
+                TaskItemId = taskItem.Id,
+                UserId = id,
+                AssigneeDate = DateTime.Now
+            }).ToList();
+
+        if (toAdd.Any())
+        {
+            await _taskAssigneeRepository.InsertRange(toAdd);
+        }
+
+       await _taskAssigneeRepository.SaveChangesAsync();
     }
 }

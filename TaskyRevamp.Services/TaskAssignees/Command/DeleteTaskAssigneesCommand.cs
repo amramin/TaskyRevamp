@@ -7,9 +7,9 @@ public record DeleteTaskAssigneesCommand(Guid Id) : IRequest<bool>;
 
 public class DeleteGroupCommandHandler : IRequestHandler<DeleteTaskAssigneesCommand, bool>
 {
-    private readonly IRepository<Domain.Models.Task.TaskAssignees> _tskRepository;
+    private readonly IRepository<Domain.Models.Task.TaskAssignee> _tskRepository;
 
-    public DeleteGroupCommandHandler(IRepository<Domain.Models.Task.TaskAssignees> tskRepository)
+    public DeleteGroupCommandHandler(IRepository<Domain.Models.Task.TaskAssignee> tskRepository)
     {
         _tskRepository = tskRepository;
     }

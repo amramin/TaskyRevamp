@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using DocumentFormat.OpenXml.Office2010.Excel;
+using MediatR;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
@@ -7,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TaskyRevamp.Domain.Interfaces.Repositeries;
 using TaskyRevamp.Domain.Models.SystemConfiguration;
+using TaskyRevamp.Domain.Models.Task;
 using TaskyRevamp.Domain.Repositeries;
 using TaskyRevamp.Dto.Enums;
 using TaskyRevamp.Dto.TaskComment;
@@ -22,12 +24,15 @@ namespace TaskyRevamp.Services.Tasks.Commands
         private readonly IRepository<TaskComments> _taskCommentRepository;
         private readonly IRepository<RejectionSettings> _rejectionRepository;
         private readonly IHttpContextAccessor _httpContextAccessor;
-        public RejectTaskCommandHandler(ITaskRepository taskRepository, IHttpContextAccessor httpContextAccessor, IRepository<TaskComments> taskCommentRepository,IRepository<RejectionSettings> rejectonRepository)
+        private readonly IRepository<TaskAssignee> _taskAssigneeRepository;
+
+        public RejectTaskCommandHandler(ITaskRepository taskRepository, IHttpContextAccessor httpContextAccessor, IRepository<TaskComments> taskCommentRepository,IRepository<RejectionSettings> rejectonRepository, IRepository<TaskAssignee> taskAssigneeRepository)
         {
             _taskRepository = taskRepository;
             _taskCommentRepository = taskCommentRepository;
             _rejectionRepository = rejectonRepository;
             _httpContextAccessor = httpContextAccessor;
+            _taskAssigneeRepository = taskAssigneeRepository;
         }
         public async Task<bool> Handle(RejectTaskCommand request, CancellationToken cancellationToken)
         {
@@ -57,16 +62,24 @@ namespace TaskyRevamp.Services.Tasks.Commands
                 }
                 else
                 {
-                    if (task.AssignedIds.Count() == 1)
+                    if (task.TaskAssignees.Count() == 1)
                     {
-                        task.AssignedIds = new List<Guid> { task.CreatedById };
+                        var assignee= new TaskAssignee
+                        {
+                            TaskItemId = request.TaskCommentDto.TaskItemId,
+                            UserId = task.CreatedById,
+                            AssigneeDate = DateTime.Now
+                        };
+                        await _taskAssigneeRepository.Delete(task.TaskAssignees.FirstOrDefault().Id);
+                        await _taskAssigneeRepository.Insert(assignee);
+                        await _taskAssigneeRepository.SaveChangesAsync();
                     }
                     else
                     {
                         var currentUserId = Guid.Parse(_httpContextAccessor.GetUserId());
-                        task.AssignedIds.Remove(currentUserId);
+                        _taskAssigneeRepository.Delete(task.TaskAssignees.FirstOrDefault(u=>u.UserId== currentUserId).Id);
+                        await _taskAssigneeRepository.SaveChangesAsync();
                     }
-                     await _taskRepository.UpdateTask(task);
                     TaskComments taskComment = new TaskComments(request.TaskCommentDto.TaskItemId, request.TaskCommentDto.Content, Guid.Parse(_httpContextAccessor.GetUserId()),request.TaskCommentDto.Type);
                     //var taskComment=new Domain.Models.Task.TaskComment( request.TaskCommentDto.TaskItemId,
                     //    request.TaskCommentDto.Content,request.TaskCommentDto.CreatedById);

@@ -227,7 +227,7 @@
              <TaskListView @key="source.Id" IsCompletedTasks="false"
                            Title="@(CultureInfo.CurrentCulture.Name == "ar-EG" ? source.NameArabic : source.NameEnglish)"
                            ViewType="@((int)ViewTypes.SourceView)" ViewTypeId="@source.Id" OnAdd="Add" OnEdit="Edit"
-                                              OnReopen="OnConfirmReopen" OnReject="Reject" OnRequestChangeDueDate="RequstChangeDueDate" TaskFilterChanged="ApplyClear" TaskFilter="TaskFilter" IsFilter="IsFilter" IsCollapseAll="IsCollapsedAll" @ref="@taskListRefs[$" source-{source.Id}"]"></TaskListView>
+                                              OnReopen="OnConfirmReopen" OnReject="Reject" OnRequestChangeDueDate="RequstChangeDueDate" TaskFilterChanged="ApplyClear" TaskFilter="TaskFilter" IsFilter="IsFilter" IsCollapseAll="IsCollapsedAll" @ref="@taskListRefs[$"source-{source.Id}"]"></TaskListView>
 
          }
          <Pagination CurrentPage="@currentPage" TotalPages="@totalPages" TotalCount="@totalCount"
@@ -242,7 +242,7 @@
          {
 
              <TaskListView Title="@(CultureInfo.CurrentCulture.Name == "ar-EG" ? status.NameArabic : status.NameEnglish)" ViewType="@((int)ViewTypes.StatusView)" ViewTypeId="@status.Id" OnAdd="Add" OnEdit="Edit"
-                                              OnReopen="OnConfirmReopen" OnReject="Reject" OnRequestChangeDueDate="RequstChangeDueDate" TaskFilterChanged="ApplyClear" TaskFilter="TaskFilter" IsFilter="IsFilter" IsCollapseAll="IsCollapsedAll" @ref="@taskListRefs[$" status-{status.Id}"]"></TaskListView>
+                                              OnReopen="OnConfirmReopen" OnReject="Reject" OnRequestChangeDueDate="RequstChangeDueDate" TaskFilterChanged="ApplyClear" TaskFilter="TaskFilter" IsFilter="IsFilter" IsCollapseAll="IsCollapsedAll" @ref="@taskListRefs[$"status-{status.Id}"]"></TaskListView>
          }
          break;
      case (int)ViewTypes.TypeView:
@@ -384,7 +384,7 @@
     }
     private async Task changeViewType(int type)
     {
-        taskListRefs.Clear();
+        //taskListRefs.Clear();
         Viewtype = type;
         if (Viewtype == (int)ViewTypes.SourceView)
         {
@@ -453,7 +453,6 @@
                 await LoadTypes();
                 break;
         }
-
         StateHasChanged();
     }
     private async Task ChangePage(int page)

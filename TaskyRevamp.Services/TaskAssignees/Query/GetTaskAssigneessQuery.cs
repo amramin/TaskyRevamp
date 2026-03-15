@@ -9,10 +9,10 @@ public record GetTaskAssigneessQuery(QueryModel? Query) : IRequest<List<TaskAssi
 
 public class GetTaskAssigneessHandler : IRequestHandler<GetTaskAssigneessQuery, List<TaskAssigneesDto>>
 {
-    private readonly IRepository<Domain.Models.Task.TaskAssignees> _taskAssigneesRepository;
+    private readonly IRepository<Domain.Models.Task.TaskAssignee> _taskAssigneesRepository;
 
 
-    public GetTaskAssigneessHandler(IRepository<Domain.Models.Task.TaskAssignees> taskAssigneesRepository)
+    public GetTaskAssigneessHandler(IRepository<Domain.Models.Task.TaskAssignee> taskAssigneesRepository)
     {
         _taskAssigneesRepository = taskAssigneesRepository;
       

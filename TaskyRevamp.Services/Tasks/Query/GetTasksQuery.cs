@@ -266,11 +266,11 @@ public class GetTasksHandler : IRequestHandler<GetTasksQuery, PagedResult<Create
                                 t => t.IsDeleted == false,
                                 searchExpression,
                                 orderBy: orderBy,
-                                includeProperties: $"{nameof(TaskItem.CreatedBy)},{nameof(TaskItem.Priority)},{nameof(TaskItem.ActualWeight)},{nameof(TaskItem.Type)},{nameof(TaskItem.Source)},{nameof(TaskItem.status)},{nameof(TaskItem.UpdatedBy)},{nameof(TaskItem.Assignees)}.{nameof(TaskyRevamp.Domain.Models.Task.TaskAssignees.User)},{nameof(TaskItem.ChangeEndDateRequests)}");
+                                includeProperties: $"{nameof(TaskItem.CreatedBy)},{nameof(TaskItem.Priority)},{nameof(TaskItem.ActualWeight)},{nameof(TaskItem.Type)},{nameof(TaskItem.Source)},{nameof(TaskItem.status)},{nameof(TaskItem.UpdatedBy)},{nameof(TaskItem.TaskAssignees)}.{nameof(TaskyRevamp.Domain.Models.Task.TaskAssignee.User)},{nameof(TaskItem.ChangeEndDateRequests)}");
 
         foreach (var tsk in res.Items)
         {
-            var assgnedusr = await _userRepository.FindBy(k => tsk.AssignedIds.Contains(k.Id));
+            //var assgnedusr = await _userRepository.FindBy(k => tsk.AssignedIds.Contains(k.Id));
             var CreatorDepartment =  _departmenRepository.FirstOrDefaultAsNoTracking(k => k.Id == (tsk.CreatedBy!.DepartmentId??Guid.Empty));
             tsk.ActualWeight=new Weight(tsk.Weight ?? 0);
             tsk.PlannedWeight = new Weight(tsk.Weight ?? 0);
@@ -299,7 +299,7 @@ public class GetTasksHandler : IRequestHandler<GetTasksQuery, PagedResult<Create
             tasky.CreatedByName = currentCulture == "ar" ? tsk.CreatedBy?.NameArabic : tsk.CreatedBy?.NameEnglish;
             tasky.Createdbydepartment = currentCulture == "ar" ? CreatorDepartment?.NameArabic! : CreatorDepartment?.NameEnglish!;
             tasky.UpdatedBy = currentCulture == "ar" ? tsk.UpdatedBy?.NameArabic : tsk.UpdatedBy?.NameEnglish;
-            tasky.AssigneduserNames = string.Join(",", assgnedusr.Value!.Select(u => currentCulture == "ar" ? u.NameArabic : u.NameEnglish));
+            tasky.AssigneduserNames = string.Join(",", tsk.TaskAssignees!.Select(u => currentCulture == "ar" ? u.User.NameArabic??"" : u.User.NameEnglish??""));
             alltasks.Add(tasky);
         }
         return new PagedResult<CreateTaskDto>
@@ -393,7 +393,7 @@ public class GetTasksHandler : IRequestHandler<GetTasksQuery, PagedResult<Create
             (taskFilter.Status == null || taskFilter.Status.Contains(t.StatusId)) &&
             (taskFilter.Source == null || taskFilter.Source.Contains(t.TaskSourceId)) &&
             (taskFilter.Type == null || taskFilter.Type.Contains(t.TaskTypeId)) &&
-            (taskFilter.AssignedTo == null || (t.AssignedIds != null && t.AssignedIds.Any(id => taskFilter.AssignedTo.Contains(id)))) &&
+            (taskFilter.AssignedTo == null || (t.TaskAssignees != null && t.TaskAssignees.Any(ass => taskFilter.AssignedTo.Contains(ass.UserId)))) &&
             (taskFilter.AssignedToDepartment == null || (t.AssignedDepartmentIds != null && t.AssignedDepartmentIds.Any(id => taskFilter.AssignedToDepartment.Contains(id)))) &&
             (taskFilter.CreatedBy==null||taskFilter.CreatedBy.Contains(t.CreatedById))&&
             (taskFilter.CreatedByDepartment == null || taskFilter.CreatedByDepartment.Contains(t.CreatedBy.Department!.Id))

@@ -50,7 +50,7 @@ public class TaskRepository : ITaskRepository
 			.Include(x => x.Type)
 			.Include(x => x.Source)
 			.Include(x => x.status)
-			.Include(x => x.Assignees).ThenInclude(a => a.User)
+			.Include(x => x.TaskAssignees).ThenInclude(a => a.User)
 			.Include(x => x.taskChecklists)
 			.Include(x => x.Subtasks)
 			.Include(x => x.Attachments)

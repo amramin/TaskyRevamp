@@ -80,6 +80,18 @@
             }
         }
         await LoadTask();
+        if (activeTab == "enddate")
+        {
+            await enddatesection?.LoadSources();
+        }
+        //await commentssection.LoadComments();
+    }
+    protected override void OnParametersSet()
+    {
+        if (string.IsNullOrEmpty(activeTab))
+        {
+            activeTab = "details";
+        }
     }
     private async Task LoadTask()
     {

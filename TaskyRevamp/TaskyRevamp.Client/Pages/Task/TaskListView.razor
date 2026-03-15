@@ -118,7 +118,7 @@
                                                             <span class="icon">
                                                                 <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Reject"></SVGCrud>
                                                             </span>
-                                                            @Loc["Reject"] - @GetRemainingDays(taskdto)
+                                                            @Loc["Reject"] - @GetRemainingDays(task)
                                                         </button>
                                                     </li>
                                                 }
@@ -962,8 +962,8 @@ SearchFieldTask.PlannedProgress
         else
         {
 
-            if ((DateOnly.FromDateTime(taskDto.CreateDate ?? DateTime.Now).AddDays(RejectionPeriod) <
-            DateOnly.FromDateTime(DateTime.Now)) || !(taskDto.AssignedIds!.Contains(CurrentUser))
+            if ((DateOnly.FromDateTime(taskDto.AssigneesData.FirstOrDefault(p=>p.UserId==CurrentUser)?.AssigneeDate??DateTime.Now).AddDays(RejectionPeriod) <
+            DateOnly.FromDateTime(DateTime.Now)) || !(taskDto.AssigneesData is not null && taskDto.AssigneesData!.Any(u => u.UserId == CurrentUser))
             || taskDto.TaskStatus == Guid.Parse("6EE4574D-C439-45B4-223A-08DE3318A61C") || taskDto.TaskStatus ==
             Guid.Parse("C8D504C7-9402-4F91-223C-08DE3318A61C"))
 
@@ -978,7 +978,7 @@ SearchFieldTask.PlannedProgress
     }
     private bool IsRequestNewEndDate(CreateTaskDto taskDto)
     {
-        if (!(taskDto.AssignedIds!.Contains(CurrentUser))
+        if (!(taskDto.AssigneesData is not null && taskDto.AssigneesData!.Any(u=>u.UserId==CurrentUser))
         || taskDto.TaskStatus == Guid.Parse("6EE4574D-C439-45B4-223A-08DE3318A61C") || taskDto.TaskStatus ==
         Guid.Parse("C8D504C7-9402-4F91-223C-08DE3318A61C") ||
         taskDto.ChangeEndDateRequestCount > 0)
@@ -1059,7 +1059,7 @@ SearchFieldTask.PlannedProgress
     private string GetRemainingDays(CreateTaskDto task)
     {
         var today = DateOnly.FromDateTime(DateTime.Now).DayNumber;
-        var expiry = DateOnly.FromDateTime(task.CreateDate ?? DateTime.Now)
+        var expiry = DateOnly.FromDateTime(task.AssigneesData?.FirstOrDefault(d=>d.UserId==CurrentUser)?.AssigneeDate??DateTime.Now)
         .AddDays(RejectionPeriod).DayNumber;
 
         var res = expiry - today;

@@ -8,13 +8,13 @@ public record CreateTaskAssigneesCommand(TaskAssigneesDto TaskAssigneesDto) : IR
 
 public class CreateTaskAssigneesHandler : IRequestHandler<CreateTaskAssigneesCommand, Guid>
 {
-    private readonly IRepository<Domain.Models.Task.TaskAssignees> _taskAssigneesRepository;
+    private readonly IRepository<Domain.Models.Task.TaskAssignee> _taskAssigneesRepository;
 
-    public CreateTaskAssigneesHandler(IRepository<Domain.Models.Task.TaskAssignees> taskAssigneesRepository) => _taskAssigneesRepository = taskAssigneesRepository;
+    public CreateTaskAssigneesHandler(IRepository<Domain.Models.Task.TaskAssignee> taskAssigneesRepository) => _taskAssigneesRepository = taskAssigneesRepository;
 
     public async Task<Guid> Handle(CreateTaskAssigneesCommand request, CancellationToken cancellationToken)
     {
-        var taskAssignees=new Domain.Models.Task.TaskAssignees();
+        var taskAssignees=new Domain.Models.Task.TaskAssignee();
         taskAssignees.SetData(request.TaskAssigneesDto);
        
         await _taskAssigneesRepository.Insert(taskAssignees);
