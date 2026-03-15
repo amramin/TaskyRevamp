@@ -13,6 +13,8 @@
     @if (ShowViewedBy && Task?.ViewdByNames != null && Task.ViewdByNames.Any())
     {
 
+<div class="d-flex align-items-center gap-1">
+            <span class="headline-8">Viewed By</span>
         <ul class="initials-list">
             @{
                 var visibleViewers = Task.ViewdByNames.Take(2).ToList();
@@ -36,6 +38,7 @@
                 </li>
             }
         </ul>
+        </div>
 
     }
 

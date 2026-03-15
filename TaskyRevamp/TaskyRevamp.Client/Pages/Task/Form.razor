@@ -47,24 +47,18 @@
                                         <span class="text-danger"> *</span>
                                     }
                                 </label>
-                                <div id="dropZone" class="border border-2 border-dashed rounded p-5 text-center mb-4" style="background-color: #f8f9fa;">
-                                    <button class="btn btn-link text-secondary p-1">
+                                <div id="dropZone" class="file-uploader">
+                                    <InputFile id="fileInput" OnChange="LoadFile" multiple
+                                               accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.csv,.jpg,.jpeg,.png" />
+                                    <label for="fileInput">
                                         <span class="icon">
                                             <SVGCrud SVGType="SVGCrud.SVGTypeEnum.FileUpload"></SVGCrud>
                                         </span>
-                                    </button>
-                                    <p class="mb-2">
-                                        @Loc["Drag and Drop or"],
-                                        <label for="fileInput" class="text-primary" style="cursor: pointer; text-decoration: underline;">
-                                            @Loc["AddFileAttachment"]
-                                        </label>
-                                    </p>
-                                    <InputFile id="fileInput"
-                                               OnChange="LoadFile"
-                                               multiple
-                                               class="d-none"
-                                               accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.csv,.jpg,.jpeg,.png" />
-
+                                        <div>
+                                            @Loc["Drag and Drop or"],
+                                            <span class="primary"> @Loc["AddFileAttachment"]</span>
+                                        </div>
+                                    </label>
                                 </div>
                                 <ValidationMessage class="small text-danger" For="@(() => taskdto.BrowserFiles)"></ValidationMessage>
                                 @if (uploadedFiles.Any())
@@ -111,8 +105,10 @@
                                 </label>
                                 <div class="col-lg-12">
                                     <div class="mb-2">
-                                        <RichTextEditorComponent @key="column.Id" EditorId="RTE_English2" @ref="RichTextEditorComponentRefDescriptionEnglish" ContentChanged="OnDescriptionChanged"
-                                                                 Content="@taskdto.Description" ButtonText="@Loc["AddDescription"]"> </RichTextEditorComponent>
+                                        <RichTextEditorComponent @key="column.Id" EditorId="RTE_English2"
+                                                                 @ref="RichTextEditorComponentRefDescriptionEnglish" ContentChanged="OnDescriptionChanged"
+                                                                 Content="@taskdto.Description" ButtonText="@Loc["AddDescription"]">
+                                        </RichTextEditorComponent>
                                         <ValidationMessage class="small text-danger" For="@(() => taskdto.Description)" />
                                     </div>
                                 </div>
@@ -127,10 +123,11 @@
                                         <span class="text-danger"> *</span>
                                     }
                                 </label>
-                                <SearchableSingleDropdownOffline TInput=TypeDto TOutput=Guid? TextSelector="(TypeDto x) => x.DisplayedName"
-                                                                 OutputSelector="x => x.Id" Datasource="taskTypeDtos" MinCharacterCount="1"
-                                                                 SelectedOption="@taskdto.TypeId" SelectedOptionChanged="OnTypeChanged"
-                                                                 SearchInputPlaceHolder="@Loc["Search"]" PlaceHolder="@($"{Loc["Select"]}")" NoMatchPlaceHolder="@Loc["NoResultsFound"]" />
+                                <SearchableSingleDropdownOffline TInput=TypeDto TOutput=Guid?
+                                                                 TextSelector="(TypeDto x) => x.DisplayedName" OutputSelector="x => x.Id" Datasource="taskTypeDtos"
+                                                                 MinCharacterCount="1" SelectedOption="@taskdto.TypeId" SelectedOptionChanged="OnTypeChanged"
+                                                                 SearchInputPlaceHolder="@Loc["Search"]" PlaceHolder="@($"{Loc["Select"]}")"
+                                                                 NoMatchPlaceHolder="@Loc["NoResultsFound"]" />
                                 <ValidationMessage class="small text-danger" For="@(() => taskdto.TypeId)" />
                             </div>
                             break;
@@ -143,10 +140,11 @@
                                 }
                             </label>
                             <div class="mb-3">
-                                <SearchableSingleDropdownOffline TInput=SourceDto TOutput=Guid? TextSelector="(SourceDto x) => x.DisplayedName"
-                                                                 OutputSelector="x => x.Id" Datasource="taskSourceDtos"  MinCharacterCount="1" 
-                                                                 SelectedOption="@taskdto.SourceId" SelectedOptionChanged="OnSourceChanged"
-                                                                 SearchInputPlaceHolder="@Loc["Search"]" PlaceHolder="@($"{Loc["Select"]}")" NoMatchPlaceHolder="@Loc["NoResultsFound"]" />
+                                <SearchableSingleDropdownOffline TInput=SourceDto TOutput=Guid?
+                                                                 TextSelector="(SourceDto x) => x.DisplayedName" OutputSelector="x => x.Id"
+                                                                 Datasource="taskSourceDtos" MinCharacterCount="1" SelectedOption="@taskdto.SourceId"
+                                                                 SelectedOptionChanged="OnSourceChanged" SearchInputPlaceHolder="@Loc["Search"]"
+                                                                 PlaceHolder="@($"{Loc["Select"]}")" NoMatchPlaceHolder="@Loc["NoResultsFound"]" />
                                 <ValidationMessage class="small text-danger" For="@(() => taskdto.SourceId)"></ValidationMessage>
                             </div>
                             break;
@@ -161,15 +159,9 @@
                                 </label>
 
                                 <div class="date-group w-100" dir="@dateGroupDir" style="cursor:pointer" @onclick="OpenStratDatePicker">
-                                    <SfDatePicker @ref="startDatePicker"
-                                                  @key="column.Id"
-                                                  TValue="DateTime?"
-                                                  @bind-Value="taskdto.StartDate"
-                                                  Locale="@datePickerLocale"
-                                                  EnableRtl="@enableRtl"
-                                                  Format="dd-MM-yyyy"
-                                                  Placeholder="@placeholderDate"
-                                                  ShowClearButton="true">
+                                    <SfDatePicker @ref="startDatePicker" @key="column.Id" TValue="DateTime?"
+                                                  @bind-Value="taskdto.StartDate" Locale="@datePickerLocale" EnableRtl="@enableRtl"
+                                                  Format="dd-MM-yyyy" Placeholder="@placeholderDate" ShowClearButton="true">
                                     </SfDatePicker>
                                 </div>
                                 <ValidationMessage class="small text-danger mt-1" For="@(() => taskdto.StartDate)" />
@@ -186,15 +178,9 @@
                                 </label>
 
                                 <div class="date-group" dir="@dateGroupDir" style="cursor:pointer" @onclick="OpenReminderDatePicker">
-                                    <SfDatePicker @ref="ReminderDatePicker"
-                                                  @key="column.Id"
-                                                  TValue="DateTime?"
-                                                  @bind-Value="taskdto.ReminderDate"
-                                                  Locale="@datePickerLocale"
-                                                  EnableRtl="@enableRtl"
-                                                  Format="dd-MM-yyyy"
-                                                  Placeholder="@placeholderDate"
-                                                  ShowClearButton="true">
+                                    <SfDatePicker @ref="ReminderDatePicker" @key="column.Id" TValue="DateTime?"
+                                                  @bind-Value="taskdto.ReminderDate" Locale="@datePickerLocale" EnableRtl="@enableRtl"
+                                                  Format="dd-MM-yyyy" Placeholder="@placeholderDate" ShowClearButton="true">
                                     </SfDatePicker>
                                 </div>
                                 <ValidationMessage class="small text-danger mt-1" For="@(() => taskdto.ReminderDate)" />
@@ -210,15 +196,9 @@
                                     }
                                 </label>
                                 <div class="date-group" dir="@dateGroupDir" style="cursor:pointer" @onclick="OpenEndDatePicker">
-                                    <SfDatePicker @ref="EndDatePicker"
-                                                  @key="column.Id"
-                                                  TValue="DateTime?"
-                                                  @bind-Value="taskdto.EndDate"
-                                                  Locale="@datePickerLocale"
-                                                  EnableRtl="@enableRtl"
-                                                  Format="dd-MM-yyyy"
-                                                  Placeholder="@placeholderDate"
-                                                  ShowClearButton="true">
+                                    <SfDatePicker @ref="EndDatePicker" @key="column.Id" TValue="DateTime?" @bind-Value="taskdto.EndDate"
+                                                  Locale="@datePickerLocale" EnableRtl="@enableRtl" Format="dd-MM-yyyy"
+                                                  Placeholder="@placeholderDate" ShowClearButton="true">
                                     </SfDatePicker>
                                 </div>
                                 <ValidationMessage class="small text-danger" For="@(() => taskdto.EndDate)" />
@@ -236,9 +216,11 @@
                                 <SearchableMultiDropdownOffline TInput=DepartmentDto TOutput="Guid" Datasource=departmentDtos
                                                                 TextSelector=@(x=>x.NameEnglish) OutputSelector="x=> x.Id"
                                                                 SelectedOptions="@taskdto.AssignedDepartmentIds" SelectedOptionsChanged="OnDepartmentsChanged"
-                                                                SearchInputPlaceHolder="@Loc["Search"]" PlaceHolder="@($"{Loc["Select"]}")" NoMatchPlaceHolder="@Loc["NoResultsFound"]" 
-                                                                SelectAllPlaceHolder="@Loc["SelectAll"]" AllowSelectAll="departmentDtos.Any()" MinCharacterCount="1"/>
-                                <ValidationMessage class="small text-danger mt-1" For="@(() => taskdto.AssignedDepartmentIds)"></ValidationMessage>
+                                                                SearchInputPlaceHolder="@Loc["Search"]" PlaceHolder="@($"{Loc["Select"]}")"
+                                                                NoMatchPlaceHolder="@Loc["NoResultsFound"]" SelectAllPlaceHolder="@Loc["SelectAll"]"
+                                                                AllowSelectAll="departmentDtos.Any()" MinCharacterCount="1" />
+                                <ValidationMessage class="small text-danger mt-1" For="@(() => taskdto.AssignedDepartmentIds)">
+                                </ValidationMessage>
                             </div>
                             break;
                         case "Dependency":
@@ -253,9 +235,11 @@
                                 <SearchableMultiDropdownOffline TInput=CreateTaskDto TOutput="Guid" Datasource=allTaskDtos
                                                                 TextSelector=@(x=>x.Title) OutputSelector="x=> x.Id" MinCharacterCount="1"
                                                                 SelectedOptions="@taskdto.Dependencies" SelectedOptionsChanged="OnDependenciesChanged"
-                                                                SearchInputPlaceHolder="@Loc["Search"]" PlaceHolder="@($"{Loc["Select"]}")" NoMatchPlaceHolder="@Loc["NoResultsFound"]"
-                                                                SelectAllPlaceHolder="@Loc["SelectAll"]" AllowSelectAll="allTaskDtos.Any()"/>
-                                <ValidationMessage class="small text-danger mt-1" For="@(() => taskdto.Dependencies)"></ValidationMessage>
+                                                                SearchInputPlaceHolder="@Loc["Search"]" PlaceHolder="@($"{Loc["Select"]}")"
+                                                                NoMatchPlaceHolder="@Loc["NoResultsFound"]" SelectAllPlaceHolder="@Loc["SelectAll"]"
+                                                                AllowSelectAll="allTaskDtos.Any()" />
+                                <ValidationMessage class="small text-danger mt-1" For="@(() => taskdto.Dependencies)">
+                                </ValidationMessage>
                             </div>
                             break;
                         case "Assigned to":
@@ -270,8 +254,9 @@
                                 <SearchableMultiDropdownOffline TInput=UserDto TOutput="Guid" Datasource=userDtos
                                                                 TextSelector=@(x=>x.DisplayedName) OutputSelector="x=> x.Id" MinCharacterCount="1"
                                                                 SelectedOptions="@taskdto.AssignedIds" SelectedOptionsChanged="OnAssigneesChanged"
-                                                                 SearchInputPlaceHolder="@Loc["Search"]" PlaceHolder="@($"{Loc["Select"]}")" NoMatchPlaceHolder="@Loc["NoResultsFound"]"
-                                                                SelectAllPlaceHolder="@Loc["SelectAll"]" AllowSelectAll="userDtos.Any()" />
+                                                                SearchInputPlaceHolder="@Loc["Search"]" PlaceHolder="@($"{Loc["Select"]}")"
+                                                                NoMatchPlaceHolder="@Loc["NoResultsFound"]" SelectAllPlaceHolder="@Loc["SelectAll"]"
+                                                                AllowSelectAll="userDtos.Any()" />
                                 <ValidationMessage class="small text-danger mt-1" For="@(() => taskdto.AssignedIds)" />
                             </div>
                             break;
@@ -286,7 +271,8 @@
                                                 <span class="text-danger"> *</span>
                                             }
                                         </label>
-                                        <RichTextEditorComponent @key="column.Id" EditorId="RTE_English4" @ref="RichTextEditorComponentRefComment" ContentChanged="OnCommentsChanged"
+                                        <RichTextEditorComponent @key="column.Id" EditorId="RTE_English4"
+                                                                 @ref="RichTextEditorComponentRefComment" ContentChanged="OnCommentsChanged"
                                                                  Content="@taskdto.Content" ButtonText="@Loc["AddComment"]"></RichTextEditorComponent>
                                         <div class="d-flex align-items-center justify-content-between">
                                             @if (column.IsMandatory)
@@ -310,10 +296,11 @@
                                         <span class="text-danger"> *</span>
                                     }
                                 </label>
-                                <SearchableSingleDropdownOffline TInput=PriorityDto TOutput=Guid TextSelector=" (PriorityDto x)=> x.Name"
-                                                                 OutputSelector="x => x.Id" Datasource="Priorities" MinCharacterCount="1"
-                                                                 SelectedOption="@taskdto.Priority" SelectedOptionChanged="OnPriorityChanged"
-                                                                 SearchInputPlaceHolder="@Loc["Search"]" PlaceHolder="@($"{Loc["Select"]}")" NoMatchPlaceHolder="@Loc["NoResultsFound"]"                                       />
+                                <SearchableSingleDropdownOffline TInput=PriorityDto TOutput=Guid
+                                                                 TextSelector=" (PriorityDto x)=> x.Name" OutputSelector="x => x.Id" Datasource="Priorities"
+                                                                 MinCharacterCount="1" SelectedOption="@taskdto.Priority" SelectedOptionChanged="OnPriorityChanged"
+                                                                 SearchInputPlaceHolder="@Loc["Search"]" PlaceHolder="@($"{Loc["Select"]}")"
+                                                                 NoMatchPlaceHolder="@Loc["NoResultsFound"]" />
                                 <ValidationMessage class="small text-danger mt-1" For="@(() => taskdto.Priority)" />
                             </div>
                             break;
@@ -327,7 +314,8 @@
                                             <span class="text-danger"> *</span>
                                         }
                                     </label>
-                                    <InputNumber class="form-control" id="maxLength" @bind-Value="taskdto.weight" ParsingErrorMessage="" />
+                                    <InputNumber class="form-control" id="maxLength" @bind-Value="taskdto.weight"
+                                                 ParsingErrorMessage="" />
                                     <ValidationMessage class="small text-danger mt-1" For="@(() => taskdto.weight)" />
 
                                 </div>
@@ -343,16 +331,13 @@
                                     }
                                 </label>
                                 <div class="mb-3">
-                                    <input type="range" class="form-range" min="0" max="100" value="@taskdto.ActualProcess" @oninput="OnActualProgressChanged"
+                                    <input type="range" class="form-range" min="0" max="100" value="@taskdto.ActualProcess"
+                                           @oninput="OnActualProgressChanged"
                                            disabled="@(taskdto.ActualProcess >= 100 && !AlllowedToChangeProgress.Any(p => p == taskdto.TaskStatus))" />
                                     <span class="badge bg-primary"> @taskdto.ActualProcess% </span>
                                     <div class="progress mt-2" style="height: 20px;">
-                                        <div class="progress-bar"
-                                             role="progressbar"
-                                             style="width:@taskdto.ActualProcess%;"
-                                             aria-valuenow="@taskdto.ActualProcess"
-                                             aria-valuemin="0"
-                                             aria-valuemax="100">
+                                        <div class="progress-bar" role="progressbar" style="width:@taskdto.ActualProcess%;"
+                                             aria-valuenow="@taskdto.ActualProcess" aria-valuemin="0" aria-valuemax="100">
                                         </div>
                                     </div>
                                     <ValidationMessage class="small text-danger" For="@(() => taskdto.ActualProcess)" />
@@ -401,7 +386,7 @@
     List<SourceDto> taskSourceDtos = new List<SourceDto>();
     List<DepartmentDto> departmentDtos = new List<DepartmentDto>();
     List<CreateTaskDto> allTaskDtos = new List<CreateTaskDto>();
-    string placeholderDate = CultureInfo.CurrentCulture.Name.StartsWith("ar")? "yyyy-mm-dd" : "dd-mm-yyyy";
+    string placeholderDate = CultureInfo.CurrentCulture.Name.StartsWith("ar") ? "yyyy-mm-dd" : "dd-mm-yyyy";
     private RichTextEditorComponent RichTextEditorComponentRefComment;
     private RichTextEditorComponent RichTextEditorComponentRefDescriptionEnglish;
     bool x;
@@ -423,12 +408,12 @@
     private SfDatePicker<DateTime?> ReminderDatePicker;
     private SfDatePicker<DateTime?> EndDatePicker;
     List<Guid> AlllowedToChangeProgress = new List<Guid>()
-    {
-        Guid.Parse("547022EA-EF8C-4FBC-2236-08DE3318A61C"),
-        Guid.Parse("9843AF9D-1389-4740-B428-08DE3D8A77AB"),
-        Guid.Parse("753404A6-8B18-43F7-2238-08DE3318A61C"),
-        Guid.Parse("270A78EB-C5CA-475D-2239-08DE3318A61C")
-    };
+{
+Guid.Parse("547022EA-EF8C-4FBC-2236-08DE3318A61C"),
+Guid.Parse("9843AF9D-1389-4740-B428-08DE3D8A77AB"),
+Guid.Parse("753404A6-8B18-43F7-2238-08DE3318A61C"),
+Guid.Parse("270A78EB-C5CA-475D-2239-08DE3318A61C")
+};
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -443,7 +428,7 @@
         var files = args.GetMultipleFiles(int.MaxValue).ToList();
         return UploadFiles(files);
     }
-    private  Task UploadFiles(List<IBrowserFile> files)
+    private Task UploadFiles(List<IBrowserFile> files)
     {
         if (!files.Any()) return Task.CompletedTask;
         var validFiles = new List<IBrowserFile>();
@@ -471,7 +456,7 @@
     }
     private async Task OpenStratDatePicker() => await startDatePicker.ShowPopupAsync();
     private async Task OpenReminderDatePicker() => await ReminderDatePicker.ShowPopupAsync();
-    private async Task OpenEndDatePicker() =>  await EndDatePicker.ShowPopupAsync();
+    private async Task OpenEndDatePicker() => await EndDatePicker.ShowPopupAsync();
     private void OnContentChanged(string html)
     {
         taskdto.Content = html;
@@ -570,13 +555,13 @@
 
         // Run all in parallel
         await Task.WhenAll(
-            addTaskSettingsTask,
-            taskTypesTask,
-            taskSourcesTask,
-            usersTask,
-            departmentsTask,
-            tasksTask,
-            prioritiesTask
+        addTaskSettingsTask,
+        taskTypesTask,
+        taskSourcesTask,
+        usersTask,
+        departmentsTask,
+        tasksTask,
+        prioritiesTask
         );
         var addTaskSettingsRes = await addTaskSettingsTask;
         if (addTaskSettingsRes.Success && addTaskSettingsRes.Data != null)

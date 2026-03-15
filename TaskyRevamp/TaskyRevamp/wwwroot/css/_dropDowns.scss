@@ -138,6 +138,8 @@
   }
   .dropdown-menu {
     width: 400px;
+    max-height: 240px;
+    overflow: auto;
     .dropdown-item {
       text-wrap: wrap;
     }

@@ -1467,6 +1467,9 @@
   <data name="NoComments" xml:space="preserve">
     <value>لم تتم إضافة أي تعليقات</value>
   </data>
+  <data name="Comments will appear after add first comment" xml:space="preserve">
+    <value>سيظهر التعليقات بعد إضافة أول تعليق</value>
+  </data>
   <data name="cannotdeactivate" xml:space="preserve">
     <value>لا يمكنك إلغاء تنشيط صفحة تسجيل الدخول الافتراضية للنظام</value>
   </data>
