@@ -64,8 +64,8 @@ namespace TaskyRevamp.Services.TaskDependency.Command
 				dto.TaskStatusName = _currentLanguage == "ar" ? task.status?.NameArabic : task.status?.NameEnglish;
 				dto.TaskStatusBackgroundColor = task.status?.BackgroundColor;
 				dto.TaskStatusColor = task.status?.NameColor;
-				//dto.AssigneduserNames = string.Join(",", assgnedusr.Value!.Select(u => _currentLanguage == "ar" ? u.NameArabic : u.NameEnglish));
-				dtoList.Add(dto);
+                dto.AssigneduserNames = string.Join(",", task.TaskAssignees.Select(u => _currentLanguage == "ar" ? u.User.NameArabic : u.User.NameEnglish));
+                dtoList.Add(dto);
 			}
 			dependOnTasks.Items = dtoList;
 			dependOnTasks.TotalCount = tasks.TotalCount;
