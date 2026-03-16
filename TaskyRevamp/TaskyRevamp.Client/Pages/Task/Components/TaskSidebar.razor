@@ -271,24 +271,17 @@
     }
     private bool DisplayRejectButton(CreateTaskDto taskDto)
     {
-        if (RejectionPeriod == 0)
-        {
+        if (RejectionPeriod == 0 || taskDto?.AssigneesData == null)
             return false;
-        }
-        else
-        {
-            if ((DateOnly.FromDateTime(taskDto.AssigneesData.FirstOrDefault(p => p.UserId == CurrentUser)?.AssigneeDate??DateTime.Now).AddDays(RejectionPeriod) <
-            DateOnly.FromDateTime(DateTime.Now)) || !(taskDto.AssigneesData is not null && taskDto.AssigneesData!.Any(u => u.UserId == CurrentUser))
-            || taskDto?.TaskStatus == Guid.Parse("6EE4574D-C439-45B4-223A-08DE3318A61C") || taskDto?.TaskStatus ==
-            Guid.Parse("C8D504C7-9402-4F91-223C-08DE3318A61C"))
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }
-        }
+        var assignee = taskDto.AssigneesData.FirstOrDefault(p => p.UserId == CurrentUser);
+        if(assignee == null)
+            return false;
+
+        if ((DateOnly.FromDateTime(assignee.AssigneeDate).AddDays(RejectionPeriod) < DateOnly.FromDateTime(DateTime.Now)) 
+                || taskDto?.TaskStatus == Guid.Parse("6EE4574D-C439-45B4-223A-08DE3318A61C") 
+                || taskDto?.TaskStatus == Guid.Parse("C8D504C7-9402-4F91-223C-08DE3318A61C"))
+            return false;
+        return true;
     }
     private bool IsRequestNewEndDate(CreateTaskDto taskDto)
     {
