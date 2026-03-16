@@ -13,9 +13,12 @@ namespace TaskyRevamp.Services.Tasks.Commands
 	public class RestoreTaskHandler : IRequestHandler<RestoreTaskCommand, bool>
 	{
 		private readonly IRepository<TaskItem> _taskRepository;
-		public RestoreTaskHandler(IRepository<TaskItem> taskRepository)
+        private readonly IRepository<TaskAssignee> _taskAssigneeRepository;
+
+        public RestoreTaskHandler(IRepository<TaskItem> taskRepository, IRepository<TaskAssignee> taskAssigneeRepository)
 		{
 			_taskRepository = taskRepository;
+			_taskAssigneeRepository = taskAssigneeRepository;
 		}
 		public async Task<bool> Handle(RestoreTaskCommand request, CancellationToken cancellationToken)
 		{
@@ -37,8 +40,17 @@ namespace TaskyRevamp.Services.Tasks.Commands
 				if(request.restoreOption == 2)
 				{
 					var creatorId = task.CreatedBy.Id;
-					//task.AssignedIds = creatorId != Guid.Empty ? new List<Guid> { creatorId } : new List<Guid>();
-				}	
+                    var assignee = new TaskAssignee
+                    {
+                        TaskItemId = task.Id,
+                        UserId = task.CreatedById,
+                        AssigneeDate = DateTime.Now
+                    };
+                    await _taskAssigneeRepository.DeleteRang(task.TaskAssignees.Where(p=>p.TaskItemId==task.Id).Select(p=>p.Id).ToList());
+                    await _taskAssigneeRepository.Insert(assignee);
+                    await _taskAssigneeRepository.SaveChangesAsync();
+                    //task.AssignedIds = creatorId != Guid.Empty ? new List<Guid> { creatorId } : new List<Guid>();
+                }	
 				await _taskRepository.Update(task);
 				return true;
 			}
