@@ -10,15 +10,11 @@ namespace TaskyRevamp.Dto.ChecklistItem
     {
         public Guid Id { get; set; }
         public Guid TaskChecklistId { get; set; }
-        public string TitleEnglish { get; set; }
-        public string TitleArabic { get; set; }
-
-        public TaskStatus Status { get; set; }
-        public bool IsCompleted { get; set; }
-        public DateTime EndDate { get; set; }
-        public Guid AssignedUserId { get; set; }
-
-        public Guid CreatedById { get; set; }
-
-    }
+        public string Title { get; set; }
+        public bool IsDone { get; set; }
+        public DateTime? EndDate { get; set; }
+        public Guid? AssignedUserId { get; set; }
+		public Guid CreatedById { get; set; }
+		public DateTime CreateDate { get; set; }
+	}
 }

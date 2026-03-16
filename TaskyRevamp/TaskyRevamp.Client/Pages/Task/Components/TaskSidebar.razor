@@ -1,12 +1,14 @@
 ﻿@using Blazored.LocalStorage
 @using TaskyRevamp.Client.Consumer
 @using TaskyRevamp.Client.Services
+@using TaskyRevamp.Dto.TaskChecklist
 @using TaskyRevamp.Dto.TaskDto
 @inject IStringLocalizer<SharedResources> Loc
 @inject ToastService ToastService
 @inject NavigationManager navigationManager
 @inject PopupService PopupService
 @inject TaskConsumer _taskConsumer
+@inject TaskChecklistConsumer _taskChecklistConsumer
 @inject ILocalStorageService LocalStorageService
 @inject RejectionSettingConsumer _rejectionSettingConsumer
 
@@ -16,8 +18,13 @@
     </OverallBar>
 </div>
 
-
 <div class="task-action-buttons">
+    <button class="btn btn-light w-100" @onclick="ShowChecklistInput" title="@Loc["Checklist"]">
+        <span class="icon">
+            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.CompletedList"></SVGCrud>
+            <span class="ms-1">@Loc["Checklist"]</span>
+        </span>
+    </button>
     @if (Task != null && Task.ActualProcess < 100)
     {
         <button class="btn btn-light w-100" @onclick="FullProgrssChange" title="@Loc["FullProgress"]">
@@ -29,6 +36,7 @@
             </span>
         </button>
     }
+
     @if (Task?.TaskStatus == Guid.Parse("6EE4574D-C439-45B4-223A-08DE3318A61C"))
     {
         <button class="btn btn-light w-100" @onclick="@(() => CompleteTask(Task.Id))" title="@Loc["Complete"]">
@@ -50,8 +58,8 @@
             </span>
         </button>
     }
-    @if (Task != null && DisplayRejectButton(Task))
 
+    @if (Task != null && DisplayRejectButton(Task))
     {
         <button class="btn btn-light w-100 " @onclick="@(() => RejectTask(Task.Id))" title="@Loc["Reject"]">
             <span class="icon">
@@ -63,6 +71,7 @@
 
         </button>
     }
+
     @if (Task != null && IsRequestNewEndDate(Task))
     {
         <button class="btn btn-light w-100" @onclick="@(() => RequestChangeDueDate(Task))">
@@ -73,6 +82,7 @@
             @Loc["RequestDueDate"]
         </button>
     }
+
     <button class="btn btn-light w-100 text-start mb-2" @onclick="@(() => Edit(Task!.Id))" title="@Loc["Edit"]">
         <span class="icon">
             <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Edit"></SVGCrud> <span class="ms-1"> @Loc["Edit"]</span>
@@ -82,10 +92,12 @@
     {
         <button class="btn btn-light w-100 text-start mb-2" @onclick="@(() => ShowRestorePopup(Task.Id))" title="@Loc["Restore"]">
             <span class="icon">
-                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Repeat"></SVGCrud> <span class="ms-1"> @Loc["Restore"]</span>
+                 <span class="ms-1"> @Loc["Restore"]</span>
+                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Repeat"></SVGCrud>
             </span>
         </button>
     }
+
     @if (Task != null && !Task.IsDeleted)
     {
         <button class="btn btn-light w-100 text-start mb-2 text-danger" title="@Loc["Delete"]" @onclick="@(() => DeleteTask(Task.Id))">
@@ -94,29 +106,13 @@
             </span>
         </button>
     }
+
 </div>
 <RestoreTaskPopup Show="@showRestorePopup" ShowChanged="@(v => showRestorePopup = v)" TaskId="@restoreTaskId" OnRestored="ReloadAfterSave" />
-
-@if (showChecklist)
-{
-    <div class="card mb-3 border-primary">
-        <div class="card-body">
-            <div class="d-flex justify-content-between align-items-center mb-3">
-                <h6 class="mb-0"><i class="bi bi-check-square me-2"></i>Checklist</h6>
-                <button class="btn btn-sm btn-link text-danger" @onclick="() => showChecklist = false">
-                    <i class="bi bi-x-lg"></i>
-                </button>
-            </div>
-            <div class="text-center text-muted py-3">
-                <i class="bi bi-list-check fs-3 d-block mb-2"></i>
-                Checklist feature coming soon
-            </div>
-        </div>
-    </div>
-}
+<Checklist Task="Task"  @bind-showNewChecklistInput="showNewChecklistInput"></Checklist>
 
 @code {
-    [Parameter] public CreateTaskDto? Task { get; set; }
+    [Parameter] public CreateTaskDto Task { get; set; }
     [Parameter] public EventCallback OnConfirmed { get; set; }
     [Parameter] public EventCallback OnReopenTask { get; set; }
     [Parameter] public EventCallback OnRequestNewEndDate { get; set; }
@@ -128,16 +124,23 @@
     Guid restoreTaskId;
     List<Guid> AlllowedToChangeProgress = new List<Guid>()
     {
-    Guid.Parse("547022EA-EF8C-4FBC-2236-08DE3318A61C"),
-    Guid.Parse("9843AF9D-1389-4740-B428-08DE3D8A77AB"),
-    Guid.Parse("753404A6-8B18-43F7-2238-08DE3318A61C"),
-    Guid.Parse("270A78EB-C5CA-475D-2239-08DE3318A61C")
+        Guid.Parse("547022EA-EF8C-4FBC-2236-08DE3318A61C"),
+        Guid.Parse("9843AF9D-1389-4740-B428-08DE3D8A77AB"),
+        Guid.Parse("753404A6-8B18-43F7-2238-08DE3318A61C"),
+        Guid.Parse("270A78EB-C5CA-475D-2239-08DE3318A61C")
     };
+    List<TaskChecklistDto> Checklists = new();
+    private string newChecklistTitle = "";
+    private string newItemTitle = "";
+    bool showNewChecklistInput = false;
 
-    protected override void OnParametersSet()
+    protected override async Task OnParametersSetAsync()
     {
         if (Task != null)
+        {
             progressold = Task.ActualProcess;
+            // await LoadChecklists();
+        }
     }
     private async Task HandleProgressChanged(int value)
     {
@@ -167,7 +170,6 @@
             ConfirmationType.Other
         );
     }
-
     protected override async Task OnInitializedAsync()
     {
         var user = await LocalStorageService.GetItemAsStringAsync("Id");
@@ -177,10 +179,11 @@
             CurrentUser = Guid.Empty;
         RejectionPeriod = await GetRejectionPeriod();
     }
-    private void ToggleChecklist()
+    private void ShowChecklistInput()
     {
-        showChecklist = !showChecklist;
+        showNewChecklistInput = true;
     }
+
     private async Task CompleteConfirmed(Guid id)
     {
         var result = await _taskConsumer.CompleteTask(id);
@@ -317,7 +320,6 @@
         ConfirmationType.Other
         );
     }
-
     private async Task ChangeProgressConfirmed(int progress)
     {
         if (Task == null)
@@ -354,5 +356,11 @@
             return $"({res} {Loc["Day"]})";
         else
             return $"({res} {Loc["Days"]})";
+    }
+    private int GetChecklistProgress(TaskChecklistDto checklist)
+    {
+        if (checklist.Items == null || !checklist.Items.Any())
+            return 0;
+        return (int)Math.Round(checklist.Items.Count(i => i.IsDone) / (double)checklist.Items.Count * 100);
     }
 }

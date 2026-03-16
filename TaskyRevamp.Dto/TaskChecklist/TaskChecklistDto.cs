@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TaskyRevamp.Dto.ChecklistItem;
 
 namespace TaskyRevamp.Dto.TaskChecklist
 {
@@ -10,7 +11,7 @@ namespace TaskyRevamp.Dto.TaskChecklist
     {
         public Guid Id { get; set; }
         public Guid TaskId { get; set; }
-        public string TitleEnglish { get; set; }
-        public string TitleArabic { get; set; }
-    }
+        public string Title { get; set; }
+        public List<ChecklistItemDto> Items { get; set; } = new();
+	}
 }

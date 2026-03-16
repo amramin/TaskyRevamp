@@ -9,70 +9,49 @@ namespace TaskyRevamp.Domain.Models.Task;
 
 public class ChecklistItem : Entity, IHasCreationMetaData
 {
-    protected ChecklistItem() { }
+	
+	public Guid TaskChecklistId { set; get; }
+	public TaskChecklist taskChecklist { get; set; }
+	public string Title { get; set; }
+	public DateTime? EndDate { get; set; }
+	public User? AssignedUser { get; set; }
+	public Guid? AssignedUserId { get; set; }
+	public bool IsDone { get; set; }
+	public Guid CreatedById { get; set; }
+	public DateTime CreateDate { get; set; }
+	public User CreatedBy { get; set; }
 
-    public Guid TaskChecklistId { set; get; }
-    public TaskChecklist TaskChecklist {  get; set; }
-    public string TitleEnglish { get;  set; }
-    public string TitleArabic { get; set; }
-
-    public TaskStatus Status { get; set; }
-    public bool IsCompleted { get;  set; }
-    public DateTime EndDate { get; set; }
-    public User CreatedBy { get;  set; }
-    public User AssignedUser { get; set; }
-
-    public Guid AssignedUserId { get; set; }
-    public Guid CreatedById { get ; set; }
-    public DateTime CreateDate { get; set; }
-
-    public bool SetData(ChecklistItemDto checklistItemDto)
-    {
-        Id= checklistItemDto.Id;
-        TitleEnglish = checklistItemDto.TitleEnglish;
-        TitleArabic= checklistItemDto.TitleArabic;
-        IsCompleted = checklistItemDto.IsCompleted;
-        EndDate = checklistItemDto.EndDate;
-       
-        return true;
-
-    }
-    public ChecklistItemDto CopyToDto()
-    {
-        return new ChecklistItemDto
-        {
-       Id= Id,
-       TitleEnglish= TitleEnglish,
-       TitleArabic= TitleArabic,
-       AssignedUserId=AssignedUserId,
-       
-       EndDate= EndDate,
-       IsCompleted= IsCompleted,
-       TaskChecklistId= TaskChecklist.Id,
-
-        };
-    }
-    public ChecklistItem(Guid id, string titleEN,string titleAR,Guid taskChecklistId, Guid by,Guid assignedId)
-    {
-        Id = id;
-        TitleEnglish = titleEN;
-        TitleArabic = titleAR;  
-        CreatedById = by;
-        AssignedUserId=assignedId;
-        TaskChecklistId = taskChecklistId;
-        CreateDate = DateTime.UtcNow;
-    }
-    public void UpdateText(string titleEN, string titleAR, User by)
-    {
-        TitleEnglish = titleEN;
-        TitleArabic = titleAR;
-    }
-    public void UpdateStatus(TaskStatus status)
-    {
-        Status = status;
-    }
-    public void MarkComplete(User by)
-    {
-        IsCompleted = true;
-    }
+	protected ChecklistItem() { }
+	public ChecklistItem(string title, Guid taskChecklistId, Guid? assignedId, DateTime? endDate, bool isDone)
+	{
+		Id = Guid.NewGuid();
+		Title = title;
+		AssignedUserId = assignedId;
+		EndDate = endDate;
+		TaskChecklistId = taskChecklistId;
+		IsDone = isDone;
+	}
+	public void SetData(ChecklistItemDto checklistItemDto)
+	{
+		Id = checklistItemDto.Id;
+		Title = checklistItemDto.Title;
+		AssignedUserId = checklistItemDto.AssignedUserId;
+		EndDate = checklistItemDto.EndDate;
+		IsDone = checklistItemDto.IsDone;
+	}
+	public ChecklistItemDto CopyToDto()
+	{
+		return new ChecklistItemDto
+		{
+			Id = Id,
+			Title = Title,
+			AssignedUserId = AssignedUserId,
+			EndDate = EndDate,
+			TaskChecklistId = TaskChecklistId,
+			IsDone = IsDone,
+			CreateDate = CreateDate,
+			CreatedById = CreatedById
+		};
+	}
+	
 }

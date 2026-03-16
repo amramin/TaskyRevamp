@@ -19,7 +19,7 @@ namespace TaskyRevamp.Localization.Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "18.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class SharedResources {
@@ -255,6 +255,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string AddFileAttachment {
             get {
                 return ResourceManager.GetString("AddFileAttachment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add an item.
+        /// </summary>
+        public static string AddItem {
+            get {
+                return ResourceManager.GetString("AddItem", resourceCulture);
             }
         }
         
@@ -1816,6 +1825,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Hide Checked Items.
+        /// </summary>
+        public static string HideCheckedItems {
+            get {
+                return ResourceManager.GetString("HideCheckedItems", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Hierarchy.
         /// </summary>
         public static string Hierarchy {
@@ -1902,6 +1920,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string IsManager {
             get {
                 return ResourceManager.GetString("IsManager", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Checklist item deleted successfully.
+        /// </summary>
+        public static string itemDeletedSuccessfully {
+            get {
+                return ResourceManager.GetString("itemDeletedSuccessfully", resourceCulture);
             }
         }
         
@@ -3505,6 +3532,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string SureDeleteTask {
             get {
                 return ResourceManager.GetString("SureDeleteTask", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to delete this checklist item?.
+        /// </summary>
+        public static string SureDeletingItem {
+            get {
+                return ResourceManager.GetString("SureDeletingItem", resourceCulture);
             }
         }
         

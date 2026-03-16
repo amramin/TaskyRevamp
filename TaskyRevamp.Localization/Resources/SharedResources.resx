@@ -1570,4 +1570,16 @@ This task will be moved to the Recycle Bin and can be restored later or permanen
   <data name="TasksSure" xml:space="preserve">
     <value>Are you sure you want to delete these tasks? </value>
   </data>
+  <data name="HideCheckedItems" xml:space="preserve">
+    <value>Hide Checked Items</value>
+  </data>
+  <data name="SureDeletingItem" xml:space="preserve">
+    <value>Are you sure you want to delete this checklist item?</value>
+  </data>
+  <data name="itemDeletedSuccessfully" xml:space="preserve">
+    <value>Checklist item deleted successfully</value>
+  </data>
+  <data name="AddItem" xml:space="preserve">
+    <value>Add an item</value>
+  </data>
 </root>

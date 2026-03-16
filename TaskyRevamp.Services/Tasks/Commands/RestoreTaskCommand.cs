@@ -37,7 +37,7 @@ namespace TaskyRevamp.Services.Tasks.Commands
 				if(request.restoreOption == 2)
 				{
 					var creatorId = task.CreatedBy.Id;
-					task.AssignedIds = creatorId != Guid.Empty ? new List<Guid> { creatorId } : new List<Guid>();
+					//task.AssignedIds = creatorId != Guid.Empty ? new List<Guid> { creatorId } : new List<Guid>();
 				}	
 				await _taskRepository.Update(task);
 				return true;

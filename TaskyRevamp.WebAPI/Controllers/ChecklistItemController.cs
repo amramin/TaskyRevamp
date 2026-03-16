@@ -15,56 +15,31 @@ namespace TaskyRevamp.WebAPI.Controllers
     public class ChecklistItemController : ControllerBase
     {
         private readonly IMediator _mediator;
-
         public ChecklistItemController(IMediator mediator)
         {
             _mediator = mediator;
         }
-
         [HttpPost("CreateChecklistItem")]
-        public async Task<ActionResult<string>> CreateChecklistItem([FromBody] ChecklistItemDto ChecklistItemDto)
+        public async Task<ActionResult<Guid>> CreateChecklistItem([FromBody] ChecklistItemDto ChecklistItemDto)
         {
             var res = await _mediator.Send(new CreateChecklistItemCommand(ChecklistItemDto));
-
-
-
             return Ok(res);
         }
-
-
-        [HttpPut]
+        [HttpPost("UpdateChecklistItem")]
         public async Task<IActionResult> UpdateChecklistItem([FromBody] ChecklistItemDto ChecklistItem)
         {
             return Ok(await _mediator.Send(new UpdateChecklistItemCommand(ChecklistItem)));
         }
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(string id)
+        [HttpDelete("DeleteChecklistItem/{id}")]
+        public async Task<IActionResult> DeleteChecklistItem(Guid id)
         {
-            return Ok(await _mediator.Send(new DeleteChecklistItemCommand(Guid.Parse(id))));
+            return Ok(await _mediator.Send(new DeleteChecklistItemCommand(id)));
         }
-        [HttpPost("GetAllAllTask")]
-        public async Task<IActionResult> AllTask([FromBody] QueryModel? query = null)
+        [HttpGet("GetChecklistItems/{id}")]
+        public async Task<IActionResult> GetChecklistItems(Guid id)
         {
-
-
-            var all = await _mediator.Send(new GetChecklistItemsQuery(query));
-
+            var all = await _mediator.Send(new GetChecklistItemsQuery(id));
             return Ok(all);
         }
-
-
-
-
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetOne(string id)
-        {
-
-            var Task = await _mediator.Send(new GetChecklistItemQuery(new Guid(id)));
-
-
-            return Ok(Task);
-        }
-
-
     }
 }
