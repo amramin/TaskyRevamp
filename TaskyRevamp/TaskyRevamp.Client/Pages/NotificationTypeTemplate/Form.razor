@@ -10,127 +10,142 @@
 
 <div class="page-header">
     <div class="title-block">
-        @if(loading){
-        @if (NotificationTypeTamplate.moduleType == Dto.Enums.ModuleType.Email)
+        @if (loading)
         {
-            <h1 class="page-headline">@Loc["EmailNotificationContent"]</h1>
-        }
-        @if (NotificationTypeTamplate.moduleType == Dto.Enums.ModuleType.SystemNotification)
-        {
-            <h1 class="page-headline">@Loc["SystemNotificationContent"]</h1>
-        }
+            <button type="button" class="btn btn-action-24">
+                <span class="icon">
+                    <SVGCrud SVGType="SVGCrud.SVGTypeEnum.BackArrow"></SVGCrud>
+                </span>
+            </button>
+            @if (NotificationTypeTamplate.moduleType == Dto.Enums.ModuleType.Email)
+            {
+                <h1 class="page-headline">@Loc["EmailNotificationContent"]</h1>
+            }
+            @if (NotificationTypeTamplate.moduleType == Dto.Enums.ModuleType.SystemNotification)
+            {
+                <h1 class="page-headline">@Loc["SystemNotificationContent"]</h1>
+            }
         }
     </div>
 
 </div>
-<EditForm EditContext="@editContext" OnSubmit="@OnSubmitHandler">
-    <DataAnnotationsValidator />
-    <div class="body">
-        <div class="row g-2">
-        <div class="col-lg-6">
-        <div class="mb-6">
-            <label class="form-label">
-                @Loc["SubjectEnglish"]
-                <span class="text-danger">*</span>
-            </label>
-                    <InputText class="form-control" @oninput="@(e => UpdateCounter(e, "nameEnglishCounter", 250))" @bind-Value="NotificationTypeTamplate.SubjectEnglish" />
-
-                    <small id="nameArabicCounter" class="form-text x-small  text-end ms-auto">
-                        @Counters["nameEnglishCounter"]/250
-                    </small>
-                        <ValidationMessage class="small text-danger" For="@(() => NotificationTypeTamplate.SubjectEnglish)"></ValidationMessage>
-        </div>
-        </div>
-        <div class="col-lg-6">
-           
-            <label class="form-label">
-                @Loc["SubjectArabic"]
-                <span class="text-danger">*</span>
-            </label>
-
-            <div class="color-group">
-                    <InputText class="form-control" @oninput="@(e => UpdateCounter(e, "nameArabicCounter", 250))" @bind-Value="NotificationTypeTamplate.SubjectArabic" />
-
-                    <small id="nameArabicCounter" class="form-text x-small  text-end ms-auto">
-                        @Counters["nameArabicCounter"]/250
-                    </small>
-
-            </div>
-            <ValidationMessage class="small text-danger" For="@(() => NotificationTypeTamplate.SubjectEnglish)"></ValidationMessage>
-        </div>
-        </div>
-       </div>
-        <div class="row g-2">
-        <div class="col-lg-6">
-         <label class="form-label">
-                         @Loc["EmailbodyinEnglish"]
-                    <span class="text-danger">*</span>
-                </label>
-                <RichTextEditorComponent EditorId="RTE_EnglishTemplateEnglish"
-                    @ref="RichTextEditorComponentRefTemplateEnglish" Content="@NotificationTypeTamplate.TemplateEnglish"
-                    ContentChanged="OnDescriptionEnglishChanged">
-                </RichTextEditorComponent>
-                <small id="templateCounterEn" class="form-text x-small  text-end ms-auto">
-                    @englishcount/ 10000
-                </small>
-
-                <div class="d-flex align-items-center justify-content-between">
-                    <div class="d-flex gap-2">
-                        <ValidationMessage class="small text-danger" For="@(() => NotificationTypeTamplate.TemplateEnglish)" />
-                    </div>
-                    @if (isEmptyEnglishTemplate)
-                    {
-                        <div md="3">
-                            <label class="small text-danger"> @Loc["Themessagecontentcannotbeempty"]</label>
+<div class="page-body">
+    <EditForm class="card setting-card" EditContext="@editContext" OnSubmit="@OnSubmitHandler">
+        <DataAnnotationsValidator />
+        <div class="card-body">
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <div class="d-flex gap-3 flex-column english-content">
+                        <div>
+                            <label class="form-label">
+                                @Loc["SubjectEnglish"]
+                                <span class="text-danger">*</span>
+                            </label>
+                            <InputText class="form-control"
+                                       @oninput="@(e => UpdateCounter(e, "nameEnglishCounter", 250))"
+                                       @bind-Value="NotificationTypeTamplate.SubjectEnglish" />
+                            <small id="nameArabicCounter" class="form-text x-small  text-end ms-auto">
+                                @Counters["nameEnglishCounter"]/250
+                            </small>
+                            <ValidationMessage class="small text-danger"
+                                               For="@(() => NotificationTypeTamplate.SubjectEnglish)"></ValidationMessage>
                         </div>
-                    }
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-6">
-         <label class="form-label">
-                        @Loc["EmailbodyinArabic"]
-                    <span class="text-danger">*</span>
-                </label>
-                <RichTextEditorComponent EditorId="RTE_EnglishTemplateArabic"
-                    @ref="RichTextEditorComponentRefTemplateArabic" Content="@NotificationTypeTamplate.TemplateArabic"
-                    ContentChanged="OnDescriptionArabicChanged">
-                </RichTextEditorComponent>
-                <small id="templateCounterAr" class="form-text x-small  text-end ms-auto">
-               @arabiccount/ 10000
-                </small>
-                <div class="d-flex align-items-center justify-content-between">
-                    <div class="d-flex gap-2">
-                        <ValidationMessage class="small text-danger"
-                            For="@(() => NotificationTypeTamplate.TemplateArabic)" />
-                    </div>
-                    @if (isEmptyArabicTemplate)
-                    {
-                        <div md="3">
-                            <label class="small text-danger"> @Loc["Themessagecontentcannotbeempty"]</label>
-                        </div>
-                    }
-                </div>
-            </div>
+                        <div>
+                            <label class="form-label">
+                                @Loc["EmailbodyinEnglish"]
+                                <span class="text-danger">*</span>
+                            </label>
+                            <RichTextEditorComponent EditorId="RTE_EnglishTemplateEnglish"
+                                                     @ref="RichTextEditorComponentRefTemplateEnglish"
+                                                     Content="@NotificationTypeTamplate.TemplateEnglish"
+                                                     ContentChanged="OnDescriptionEnglishChanged">
+                            </RichTextEditorComponent>
+                            <small id="templateCounterEn" class="form-text x-small  text-end ms-auto">
+                                @englishcount/ 10000
+                            </small>
 
-       
-  
-    
-     <div class="card-footer">
-                <div class="row justify-content-center">
-                    <div class="col-xxl-12 col-xl-12 col-lg-12 col-md-12">
-                        <div class="action-buttons">
-                           <button type="button" class="btn btn-lg btn-light"
-                        @onclick="OnCancelClick">@Loc["Cancel"]</button>
-                            <button type="submit"
-                        class="btn btn-lg btn-primary">@Loc[@SubmitButtonText]</button>
+                            <div class="d-flex align-items-center justify-content-between">
+                                <div class="d-flex gap-2">
+                                    <ValidationMessage class="small text-danger"
+                                                       For="@(() => NotificationTypeTamplate.TemplateEnglish)" />
+                                </div>
+                                @if (isEmptyEnglishTemplate)
+                                {
+                                    <div md="3">
+                                        <label class="small text-danger"> @Loc["Themessagecontentcannotbeempty"]</label>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="d-flex gap-3 flex-column">
+                        <div>
+                            <label class="form-label">
+                                @Loc["SubjectArabic"]
+                                <span class="text-danger">*</span>
+                            </label>
+                            <div class="arabic-content">
+                                <InputText class="form-control"
+                                           @oninput="@(e => UpdateCounter(e, "nameArabicCounter", 250))"
+                                           @bind-Value="NotificationTypeTamplate.SubjectArabic" />
+                            </div>
+
+                            <small id="nameArabicCounter" class="form-text x-small  text-end ms-auto">
+                                @Counters["nameArabicCounter"]/250
+                            </small>
+                            <ValidationMessage class="small text-danger"
+                                               For="@(() => NotificationTypeTamplate.SubjectArabic)">
+                            </ValidationMessage>
+                        </div>
+                        <div>
+                            <label class="form-label">
+                                @Loc["EmailbodyinArabic"]
+                                <span class="text-danger">*</span>
+                            </label>
+                            <div class="arabic-content">
+                                <RichTextEditorComponent EditorId="RTE_EnglishTemplateArabic"
+                                                         @ref="RichTextEditorComponentRefTemplateArabic"
+                                                         Content="@NotificationTypeTamplate.TemplateArabic"
+                                                         ContentChanged="OnDescriptionArabicChanged">
+                                </RichTextEditorComponent>
+                            </div>
+                            <small id="templateCounterAr" class="form-text x-small  text-end ms-auto">
+                                @arabiccount/ 10000
+                            </small>
+                            <div class="d-flex align-items-center justify-content-between">
+                                <div class="d-flex gap-2">
+                                    <ValidationMessage class="small text-danger"
+                                                       For="@(() => NotificationTypeTamplate.TemplateArabic)" />
+                                </div>
+                                @if (isEmptyArabicTemplate)
+                                {
+                                    <div md="3">
+                                        <label class="small text-danger"> @Loc["Themessagecontentcannotbeempty"]</label>
+                                    </div>
+                                }
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-       
-</EditForm>
+        </div>
 
+        <div class="card-footer">
+            <div class="row justify-content-center">
+                <div class="col-xxl-12 col-xl-12 col-lg-12 col-md-12">
+                    <div class="action-buttons">
+                        <button type="button" class="btn btn-lg btn-light"
+                                @onclick="OnCancelClick">@Loc["Cancel"]</button>
+                        <button type="submit" class="btn btn-lg btn-primary">@Loc[@SubmitButtonText]</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </EditForm>
+</div>
 
 @code {
 
@@ -140,7 +155,7 @@
     NotificationTypeTemplateDto NotificationTypeTamplate { get; set; } = new NotificationTypeTemplateDto();
     [Parameter] public EventCallback<EditContext> OnValidSubmit { get; set; }
     [Parameter] public EventCallback OnCancel { get; set; }
-    [Parameter] public string SubmitButtonText { get; set; } ="Save";
+    [Parameter] public string SubmitButtonText { get; set; } = "Save";
     private RichTextEditorComponent RichTextEditorComponentRefTemplateEnglish;
     int englishcount = 0;
     int arabiccount = 0;
@@ -213,14 +228,14 @@
     {
         if (string.IsNullOrEmpty(NotificationTypeTamplate.TemplateEnglish)
         || string.IsNullOrEmpty(NotificationTypeTamplate.TemplateArabic)
-        
+
         )
         {
             if (string.IsNullOrEmpty(NotificationTypeTamplate.TemplateEnglish))
-        isEmptyEnglishTemplate = true;
+                isEmptyEnglishTemplate = true;
             if (string.IsNullOrEmpty(NotificationTypeTamplate.TemplateArabic))
                 isEmptyArabicTemplate = true;
-                return;
+            return;
         }
         ClearValidationMessages();
         if (!editContext.Validate())
@@ -229,7 +244,7 @@
         await _NotificationTypeTemplateConsumer.AddNotificationTypeTemplate(NotificationTypeTamplate);
         navigationManager.NavigateTo($"NotificationTypeTemplates/{(int)NotificationTypeTamplate.moduleType}");
 
-   await OnValidSubmit.InvokeAsync(context);
+        await OnValidSubmit.InvokeAsync(context);
     }
 
     private async Task OnCancelClick()
@@ -243,4 +258,5 @@
         messageStore.Clear();
         editContext.NotifyValidationStateChanged();
     }
+
 }

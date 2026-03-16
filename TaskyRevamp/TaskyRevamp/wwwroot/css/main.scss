@@ -246,6 +246,15 @@ html {
   }
 }
 /* end auth*/
+/* start .arabic-content*/
+.arabic-content{
+  *:not(i):not(.fa):not(mat-icon):not(.ar-text):not(.e-icons):not(.form-label) {
+    font-family: "Almarai", sans-serif;
+  direction: rtl;
+}
+
+}
+/* start .arabic-content*/
 /* start treelist*/
 .tree-list {
   padding-inline-start: 0;
