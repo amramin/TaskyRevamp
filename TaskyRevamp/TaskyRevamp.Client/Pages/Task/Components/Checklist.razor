@@ -20,6 +20,7 @@
         color: red !important;
         font-weight: bold;
     }
+
     .overdue-date.e-date-wrapper .e-input-group-icon {
         color: red !important;
     }
@@ -44,7 +45,7 @@
                 @if (editingChecklistId == checklist.Id && IsCreator)
                 {
                     <div class="d-flex align-items-center gap-2">
-                    <InputText class="form-control" @bind-Value="editingChecklistTitle" @onblur="() => SaveChecklistTitle(checklist)" style="width:200px" />
+                        <InputText class="form-control" @bind-Value="editingChecklistTitle" @onblur="() => SaveChecklistTitle(checklist)" style="width:200px" />
                         <button class="btn btn-sm btn-success" @onclick="() => SaveChecklistTitle(checklist)">✔</button>
                         <button class="btn btn-sm btn-secondary" @onclick="CancelEditChecklist">✖</button>
                     </div>
@@ -86,11 +87,11 @@
                 {
                     <div class="d-flex align-items-center gap-2 mt-2">
                         <input type="checkbox" class="form-check-input" checked="@item.IsDone" disabled="@(CanToggleItem(item) ? null : true)"
-                                @onchange="async () => { if (CanToggleItem(item)) await ToggleItem(item); }" />
+                               @onchange="async () => { if (CanToggleItem(item)) await ToggleItem(item); }" />
                         @if (editingItemId == item.Id && (IsCreator || item.AssignedUserId == currentUserId))
                         {
                             <div class="d-flex align-items-center gap-1">
-                            <InputText class="form-control" @bind-Value="editingItemTitle" @onblur="() => SaveItemTitle(item)" style="width:200px" />
+                                <InputText class="form-control" @bind-Value="editingItemTitle" @onblur="() => SaveItemTitle(item)" style="width:200px" />
                                 <button class="btn btn-sm btn-success" @onclick="() => SaveItemTitle(item)">✔</button>
                                 <button class="btn btn-sm btn-secondary" @onclick="CancelEditItem">✖</button>
                             </div>
@@ -145,13 +146,16 @@
                     </div>
                 }
             }
-            <div class="mt-2">
-                <InputText class="form-control" placeholder="@Loc["AddItem"]" @bind-Value="newItemTitle" />
-                <div class="mt-2 d-flex gap-2">
-                    <button class="btn btn-primary" @onclick="() => AddItem(checklist)">@Loc["Add"]</button>
-                    <button class="btn btn-secondary" @onclick="CancelItem">@Loc["Cancel"]</button>
+            @if (IsCreator)
+            {
+                <div class="mt-2">
+                    <InputText class="form-control" placeholder="@Loc["AddItem"]" @bind-Value="newItemTitle" />
+                    <div class="mt-2 d-flex gap-2">
+                        <button class="btn btn-primary" @onclick="() => AddItem(checklist)">@Loc["Add"]</button>
+                        <button class="btn btn-secondary" @onclick="CancelItem">@Loc["Cancel"]</button>
+                    </div>
                 </div>
-            </div>
+            }
         </div>
     </div>
 }

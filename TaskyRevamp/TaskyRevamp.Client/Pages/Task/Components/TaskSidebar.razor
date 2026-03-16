@@ -19,12 +19,16 @@
 </div>
 
 <div class="task-action-buttons">
-    <button class="btn btn-light w-100" @onclick="ShowChecklistInput" title="@Loc["Checklist"]">
-        <span class="icon">
-            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.CompletedList"></SVGCrud>
-            <span class="ms-1">@Loc["Checklist"]</span>
-        </span>
-    </button>
+    @if (Task != null && (Task.CreatedBy == CurrentUser ||
+        (Task.AssignedIds != null && Task.AssignedIds.Contains(CurrentUser))))
+    {
+        <button class="btn btn-light w-100" @onclick="ShowChecklistInput" title="@Loc["Checklist"]">
+            <span class="icon">
+                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.CompletedList"></SVGCrud>
+                <span class="ms-1">@Loc["Checklist"]</span>
+            </span>
+        </button>
+    }
     @if (Task != null && Task.ActualProcess < 100)
     {
         <button class="btn btn-light w-100" @onclick="FullProgrssChange" title="@Loc["FullProgress"]">
