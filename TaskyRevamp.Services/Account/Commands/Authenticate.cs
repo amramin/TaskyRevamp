@@ -44,7 +44,7 @@ public class AuthenticateCommandHandler : IRequestHandler<AuthenticateCommand, s
         try
         {
             User user = null;
-			if (_appSettingsOptions.Value.AuthenticationMode == (int)AuthenticationMode.ActiveDirectory)
+            if (_appSettingsOptions.Value.AuthenticationMode == (int)AuthenticationMode.ActiveDirectory)
             {
                 var adUser = AuthenticateAndGetUser(_ldapPath.Value.Path, request.Username, request.Password);
                 if (!adUser.IsAuthenticated)
@@ -52,7 +52,7 @@ public class AuthenticateCommandHandler : IRequestHandler<AuthenticateCommand, s
                     return null;
                 }
                 var userResponse = await _userRepository.FindBy(x => x.Username == request.Username);
-				if (userResponse.IsFailure || userResponse.Value is null || userResponse.Value.Count == 0)
+                if (userResponse.IsFailure || userResponse.Value is null || userResponse.Value.Count == 0)
                 {
                     user = new User
                     {
@@ -70,18 +70,24 @@ public class AuthenticateCommandHandler : IRequestHandler<AuthenticateCommand, s
                     };
                     await _userRepository.Insert(user);
                     await _userRepository.SaveChangesAsync();
-				}
+                }
                 else
                 {
                     user = userResponse.Value.FirstOrDefault()!;
                     if (user is null)
                     {
                         throw new NoDataException("User Not Found!");
-					}
+                    }
                     user = await SyncUserWithActiveDirectory(user, adUser);
-				}
+                }
 
             }
+            else
+            {
+                var userResponse = await _userRepository.FindBy(x => x.Username == request.Username);
+                user = userResponse.Value.FirstOrDefault()!;
+            }
+
 
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_appSettingsOptions.Value.Secret);
@@ -99,10 +105,10 @@ public class AuthenticateCommandHandler : IRequestHandler<AuthenticateCommand, s
                 {
                 new(ClaimTypes.Name, user.Id.ToString()),
                 new(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                new("Username", user.Username),
-                new("Email", user.Email),
-                new("NameEnglish", user.NameEnglish),
-                new("NameArabic", user.NameArabic),
+                new("Username", user.Username ?? ""),
+                new("Email", user.Email ?? ""),
+                new("NameEnglish", user.NameEnglish ?? ""),
+                new("NameArabic", user.NameArabic ?? ""),
                 new("Id", user.Id.ToString()),
                 new("DelegatedUsersId", string.Join(",", delegateUsersIds)),
                 }),
