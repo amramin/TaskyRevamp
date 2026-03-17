@@ -40,15 +40,9 @@
                                          @ref="RichTextEditorComponentRefDescriptionEnglish" ContentChanged="OnDescriptionChanged"
                                          Content="@newComment" ButtonText="@Loc["AddDescription"]"> </RichTextEditorComponent>
             </div>
-
             <div class="d-flex justify-content-end">
-                <button class="btn btn-primary" @onclick="AddComment" disabled="@string.IsNullOrWhiteSpace(newComment)">
-                    @Loc[buttonName] <i class="bi bi-arrow-right"></i>
-                </button>
-
-                <button class="btn btn-primary" @onclick="CancelComment" disabled="@string.IsNullOrWhiteSpace(newComment)">
-                    @Loc["Cancel"] <i class="bi bi-arrow-right"></i>
-                </button>
+                <button class="btn btn-primary me-2" @onclick="AddComment" disabled="@string.IsNullOrWhiteSpace(newComment)">@Loc[buttonName]</button>
+                <button class="btn btn-secondary" @onclick="CancelComment" disabled="@string.IsNullOrWhiteSpace(newComment)">@Loc["Cancel"] </button>
             </div>
 
             @if (comments != null && comments.Any())
@@ -70,10 +64,7 @@
                                         @if (comment.TaskComment.UpdateDate != comment.TaskComment.CreateDate)
                                         {
                                             @Loc["Edited"]
-
-
                                             @comment.TaskComment.UpdateDate.Value.ToString(Loc["LocalizeDate"])
-
                                         }
                                     </small>
                                 </div>
@@ -91,7 +82,7 @@
                                         </div>
                                     }
                                 </div>
-                                @if (currentId == comment.TaskComment.CreatedById)
+                                @if (currentId == comment.TaskComment.CreatedById || isCreator)
                                 {
                                     <div class="mt-2">
                                         <button class="btn btn-link text-primary p-0 m-0 text-decoration-none small me-1"
@@ -125,12 +116,14 @@
     [Parameter] public bool ShowSection { get; set; } = true;
     [Parameter] public EventCallback<bool> ShowSectionChanged { get; set; }
     [Parameter] public Guid TaskId { get; set; }
+    [Parameter] public CreateTaskDto taskDto { get; set; }
     private string newComment = string.Empty;
     private List<TaskCommentWithNameDto>? comments;
     private TaskCommentWithNameDto Upatedcomment = new TaskCommentWithNameDto();
     string buttonName = $"AddComment";
     private RichTextEditorComponent RichTextEditorComponentRefDescriptionEnglish;
-
+    private Guid? creatorId { set; get; }
+    private bool isCreator => creatorId.HasValue && creatorId.Value == currentId;
     private async Task ToggleSection()
     {
         ShowSection = !ShowSection;
@@ -140,22 +133,22 @@
     protected override async Task OnInitializedAsync()
     {
         var current = await LocalStorageService.GetItemAsStringAsync("Id");
-        currentId = Guid.Parse(current);
+        currentId = Guid.Parse(current!);
         await LoadComments();
     }
-
+    protected override void OnParametersSet()
+    {
+        if (taskDto != null)
+            creatorId = taskDto.CreatedBy;
+    }
     private void OnDeleteComment(Guid Id)
     {
-        PopupService.ShowConfirmation(
-        @Loc["Ares"],
-        "Yes, Delete",
-        async (confirmed) =>
+        PopupService.ShowConfirmation(@Loc["Ares"], @Loc["Confirm"], async (confirmed) =>
         {
             if (confirmed)
                 await DeleteConfirmed(Id);
         },
-        ConfirmationType.Danger
-        );
+        ConfirmationType.Danger);
     }
     private async Task DeleteConfirmed(Guid Id)
     {
@@ -168,7 +161,7 @@
                 await LoadComments();
             }
 
-            await ToastService.ShowToastAsync(Loc["Deletedsuccessfully"], "success");
+            await ToastService.ShowToastAsync(Loc["Deleted successfully"], "success");
         }
         else
         {
@@ -189,18 +182,12 @@
 
     private async Task CancelComment()
     {
-        PopupService.ShowConfirmation(
-        @Loc["Areyousureyouwan"],
-        "Yes, Cancel",
-        async (confirmed) =>
+        PopupService.ShowConfirmation(@Loc["Areyousureyouwan"], @Loc["Confirm"], async (confirmed) =>
         {
             if (confirmed)
                 await CancelConfirmed();
         },
-        ConfirmationType.Danger
-        );
-
-
+        ConfirmationType.Danger);
     }
     private async Task AddComment()
     {

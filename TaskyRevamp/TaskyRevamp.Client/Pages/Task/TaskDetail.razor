@@ -28,7 +28,7 @@
                     {
                         <TaskDescription @bind-ShowSection="showDescription" Task="task" />
                         <TaskDetails @bind-ShowSection="showDetails" Task="task" />
-                        <TaskComments @bind-ShowSection="showComments" TaskId="TaskId" @ref="commentssection" />
+                        <TaskComments @bind-ShowSection="showComments" taskDto="task" TaskId="TaskId" @ref="commentssection" />
                     }
                     else if (activeTab == "enddate")
                     {
