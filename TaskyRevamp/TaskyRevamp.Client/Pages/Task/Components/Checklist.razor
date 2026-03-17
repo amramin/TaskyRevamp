@@ -274,7 +274,15 @@
     {
         var res = await _taskChecklistConsumer.DeleteCheklist(id);
         if (res.Success && res.Data)
+        {
+            await ToastService.ShowToastAsync(Loc["Deleted successfully"], "success");
             await LoadChecklists();
+            StateHasChanged();
+        }
+        else
+        {
+            await ToastService.ShowToastAsync(Loc["Cannot delete a checklist that includes items"], "error");
+        }
     }
     async Task ConfirmDeleteChecklistItem(TaskChecklistDto checklist, ChecklistItemDto item)
     {

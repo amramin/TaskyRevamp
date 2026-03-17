@@ -13,7 +13,17 @@ public class DeleteGroupCommandHandler : IRequestHandler<DeleteTaskChecklistComm
     }
     public async Task<bool> Handle(DeleteTaskChecklistCommand request, CancellationToken cancellationToken)
     {
-        await _taskChecklistRepository.Delete(request.Id);
+        if (request.Id == Guid.Empty)
+            throw new Exception("Invalid TaskChecklist Id");
+
+        var taskChecklist = await _taskChecklistRepository.FindBy(tc => tc.Id == request.Id, includeProperties: $"{nameof(TaskChecklist.items)}");
+        if (taskChecklist == null || taskChecklist.Value == null || taskChecklist.Value.FirstOrDefault() == null)
+            throw new Exception("Task Checklist not found");
+
+        var taskChecklistItems = taskChecklist.Value.FirstOrDefault()!.items;
+		if (taskChecklistItems.Any())
+            return false;
+		await _taskChecklistRepository.Delete(request.Id);
         return true;
     }
 }
