@@ -15,7 +15,7 @@ internal class ChecklistItemConfiguration : IEntityTypeConfiguration<ChecklistIt
     public void Configure(EntityTypeBuilder<ChecklistItem> builder)
     {
         builder
-   .HasOne(te => te.TaskChecklist)
+   .HasOne(te => te.taskChecklist)
    .WithMany(tc=>tc.items)
    .HasForeignKey(ci => ci.TaskChecklistId)  // Use this FK
 

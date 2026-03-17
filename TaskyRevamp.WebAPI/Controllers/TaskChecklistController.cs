@@ -4,6 +4,7 @@ using TaskyRevamp.Dto.TaskChecklist;
 using TaskyRevamp.Dto.GeneralDto;
 using TaskyRevamp.Services.TaskChecklists.Commands;
 using TaskyRevamp.Services.TaskChecklists.Query;
+using DocumentFormat.OpenXml.Bibliography;
 
 namespace TaskChecklistRevamp.WebAPI.Controllers;
 
@@ -12,55 +13,33 @@ namespace TaskChecklistRevamp.WebAPI.Controllers;
 public class TaskChecklistController : ControllerBase
 {
     private readonly IMediator _mediator;
-
     public TaskChecklistController(IMediator mediator)
     {
         _mediator = mediator;
     }
 
     [HttpPost("CreateTaskChecklist")]
-    public async Task<ActionResult<string>> CreateTaskChecklist([FromBody] TaskChecklistDto TaskChecklistDto)
+    public async Task<IActionResult> CreateTaskChecklist([FromBody] TaskChecklistDto TaskChecklistDto)
     {
-        var res = await _mediator.Send(new CreateTaskChecklistCommand(TaskChecklistDto));
-
-
-
-        return Ok(res);
+		return Ok(await _mediator.Send(new CreateTaskChecklistCommand(TaskChecklistDto)));
     }
 
-
-    [HttpPut]
+    [HttpPost("UpdateTaskChecklist")]
     public async Task<IActionResult> UpdateTaskChecklist([FromBody] TaskChecklistDto TaskChecklist)
     {
         return Ok(await _mediator.Send(new UpdateTaskChecklistCommand(TaskChecklist)));
     }
-    [HttpDelete("{id}")]
-    public async Task<IActionResult> Delete(string id)
+
+    [HttpDelete("DeleteCheklist/{taskId}")]
+    public async Task<IActionResult> Delete(Guid taskId)
     {
-        return Ok(await _mediator.Send(new DeleteTaskChecklistCommand(Guid.Parse(id))));
+        return Ok(await _mediator.Send(new DeleteTaskChecklistCommand(taskId)));
     }
-    [HttpPost("GetAllTaskChecklists")]
-    public async Task<IActionResult> AllTask([FromBody] QueryModel? query = null)
+
+    [HttpGet("GetAllTaskChecklists/{taskId}")]
+    public async Task<IActionResult> GetTaskChecklists(Guid taskId)
     {
-
-
-        var all = await _mediator.Send(new GetTaskChecklistsQuery(query));
-
+        var all = await _mediator.Send(new GetTaskChecklistsQuery(taskId));
         return Ok(all);
     }
-
-
-
-
-    [HttpGet("{id}")]
-    public async Task<IActionResult> GetOne(string id)
-    {
-
-        var Task = await _mediator.Send(new GetTaskChecklistQuery(new Guid(id)));
-
-
-        return Ok(Task);
-    }
-
-
 }

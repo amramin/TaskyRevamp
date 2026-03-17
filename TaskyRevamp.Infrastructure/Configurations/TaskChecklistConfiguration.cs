@@ -15,7 +15,7 @@ internal class TaskChecklistConfiguration : IEntityTypeConfiguration<TaskCheckli
     public void Configure(EntityTypeBuilder<TaskChecklist> builder)
     {
         builder
-   .HasOne(te => te.taskItem)
+   .HasOne(te => te.TaskItem)
    .WithMany(tc=>tc.taskChecklists).HasForeignKey(p=>p.TaskItemId)
    .OnDelete(DeleteBehavior.Restrict); // or NoAction in EF Core 5+
 

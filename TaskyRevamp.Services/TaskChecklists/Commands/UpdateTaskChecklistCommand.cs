@@ -15,18 +15,18 @@ public class UpdateTaskChecklistCommandHandler : IRequestHandler<UpdateTaskCheck
     {
         _taskChecklistRepository = taskChecklistRepository;
     }
-
     public async Task<bool> Handle(UpdateTaskChecklistCommand request, CancellationToken cancellationToken)
     {
         var taskChecklistResponse = await _taskChecklistRepository.FindByKey(request.TaskChecklist.Id);
         if (!taskChecklistResponse.Success)
-        {
             return false;
-        }
         var updated = taskChecklistResponse.Value;
-      updated.SetData(request.TaskChecklist);
-        await _taskChecklistRepository.Update(updated);
-
-        return true;
+        if (updated != null)
+        {
+            updated.SetData(request.TaskChecklist);
+            await _taskChecklistRepository.Update(updated);
+            return true;
+		}
+        return false;
     }
 }

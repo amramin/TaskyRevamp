@@ -10,18 +10,21 @@ namespace TaskyRevamp.Domain.Models.Task;
 public class TaskChecklist : Entity
 {
     public Guid TaskItemId { get; set; }
-    public  TaskItem taskItem { set; get; }
-    public string TitleEnglish { get; set; }
-    public string TitleArabic { get; set; }
-    public  List<ChecklistItem> items = new();
-    public bool SetData(TaskChecklistDto taskChecklistDto)
+    public  TaskItem TaskItem { set; get; }
+    public string Title { get; set; }
+    public  List<ChecklistItem> items { get; set; } = new();
+	public TaskChecklist(Guid taskid, string title)
+	{
+		TaskItemId = taskid;
+		Title = title;
+	}
+	public TaskChecklist()
+	{
+	}
+	public void SetData(TaskChecklistDto taskChecklistDto)
     {
-        Id = Id;
-        TitleEnglish = taskChecklistDto.TitleEnglish;
-        TitleArabic = taskChecklistDto.TitleArabic;
+        Title = taskChecklistDto.Title;
         TaskItemId = taskChecklistDto.TaskId;
-        return true;
-
     }
     public TaskChecklistDto CopyToDto()
     {
@@ -29,50 +32,8 @@ public class TaskChecklist : Entity
         {
             Id = Id,
             TaskId = TaskItemId,
-            TitleEnglish = TitleEnglish,
-            TitleArabic = TitleArabic,
-        
-
-
-
-
-        };
-    }
-    internal TaskChecklist(TaskItem tsk)
-    {
-        taskItem = tsk;
-    }
-    public TaskChecklist(Guid taskid,string titleEN,string titleAR)
-    {
-        TaskItemId = taskid;
-        TitleEnglish= titleEN;
-        TitleArabic= titleAR;
-    }
-    public TaskChecklist()
-    {
-    }
-
-    public void AddItem(string textEN,string textAR,User by,Guid assigned)
-    {
-        var item = new ChecklistItem(Guid.NewGuid(), textEN,textAR, Id,by.Id,assigned);
-        items.Add(item);
-        taskItem.AddHistoryEntry(by, $"added checklist item '{textEN}''{textEN}'");
-    }
-
-    public void EditItem(Guid itemId, string newTextEN,string newtextAR, User by)
-    {
-        var item = items.FirstOrDefault(x => x.Id == itemId) ?? throw new KeyNotFoundException();
-        item.UpdateText(newTextEN,newtextAR, by);
-        taskItem.AddHistoryEntry(by, $"edited checklist item '{newTextEN}''{newtextAR}'");
-    }
-
-    public void DeleteItem(Guid itemId, User by)
-    {
-        var item = items.FirstOrDefault(x => x.Id == itemId);
-        if (item != null)
-        {
-            items.Remove(item);
-            taskItem.AddHistoryEntry(by, $"deleted checklist item '{item.TitleEnglish}'");
-        }
+            Title = Title,
+			Items = items?.Select(i => i.CopyToDto()).ToList() ?? new()
+		};
     }
 }

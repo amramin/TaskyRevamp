@@ -1135,7 +1135,7 @@
     <value>تم التعديل</value>
   </data>
   <data name="Ares" xml:space="preserve">
-    <value>هل انت متأكد من الحذف</value>
+    <value>هل انت متأكد من الحذف؟</value>
   </data>
   <data name="CompleteFailed" xml:space="preserve">
     <value>فشلت عملية اكمال المهمة</value>
@@ -1546,12 +1546,6 @@
   <data name="RequestStatus" xml:space="preserve">
     <value>حالة الطلب </value>
   </data>
-  <data name="approvedsuccessfully" xml:space="preserve">
-    <value>تم الموافقة على تاريخ الطلب بنجاح</value>
-  </data>
-  <data name="rejectedsuccessfully" xml:space="preserve">
-    <value>تم رفض تاريخ الطلب بنجاح</value>
-  </data>
   <data name="Sureapprovestatus" xml:space="preserve">
     <value>هل انت متاكد من قبول هذا الطلب</value>
   </data>
@@ -1578,5 +1572,32 @@
   </data>
   <data name="TasksSure" xml:space="preserve">
     <value>هل أنت متأكد أنك تريد حذف هذه المهام؟</value>
+  </data>
+  <data name="HideCheckedItems" xml:space="preserve">
+    <value>إخفاء العناصر المحددة</value>
+  </data>
+  <data name="SureDeletingItem" xml:space="preserve">
+    <value>هل أنت متأكد من رغبتك في حذف عنصر قائمة التحقق؟</value>
+  </data>
+  <data name="itemDeletedSuccessfully" xml:space="preserve">
+    <value>تم حذف عنصر قائمة التحقق بنجاح</value>
+  </data>
+  <data name="AddItem" xml:space="preserve">
+    <value>إضافة عنصر</value>
+  </data>
+  <data name="Checklist" xml:space="preserve">
+    <value>قائمة المهام</value>
+  </data>
+  <data name="ChecklistTitle" xml:space="preserve">
+    <value> عنوان قائمة المهام</value>
+  </data>
+  <data name="ShowCheckedItems" xml:space="preserve">
+    <value>إظهار العناصر المحددة</value>
+  </data>
+  <data name="approvedsuccessfully" xml:space="preserve">
+    <value>تم الموافقة على تاريخ الطلب بنجاح</value>
+  </data>
+  <data name="rejectedsuccessfully" xml:space="preserve">
+    <value>تم رفض تاريخ الطلب بنجاح</value>
   </data>
 </root>

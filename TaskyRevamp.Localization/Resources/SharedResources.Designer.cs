@@ -19,7 +19,7 @@ namespace TaskyRevamp.Localization.Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "18.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class SharedResources {
@@ -255,6 +255,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string AddFileAttachment {
             get {
                 return ResourceManager.GetString("AddFileAttachment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add an item.
+        /// </summary>
+        public static string AddItem {
+            get {
+                return ResourceManager.GetString("AddItem", resourceCulture);
             }
         }
         
@@ -655,11 +664,29 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Checklist.
+        /// </summary>
+        public static string Checklist {
+            get {
+                return ResourceManager.GetString("Checklist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Checklist add.
         /// </summary>
         public static string ChecklistAdd {
             get {
                 return ResourceManager.GetString("ChecklistAdd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Checklist Title.
+        /// </summary>
+        public static string ChecklistTitle {
+            get {
+                return ResourceManager.GetString("ChecklistTitle", resourceCulture);
             }
         }
         
@@ -696,6 +723,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string Comments {
             get {
                 return ResourceManager.GetString("Comments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Comments will appear after add first comment.
+        /// </summary>
+        public static string Comments_will_appear_after_add_first_comment {
+            get {
+                return ResourceManager.GetString("Comments will appear after add first comment", resourceCulture);
             }
         }
         
@@ -1816,6 +1852,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Hide Checked Items.
+        /// </summary>
+        public static string HideCheckedItems {
+            get {
+                return ResourceManager.GetString("HideCheckedItems", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Hierarchy.
         /// </summary>
         public static string Hierarchy {
@@ -1902,6 +1947,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string IsManager {
             get {
                 return ResourceManager.GetString("IsManager", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Checklist item deleted successfully.
+        /// </summary>
+        public static string itemDeletedSuccessfully {
+            get {
+                return ResourceManager.GetString("itemDeletedSuccessfully", resourceCulture);
             }
         }
         
@@ -3229,6 +3283,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Show Checked Items.
+        /// </summary>
+        public static string ShowCheckedItems {
+            get {
+                return ResourceManager.GetString("ShowCheckedItems", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The new end date should be equal to or greater than the start date.
         /// </summary>
         public static string smallerrequesteddate {
@@ -3505,6 +3568,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string SureDeleteTask {
             get {
                 return ResourceManager.GetString("SureDeleteTask", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to delete this checklist item?.
+        /// </summary>
+        public static string SureDeletingItem {
+            get {
+                return ResourceManager.GetString("SureDeletingItem", resourceCulture);
             }
         }
         

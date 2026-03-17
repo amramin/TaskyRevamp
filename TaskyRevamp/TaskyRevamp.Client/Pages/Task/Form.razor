@@ -6,12 +6,14 @@
 @using Syncfusion.Blazor
 @using Syncfusion.Blazor.Calendars
 @using TaskyRevamp.Dto.Account
+@using TaskyRevamp.Dto.ChecklistItem
 @using TaskyRevamp.Dto.Department
 @using TaskyRevamp.Dto.SystemConfiguration
 @using TaskyRevamp.Client.Consumer
 @using TaskyRevamp.Client.Services
 @using TaskyRevamp.Dto.Enums;
 @using TaskyRevamp.Dto.TaskAttachment
+@using TaskyRevamp.Dto.TaskChecklist
 @using TaskyRevamp.Dto.TaskDto
 @using TaskyRevamp.Dto.TaskSourceDto
 @using TaskyRevamp.Dto.TaskTypeDto
@@ -287,6 +289,48 @@
                                 </div>
                             </div>
                             break;
+                        case "Checklist":
+                            <div class="mb-3">
+                                <label class="form-label">@Loc["Checklist"]</label>
+                                @if (column.IsMandatory)
+                                {
+                                    <span class="text-danger"> *</span>
+                                }
+                                @foreach (var checklist in taskdto.Checklists)
+                                {
+                                    <div class="border rounded p-2 mb-2">
+                                        <InputText class="form-control mb-2" Value="@checklist.Title"
+                                                   ValueChanged="@(v => OnChecklistTitleChanged(checklist, v))" ValueExpression="() => checklist.Title" />
+                                        <ValidationMessage For="@(() => checklist.Title)" class="small text-danger mb-2" />
+                                        @foreach (var item in checklist.Items)
+                                        {
+                                            <div class="d-flex mb-1">
+                                                <InputText class="form-control me-2" Value="@item.Title"
+                                                    ValueChanged="@(v => OnChecklistItemTitleChanged(item, v))" ValueExpression="() => item.Title" />
+                                                <button type="button" class="btn btn-sm btn-danger" @onclick="() => RemoveChecklistItem(checklist, item)">✖</button>
+                                            </div>
+                                            <ValidationMessage For="@(() => item.Title)" class="small text-danger" />
+                                        }
+                                        <button type="button" class="btn btn-sm btn-light" @onclick="() => AddChecklistItem(checklist)">@Loc["AddItem"]</button>
+                                        <button type="button" class="btn btn-sm btn-outline-danger" @onclick="() => RemoveChecklist(checklist)">✖</button>
+                                    </div>
+                                }
+                                <div class="me-2">
+                                <button type="button" class="btn btn-sm btn-light me-2" @onclick="AddChecklist">@Loc["Add Checklist"]</button>
+                                </div>
+                                @if (column.IsMandatory)
+                                {
+                                    <div class="d-flex align-items-center justify-content-between">
+                                        @if (column.IsMandatory)
+                                        {
+                                            <div class="d-flex gap-2">
+                                                <ValidationMessage class="small text-danger" For="@(() => taskdto.Checklists)" />
+                                            </div>
+                                        }
+                                    </div>
+                                }
+                            </div>
+                            break;
                         case "Priority":
                             <div class="mb-3">
                                 <label class="form-label">
@@ -363,10 +407,8 @@
             </div>
 
         </div>
-
     </EditForm>
 }
-
 
 @code {
     [Parameter] public CreateTaskDto taskdto { set; get; }
@@ -408,12 +450,12 @@
     private SfDatePicker<DateTime?> ReminderDatePicker;
     private SfDatePicker<DateTime?> EndDatePicker;
     List<Guid> AlllowedToChangeProgress = new List<Guid>()
-{
-Guid.Parse("547022EA-EF8C-4FBC-2236-08DE3318A61C"),
-Guid.Parse("9843AF9D-1389-4740-B428-08DE3D8A77AB"),
-Guid.Parse("753404A6-8B18-43F7-2238-08DE3318A61C"),
-Guid.Parse("270A78EB-C5CA-475D-2239-08DE3318A61C")
-};
+    {
+        Guid.Parse("547022EA-EF8C-4FBC-2236-08DE3318A61C"),
+        Guid.Parse("9843AF9D-1389-4740-B428-08DE3D8A77AB"),
+        Guid.Parse("753404A6-8B18-43F7-2238-08DE3318A61C"),
+        Guid.Parse("270A78EB-C5CA-475D-2239-08DE3318A61C")
+    };
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -662,10 +704,67 @@ Guid.Parse("270A78EB-C5CA-475D-2239-08DE3318A61C")
                     if (column.IsMandatory && (taskdto.ActualProcess < 0 || taskdto.ActualProcess > 100))
                         messageStore.Add(progressField, Loc["Required"]);
                     break;
+                case "Checklist":
+                    if (column.IsMandatory)
+                    {
+                        if (taskdto.Checklists == null || !taskdto.Checklists.Any())
+                            messageStore.Add(new FieldIdentifier(taskdto, nameof(taskdto.Checklists)), Loc["Required"]);
+                        foreach (var checklist in taskdto.Checklists!)
+                        {
+                            if (string.IsNullOrWhiteSpace(checklist.Title))
+                                messageStore.Add(new FieldIdentifier(checklist, nameof(checklist.Title)), Loc["Required"]);
+                            foreach (var item in checklist.Items)
+                            {
+                                if (string.IsNullOrWhiteSpace(item.Title))
+                                    messageStore.Add(new FieldIdentifier(item, nameof(item.Title)), Loc["Required"]);
+                            }
+                        }
+                    }
+                    break;
             }
         }
         ValidateDateRange();
         editContext.NotifyValidationStateChanged();
+    }
+    private void AddChecklist()
+    {
+        taskdto.Checklists.Add(new TaskChecklistDto
+        {
+            Title = "",
+            Items = new List<ChecklistItemDto>()
+        });;
+    }
+    private void AddChecklistItem(TaskChecklistDto checklist)
+    {
+        checklist.Items.Add(new ChecklistItemDto
+        {
+            Title = "",
+            IsDone = false
+        });
+    }
+    private void RemoveChecklistItem(TaskChecklistDto checklist, ChecklistItemDto item)
+    {
+        checklist.Items.Remove(item);
+        var field = new FieldIdentifier(checklist, nameof(checklist.Items));
+        Notify(field);
+    }
+    private void RemoveChecklist(TaskChecklistDto checklist)
+    {
+        taskdto.Checklists.Remove(checklist);
+        var field = new FieldIdentifier(taskdto, nameof(taskdto.Checklists));
+        Notify(field);
+    }
+    private void OnChecklistTitleChanged(TaskChecklistDto checklist, string value)
+    {
+        checklist.Title = value;
+        var field = new FieldIdentifier(checklist, nameof(checklist.Title));
+        Notify(field);
+    }
+    private void OnChecklistItemTitleChanged(ChecklistItemDto item, string value)
+    {
+        item.Title = value;
+        var field = new FieldIdentifier(item, nameof(item.Title));
+        Notify(field);
     }
     private async Task HandleValidSubmit(EditContext context)
     {

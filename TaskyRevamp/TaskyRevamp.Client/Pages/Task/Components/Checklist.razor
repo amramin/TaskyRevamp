@@ -1,0 +1,407 @@
+﻿@using Blazored.LocalStorage
+@using Stingray.Components.MultiSelectComponent
+@using Syncfusion.Blazor.Calendars
+@using System.Globalization
+@using TaskyRevamp.Client.Consumer
+@using TaskyRevamp.Client.Services
+@using TaskyRevamp.Dto.Account
+@using TaskyRevamp.Dto.ChecklistItem
+@using TaskyRevamp.Dto.TaskChecklist
+@using TaskyRevamp.Dto.TaskDto
+@inject TaskChecklistConsumer _taskChecklistConsumer
+@inject ChecklistItemConsumer _checklistItemConsumer
+@inject ToastService ToastService
+@inject PopupService PopupService
+@inject IStringLocalizer<SharedResources> Loc
+@inject ILocalStorageService LocalStorage
+
+<style>
+    .overdue-date .e-input {
+        color: red !important;
+        font-weight: bold;
+    }
+
+    .overdue-date.e-date-wrapper .e-input-group-icon {
+        color: red !important;
+    }
+</style>
+@if (showNewChecklistInput)
+{
+    <div class="card mb-3 border-primary">
+        <div class="card-body">
+            <InputText class="form-control" placeholder="@Loc["ChecklistTitle"]" @bind-Value="newChecklistTitle" /><span class="text-danger"> *</span>
+            <div class="mt-2 d-flex gap-2">
+                <button class="btn btn-primary" @onclick="AddChecklist">@Loc["Add"]</button>
+                <button class="btn btn-secondary" @onclick="CancelChecklist">@Loc["Cancel"]</button>
+            </div>
+        </div>
+    </div>
+}
+@foreach (var checklist in Checklists)
+{
+    <div class="card mb-3 border-primary">
+        <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center">
+                @if (editingChecklistId == checklist.Id && IsCreator)
+                {
+                    <div class="d-flex align-items-center gap-2">
+                        <InputText class="form-control" @bind-Value="editingChecklistTitle" @onblur="() => SaveChecklistTitle(checklist)" style="width:200px" />
+                        <button class="btn btn-sm btn-success" @onclick="() => SaveChecklistTitle(checklist)">✔</button>
+                        <button class="btn btn-sm btn-secondary" @onclick="CancelEditChecklist">✖</button>
+                    </div>
+                }
+                else
+                {
+                    <div class="d-flex align-items-center gap-2" @onclick="() => StartEditChecklist(checklist)" style="cursor:pointer;">
+                        <span class="icon"><SVGCrud SVGType="SVGCrud.SVGTypeEnum.CompletedList"></SVGCrud></span>
+                        <span>@checklist.Title</span>
+                        @if (IsCreator)
+                        {
+                            <button class="btn btn-sm btn-link p-0" @onclick="() => StartEditChecklist(checklist)" title="@Loc["Edit"]">
+                                <span><SVGCrud SVGType="SVGCrud.SVGTypeEnum.Edit"></SVGCrud></span>
+                            </button>
+                        }
+                    </div>
+                }
+                <div class="d-flex gap-2">
+                    @if (checklist.Items?.Any(i => i.IsDone) == true)
+                    {
+                        <button class="btn btn-sm btn-primary" @onclick="HideCheckedItems">
+                            @(hideCheckedItems? Loc["ShowCheckedItems"] : Loc["HideCheckedItems"])
+                        </button>
+                    }
+                    @if (IsCreator)
+                    {
+                        <button class="btn btn-sm btn-danger" @onclick="() => ConfirmDeleteTaskChecklist(checklist.Id)">
+                            <span class="icon">
+                                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Delete"></SVGCrud><span class="me-1">@Loc["Delete"]</span>
+                            </span>
+                        </button>
+                    }
+                </div>
+            </div>
+            <OverallBar ActualProgress="@GetChecklistProgress(checklist)" Width="100" />
+            @if (checklist.Items != null)
+            {
+                foreach (var item in checklist.Items.Where(i => !hideCheckedItems || !i.IsDone))
+                {
+                    <div class="d-flex align-items-center gap-2 mt-2">
+                        <input type="checkbox" class="form-check-input" checked="@item.IsDone" disabled="@(CanToggleItem(item) ? null : true)"
+                               @onchange="async () => { if (CanToggleItem(item)) await ToggleItem(item); }" />
+                        @if (editingItemId == item.Id && (IsCreator || item.AssignedUserId == currentUserId))
+                        {
+                            <div class="d-flex align-items-center gap-1">
+                                <InputText class="form-control" @bind-Value="editingItemTitle" @onblur="() => SaveItemTitle(item)" style="width:200px" />
+                                <button class="btn btn-sm btn-success" @onclick="() => SaveItemTitle(item)">✔</button>
+                                <button class="btn btn-sm btn-secondary" @onclick="CancelEditItem">✖</button>
+                            </div>
+                        }
+                        else
+                        {
+                            <span style="@(item.IsDone ? "text-decoration: line-through;" : "")"
+                                  @onclick="() => StartEditItem(item)">
+                                @item.Title
+                            </span>
+                            @if (IsCreator || item.AssignedUserId == currentUserId)
+                            {
+                                <button class="btn btn-sm btn-link p-0" @onclick="() => StartEditItem(item)" title="@Loc["Edit"]">
+                                    <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Edit"></SVGCrud>
+                                </button>
+                            }
+                        }
+                        <SfDatePicker TValue="DateTime?"
+                                      Value="item.EndDate"
+                                      ValueChanged="@(async (DateTime? value) => { if (IsCreator || item.CreatedById == currentUserId) await OnEndDateChanged(item, value); })"
+                                      Locale="@datePickerLocale"
+                                      EnableRtl="@enableRtl"
+                                      Format="dd-MM-yyyy"
+                                      ShowClearButton="true"
+                                      Min="@(Task.StartDate ?? DateTime.Today)"
+                                      Max="@(Task.EndDate ?? DateTime.MaxValue)"
+                                      Width="150px" Enabled="@IsCreator"
+                                      CssClass="@(GetDateColor(item))">
+                        </SfDatePicker>
+                        <div style="width:180px">
+                            <SearchableSingleDropdownOffline TInput="UserDto"
+                                                             TOutput="Guid"
+                                                             Datasource="Assignees"
+                                                             TextSelector="(UserDto x) => x.UserName"
+                                                             OutputSelector="x => x.Id"
+                                                             SelectedOption="item.AssignedUserId ?? Guid.Empty"
+                                                             SelectedOptionChanged="@(async (Guid value) => { if (IsCreator || item.CreatedById == currentUserId) await OnAssigneeChanged(item, value); })"
+                                                             MinCharacterCount="1"
+                                                             SearchInputPlaceHolder="@Loc["Search"]"
+                                                             PlaceHolder="@Loc["Select"]"
+                                                             IsDisabled="!IsCreator"
+                                                             NoMatchPlaceHolder="@Loc["NoResultsFound"]" />
+                        </div>
+                        @if (CanDeleteItem(item))
+                        {
+                            <button class="btn btn-sm text-danger" @onclick="() => ConfirmDeleteChecklistItem(checklist, item)">
+                                <span class="icon">
+                                    <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Reject"></SVGCrud>
+                                </span>
+                            </button>
+                        }
+                    </div>
+                }
+            }
+            @if (IsCreator)
+            {
+                <div class="mt-2">
+                    <InputText class="form-control" placeholder="@Loc["AddItem"]" @bind-Value="newItemTitle" />
+                    <div class="mt-2 d-flex gap-2">
+                        <button class="btn btn-primary" @onclick="() => AddItem(checklist)">@Loc["Add"]</button>
+                        <button class="btn btn-secondary" @onclick="CancelItem">@Loc["Cancel"]</button>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+}
+@code {
+
+    [Parameter] public CreateTaskDto Task { get; set; }
+    [Parameter] public bool showNewChecklistInput { get; set; }
+    [Parameter] public EventCallback<bool> showNewChecklistInputChanged { get; set; }
+    List<TaskChecklistDto> Checklists { get; set; } = new();
+    List<ChecklistItemDto> ChecklistItems { get; set; } = new();
+    string newChecklistTitle = "";
+    string newItemTitle = "";
+    List<UserDto> Assignees = new();
+    private Guid taskChecklistId { get; set; }
+    private Guid taskChecklistItemId { get; set; }
+    private string datePickerLocale = "en";
+    private bool enableRtl = false;
+    private bool isRtlCulture;
+    private bool hideCheckedItems = false;
+    DateTime? newEndDate = null;
+    Guid? selectedUserId = null;
+    Guid? editingChecklistId = null;
+    Guid? editingItemId = null;
+    string editingChecklistTitle = "";
+    string editingItemTitle = "";
+    private Guid? creatorId;
+    private Guid currentUserId;
+    private bool IsCreator => currentUserId == creatorId;
+    private Guid _lastLoadedTaskId = Guid.Empty;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (Task.AssignedIds != null && Task.AssigneduserNames != null)
+        {
+            var userNamesArray = Task.AssigneduserNames.Split(',', StringSplitOptions.RemoveEmptyEntries).Select(x => x.Trim()).ToArray();
+            Assignees = Task.AssignedIds.Select((id, index) => new UserDto
+            {
+                Id = id,
+                UserName = index < userNamesArray.Length ? userNamesArray[index] : ""
+            }).ToList();
+        }
+        creatorId = Task.CreatedBy;
+        if (Task.Id != Guid.Empty && Task.Id != _lastLoadedTaskId)
+        {
+            _lastLoadedTaskId = Task.Id;
+            await LoadChecklists();
+        }
+    }
+    protected override async Task OnInitializedAsync()
+    {
+        isRtlCulture = CultureInfo.CurrentCulture.TwoLetterISOLanguageName.Equals("ar", StringComparison.OrdinalIgnoreCase);
+        datePickerLocale = isRtlCulture ? "ar" : "en";
+        enableRtl = isRtlCulture;
+        var userIdString = await LocalStorage.GetItemAsStringAsync("Id");
+        if (!string.IsNullOrEmpty(userIdString))
+        {
+            userIdString = userIdString.Trim('"');
+            if (Guid.TryParse(userIdString, out var userId))
+                currentUserId = userId;
+        }
+    }
+    async Task LoadChecklists()
+    {
+        var res = await _taskChecklistConsumer.GetTaskChecklists(Task.Id);
+        if (res.Success && res.Data != null)
+        {
+            Checklists = res.Data;
+            foreach (var checklist in Checklists)
+            {
+                var itemsRes = await _checklistItemConsumer.GetChecklistItems(checklist.Id);
+                if (itemsRes.Success && itemsRes.Data != null)
+                    checklist.Items = itemsRes.Data;
+                else
+                    checklist.Items = new List<ChecklistItemDto>();
+            }
+        }
+    }
+    void ShowChecklistInput()
+    {
+        showNewChecklistInput = true;
+    }
+    void CancelChecklist()
+    {
+        showNewChecklistInput = false;
+        showNewChecklistInputChanged.InvokeAsync(false);
+        newChecklistTitle = "";
+    }
+    async Task AddChecklist()
+    {
+        if (string.IsNullOrWhiteSpace(newChecklistTitle))
+            return;
+        var dto = new TaskChecklistDto
+        {
+            TaskId = Task.Id,
+            Title = newChecklistTitle
+        };
+        var res = await _taskChecklistConsumer.CreateTaskChecklist(dto);
+        if (res.Success)
+        {
+            newChecklistTitle = "";
+            showNewChecklistInput = false;
+            await LoadChecklists();
+            taskChecklistId = res.Data;
+        }
+    }
+    async Task ConfirmDeleteTaskChecklist(Guid id)
+    {
+        PopupService.ShowConfirmation(@Loc["Sure"], @Loc["Confirm"],
+        async (confirmed) =>
+        {
+            if (confirmed)
+                await DeleteChecklist(id);
+        }, ConfirmationType.Other);
+    }
+    async Task DeleteChecklist(Guid id)
+    {
+        var res = await _taskChecklistConsumer.DeleteCheklist(id);
+        if (res.Success && res.Data)
+        {
+            await ToastService.ShowToastAsync(Loc["Deleted successfully"], "success");
+            await LoadChecklists();
+            StateHasChanged();
+        }
+        else
+        {
+            await ToastService.ShowToastAsync(Loc["Cannot delete a checklist that includes items"], "error");
+        }
+    }
+    async Task ConfirmDeleteChecklistItem(TaskChecklistDto checklist, ChecklistItemDto item)
+    {
+        PopupService.ShowConfirmation(@Loc["SureDeletingItem"], @Loc["Delete"],
+        async (confirmed) =>
+        {
+            if (confirmed)
+                await DeleteChecklistItem(checklist, item);
+        }, ConfirmationType.Other);
+    }
+    async Task DeleteChecklistItem(TaskChecklistDto checklist, ChecklistItemDto item)
+    {
+        var res = await _checklistItemConsumer.DeleteChecklistItem(item.Id);
+        if (res.Success && res.Data)
+        {
+            checklist.Items = checklist.Items.Where(i => i.Id != item.Id).ToList();
+            await ToastService.ShowToastAsync(Loc["itemDeletedSuccessfully"], "success");
+            StateHasChanged();
+        }
+    }
+    async Task AddItem(TaskChecklistDto checklist)
+    {
+        if (string.IsNullOrWhiteSpace(newItemTitle))
+            return;
+        var dto = new ChecklistItemDto
+        {
+            TaskChecklistId = checklist.Id,
+            Title = newItemTitle,
+            EndDate = newEndDate,
+            AssignedUserId = selectedUserId,
+            IsDone = false
+        };
+        var res = await _checklistItemConsumer.CreateChecklistItem(dto);
+        if (res.Success)
+        {
+            taskChecklistItemId = res.Data;
+            newItemTitle = "";
+            newEndDate = null;
+            selectedUserId = null;
+            var itemRes = await _checklistItemConsumer.GetChecklistItems(checklist.Id);
+            if (itemRes.Success && itemRes.Data != null)
+            {
+                checklist.Items = itemRes.Data;
+            }
+        }
+    }
+    void HideCheckedItems()
+    {
+        hideCheckedItems = !hideCheckedItems;
+    }
+    void CancelItem()
+    {
+        newItemTitle = "";
+    }
+    async Task OnAssigneeChanged(ChecklistItemDto item, Guid userId)
+    {
+        item.AssignedUserId = userId;
+        await _checklistItemConsumer.UpdateChecklistItem(item);
+    }
+    async Task OnEndDateChanged(ChecklistItemDto item, DateTime? date)
+    {
+        item.EndDate = date;
+        await _checklistItemConsumer.UpdateChecklistItem(item);
+    }
+    void StartEditChecklist(TaskChecklistDto checklist)
+    {
+        editingChecklistId = checklist.Id;
+        editingChecklistTitle = checklist.Title;
+    }
+    async Task SaveChecklistTitle(TaskChecklistDto checklist)
+    {
+        checklist.Title = editingChecklistTitle;
+        await _taskChecklistConsumer.UpdateTaskChecklist(checklist);
+        editingChecklistId = null;
+    }
+    void CancelEditChecklist()
+    {
+        editingChecklistId = null;
+        editingChecklistTitle = "";
+    }
+    void StartEditItem(ChecklistItemDto item)
+    {
+        editingItemId = item.Id;
+        editingItemTitle = item.Title;
+    }
+    async Task SaveItemTitle(ChecklistItemDto item)
+    {
+        item.Title = editingItemTitle;
+        await _checklistItemConsumer.UpdateChecklistItem(item);
+        editingItemId = null;
+    }
+    void CancelEditItem()
+    {
+        editingItemId = null;
+        editingItemTitle = "";
+    }
+    async Task ToggleItem(ChecklistItemDto item)
+    {
+        item.IsDone = !item.IsDone;
+        await _checklistItemConsumer.UpdateChecklistItem(item);
+    }
+    int GetChecklistProgress(TaskChecklistDto checklist)
+    {
+        if (checklist.Items == null || !checklist.Items.Any())
+            return 0;
+        return (int)Math.Round(checklist.Items.Count(i => i.IsDone) / (double)checklist.Items.Count * 100);
+    }
+    private string GetDateColor(ChecklistItemDto item)
+    {
+        if (!item.IsDone && item.EndDate.HasValue && item.EndDate.Value.Date < DateTime.Today)
+            return "overdue-date";
+        return "";
+    }
+    private bool CanDeleteItem(ChecklistItemDto item)
+    {
+        return item.CreatedById == currentUserId || Task.CreatedBy == currentUserId;
+    }
+    private bool CanToggleItem(ChecklistItemDto item)
+    {
+        return !item.AssignedUserId.HasValue || item.AssignedUserId == currentUserId || Task.CreatedBy == currentUserId;
+    }
+}
