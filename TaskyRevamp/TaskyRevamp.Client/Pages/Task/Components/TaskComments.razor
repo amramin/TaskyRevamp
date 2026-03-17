@@ -9,10 +9,10 @@
 @inject ILocalStorageService LocalStorageService
 
 @inject PopupService PopupService
-<div class="card collapse-card mb-3">
-    <div class="card-header"         @onclick="ToggleSection">
+<div class="card comments-card collapse-card mb-3">
+    <div class="card-header" @onclick="ToggleSection">
 
-     
+
         <button type="button" class="btn colapse-btn ">
             <h6 class="headline-6 mb-0">@Loc["Comments"]</h6>
             <span class="icon"> @if (ShowSection)
@@ -29,25 +29,27 @@
     @if (ShowSection)
     {
         <div class="card-body">
-            <div class="d-flex gap-3 mb-3">
-                <div class="rounded-circle bg-light border d-flex align-items-center justify-content-center"
-                     style="width:48px;height:48px;">
-                    <span class="fw-bold text-primary">
-                        @GetInitials("You")
-                    </span>
+            <div class="comment-container">
+                <div class="avatar">
+                    @GetInitials("You")
                 </div>
-                <RichTextEditorComponent @key="TaskId" EditorId="RTE_English2"
-                                         @ref="RichTextEditorComponentRefDescriptionEnglish" ContentChanged="OnDescriptionChanged"
-                                         Content="@newComment" ButtonText="@Loc["AddDescription"]"> </RichTextEditorComponent>
+                <div class="comment-input">
+                    <RichTextEditorComponent @key="TaskId" EditorId="RTE_English2"
+                                             @ref="RichTextEditorComponentRefDescriptionEnglish" ContentChanged="OnDescriptionChanged"
+                                             Content="@newComment" ButtonText="@Loc["AddDescription"]"> </RichTextEditorComponent>
+                </div>
             </div>
 
-            <div class="d-flex justify-content-end">
-                <button class="btn btn-primary" @onclick="AddComment" disabled="@string.IsNullOrWhiteSpace(newComment)">
-                    @Loc[buttonName] <i class="bi bi-arrow-right"></i>
+            <div class="action-btn-list justify-content-end">
+                <button class="btn btn-light" @onclick="CancelComment" disabled="@string.IsNullOrWhiteSpace(newComment)">
+                    @Loc["Cancel"]
                 </button>
-
-                <button class="btn btn-primary" @onclick="CancelComment" disabled="@string.IsNullOrWhiteSpace(newComment)">
-                    @Loc["Cancel"] <i class="bi bi-arrow-right"></i>
+                <button class="btn btn-primary end-icon" @onclick="AddComment"
+                        disabled="@string.IsNullOrWhiteSpace(newComment)">
+                    @Loc[buttonName]
+                    <span class="icon">
+                        <SVGCrud SVGType="SVGCrud.SVGTypeEnum.PaperPlane"></SVGCrud>
+                    </span>
                 </button>
             </div>
 
@@ -56,51 +58,49 @@
                 <div class="mt-4">
                     @foreach (var comment in comments)
                     {
-                        <div class="d-flex gap-3 mb-3 pb-3">
-                            <div class="rounded-circle bg-light border d-flex align-items-center justify-content-center"
-                                 style="width:48px;height:48px;">
-                                <span class="fw-bold text-primary">
-                                    @GetInitials(comment.CreatedByName)
-                                </span>
+                        <div class="comment-container">
+                            <div class="avatar">
+                                @GetInitials(comment.CreatedByName)
                             </div>
-                            <div class="flex-grow-1">
-                                <div class="d-flex justify-content-between mb-2">
-                                    <strong>@comment.CreatedByName</strong>
-                                    <small class="text-muted">
-                                        @if (comment.TaskComment.UpdateDate != comment.TaskComment.CreateDate)
-                                        {
-                                            @Loc["Edited"]
-
-
-                                            @comment.TaskComment.UpdateDate.Value.ToString(Loc["LocalizeDate"])
-
-                                        }
-                                    </small>
-                                </div>
-
-                                <div class="p-3 bg-light rounded-3 border">
-                                    @if (comment.TaskComment.Type == Dto.Enums.CommentType.Reject)
-                                    {
-                                        <p class="mb-0">@Loc["RejectReason"]</p>
-                                        <p class="mb-0"> @comment.TaskComment.Content</p>
-                                    }
-                                    else
-                                    {
-                                        <div>
-                                            @((MarkupString)comment.TaskComment.Content)
+                            <div class="comment-input mb-3">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="d-flex align-items-center gap-3 mb-2">
+                                            <h5 class="headline-8 mb-0">@comment.CreatedByName</h5>
+                                            <span class="x-small-medium-text">
+                                                @if (comment.TaskComment.UpdateDate != comment.TaskComment.CreateDate)
+                                                {
+                                                    <span>@Loc["Edited"] : </span>
+                                                    @comment.TaskComment.UpdateDate.Value.ToString(Loc["LocalizeDate"])
+                                                }
+                                            </span>
                                         </div>
-                                    }
+                                        @if (comment.TaskComment.Type == Dto.Enums.CommentType.Reject)
+                                        {
+                                            <p class="mb-0">@Loc["RejectReason"]</p>
+                                            <p class="mb-0"> @comment.TaskComment.Content</p>
+                                        }
+                                        else
+                                        {
+                                            <div>
+                                                @((MarkupString)comment.TaskComment.Content)
+                                            </div>
+                                        }
+                                    </div>
                                 </div>
                                 @if (currentId == comment.TaskComment.CreatedById)
                                 {
-                                    <div class="mt-2">
-                                        <button class="btn btn-link text-primary p-0 m-0 text-decoration-none small me-1"
+                                    <div class="mt-2 d-flex align-items-center gap-1">
+                                        <button class="btn btn-link btn-text-500"
                                                 @onclick="(() => EditTask(comment.TaskComment.Id))">@Loc["Edit"]</button>
-                                        <button class="btn btn-link text-danger p-0 m-0 text-decoration-none small"
+                                        <span class="btn-text-500">.</span>
+                                        <button class="btn btn-link btn-text-500"
                                                 @onclick="(() => OnDeleteComment(comment.TaskComment.Id))">@Loc["Delete"]</button>
                                     </div>
                                 }
                             </div>
+
+
                         </div>
                     }
                 </div>
@@ -113,7 +113,7 @@
                     </span>
                     <h5 class="headline-8 mb-1">@Loc["NoComments"]</h5>
                     <span class="x-small-medium-text">@Loc["Comments will appear after add first comment"]</span>
-                    
+
                 </div>
             }
 
