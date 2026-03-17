@@ -20,29 +20,22 @@ public class UpdateTaskCommandHandler : IRequestHandler<UpdateTaskCommand, bool>
 {
     private readonly ITaskRepository _taskRepository;
     private readonly IRepository<StatusSettings> _statusSettings;
-    private readonly IRepository<TaskDependencies> _taskDependincesRepository;
     private readonly IRepository<AddTaskSettings> _addTaskSettingRepository;
     private readonly IRepository<TaskItem> _taskrepo;
     private readonly IRepository<TaskAssignee> _taskAssigneeRepository;
     private readonly IRepository<TaskComments> _taskCommentRepository;
-    private readonly IRepository<Attachment> _attachmentRepository;
-    private readonly IRepository<TaskAttachment> _taskAttachmentRepository;
-    private readonly HashSet<string> AllowedUploadedExtensions = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
-        { ".pdf", ".doc", ".docx", ".xls", ".xlsx", ".ppt", ".pptx", ".txt", ".csv", ".jpg", ".jpeg", ".png" };
-    private readonly IFileManagement _fileManagement;
+	private readonly IRepository<TaskChecklist> _taskChecklistRepository;
 
-	public UpdateTaskCommandHandler(ITaskRepository taskRepository, IFileManagement fileManagement, IRepository<Attachment> attachmentRepository, IRepository<TaskAttachment> taskAttachmentRepository, IRepository<StatusSettings> statusSettings, IRepository<TaskDependencies> taskDependincesRepository, IRepository<TaskItem> taskrepo, IRepository<TaskComments> taskCommentRepository, IRepository<AddTaskSettings> addTaskSettingRepository, IRepository<TaskAssignee> taskAssigneeRepository)
+	public UpdateTaskCommandHandler(ITaskRepository taskRepository, IRepository<StatusSettings> statusSettings, IRepository<TaskItem> taskrepo, IRepository<TaskChecklist> taskChecklistRepository,
+		IRepository<TaskComments> taskCommentRepository, IRepository<AddTaskSettings> addTaskSettingRepository, IRepository<TaskAssignee> taskAssigneeRepository)
 	{
 		_taskRepository = taskRepository;
 		_statusSettings = statusSettings;
-		_taskDependincesRepository = taskDependincesRepository;
 		_taskrepo = taskrepo;
 		_taskCommentRepository = taskCommentRepository;
-		_attachmentRepository = attachmentRepository;
-		_taskAttachmentRepository = taskAttachmentRepository;
-		_fileManagement = fileManagement;
 		_addTaskSettingRepository = addTaskSettingRepository;
-        _taskAssigneeRepository= taskAssigneeRepository;
+		_taskAssigneeRepository = taskAssigneeRepository;
+		_taskChecklistRepository = taskChecklistRepository;
 	}
 
 	public async Task<bool> Handle(UpdateTaskCommand request, CancellationToken cancellationToken)
@@ -122,7 +115,22 @@ public class UpdateTaskCommandHandler : IRequestHandler<UpdateTaskCommand, bool>
             TaskComments taskComment = new TaskComments(task.Id, request.Task.Content);
             await _taskCommentRepository.Insert(taskComment);
         }
-        return true;
+		var taskChecklists = new List<TaskChecklist>();
+		if (request.Task.Checklists is not null && request.Task.Checklists.Count > 0)
+		{
+			foreach (var checklist in request.Task.Checklists)
+			{
+				var taskChecklist = new TaskChecklist(task.Id, checklist.Title);
+				if (checklist.Items != null && checklist.Items.Any())
+				{
+					foreach (var item in checklist.Items)
+						taskChecklist.items.Add(new ChecklistItem(item.Title, taskChecklist.Id, item.AssignedUserId, item.EndDate, item.IsDone));
+				}
+				taskChecklists.Add(taskChecklist);
+			}
+			await _taskChecklistRepository.InsertRange(taskChecklists);
+		}
+		return true;
     }
     private async System.Threading.Tasks.Task UpdateAssignees(CreateTaskDto taskDto,TaskItem taskItem)
     {

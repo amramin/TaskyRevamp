@@ -12,7 +12,7 @@ public class TaskChecklist : Entity
     public Guid TaskItemId { get; set; }
     public  TaskItem TaskItem { set; get; }
     public string Title { get; set; }
-    public  List<ChecklistItem> items = new();
+    public  List<ChecklistItem> items { get; set; } = new();
 	public TaskChecklist(Guid taskid, string title)
 	{
 		TaskItemId = taskid;
@@ -33,6 +33,7 @@ public class TaskChecklist : Entity
             Id = Id,
             TaskId = TaskItemId,
             Title = Title,
-        };
+			Items = items?.Select(i => i.CopyToDto()).ToList() ?? new()
+		};
     }
 }

@@ -664,11 +664,29 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Checklist.
+        /// </summary>
+        public static string Checklist {
+            get {
+                return ResourceManager.GetString("Checklist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Checklist add.
         /// </summary>
         public static string ChecklistAdd {
             get {
                 return ResourceManager.GetString("ChecklistAdd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Checklist Title.
+        /// </summary>
+        public static string ChecklistTitle {
+            get {
+                return ResourceManager.GetString("ChecklistTitle", resourceCulture);
             }
         }
         
@@ -705,6 +723,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string Comments {
             get {
                 return ResourceManager.GetString("Comments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Comments will appear after add first comment.
+        /// </summary>
+        public static string Comments_will_appear_after_add_first_comment {
+            get {
+                return ResourceManager.GetString("Comments will appear after add first comment", resourceCulture);
             }
         }
         
@@ -3252,6 +3279,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string setAsManager {
             get {
                 return ResourceManager.GetString("setAsManager", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show Checked Items.
+        /// </summary>
+        public static string ShowCheckedItems {
+            get {
+                return ResourceManager.GetString("ShowCheckedItems", resourceCulture);
             }
         }
         

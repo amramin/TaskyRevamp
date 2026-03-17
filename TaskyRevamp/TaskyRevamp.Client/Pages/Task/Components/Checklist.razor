@@ -29,7 +29,7 @@
 {
     <div class="card mb-3 border-primary">
         <div class="card-body">
-            <InputText class="form-control" placeholder="@Loc["ChecklistTitle"]" @bind-Value="newChecklistTitle" />
+            <InputText class="form-control" placeholder="@Loc["ChecklistTitle"]" @bind-Value="newChecklistTitle" /><span class="text-danger"> *</span>
             <div class="mt-2 d-flex gap-2">
                 <button class="btn btn-primary" @onclick="AddChecklist">@Loc["Add"]</button>
                 <button class="btn btn-secondary" @onclick="CancelChecklist">@Loc["Cancel"]</button>

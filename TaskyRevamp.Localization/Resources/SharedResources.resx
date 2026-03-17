@@ -1582,4 +1582,13 @@ This task will be moved to the Recycle Bin and can be restored later or permanen
   <data name="AddItem" xml:space="preserve">
     <value>Add an item</value>
   </data>
+  <data name="Checklist" xml:space="preserve">
+    <value>Checklist</value>
+  </data>
+  <data name="ChecklistTitle" xml:space="preserve">
+    <value>Checklist Title</value>
+  </data>
+  <data name="ShowCheckedItems" xml:space="preserve">
+    <value>Show Checked Items</value>
+  </data>
 </root>

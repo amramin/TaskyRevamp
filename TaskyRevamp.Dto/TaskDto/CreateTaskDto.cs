@@ -9,6 +9,7 @@ using TaskyRevamp.Dto.ChangeEndDateRequest;
 using TaskyRevamp.Dto.GeneralDto;
 using TaskyRevamp.Dto.TaskAssignees;
 using TaskyRevamp.Dto.TaskAttachment;
+using TaskyRevamp.Dto.TaskChecklist;
 using TaskyRevamp.Dto.TaskViews;
 using TaskyRevamp.Localization.Resources;
 
@@ -72,4 +73,5 @@ public class CreateTaskDto
 	//public List<UploadAttachmentDto>? uploadAttachmentDtos { get; set; }
 	[System.Text.Json.Serialization.JsonIgnore]
 	public List<IBrowserFile> BrowserFiles { get; set; } = new();
+	public List<TaskChecklistDto> Checklists { get; set; } = new();
 }
