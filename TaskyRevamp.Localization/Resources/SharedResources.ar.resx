@@ -1594,10 +1594,37 @@
   <data name="ShowCheckedItems" xml:space="preserve">
     <value>إظهار العناصر المحددة</value>
   </data>
+  <data name="Export" xml:space="preserve">
+    <value>تحميل</value>
+  </data>
+  <data name="DepartmentName" xml:space="preserve">
+    <value>اسم الإدارة</value>
+  </data>
+  <data name="Departmentlevel" xml:space="preserve">
+    <value>مستوى الإدارة</value>
+  </data>
+  <data name="LinkedUsers" xml:space="preserve">
+    <value>مستخدمين الإدارة</value>
+  </data>
+  <data name="UsersWithTasks" xml:space="preserve">
+    <value>مربوطين بمهام</value>
+  </data>
+  <data name="SubDeptUsers" xml:space="preserve">
+    <value>مستخدمي الإدارة الفرعية</value>
+  </data>
+  <data name="systemDepartments" xml:space="preserve">
+    <value>إدارات النظام</value>
+  </data>
+  <data name="UsersList" xml:space="preserve">
+    <value>قائمة المستخدمين</value>
+  </data>
   <data name="approvedsuccessfully" xml:space="preserve">
     <value>تم الموافقة على تاريخ الطلب بنجاح</value>
   </data>
   <data name="rejectedsuccessfully" xml:space="preserve">
     <value>تم رفض تاريخ الطلب بنجاح</value>
+  </data>
+  <data name="isManagerTilte" xml:space="preserve">
+    <value>مدير</value>
   </data>
 </root>

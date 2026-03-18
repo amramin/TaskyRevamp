@@ -1591,4 +1591,31 @@ This task will be moved to the Recycle Bin and can be restored later or permanen
   <data name="ShowCheckedItems" xml:space="preserve">
     <value>Show Checked Items</value>
   </data>
+  <data name="Export" xml:space="preserve">
+    <value>Export</value>
+  </data>
+  <data name="DepartmentName" xml:space="preserve">
+    <value>Department Name</value>
+  </data>
+  <data name="Departmentlevel" xml:space="preserve">
+    <value>Department level</value>
+  </data>
+  <data name="LinkedUsers" xml:space="preserve">
+    <value>Linked users</value>
+  </data>
+  <data name="UsersWithTasks" xml:space="preserve">
+    <value>Users with tasks</value>
+  </data>
+  <data name="SubDeptUsers" xml:space="preserve">
+    <value>Sub dept users</value>
+  </data>
+  <data name="systemDepartments" xml:space="preserve">
+    <value>system departments </value>
+  </data>
+  <data name="UsersList" xml:space="preserve">
+    <value>Users list</value>
+  </data>
+  <data name="isManagerTilte" xml:space="preserve">
+    <value>Is manager</value>
+  </data>
 </root>

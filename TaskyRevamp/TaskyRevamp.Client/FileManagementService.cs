@@ -10,6 +10,7 @@ using Microsoft.JSInterop;
 using TaskyRevamp.Client.Consumer;
 using TaskyRevamp.Client.Services;
 using TaskyRevamp.Client.Shared;
+using TaskyRevamp.Dto.Files;
 using TaskyRevamp.Localization.Resources;
 
 namespace TaskyRevamp.Client
@@ -105,6 +106,50 @@ namespace TaskyRevamp.Client
 				var base64 = Convert.ToBase64String(bytes);
 				await JS.InvokeVoidAsync("saveFileFromBytes", fileName, base64);
 			}
+		}
+		public async Task ExportToExcelAsync<T>(List<T> data, List<ColumnDefinition<T>> columns, string fileName)
+		{
+			using var memStream = new MemoryStream();
+			using (var spreadsheet = SpreadsheetDocument.Create(memStream, SpreadsheetDocumentType.Workbook))
+			{
+				var workbookPart = spreadsheet.AddWorkbookPart();
+				workbookPart.Workbook = new Workbook();
+				var worksheetPart = workbookPart.AddNewPart<WorksheetPart>();
+				var sheetData = new SheetData();
+				worksheetPart.Worksheet = new Worksheet(sheetData);
+				// Add header row
+				var headerRow = new Row();
+				foreach (var col in columns)
+				{
+					var header = col.Header;
+					var cell = new Cell { DataType = CellValues.String, CellValue = new CellValue(header) };
+					headerRow.AppendChild(cell);
+				}
+				sheetData.AppendChild(headerRow);
+				// Add data rows
+				foreach (var item in data)
+				{
+					var row = new Row();
+					foreach (var col in columns)
+					{
+						var value = col.Value(item)?.ToString() ?? "";
+						var cell = new Cell { DataType = CellValues.String, CellValue = new CellValue(value) };
+						row.AppendChild(cell);
+					}
+					sheetData.AppendChild(row);
+				}
+				var sheets = spreadsheet.WorkbookPart!.Workbook.AppendChild(new Sheets());
+				sheets.AppendChild(new Sheet
+				{
+					Id = spreadsheet.WorkbookPart.GetIdOfPart(worksheetPart),
+					SheetId = 1,
+					Name = fileName
+				});
+				spreadsheet.WorkbookPart.Workbook.Save();
+			}
+			memStream.Position = 0;
+			using var streamRef = new DotNetStreamReference(stream: memStream);
+			await JS.InvokeVoidAsync("downloadFileFromStream", fileName, streamRef);
 		}
 		public async Task DownloadUsersTemplateAsync()
 		{
