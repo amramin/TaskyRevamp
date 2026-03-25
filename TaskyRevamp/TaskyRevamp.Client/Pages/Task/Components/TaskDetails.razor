@@ -210,7 +210,7 @@
                         <div class="info-item">
                             <span class="squer-medium-icon">
                                 <span class="icon">
-                                    <SVGCrud SVGType="SVGCrud.SVGTypeEnum.DataFlow"></SVGCrud>
+                                    <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Dependency"></SVGCrud>
                                 </span>
                             </span>
                             <div class="text-content">
@@ -225,7 +225,8 @@
                                 </div>
                             </div>
                         </div>
-                    @if (Task?.ActualProcess == 100 && (Task?.TaskStatusName == "Pending Review" || Task?.TaskStatusName ==
+                   
+                        @if (Task?.ActualProcess == 100 && (Task?.TaskStatusName == "Pending Review" || Task?.TaskStatusName ==
                                                                                                                                                                                                                 "Completed"))
                     {
                         <div class="d-flex gap-3">
