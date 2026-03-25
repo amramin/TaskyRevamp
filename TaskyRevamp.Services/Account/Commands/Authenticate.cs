@@ -76,15 +76,15 @@ public class AuthenticateCommandHandler : IRequestHandler<AuthenticateCommand, s
                     await _userRepository.Insert(user);
                     await _userRepository.SaveChangesAsync();
 				}
-                else
-                {
-                    user = userResponse.Value.FirstOrDefault()!;
-                    if (user is null)
-                    {
-                        throw new NoDataException("User Not Found!");
-					}
-                    user = await SyncUserWithActiveDirectory(user, adUser);
-				}
+    //            else
+    //            {
+    //                user = userResponse.Value.FirstOrDefault()!;
+    //                if (user is null)
+    //                {
+    //                    throw new NoDataException("User Not Found!");
+				//	}
+    //                user = await SyncUserWithActiveDirectory(user, adUser);
+				//}
 
             }
             else
