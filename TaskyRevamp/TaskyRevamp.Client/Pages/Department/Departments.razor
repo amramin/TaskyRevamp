@@ -495,9 +495,16 @@
     }
     private async Task Export(MouseEventArgs args)
     {
+        var effectivePageSize = 100000;
+        var encodedTerm = !string.IsNullOrEmpty(searchdata)? Uri.EscapeDataString(searchdata): null;
+        var resp = await _departmentConsumer.GetDepartments(1, 10000, currentSortColumn,sortAscending ?? true,
+            !string.IsNullOrEmpty(searchdata) ? searchFields : null, !string.IsNullOrEmpty(searchdata) ? encodedTerm : null);
+        if (!(resp?.Success ?? false) || resp.Data is null)
+            return;
+        var allData = resp.Data.Items;
         var lang = Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName;
         var fileName = Loc["systemDepartments"] + ".xlsx";
         var columns = GetColumns();
-        await _fileManagementService.ExportToExcelAsync(departmentDtos, columns, fileName);
+        await _fileManagementService.ExportToExcelAsync(allData, columns, fileName);
     }
 }

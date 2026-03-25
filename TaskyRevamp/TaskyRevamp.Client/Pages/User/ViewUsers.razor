@@ -19,6 +19,7 @@
 @inject PopupService PopupService
 @inject FileManagementService _fileManagementService
 @inject ILocalStorageService LocalStorageService
+
 <div class="page-header">
     <div class="title-block">
         <h1 class="page-headline">@Loc["users"]</h1>
@@ -192,6 +193,7 @@
     private HashSet<string> systemEmails = new();
     private List<UserLinkDto> userLinkDtos = new();
     private bool IsLoading = false;
+
     private async Task ChangePage(int page)
     {
         currentPage = page;
@@ -462,9 +464,17 @@
     }
     private async Task Export(MouseEventArgs args)
     {
+        var effectivePageSize = 100000;
+        var searchTerm = searchComponent?.SearchTerm;
+        var isSearch = !string.IsNullOrEmpty(searchTerm);
+        var resp = await _userConsumer.GetUsersWithPagination(1, effectivePageSize, currentSortColumn, sortAscending ?? true,
+                isSearch ? searchFields! : null!, isSearch ? searchTerm! : null!);
+        if (!(resp?.Success ?? false) || resp.Data is null)
+            return;
+        var allData = resp.Data.Items;
         var lang = Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName;
         var fileName = Loc["UsersList"] + ".xlsx";
         var columns = GetColumns();
-        await _fileManagementService.ExportToExcelAsync(users, columns, fileName);
+        await _fileManagementService.ExportToExcelAsync(allData, columns, fileName);
     }
 }
