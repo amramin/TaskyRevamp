@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TaskyRevamp.Infrastructure;
 
@@ -11,9 +12,11 @@ using TaskyRevamp.Infrastructure;
 namespace TaskyRevamp.Infrastructure.Migrations
 {
     [DbContext(typeof(EfDbContext))]
-    partial class EfDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260321195223_audittable")]
+    partial class audittable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -799,7 +802,7 @@ namespace TaskyRevamp.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("AssignedUserId")
+                    b.Property<Guid>("AssignedUserId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreateDate")
@@ -808,16 +811,23 @@ namespace TaskyRevamp.Infrastructure.Migrations
                     b.Property<Guid>("CreatedById")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime?>("EndDate")
+                    b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool>("IsDone")
+                    b.Property<bool>("IsCompleted")
                         .HasColumnType("bit");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
 
                     b.Property<Guid>("TaskChecklistId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Title")
+                    b.Property<string>("TitleArabic")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TitleEnglish")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -969,7 +979,11 @@ namespace TaskyRevamp.Infrastructure.Migrations
                     b.Property<Guid?>("TaskItemId1")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Title")
+                    b.Property<string>("TitleArabic")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TitleEnglish")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -1538,7 +1552,8 @@ namespace TaskyRevamp.Infrastructure.Migrations
                     b.HasOne("TaskyRevamp.Domain.Models.Users.User", "AssignedUser")
                         .WithMany()
                         .HasForeignKey("AssignedUserId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("TaskyRevamp.Domain.Models.Users.User", "CreatedBy")
                         .WithMany()
@@ -1546,7 +1561,7 @@ namespace TaskyRevamp.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("TaskyRevamp.Domain.Models.Task.TaskChecklist", "taskChecklist")
+                    b.HasOne("TaskyRevamp.Domain.Models.Task.TaskChecklist", "TaskChecklist")
                         .WithMany("items")
                         .HasForeignKey("TaskChecklistId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -1556,7 +1571,7 @@ namespace TaskyRevamp.Infrastructure.Migrations
 
                     b.Navigation("CreatedBy");
 
-                    b.Navigation("taskChecklist");
+                    b.Navigation("TaskChecklist");
                 });
 
             modelBuilder.Entity("TaskyRevamp.Domain.Models.Task.Department", b =>
@@ -1643,7 +1658,7 @@ namespace TaskyRevamp.Infrastructure.Migrations
 
             modelBuilder.Entity("TaskyRevamp.Domain.Models.Task.TaskChecklist", b =>
                 {
-                    b.HasOne("TaskyRevamp.Domain.Models.Task.TaskItem", "TaskItem")
+                    b.HasOne("TaskyRevamp.Domain.Models.Task.TaskItem", "taskItem")
                         .WithMany("taskChecklists")
                         .HasForeignKey("TaskItemId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -1653,7 +1668,7 @@ namespace TaskyRevamp.Infrastructure.Migrations
                         .WithOne("Checklist")
                         .HasForeignKey("TaskyRevamp.Domain.Models.Task.TaskChecklist", "TaskItemId1");
 
-                    b.Navigation("TaskItem");
+                    b.Navigation("taskItem");
                 });
 
             modelBuilder.Entity("TaskyRevamp.Domain.Models.Task.TaskComment", b =>

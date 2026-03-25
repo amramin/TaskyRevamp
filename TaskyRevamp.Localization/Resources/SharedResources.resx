@@ -742,7 +742,7 @@
     <value>Title</value>
   </data>
   <data name="TaskStatus" xml:space="preserve">
-    <value>Task status</value>
+    <value>Status </value>
   </data>
   <data name="AssigneduserNames" xml:space="preserve">
     <value>Assignee</value>
@@ -1617,5 +1617,42 @@ This task will be moved to the Recycle Bin and can be restored later or permanen
   </data>
   <data name="isManagerTilte" xml:space="preserve">
     <value>Is manager</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="approvedsuccessfully" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="Cannotdeactivateuser" xml:space="preserve">
+    <value>Can't deactivate, the user has an open task on him</value>
+  </data>
+  <data name="successactive" xml:space="preserve">
+    <value>Activated successfully</value>
+  </data>
+  <data name="successdeactive" xml:space="preserve">
+    <value>Deactivated successfully</value>
+  </data>
+  <data name="SystemHistory" xml:space="preserve">
+    <value> Task history log</value>
+  </data>
+  <data name="historyHint" xml:space="preserve">
+    <value>Use this option to enable task history notifications that will be automatically sent when the specified action is triggered.</value>
+  </data>
+  <data name="totalusers" xml:space="preserve">
+    <value>Total users</value>
+  </data>
+  <data name="activeusers" xml:space="preserve">
+    <value>Active users</value>
+  </data>
+  <data name="InActiveUsers" xml:space="preserve">
+    <value>Inactive users</value>
+  </data>
+  <data name="LinkedWithTasksUsers" xml:space="preserve">
+    <value>Users linked to tasks</value>
+  </data>
+  <data name="LoggedInUsers" xml:space="preserve">
+    <value> Logged-in user</value>
+  </data>
+  <data name="LinkedWithPrivilagesUsers" xml:space="preserve">
+    <value> Users with privileges</value>
   </data>
 </root>

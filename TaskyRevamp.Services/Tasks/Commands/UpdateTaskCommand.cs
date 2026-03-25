@@ -71,7 +71,7 @@ public class UpdateTaskCommandHandler : IRequestHandler<UpdateTaskCommand, bool>
                 }
                 else if (request.Task.ActualProcess > 0 && request.Task.ActualProcess < 100)
                 {
-                    if(request.Task.EndDate < DateTime.Now)
+                    if (DateOnly.FromDateTime(request.Task.EndDate?.Date ?? default) < DateOnly.FromDateTime(DateTime.UtcNow.Date))
                     {
                         task.StatusId = Guid.Parse("270A78EB-C5CA-475D-2239-08DE3318A61C");
                     }

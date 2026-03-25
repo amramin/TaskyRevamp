@@ -81,6 +81,111 @@
     </div>
     @if (users != null && users.Any())
     {
+        <div class="row g-3 my-2">
+
+            <!-- Total Users -->
+            <div class="col-md-4">
+                <div class="card p-2">
+                    <div class="d-flex align-items-center">
+                        <div class="dropdown-item border border-2 rounded-circle m-2" style="width:10%">
+                            <span class="icon">
+                                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Users"></SVGCrud>
+                            </span>
+                        </div>
+                        <div>
+                            <div class="stat-title">@Loc["totalusers"]</div>
+                            <div class="stat-value">@UserStatistics.TotalUsers</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Active Users -->
+            <div class="col-md-4">
+                <div class="card p-2">
+                    <div class="d-flex align-items-center">
+                        <div class="dropdown-item border border-2 rounded-circle m-2" style="width:10%">
+                            <span class="icon">
+                                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.ActiveUsers"></SVGCrud>
+                            </span>
+                        </div>
+                        <div>
+                            <div class="stat-title">@Loc["activeusers"]</div>
+                            <div class="stat-value">@UserStatistics.ActiveUsers</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Inactive Users -->
+            <div class="col-md-4">
+                <div class="card p-2">
+                    <div class="d-flex  align-items-center">
+                        <div class="dropdown-item border border-2 rounded-circle m-2" style="width:10%">
+                            <span class="icon">
+                                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.NonActiveUsers"></SVGCrud>
+                            </span>
+                        </div>
+                        <div>
+                            <div class="stat-title">@Loc["InActiveUsers"]</div>
+                            <div class="stat-value">@UserStatistics.InActiveUsers</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Linked to Tasks -->
+            <div class="col-md-4">
+                <div class="card p-2">
+                    <div class="d-flex align-items-center">
+                        <div class="dropdown-item border border-2 rounded-circle m-2" style="width:10%">
+                            <span class="icon">
+                                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Relation"></SVGCrud>
+                            </span>
+                        </div>
+                        <div>
+                            <div class="stat-title">@Loc["LinkedWithTasksUsers"]</div>
+                            <div class="stat-value">@UserStatistics.LinkedWithTasksUsers</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Successful Login -->
+            <div class="col-md-4">
+                <div class="card p-2">
+                    <div class="d-flex align-items-center">
+                        <div class="dropdown-item border border-2 rounded-circle m-2" style="width:10%">
+                            <span class="icon">
+                                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Login"></SVGCrud>
+                            </span>
+                        </div>
+                        <div>
+                            <div class="stat-title">@Loc["LoggedInUsers"]</div>
+                            <div class="stat-value">@UserStatistics.LoggedInUsers</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Linked to Privileges -->
+            <div class="col-md-4">
+                <div class="card p-2">
+                    <div class="d-flex  align-items-center">
+                        <div class="dropdown-item border border-2 rounded-circle m-2" style="width:10%">
+                            <span class="icon">
+                                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.PrivilegePluse"></SVGCrud>
+                            </span>
+                        </div>
+                        <div>
+                            <div class="stat-title">@Loc["LinkedWithPrivilagesUsers"]</div>
+                            <div class="stat-value">@UserStatistics.LinkedWithPrivilagesUsers</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
         <div class="table-responsive sticky-header-custom">
             @if (users != null && users.Any())
             {
@@ -91,6 +196,7 @@
                         @foreach (var item in users)
                         {
                             var checkboxId = $"source-active-{item.user.Id}";
+                            var checkboxdeactivate = $"source-active-{item.user.Id}-active";
                             <tr>
                                 <td>@item.user.DisplayedName</td>
                                 <td>@item.user.Email</td>
@@ -100,9 +206,24 @@
                                 <td>@item.UpdatedByName</td>
                                 <td>
                                     <div class="form-check form-switch custom">
-                                        <InputCheckbox id="@checkboxId" @bind-Value="item.user.IsManager" class="form-check-input"
-                                                       disabled />
+                                        <InputCheckbox id="@checkboxId"
+                                                       Value="item.user.IsManager"
+                                                       ValueChanged="@(value => OnManagerChanged(value, item.user.Id))"
+                                                       ValueExpression="() => item.user.IsManager"
+                                                       class="form-check-input" />
                                         <label for="@checkboxId" class="form-check-label">
+                                            <span class="toggler-icon"></span>
+                                        </label>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-check form-switch custom">
+                                        <InputCheckbox id="@checkboxdeactivate"
+                                                       Value="item.user.IsActive"
+                                                       ValueChanged="@(value => ActivateDeActivateUser(value, item.user.Id))"
+                                                       ValueExpression="() => item.user.IsActive"
+                                                       class="form-check-input" />
+                                        <label for="@checkboxdeactivate" class="form-check-label">
                                             <span class="toggler-icon"></span>
                                         </label>
                                     </div>
@@ -114,7 +235,7 @@
                                             <SVGCrud SVGType="SVGCrud.SVGTypeEnum.EllipseVertical"></SVGCrud>
                                         </button>
                                         <ul class="dropdown-menu">
-                                            <li>
+@*                                             <li>
 
                                                 <button class="dropdown-item text-danger" @onclick="@(() => DeleteUser(item))">
 
@@ -123,7 +244,7 @@
                                                     </span>
                                                     <span>@Loc["Delete"]</span>
                                                 </button>
-                                            </li>
+                                            </li> *@
                                             <li>
                                                 <button class="dropdown-item"
                                                         @onclick="@(() => ViewPrivilege(item.user.PrivilegeId))">
@@ -177,6 +298,7 @@
 @code {
     List<UserDtoWithName> users = new();
     List<UserDtoWithName> initialUsers = new();
+     UserStatisticsDto UserStatistics = new();
     private bool showConfirm;
     private UserDtoWithName? selectedUser;
     private int currentPage = 1;
@@ -217,7 +339,14 @@
             new() { Field = "UpdatedBy", DisplayName = Loc["UpdatedBy"] },
             new() { Field = "Set as Manager", DisplayName = Loc["setAsManager"] },
             new() { Field = "Action", DisplayName = Loc["Action"] ,IsSortable = false},
+new() { Field = "Is active", DisplayName = Loc["active"] },
+new() { Field = "Action", DisplayName = Loc["Action"] ,IsSortable = false},
         };
+        var statistics= await _userConsumer.GetUsersStatistics();
+        if(statistics.Data is not null)
+        {
+            UserStatistics = statistics.Data;
+        }
         await LoadUsers();
         initialUsers = users;
     }
@@ -476,5 +605,35 @@
         var fileName = Loc["UsersList"] + ".xlsx";
         var columns = GetColumns();
         await _fileManagementService.ExportToExcelAsync(allData, columns, fileName);
+    }
+    private async Task OnManagerChanged(bool value, Guid UserId)
+    {
+        var res=await _userConsumer.SetUserAsManger(UserId,value);
+        if (res.Success)
+        {
+            await LoadUsers();
+            StateHasChanged();
+        }
+    }
+    private async Task ActivateDeActivateUser(bool value, Guid UserId)
+    {
+        var res = await _userConsumer.ActivateDeActivateUser(UserId, value);
+        if (res.Success&&res.Data==true)
+        {
+            await LoadUsers();
+            if (value == true)
+            {
+                await ToastService.ShowToastAsync(Loc["successactive"], "success");
+            }
+            else
+            {
+                await ToastService.ShowToastAsync(Loc["successdeactive"], "success");
+            }
+            StateHasChanged();
+        }
+        else
+        {
+            await ToastService.ShowToastAsync(Loc["Cannotdeactivateuser"], "error");
+        }
     }
 }

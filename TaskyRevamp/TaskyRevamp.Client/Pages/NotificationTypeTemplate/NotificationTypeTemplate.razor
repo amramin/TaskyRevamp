@@ -21,6 +21,10 @@
         {
             <h1 class="page-headline">@Loc["SystemNotification"]</h1>
         }
+        @if (ModuleType == (int)Dto.Enums.ModuleType.History)
+        {
+            <h1 class="page-headline">@Loc["SystemHistory"]</h1>
+        }
     </div>
 
 </div>
@@ -33,7 +37,18 @@
                     <div class="text-content">
                         <div class="text-content">
                             <h6 class="headline-6">@Loc["Types of system notification Messages"]</h6>
-                            <p class="small-medium-text hint"> @Loc["Usethisoption"]</p>
+                            @if (ModuleType == (int)Dto.Enums.ModuleType.Email)
+                            {
+                                <p class="small-medium-text hint"> @Loc["Usethisoption"]</p>
+                            }
+                            else if (ModuleType == (int)Dto.Enums.ModuleType.SystemNotification)
+                            {
+                                <p class="small-medium-text hint"> @Loc["Usethisoption"]</p>
+                            }
+                            else if (ModuleType == (int)Dto.Enums.ModuleType.History)
+                            {
+                                <p class="small-medium-text hint"> @Loc["historyHint"]</p>
+                            }
                         </div>
                     </div>
 

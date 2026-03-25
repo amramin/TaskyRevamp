@@ -1,4 +1,5 @@
 ﻿using DepartmentyRevamp.Services.Departments.Commands;
+using DocumentFormat.OpenXml.Wordprocessing;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -91,9 +92,14 @@ public class UserController : ControllerBase
 		var result = await _mediator.Send(new GetUsersWithPaginationQuery(pageNumber, size, sortByColumnName, sortAscending, searchFields, searchText));
 		return Ok(result);
 	}
+    [HttpGet("GetUsersStatistics")]
+    public async Task<IActionResult> GetUsersStatistics()
+    {
+        var result = await _mediator.Send(new GetUsersStatisticsQuery());
+        return Ok(result);
+    }
 
-
-	[HttpPost("CreateAssignedUser")]
+    [HttpPost("CreateAssignedUser")]
 	public async Task<ActionResult<string>> CreateAssignedUser([FromBody] AssignedUserDto assignedUserDto)
 	{
 		var res = await _mediator.Send(new CreateAssignedUserCommand(assignedUserDto));
@@ -126,8 +132,19 @@ public class UserController : ControllerBase
 		var res = await _mediator.Send(new IfUserHasOpenTasksOnDepartmentCommand(departmentId, userId));
 		return Ok(res);
 	}
-
-	[HttpGet("GetUsers")]
+    [HttpGet("SetUserAsManger/{userId}/{IsManger}")]
+    public async Task<ActionResult<bool>> SetUserAsManger(Guid userId,bool IsManger)
+    {
+        var res = await _mediator.Send(new SetUserAsMangerCommand(userId, IsManger));
+        return Ok(res);
+    }
+    [HttpGet("ActivateDeActivateUser/{userId}/{IsActive}")]
+    public async Task<ActionResult<bool>> ActivateDeActivateUser(Guid userId, bool IsActive)
+    {
+        var res = await _mediator.Send(new ActivateDeActivateUserCommand(userId, IsActive));
+        return Ok(res);
+    }
+    [HttpGet("GetUsers")]
 	public async Task<List<UserDto>> GetUsers()
 	{
 		var data = await _mediator.Send(new TaskyRevamp.Services.Users.Query.GetUsersQuery());

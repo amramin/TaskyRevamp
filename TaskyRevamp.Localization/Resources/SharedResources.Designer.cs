@@ -97,6 +97,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Active users.
+        /// </summary>
+        public static string activeusers {
+            get {
+                return ResourceManager.GetString("activeusers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Actual progress.
         /// </summary>
         public static string ActualProgress {
@@ -448,6 +457,16 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Object.
+        /// </summary>
+        public static object approvedsuccessfully {
+            get {
+                object obj = ResourceManager.GetObject("approvedsuccessfully", resourceCulture);
+                return ((object)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Arabic.
         /// </summary>
         public static string Arabic {
@@ -579,6 +598,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string cannotdeactivate {
             get {
                 return ResourceManager.GetString("cannotdeactivate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Can&apos;t deactivate, the user has an open task on him.
+        /// </summary>
+        public static string Cannotdeactivateuser {
+            get {
+                return ResourceManager.GetString("Cannotdeactivateuser", resourceCulture);
             }
         }
         
@@ -1915,6 +1943,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Use this option to enable task history notifications that will be automatically sent when the specified action is triggered..
+        /// </summary>
+        public static string historyHint {
+            get {
+                return ResourceManager.GetString("historyHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 24 hours.
         /// </summary>
         public static string Hours24 {
@@ -1938,6 +1975,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string inactive {
             get {
                 return ResourceManager.GetString("inactive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Inactive users.
+        /// </summary>
+        public static string InActiveUsers {
+            get {
+                return ResourceManager.GetString("InActiveUsers", resourceCulture);
             }
         }
         
@@ -2077,6 +2123,24 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to  Users with privileges.
+        /// </summary>
+        public static string LinkedWithPrivilagesUsers {
+            get {
+                return ResourceManager.GetString("LinkedWithPrivilagesUsers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Users linked to tasks.
+        /// </summary>
+        public static string LinkedWithTasksUsers {
+            get {
+                return ResourceManager.GetString("LinkedWithTasksUsers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Link users.
         /// </summary>
         public static string LinkUser {
@@ -2172,6 +2236,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string LocalizeDate {
             get {
                 return ResourceManager.GetString("LocalizeDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to  Logged-in user.
+        /// </summary>
+        public static string LoggedInUsers {
+            get {
+                return ResourceManager.GetString("LoggedInUsers", resourceCulture);
             }
         }
         
@@ -3535,6 +3608,24 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Activated successfully.
+        /// </summary>
+        public static string successactive {
+            get {
+                return ResourceManager.GetString("successactive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Deactivated successfully.
+        /// </summary>
+        public static string successdeactive {
+            get {
+                return ResourceManager.GetString("successdeactive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Sunday.
         /// </summary>
         public static string Sunday {
@@ -3716,6 +3807,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to  Task history log.
+        /// </summary>
+        public static string SystemHistory {
+            get {
+                return ResourceManager.GetString("SystemHistory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to System Notification.
         /// </summary>
         public static string SystemNotification {
@@ -3797,7 +3897,7 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Task status.
+        ///   Looks up a localized string similar to Status .
         /// </summary>
         public static string TaskStatus {
             get {
@@ -4072,6 +4172,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string ToStartDateValidation {
             get {
                 return ResourceManager.GetString("ToStartDateValidation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Total users.
+        /// </summary>
+        public static string totalusers {
+            get {
+                return ResourceManager.GetString("totalusers", resourceCulture);
             }
         }
         

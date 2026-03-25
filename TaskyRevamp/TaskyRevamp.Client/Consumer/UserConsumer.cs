@@ -46,7 +46,13 @@ namespace TaskyRevamp.Client.Consumer
 
 			return ret;
 		}
-		public async Task<CommonApiResponse<PagedResult<DepartmentDto>>> GetAllUsersByDepartmentWithPagination(Guid DepartmentId, int pageNumber, int pageSize, string sortByColumnName, bool sortAscending, List<SearchFieldUserDepartment> searchFields = null, string searchText = null)
+        public async Task<CommonApiResponse<UserStatisticsDto>> GetUsersStatistics()
+        {
+            var ret = await _taskyService.GetFromJsonAsync<CommonApiResponse<UserStatisticsDto>>($"api/User/GetUsersStatistics");
+
+            return ret;
+        }
+        public async Task<CommonApiResponse<PagedResult<DepartmentDto>>> GetAllUsersByDepartmentWithPagination(Guid DepartmentId, int pageNumber, int pageSize, string sortByColumnName, bool sortAscending, List<SearchFieldUserDepartment> searchFields = null, string searchText = null)
 		{
 			var queryString = _taskyService.PreparePaginatedSearchQueryString(pageNumber, pageSize, sortByColumnName, sortAscending, searchFields, searchText);
 
@@ -100,8 +106,21 @@ namespace TaskyRevamp.Client.Consumer
 
 			return res.Data;
 		}
+        public async Task<CommonApiResponse<bool>> SetUserAsManger(Guid UserId,bool IsManger)
+        {
+            var url = $"api/User/SetUserAsManger/{UserId}/{IsManger}";
+            var res = await _taskyService.GetFromJsonAsync<CommonApiResponse<bool>>(url);
 
-		public async Task<CommonApiResponse<bool>> LinkUserWithDepartmentAndPrivilege(List<UserLinkDto> userLinkDtos)
+            return res;
+        }
+        public async Task<CommonApiResponse<bool>> ActivateDeActivateUser(Guid UserId, bool IsActive)
+        {
+            var url = $"api/User/ActivateDeActivateUser/{UserId}/{IsActive}";
+            var res = await _taskyService.GetFromJsonAsync<CommonApiResponse<bool>>(url);
+
+            return res;
+        }
+        public async Task<CommonApiResponse<bool>> LinkUserWithDepartmentAndPrivilege(List<UserLinkDto> userLinkDtos)
 		{
 			var url = $"api/User/LinkUserWithDepartmentAndPrivilege";
 			var res = await _taskyService.PostJsonAsync<CommonApiResponse<bool>>(url, userLinkDtos);
