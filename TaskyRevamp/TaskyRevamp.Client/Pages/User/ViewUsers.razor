@@ -5,6 +5,7 @@
 @using TaskyRevamp.Client.Services
 @using TaskyRevamp.Client.Shared.Popups
 @using TaskyRevamp.Dto.Account
+@using TaskyRevamp.Dto.Files
 @using TaskyRevamp.Dto.SystemConfiguration
 @using TaskyRevamp.Dto.Enums.SearchFields
 @inject NavigationManager navigationManager
@@ -18,18 +19,23 @@
 @inject PopupService PopupService
 @inject FileManagementService _fileManagementService
 @inject ILocalStorageService LocalStorageService
+
 <div class="page-header">
     <div class="title-block">
         <h1 class="page-headline">@Loc["users"]</h1>
-
     </div>
     <div class="action-btn-list">
         <Search @ref="searchComponent" SearchSubmit="Search" CssClass="form-control"></Search>
+        <button class="btn btn-action-40 btn-outline-primary ms-1"
+                data-bs-toggle="tooltip" data-bs-placement="top" title="@Loc["Export"]"
+                @onclick="Export">
+            <span class="icon">
+                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Excel"></SVGCrud>
+            </span>
+        </button>
     </div>
-
 </div>
 <div class="page-body">
-
     <div class="file-qustom button-end mb-2">
         <label for="userFileUpload">
             <span class="icon">
@@ -63,25 +69,24 @@
             <button class="btn btn-lg btn-light text-nowrap" @onclick="SyncUsers">
                 @Loc["SyncUsers"]
             </button>
-        }else
-            {
+        }
+        else
+        {
             <button class="btn btn-lg btn-light text-nowrap" @onclick="SyncUsers">
                 <span class="spinner-border spinner-border-sm me-2"
                       role="status" aria-hidden="true"></span>
                 @Loc["SyncUsers"]
             </button>
-            }
+        }
     </div>
-
     @if (users != null && users.Any())
     {
-
         <div class="table-responsive sticky-header-custom">
             @if (users != null && users.Any())
             {
 
                 <SortableTable TItem="UserDtoWithName" Columns="@tableColumns" Items="@users" SortColumn="@currentSortColumn"
-                    SortAscending="@sortAscending" OnSortRequested="HandleSort">
+                               SortAscending="@sortAscending" OnSortRequested="HandleSort">
                     <RowTemplate>
                         @foreach (var item in users)
                         {
@@ -91,23 +96,12 @@
                                 <td>@item.user.Email</td>
                                 <td>@item.PrivilegeName</td>
                                 <td>@item.DepartmentName</td>
-
-                                @* <td>
-                                    <div class="form-check form-switch custom">
-                                        <InputCheckbox id="@checkboxId" @bind-Value="item.user.IsActive" class="form-check-input"
-                                                       disabled />
-                                        <label for="@checkboxId" class="form-check-label">
-                                            <span class="toggler-icon"></span>
-                                        </label>
-                                    </div>
-
-                                </td>*@
                                 <td>@(item.user.UpdateDate?.ToLocalTime().ToString(Loc["LocalizeDate"]))</td>
                                 <td>@item.UpdatedByName</td>
                                 <td>
                                     <div class="form-check form-switch custom">
                                         <InputCheckbox id="@checkboxId" @bind-Value="item.user.IsManager" class="form-check-input"
-                                            disabled />
+                                                       disabled />
                                         <label for="@checkboxId" class="form-check-label">
                                             <span class="toggler-icon"></span>
                                         </label>
@@ -116,7 +110,7 @@
                                 <td>
                                     <div class="dropdown actions">
                                         <button class="btn btn-action-24" type="button" data-bs-toggle="dropdown"
-                                            aria-expanded="false">
+                                                aria-expanded="false">
                                             <SVGCrud SVGType="SVGCrud.SVGTypeEnum.EllipseVertical"></SVGCrud>
                                         </button>
                                         <ul class="dropdown-menu">
@@ -132,7 +126,7 @@
                                             </li>
                                             <li>
                                                 <button class="dropdown-item"
-                                                    @onclick="@(() => ViewPrivilege(item.user.PrivilegeId))">
+                                                        @onclick="@(() => ViewPrivilege(item.user.PrivilegeId))">
                                                     <span class="icon">
                                                         <SVGCrud SVGType="SVGCrud.SVGTypeEnum.PrivilegeConfig"></SVGCrud>
                                                     </span>
@@ -157,9 +151,7 @@
             }
         </div>
         <Pagination CurrentPage="@currentPage" TotalPages="@totalPages" TotalCount="@totalCount" PageSize="@pageSize"
-            PageChanged="ChangePage" PageSizeChangedCallback="ChangePageSize" />
-
-
+                    PageChanged="ChangePage" PageSizeChangedCallback="ChangePageSize" />
     }
     else if (initialUsers != null && initialUsers.Any())
     {
@@ -201,6 +193,7 @@
     private HashSet<string> systemEmails = new();
     private List<UserLinkDto> userLinkDtos = new();
     private bool IsLoading = false;
+
     private async Task ChangePage(int page)
     {
         currentPage = page;
@@ -215,23 +208,23 @@
     protected override async Task OnInitializedAsync()
     {
         tableColumns = new()
-{
-new() { Field = "Name", DisplayName = Loc["name"] },
-new() { Field = "Email", DisplayName = Loc["email"] },
-new() { Field = "Privileges", DisplayName = Loc["UserPrivilege"] },
-new() { Field = "Department", DisplayName = Loc["Department"] },
-new() { Field = "UpdateDate", DisplayName = Loc["UpdateDate"] },
-new() { Field = "UpdatedBy", DisplayName = Loc["UpdatedBy"] },
-new() { Field = "Set as Manager", DisplayName = Loc["setAsManager"] },
-new() { Field = "Action", DisplayName = Loc["Action"] ,IsSortable = false},
-};
+        {
+            new() { Field = "Name", DisplayName = Loc["name"] },
+            new() { Field = "Email", DisplayName = Loc["email"] },
+            new() { Field = "Privileges", DisplayName = Loc["UserPrivilege"] },
+            new() { Field = "Department", DisplayName = Loc["Department"] },
+            new() { Field = "UpdateDate", DisplayName = Loc["UpdateDate"] },
+            new() { Field = "UpdatedBy", DisplayName = Loc["UpdatedBy"] },
+            new() { Field = "Set as Manager", DisplayName = Loc["setAsManager"] },
+            new() { Field = "Action", DisplayName = Loc["Action"] ,IsSortable = false},
+        };
         await LoadUsers();
         initialUsers = users;
     }
     private async Task LoadUsers(bool isSearch = false, string searchTerm = null)
     {
         var resp = await _userConsumer.GetUsersWithPagination(currentPage, pageSize, currentSortColumn, sortAscending.Value,
-        isSearch ? searchFields : null, isSearch ? searchTerm : null);
+                isSearch ? searchFields : null, isSearch ? searchTerm : null);
 
         if (!(resp?.Success ?? false) || resp.Data is null)
             return;
@@ -308,15 +301,15 @@ new() { Field = "Action", DisplayName = Loc["Action"] ,IsSortable = false},
         await LoadUsers();
     }
     public List<SearchFieldUser> searchFields = new List<SearchFieldUser>() {
-SearchFieldUser.Name,
-SearchFieldUser.Email,
-SearchFieldUser.IsManager,
-SearchFieldUser.Privilege,
-SearchFieldUser.Department,
-SearchFieldUser.UpdatedBy,
-SearchFieldUser.UpdateDate,
-SearchFieldUser.ActiveStatus
-};
+        SearchFieldUser.Name,
+        SearchFieldUser.Email,
+        SearchFieldUser.IsManager,
+        SearchFieldUser.Privilege,
+        SearchFieldUser.Department,
+        SearchFieldUser.UpdatedBy,
+        SearchFieldUser.UpdateDate,
+        SearchFieldUser.ActiveStatus
+    };
     public async Task Search(string searchTerm)
     {
         await LoadUsers(true, searchTerm);
@@ -398,17 +391,14 @@ SearchFieldUser.ActiveStatus
                     privilegeName = rows[i][2].Trim()
                 });
             }
-
             var resp = await _userConsumer.LinkUserWithDepartmentAndPrivilege(userLinkDtos);
             if (resp.Success)
             {
                 await ToastService.ShowToastAsync(Loc["filesSuccess"], "success");
                 await LoadUsers();
             }
-
         }
     }
-
     private bool Validate(string[] row, HashSet<string> uploadedEmails)
     {
         if (row.Length != 3)
@@ -418,8 +408,7 @@ SearchFieldUser.ActiveStatus
         var departmentName = row[1].Trim().ToLower();
         var privilegeName = row[2].Trim().ToLower();
         Console.WriteLine($"Email: {email}, Department: {departmentName}, Privilege: {privilegeName}");
-        if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(departmentName) ||
-        string.IsNullOrWhiteSpace(privilegeName))
+        if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(departmentName) || string.IsNullOrWhiteSpace(privilegeName))
         {
             Console.WriteLine("case1");
             return false;
@@ -444,25 +433,48 @@ SearchFieldUser.ActiveStatus
             Console.WriteLine("case5");
             return false;
         }
-
         return true;
     }
     private async Task SyncUsers(MouseEventArgs args)
     {
         IsLoading = true;
         var current = await LocalStorageService.GetItemAsStringAsync("Id");
-        var UpdatedBy= Guid.Parse(current);
-        var res=await _accountConsumer.SyncUsers(UpdatedBy);
+        var UpdatedBy = Guid.Parse(current);
+        var res = await _accountConsumer.SyncUsers(UpdatedBy);
         if (res.Success)
         {
             IsLoading = false;
             await LoadUsers();
             StateHasChanged();
-             PopupService.ShowInfo(
-       @Loc[$"UsersUpdated"],
-   $"{Loc["UsersAdded"]} {res.Data}",
-        ConfirmationType.Primary
-        );
+            PopupService.ShowInfo(@Loc[$"UsersUpdated"], $"{Loc["UsersAdded"]} {res.Data}", ConfirmationType.Primary);
         }
+    }
+    private List<ColumnDefinition<UserDtoWithName>> GetColumns()
+    {
+        return new()
+        {
+            new() { Header = @Loc["name"], Value = d => d.user.UserName },
+            new() { Header = @Loc["email"], Value = d => d.user.Email },
+            new() { Header = @Loc["PrivilegeTilte"], Value = d => d.PrivilegeName ?? " "},
+            new() { Header = @Loc["Department"], Value = d => d.DepartmentName},
+            new() { Header = @Loc["UpdateDate"], Value = d => d.user.UpdateDate?.ToString(Loc["LocalizeDate"])! },
+            new() { Header = @Loc["UpdatedBy"], Value = d => d.UpdatedByName! },
+            new() { Header = @Loc["isManagerTilte"], Value = d => d.user.IsManager ? Loc["Yes"] : Loc["No"] },
+        };
+    }
+    private async Task Export(MouseEventArgs args)
+    {
+        var effectivePageSize = 100000;
+        var searchTerm = searchComponent?.SearchTerm;
+        var isSearch = !string.IsNullOrEmpty(searchTerm);
+        var resp = await _userConsumer.GetUsersWithPagination(1, effectivePageSize, currentSortColumn, sortAscending ?? true,
+                isSearch ? searchFields! : null!, isSearch ? searchTerm! : null!);
+        if (!(resp?.Success ?? false) || resp.Data is null)
+            return;
+        var allData = resp.Data.Items;
+        var lang = Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName;
+        var fileName = Loc["UsersList"] + ".xlsx";
+        var columns = GetColumns();
+        await _fileManagementService.ExportToExcelAsync(allData, columns, fileName);
     }
 }

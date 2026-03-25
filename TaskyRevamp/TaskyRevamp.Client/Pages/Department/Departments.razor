@@ -6,6 +6,7 @@
 @using TaskyRevamp.Dto.Department
 @using TaskyRevamp.Client.Shared.Popups
 @using TaskyRevamp.Dto.Enums.SearchFields
+@using TaskyRevamp.Dto.Files
 @using TaskyRevamp.Dto.SystemConfiguration
 @inject DepartmentConsumer _departmentConsumer
 @inject NavigationManager navigationManager
@@ -14,42 +15,40 @@
 @inject PopupService PopupService
 @inject FileManagementService _fileManagementService
 
-
-
 <div class="page-header">
     <h1 class="page-headline">@Loc["Departments"]</h1>
     <div class="action-btn-list">
         <Search @ref="searchComponent" SearchSubmit="Search" CssClass="form-control"></Search>
-        <button
-            class="btn btn-action-40 @(currentView == DepartmentViewType.Hierarchy ? "btn-outline-primary" : "btn-outline-light")"
-            data-bs-toggle="tooltip" data-bs-placement="top" title="@Loc["Hierarchy"]"
-            @onclick="@(() => ChangeView(DepartmentViewType.Hierarchy))">
+        <button class="btn btn-action-40 @(currentView == DepartmentViewType.Hierarchy ? "btn-outline-primary" : "btn-outline-light")"
+                data-bs-toggle="tooltip" data-bs-placement="top" title="@Loc["Hierarchy"]"
+                @onclick="@(() => ChangeView(DepartmentViewType.Hierarchy))">
 
             <span class="icon">
                 <SVGCrud SVGType="SVGCrud.SVGTypeEnum.DataFlow"></SVGCrud>
             </span>
         </button>
-
-        <button
-            class="btn btn-action-40 @(currentView == DepartmentViewType.Tree ? "btn-outline-primary" : "btn-outline-light")"
-            data-bs-toggle="tooltip" data-bs-placement="top" title="@Loc["Tree"]"
-            @onclick="@(() => ChangeView(DepartmentViewType.Tree))">
+        <button class="btn btn-action-40 @(currentView == DepartmentViewType.Tree ? "btn-outline-primary" : "btn-outline-light")"
+                data-bs-toggle="tooltip" data-bs-placement="top" title="@Loc["Tree"]"
+                @onclick="@(() => ChangeView(DepartmentViewType.Tree))">
 
             <span class="icon">
                 <SVGCrud SVGType="SVGCrud.SVGTypeEnum.SubTasks"></SVGCrud>
             </span>
         </button>
-        <button
-            class="btn btn-action-40   @(currentView == DepartmentViewType.Grid ? "btn-outline-primary" : "btn-outline-light")"
-            data-bs-toggle="tooltip" data-bs-placement="top" title="@Loc["Grid"]"
-            @onclick="@(() => ChangeView(DepartmentViewType.Grid))">
+        <button class="btn btn-action-40   @(currentView == DepartmentViewType.Grid ? "btn-outline-primary" : "btn-outline-light")"
+                data-bs-toggle="tooltip" data-bs-placement="top" title="@Loc["Grid"]"
+                @onclick="@(() => ChangeView(DepartmentViewType.Grid))">
             <span class="icon">
                 <SVGCrud SVGType="SVGCrud.SVGTypeEnum.List"></SVGCrud>
             </span>
-
         </button>
-
-
+        <button class="btn btn-action-40   @(currentView == DepartmentViewType.Grid ? "btn-outline-primary" : "btn-outline-light")"
+                data-bs-toggle="tooltip" data-bs-placement="top" title="@Loc["Export"]"
+                @onclick="Export">
+            <span class="icon">
+                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Excel"></SVGCrud>
+            </span>
+        </button>
         <button class="btn btn-primary" @onclick="Add">
             <span class="icon">
                 <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Pluse"></SVGCrud>
@@ -58,48 +57,48 @@
         </button>
     </div>
 </div>
- <div class="page-body">
-      <div class="file-qustom button-end mb-2">
-    <label for="DepartmentFileUpload">
-        <span class="icon">
-            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.FileUpload"></SVGCrud>
-        </span>
-        <div>
-            <div class="d-flex gap-2 align-items-center">
+<div class="page-body">
+    <div class="file-qustom button-end mb-2">
+        <label for="DepartmentFileUpload">
+            <span class="icon">
+                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.FileUpload"></SVGCrud>
+            </span>
+            <div>
+                <div class="d-flex gap-2 align-items-center">
                     <span class="text"> @Loc["UploadExcelFile"]</span>
                     <div class="more-info">
-                            <span class="info-icon">
-                                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Info"></SVGCrud>
-                            </span>
-                            <div class="content">
-                                <ul>
-                                    <li>@Loc["DepartmentLevelMandatory"]</li>
-                                    <li>@Loc["DepartmentNameMandatory"]</li>
-                                    <li>@Loc["ParentDepartmentNameMandatory"]</li>
-                                </ul>
-                            </div>
+                        <span class="info-icon">
+                            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Info"></SVGCrud>
+                        </span>
+                        <div class="content">
+                            <ul>
+                                <li>@Loc["DepartmentLevelMandatory"]</li>
+                                <li>@Loc["DepartmentNameMandatory"]</li>
+                                <li>@Loc["ParentDepartmentNameMandatory"]</li>
+                            </ul>
+                        </div>
                     </div>
+                </div>
+                <span class="file-type"> @Loc["Add the department's structure"]</span>
             </div>
-            <span class="file-type"> @Loc["Add the department's structure"]</span>
-        </div>
-    </label>
-    <InputFile id="DepartmentFileUpload" OnChange="HandleFileSelected" accept=".xlsx" />
-    <a class="btn btn-lg btn-light text-nowrap" href=@(Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName ==
-                                                        "ar" ? "إضافة إدارات.xlsx" : "Add departements.xlsx") download="DepartmentsTemplate.xlsx">
-        @Loc["DownloadExcelTemplate"]
-    </a>
-</div>
-@if (departmentDtos != null && departmentDtos.Any())
-{
-   
-      
+        </label>
+        <InputFile id="DepartmentFileUpload" OnChange="HandleFileSelected" accept=".xlsx" />
+        <a class="btn btn-lg btn-light text-nowrap" href=@(Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName ==
+                                                               "ar" ? "إضافة إدارات.xlsx" : "Add departements.xlsx") download="DepartmentsTemplate.xlsx">
+            @Loc["DownloadExcelTemplate"]
+        </a>
+    </div>
+    @if (departmentDtos != null && departmentDtos.Any())
+    {
+
+
         @switch (currentView)
         {
             case DepartmentViewType.Grid:
                 <DepartmentGrid Departments="departmentDtos" OnEdit="Edit" OnDelete="OnDeleteDepartment" OnShowUsers="ShowUser" OnLinkUsers="AddLinkUser"
-                    OnAdd="AddDept" OnAddDepartment="AddDept" CurrentPage="currentPage" SortChanged="HandleSort"
-                    SortColumn="@currentSortColumn" SortAscending="@sortAscending" PageChanged="ChangePage"
-                    PageSizeChanged="ChangePageSize" PageSize="pageSize" TotalPages="totalPages" TotalCount="totalCount" />
+                                OnAdd="AddDept" OnAddDepartment="AddDept" CurrentPage="currentPage" SortChanged="HandleSort"
+                                SortColumn="@currentSortColumn" SortAscending="@sortAscending" PageChanged="ChangePage"
+                                PageSizeChanged="ChangePageSize" PageSize="pageSize" TotalPages="totalPages" TotalCount="totalCount" />
                 break;
 
             case DepartmentViewType.Tree:
@@ -109,7 +108,7 @@
                             <div class="col-lg-10 ">
                                 <DepartmentTree IsRoot="true" Departments="rootDepartments" OnEdit="Edit"
                                                 OnDelete="OnDeleteDepartment" OnAddDepartment="AddDept" OnShowUsers="ShowUser" OnLinkUsers="AddLinkUser"
-                                    OnAdd="AddDept" />
+                                                OnAdd="AddDept" />
                             </div>
                         </div>
                     </div>
@@ -125,20 +124,20 @@
                 </div>
                 break;
         }
-  
-}
-else if (intialDepartmentDtos != null && intialDepartmentDtos.Any())
-{
-    <NoSearchResults OnResetClick="ClearSearch"></NoSearchResults>
 
-}
-else
-{
-    
-    <NoDataAvailable MessageTitle="@Loc["Nodepartmentavailable"]" MessageSubtitle="@Loc["AddADepartmentToGetStarted"]"
-        ButtonText="@Loc["AddDepartment"]" OnButtonClick="Add" />
-}
-  </div>
+    }
+    else if (intialDepartmentDtos != null && intialDepartmentDtos.Any())
+    {
+        <NoSearchResults OnResetClick="ClearSearch"></NoSearchResults>
+
+    }
+    else
+    {
+
+        <NoDataAvailable MessageTitle="@Loc["Nodepartmentavailable"]" MessageSubtitle="@Loc["AddADepartmentToGetStarted"]"
+                         ButtonText="@Loc["AddDepartment"]" OnButtonClick="Add" />
+    }
+</div>
 
 @code {
     private List<DepartmentDto> departmentDtos = new();
@@ -193,37 +192,37 @@ else
                 if (Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName == "ar")
                 {
                     DepartmentsList.Add(new DepartmentDto
-                        {
-                            Level = int.Parse(rows[i][0].Trim()),
-                            NameEnglish = rows[i][1].Trim(),
-                            NameArabic = rows[i][2].Trim(),
-                            ParentdepartmentArabic = rows[i][3].Trim(),
+                    {
+                        Level = int.Parse(rows[i][0].Trim()),
+                        NameEnglish = rows[i][1].Trim(),
+                        NameArabic = rows[i][2].Trim(),
+                        ParentdepartmentArabic = rows[i][3].Trim(),
                         ParentdepartmentId = allDepartments.Where(k => k.NameArabic == rows[i][3].Trim()).First().Id,
 
-                        });
+                    });
                 }
 
                 else
                 {
                     DepartmentsList.Add(new DepartmentDto
-                        {
-                            Level = int.Parse(rows[i][0].Trim()),
-                            NameEnglish = rows[i][1].Trim(),
-                            NameArabic = rows[i][2].Trim(),
-                            ParentdepartmentEnglish = rows[i][3].Trim(),
+                    {
+                        Level = int.Parse(rows[i][0].Trim()),
+                        NameEnglish = rows[i][1].Trim(),
+                        NameArabic = rows[i][2].Trim(),
+                        ParentdepartmentEnglish = rows[i][3].Trim(),
                         ParentdepartmentId = allDepartments.Where(k => k.NameEnglish == rows[i][3].Trim()).First().Id,
 
-                        });
+                    });
                 }
                 await _departmentConsumer.CreateDeprtmentsBulk(DepartmentsList);
 
-                 await LoadDepartmentsAsync(); 
+                await LoadDepartmentsAsync();
             }
         }
     }
     private async Task<bool> Validate(string[] row)
     {
-        
+
         var level = row[0].Trim().ToLower();
         var departmentNameEN = row[1].Trim().ToLower();
         var departmentNameAR = row[2].Trim().ToLower();
@@ -263,153 +262,12 @@ else
                 return false;
             }
         }
-        
-        
-        
+
+
+
 
         return true;
     }
-    // private async Task HandleFileSelected(InputFileChangeEventArgs e)
-    // {
-    //     var file = e.File;
-    //     if (file != null)
-    //     {
-
-
-    //         var extensions = Path.GetExtension(file.Name).ToLower();
-    //         if (!_validExtensions.Contains(extensions))
-    //         {
-    //             await ToastService.ShowToastAsync(Loc["FileNotValid"], "danger");
-
-    //             return;
-    //         }
-    //         var DepartmentDto = await ReadDepartmentsFromExcel(file);
-    //         if (DepartmentDto.Count > 0)
-    //         {
-    //             // var current = await LocalStorageService.GetItemAsStringAsync("Id");
-    //             // DepartmentDto.ForEach(k => k.CreatedById = Guid.Parse(current));
-    //             await _departmentConsumer.CreateDeprtmentsBulk(DepartmentDto);
-
-    //             await ToastService.ShowToastAsync(Loc["ThevalidRowsuploadedsuccessfully"], "success");
-
-    //         }
-    //     }
-    // }
-    // public async Task<List<DepartmentDto>> ReadDepartmentsFromExcel(IBrowserFile file)
-    // {
-    //     var DepartmentsList = new List<DepartmentDto>();
-    //     var duplicateCheck = new HashSet<string>();
-    //     bool hasDuplicates = false;
-    //     // Limit file size to a reasonable value (e.g., 10 MB)
-    //     var maxSize = 10 * 1024 * 1024;
-    //     using (var stream = new MemoryStream())
-    //     {
-    //         await file.OpenReadStream(maxSize).CopyToAsync(stream);
-    //         stream.Position = 0; // Reset stream position to read
-    //        // ExcelPackage.LicenseContext = new OfficeOpenXml.LicenseContext;//.ExcelLicense
-    //         // {
-    //         //     LicenseType = OfficeOpenXml.License.eLicenseType.NonCommercial
-    //         // };            // Non-commercial use
-    //         using (var package = new ExcelPackage(stream))
-    //         {
-    //             var worksheet = package.Workbook.Worksheets[0]; // Assuming the first sheet
-    //             var rowCount = worksheet.Dimension.Rows;
-
-    //             if (string.IsNullOrEmpty(worksheet.Cells[1, 1].Text) || string.IsNullOrEmpty(worksheet.Cells[1, 2].Text) ||
-    //                 string.IsNullOrEmpty(worksheet.Cells[1, 3].Text) || string.IsNullOrEmpty(worksheet.Cells[1, 4].Text) || string.IsNullOrEmpty(worksheet.Cells[1, 5].Text))
-    //             {
-    //                 await ToastService.ShowToastAsync(Loc["SomeInvalidRowsSkipped"], "danger");
-
-    //                 return new List<DepartmentDto>();
-    //             }
-
-    //             // Start from row 2 to skip the header
-    //             for (int row = 2; row <= rowCount; row++)
-    //             {
-    //                 if (IsRowEmpty(worksheet, row))
-    //                 {
-    //                     continue; // Skip this row if it's empty
-    //                 }
-
-    //                 var choiceKey = $"{worksheet.Cells[row, 1].Text}-{worksheet.Cells[row, 2].Text}-{worksheet.Cells[row, 3].Text}";
-    //                 if (duplicateCheck.Contains(choiceKey))
-    //                 {
-    //                     await ToastService.ShowToastAsync(Loc["Somerequiredvaluesaremissing"], "danger");
-
-    //                     return new List<DepartmentDto>();
-    //                 }
-    //                 duplicateCheck.Add(choiceKey);
-
-
-    //                 if (string.IsNullOrEmpty(worksheet.Cells[row, 1].Text) ||
-    //                     string.IsNullOrEmpty(worksheet.Cells[row, 2].Text) ||
-    //                     string.IsNullOrEmpty(worksheet.Cells[row, 3].Text) ||
-
-    //                     string.IsNullOrEmpty(worksheet.Cells[row, 4].Text))
-    //                 {
-    //                     await ToastService.ShowToastAsync(Loc["SomeInvalidRowsSkipped"], "danger");
-
-    //                     return new List<DepartmentDto>();
-    //                 }
-    //                 else
-    //                 {
-    //                     var DepartmentDto = new DepartmentDto();
-    //                     if (string.IsNullOrEmpty(worksheet.Cells[row, 4]?.Text) && RootDepartments.Count() > 0)
-    //                     {
-    //                         await ToastService.ShowToastAsync(Loc["Somerequiredvaluesaremissing"], "danger");
-
-    //                         return new List<DepartmentDto>();
-    //                     }
-                        
-    //                     if (Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName == "ar")
-
-    //                     {
-
-    //                         if (string.IsNullOrEmpty(worksheet.Cells[row, 4]?.Text) || RootDepartments.Where(k => k.NameArabic == worksheet.Cells[row, 3].Text).Count()==0)
-    //                         {
-    //                             await ToastService.ShowToastAsync(Loc["Somerequiredvaluesaremissing"], "danger");
-
-    //                             return new List<DepartmentDto>();
-    //                         }
-    //                         DepartmentDto = new DepartmentDto()
-    //                             {
-
-    //                                 Level = int.Parse(worksheet.Cells[row, 1].Text),
-    //                                 NameEnglish = worksheet.Cells[row, 2].Text,
-    //                                 NameArabic = worksheet.Cells[row, 3].Text,
-    //                                 ParentdepartmentArabic = worksheet.Cells[row, 4]?.Text,
-    //                                 ParentdepartmentId = RootDepartments.Where(k => k.NameArabic == worksheet.Cells[row, 3].Text).First().Id,
-
-    //                             };
-    //                     }
-    //                     else
-    //                     {
-    //                         if (string.IsNullOrEmpty(worksheet.Cells[row, 4]?.Text) || RootDepartments.Where(k => k.NameEnglish == worksheet.Cells[row, 3].Text).Count() == 0)
-    //                         {
-    //                             await ToastService.ShowToastAsync(Loc["Somerequiredvaluesaremissing"], "danger");
-
-    //                             return new List<DepartmentDto>();
-    //                         }
-    //                         DepartmentDto = new DepartmentDto
-    //                         {
-    //                             Level = int.Parse(worksheet.Cells[row, 1].Text),
-    //                             NameEnglish = worksheet.Cells[row, 2].Text,
-    //                             NameArabic = worksheet.Cells[row, 3].Text,
-    //                             ParentdepartmentEnglish = worksheet.Cells[row, 4]?.Text,
-    //                             ParentdepartmentId = RootDepartments.Where(k => k.NameEnglish == worksheet.Cells[row, 3].Text).First().Id,
-
-    //                         };
-    //                     }
-    //                     DepartmentsList.Add(DepartmentDto);
-    //                 }
-
-    //             }
-    //         }
-    //     }
-
-    //     return DepartmentsList;
-    // }
-
     private bool IsRowEmpty(ExcelWorksheet worksheet, int row)
     {
         for (int col = 1; col <= worksheet.Dimension.Columns; col++)
@@ -421,7 +279,6 @@ else
         }
         return true; // Row is completely empty
     }
-
     private async Task ChangePageSize(int newSize)
     {
         pageSize = newSize;
@@ -432,16 +289,16 @@ else
     {
 
         tableColumns = new()
-{
-new() { Field = "DisplayedName", DisplayName = Loc["Name"] },
-new() { Field = "Level", DisplayName = Loc["Level"] },
-new() { Field = "DepartmentParent", DisplayName = Loc["DepartmentParent"] },
-new() { Field = "CreateDate", DisplayName = Loc["CreationDate"] },
-new() { Field = "CreatedBy", DisplayName = Loc["CreatedBy"] },
-new() { Field = "UpdateDate", DisplayName = Loc["UpdateDate"] },
-new() { Field = "UpdatedBy", DisplayName = Loc["UpdatedBy"] },
-new() { Field = "Action", DisplayName = Loc["Action"] ,IsSortable = false},
-};
+        {
+            new() { Field = "DisplayedName", DisplayName = Loc["Name"] },
+            new() { Field = "Level", DisplayName = Loc["Level"] },
+            new() { Field = "DepartmentParent", DisplayName = Loc["DepartmentParent"] },
+            new() { Field = "CreateDate", DisplayName = Loc["CreationDate"] },
+            new() { Field = "CreatedBy", DisplayName = Loc["CreatedBy"] },
+            new() { Field = "UpdateDate", DisplayName = Loc["UpdateDate"] },
+            new() { Field = "UpdatedBy", DisplayName = Loc["UpdatedBy"] },
+            new() { Field = "Action", DisplayName = Loc["Action"] ,IsSortable = false},
+        };
 
         await LoadDepartmentsAsync();
         intialDepartmentDtos = departmentDtos;
@@ -539,7 +396,7 @@ new() { Field = "Action", DisplayName = Loc["Action"] ,IsSortable = false},
                 if (departmentDtos.Count() <= 0)
                 {
                     currentPage -= 1;
-                   await LoadDepartmentsAsync();
+                    await LoadDepartmentsAsync();
                 }
             }
 
@@ -573,54 +430,33 @@ new() { Field = "Action", DisplayName = Loc["Action"] ,IsSortable = false},
     }
     private async Task LoadDepartmentsAsync(bool isSearch = false, string searchTerm = null)
     {
-        // Determine page size dynamically
-        var effectivePageSize = (currentView == DepartmentViewType.Tree || currentView == DepartmentViewType.Hierarchy)
-        ? 10000
-                : pageSize;
+        var effectivePageSize = (currentView == DepartmentViewType.Tree || currentView == DepartmentViewType.Hierarchy)? 10000 : pageSize;
         if (isSearchMode && !isSearch)
         {
             isSearch = true;
             searchTerm = lastSearchTerm;
         }
         var encodedTerm = searchTerm != null ? Uri.EscapeDataString(searchTerm) : null;
-        var resp = await _departmentConsumer.GetDepartments(
-        currentPage,
-        effectivePageSize,
-        currentSortColumn,
-        sortAscending.Value,
-        isSearch ? searchFields : null,
-        isSearch ? encodedTerm : null
-                );
-
+        var resp = await _departmentConsumer.GetDepartments(currentPage, effectivePageSize, currentSortColumn, sortAscending.Value, 
+                            isSearch ? searchFields : null, isSearch ? encodedTerm : null);
         if (!(resp?.Success ?? false) || resp.Data is null)
             return;
-
         var data = resp.Data;
-
-        // Paginated or full list (depends on view)
         departmentDtos = data.Items;
         totalPages = data.TotalPages;
         totalCount = data.TotalCount;
 
-        // Build hierarchy tree using same data
         allDepartments = data.Items.ToList();
         var dict = allDepartments.ToDictionary(x => x.Id);
-
         foreach (var dept in allDepartments)
             dept.Children = new List<DepartmentDto>();
-
         foreach (var dept in allDepartments)
         {
             if (dept.ParentdepartmentId != Guid.Empty && dict.ContainsKey(dept.ParentdepartmentId))
                 dict[dept.ParentdepartmentId].Children.Add(dept);
         }
-
-        rootDepartments = allDepartments
-        .Where(d => d.ParentdepartmentId == Guid.Empty ||
-        !allDepartments.Any(x => x.Id == d.ParentdepartmentId))
-        .ToList();
-
-        RootDepartments = rootDepartments; // alias for hierarchy view
+        rootDepartments = allDepartments.Where(d => d.ParentdepartmentId == Guid.Empty || !allDepartments.Any(x => x.Id == d.ParentdepartmentId)).ToList();
+        RootDepartments = rootDepartments;
     }
     private async Task HandleSort((string Column, bool? Ascending) sortInfo)
     {
@@ -640,5 +476,35 @@ new() { Field = "Action", DisplayName = Loc["Action"] ,IsSortable = false},
         Grid,
         Tree,
         Hierarchy
+    }
+    private List<ColumnDefinition<DepartmentDto>> GetColumns()
+    {
+        return new()
+        {
+            new() { Header = @Loc["DepartmentName"], Value = d => d.Name },
+            new() { Header = @Loc["Departmentlevel"], Value = d => d.Level },
+            new() { Header = @Loc["DepartmentParent"], Value = d => d.ParentdepartmentName ?? " "},
+            new() { Header = @Loc["LinkedUsers"], Value = d => d.AssignedUsers!.Count()},
+            new() { Header = @Loc["UsersWithTasks"], Value = d => d.UsersWithTasks},
+            new() { Header = @Loc["SubDeptUsers"], Value = d => d.SubDepartmentUsers},
+            new() { Header = @Loc["CreationDate"], Value = d => d.CreateDate?.ToString(Loc["LocalizeDate"])! },
+            new() { Header = @Loc["CreatedBy"], Value = d => d.CreatedByName! },
+            new() { Header = @Loc["UpdateDate"], Value = d => d.UpdateDate?.ToString(Loc["LocalizeDate"])! },
+            new() { Header = @Loc["UpdatedBy"], Value = d => d.UpdatedByName! },
+        };
+    }
+    private async Task Export(MouseEventArgs args)
+    {
+        var effectivePageSize = 100000;
+        var encodedTerm = !string.IsNullOrEmpty(searchdata)? Uri.EscapeDataString(searchdata): null;
+        var resp = await _departmentConsumer.GetDepartments(1, 10000, currentSortColumn,sortAscending ?? true,
+            !string.IsNullOrEmpty(searchdata) ? searchFields : null, !string.IsNullOrEmpty(searchdata) ? encodedTerm : null);
+        if (!(resp?.Success ?? false) || resp.Data is null)
+            return;
+        var allData = resp.Data.Items;
+        var lang = Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName;
+        var fileName = Loc["systemDepartments"] + ".xlsx";
+        var columns = GetColumns();
+        await _fileManagementService.ExportToExcelAsync(allData, columns, fileName);
     }
 }

@@ -7,24 +7,24 @@ using TaskyRevamp.Dto.Enums.SearchFields;
 using TaskyRevamp.Dto.GeneralDto;
 using TaskyRevamp.Services.Helpers;
 using TaskyRevamp.Services.SearchMappings;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace TaskyRevamp.Services.Departments.Query;
 
 public record GetDepartmentsQuery(int pageNumber, int pageSize, string sortByColumnName, bool sortAscending, List<SearchFieldDepartment> SearchFields, string SearchText) : IRequest<PagedResult<DepartmentDto>>;
-
 public class GetDepartmentsHandler : IRequestHandler<GetDepartmentsQuery, PagedResult<DepartmentDto>>
 {
     private readonly IRepository<Department> _departmentRepository;
-   private readonly string currentCulture; 
+    private readonly IRepository<TaskItem> _taskRepository;
+	private readonly string currentCulture;
 
-    public GetDepartmentsHandler(IRepository<Department> departmentRepository)
-    {
-        _departmentRepository = departmentRepository;
-        currentCulture = System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
-    }
+	public GetDepartmentsHandler(IRepository<Department> departmentRepository, IRepository<TaskItem> taskRepository)
+	{
+		_departmentRepository = departmentRepository;
+		currentCulture = System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
+		_taskRepository = taskRepository;
+	}
 
-    public async Task<PagedResult<DepartmentDto>> Handle(GetDepartmentsQuery request, CancellationToken cancellationToken)
+	public async Task<PagedResult<DepartmentDto>> Handle(GetDepartmentsQuery request, CancellationToken cancellationToken)
     {
 		List<DepartmentDto> allSortedDepartments = new List<DepartmentDto>();
 		//var orderBy = GetOrderBy(request.sortByColumnName, request.sortAscending);
@@ -36,17 +36,23 @@ public class GetDepartmentsHandler : IRequestHandler<GetDepartmentsQuery, PagedR
             searchExpression = ExpressionBuilder.BuildLikeExpression(predicates, request.SearchText);
         }
         var allDepartments = await _departmentRepository.GetPagedAsync(1, int.MaxValue, null, searchExpression, orderBy: null,
-                            includeProperties: $"{nameof(Department.CreatedBy)},{nameof(Department.UpdatedBy)},{nameof(Department.Parentdepartment)}");
+                            includeProperties: $"{nameof(Department.CreatedBy)},{nameof(Department.UpdatedBy)}," +
+								$"{nameof(Department.Parentdepartment)},{nameof(Department.AssignedUser)}");
 
+		var deptList = allDepartments.Items.ToList();
+		var allDeptLookup = deptList.ToDictionary(d => d.Id);
 		// Reorder hierarchically based on sort column
-		var reordered = ReorderHierarchically(allDepartments.Items, request.sortByColumnName, request.sortAscending);
+		var reordered = ReorderHierarchically(deptList, request.sortByColumnName, request.sortAscending);
 		var departments = reordered.Skip((request.pageNumber - 1) * request.pageSize).Take(request.pageSize);
+
 		foreach (var Department in departments)
         {
-            DepartmentDto dep = Department.CopyToDto();
+			//var res = await _taskRepository.GetAsync(t => t.DepartmentId == Department.Id);
+			DepartmentDto dep = Department.CopyToDto();
             dep.CreatedByName = currentCulture == "ar"? Department.CreatedBy?.NameArabic : Department.CreatedBy?.NameEnglish;
             dep.UpdatedByName = currentCulture == "ar" ? Department.UpdatedBy?.NameArabic : Department.UpdatedBy?.NameEnglish;
-            allSortedDepartments.Add(dep);
+			dep.SubDepartmentUsers = allDeptLookup.Values.Count(d => d.ParentdepartmentId == Department.Id);
+			allSortedDepartments.Add(dep);
         }
         return new PagedResult<DepartmentDto>
         {

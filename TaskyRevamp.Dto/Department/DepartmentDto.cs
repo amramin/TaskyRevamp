@@ -35,6 +35,8 @@ namespace TaskyRevamp.Dto.Department
         public Guid? UpdatedBy { get; set; }
         public DateTime? UpdateDate { get; set; }
         public List<UserDto>? AssignedUsers { get; set; } = new List<UserDto>();
+        public int UsersWithTasks { get; set; }
+        public int SubDepartmentUsers { get; set; }
 
     }
     public class DepartmentDtoWithName

@@ -1087,6 +1087,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Department level.
+        /// </summary>
+        public static string Departmentlevel {
+            get {
+                return ResourceManager.GetString("Departmentlevel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to  Department Level (Mandatory).
         /// </summary>
         public static string DepartmentLevelMandatory {
@@ -1101,6 +1110,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string DepartmentMandatory {
             get {
                 return ResourceManager.GetString("DepartmentMandatory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Department Name.
+        /// </summary>
+        public static string DepartmentName {
+            get {
+                return ResourceManager.GetString("DepartmentName", resourceCulture);
             }
         }
         
@@ -1618,6 +1636,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Export.
+        /// </summary>
+        public static string Export {
+            get {
+                return ResourceManager.GetString("Export", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to External department.
         /// </summary>
         public static string ExternalDepartment {
@@ -1951,6 +1978,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Is manager.
+        /// </summary>
+        public static string isManagerTilte {
+            get {
+                return ResourceManager.GetString("isManagerTilte", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Checklist item deleted successfully.
         /// </summary>
         public static string itemDeletedSuccessfully {
@@ -2028,6 +2064,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string Link {
             get {
                 return ResourceManager.GetString("Link", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Linked users.
+        /// </summary>
+        public static string LinkedUsers {
+            get {
+                return ResourceManager.GetString("LinkedUsers", resourceCulture);
             }
         }
         
@@ -3418,6 +3463,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sub dept users.
+        /// </summary>
+        public static string SubDeptUsers {
+            get {
+                return ResourceManager.GetString("SubDeptUsers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Subject Arabic.
         /// </summary>
         public static string SubjectArabic {
@@ -3649,6 +3703,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string System_name_english {
             get {
                 return ResourceManager.GetString("System name english", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to system departments .
+        /// </summary>
+        public static string systemDepartments {
+            get {
+                return ResourceManager.GetString("systemDepartments", resourceCulture);
             }
         }
         
@@ -4265,11 +4328,29 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Users list.
+        /// </summary>
+        public static string UsersList {
+            get {
+                return ResourceManager.GetString("UsersList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Users data updated.
         /// </summary>
         public static string UsersUpdated {
             get {
                 return ResourceManager.GetString("UsersUpdated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Users with tasks.
+        /// </summary>
+        public static string UsersWithTasks {
+            get {
+                return ResourceManager.GetString("UsersWithTasks", resourceCulture);
             }
         }
         
