@@ -743,7 +743,7 @@
     <value>العنوان</value>
   </data>
   <data name="TaskStatus" xml:space="preserve">
-    <value>حاله المهمه</value>
+    <value>الحالة</value>
   </data>
   <data name="AssigneduserNames" xml:space="preserve">
     <value>المسند إليه</value>
@@ -1591,9 +1591,6 @@
   <data name="historyHint" xml:space="preserve">
     <value>استخدم هذا الخيار لتفعيل إشعارات سجل المهام التي سيتم إرسالها تلقائيًا عند تنفيذ الإجراء المحدد</value>
   </data>
-  <data name="rejectedsuccessfully" xml:space="preserve">
-    <value>تم رفض تاريخ الطلب بنجاح</value>
-  </data>
   <data name="totalusers" xml:space="preserve">
     <value>إجمالي المستخدمين</value>
   </data>
@@ -1611,5 +1608,8 @@
   </data>
   <data name="LinkedWithPrivilagesUsers" xml:space="preserve">
     <value>المستخدمون المرتبطون بامتيازات</value>
+  </data>
+  <data name="rejectedsuccessfully" xml:space="preserve">
+    <value>تم رفض تاريخ الطلب بنجاح</value>
   </data>
 </root>

@@ -742,7 +742,7 @@
     <value>Title</value>
   </data>
   <data name="TaskStatus" xml:space="preserve">
-    <value>Task status</value>
+    <value>Status </value>
   </data>
   <data name="AssigneduserNames" xml:space="preserve">
     <value>Assignee</value>

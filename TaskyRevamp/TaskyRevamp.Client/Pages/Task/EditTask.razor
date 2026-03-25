@@ -57,6 +57,16 @@
             await OnValidSubmit.InvokeAsync(Taskdto);
             PopupService.Hide();
         }
+        else if (!rs.Success)
+        {
+            await ToastService.ShowToastAsync(Loc[rs.ErrorMessage], "error");
+            return;
+        }
+        else
+        {
+            await ToastService.ShowToastAsync(Loc["Erroroccurred"], "error");
+            return;
+        }
     }
     private void Cancel()
     {

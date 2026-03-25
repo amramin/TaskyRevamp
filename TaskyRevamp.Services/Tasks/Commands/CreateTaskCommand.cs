@@ -78,7 +78,7 @@ public class CreateTaskHandler : IRequestHandler<CreateTaskCommand, string>
 
         if (TaskSatuses is not null)
         {
-            if (request.CreateTaskDto.EndDate?.Date < DateTime.UtcNow.Date && request.CreateTaskDto.ActualProcess < 100)
+            if (DateOnly.FromDateTime(request.CreateTaskDto.EndDate?.Date ?? default) < DateOnly.FromDateTime(DateTime.UtcNow.Date) && request.CreateTaskDto.ActualProcess < 100)
             {
                 task.StatusId = Guid.Parse("270A78EB-C5CA-475D-2239-08DE3318A61C");
             }

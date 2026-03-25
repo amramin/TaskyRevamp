@@ -3771,7 +3771,7 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Task status.
+        ///   Looks up a localized string similar to Status .
         /// </summary>
         public static string TaskStatus {
             get {

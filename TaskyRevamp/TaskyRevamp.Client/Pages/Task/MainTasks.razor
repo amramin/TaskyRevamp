@@ -222,18 +222,26 @@
          }
          break;
      case (int)ViewTypes.SourceView:
-         @foreach (var source in sources)
-         {
-             <TaskListView @key="source.Id" IsCompletedTasks="false"
-                           Title="@(CultureInfo.CurrentCulture.Name == "ar-EG" ? source.NameArabic : source.NameEnglish)"
-                           ViewType="@((int)ViewTypes.SourceView)" ViewTypeId="@source.Id" OnAdd="Add" OnEdit="Edit"
+                        @if (sources is not null && sources.Any())
+                        {
+                            @foreach (var source in sources)
+                            {
+                                <TaskListView @key="source.Id" IsCompletedTasks="false"
+                                              Title="@(CultureInfo.CurrentCulture.Name == "ar-EG" ? source.NameArabic : source.NameEnglish)"
+                                              ViewType="@((int)ViewTypes.SourceView)" ViewTypeId="@source.Id" OnAdd="Add" OnEdit="Edit"
                                               OnReopen="OnConfirmReopen" OnReject="Reject" OnRequestChangeDueDate="RequstChangeDueDate" TaskFilterChanged="ApplyClear" TaskFilter="TaskFilter" IsFilter="IsFilter" IsCollapseAll="IsCollapsedAll" @ref="@taskListRefs[$"source-{source.Id}"]"></TaskListView>
 
-         }
-         <Pagination CurrentPage="@currentPage" TotalPages="@totalPages" TotalCount="@totalCount"
-                     PageSize="@pageSize" PageSizeOptions="new[] {5, 8, 10, 15 }" PageChanged="ChangePage"
-                     PageSizeChangedCallback="ChangePageSize" />
-         break;
+                            }
+                            <Pagination CurrentPage="@currentPage" TotalPages="@totalPages" TotalCount="@totalCount"
+                                        PageSize="@pageSize" PageSizeOptions="new[] {5, 8, 10, 15 }" PageChanged="ChangePage"
+                                        PageSizeChangedCallback="ChangePageSize" />
+                            }
+                            else
+                             {
+                                    <NoDataAvailable MessageTitle="@Loc["NoTasks"]" MessageSubtitle="@Loc["AddTaskToStart"]"
+                                                     ButtonText="@Loc["AddTask"]" OnButtonClick="Add" /> 
+                            }
+                            break;
      case (int)ViewTypes.StatusView:
          var statusList = Satuses.Where(s => s.Id != Guid.Parse("D8E94CCE-586A-46D3-223D-08DE3318A61C") && s.Id != Guid.Parse("C8D504C7-9402-4F91-223C-08DE3318A61C")).ToList();
          @foreach (var status in Satuses.Where(s => s.Id !=
@@ -246,16 +254,23 @@
          }
          break;
      case (int)ViewTypes.TypeView:
-         @foreach (var type in Types)
-         {
-             <TaskListView @key="type.Id" IsCompletedTasks="false"
-                           Title="@(CultureInfo.CurrentCulture.Name == "ar-EG" ? type.NameArabic : type.NameEnglish)"
-                           ViewType="@((int)ViewTypes.TypeView)" ViewTypeId="@type.Id" OnAdd="Add" OnEdit="Edit"
+     if(Types is not null && Types.Any()){
+                            @foreach (var type in Types)
+                            {
+                                <TaskListView @key="type.Id" IsCompletedTasks="false"
+                                              Title="@(CultureInfo.CurrentCulture.Name == "ar-EG" ? type.NameArabic : type.NameEnglish)"
+                                              ViewType="@((int)ViewTypes.TypeView)" ViewTypeId="@type.Id" OnAdd="Add" OnEdit="Edit"
                                               OnReopen="OnConfirmReopen" OnRequestChangeDueDate="RequstChangeDueDate" OnReject="Reject" TaskFilterChanged="ApplyClear" TaskFilter="TaskFilter" IsFilter="IsFilter" IsCollapseAll="IsCollapsedAll" @ref="@taskListRefs[$"type-{type.Id}"]"></TaskListView>
-         }
-         <Pagination CurrentPage="@currentPage" TotalPages="@totalPages" TotalCount="@totalCount"
-                     PageSize="@pageSize" PageSizeOptions="new[] { 5, 8, 10, 15 }" PageChanged="ChangePageType"
-                     PageSizeChangedCallback="ChangePageSizeType" />
+                            }
+                            <Pagination CurrentPage="@currentPage" TotalPages="@totalPages" TotalCount="@totalCount"
+                                        PageSize="@pageSize" PageSizeOptions="new[] { 5, 8, 10, 15 }" PageChanged="ChangePageType"
+                                        PageSizeChangedCallback="ChangePageSizeType" />
+                            }
+                            else
+                            {
+                    <NoDataAvailable MessageTitle="@Loc["NoTasks"]" MessageSubtitle="@Loc["AddTaskToStart"]"
+                                     ButtonText="@Loc["AddTask"]" OnButtonClick="Add" />
+                            }
 
          break;
  }
@@ -333,7 +348,7 @@
     private string timeLineTitle => $" - {Loc["TimeLineTilte"]}";
     bool IsKanban=false;
     bool IsGant = false;
-
+    bool IsCollapse = false;
 
     protected override async Task OnInitializedAsync()
     {
@@ -520,5 +535,9 @@
         TaskFilter = filter;
         IsFilter = true;
         StateHasChanged();
+    }
+    private async Task Collapse()
+    {
+       IsCollapse = !IsCollapse;
     }
 }

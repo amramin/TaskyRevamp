@@ -8,18 +8,18 @@
     <div class="mb-3">
         <label class="form-label">@Loc["Source"]<span class="text-danger">*</span></label>
         <SearchableMultiDropdownOffline @key="AvailableSources"
-                                        TInput="SourceDto" TOutput="Guid" Datasource="AvailableSources"
+                                    TInput="SourceDto" TOutput="Guid" Datasource="SourceList"
                                         TextSelector="(s => s.DisplayedName)" OutputSelector="(s => s.Id)"
                                         SelectedOptions="SelectedSources"
                                     MinCharacterCount="1"
-                                        SelectedOptionsChanged="OnSelectedChanged"
                                         IsDisabled="IsViewMode" 
                                     SearchInputPlaceHolder="@Loc["Search"]" PlaceHolder="@($"{Loc["Select"]}")" NoMatchPlaceHolder="@Loc["NoResultsFound"]"
-                                    SelectAllPlaceHolder="@Loc["SelectAll"]" AllowSelectAll="AvailableSources.Any()" />
-        @if (IsSaveClicked && (SelectedSources == null || !SelectedSources.Any()))
+                                    SelectAllPlaceHolder="@Loc["SelectAll"]" AllowSelectAll="SourceList.Any()" />
+@*         @if (IsSaveClicked && (SelectedSources == null || !SelectedSources.Any()))
         {
             <div class="text-danger small mt-1">@Loc["Required"]</div>
         }
+
         @if (SelectedSources != null && SelectedSources.Any())
         {
         <div class="my-2">
@@ -46,6 +46,7 @@
                 }
             </div>
         }
+     *@
     </div>
 
 @code {
