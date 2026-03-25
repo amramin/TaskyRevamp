@@ -2681,12 +2681,16 @@ fieldset:disabled .btn {
   width: 1.5rem;
   height: 1.5rem;
 }
-.card.table-card .table-responsive, .card.table-card .card.empty-page {
+.card.table-card .table-responsive,
+.card.table-card .card.empty-page,
+.card.table-card .card-view {
   border-top: 0;
   border-start-start-radius: 0;
   border-start-end-radius: 0;
 }
-.card.table-card .table-responsive .card-body .vector svg, .card.table-card .card.empty-page .card-body .vector svg {
+.card.table-card .table-responsive .card-body .vector svg,
+.card.table-card .card.empty-page .card-body .vector svg,
+.card.table-card .card-view .card-body .vector svg {
   height: 100px;
 }
 .card.collaped-task-card .content {
