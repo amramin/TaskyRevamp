@@ -1733,6 +1733,9 @@ html[dir=rtl] .progress-overall-bar .circle {
 .action-btn-list .btn-primary {
   padding-inline: 1.25rem 1.5rem;
 }
+.action-btn-list .btn-primary.end-icon {
+  padding-inline: 1.5rem 1.25rem;
+}
 .action-btn-list .group-input {
   -ms-flex-item-align: stretch;
       align-self: stretch;
@@ -1795,6 +1798,23 @@ fieldset:disabled .btn {
   cursor: not-allowed;
 }
 
+.btn.btn-primary.disabled,
+.btn.btn-primary:disabled,
+fieldset:disabled .btn.btn-primary {
+  color: var(--bs-white);
+  pointer-events: none;
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+  opacity: var(--bs-btn-disabled-opacity);
+}
+
+.btn-text-500 {
+  font-weight: 500;
+  font-size: 0.75rem;
+  color: var(--dark-500);
+  padding: 0;
+}
+
 /* end button*/
 /* start typography*/
 .auth-headline {
@@ -1848,6 +1868,7 @@ fieldset:disabled .btn {
 .headline-8 {
   font-size: 0.75rem;
   font-weight: 600;
+  color: var(--dark-900);
 }
 
 .small-medium-text {
@@ -2681,12 +2702,14 @@ fieldset:disabled .btn {
   width: 1.5rem;
   height: 1.5rem;
 }
-.card.table-card .table-responsive, .card.table-card .card.empty-page {
+.card.table-card .table-responsive,
+.card.table-card .card.empty-page {
   border-top: 0;
   border-start-start-radius: 0;
   border-start-end-radius: 0;
 }
-.card.table-card .table-responsive .card-body .vector svg, .card.table-card .card.empty-page .card-body .vector svg {
+.card.table-card .table-responsive .card-body .vector svg,
+.card.table-card .card.empty-page .card-body .vector svg {
   height: 100px;
 }
 .card.collaped-task-card .content {
@@ -2717,6 +2740,38 @@ fieldset:disabled .btn {
 .card.collaped-task-card .table-caption.collapsed {
   border-bottom-width: 1px;
   border-radius: var(--bs-border-radius);
+}
+.card.comments-card .comment-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: start;
+      -ms-flex-align: start;
+          align-items: start;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+.card.comments-card .avatar {
+  width: 2.75rem;
+  height: 2.75rem;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  border: 1px solid var(--light-300);
+  background-color: var(--light-200);
+  border-radius: 50%;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--primary-color);
+}
+.card.comments-card .comment-input {
+  width: calc(100% - 3rem);
 }
 
 .no-comments {
