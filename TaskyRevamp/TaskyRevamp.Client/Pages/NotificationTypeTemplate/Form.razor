@@ -18,7 +18,11 @@
         @if (NotificationTypeTamplate.moduleType == Dto.Enums.ModuleType.SystemNotification)
         {
             <h1 class="page-headline">@Loc["SystemNotificationContent"]</h1>
-        }
+            }
+            @if (NotificationTypeTamplate.moduleType == Dto.Enums.ModuleType.History)
+            {
+                <h1 class="page-headline">@Loc["SystemHistory"]</h1>
+            }
         }
     </div>
 
@@ -60,15 +64,17 @@
         </div>
         </div>
        </div>
+    @if (NotificationTypeTamplate.moduleType == Dto.Enums.ModuleType.Email)
+    {
         <div class="row g-2">
-        <div class="col-lg-6">
-         <label class="form-label">
-                         @Loc["EmailbodyinEnglish"]
+            <div class="col-lg-6">
+                <label class="form-label">
+                    @Loc["EmailbodyinEnglish"]
                     <span class="text-danger">*</span>
                 </label>
                 <RichTextEditorComponent EditorId="RTE_EnglishTemplateEnglish"
-                    @ref="RichTextEditorComponentRefTemplateEnglish" Content="@NotificationTypeTamplate.TemplateEnglish"
-                    ContentChanged="OnDescriptionEnglishChanged">
+                                         @ref="RichTextEditorComponentRefTemplateEnglish" Content="@NotificationTypeTamplate.TemplateEnglish"
+                                         ContentChanged="OnDescriptionEnglishChanged">
                 </RichTextEditorComponent>
                 <small id="templateCounterEn" class="form-text x-small  text-end ms-auto">
                     @englishcount/ 10000
@@ -88,33 +94,34 @@
             </div>
         </div>
         <div class="col-lg-6">
-         <label class="form-label">
-                        @Loc["EmailbodyinArabic"]
-                    <span class="text-danger">*</span>
-                </label>
-                <RichTextEditorComponent EditorId="RTE_EnglishTemplateArabic"
-                    @ref="RichTextEditorComponentRefTemplateArabic" Content="@NotificationTypeTamplate.TemplateArabic"
-                    ContentChanged="OnDescriptionArabicChanged">
-                </RichTextEditorComponent>
-                <small id="templateCounterAr" class="form-text x-small  text-end ms-auto">
-               @arabiccount/ 10000
-                </small>
-                <div class="d-flex align-items-center justify-content-between">
-                    <div class="d-flex gap-2">
-                        <ValidationMessage class="small text-danger"
-                            For="@(() => NotificationTypeTamplate.TemplateArabic)" />
-                    </div>
-                    @if (isEmptyArabicTemplate)
-                    {
-                        <div md="3">
-                            <label class="small text-danger"> @Loc["Themessagecontentcannotbeempty"]</label>
-                        </div>
-                    }
+            <label class="form-label">
+                @Loc["EmailbodyinArabic"]
+                <span class="text-danger">*</span>
+            </label>
+            <RichTextEditorComponent EditorId="RTE_EnglishTemplateArabic"
+                                     @ref="RichTextEditorComponentRefTemplateArabic" Content="@NotificationTypeTamplate.TemplateArabic"
+                                     ContentChanged="OnDescriptionArabicChanged">
+            </RichTextEditorComponent>
+            <small id="templateCounterAr" class="form-text x-small  text-end ms-auto">
+                @arabiccount/ 10000
+            </small>
+            <div class="d-flex align-items-center justify-content-between">
+                <div class="d-flex gap-2">
+                    <ValidationMessage class="small text-danger"
+                                       For="@(() => NotificationTypeTamplate.TemplateArabic)" />
                 </div>
+                @if (isEmptyArabicTemplate)
+                {
+                    <div md="3">
+                        <label class="small text-danger"> @Loc["Themessagecontentcannotbeempty"]</label>
+                    </div>
+                }
             </div>
+        </div>
 
        
-  
+    }
+
     
      <div class="card-footer">
                 <div class="row justify-content-center">

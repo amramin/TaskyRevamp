@@ -1546,12 +1546,6 @@
   <data name="RequestStatus" xml:space="preserve">
     <value>حالة الطلب </value>
   </data>
-  <data name="approvedsuccessfully" xml:space="preserve">
-    <value>تم الموافقة على تاريخ الطلب بنجاح</value>
-  </data>
-  <data name="rejectedsuccessfully" xml:space="preserve">
-    <value>تم رفض تاريخ الطلب بنجاح</value>
-  </data>
   <data name="Sureapprovestatus" xml:space="preserve">
     <value>هل انت متاكد من قبول هذا الطلب</value>
   </data>
@@ -1578,5 +1572,44 @@
   </data>
   <data name="TasksSure" xml:space="preserve">
     <value>هل أنت متأكد أنك تريد حذف هذه المهام؟</value>
+  </data>
+  <data name="approvedsuccessfully" xml:space="preserve">
+    <value>تم الموافقة على تاريخ الطلب بنجاح</value>
+  </data>
+  <data name="Cannotdeactivateuser" xml:space="preserve">
+    <value>لا يمكن إلغاء التنشيط، حيث يوجد لدى المستخدم مهمة مفتوحة عليه</value>
+  </data>
+  <data name="successactive" xml:space="preserve">
+    <value>تم التنشيط بنجاح</value>
+  </data>
+  <data name="successdeactive" xml:space="preserve">
+    <value>تم إلغاء التنشيط بنجاح</value>
+  </data>
+  <data name="SystemHistory" xml:space="preserve">
+    <value>سجل تاريخ المهمة</value>
+  </data>
+  <data name="historyHint" xml:space="preserve">
+    <value>استخدم هذا الخيار لتفعيل إشعارات سجل المهام التي سيتم إرسالها تلقائيًا عند تنفيذ الإجراء المحدد</value>
+  </data>
+  <data name="rejectedsuccessfully" xml:space="preserve">
+    <value>تم رفض تاريخ الطلب بنجاح</value>
+  </data>
+  <data name="totalusers" xml:space="preserve">
+    <value>إجمالي المستخدمين</value>
+  </data>
+  <data name="activeusers" xml:space="preserve">
+    <value>المستخدمون النشطون</value>
+  </data>
+  <data name="InActiveUsers" xml:space="preserve">
+    <value>المستخدمون الغير النشطين</value>
+  </data>
+  <data name="LinkedWithTasksUsers" xml:space="preserve">
+    <value>المستخدمون المرتبطون بالمهام</value>
+  </data>
+  <data name="LoggedInUsers" xml:space="preserve">
+    <value>المستخدمون الذين سجلوا الدخول</value>
+  </data>
+  <data name="LinkedWithPrivilagesUsers" xml:space="preserve">
+    <value>المستخدمون المرتبطون بامتيازات</value>
   </data>
 </root>

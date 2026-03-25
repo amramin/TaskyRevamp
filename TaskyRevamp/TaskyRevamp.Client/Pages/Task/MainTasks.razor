@@ -35,7 +35,7 @@
                 <span class="icon">
                     <SVGCrud SVGType="SVGCrud.SVGTypeEnum.List"></SVGCrud>
                 </span>
-                List view
+                    @Loc["List"]
             </button>
 
 
@@ -51,10 +51,10 @@
                     <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Kanban"></SVGCrud>
 
                 </span>
-                Kanban view
+                    @Loc["Kanban"]
             </button>
         </li>
-        }
+        } 
         @if(TaskViews.Any(p => p.ViewType == ViewType.Gantt&&p.IsActive)){
         <li class="nav-item" role="presentation">
             <button class="nav-link @(IsGant ? "active" : "")" id="gannt-tab" data-bs-toggle="tab" data-bs-target="#gannt-view-tab" type="button"
@@ -63,7 +63,7 @@
                     <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Gantt"></SVGCrud>
 
                 </span>
-                Gantt chart
+                    @Loc["Gantt"]
             </button>
         </li>
         }
@@ -102,14 +102,14 @@
                                checked />
                         <label class="btn" for="mineRadio-task">
                             <SVGCrud SVGType="SVGCrud.SVGTypeEnum.User"></SVGCrud>
-                            <span>Mine</span>
+                            <span>@Loc["Mine"]</span>
                         </label>
 
                         <input type="radio" class="btn-check" name="taskRadio" id="teamRadio-task" autocomplete="off" />
                         <label class="btn" for="teamRadio-task">
                             <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Users"></SVGCrud>
 
-                            <span>Team</span>
+                            <span>@Loc["Team"]</span>
                         </label>
                     </div>
                 </div>

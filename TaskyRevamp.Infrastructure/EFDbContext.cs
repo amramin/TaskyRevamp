@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using TaskyRevamp.Domain.Interfaces;
+using TaskyRevamp.Domain.Models.AuditLog;
 using TaskyRevamp.Domain.Models.Notification;
 using TaskyRevamp.Domain.Models.Permissions;
 using TaskyRevamp.Domain.Models.Permissions.GeneralModule;
@@ -44,6 +45,7 @@ public class EfDbContext : DbContext
     public DbSet<ReportModulePermission> ReportModulePermission { get; set; }
     public DbSet<TaskModuleUserDepartment> TaskModuleUserDepartment { get; set; }
     public DbSet<TaskModuleExternalDepartment> TaskModuleExternalDepartment { get; set; }
+    public DbSet<AuditLog> AuditLogs { get; set; }
     public DbSet<SystemIdentity> SystemIdentity { get; set; }
     public EfDbContext(DbContextOptions<EfDbContext> options, IHttpContextAccessor httpContextAccessor)
         : base(options)
