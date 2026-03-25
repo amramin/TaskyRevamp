@@ -89,7 +89,7 @@
                                                         </li>
                                                     }
                                                     @if ((task.ActualProcess == 100 && task.TaskStatus ==
-                                                                                        Guid.Parse("6EE4574D-C439-45B4-223A-08DE3318A61C")))
+                                                                                                                                            Guid.Parse("6EE4574D-C439-45B4-223A-08DE3318A61C")))
                                                     {
                                                         <li>
                                                             <button class="dropdown-item" @onclick="@(() => CompleteTask(task.Id))">
@@ -101,7 +101,7 @@
                                                         </li>
                                                     }
                                                     @if (task.ActualProcess == 100 && task.TaskStatus ==
-                                                                                        Guid.Parse("6EE4574D-C439-45B4-223A-08DE3318A61C"))
+                                                                                                                                            Guid.Parse("6EE4574D-C439-45B4-223A-08DE3318A61C"))
                                                     {
                                                         <li>
                                                             <button class="dropdown-item" @onclick="@(() => OnReopen.InvokeAsync(task.Id))">
@@ -156,22 +156,390 @@
                 }
                 else
                 {
-                    <div class="card card-view">
+                    <div class="card card-view mb-3">
                         <div class="card-body">
-                            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3">
-                        @foreach (var task in allTaks)
-                        {
-                            <div class="col">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <p>@task.Title</p>
-                                        <p>@task.PriorityName</p>
-                            </div>
-                            </div>
-                                </div>
-                        }
+                            <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-3">
+                                @foreach (var task in allTaks)
+                                {
+                                    <div class="col">
+                                        <div class="card task-card">
+                                            <div class="card-body">
+                                                <div class="card-header mb-3">
+                                                    <div class="d-flex justify-content-between gap-3">
+                                                        <div class="d-flex gap-2">
+                                                            <div class="badge" style="background-color:@task.TaskStatusBackgroundColor;
+                                                                color:@task.TaskStatusColor;">
+                                                                @task.TaskStatusName
+                                                            </div>
+                                                            <div class="badge" style="background-color:@task.PriorityBackgroundColor;
+                                                                color:@task.PriorityColor;">
+                                                                @task.PriorityName
+                                                            </div>
+                                                        </div>
+                                                        <div class="dropdown actions">
+                                                            <button class="btn btn-action-24" type="button" data-bs-toggle="dropdown"
+                                                                    aria-expanded="false">
+                                                                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.EllipseVertical"></SVGCrud>
+                                                            </button>
+                                                            <ul class="dropdown-menu">
+                                                                <li>
+                                                                    <button class="dropdown-item"
+                                                                            @onclick="@(() => ViewTaskDetails(task.Id))">
+                                                                        <span class="icon">
+                                                                            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.OpenEye"></SVGCrud>
+                                                                        </span>
+                                                                        @Loc["Taskdetails"]
+                                                                    </button>
+                                                                </li>
+                                                                @if (!IsCompletedTask(task))
+                                                                {
+                                                                    <li>
+                                                                        <button class="dropdown-item"
+                                                                                @onclick="@(() => OnEdit.InvokeAsync(task.Id))">
+                                                                            <span class="icon">
+                                                                                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Edit"></SVGCrud>
+                                                                            </span>
+                                                                            @Loc["Edit"]
+                                                                        </button>
+                                                                    </li>
+                                                                }
+                                                                @if ((task.ActualProcess == 100 && task.TaskStatus ==
+                                                                                                                                                                                Guid.Parse("6EE4574D-C439-45B4-223A-08DE3318A61C")))
+                                                                {
+                                                                    <li>
+                                                                        <button class="dropdown-item"
+                                                                                @onclick="@(() => CompleteTask(task.Id))">
+                                                                            <span class="icon">
+                                                                                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.OpenEye"></SVGCrud>
+                                                                            </span>
+                                                                            @Loc["Complete"]
+                                                                        </button>
+                                                                    </li>
+                                                                }
+                                                                @if (task.ActualProcess == 100 && task.TaskStatus ==
+                                                                                                                                                                                Guid.Parse("6EE4574D-C439-45B4-223A-08DE3318A61C"))
+                                                                {
+                                                                    <li>
+                                                                        <button class="dropdown-item"
+                                                                                @onclick="@(() => OnReopen.InvokeAsync(task.Id))">
+                                                                            <span class="icon">
+                                                                                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.OpenEye"></SVGCrud>
+                                                                            </span>
+                                                                            @Loc["ReOpen"]
+                                                                        </button>
+                                                                    </li>
+                                                                }
+                                                                @if (DisplayRejectButton(task))
+                                                                {
+                                                                    <li>
+                                                                        <button class="dropdown-item"
+                                                                                @onclick="@(() => OnReject.InvokeAsync(task.Id))">
+                                                                            <span class="icon">
+                                                                                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Reject"></SVGCrud>
+                                                                            </span>
+                                                                            @Loc["Reject"] - @GetRemainingDays(task)
+                                                                        </button>
+                                                                    </li>
+                                                                }
 
-                        </div>
+                                                                @if (IsRequestNewEndDate(task))
+                                                                {
+                                                                    <li>
+                                                                        <button class="dropdown-item"
+                                                                                @onclick="@(() => OnRequestChangeDueDate.InvokeAsync(task))">
+                                                                            <span class="icon">
+                                                                                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.CalnderPluse">
+                                                                                </SVGCrud>
+                                                                            </span>
+                                                                            @Loc["RequestDueDate"]
+                                                                        </button>
+                                                                    </li>
+                                                                }
+                                                                <li>
+                                                                    <button class="dropdown-item text-danger"
+                                                                            @onclick="@(() => DeleteTask(task.Id))">
+                                                                        <span class="icon">
+                                                                            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Delete"></SVGCrud>
+                                                                        </span>
+                                                                        @Loc["Delete"]
+                                                                    </button>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row flex-column g-3">
+                                                    <div class="col-lg-12">
+                                                        <div class="row g-2">
+                                                            <div class="col-10">
+                                                                <h5 class="card-title headline-6 task-title" title="@task.Title"
+                                                                    @onclick="@(() => ViewTaskDetails(task.Id))">
+                                                                    @task.Title
+                                                                </h5>
+                                                            </div>
+                                                            <div class="col-2">
+                                                                <div class="d-flex align-items-center gap-1 justify-content-end">
+                                                                    @if (IsDelayed(task))
+                                                                    {
+                                                                        <span class="task-delayed-icon">
+
+                                                                            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.ClockRewind"></SVGCrud>
+                                                                        </span>
+                                                                    }
+                                                                    @if (task.Dependencies!.Count() > 0)
+                                                                    {
+                                                                        <span class="task-depancy-number">
+                                                                            <span class="icon">
+                                                                                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Relation"></SVGCrud>
+                                                                            </span>
+                                                                            <span class="text">@task.Dependencies.Count()</span>
+                                                                        </span>
+
+                                                                    }
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-12">
+                                                        <div class="d-flex justify-content-between flex-wrap gap-2">
+                                                            <h6 class="headline-8">@Loc["AssignedTo"]</h6>
+                                                            <Initials Names="@task.AssigneduserNames" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-12">
+                                                        <OverallBar Tasks="allTaks" Width="100"></OverallBar>
+                                                    </div>
+                                                   <div class="col-lg-12">
+                                                       <div class="row g-3">
+                                                            <div class="col-lg-12">
+                                                                <div class="info-item">
+                                                                    <span class="squer-medium-icon">
+                                                                        <span class="icon">
+                                                                            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.DataFlow"></SVGCrud>
+                                                                        </span>
+                                                                    </span>
+                                                                    <div class="text-content">
+                                                                        <h6 class="headline-8 mb-1">@Loc["AssignedToDepartment"]</h6>
+                                                                        <div class="card-item department-cell">
+                                                                            @if (!string.IsNullOrWhiteSpace(task.AssignedDepartmentName))
+                                                                            {
+
+                                                                                var departments = task.AssignedDepartmentName
+                                                                                .Split(',', StringSplitOptions.RemoveEmptyEntries)
+                                                                                .Select(x => x.Trim())
+                                                                                .ToList();
+                                                                                var first = departments.Take(1).ToList();
+                                                                                var rest = departments.Skip(1).ToList();
+                                                                                @for (int i = 0; i < first.Count; i++)
+                                                                                {
+                                                                                    <span class="department-main">@first[i]</span>
+                                                                                    @if (i < first.Count - 1)
+                                                                                    {
+                                                                                        @:", "
+                                                                                    }
+                                                                                }
+                                                                                @if (rest.Any())
+                                                                                {
+                                                                                    <div class="dropdown department-dropdown d-inline ms-1">
+                                                                                        <button class="btn btn-sm btn-light" type="button"
+                                                                                                data-bs-toggle="dropdown">
+                                                                                            +@rest.Count
+                                                                                        </button>
+                                                                                        <ul class="dropdown-menu">
+                                                                                            @foreach (var dep in rest)
+                                                                                            {
+                                                                                                <li>
+                                                                                                    <span class="dropdown-item">@dep</span>
+                                                                                                </li>
+                                                                                            }
+                                                                                        </ul>
+                                                                                    </div>
+                                                                                }
+                                                                            }
+                                                                        </div>
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-6">
+                                                                <div class="info-item">
+                                                                    <span class="squer-medium-icon">
+                                                                        <span class="icon">
+                                                                            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.CalnderPluse"></SVGCrud>
+                                                                        </span>
+                                                                    </span>
+                                                                    <div class="text-content">
+                                                                        <h6 class="headline-8 mb-1">@Loc["StartDate"]</h6>
+                                                                        <span class="x-small-medium-text">@task.StartDate?.ToString(Loc["LocalizeDate"])</span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-6">
+                                                                <div class="info-item">
+                                                                    <span class="squer-medium-icon">
+                                                                        <span class="icon">
+                                                                            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.CalnderCheck"></SVGCrud>
+                                                                        </span>
+                                                                    </span>
+                                                                    <div class="text-content">
+                                                                        <h6 class="headline-8 mb-1">@Loc["EndDate"]</h6>
+                                                                        <span class="x-small-medium-text">@task.EndDate?.ToString(Loc["LocalizeDate"])</span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-6">
+                                                                <div class="info-item">
+                                                                    <span class="squer-medium-icon">
+                                                                        <span class="icon">
+                                                                            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Target"></SVGCrud>
+                                                                        </span>
+                                                                    </span>
+                                                                    <div class="text-content">
+                                                                        <h6 class="headline-8 mb-1">@Loc["weight"]</h6>
+                                                                        <span class="x-small-medium-text">@task.weight</span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-6">
+                                                                <div class="info-item">
+                                                                    <span class="squer-medium-icon">
+                                                                        <span class="icon">
+                                                                            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Target"></SVGCrud>
+                                                                        </span>
+                                                                    </span>
+                                                                    <div class="text-content">
+                                                                        <h6 class="headline-8 mb-1">@Loc["PlannedWeight"]</h6>
+                                                                        <span class="x-small-medium-text">@task.Plannedweight%</span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                  
+                                                    <div class="col-lg-6">
+                                                        <div class="info-item">
+                                                            <span class="squer-medium-icon">
+                                                                <span class="icon">
+                                                                    <SVGCrud SVGType="SVGCrud.SVGTypeEnum.User"></SVGCrud>
+                                                                </span>
+                                                            </span>
+                                                            <div class="text-content">
+                                                                <h6 class="headline-8 mb-1">@Loc["CreatedBy"]</h6>
+                                                                <span class="x-small-medium-text">@task.CreatedByName</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                  
+                                                    
+                                                  
+                                                    <div class="col-lg-6">
+                                                        <div class="info-item">
+                                                            <span class="squer-medium-icon">
+                                                                <span class="icon">
+                                                                    <SVGCrud SVGType="SVGCrud.SVGTypeEnum.TaskSource"></SVGCrud>
+                                                                </span>
+                                                            </span>
+                                                            <div class="text-content">
+                                                                <h6 class="headline-8 mb-1">@Loc["Source"]</h6>
+                                                                <span class="x-small-medium-text">@task.SourceName</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                   
+                                                  
+                                                    <div class="col-lg-6">
+                                                        <div class="info-item">
+                                                            <span class="squer-medium-icon">
+                                                                <span class="icon">
+                                                                    <SVGCrud SVGType="SVGCrud.SVGTypeEnum.ClockFastForward"></SVGCrud>
+                                                                </span>
+                                                            </span>
+                                                            <div class="text-content">
+                                                                <h6 class="headline-8 mb-1">@Loc["Duration"]</h6>
+                                                                <span class="x-small-medium-text">@task.Duration</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                            <div class="col-lg-6">
+                                                                <div class="info-item">
+                                                                    <span class="squer-medium-icon">
+                                                                        <span class="icon">
+                                                                            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.TaskType"></SVGCrud>
+                                                                        </span>
+                                                                    </span>
+                                                                    <div class="text-content">
+                                                                        <h6 class="headline-8 mb-1">@Loc["Type"]</h6>
+                                                                        <span class="x-small-medium-text">@task.TypeName</span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                    <div class="col-lg-12">
+                                                        <div class="info-item">
+                                                            <span class="squer-medium-icon">
+                                                                <span class="icon">
+                                                                    <SVGCrud SVGType="SVGCrud.SVGTypeEnum.DataFlow"></SVGCrud>
+                                                                </span>
+                                                            </span>
+                                                            <div class="text-content">
+                                                                <h6 class="headline-8 mb-1">@Loc["CreatedByDepartment"]</h6>
+                                                                <span class="x-small-medium-text">@task.CreatorDepartment</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                  
+                                                  
+                                                   
+                                                  
+                                                    <div class="col-12">
+                                                        <div class="info-item">
+                                                            <span class="squer-medium-icon">
+                                                                <span class="icon">
+                                                                    <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Dependency"></SVGCrud>
+                                                                </span>
+                                                            </span>
+                                                            <div class="text-content">
+                                                                <h6 class="headline-8 mb-1">@Loc["Dependency"]</h6>
+                                                                <div class="card-item dependency">
+                                                                    @if (!string.IsNullOrWhiteSpace(task.DependencyNames))
+                                                                    {
+                                                                        var dependencies = task.DependencyNames
+                                                                        .Split(',', StringSplitOptions.RemoveEmptyEntries)
+                                                                        .Select(x => x.Trim())
+                                                                        .ToList();
+                                                                        var first = dependencies.FirstOrDefault();
+                                                                        var rest = dependencies.Skip(1).ToList();
+                                                                        @if (!string.IsNullOrEmpty(first))
+                                                                        {
+                                                                            <span class="dependency-main">@first</span>
+                                                                        }
+
+                                                                        @if (rest.Any())
+                                                                        {
+                                                                            <div class="dropdown dependency-dropdown d-inline ms-1">
+                                                                                <button class="btn btn-sm btn-light" type="button"
+                                                                                        data-bs-toggle="dropdown">
+                                                                                    +@rest.Count
+                                                                                </button>
+                                                                                <ul class="dropdown-menu">
+                                                                                    @foreach (var dep in rest)
+                                                                                    {
+                                                                                        <li class="dropdown-item">@dep</li>
+                                                                                    }
+                                                                                </ul>
+                                                                            </div>
+                                                                        }
+                                                                    }
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+
+                            </div>
                         </div>
                     </div>
                 }
@@ -302,7 +670,7 @@ new() { Field = "Type", DisplayName = Loc["Type"], Order = 16, IsVisible = true 
 new() { Field = "Actual Weight", DisplayName = Loc["ActualWeight"], Order = 17, IsVisible = true,IsSortable=false },
 new() { Field = "Planned Weight", DisplayName =Loc["PlannedWeight"], Order = 18, IsVisible = true,IsSortable=false },
 };
- 
+
         var key = IsCompletedTasks ? "CompletedTask_Columns" : "MainTask_Columns";
         if (await LocalStorageService.GetItemAsync<List<SortableColumn>>(key) is null)
         {
@@ -408,31 +776,7 @@ new() { Field = "Planned Weight", DisplayName =Loc["PlannedWeight"], Order = 18,
             await GetTasks();
             InitialTasks = allTaks;
 
-             CardViewColumns = new List<SortableColumn>()
-{
-    new() { Field = "Priority", DisplayName = Loc["Priority2"], Order = 0, IsVisible = true },
-new() { Field = "Status", DisplayName = Loc["TaskStatus"], Order = 1, IsVisible = true },
-new() { Field = "Title", DisplayName = Loc["Title"], Order = 2, IsVisible = true },
 
-new() { Field = "Actual progress", DisplayName = Loc["ActualProgress"], Order = 3, IsVisible = true },
-new() { Field = "Start Date", DisplayName = Loc["StartDate"], Order = 4, IsVisible = true },
-new() { Field = "End Date", DisplayName = Loc["EndDate"], Order = 5, IsVisible = true },
-new() { Field = "weight", DisplayName = Loc["weight"], Order = 6, IsVisible = true },
-new() { Field = "Assigned To", DisplayName = Loc["AssignedTo"], Order = 7, IsVisible = true,IsSortable=false },
-new() { Field = "Assigned To Department", DisplayName =Loc["AssignedToDepartment"], Order = 8, IsVisible =
-true,IsSortable=false },
-new() { Field = "Source", DisplayName =Loc["Source"], Order = 9, IsVisible = true },
-new() { Field = "Dependency", DisplayName = Loc["Dependency"], Order = 10, IsVisible = true,IsSortable=false },
-new() { Field = "Created By", DisplayName = Loc["CreatedBy"], Order = 11, IsVisible = true },
-new() { Field = "Duration", DisplayName = Loc["Duration"], Order = 12, IsVisible = true,IsSortable=false },
-new() { Field = "Created by department", DisplayName = Loc["Createdbydepartment"], Order = 13, IsVisible = true },
-new() { Field = "Planned Progress", DisplayName = Loc["PlannedProgress"], Order = 14, IsVisible = true,IsSortable=false
-},
-new() { Field = "Creation Date", DisplayName = Loc["CreationDate"], Order = 15, IsVisible = true },
-new() { Field = "Type", DisplayName = Loc["Type"], Order = 16, IsVisible = true },
-new() { Field = "Actual Weight", DisplayName = Loc["ActualWeight"], Order = 17, IsVisible = true,IsSortable=false },
-new() { Field = "Planned Weight", DisplayName =Loc["PlannedWeight"], Order = 18, IsVisible = true,IsSortable=false },
-};
         }
         finally
         {
@@ -598,7 +942,7 @@ SearchFieldTask.PlannedProgress
         var isactiveField = activeFields.FirstOrDefault(s => s.Key == fieldName);
         return isactiveField.Value;
     }
-    private RenderFragment RenderColumnValue(CreateTaskDto task, string field , bool IsCardView = false) => builder =>
+    private RenderFragment RenderColumnValue(CreateTaskDto task, string field, bool IsCardView = false) => builder =>
     {
         switch (field)
         {
@@ -606,7 +950,7 @@ SearchFieldTask.PlannedProgress
                 if (IsDelayed(task))
                 {
                     builder.OpenElement(-10, "span");
-                  
+
                     builder.AddAttribute(-9, "class", "task-delayed-icon");
 
                     builder.OpenComponent<SVGCrud>(-8);
@@ -617,9 +961,9 @@ SearchFieldTask.PlannedProgress
                 }
 
                 builder.OpenElement(4, "span");
-                  var taskTitle = IsCardView ? "headline-6 task-title" : "task-title";
-                builder.AddAttribute(5, "class", taskTitle);
-              
+
+                builder.AddAttribute(5, "class", "task-title");
+
 
                 builder.AddAttribute(6, "title", task.Title ?? string.Empty);
                 builder.AddAttribute(7, "style", "cursor:pointer;");
@@ -701,19 +1045,19 @@ SearchFieldTask.PlannedProgress
                     builder.AddAttribute(13, "ItemTemplate",
                 (RenderFragment<PriorityDto>)((context) => (itemBuilder) =>
                 {
-        itemBuilder.OpenElement(0, "div");
-        itemBuilder.AddAttribute(1, "class", "");
+                    itemBuilder.OpenElement(0, "div");
+                    itemBuilder.AddAttribute(1, "class", "");
 
-        itemBuilder.OpenElement(2, "span");
-        itemBuilder.AddAttribute(3, "class", "badge");
-        itemBuilder.AddAttribute(4, "style",
-    $"background-color:{context.BackgroundColor};color:{context.NameColor};");
+                    itemBuilder.OpenElement(2, "span");
+                    itemBuilder.AddAttribute(3, "class", "badge");
+                    itemBuilder.AddAttribute(4, "style",
+                $"background-color:{context.BackgroundColor};color:{context.NameColor};");
 
-        itemBuilder.AddContent(5, context.Name);
+                    itemBuilder.AddContent(5, context.Name);
 
-        itemBuilder.CloseElement(); // span
-        itemBuilder.CloseElement(); // div
-    }));
+                    itemBuilder.CloseElement(); // span
+                    itemBuilder.CloseElement(); // div
+                }));
                     builder.CloseComponent();
                     builder.CloseElement();
                 }
@@ -730,14 +1074,14 @@ SearchFieldTask.PlannedProgress
             case "Actual progress":
                 builder.AddContent(0, (RenderFragment)(b =>
             {
-        b.OpenComponent<OverallBar>(0);
-        b.AddAttribute(1, "ActualProgress", task.ActualProcess);
-        b.AddAttribute(2, "Width", 150);
-        b.AddAttribute(3, "OnProgressChanged", EventCallback.Factory.Create<int>(this, value => ChangeProgressConfirmed(task,
+                b.OpenComponent<OverallBar>(0);
+                b.AddAttribute(1, "ActualProgress", task.ActualProcess);
+                b.AddAttribute(2, "Width", 150);
+                b.AddAttribute(3, "OnProgressChanged", EventCallback.Factory.Create<int>(this, value => ChangeProgressConfirmed(task,
 
-    value)));
-        b.CloseComponent();
-    }));
+            value)));
+                b.CloseComponent();
+            }));
                 break;
             case "Start Date":
                 builder.AddContent(0, task.StartDate?.ToString(Loc["LocalizeDate"]));
@@ -754,12 +1098,12 @@ SearchFieldTask.PlannedProgress
             case "Assigned To":
                 builder.AddContent(0, (RenderFragment)(b =>
             {
-        b.OpenComponent<Initials>(0);
-        b.AddAttribute(1, "Names", task.AssigneduserNames);
-        b.AddAttribute(2, "Size", 32);
-        b.AddAttribute(3, "Black", true);
-        b.CloseComponent();
-    }));
+                b.OpenComponent<Initials>(0);
+                b.AddAttribute(1, "Names", task.AssigneduserNames);
+                b.AddAttribute(2, "Size", 32);
+                b.AddAttribute(3, "Black", true);
+                b.CloseComponent();
+            }));
                 break;
             case "Assigned To Department":
 
@@ -881,12 +1225,12 @@ SearchFieldTask.PlannedProgress
             case "Created By":
                 builder.AddContent(0, (RenderFragment)(b =>
             {
-        b.OpenComponent<Initials>(0);
-        b.AddAttribute(1, "Names", task.CreatedByName);
-        b.AddAttribute(2, "Size", 32);
-        b.AddAttribute(3, "Black", true);
-        b.CloseComponent();
-    }));
+                b.OpenComponent<Initials>(0);
+                b.AddAttribute(1, "Names", task.CreatedByName);
+                b.AddAttribute(2, "Size", 32);
+                b.AddAttribute(3, "Black", true);
+                b.CloseComponent();
+            }));
                 break;
             case "Duration":
                 builder.AddContent(0, task.Duration);
@@ -1022,7 +1366,8 @@ SearchFieldTask.PlannedProgress
         {
 
             if
-            ((DateOnly.FromDateTime(taskDto.AssigneesData.FirstOrDefault(p => p.UserId == CurrentUser)?.AssigneeDate ?? DateTime.Now).AddDays(RejectionPeriod)
+            ((DateOnly.FromDateTime(taskDto.AssigneesData.FirstOrDefault(p => p.UserId == CurrentUser)?.AssigneeDate ??
+DateTime.Now).AddDays(RejectionPeriod)
             <
             DateOnly.FromDateTime(DateTime.Now)) || !(taskDto.AssigneesData is not null && taskDto.AssigneesData!.Any(u => u.UserId
             == CurrentUser))

@@ -2722,6 +2722,34 @@ fieldset:disabled .btn {
   border-bottom-width: 1px;
   border-radius: var(--bs-border-radius);
 }
+.card.task-card .card-header {
+  background-color: transparent;
+  border-color: var(--light-300);
+  padding: 0 0 0.5rem 0;
+}
+.card.task-card .task-title {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: break-word;
+  width: 100%;
+  cursor: pointer;
+}
+.card.task-card .task-depancy-number,
+.card.task-card .task-delayed-icon {
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  color: var(--dark-600);
+  font-size: 0.875rem;
+}
+.card.task-card .task-depancy-number svg,
+.card.task-card .task-delayed-icon svg {
+  width: 1rem;
+  height: 1rem;
+}
 
 .no-comments {
   display: -webkit-box;
@@ -3288,6 +3316,7 @@ fieldset:disabled .btn {
   display: -ms-inline-flexbox;
   display: inline-flex;
   color: var(--dark-700);
+  font-size: 0.875rem;
 }
 .table .task-depancy-number svg,
 .table .task-delayed-icon svg {
