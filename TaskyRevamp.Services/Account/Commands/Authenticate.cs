@@ -76,33 +76,22 @@ public class AuthenticateCommandHandler : IRequestHandler<AuthenticateCommand, s
                     await _userRepository.Insert(user);
                     await _userRepository.SaveChangesAsync();
                 }
-    //            else
-    //            {
-    //                user = userResponse.Value.FirstOrDefault()!;
-    //                if (user is null)
-    //                {
-    //                    throw new NoDataException("User Not Found!");
-				//	}
-    //                user = await SyncUserWithActiveDirectory(user, adUser);
-				//}
-
-            }
-            else
-            {
-                var userResponse = await _userRepository.FindBy(x => x.Username == request.Username&&x.IsActive==true);
-                user = userResponse.Value.FirstOrDefault()!;
+                else
+                {
+                    user = userResponse.Value.FirstOrDefault()!;
                     if (user is null)
                     {
                         throw new NoDataException("User Not Found!");
                     }
                     user = await SyncUserWithActiveDirectory(user, adUser);
                 }
+
             }
-            else
-            {
-                var userResponse = await _userRepository.FindBy(x => x.Username == request.Username);
-                user = userResponse.Value.FirstOrDefault()!;
-            }
+            //else
+            //{
+            //    var userResponse = await _userRepository.FindBy(x => x.Username == request.Username);
+            //    user = userResponse.Value.FirstOrDefault()!;
+            //}
 
 
             var tokenHandler = new JwtSecurityTokenHandler();

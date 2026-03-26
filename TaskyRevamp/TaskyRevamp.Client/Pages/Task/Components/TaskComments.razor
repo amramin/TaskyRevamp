@@ -1,4 +1,5 @@
 ﻿@using Blazored.LocalStorage
+@using Syncfusion.Blazor.Buttons.Internal
 @using TaskyRevamp.Client.Consumer
 @using TaskyRevamp.Client.Services
 @using TaskyRevamp.Dto.TaskComment
@@ -119,9 +120,9 @@
             }
 
         </div>
+        </div>
     }
 </div>
-
 @code {
     [Parameter] public bool ShowSection { get; set; } = true;
     [Parameter] public EventCallback<bool> ShowSectionChanged { get; set; }
