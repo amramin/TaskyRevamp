@@ -39,7 +39,7 @@
                                              @ref="RichTextEditorComponentRefDescriptionEnglish" ContentChanged="OnDescriptionChanged"
                                              Content="@newComment" ButtonText="@Loc["AddDescription"]"> </RichTextEditorComponent>
                 </div>
-
+            </div>
 
             <div class="action-btn-list justify-content-end">
                 <button class="btn btn-light" @onclick="CancelComment" disabled="@string.IsNullOrWhiteSpace(newComment)">
@@ -119,7 +119,7 @@
                 </div>
             }
 
-        </div>
+        
         </div>
     }
 </div>
