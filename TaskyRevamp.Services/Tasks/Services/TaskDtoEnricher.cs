@@ -15,23 +15,28 @@ public class TaskDtoEnricher
 {
     private readonly IRepository<Department> _departmentRepository;
     private readonly IRepository<TaskDependencies> _taskDependenciesRepository;
+    private readonly IRepository<TaskItem> _taskRepository;
 
     public TaskDtoEnricher(
         IRepository<Department> departmentRepository,
-        IRepository<TaskDependencies> taskDependenciesRepository)
+        IRepository<TaskDependencies> taskDependenciesRepository,
+        IRepository<TaskItem> taskRepository)
     {
         _departmentRepository = departmentRepository;
         _taskDependenciesRepository = taskDependenciesRepository;
+        _taskRepository = taskRepository;
     }
 
     /// <summary>
     /// Enriches a CreateTaskDto with localised display names, department names, dependency info, etc.
     /// </summary>
-    public async Task<CreateTaskDto> EnrichAsync(TaskItem task, CreateTaskDto dto, string currentCulture, IRepository<TaskItem> taskRepository)
+    public async Task<CreateTaskDto> EnrichAsync(TaskItem task, CreateTaskDto dto, string currentCulture)
     {
         // Creator department
-        var creatorDepartment = await _departmentRepository.FirstOrDefaultAsNoTrackingAsync(
-            k => k.Id == (task.CreatedBy!.DepartmentId ?? Guid.Empty));
+        var creatorDepartment = task.CreatedBy is not null
+            ? await _departmentRepository.FirstOrDefaultAsNoTrackingAsync(
+                k => k.Id == (task.CreatedBy.DepartmentId ?? Guid.Empty))
+            : null;
 
         // Localized type/source/priority/status names
         dto.TypeName = currentCulture == "ar" ? task.Type?.NameArabic ?? "" : task.Type?.NameEnglish ?? "";
@@ -52,7 +57,7 @@ public class TaskDtoEnricher
         if (dependencies is not null)
         {
             var dependencyIds = dependencies.Value!.Select(p => p.DependentId);
-            var tasksDependent = await taskRepository.FindBy(p => dependencyIds.Contains(p.Id));
+            var tasksDependent = await _taskRepository.FindBy(p => dependencyIds.Contains(p.Id));
             dto.DependencyNames = string.Join(", ", tasksDependent.Value!.Select(d => d.Title));
             dto.Dependencies = dependencyIds.ToList();
         }

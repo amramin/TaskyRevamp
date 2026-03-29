@@ -24,11 +24,10 @@ public class GetTasksHandler : IRequestHandler<GetTasksQuery, PagedResult<Create
 
     public GetTasksHandler(
         IRepository<TaskItem> taskRepository,
-        IRepository<Department> departmentRepository,
-        IRepository<TaskDependencies> taskDependenciesRepository)
+        TaskDtoEnricher dtoEnricher)
     {
         _taskRepository = taskRepository;
-        _dtoEnricher = new TaskDtoEnricher(departmentRepository, taskDependenciesRepository);
+        _dtoEnricher = dtoEnricher;
     }
 
     public async Task<PagedResult<CreateTaskDto>> Handle(GetTasksQuery request, CancellationToken cancellationToken)
@@ -51,7 +50,7 @@ public class GetTasksHandler : IRequestHandler<GetTasksQuery, PagedResult<Create
             tsk.ActualWeight = new Weight(tsk.Weight ?? 0);
             tsk.PlannedWeight = new Weight(tsk.Weight ?? 0);
             var dto = tsk.ToDto();
-            dto = await _dtoEnricher.EnrichAsync(tsk, dto, currentCulture, _taskRepository);
+            dto = await _dtoEnricher.EnrichAsync(tsk, dto, currentCulture);
             alltasks.Add(dto);
         }
 
