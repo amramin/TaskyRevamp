@@ -49,7 +49,7 @@ public class UpdateTaskCommandHandler : IRequestHandler<UpdateTaskCommand, bool>
 
         int oldprogress = task.Progress;
         var oldstatus = task.StatusId;
-        task.SetData(request.Task);
+        task.ApplyDto(request.Task);
 
         if (request.Task.ActualProcess == 100)
         {

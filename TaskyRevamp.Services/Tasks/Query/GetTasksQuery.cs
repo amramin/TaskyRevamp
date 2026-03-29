@@ -275,7 +275,7 @@ public class GetTasksHandler : IRequestHandler<GetTasksQuery, PagedResult<Create
             var CreatorDepartment = await _departmenRepository.FirstOrDefaultAsNoTrackingAsync(k => k.Id == (tsk.CreatedBy!.DepartmentId??Guid.Empty));
             tsk.ActualWeight=new Weight(tsk.Weight ?? 0);
             tsk.PlannedWeight = new Weight(tsk.Weight ?? 0);
-            CreateTaskDto tasky = tsk.CopyToDto();
+            CreateTaskDto tasky = tsk.ToDto();
             tasky.TypeName = currentCulture == "ar" ? tsk.Type?.NameArabic??"" : tsk.Type?.NameEnglish??"";
             tasky.SourceName = currentCulture == "ar" ? tsk.Source?.NameArabic??"" : tsk.Source?.NameEnglish ?? "";
             tasky.PriorityName = currentCulture == "ar" ? tsk.Priority?.NameArabic??"" : tsk.Priority?.NameEnglish ?? "";

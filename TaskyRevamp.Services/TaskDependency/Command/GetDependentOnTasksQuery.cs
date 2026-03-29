@@ -14,6 +14,7 @@ using TaskyRevamp.Dto.GeneralDto;
 using TaskyRevamp.Dto.TaskDto;
 using TaskyRevamp.Services.Helpers;
 using TaskyRevamp.Services.SearchMappings;
+using TaskyRevamp.Services.Tasks;
 using TaskItemss = TaskyRevamp.Domain.Models.Task.TaskItem;
 
 namespace TaskyRevamp.Services.TaskDependency.Command
@@ -57,7 +58,7 @@ namespace TaskyRevamp.Services.TaskDependency.Command
 			foreach (var task in tasks.Items)
 			{
 				//var assgnedusr = await _userRepository.FindBy(k => task.AssignedIds.Contains(k.Id));
-				var dto = task.CopyToDto();
+				var dto = task.ToDto();
 				dto.PriorityName = _currentLanguage == "ar" ? task.Priority?.NameArabic : task.Priority?.NameEnglish;
 				dto.PriorityBackgroundColor = task.Priority?.BackgroundColor;
 				dto.PriorityColor = task.Priority?.NameColor;

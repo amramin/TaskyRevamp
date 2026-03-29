@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using TaskyRevamp.Domain.Models.Users;
 using TaskyRevamp.Domain.Repositeries;
 using TaskyRevamp.Dto.TaskDto;
+using TaskyRevamp.Services.Tasks;
 using TaskItems = TaskyRevamp.Domain.Models.Task.TaskItem;
 
 namespace TaskyRevamp.Services.Users.Command
@@ -28,7 +29,7 @@ namespace TaskyRevamp.Services.Users.Command
 			var res = await _taskRepository.AllAsNoTracking(includeProperties: $"{nameof(TaskItems.status)}");
 			if (res.Success && res.Value != null)
 			{
-				tasks = res.Value.Select(t => t.CopyToDto()).ToList();
+				tasks = res.Value.Select(t => t.ToDto()).ToList();
 			}
 			foreach (var task in tasks)
 			{

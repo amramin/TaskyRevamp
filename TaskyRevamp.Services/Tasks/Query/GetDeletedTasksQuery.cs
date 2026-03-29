@@ -48,7 +48,7 @@ namespace TaskyRevamp.Services.Tasks.Query
 								includeProperties: $"{nameof(TaskItem.DeletedBy)},{nameof(TaskItem.Priority)}");
 			foreach (var item in res.Items)
 			{
-				var task = item.CopyToDto();
+				var task = item.ToDto();
 				task.PriorityName = currentCulture == "ar" ? item.Priority?.NameArabic ?? "" : item.Priority?.NameEnglish ?? "";
 				task.PriorityBackgroundColor = item.Priority?.BackgroundColor;
 				task.PriorityColor = item.Priority?.NameColor;
