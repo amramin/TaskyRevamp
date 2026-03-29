@@ -27,6 +27,7 @@ using TaskyRevamp.Infrastructure.Seeders;
 using TaskyRevamp.Infrastructure.Services.Notification;
 using TaskyRevamp.Services;
 using TaskyRevamp.Services.Account.Commands;
+using TaskyRevamp.Services.ActiveDirectory;
 using TaskyRevamp.Services.BackgroundJobs;
 using TaskyRevamp.Services.Tasks.Services;
 using TaskyRevamp.WebAPI;
@@ -71,6 +72,7 @@ builder.Services.AddHangfireServer();
 
 builder.Services.AddScoped<ITaskRepository, TaskRepository>();
 builder.Services.AddScoped<ITaskStatusDeterminer, TaskStatusDeterminer>();
+builder.Services.AddScoped<IActiveDirectoryService, ActiveDirectoryService>();
 
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<HttpContextAccessor>();

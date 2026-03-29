@@ -1,18 +1,16 @@
-﻿using DocumentFormat.OpenXml.Spreadsheet;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
-using Org.BouncyCastle.Asn1.Ocsp;
 using System;
 using System.Collections.Generic;
 using System.DirectoryServices;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TaskyRevamp.Domain.Interfaces.Services;
 using TaskyRevamp.Domain.Models.Users;
 using TaskyRevamp.Domain.Repositeries;
 using TaskyRevamp.Dto.Account;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 
 namespace TaskyRevamp.Services.Jobs.ActiveDirectory.SyncFirstTime;
@@ -24,33 +22,37 @@ public class SyncAllUsersFtHandler : IRequestHandler<SyncAllUsersFt, int>
     private readonly IRepository<User> _userRepository;
     private readonly IOptions<LdapSettings> _ldapPath;
     private readonly IHttpContextAccessor _httpContextAccessor;
-    public SyncAllUsersFtHandler(IOptions<LdapSettings> ldapSettings, IRepository<User> userRepository,IHttpContextAccessor httpContextAccessor)
+    private readonly IActiveDirectoryService _adService;
+
+    public SyncAllUsersFtHandler(IOptions<LdapSettings> ldapSettings, IRepository<User> userRepository,
+        IHttpContextAccessor httpContextAccessor, IActiveDirectoryService adService)
     {
         _userRepository = userRepository;
         _ldapPath = ldapSettings;
         _httpContextAccessor = httpContextAccessor;
+        _adService = adService;
     }
 
     public async Task<int> Handle(SyncAllUsersFt request, CancellationToken cancellationToken)
     {
         try
         {
-            var AddedUsers=await SyncAllAdUsers(request.LogedInUser);
+            var AddedUsers = await SyncAllAdUsers(request.LogedInUser);
             return AddedUsers;
         }
         catch (Exception ex) { Console.WriteLine(ex); return 0; }
-
     }
 
     private async Task<int> SyncAllAdUsers(Guid updatedby)
     {
         string ldapPath = _ldapPath.Value.Path;
         var adUsers = await GetAllActiveDirectoryUsers(ldapPath, _ldapPath.Value.Username, _ldapPath.Value.Password);
-        var AddedUsers=await SaveUsersToDatabaseBulk(adUsers, updatedby);
+        var AddedUsers = await SaveUsersToDatabaseBulk(adUsers, updatedby);
 
         Console.WriteLine("Active Directory users successfully saved to the database.");
         return AddedUsers;
     }
+
     public async Task<List<User>> GetAllActiveDirectoryUsers(string ldapPath, string userName, string password)
     {
         var users = new List<User>();
@@ -59,151 +61,82 @@ public class SyncAllUsersFtHandler : IRequestHandler<SyncAllUsersFt, int>
         {
             using (var searcher = new DirectorySearcher(entry))
             {
-                // Filter to get user objects
                 searcher.PageSize = 5000;
                 searcher.ServerTimeLimit = TimeSpan.FromMinutes(5);
                 searcher.Filter = "(&(objectClass=user)(!(sAMAccountName=*$))(|(userAccountControl=512)(userAccountControl=66048)))";
-                //searcher.Filter = "(&(objectClass=user)(!(sAMAccountName=*$))(!(userAccountControl:1.2.840.113556.1.4.803:=2)))";
-                searcher.PropertiesToLoad.Add("samAccountName");    // Username
-                searcher.PropertiesToLoad.Add("displayName");       // Display name
-                searcher.PropertiesToLoad.Add("mail");              // Email
-                searcher.PropertiesToLoad.Add("distinguishedName"); // Full DN
-                searcher.PropertiesToLoad.Add("givenName");         // Given name
-                searcher.PropertiesToLoad.Add("sn");                // Surname
-                searcher.PropertiesToLoad.Add("title");             // Title
-                searcher.PropertiesToLoad.Add("telephoneNumber");    // Phone number
-                searcher.PropertiesToLoad.Add("userAccountControl");
-                searcher.PropertiesToLoad.Add("manager"); // Manager DN
-                // Add other attributes as needed
+                _adService.ConfigureSearcherProperties(searcher);
 
                 foreach (SearchResult result in searcher.FindAll())
                 {
-                    string username = result.Properties.Contains("samAccountName") ? result.Properties["samAccountName"][0].ToString() : string.Empty;
-                    string displayName = result.Properties.Contains("displayName") ? result.Properties["displayName"][0].ToString() : string.Empty;
-                    string email = result.Properties.Contains("mail") ? result.Properties["mail"][0].ToString() : string.Empty;
-                    string distinguishedName = result.Properties.Contains("distinguishedName") ? result.Properties["distinguishedName"][0].ToString() : string.Empty;
-                    string givenName = result.Properties.Contains("givenName") ? result.Properties["givenName"][0].ToString() : string.Empty;
-                    string surname = result.Properties.Contains("sn") ? result.Properties["sn"][0].ToString() : string.Empty;
-                    string title = result.Properties.Contains("title") ? result.Properties["title"][0].ToString() : string.Empty;
-                    string phone = result.Properties.Contains("telephoneNumber") ? result.Properties["telephoneNumber"][0].ToString() : string.Empty;
-                    // Check if the user account is active by inspecting the userAccountControl flag
-                    int userAccountControl = result.Properties.Contains("userAccountControl") ? Convert.ToInt32(result.Properties["userAccountControl"][0]) : 0;
-                    bool isActive = (userAccountControl & 0x0002) == 0; // If the 2nd bit is not set, the account is active
-                    string managerUsername = "";
-                    // Check if the user has a manager
-                    if (result.Properties.Contains("manager"))
-                    {
-                        // Get the manager's DN
-                        string managerDn = result.Properties["manager"][0].ToString();
-                        managerUsername = await GetUserManager(ldapPath, _ldapPath.Value.Username, _ldapPath.Value.Password, managerDn);
-
-                    }
-                    // Add the AD user to the list
-                    users.Add(new User
-                    {
-                        Username = username,
-                        NameArabic = displayName,
-                        NameEnglish = displayName,
-                        Email = email,
-                        DistinguishedName = distinguishedName,
-                        GivenName = givenName,
-                        //Surname = surname,
-                        //Title = title,
-                        Mobile = phone,
-                        IsActive = isActive,
-                        IsManager = false
-                        // Add other attributes as needed
-                    });
+                    var adUser = _adService.ExtractAdUser(result);
+                    users.Add(MapAdUserToUser(adUser));
                 }
             }
         }
 
         return users;
     }
-    public static async Task<string> GetUserManager(string ldapPath, string userName, string password, string managerDn)
+
+    private static User MapAdUserToUser(AdUser adUser)
     {
-        try
+        return new User
         {
-            // Create a DirectoryEntry for the LDAP path
-            using (var entry = new DirectoryEntry(ldapPath, userName, password))
-            {
-                // Create a DirectorySearcher to search for the manager by distinguished name (DN)
-                using (var searcher = new DirectorySearcher(entry))
-                {
-                    searcher.Filter = $"(distinguishedName={managerDn})";
-                    searcher.PropertiesToLoad.Add("sAMAccountName"); // Manager's username
-
-                    // Perform the search for the manager
-                    var result = searcher.FindOne();
-
-                    if (result != null && result.Properties.Contains("sAMAccountName"))
-                    {
-                        return result.Properties["sAMAccountName"][0].ToString();
-                    }
-                }
-            }
-        }
-        catch (Exception ex)
-        {
-            // Handle exceptions related to retrieving the manager
-            Console.WriteLine($"Error retrieving manager's username: {ex.Message}");
-        }
-
-        return null; // Return null if the manager's sAMAccountName is not found
+            Username = adUser.Username,
+            NameArabic = adUser.DisplayName,
+            NameEnglish = adUser.DisplayName,
+            Email = adUser.Email,
+            DistinguishedName = adUser.DistinguishedName,
+            GivenName = adUser.GivenName,
+            Mobile = adUser.Phone,
+            IsActive = adUser.IsActive,
+            IsManager = false
+        };
     }
 
     public async Task SaveUsersToDatabase(List<User> users)
     {
-
         foreach (var user in users)
         {
-            // Check if the user already exists
             var userData = await _userRepository.FindBy(x => x.Username == user.Username);
             var existingUser = userData?.Value?.FirstOrDefault();
 
             if (existingUser != null)
             {
-                // Update existing user
                 existingUser.NameEnglish = user.NameEnglish;
                 existingUser.NameArabic = user.NameArabic;
                 existingUser.Email = user.Email;
                 existingUser.DistinguishedName = user.DistinguishedName;
                 existingUser.GivenName = user.GivenName;
-                //existingUser.Surname = user.Surname;
-                //existingUser.Title = user.Title;
                 existingUser.Mobile = user.Mobile;
                 existingUser.IsActive = user.IsActive;
                 existingUser.IsManager = user.IsManager;
             }
             else
             {
-                // Add new user
                 await _userRepository.Insert(user);
             }
-
-
         }
         await _userRepository.SaveChangesAsync();
     }
-    public async Task<int> SaveUsersToDatabaseBulk(List<User> users,Guid UpdatedBy)
+
+    public async Task<int> SaveUsersToDatabaseBulk(List<User> users, Guid UpdatedBy)
     {
         int AddedUsers = 0;
         var dbUsersResult = await _userRepository.AllAsNoTracking();
         var dbUsers = (dbUsersResult.Value
               ?? Enumerable.Empty<User>());
-        
+
         var dbUsernames = dbUsers
             .Select(u => u.Username)
             .ToHashSet();
         var ExistUsersAD = users.Where(u => dbUsernames.Contains(u.Username)).ToList();
-         users.RemoveAll(u => dbUsernames.Contains(u.Username));
-        if(users is not null && users.Count() > 0)
+        users.RemoveAll(u => dbUsernames.Contains(u.Username));
+        if (users is not null && users.Count() > 0)
         {
             await _userRepository.InsertRange(users);
-            //await _userRepository.BulkInsertAsync(users);
             AddedUsers = users.Count();
         }
-        if(ExistUsersAD is not null&&dbUsers is not null)
+        if (ExistUsersAD is not null && dbUsers is not null)
         {
             var UsersToUpdate = UpdateDbUsers(dbUsers.ToList(), ExistUsersAD, UpdatedBy);
             await _userRepository.UpdateRange(UsersToUpdate);
@@ -211,18 +144,16 @@ public class SyncAllUsersFtHandler : IRequestHandler<SyncAllUsersFt, int>
         return AddedUsers;
     }
 
-    private List<User> UpdateDbUsers(List<User> DbUsers,List<User> AdUsers,Guid UpdatedBy)
+    private List<User> UpdateDbUsers(List<User> DbUsers, List<User> AdUsers, Guid UpdatedBy)
     {
-        var adUserDict = AdUsers.ToDictionary(u => u.Username??"", u => u);
+        var adUserDict = AdUsers.ToDictionary(u => u.Username ?? "", u => u);
 
         foreach (var dbUser in DbUsers)
         {
-            // Try get the corresponding AD user
             try
             {
                 if (adUserDict.TryGetValue(dbUser.Username ?? "", out var adUser))
                 {
-                    // Only update if AD user exists
                     dbUser.NameEnglish = adUser.NameEnglish;
                     dbUser.NameArabic = adUser.NameArabic;
                     dbUser.Email = adUser.Email;
@@ -231,11 +162,9 @@ public class SyncAllUsersFtHandler : IRequestHandler<SyncAllUsersFt, int>
                     dbUser.Mobile = adUser.Mobile;
                     dbUser.IsManager = adUser.IsManager;
                     dbUser.UpdatedById = UpdatedBy;
-                    // Optional: uncomment if you want to update these as well
-                    // dbUser.Surname = adUser.Surname;
-                    // dbUser.Title = adUser.Title;
                 }
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 var res = ex;
             }
