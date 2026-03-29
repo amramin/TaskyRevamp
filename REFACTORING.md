@@ -102,9 +102,9 @@ RuleFor(x => x.CreateTaskDto.Title)  // DUPLICATE
 
 These items represent significant code quality issues, SOLID violations, or maintainability concerns.
 
-### ~~HI-01: God Handlers / Oversized Command Handlers~~ ✅ PARTIALLY RESOLVED
+### ~~HI-01: God Handlers / Oversized Command Handlers~~ ✅ MOSTLY RESOLVED
 
-**Status**: Partially fixed — `ITaskStatusDeterminer` extracted to `TaskyRevamp.Domain/Interfaces/Services/`, implemented in `TaskyRevamp.Services/Tasks/Services/TaskStatusDeterminer.cs`. Status determination and dependency validation logic removed from `CreateTaskCommand`, `UpdateTaskCommand`, and `ChangeTaskProgressCommand`. Remaining: `GetTasksQuery` (filtering/sorting/mapping) and `Authenticate` (AD/JWT/sync) still oversized — tracked for future extraction.
+**Status**: Further fixed — `IActiveDirectoryService` extracted to centralise AD logic. `Authenticate.cs` reduced from 319→196 lines (AD auth + property extraction + manager lookup removed). `SyncADUsers.cs` reduced from 335→195 lines. `SyncAllUsersFT.cs` reduced from 246→185 lines. Remaining: `GetTasksQuery.cs` (442 lines) still oversized with timeline/filter/sort/mapping — tracked for future decomposition.
 
 **Severity**: High | **SOLID Violation**: SRP | **Layer**: Services
 
@@ -113,9 +113,9 @@ Multiple handlers have too many responsibilities, making them hard to test and m
 | Handler | Lines | Responsibilities |
 |---------|-------|-----------------|
 | `GetTasksQuery.cs` | 442 | Timeline filtering (11 types), status/source/type filtering, search mapping, pagination, sorting, culture formatting, DTO mapping |
-| `Authenticate.cs` | 319 | AD authentication, user sync, token generation, delegation handling, manager lookup |
-| `SyncADUsers.cs` | 335 | AD user extraction, bulk updates, property extraction, manager lookup |
-| `SyncAllUsersFT.cs` | 245 | Full AD sync, user extraction, bulk operations |
+| ~~`Authenticate.cs`~~ | ~~319→196~~ | ~~AD authentication, user sync, token generation, delegation handling, manager lookup~~ |
+| ~~`SyncADUsers.cs`~~ | ~~335→195~~ | ~~AD user extraction, bulk updates, property extraction, manager lookup~~ |
+| ~~`SyncAllUsersFT.cs`~~ | ~~245→185~~ | ~~Full AD sync, user extraction, bulk operations~~ |
 | ~~`UpdateTaskCommand.cs`~~ | ~~165~~ | ~~Task updates, assignee management, comment handling, checklist management, status logic~~ |
 | ~~`CreateTaskCommand.cs`~~ | ~~118~~ | ~~Task creation, status determination, comment insertion, checklist creation, dependency validation~~ |
 
@@ -129,45 +129,21 @@ Multiple handlers have too many responsibilities, making them hard to test and m
 
 ---
 
-### HI-03: Duplicated Active Directory User Extraction Logic
+### ~~HI-03: Duplicated Active Directory User Extraction Logic~~ ✅ RESOLVED
 
-**Severity**: High | **SOLID Violation**: DRY | **Layer**: Services
-
-The same AD user property extraction code appears in three places.
-
-**Files affected**:
-- `TaskyRevamp.Services/Jobs/SyncADUsers.cs` (`CheckNewAddedUser` lines 87-94, `CheckUsersChanges` lines 164-170)
-- `TaskyRevamp.Services/Jobs/SyncAllUsersFT.cs` (lines 81-88)
-- `TaskyRevamp.Services/Account/Commands/Authenticate.cs` (`GetUserManager` lines 261-291)
-
-**Recommended fix**: Create an `IActiveDirectoryUserService` abstraction.
+**Status**: Fixed — `IActiveDirectoryService` created in `TaskyRevamp.Domain/Interfaces/Services/`, implemented in `TaskyRevamp.Services/ActiveDirectory/ActiveDirectoryService.cs`. Centralises `ExtractAdUser()`, `ConfigureSearcherProperties()`, `ResolveManagerUsername()`, and `AuthenticateAndGetUser()`. All three files refactored to use the service. ~170 lines of duplicated code eliminated.
 
 ---
 
-### HI-04: Business Logic in Service Layer (Should Be in Domain)
+### ~~HI-04: Business Logic in Service Layer (Should Be in Domain)~~ ✅ RESOLVED
 
-**Severity**: High | **SOLID Violation**: SRP, DIP | **Layer**: Services
-
-Domain rules are implemented in command handlers instead of the domain model, resulting in an anemic domain.
-
-**Examples**:
-- Status determination logic in `CreateTaskCommand.cs`, `UpdateTaskCommand.cs`, `ChangeTaskProgressCommand.cs`
-- Dependency validation in `CreateTaskCommand.cs` (lines 51-59), `UpdateTaskCommand.cs` (lines 85-103)
-- Rejection period calculations in `RejectTaskCommand.cs`
-
-**Recommended fix**: Move business rules to domain entity methods or domain services.
+**Status**: Fixed — Status determination extracted to `ITaskStatusDeterminer` (HI-02). Rejection period logic extracted to `ITaskRejectionService` in `TaskyRevamp.Domain/Interfaces/Services/`, implemented in `TaskyRevamp.Services/Tasks/Services/TaskRejectionService.cs`. `RejectTaskCommand` now delegates to `GetRejectionPeriodDays()` and `CanRejectTask()` instead of inline calculations.
 
 ---
 
-### HI-05: TaskItem God Class
+### ~~HI-05: TaskItem God Class~~ ✅ PARTIALLY RESOLVED
 
-**Severity**: High | **SOLID Violation**: SRP | **Layer**: Domain
-
-`TaskItem.cs` is an oversized aggregate root handling too many concerns: task data, weight/progress calculation, history tracking, escalation, end-date changes, checklist management, comments, attachments, and subtask management.
-
-**File**: `TaskyRevamp.Domain/Models/Task/TaskItem.cs`
-
-**Recommended fix**: Consider splitting into focused aggregates or extracting value objects and domain services.
+**Status**: Partially fixed — `CopyToDto()` and `SetData()` extracted to `TaskItemMappingExtensions` in `TaskyRevamp.Services/Tasks/TaskItemMappingExtensions.cs` as `ToDto()` and `ApplyDto()` extension methods. DTO mapping is no longer a domain concern. All 12+ callers updated. TaskItem reduced from 430→385 lines. Remaining: weight/progress calculation, subtask hierarchy, escalation, and change request logic still in TaskItem — tracked for future extraction.
 
 ---
 

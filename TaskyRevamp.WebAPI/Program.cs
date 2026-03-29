@@ -73,6 +73,7 @@ builder.Services.AddHangfireServer();
 builder.Services.AddScoped<ITaskRepository, TaskRepository>();
 builder.Services.AddScoped<ITaskStatusDeterminer, TaskStatusDeterminer>();
 builder.Services.AddScoped<IActiveDirectoryService, ActiveDirectoryService>();
+builder.Services.AddScoped<ITaskRejectionService, TaskRejectionService>();
 
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<HttpContextAccessor>();

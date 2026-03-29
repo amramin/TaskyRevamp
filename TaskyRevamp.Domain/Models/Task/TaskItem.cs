@@ -3,9 +3,6 @@ using TaskyRevamp.Domain.Models.SystemConfiguration;
 using TaskyRevamp.Domain.Models.Users;
 using TaskyRevamp.Dto.ChangeEndDateRequest;
 using TaskyRevamp.Dto.Enums;
-using TaskyRevamp.Dto.SystemConfiguration;
-using TaskyRevamp.Dto.TaskAssignees;
-using TaskyRevamp.Dto.TaskDto;
 using Type = TaskyRevamp.Domain.Models.SystemConfiguration.Type;
 
 namespace TaskyRevamp.Domain.Models.Task;
@@ -198,29 +195,6 @@ public class TaskItem : Entity, IHasCreationMetaData, IHasUpdateMetaData
 		}
 		return level;
 	}
-	public bool SetData(CreateTaskDto tsakdto)
-	{
-		Id = tsakdto.Id;
-		Description = tsakdto.Description;
-		Title = tsakdto.Title;
-		Progress = tsakdto.ActualProcess;
-		TaskSourceId = tsakdto.SourceId;
-		TaskTypeId = tsakdto.TypeId;
-		StartDate = tsakdto.StartDate;
-		EndDate = tsakdto.EndDate;
-		PriorityId = tsakdto.Priority;
-		Weight = tsakdto.weight;
-		if (Weight.HasValue)
-			_actualWeight = new Weight(Weight.Value);
-		else
-			_actualWeight = new Weight(0);
-		AssignedDepartmentIds = tsakdto.AssignedDepartmentIds;
-		ReminderDate = tsakdto.ReminderDate;
-		Dependencies = tsakdto.Dependencies?.Select(d => new TaskDependencies { TaskItemId = tsakdto.Id, DependentId = d }).ToList();
-        //TaskAssignees = tsakdto.AssignedIds!.Select(userid => new TaskAssignee { TaskItemId = tsakdto.Id, UserId = userid, AssigneeDate = DateTime.Now }).ToList();
-        return true;
-
-	}
 	public void UpdateTitle(string title, User by)
 	{
 		Title = title;
@@ -230,38 +204,6 @@ public class TaskItem : Entity, IHasCreationMetaData, IHasUpdateMetaData
 	{
 		status = taskStus;
 		AddHistoryEntry(by, $"updated the TaskStatus");
-	}
-	public CreateTaskDto CopyToDto()
-	{
-		return new CreateTaskDto
-		{
-			Id = Id,
-			Description = Description,
-			Title = Title,
-			Plannedweight = PlannedWeight.Value,
-			ActualWeight = ActualWeight.Value,
-			weight = Weight,
-			ActualProcess = Progress,
-			PlannedProgress = PlannedProgress.Percentage,
-			//SourceId=Source.Id,
-			CreateDate = CreateDate,
-			UpdateDate = UpdateDate,
-			StartDate = StartDate,
-			EndDate = EndDate,
-			AssignedIds = TaskAssignees?.Select(u => u.UserId).ToList(),
-			AssigneesData = TaskAssignees?.Select(u => new TaskAssigneeDataDto { UserId = u.UserId, AssigneeDate = u.AssigneeDate }).ToList(),
-			DeletionDate = DeleteDate,
-			DeletedBy = DeletedBy?.Username,
-			Priority = PriorityId,
-			CreatedByName = CreatedBy?.Username,
-			UpdatedBy = UpdatedBy?.Username,
-			ReminderDate = ReminderDate,
-			TaskStatusName = status?.NameEnglish,
-			TaskStatus = StatusId,
-			SourceId = TaskSourceId,
-			TypeId = TaskTypeId,
-			AssignedDepartmentIds = AssignedDepartmentIds?.ToList() ?? new List<Guid>()
-		};
 	}
 	public void UpdateDescription(string desc, User by)
 	{
