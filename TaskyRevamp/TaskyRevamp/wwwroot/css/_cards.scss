@@ -439,10 +439,15 @@
     }
   }
   &.task-card {
-    .card-header {
+    .card-header,
+    .card-footer {
       background-color: transparent;
       border-color: var(--light-300);
       padding: 0 0 0.5rem 0;
+    }
+    .card-footer {
+      padding: 0.5rem 0 0 0;
+      margin-top: 1rem;
     }
   }
   &.comments-card {
