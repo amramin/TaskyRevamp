@@ -2,9 +2,13 @@
 
 This document lists the features of TaskyRevamp along with their current status and descriptions. It serves as a reference for contributors, AI agents, and stakeholders.
 
+For detailed documentation of each feature, see the linked documents in the `docs/` directory.
+
 ## Feature Inventory
 
 ### Task Management
+
+> **Detailed documentation**: [docs/task-management.md](docs/task-management.md)
 
 | Feature | Status | Description |
 |---------|--------|-------------|
@@ -16,6 +20,8 @@ This document lists the features of TaskyRevamp along with their current status 
 
 ### Task Collaboration
 
+> **Detailed documentation**: [docs/task-collaboration.md](docs/task-collaboration.md)
+
 | Feature | Status | Description |
 |---------|--------|-------------|
 | Task Assignees | Implemented | Assign one or more users to a task |
@@ -25,6 +31,8 @@ This document lists the features of TaskyRevamp along with their current status 
 | Task Escalation | Implemented | Escalate tasks based on rules or manual action |
 
 ### User and Access Management
+
+> **Detailed documentation**: [docs/authentication-and-authorization.md](docs/authentication-and-authorization.md) | [docs/departments-and-users.md](docs/departments-and-users.md)
 
 | Feature | Status | Description |
 |---------|--------|-------------|
@@ -36,12 +44,16 @@ This document lists the features of TaskyRevamp along with their current status 
 
 ### Organization
 
+> **Detailed documentation**: [docs/departments-and-users.md](docs/departments-and-users.md) | [docs/system-configuration.md](docs/system-configuration.md)
+
 | Feature | Status | Description |
 |---------|--------|-------------|
 | Department Management | Implemented | Create and manage organizational departments |
 | System Configuration | Implemented | Application-wide settings and preferences |
 
 ### Communication
+
+> **Detailed documentation**: [docs/notifications-and-email.md](docs/notifications-and-email.md)
 
 | Feature | Status | Description |
 |---------|--------|-------------|
@@ -50,6 +62,8 @@ This document lists the features of TaskyRevamp along with their current status 
 
 ### Infrastructure
 
+> **Detailed documentation**: [docs/background-jobs.md](docs/background-jobs.md) | [docs/localization.md](docs/localization.md) | [docs/file-management.md](docs/file-management.md) | [docs/search-and-filtering.md](docs/search-and-filtering.md)
+
 | Feature | Status | Description |
 |---------|--------|-------------|
 | Background Jobs | Implemented | Scheduled tasks via Hangfire (cleanup, AD sync) |
@@ -57,6 +71,23 @@ This document lists the features of TaskyRevamp along with their current status 
 | Localization | Implemented | Multi-language UI support via resource files |
 | Swagger API Docs | Implemented | Interactive API documentation at `/swagger` |
 | Real-time Updates | Implemented | Live UI updates via SignalR hubs |
+
+## Detailed Feature Documentation
+
+| Document | Topics Covered |
+|----------|---------------|
+| [Task Management](docs/task-management.md) | Task CRUD, lifecycle, status transitions, dependencies, pinned tasks, recycle bin |
+| [Task Collaboration](docs/task-collaboration.md) | Assignees, comments, checklists, attachments, escalation, change end date requests, history |
+| [Authentication & Authorization](docs/authentication-and-authorization.md) | JWT auth, LDAP/AD integration, privileges, permissions, delegation |
+| [Departments & Users](docs/departments-and-users.md) | Department hierarchy, user management, linking, statistics |
+| [System Configuration](docs/system-configuration.md) | Priority, status, source, type, views, columns, filters, rejection, recycle bin, identity, reports |
+| [Notifications & Email](docs/notifications-and-email.md) | SignalR notifications, email via MailKit, notification templates |
+| [Background Jobs](docs/background-jobs.md) | Hangfire setup, AD sync, recycle bin cleanup, delayed task checks |
+| [Localization](docs/localization.md) | Multi-language (English/Arabic), RTL support, culture switching |
+| [Search & Filtering](docs/search-and-filtering.md) | Dynamic search fields, pagination, sorting, view types |
+| [File Management](docs/file-management.md) | Upload/download, validation, Excel operations, preview |
+| [API Reference](docs/api-reference.md) | All REST API endpoints by controller |
+| [Domain Models](docs/domain-models.md) | All entity models, properties, relationships, enums, value objects |
 
 ## Planned Enhancements
 
