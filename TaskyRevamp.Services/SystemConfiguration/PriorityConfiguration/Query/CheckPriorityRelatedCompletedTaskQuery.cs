@@ -1,3 +1,4 @@
+using TaskyRevamp.Domain.Constants;
 ﻿
 using MediatR;
 using System;
@@ -31,7 +32,7 @@ namespace TaskyRevamp.Services.SystemConfiguration.PriorityConfiguration.Query
 
 
             var data = await _TaskItemRepository.FindBy(
-        k => k.PriorityId == request.Id && k.StatusId == Guid.Parse("C8D504C7-9402-4F91-223C-08DE3318A61C"));
+        k => k.PriorityId == request.Id && k.StatusId == TaskStatusConstants.Completed);
 
             if (data != null && data.Value.Count > 0)
             {

@@ -1,3 +1,4 @@
+using TaskyRevamp.Domain.Constants;
 ﻿
 using DocumentFormat.OpenXml.Bibliography;
 using MediatR;
@@ -37,7 +38,7 @@ namespace TaskyRevamp.Services.SystemConfiguration.PriorityConfiguration.Query
             var olddata = deleted.Value.FirstOrDefault();
             if (olddata != null)
             {
-                var data = await _TaskItemRepository.FindBy(k => k.TaskTypeId == olddata.Id && k.StatusId == Guid.Parse("C8D504C7-9402-4F91-223C-08DE3318A61C"));
+                var data = await _TaskItemRepository.FindBy(k => k.TaskTypeId == olddata.Id && k.StatusId == TaskStatusConstants.Completed);
 
                 if (data != null && data.Value.Count > 0)
                 {

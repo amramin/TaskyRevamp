@@ -111,8 +111,8 @@ public interface IRepository<TEntity> where TEntity : Entity
     Task<DbResponse<List<TEntity>>> FindBy(Expression<Func<TEntity, bool>> predicate,
         params Expression<Func<TEntity, object>>[] includeProperties);
 
-    TEntity FirstOrDefaultAsNoTracking(Expression<Func<TEntity, bool>> filter);
-    TEntity FirstOrDefaultAsNoTracking(Expression<Func<TEntity, bool>> filter, string includeProperties);
+    Task<TEntity> FirstOrDefaultAsNoTrackingAsync(Expression<Func<TEntity, bool>> filter);
+    Task<TEntity> FirstOrDefaultAsNoTrackingAsync(Expression<Func<TEntity, bool>> filter, string includeProperties);
     Task<TEntity> FirstOrDefaultAsSplitQuery(Expression<Func<TEntity, bool>> filter, string includeProperties);
 
     Task BulkInsertAsync(IEnumerable<TEntity> entities);

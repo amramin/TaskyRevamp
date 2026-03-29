@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using MimeKit.Cryptography;
 using System.Linq.Expressions;
+using TaskyRevamp.Domain.Constants;
 using TaskyRevamp.Domain.Interfaces.Repositeries;
 using TaskyRevamp.Domain.Models.Task;
 using TaskyRevamp.Domain.Models.Users;
@@ -46,11 +47,11 @@ public class GetTasksHandler : IRequestHandler<GetTasksQuery, PagedResult<Create
         Expression<Func<TaskItem, bool>> searchExpression = null;
         if (request.IsCompleted)
         {
-            searchExpression = t => t.StatusId == Guid.Parse("C8D504C7-9402-4F91-223C-08DE3318A61C");
+            searchExpression = t => t.StatusId == TaskStatusConstants.Completed;
         }
         else
         {
-            searchExpression = t => t.StatusId != Guid.Parse("D8E94CCE-586A-46D3-223D-08DE3318A61C") && t.StatusId != Guid.Parse("C8D504C7-9402-4F91-223C-08DE3318A61C");
+            searchExpression = t => t.StatusId != TaskStatusConstants.Deleted && t.StatusId != TaskStatusConstants.Completed;
 
         }
         if(request.TaskFilter is null)
@@ -271,7 +272,7 @@ public class GetTasksHandler : IRequestHandler<GetTasksQuery, PagedResult<Create
         foreach (var tsk in res.Items)
         {
             //var assgnedusr = await _userRepository.FindBy(k => tsk.AssignedIds.Contains(k.Id));
-            var CreatorDepartment =  _departmenRepository.FirstOrDefaultAsNoTracking(k => k.Id == (tsk.CreatedBy!.DepartmentId??Guid.Empty));
+            var CreatorDepartment = await _departmenRepository.FirstOrDefaultAsNoTrackingAsync(k => k.Id == (tsk.CreatedBy!.DepartmentId??Guid.Empty));
             tsk.ActualWeight=new Weight(tsk.Weight ?? 0);
             tsk.PlannedWeight = new Weight(tsk.Weight ?? 0);
             CreateTaskDto tasky = tsk.CopyToDto();

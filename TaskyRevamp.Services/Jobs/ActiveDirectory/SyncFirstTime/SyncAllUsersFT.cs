@@ -188,7 +188,8 @@ public class SyncAllUsersFtHandler : IRequestHandler<SyncAllUsersFt, int>
     public async Task<int> SaveUsersToDatabaseBulk(List<User> users,Guid UpdatedBy)
     {
         int AddedUsers = 0;
-        var dbUsers = (_userRepository.AllAsNoTracking().Result.Value
+        var dbUsersResult = await _userRepository.AllAsNoTracking();
+        var dbUsers = (dbUsersResult.Value
               ?? Enumerable.Empty<User>());
         
         var dbUsernames = dbUsers

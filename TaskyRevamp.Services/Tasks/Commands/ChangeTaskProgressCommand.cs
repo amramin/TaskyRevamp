@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TaskyRevamp.Domain.Constants;
 using TaskyRevamp.Domain.Interfaces.Repositeries;
 using TaskyRevamp.Domain.Models.SystemConfiguration;
 using TaskyRevamp.Domain.Models.Task;
@@ -39,30 +40,30 @@ namespace TaskyRevamp.Services.Tasks.Commands
                     {
                         if (task.Progress == 0 && (task.StartDate > DateTime.Now))
                         {
-                            task.StatusId = Guid.Parse("547022EA-EF8C-4FBC-2236-08DE3318A61C");
+                            task.StatusId = TaskStatusConstants.NotStarted;
                         }
                         else if (task.Progress == 0 && (task.StartDate <= DateTime.Now))
                         {
-                            task.StatusId = Guid.Parse("9843AF9D-1389-4740-B428-08DE3D8A77AB");
+                            task.StatusId = TaskStatusConstants.InProgress;
                         }
                         else if (task.Progress > 0 && task.Progress < 100)
                         {
-                            if (task.StatusId !=Guid.Parse("270A78EB-C5CA-475D-2239-08DE3318A61C"))
+                            if (task.StatusId !=TaskStatusConstants.Delayed)
                             {
-                                task.StatusId = Guid.Parse("753404A6-8B18-43F7-2238-08DE3318A61C");
+                                task.StatusId = TaskStatusConstants.PartiallyCompleted;
                             }
                         }
                         else if (task.Progress == 100)
                         {
                             var dependencies = task.Dependencies?.Select(p => p.DependentId).ToList();
                             var tasksnotcompleted = await _taskRepo.FindBy(d => dependencies.Contains(d.Id));
-                            if (tasksnotcompleted.Value.Any(p => p.StatusId != Guid.Parse("C8D504C7-9402-4F91-223C-08DE3318A61C")))
+                            if (tasksnotcompleted.Value.Any(p => p.StatusId != TaskStatusConstants.Completed))
                             {
                                 return false;
                             }
                             else
                             {
-                                task.StatusId = Guid.Parse("6EE4574D-C439-45B4-223A-08DE3318A61C");
+                                task.StatusId = TaskStatusConstants.Done;
                             }
                         }
                     }

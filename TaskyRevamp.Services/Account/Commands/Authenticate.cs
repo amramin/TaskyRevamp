@@ -94,7 +94,7 @@ public class AuthenticateCommandHandler : IRequestHandler<AuthenticateCommand, s
             var tokenExpiry = GetTokenExpirySettingsQuery();
             var delegateUsersNames = new List<string>();
             var delegateUsersIds = new List<Guid>();
-            var delegateUsers = GetDelegatedUsers(user);
+            var delegateUsers = await GetDelegatedUsersAsync(user);
 
             delegateUsersNames.AddRange(delegateUsers.Select(x => x.Username));
             delegateUsersIds.AddRange(delegateUsers.Select(x => x.Id));
@@ -289,19 +289,19 @@ public class AuthenticateCommandHandler : IRequestHandler<AuthenticateCommand, s
 
         return null; // Return null if the manager's sAMAccountName is not found
     }
-    private List<User> GetDelegatedUsers(User user)
+    private async Task<List<User>> GetDelegatedUsersAsync(User user)
     {
         var users = new List<User>();
         users.Add(user);
 
-        var data = _delegateRepository.FindBy(x => x.ToUserId == user.Id && x.FromDate <= DateTime.UtcNow && x.ToDate >= DateTime.UtcNow);
+        var data = await _delegateRepository.FindBy(x => x.ToUserId == user.Id && x.FromDate <= DateTime.UtcNow && x.ToDate >= DateTime.UtcNow);
         if (data == null) { return new List<User>() { user }; }
-        var toUsers = data.Result.Value?.ToList();
+        var toUsers = data.Value?.ToList();
         var guids = toUsers.Select(x => x.FromUserId).ToList();
 
-        var data2 = _userRepository.FindBy(x => guids.Contains(x.Id));
+        var data2 = await _userRepository.FindBy(x => guids.Contains(x.Id));
         if (data2 == null) { return new List<User>() { user }; }
-        var delegateUsers = data2.Result.Value?.ToList();
+        var delegateUsers = data2.Value?.ToList();
         users.AddRange(delegateUsers);
 
         return users;

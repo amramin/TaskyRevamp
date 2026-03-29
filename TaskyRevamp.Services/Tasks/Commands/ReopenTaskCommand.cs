@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TaskyRevamp.Domain.Constants;
 using TaskyRevamp.Domain.Interfaces.Repositeries;
 using TaskyRevamp.Domain.Models.SystemConfiguration;
 using TaskyRevamp.Domain.Repositeries;
@@ -36,9 +37,9 @@ namespace TaskyRevamp.Services.Tasks.Commands
             {
                 throw new Exception("Task not found");
             }
-            if (task.StatusId == Guid.Parse("6EE4574D-C439-45B4-223A-08DE3318A61C"))
+            if (task.StatusId == TaskStatusConstants.Done)
             {
-                task.StatusId = Guid.Parse("e1319fc1-8cb8-495c-223b-08de3318a61c"); //to check
+                task.StatusId = TaskStatusConstants.Reopened;
                 task.Progress = 50;
                 await _taskRepository.UpdateTask(task);
                 TaskComments taskComment = new TaskComments(request.TaskCommentDto.TaskItemId, request.TaskCommentDto.Content, Guid.Parse(_httpContextAccessor.GetUserId()), request.TaskCommentDto.Type);

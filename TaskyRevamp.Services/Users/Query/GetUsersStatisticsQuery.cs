@@ -30,10 +30,14 @@ namespace TaskyRevamp.Services.Users.Query
 		}
 		public async Task<UserStatisticsDto> Handle(GetUsersStatisticsQuery request, CancellationToken cancellationToken)
 		{
-			var users = _userRepository.AllAsNoTracking().Result.Value.ToList();
-			var logedusers = _auditlogrepository.FindBy(u => u.AuditAction == Dto.Enums.AuditAction.Login)?.Result?.Value?.Count() ?? 0;
-			var assigneeusers = _taskassigneerepository.AllAsNoTracking().Result.Value.Select(p => p.UserId).ToList();
-            var creatorusers = _taskitemrepository.AllAsNoTracking().Result.Value.Select(p => p.CreatedById).ToList();
+			var usersResult = await _userRepository.AllAsNoTracking();
+			var users = usersResult.Value.ToList();
+			var loginResult = await _auditlogrepository.FindBy(u => u.AuditAction == Dto.Enums.AuditAction.Login);
+			var logedusers = loginResult?.Value?.Count() ?? 0;
+			var assigneeResult = await _taskassigneerepository.AllAsNoTracking();
+			var assigneeusers = assigneeResult.Value.Select(p => p.UserId).ToList();
+			var creatorResult = await _taskitemrepository.AllAsNoTracking();
+            var creatorusers = creatorResult.Value.Select(p => p.CreatedById).ToList();
             var mergedUsers = assigneeusers
 							.Union(creatorusers)
 							.ToList();
