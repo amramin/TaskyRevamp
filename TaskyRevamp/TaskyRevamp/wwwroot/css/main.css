@@ -2778,14 +2778,15 @@ fieldset:disabled .btn.btn-primary {
   border-bottom-width: 1px;
   border-radius: var(--bs-border-radius);
 }
-.card.task-card .card-header, .card.task-card .card-footer {
+.card.task-card .card-header,
+.card.task-card .card-footer {
   background-color: transparent;
   border-color: var(--light-300);
   padding: 0 0 0.5rem 0;
 }
 .card.task-card .card-footer {
   padding: 0.5rem 0 0 0;
-  margin-top: 0.5rem;
+  margin-top: 1rem;
 }
 .card.comments-card .comment-container {
   display: -webkit-box;
