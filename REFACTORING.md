@@ -102,9 +102,9 @@ RuleFor(x => x.CreateTaskDto.Title)  // DUPLICATE
 
 These items represent significant code quality issues, SOLID violations, or maintainability concerns.
 
-### ~~HI-01: God Handlers / Oversized Command Handlers~~ ✅ MOSTLY RESOLVED
+### ~~HI-01: God Handlers / Oversized Command Handlers~~ ✅ RESOLVED
 
-**Status**: Further fixed — `IActiveDirectoryService` extracted to centralise AD logic. `Authenticate.cs` reduced from 319→196 lines (AD auth + property extraction + manager lookup removed). `SyncADUsers.cs` reduced from 335→195 lines. `SyncAllUsersFT.cs` reduced from 246→185 lines. Remaining: `GetTasksQuery.cs` (442 lines) still oversized with timeline/filter/sort/mapping — tracked for future decomposition.
+**Status**: Fully resolved — `GetTasksQuery.cs` reduced from 442→163 lines by extracting `TaskTimelineFilterService`, `TaskViewFilterService`, `TaskDtoEnricher`, and `TaskSortingService` into `TaskyRevamp.Services/Tasks/Services/`. Timeline filter duplication eliminated. DTO enrichment, sorting, and filter override logic all in dedicated services.
 
 **Severity**: High | **SOLID Violation**: SRP | **Layer**: Services
 
@@ -112,14 +112,12 @@ Multiple handlers have too many responsibilities, making them hard to test and m
 
 | Handler | Lines | Responsibilities |
 |---------|-------|-----------------|
-| `GetTasksQuery.cs` | 442 | Timeline filtering (11 types), status/source/type filtering, search mapping, pagination, sorting, culture formatting, DTO mapping |
+| ~~`GetTasksQuery.cs`~~ | ~~442→163~~ | ~~Timeline filtering, status/source/type filtering, search mapping, pagination, sorting, culture formatting, DTO mapping~~ |
 | ~~`Authenticate.cs`~~ | ~~319→196~~ | ~~AD authentication, user sync, token generation, delegation handling, manager lookup~~ |
 | ~~`SyncADUsers.cs`~~ | ~~335→195~~ | ~~AD user extraction, bulk updates, property extraction, manager lookup~~ |
 | ~~`SyncAllUsersFT.cs`~~ | ~~245→185~~ | ~~Full AD sync, user extraction, bulk operations~~ |
 | ~~`UpdateTaskCommand.cs`~~ | ~~165~~ | ~~Task updates, assignee management, comment handling, checklist management, status logic~~ |
 | ~~`CreateTaskCommand.cs`~~ | ~~118~~ | ~~Task creation, status determination, comment insertion, checklist creation, dependency validation~~ |
-
-**Recommended fix**: Extract shared logic into domain services (e.g., `ITaskStatusService`, `IActiveDirectoryUserService`, `ITaskValidationService`).
 
 ---
 
@@ -141,9 +139,9 @@ Multiple handlers have too many responsibilities, making them hard to test and m
 
 ---
 
-### ~~HI-05: TaskItem God Class~~ ✅ PARTIALLY RESOLVED
+### ~~HI-05: TaskItem God Class~~ ✅ RESOLVED
 
-**Status**: Partially fixed — `CopyToDto()` and `SetData()` extracted to `TaskItemMappingExtensions` in `TaskyRevamp.Services/Tasks/TaskItemMappingExtensions.cs` as `ToDto()` and `ApplyDto()` extension methods. DTO mapping is no longer a domain concern. All 12+ callers updated. TaskItem reduced from 430→385 lines. Remaining: weight/progress calculation, subtask hierarchy, escalation, and change request logic still in TaskItem — tracked for future extraction.
+**Status**: Fully resolved — `CopyToDto()`/`SetData()` extracted to `TaskItemMappingExtensions` as `ToDto()`/`ApplyDto()`. Weight/progress computation extracted to `TaskWeightCalculator` in `TaskyRevamp.Domain/Services/TaskWeightCalculator.cs`. TaskItem properties now delegate to the calculator. TaskItem reduced from 430→301 lines. Remaining domain behaviour (escalation, change requests, subtask management) is appropriate for an aggregate root.
 
 ---
 

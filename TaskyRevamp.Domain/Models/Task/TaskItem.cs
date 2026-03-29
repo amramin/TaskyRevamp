@@ -1,6 +1,7 @@
 using TaskyRevamp.Domain.Interfaces;
 using TaskyRevamp.Domain.Models.SystemConfiguration;
 using TaskyRevamp.Domain.Models.Users;
+using TaskyRevamp.Domain.Services;
 using TaskyRevamp.Dto.ChangeEndDateRequest;
 using TaskyRevamp.Dto.Enums;
 using Type = TaskyRevamp.Domain.Models.SystemConfiguration.Type;
@@ -29,94 +30,23 @@ public class TaskItem : Entity, IHasCreationMetaData, IHasUpdateMetaData
 	Weight _plannedWeight;
 	public Weight PlannedWeight
 	{
-		get
-		{
-			if (!_subtasks.Any())
-				return _plannedWeight;
-
-			double averageWeight = _subtasks.Average(st => st.PlannedWeight.Value);
-			int roundedWeight = (int)Math.Round(averageWeight, MidpointRounding.AwayFromZero);
-			int finalWeight = Math.Min(100, roundedWeight);
-
-			return new Weight(finalWeight);
-		}
-		set
-		{
-			if(!Weight.HasValue)
-			{
-				_plannedWeight = new Weight(0);
-				return;
-			}
-			var CountWeight = (double)(PlannedProgress.Percentage * Weight) / 100;
-			var RoundedValue = (int)Math.Round(CountWeight, MidpointRounding.AwayFromZero);
-			_plannedWeight = new Weight(RoundedValue);
-		}
+		get => TaskWeightCalculator.CalculatePlannedWeight(_subtasks.AsReadOnly(), _plannedWeight);
+		set => _plannedWeight = TaskWeightCalculator.ComputePlannedWeightValue(Weight, PlannedProgress);
 	}
 	Weight _actualWeight;
 	public Weight ActualWeight
 	{
-		get
-		{
-			if (!_subtasks.Any())
-				return _actualWeight;
-
-			double averageWeight = _subtasks.Average(st => st.ActualWeight.Value);
-			int roundedWeight = (int)Math.Round(averageWeight, MidpointRounding.AwayFromZero);
-			int finalWeight = Math.Min(100, roundedWeight);
-
-			return new Weight(finalWeight);
-		}
-		set
-		{
-			if (!Weight.HasValue)
-			{
-				_actualWeight = new Weight(0);
-				return;
-			}
-			var CountWeight = (double)(Progress * Weight) / 100;
-			var RoundedValue = (int)Math.Round(CountWeight, MidpointRounding.AwayFromZero);
-			_actualWeight = new Weight(RoundedValue);
-		}
+		get => TaskWeightCalculator.CalculateActualWeight(_subtasks.AsReadOnly(), _actualWeight);
+		set => _actualWeight = TaskWeightCalculator.ComputeActualWeightValue(Weight, Progress);
 	}
 	public Progress PlannedProgress
 	{
-		get
-		{
-			if (_subtasks.Any())
-			{
-				double averageProgress = _subtasks.Average(st => st.PlannedProgress.Percentage);
-				int roundedProgress = (int)Math.Round(averageProgress, MidpointRounding.AwayFromZero);
-				int finalProgress = Math.Min(100, roundedProgress);
-				return new Progress(finalProgress);
-			}
-
-			var today = DateTime.UtcNow.Date;
-			var startDate = StartDate!.Value.Date;
-
-			if (today < startDate) return new Progress(0);
-
-			int totalDuration = Duration;
-			int timeElapsed = (today - startDate).Days + 1;
-
-			double percentage = (double)Math.Min(timeElapsed, totalDuration) / totalDuration * 100.0;
-			int roundedPercentage = (int)Math.Round(percentage, MidpointRounding.AwayFromZero);
-			return new Progress(roundedPercentage);
-		}
+		get => TaskWeightCalculator.CalculatePlannedProgress(_subtasks.AsReadOnly(), StartDate, Duration);
 	}
 	Progress _actualProgress;
 	public Progress ActualProgress
 	{
-		get
-		{
-			if (!_subtasks.Any())
-				return _actualProgress;
-
-			double averageProgress = _subtasks.Average(st => st.ActualProgress.Percentage);
-			int roundedProgress = (int)Math.Round(averageProgress, MidpointRounding.AwayFromZero);
-			int finalProgress = Math.Min(100, roundedProgress);
-
-			return new Progress(finalProgress);
-		}
+		get => TaskWeightCalculator.CalculateActualProgress(_subtasks.AsReadOnly(), _actualProgress);
 		set => _actualProgress = value;
 	}
 	public StatusSettings status { set; get; }
