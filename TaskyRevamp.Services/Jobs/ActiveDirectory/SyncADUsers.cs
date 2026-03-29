@@ -17,7 +17,7 @@ public class SyncAdUsers
 
 private readonly IRepository<User> _userRepository;
 private readonly IActiveDirectoryService _adService;
-IOptions<LdapSettings> _ldapPath;
+private readonly IOptions<LdapSettings> _ldapPath;
 
 public SyncAdUsers(IOptions<LdapSettings> ldapSettings, IRepository<User> userRepository, IActiveDirectoryService adService)
 {
