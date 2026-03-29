@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using TaskyRevamp.Domain;
 using TaskyRevamp.Domain.Constants;
 using TaskyRevamp.Domain.Interfaces;
+using TaskyRevamp.Domain.Interfaces.Services;
 using TaskyRevamp.Domain.Models.SystemConfiguration;
 using TaskyRevamp.Domain.Models.Task;
 using TaskyRevamp.Domain.Models.Users;
@@ -24,36 +25,34 @@ public record CreateTaskCommand(CreateTaskDto CreateTaskDto) : IRequest<string>;
 public class CreateTaskHandler : IRequestHandler<CreateTaskCommand, string>
 {
 	private readonly IRepository<TaskItem> _taskRepository;
-	private readonly IRepository<StatusSettings> _statusSettings;
 	private readonly IRepository<User> _userRepository;
 	private readonly IRepository<Department> _depRepository;
 	private readonly IRepository<TaskComments> _taskCommentRepository;
 	private readonly IRepository<TaskChecklist> _taskChecklistRepository;
+	private readonly ITaskStatusDeterminer _statusDeterminer;
 
-	public CreateTaskHandler(IRepository<TaskItem> taskRepository, IRepository<User> userRepository, IRepository<StatusSettings> statusSettings,
-		IRepository<Department> depRepository, IRepository<TaskComments> taskCommentRepository, IRepository<TaskChecklist> taskChecklistRepository)
+	public CreateTaskHandler(IRepository<TaskItem> taskRepository, IRepository<User> userRepository,
+		IRepository<Department> depRepository, IRepository<TaskComments> taskCommentRepository,
+		IRepository<TaskChecklist> taskChecklistRepository, ITaskStatusDeterminer statusDeterminer)
 	{
 		_taskRepository = taskRepository;
 		_userRepository = userRepository;
 		_depRepository = depRepository;
-		_statusSettings = statusSettings;
 		_taskCommentRepository = taskCommentRepository;
 		_taskChecklistRepository = taskChecklistRepository;
+		_statusDeterminer = statusDeterminer;
 	}
 	public async Task<string> Handle(CreateTaskCommand request, CancellationToken cancellationToken)
 	{
 		var user = await _userRepository.FindByKey(request.CreateTaskDto.CreatedBy.Value);
 		if (user is null || user.IsFailure || user.Value is null)
 			throw new Exception("UserNotFound");
-		var TaskSatuses = await _statusSettings.All();
 		var departments = await _depRepository.FindBy(k => request.CreateTaskDto.AssignedDepartmentIds.Contains(k.Id));
 		if (departments is null || departments.IsFailure || departments.Value is null)
 			throw new Exception("DepartmentsNotFound");
 		if (request.CreateTaskDto.ActualProcess == 100 && request.CreateTaskDto.Dependencies is not null && request.CreateTaskDto.Dependencies.Count > 0)
 		{
-			var dependencies = request.CreateTaskDto.Dependencies?.Select(p => p).ToList();
-			var tasksnotcompleted = await _taskRepository.FindBy(d => dependencies.Contains(d.Id));
-			if (tasksnotcompleted.Value.Any(p => p.StatusId != TaskStatusConstants.Completed))
+			if (!await _statusDeterminer.AreDependenciesCompleted(request.CreateTaskDto.Dependencies))
 			{
 				throw new Exception("DependencyError");
 			}
@@ -67,33 +66,11 @@ public class CreateTaskHandler : IRequestHandler<CreateTaskCommand, string>
 			, new Weight(weight), user.Value.Id, departments.Value.ToList(),
 			request.CreateTaskDto.AssignedIds, request.CreateTaskDto.ReminderDate, request.CreateTaskDto.ActualProcess, weight, request.CreateTaskDto.Dependencies);
 
-		if (TaskSatuses is not null)
-		{
+		task.StatusId = _statusDeterminer.DetermineStatus(
+			request.CreateTaskDto.ActualProcess,
+			request.CreateTaskDto.StartDate,
+			request.CreateTaskDto.EndDate);
 
-            if (DateOnly.FromDateTime(request.CreateTaskDto.EndDate?.Date ?? default) < DateOnly.FromDateTime(DateTime.UtcNow.Date) && request.CreateTaskDto.ActualProcess < 100)
-			{
-				task.StatusId = TaskStatusConstants.Delayed;
-			}
-			else
-			{
-				if (request.CreateTaskDto.ActualProcess == 0 && (request.CreateTaskDto.StartDate > DateTime.Now))
-				{
-					task.StatusId = TaskStatusConstants.NotStarted;
-				}
-				else if (request.CreateTaskDto.ActualProcess == 0 && (request.CreateTaskDto.StartDate <= DateTime.Now))
-				{
-					task.StatusId = TaskStatusConstants.InProgress;
-				}
-				else if (request.CreateTaskDto.ActualProcess > 0 && request.CreateTaskDto.ActualProcess < 100)
-				{
-					task.StatusId = TaskStatusConstants.PartiallyCompleted;
-				}
-				else if (request.CreateTaskDto.ActualProcess == 100)
-				{
-					task.StatusId = TaskStatusConstants.Done;
-				}
-			}
-		}
 		await _taskRepository.Insert(task);
 		if (!string.IsNullOrEmpty(request.CreateTaskDto.Content))
 		{

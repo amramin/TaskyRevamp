@@ -102,7 +102,9 @@ RuleFor(x => x.CreateTaskDto.Title)  // DUPLICATE
 
 These items represent significant code quality issues, SOLID violations, or maintainability concerns.
 
-### HI-01: God Handlers / Oversized Command Handlers
+### ~~HI-01: God Handlers / Oversized Command Handlers~~ ✅ PARTIALLY RESOLVED
+
+**Status**: Partially fixed — `ITaskStatusDeterminer` extracted to `TaskyRevamp.Domain/Interfaces/Services/`, implemented in `TaskyRevamp.Services/Tasks/Services/TaskStatusDeterminer.cs`. Status determination and dependency validation logic removed from `CreateTaskCommand`, `UpdateTaskCommand`, and `ChangeTaskProgressCommand`. Remaining: `GetTasksQuery` (filtering/sorting/mapping) and `Authenticate` (AD/JWT/sync) still oversized — tracked for future extraction.
 
 **Severity**: High | **SOLID Violation**: SRP | **Layer**: Services
 
@@ -114,25 +116,16 @@ Multiple handlers have too many responsibilities, making them hard to test and m
 | `Authenticate.cs` | 319 | AD authentication, user sync, token generation, delegation handling, manager lookup |
 | `SyncADUsers.cs` | 335 | AD user extraction, bulk updates, property extraction, manager lookup |
 | `SyncAllUsersFT.cs` | 245 | Full AD sync, user extraction, bulk operations |
-| `UpdateTaskCommand.cs` | 165 | Task updates, assignee management, comment handling, checklist management, status logic |
-| `CreateTaskCommand.cs` | 118 | Task creation, status determination, comment insertion, checklist creation, dependency validation |
+| ~~`UpdateTaskCommand.cs`~~ | ~~165~~ | ~~Task updates, assignee management, comment handling, checklist management, status logic~~ |
+| ~~`CreateTaskCommand.cs`~~ | ~~118~~ | ~~Task creation, status determination, comment insertion, checklist creation, dependency validation~~ |
 
 **Recommended fix**: Extract shared logic into domain services (e.g., `ITaskStatusService`, `IActiveDirectoryUserService`, `ITaskValidationService`).
 
 ---
 
-### HI-02: Duplicated Status Determination Logic
+### ~~HI-02: Duplicated Status Determination Logic~~ ✅ RESOLVED
 
-**Severity**: High | **SOLID Violation**: DRY | **Layer**: Services
-
-Identical task status determination logic is copy-pasted across three handlers.
-
-**Files affected**:
-- `TaskyRevamp.Services/Tasks/Commands/CreateTaskCommand.cs` (lines 72-95)
-- `TaskyRevamp.Services/Tasks/Commands/UpdateTaskCommand.cs` (lines 57-104)
-- `TaskyRevamp.Services/Tasks/Commands/ChangeTaskProgressCommand.cs` (lines 40-68)
-
-**Recommended fix**: Extract to a `TaskStatusDeterminer` domain service or move into the `TaskItem` aggregate root as a `DetermineStatus()` method.
+**Status**: Fixed — All three handlers now delegate to `ITaskStatusDeterminer.DetermineStatus()` and `AreDependenciesCompleted()`. Duplicated if/else chains removed.
 
 ---
 
