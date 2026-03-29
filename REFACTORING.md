@@ -20,53 +20,15 @@ This document lists all identified clean code violations, code smells, and refac
 
 These items represent architectural issues, potential runtime failures, or security concerns that should be addressed first.
 
-### CR-01: Hardcoded Status GUIDs Throughout Service Layer
+### ~~CR-01: Hardcoded Status GUIDs Throughout Service Layer~~ ✅ RESOLVED
 
-**Severity**: Critical | **SOLID Violation**: DRY, OCP | **Layer**: Services
-
-Status GUIDs are hardcoded as magic strings in multiple handlers, making the system fragile and impossible to configure without code changes.
-
-**Files affected**:
-- `TaskyRevamp.Services/Tasks/Commands/CreateTaskCommand.cs` (lines 55, 74, 80, 84, 88, 92)
-- `TaskyRevamp.Services/Tasks/Commands/UpdateTaskCommand.cs` (lines 59, 65, 69, 76, 80, 91, 96, 101)
-- `TaskyRevamp.Services/Tasks/Commands/ChangeTaskProgressCommand.cs` (lines 42, 46, 50, 52, 59, 65)
-- `TaskyRevamp.Services/Tasks/Commands/CompleteTaskCommand.cs` (lines 33, 35)
-- `TaskyRevamp.Services/Tasks/Commands/CheckDelayedTasksCommand.cs` (lines 28-31, 38)
-- `TaskyRevamp.Services/Tasks/Queries/GetTasksQuery.cs` (lines 49, 53, 60, 141-145)
-- `TaskyRevamp.Client/Pages/Task/TaskListView.razor` (line 92)
-
-**Example of the problem**:
-```csharp
-task.StatusId = Guid.Parse("270A78EB-C5CA-475D-2239-08DE3318A61C");  // Delayed
-task.StatusId = Guid.Parse("547022EA-EF8C-4FBC-2236-08DE3318A61C");  // Pending
-task.StatusId = Guid.Parse("9843AF9D-1389-4740-B428-08DE3D8A77AB");  // In Progress
-```
-
-**Recommended fix**: Extract to a `TaskStatusConstants` class or load from configuration/database at startup.
+**Status**: Fixed — `TaskStatusConstants` class created in `TaskyRevamp.Domain/Constants/` and all hardcoded GUIDs replaced across 20+ files.
 
 ---
 
-### CR-02: Sync-Over-Async Anti-Pattern (`.Result` Calls)
+### ~~CR-02: Sync-Over-Async Anti-Pattern (`.Result` Calls)~~ ✅ RESOLVED
 
-**Severity**: Critical | **Layer**: Services, Infrastructure
-
-Blocking `.Result` calls on async methods cause thread-pool starvation and potential deadlocks.
-
-**Files affected**:
-- `TaskyRevamp.Services/Jobs/SyncAllUsersFT.cs` (line 191)
-- `TaskyRevamp.Services/SystemConfiguration/ViewTaskSettings/Commands/UpdateViewTaskSettingActivationCommand.cs` (line 28)
-- `TaskyRevamp.Services/SystemConfiguration/TypeConfiguration/Queries/GetTypeConfigurationViewQuery.cs` (lines 41, 42, 48, 49)
-- `TaskyRevamp.Services/SystemConfiguration/SourceConfiguration/Queries/GetSourceConfigurationQueryView.cs` (lines 37, 38, 43, 44)
-- `TaskyRevamp.Services/Account/Commands/Authenticate.cs` (lines 299, 304)
-- `TaskyRevamp.Services/Users/Queries/GetUsersStatisticsQuery.cs` (lines 33-35)
-- `TaskyRevamp.Infrastructure/EfRepository.cs` (lines 95-99, 103-115)
-
-**Example**:
-```csharp
-var dbUsers = _userRepository.AllAsNoTracking().Result.Value  // BLOCKING
-```
-
-**Recommended fix**: Replace all `.Result` with proper `await` calls.
+**Status**: Fixed — All `.Result` calls replaced with proper `await` patterns. `FirstOrDefaultAsNoTracking` renamed to async `FirstOrDefaultAsNoTrackingAsync` in `IRepository<T>` and `EfRepository`. `GetDelegatedUsers` in `Authenticate.cs` converted to async `GetDelegatedUsersAsync`.
 
 ---
 
