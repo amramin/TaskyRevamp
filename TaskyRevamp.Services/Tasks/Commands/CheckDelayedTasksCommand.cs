@@ -28,6 +28,7 @@ namespace TaskyRevamp.Services.Tasks.Commands
             {
                 TaskStatusConstants.Delayed,
                 TaskStatusConstants.Done,
+                TaskStatusConstants.Reopened,
                 TaskStatusConstants.Completed,
                 TaskStatusConstants.Deleted,
             };

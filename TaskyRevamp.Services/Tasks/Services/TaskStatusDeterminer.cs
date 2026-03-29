@@ -31,7 +31,7 @@ public class TaskStatusDeterminer : ITaskStatusDeterminer
             if (isPastEndDate)
                 return TaskStatusConstants.Delayed;
 
-            if (startDate > DateTime.Now)
+            if (startDate > DateTime.UtcNow)
                 return TaskStatusConstants.NotStarted;
 
             return TaskStatusConstants.InProgress;
@@ -60,6 +60,9 @@ public class TaskStatusDeterminer : ITaskStatusDeterminer
             return true;
 
         var result = await _taskRepository.FindBy(d => dependencyTaskIds.Contains(d.Id));
-        return result.Value?.All(p => p.StatusId == TaskStatusConstants.Completed) ?? true;
+        if (result.Value is null)
+            return false;
+
+        return result.Value.All(p => p.StatusId == TaskStatusConstants.Completed);
     }
 }
