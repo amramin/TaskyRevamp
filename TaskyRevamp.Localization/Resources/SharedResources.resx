@@ -1655,4 +1655,7 @@ This task will be moved to the Recycle Bin and can be restored later or permanen
   <data name="LinkedWithPrivilagesUsers" xml:space="preserve">
     <value> Users with privileges</value>
   </data>
+  <data name="ViewedBy" xml:space="preserve">
+    <value>Viewed by</value>
+  </data>
 </root>
