@@ -530,7 +530,7 @@
     <value>الإدارات</value>
   </data>
   <data name="AddDepartment" xml:space="preserve">
-    <value>إضافة إدارة</value>
+    <value>أضف إدارة</value>
   </data>
   <data name="DepartmentParent" xml:space="preserve">
     <value>الإدارة الرئيسية </value>
@@ -1657,9 +1657,6 @@
   <data name="LinkedWithPrivilagesUsers" xml:space="preserve">
     <value>المستخدمون المرتبطون بامتيازات</value>
   </data>
-  <data name="rejectedsuccessfully" xml:space="preserve">
-    <value>تم رفض تاريخ الطلب بنجاح</value>
-  </data>
   <data name="CommentHint" xml:space="preserve">
     <value>أضف تعليقًا. استخدم @ للإشارة إلى شخص ما</value>
   </data>
@@ -1668,5 +1665,11 @@
   </data>
   <data name="ViewedBy" xml:space="preserve">
     <value>تمت المشاهدة بواسطة</value>
+  </data>
+  <data name="rejectedsuccessfully" xml:space="preserve">
+    <value>تم رفض تاريخ الطلب بنجاح</value>
+  </data>
+  <data name="linkOneUser" xml:space="preserve">
+    <value>ربط المستخدم</value>
   </data>
 </root>
