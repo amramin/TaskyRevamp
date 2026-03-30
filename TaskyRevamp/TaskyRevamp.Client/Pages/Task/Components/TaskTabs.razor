@@ -2,44 +2,53 @@
 @inject IStringLocalizer<SharedResources> Loc
 
 
-<ul class="nav nav-pills ">
-    <li class="nav-item">
-        <a class="nav-link @(ActiveTab == "details" ? "active" : "")" @onclick='() => OnTabClick("details")'
-           style="cursor: pointer;">@Loc["Details"]</a>
-    </li>
+<ul class="nav nav-pills justify-content-between">
+    <li>
+        <ul class="nav  border-0 p-0">
+            <li class="nav-item">
+                <a class="nav-link @(ActiveTab == "details" ? "active" : "")" @onclick='() => OnTabClick("details")'
+                   style="cursor: pointer;">@Loc["Details"]</a>
+            </li>
 
-    <li class="nav-item">
-        <a class="nav-link @(ActiveTab == "attachment" ? "active" : "")" @onclick='() => OnTabClick("attachment")'
-           style="cursor: pointer;">@Loc["Attachments"]</a>
+            <li class="nav-item">
+                <a class="nav-link @(ActiveTab == "attachment" ? "active" : "")"
+                   @onclick='() => OnTabClick("attachment")' style="cursor: pointer;">@Loc["Attachments"]</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link @(ActiveTab == "subtasks" ? "active" : "")" @onclick='() => OnTabClick("subtasks")'
+                       style="cursor: pointer;">
+                    @Loc["Subtasks"]
+                    <span class="badge bg-primary ms-1"></span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link @(ActiveTab == "dependency" ? "active" : "")"
+                       @onclick='() => OnTabClick("dependency")' style="cursor: pointer;">
+                    @Loc["dependencyTitle"]
+                    <span class="badge bg-primary ms-1"></span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link @(ActiveTab == "enddate" ? "active" : "")" @onclick='() => OnTabClick("enddate")'
+                   style="cursor: pointer;">@Loc["ChangeEndDatesRequests"]</a>
+            </li>
+        </ul>
     </li>
-    <li class="nav-item">
-        <a class="nav-link @(ActiveTab == "subtasks" ? "active" : "")" @onclick='() => OnTabClick("subtasks")'
-               style="cursor: pointer;">
-            @Loc["Subtasks"]
-            <span class="badge bg-primary ms-1"></span>
-        </a>
+    <li>
+        <ul class="nav  border-0 p-0">
+            <li class="nav-item ms-auto">
+                <button class="btn btn-link nav-link"> <span class="icon">
+                    <SVGCrud SVGType="SVGCrud.SVGTypeEnum.ClockRefresh"></SVGCrud>
+                </span> @Loc["History"]</button>
+            </li>
+            <li class="nav-item">
+                <button class="btn btn-link nav-link"> <span class="icon">
+                    <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Escalation"></SVGCrud>
+                </span> @Loc["Escalation"]</button>
+            </li>
+        </ul>
     </li>
-    <li class="nav-item">
-        <a class="nav-link @(ActiveTab == "dependency" ? "active" : "")" @onclick='() => OnTabClick("dependency")'
-               style="cursor: pointer;">
-            @Loc["dependencyTitle"]
-            <span class="badge bg-primary ms-1"></span>
-        </a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link @(ActiveTab == "enddate" ? "active" : "")" @onclick='() => OnTabClick("enddate")'
-           style="cursor: pointer;">@Loc["ChangeEndDatesRequests"]</a>
-    </li>
-    <li class="nav-item ms-auto">
-        <button class="btn btn-link nav-link"> <span class="icon">
-            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.ClockRefresh"></SVGCrud>
-        </span> @Loc["History"]</button>
-    </li>
-    <li class="nav-item">
-        <button class="btn btn-link nav-link"> <span class="icon">
-            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Escalation"></SVGCrud>
-        </span> @Loc["Escalation"]</button>
-    </li>
+   
 </ul>
 
 
