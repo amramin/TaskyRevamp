@@ -70,25 +70,9 @@ public class GetTaskByIdHandler : IRequestHandler<GetTaskQuery, CreateTaskDto>
 		taskDto.UpdatedBy = currentCulture == "ar" ? res.UpdatedBy?.NameArabic : res.UpdatedBy?.NameEnglish;
 		taskDto.CreatorDepartment = currentCulture == "ar" ? res.CreatedBy?.Department?.NameArabic : res.CreatedBy?.Department?.NameEnglish;
 		taskDto.ChangeEndDateRequestCount = res.ChangeEndDateRequests?.Count(c => c.Status == ChangeRequestStatus.Pending)??0;
-		//      var assignedUserIds = res.AssignedIds ?? res.Assignees?.Select(a => a.User.Id).ToList() ?? new List<Guid>();
-		//List<User> assignedUsers;
-		//if (res.Assignees != null && res.Assignees.Any() && res.Assignees.First().User != null)
-		//{
-		//	assignedUsers = res.Assignees.Select(a => a.User).Where(u => u != null).ToList();
-		//}
-		//else
-		//{
-		//	var findRes = await _userRepository.FindBy(u => assignedUserIds.Contains(u.Id));
-		//	assignedUsers = findRes.Value!.ToList();
-		//}
-		//var orderedUsers = assignedUserIds.Select(id => assignedUsers.FirstOrDefault(u => u.Id == id)).Where(u => u != null).ToList();
-		//var fullNamesList = orderedUsers.Select(u => { 
-		//	var full = currentCulture == "ar"? u!.NameArabic ?? u.NameEnglish: u!.NameEnglish ?? u.NameArabic;
-		//	return full;
-		//}).Where(x => !string.IsNullOrWhiteSpace(x)).ToList();
-		//taskDto.AssigneduserNames = string.Join(",", fullNamesList);
+		var assignedUsers = res.TaskAssignees.Select(a => a.User).Where(u => u != null).ToList();
+		taskDto.assignedUsers = assignedUsers.Select(u => u.CopyToDto()).ToList();
 		taskDto.AssigneduserNames = string.Join(",", res?.TaskAssignees?.Select(u => currentCulture == "ar" ? u.User?.NameArabic ?? "" : u.User?.NameEnglish ?? "").ToList());
-
 		var departments = await _departmentRepository.FindBy(d => res.AssignedDepartmentIds.Contains(d.Id));
 		var deptDict = departments.Value!.ToDictionary(d => d.Id, d => currentCulture == "ar" ? d.NameArabic : d.NameEnglish);
 		var orderedDeptNames = res.AssignedDepartmentIds.Where(id => deptDict.ContainsKey(id)).Select(id => deptDict[id]).Distinct().ToList();

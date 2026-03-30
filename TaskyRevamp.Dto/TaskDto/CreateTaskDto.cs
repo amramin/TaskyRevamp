@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TaskyRevamp.Dto.Account;
 using TaskyRevamp.Dto.ChangeEndDateRequest;
 using TaskyRevamp.Dto.GeneralDto;
 using TaskyRevamp.Dto.TaskAssignees;
@@ -74,4 +75,5 @@ public class CreateTaskDto
 	[System.Text.Json.Serialization.JsonIgnore]
 	public List<IBrowserFile> BrowserFiles { get; set; } = new();
 	public List<TaskChecklistDto> Checklists { get; set; } = new();
+	public List<UserDto> assignedUsers { get; set; } = new();
 }
