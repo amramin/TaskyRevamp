@@ -5,54 +5,23 @@
 @inject IStringLocalizer<SharedResources> Loc
 @inject SourceSettingConsumer _sourceSettingConsumer
 
-    <div class="mb-3">
-        <label class="form-label">@Loc["Source"]<span class="text-danger">*</span></label>
-        <SearchableMultiDropdownOffline @key="AvailableSources"
+<div class="mb-3">
+    <label class="form-label">@Loc["Source"]<span class="text-danger">*</span></label>
+    <SearchableMultiDropdownOffline @key="AvailableSources"
                                     TInput="SourceDto" TOutput="Guid" Datasource="SourceList"
-                                        TextSelector="(s => s.DisplayedName)" OutputSelector="(s => s.Id)"
-                                        SelectedOptions="SelectedSources"
+                                    TextSelector="(s => s.DisplayedName)" OutputSelector="(s => s.Id)"
+                                    SelectedOptions="SelectedSources"
                                     MinCharacterCount="1"
-                                        IsDisabled="IsViewMode" 
+                                    IsDisabled="IsViewMode"
                                     SearchInputPlaceHolder="@Loc["Search"]" PlaceHolder="@($"{Loc["Select"]}")" NoMatchPlaceHolder="@Loc["NoResultsFound"]"
                                     SelectAllPlaceHolder="@Loc["SelectAll"]" AllowSelectAll="SourceList.Any()" />
-@*         @if (IsSaveClicked && (SelectedSources == null || !SelectedSources.Any()))
-        {
-            <div class="text-danger small mt-1">@Loc["Required"]</div>
-        }
-
-        @if (SelectedSources != null && SelectedSources.Any())
-        {
-        <div class="my-2">
-            <button class="btn btn-primary" @onclick="RemoveAll">@Loc["Deslectall"]</button>
-        </div>
-        <div class="mt-2 d-flex flex-wrap gap-1">
-                @foreach (var sourceId in SelectedSources)
-                {
-                    var sourceItem = SourceList.FirstOrDefault(s => s.Id == sourceId);
-                    if (sourceItem != null)
-                    {
-                    <div class="my-2">
-                    </div>
-                    <span class="badge bg-white text-black border border-dark d-flex align-items-center gap-1 py-1 px-2 small">
-                            @sourceItem.DisplayedName
-                            @if (!IsViewMode)
-                            {
-                                <button type="button" class="btn-close btn-close-black btn-close-sm ms-1"
-                                        aria-label="Remove" style="height:0.9rem; width:0.9rem;"
-                                        @onclick="() => RemoveSource(sourceId)"></button>
-                            }
-                        </span>
-                    }
-                }
-            </div>
-        }
-     *@
-    </div>
+</div>
 
 @code {
     [Parameter] public TaskModuleExternalDepartmentDto Item { get; set; }
     [Parameter] public bool IsViewMode { get; set; }
     [Parameter] public bool IsSaveClicked { get; set; }
+    [Parameter] public string Mode { get; set; }
     private List<SourceDto> SourceList { get; set; } = new();
     private List<Guid> SelectedSources
     {
@@ -66,16 +35,22 @@
         var sourceRes = await _sourceSettingConsumer.GetSourcesWithoutPagination();
         if (sourceRes.Success && sourceRes != null && sourceRes.Data != null)
         {
-            SourceList = sourceRes.Data.Where(s => s.IsActive == true).ToList();
-        }
+            var allSources = sourceRes.Data.ToList();
+            if (Mode == "Edit")
+                SourceList = allSources;
+            else
+                SourceList = allSources.Where(s => s.IsActive).ToList();
 
+            var selectedSourceIds = SelectedSources ?? new List<Guid>();
+            var missingSelected = allSources.Where(s => selectedSourceIds.Contains(s.Id) && !SourceList.Any(x => x.Id == s.Id)).ToList();
+            SourceList.AddRange(missingSelected);
+        }
     }
     private void OnSelectedChanged(List<Guid> selected)
     {
         SelectedSources = selected;
         StateHasChanged();
     }
-
     private void RemoveSource(Guid id)
     {
         SelectedSources.Remove(id);

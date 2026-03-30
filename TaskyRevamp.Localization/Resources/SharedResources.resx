@@ -1655,4 +1655,10 @@ This task will be moved to the Recycle Bin and can be restored later or permanen
   <data name="LinkedWithPrivilagesUsers" xml:space="preserve">
     <value> Users with privileges</value>
   </data>
+  <data name="CommentHint" xml:space="preserve">
+    <value>Add a comment. Use @ to mention a person.</value>
+  </data>
+  <data name="Post" xml:space="preserve">
+    <value>Post</value>
+  </data>
 </root>

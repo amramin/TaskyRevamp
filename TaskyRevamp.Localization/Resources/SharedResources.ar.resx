@@ -1132,7 +1132,7 @@
     <value>هل انت متأكد انك تريد الغاء التعديل</value>
   </data>
   <data name="Edited" xml:space="preserve">
-    <value>تم التعديل</value>
+    <value>تم تعديله</value>
   </data>
   <data name="Ares" xml:space="preserve">
     <value>هل انت متأكد من الحذف؟</value>
@@ -1618,12 +1618,6 @@
   <data name="UsersList" xml:space="preserve">
     <value>قائمة المستخدمين</value>
   </data>
-  <data name="approvedsuccessfully" xml:space="preserve">
-    <value>تم الموافقة على تاريخ الطلب بنجاح</value>
-  </data>
-  <data name="rejectedsuccessfully" xml:space="preserve">
-    <value>تم رفض تاريخ الطلب بنجاح</value>
-  </data>
   <data name="isManagerTilte" xml:space="preserve">
     <value>مدير</value>
   </data>
@@ -1665,5 +1659,11 @@
   </data>
   <data name="rejectedsuccessfully" xml:space="preserve">
     <value>تم رفض تاريخ الطلب بنجاح</value>
+  </data>
+  <data name="CommentHint" xml:space="preserve">
+    <value>أضف تعليقًا. استخدم @ للإشارة إلى شخص ما</value>
+  </data>
+  <data name="Post" xml:space="preserve">
+    <value>نشر </value>
   </data>
 </root>

@@ -746,6 +746,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add a comment. Use @ to mention a person..
+        /// </summary>
+        public static string CommentHint {
+            get {
+                return ResourceManager.GetString("CommentHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Comments.
         /// </summary>
         public static string Comments {
@@ -2767,6 +2776,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string PlannedWeight {
             get {
                 return ResourceManager.GetString("PlannedWeight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Post.
+        /// </summary>
+        public static string Post {
+            get {
+                return ResourceManager.GetString("Post", resourceCulture);
             }
         }
         

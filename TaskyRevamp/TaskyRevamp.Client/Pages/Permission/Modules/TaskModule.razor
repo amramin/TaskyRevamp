@@ -69,7 +69,7 @@
                 List<TaskModuleExternalDepartmentDto>())
         {
             <ExternalDepartmentExtendedFields @key="dept.DepartmentId" Item="dept" DepartmentName="@GetDepartmentName(dept.DepartmentId)" IsSaveClicked="@IsSaveClicked"
-                                              OnRemove="RemoveDepartment" IsViewMode="@IsViewMode" IsExpanded="@(IsViewMode || Mode == "Edit")" />
+                                 Mode="@Mode" OnRemove="RemoveDepartment" IsViewMode="@IsViewMode" IsExpanded="@(IsViewMode || Mode == "Edit")" />
         }
     </div>
 </div>
