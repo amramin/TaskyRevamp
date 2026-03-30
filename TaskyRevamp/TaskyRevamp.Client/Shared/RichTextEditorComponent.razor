@@ -1,8 +1,8 @@
 ﻿@using Syncfusion.Blazor
 @using Syncfusion.Blazor.RichTextEditor
-@inject IStringLocalizer<SharedResources> Loc
 @using System.Globalization
 @using TaskyRevamp.Dto.Account
+@inject IStringLocalizer<SharedResources> Loc
 
 @if (!IsLoaded)
 {
@@ -16,24 +16,26 @@
 }
 else
 {
-        <SfRichTextEditor @ref="rte"
-                          ID="@EditorId"
-                          SaveInterval="0"
-                          Value="@InternalContent"
-                          ValueChanged="OnValueChange"
-                          EnablePersistence="false"
-                          EnableRtl="EnableRtl"
-                          ShowCharCount="true"
-                          MaxLength="3000"
-                          CssClass="@(EnableRtl ? "arabic-rte" : "")">
-            <RichTextEditorToolbarSettings Items="@Tools" />
-            <RichTextEditorPasteCleanupSettings Prompt="false" PlainText="false" KeepFormat="true" DeniedTags="@DeniedTags" />
-            <RichTextEditorQuickToolbarSettings Link="@Link" />
-        </SfRichTextEditor>       
+    <SfRichTextEditor @ref="rte"
+                      ID="@EditorId"
+                      SaveInterval="0"
+                      Value="@InternalContent"
+                      ValueChanged="OnValueChange"
+                      EnablePersistence="false"
+                      EnableRtl="EnableRtl"
+                      ShowCharCount="true"
+                      MaxLength="3000"
+                      CssClass="@(EnableRtl ? "arabic-rte" : "")">
+        <RichTextEditorToolbarSettings Items="@Tools" />
+        <RichTextEditorPasteCleanupSettings Prompt="false" PlainText="false" KeepFormat="true" DeniedTags="@DeniedTags" />
+        <RichTextEditorQuickToolbarSettings Link="@Link" />
+    </SfRichTextEditor>
 
 }
 <style>
-    .arabic-rte .e-rte-content { text-align: right; }
+    .arabic-rte .e-rte-content {
+        text-align: right;
+    }
 </style>
 
 @code {
@@ -82,6 +84,7 @@ else
         new LinkToolbarItemModel() { Command = LinkToolbarCommand.Edit },
         new LinkToolbarItemModel() { Command = LinkToolbarCommand.UnLink }
     };
+
 
     public async Task<string> GetValueAsync() => IsLoaded ? await rte.GetXhtmlAsync() : InternalContent;
     private string InternalContent

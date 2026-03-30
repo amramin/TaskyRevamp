@@ -45,19 +45,22 @@
                                              Content="@newComment" ButtonText="@Loc["AddDescription"]"> </RichTextEditorComponent>
                 </div>
             </div>
-            <div class="action-btn-list justify-content-end">
-                <button class="btn btn-light" @onclick="CancelComment" disabled="@IsCommentEmpty(newComment)">
-                    @Loc["Cancel"]
-                </button>
-                <button class="btn btn-primary end-icon" @onclick="AddComment"
-                        disabled="@IsCommentEmpty(newComment)">
-                    @Loc[buttonName]
-                    <span class="icon">
-                        <SVGCrud SVGType="SVGCrud.SVGTypeEnum.PaperPlane"></SVGCrud>
-                    </span>
-                </button>
+            @if (!string.IsNullOrWhiteSpace(newComment))
+            {
+                <div class="action-btn-list justify-content-end">
+                    <button class="btn btn-light" @onclick="CancelComment" disabled="@IsCommentEmpty(newComment)">
+                        @Loc["Cancel"]
+                    </button>
+                    <button class="btn btn-primary end-icon" @onclick="AddComment"
+                            disabled="@IsCommentEmpty(newComment)">
+                        @Loc[buttonName]
+                        <span class="icon">
+                            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.PaperPlane"></SVGCrud>
+                        </span>
+                    </button>
 
-            </div>
+                </div>
+            }
             @if (comments != null && comments.Any())
             {
                 <div class="mt-4">
@@ -73,8 +76,8 @@
                                         <div class="d-flex align-items-center gap-3 mb-2">
                                             <h5 class="headline-8 mb-0">@comment.CreatedByName</h5>
                                             <span class="x-small-medium-text">
-                                                @if (comment.TaskComment.UpdateDate != null && 
-                                                    comment.TaskComment.UpdateDate != comment.TaskComment.CreateDate)
+                                                @if (comment.TaskComment.UpdateDate != null &&
+                                                                                    comment.TaskComment.UpdateDate != comment.TaskComment.CreateDate)
                                                 {
                                                     <span>@Loc["Edited"] : </span>
                                                     @FormatDateTime(comment.TaskComment.UpdateDate.Value)
@@ -83,7 +86,7 @@
                                                 {
                                                     <span>@FormatDateTime(comment.TaskComment.CreateDate)</span>
                                                 }
-   
+
                                             </span>
                                         </div>
                                         @if (comment.TaskComment.Type == Dto.Enums.CommentType.Reject)
@@ -97,7 +100,7 @@
                                                 @((MarkupString)comment.TaskComment.Content)
                                             </div>
                                         }
-  
+
                                     </div>
                                 </div>
                                 @if (currentId == comment.TaskComment.CreatedById || isCreator)
@@ -114,11 +117,11 @@
                                         </button>
                                     </div>
                                 }
-  
+
                             </div>
                         </div>
                     }
- 
+
                 </div>
             }
             else
@@ -275,9 +278,9 @@
         StateHasChanged();
 
     }
-    private void OnDescriptionChanged()
+    private void OnDescriptionChanged(string newValue)
     {
-        newComment = RichTextEditorComponentRefDescriptionEnglish.GetContent();
+        newComment = newValue;
         StateHasChanged();
     }
     private bool IsCommentEmpty(string input)
