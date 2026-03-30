@@ -4527,6 +4527,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Viewed by.
+        /// </summary>
+        public static string ViewedBy {
+            get {
+                return ResourceManager.GetString("ViewedBy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to View options.
         /// </summary>
         public static string ViewOptions {
