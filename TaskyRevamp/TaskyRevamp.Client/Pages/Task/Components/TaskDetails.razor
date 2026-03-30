@@ -5,11 +5,12 @@
     <div class="card-header " style="cursor: pointer;" @onclick="ToggleSection">
         <button type="button" class="btn colapse-btn ">
             <h6 class="headline-6 mb-0">@Loc["Details"]</h6>
-            <span class="icon"> @if (ShowSection)
+            <span class="icon">
+                @if (ShowSection)
                 {
                     <SVGCrud SVGType="SVGCrud.SVGTypeEnum.ChevronDown"></SVGCrud>
                 }
-    else
+                else
                 {
                     <SVGCrud SVGType="SVGCrud.SVGTypeEnum.ChevronUp"></SVGCrud>
                 }
@@ -68,7 +69,6 @@
                                 <span class="x-small-medium-text">@Task?.weight</span>
                             </div>
                         </div>
-
                         <div class="info-item">
                             <span class="squer-medium-icon">
                                 <span class="icon">
@@ -80,8 +80,6 @@
                                 <span class="x-small-medium-text">@Task?.Plannedweight%</span>
                             </div>
                         </div>
-
-                       
                         <div class="info-item">
                             <span class="squer-medium-icon">
                                 <span class="icon">
@@ -107,7 +105,6 @@
                             </div>
                             </div>
                         </div> *@
-                        
                         <div class="info-item">
                             <span class="squer-medium-icon">
                                 <span class="icon">
@@ -123,17 +120,17 @@
                 </div>
                 <div class="col-md-6">
                     <div class="d-flex flex-column gap-3">
-                    <div class="info-item">
-                        <span class="squer-medium-icon">
-                            <span class="icon">
-                                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.TaskType"></SVGCrud>
+                        <div class="info-item">
+                            <span class="squer-medium-icon">
+                                <span class="icon">
+                                    <SVGCrud SVGType="SVGCrud.SVGTypeEnum.TaskType"></SVGCrud>
+                                </span>
                             </span>
-                        </span>
-                        <div class="text-content">
-                            <h6 class="headline-8 mb-1">@Loc["Type"]</h6>
-                            <span class="x-small-medium-text">@Task?.TypeName</span>
+                            <div class="text-content">
+                                <h6 class="headline-8 mb-1">@Loc["Type"]</h6>
+                                <span class="x-small-medium-text">@Task?.TypeName</span>
+                            </div>
                         </div>
-                    </div>
                         <div class="info-item">
                             <span class="squer-medium-icon">
                                 <span class="icon">
@@ -145,57 +142,51 @@
                                 <span class="x-small-medium-text">@Task?.CreateDate?.ToString(Loc["LocalizeDate"])</span>
                             </div>
                         </div>
-                    <div class="info-item">
-                        <span class="squer-medium-icon">
-                            <span class="icon">
-                                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.DataFlow"></SVGCrud>
+                        <div class="info-item">
+                            <span class="squer-medium-icon">
+                                <span class="icon">
+                                    <SVGCrud SVGType="SVGCrud.SVGTypeEnum.DataFlow"></SVGCrud>
+                                </span>
                             </span>
-                        </span>
-                        <div class="text-content">
-                            <h6 class="headline-8 mb-1">@Loc["AssignedToDepartment"]</h6>
-                            @* <span class="x-small-medium-text">@Task?.AssignedDepartmentName</span> *@
-                            <div class="d-flex flex-wrap gap-1">
-                                @foreach (var dept in Task.AssignedDepartmentName.Split(','))
-                                {
-                                    <span class="badge badge-sm badge-light">
-                                        @dept
-                                    </span>
-                                }
+                            <div class="text-content">
+                                <h6 class="headline-8 mb-1">@Loc["AssignedToDepartment"]</h6>
+                                @* <span class="x-small-medium-text">@Task?.AssignedDepartmentName</span> *@
+                                <div class="d-flex flex-wrap gap-1">
+                                    @foreach (var dept in Task!.AssignedDepartmentName!.Split(','))
+                                    {
+                                        <span class="badge badge-sm badge-light">@dept</span>
+                                    }
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="info-item">
-                        <span class="squer-medium-icon">
-                            <span class="icon">
-                                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Users"></SVGCrud>
+                        <div class="info-item">
+                            <span class="squer-medium-icon">
+                                <span class="icon">
+                                    <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Users"></SVGCrud>
+                                </span>
                             </span>
-                        </span>
-                        <div class="text-content">
-                            <h6 class="headline-8 mb-1">@Loc["AssignedTo"]</h6>
-                            @* <span class="x-small-medium-text">@Task?.AssignedDepartmentName</span> *@
-                            <div class="d-flex flex-wrap gap-1">
-                            @foreach (var name in (Task?.AssigneduserNames ?? "").Split(",",
-                                                                                                                                                                                                                                                                                                                                                                                                                        StringSplitOptions.RemoveEmptyEntries).Select(n => n.Trim()))
-                                {
-                                    <div class="initial" 
-                                        title="@name">
-                                        @GetInitials(name)
-                                    </div>
-                                }
+                            <div class="text-content">
+                                <h6 class="headline-8 mb-1">@Loc["AssignedTo"]</h6>
+                                @* <span class="x-small-medium-text">@Task?.AssignedDepartmentName</span> *@
+                                <div class="d-flex flex-wrap gap-1">
+                                    @foreach (var name in (Task?.AssigneduserNames ?? "").Split(",", StringSplitOptions.RemoveEmptyEntries).Select(n => n.Trim()))
+                                    {
+                                        <div class="initial" title="@name">@GetInitials(name)</div>
+                                    }
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="info-item">
-                        <span class="squer-medium-icon">
-                            <span class="icon">
-                                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Target"></SVGCrud>
+                        <div class="info-item">
+                            <span class="squer-medium-icon">
+                                <span class="icon">
+                                    <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Target"></SVGCrud>
+                                </span>
                             </span>
-                        </span>
-                        <div class="text-content">
-                            <h6 class="headline-8 mb-1">@Loc["ActualWeight"]</h6>
-                            <span class="x-small-medium-text">@Task?.ActualWeight%</span>
+                            <div class="text-content">
+                                <h6 class="headline-8 mb-1">@Loc["ActualWeight"]</h6>
+                                <span class="x-small-medium-text">@Task?.ActualWeight%</span>
+                            </div>
                         </div>
-                    </div>
                         <div class="info-item">
                             <span class="squer-medium-icon">
                                 <span class="icon">
@@ -216,28 +207,24 @@
                             <div class="text-content">
                                 <h6 class="headline-8 mb-1">@Loc["Dependency"]</h6>
                                 <div class="d-flex flex-wrap gap-1">
-                                    @foreach (var dept in Task.DependencyNames.Split(','))
+                                    @foreach (var dep in Task!.DependencyNames!.Split(','))
                                     {
-                                        <span class="badge badge-sm badge-light">
-                                            @dept
-                                        </span>
+                                        <span class="badge badge-sm badge-light">@dep</span>
                                     }
                                 </div>
                             </div>
                         </div>
-                   
-                        @if (Task?.ActualProcess == 100 && (Task?.TaskStatusName == "Pending Review" || Task?.TaskStatusName ==
-                                                                                                                                                                                                                "Completed"))
-                    {
-                        <div class="d-flex gap-3">
-                            <i class="bi bi-building fs-5"></i>
-                            <div>
-                                <small class="text-muted d-block">@Loc["DeliveryDate"]</small>
-                                <span class="fw-medium">@Task?.DeliveryDate?.ToString(Loc["LocalizeDate"])</span>
+                        @if (Task?.ActualProcess == 100 && (Task?.TaskStatusName == "Pending Review" || Task?.TaskStatusName == "Completed"))
+                        {
+                            <div class="d-flex gap-3">
+                                <i class="bi bi-building fs-5"></i>
+                                <div>
+                                    <small class="text-muted d-block">@Loc["DeliveryDate"]</small>
+                                    <span class="fw-medium">@Task?.DeliveryDate?.ToString(Loc["LocalizeDate"])</span>
+                                </div>
                             </div>
-                        </div>
-                    }
-                            </div>
+                        }
+                    </div>
                 </div>
             </div>
         </div>
@@ -245,14 +232,9 @@
 </div>
 
 @code {
-    [Parameter]
-    public bool ShowSection { get; set; }
-
-    [Parameter]
-    public EventCallback<bool> ShowSectionChanged { get; set; }
-
-    [Parameter]
-    public CreateTaskDto? Task { get; set; }
+    [Parameter] public bool ShowSection { get; set; }
+    [Parameter] public EventCallback<bool> ShowSectionChanged { get; set; }
+    [Parameter] public CreateTaskDto? Task { get; set; }
 
     private async Task ToggleSection()
     {

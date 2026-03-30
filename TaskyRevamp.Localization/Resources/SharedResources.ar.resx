@@ -1666,4 +1666,7 @@
   <data name="Post" xml:space="preserve">
     <value>نشر </value>
   </data>
+  <data name="ViewedBy" xml:space="preserve">
+    <value>تمت المشاهدة بواسطة</value>
+  </data>
 </root>
