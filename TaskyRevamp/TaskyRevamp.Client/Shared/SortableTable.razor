@@ -1,6 +1,20 @@
 ﻿@using TaskyRevamp.Client.Pages
+@inject IStringLocalizer<SharedResources> Loc
 @typeparam TItem
-
+<style>
+    .w-icon svg {
+        width: 20px !important;
+        height: 20px !important;
+    }
+</style>
+<div class="table-hint-box">
+    @if (!string.IsNullOrEmpty(CurrentHint))
+    {
+        <div class="alert alert-info p-1">
+            @Loc[CurrentHint]
+        </div>
+    }
+</div>
 <table class="table">
     <thead>
         <tr>
@@ -9,7 +23,17 @@
                 <th style="@(col.IsSortable ? "cursor:pointer;" : "cursor:default;")"
                     @onclick="@(col.IsSortable ? (() => OnSort(col.Field)) : null)">
                     @col.DisplayName
-
+                    @if (!string.IsNullOrEmpty(col.Hint))
+                    {
+                        <span class="icon" 
+                              style="cursor:pointer;width:20px;"
+                              @onmouseover="() => OnHintHover(col.Hint)"
+                              @onmouseout="() => OnHintHover(null)"
+                              @onclick:stopPropagation="true">
+                
+                            <span class="w-icon"><SVGCrud SVGType="SVGCrud.SVGTypeEnum.Info"></SVGCrud></span>
+                        </span>
+                    }
                     @if (col.IsSortable)
                     {
                         <span class="ms-1">
@@ -71,7 +95,7 @@
     [Parameter] public bool? SortAscending { get; set; } // ✅ nullable to support "no sort"
     [Parameter] public EventCallback<(string Column, bool? Ascending)> OnSortRequested { get; set; }
     [Parameter] public RenderFragment RowTemplate { get; set; } = default!;
-
+    public string? CurrentHint { get; set; } = null;
     private async Task OnSort(string columnName)
     {
         // cycle through states
@@ -93,5 +117,9 @@
         }
 
         await OnSortRequested.InvokeAsync((SortColumn, SortAscending));
+    }
+    public void OnHintHover(string hint)
+    {
+        CurrentHint = hint;
     }
 }

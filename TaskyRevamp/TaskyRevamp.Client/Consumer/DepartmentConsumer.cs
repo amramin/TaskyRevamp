@@ -13,10 +13,10 @@ namespace TaskyRevamp.Client.Consumer
         {
             _taskyService = taskyService;
         }
-        public async Task<CommonApiResponse<List<DepartmentDto>>> GetDepartmentsForDDL()
+        public async Task<CommonApiResponse<List<DepartmentDto>>> GetDepartmentsForDDL(bool isload = true)
         {
             var url = $"api/Department/GetDepartmentsForDDL";
-            var res = await _taskyService.GetFromJsonAsync<CommonApiResponse<List<DepartmentDto>>>(url);
+            var res = await _taskyService.GetFromJsonAsync<CommonApiResponse<List<DepartmentDto>>>(url,isload);
             return res;
         }
 

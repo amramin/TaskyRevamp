@@ -1,5 +1,6 @@
 ﻿using Stingray.Components.MultiSelectComponent.Dtos;
 using System.Net.Http.Json;
+using System.Runtime.CompilerServices;
 using TaskyRevamp.Client.Pages.User;
 using TaskyRevamp.Dto.Account;
 using TaskyRevamp.Dto.Department;
@@ -17,9 +18,9 @@ namespace TaskyRevamp.Client.Consumer
 		{
 			_taskyService = taskyService;
 		}
-		public async Task<CommonApiResponse<List<UserDto>>> GetUsers()
-		{
-			var ret = await _taskyService.GetFromJsonAsync<CommonApiResponse<List<UserDto>>>($"api/User/GetUsers");
+		public async Task<CommonApiResponse<List<UserDto>>> GetUsers(bool isload = true)
+        {
+			var ret = await _taskyService.GetFromJsonAsync<CommonApiResponse<List<UserDto>>>($"api/User/GetUsers",isload);
 			return ret;
 		}
 		public async Task<CommonApiResponse<PagedResult<UserDtoWithName>>> GetUsersWithPagination(int pageNumber, int pageSize, string sortByColumnName, bool sortAscending, List<SearchFieldUser> searchFields = null, string searchText = null)

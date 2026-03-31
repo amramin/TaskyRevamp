@@ -1,3 +1,7 @@
+using MediatR;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using System.Collections.Generic;
 using System.DirectoryServices;
 using System.DirectoryServices.ActiveDirectory;
@@ -5,17 +9,15 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Net.NetworkInformation;
 using System.Security.Claims;
 using System.Text;
-using MediatR;
-using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
+using TaskyRevamp.Domain.Models.AuditLog;
 using TaskyRevamp.Domain.Models.Users;
-using UserDelegations;
 using TaskyRevamp.Domain.Repositeries;
+using TaskyRevamp.Dto.Account;
+using TaskyRevamp.Dto.Enums;
 using TaskyRevamp.Dto.GeneralDto;
 using TaskyRevamp.Services;
 using TaskyRevamp.Services.Exceptions;
-using TaskyRevamp.Dto.Enums;
-using TaskyRevamp.Dto.Account;
+using UserDelegations;
 
 
 namespace TaskyRevamp.Services.Account.Commands;
@@ -28,13 +30,16 @@ public class AuthenticateCommandHandler : IRequestHandler<AuthenticateCommand, s
     private readonly IRepository<UserDelegation> _delegateRepository;
     private readonly IOptions<AppSettings> _appSettingsOptions;
     IOptions<LdapSettings> _ldapPath;
-
-    public AuthenticateCommandHandler(IRepository<User> userRepository, IRepository<UserDelegation> delegateRepository, IOptions<AppSettings> appSettingsOptions, IOptions<LdapSettings> ldapSettings)
+    private readonly IRepository<AuditLog> _auditlog;
+    private readonly IHttpContextAccessor _httpContextAccessor;
+    public AuthenticateCommandHandler(IRepository<User> userRepository, IRepository<UserDelegation> delegateRepository, IOptions<AppSettings> appSettingsOptions, IOptions<LdapSettings> ldapSettings, IRepository<AuditLog> auditlog, IHttpContextAccessor httpContextAccessor)
     {
         _userRepository = userRepository;
         _delegateRepository = delegateRepository;
         _appSettingsOptions = appSettingsOptions;
         _ldapPath = ldapSettings;
+        _auditlog = auditlog;
+        _httpContextAccessor=httpContextAccessor;
     }
 
     private const int DefaultTokenExpiry = 24;
@@ -82,11 +87,6 @@ public class AuthenticateCommandHandler : IRequestHandler<AuthenticateCommand, s
                 }
 
             }
-            else
-            {
-                var userResponse = await _userRepository.FindBy(x => x.Username == request.Username);
-                user = userResponse.Value.FirstOrDefault()!;
-            }
 
 
             var tokenHandler = new JwtSecurityTokenHandler();
@@ -117,7 +117,26 @@ public class AuthenticateCommandHandler : IRequestHandler<AuthenticateCommand, s
                     new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);
-
+            var res = await _auditlog.FindBy(u => u.UserId == user.Id);
+            if (res.Value is not null && res.Value.Count() > 0)
+            {
+                var AudietLogged = res.Value?.FirstOrDefault(u => u.AuditAction == AuditAction.Login);
+                AudietLogged.LastLogin = DateTime.UtcNow;
+                await _auditlog.Update(AudietLogged);
+                await _auditlog.SaveChangesAsync();
+            }
+            else
+            {
+                var loggeduser = new AuditLog
+                {
+                    UserId = user.Id,
+                    CreateDate = DateTime.UtcNow,
+                    FirstLogin = DateTime.UtcNow,
+                    AuditAction = AuditAction.Login,
+                    IpAddress = _httpContextAccessor.HttpContext?.Connection?.RemoteIpAddress?.ToString()
+                };
+                await _auditlog.Insert(loggeduser);
+            }
             return tokenHandler.WriteToken(token);
         }
         catch (Exception ex)

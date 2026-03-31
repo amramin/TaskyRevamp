@@ -213,18 +213,18 @@
     }
     private async Task changeViewType(int type)
     {
-        taskListRefs.Clear();
+        // taskListRefs.Clear();
         ViewType = type;
         if (ViewType == (int)ViewTypes.SourceView)
         {
-            var res = await _sourceSettingConsumer.GetSourcesView(currentPage, pageSize, true);
+            var res = await _sourceSettingConsumer.GetSourcesView(currentPage, pageSize, true,Isload:false);
             sources = res?.Data?.Items.ToList()!;
             totalCount = res!.Data!.TotalCount;
             totalPages = res.Data.TotalPages;
         }
         else if (ViewType == (int)ViewTypes.TypeView)
         {
-            var res = await _typeSettingConsumer.GetTypesView(currentPage, pageSize, true);
+            var res = await _typeSettingConsumer.GetTypesView(currentPage, pageSize, true,isload:false);
             Types = res.Data!.Items.ToList();
             totalCount = res.Data.TotalCount;
             totalPages = res.Data.TotalPages;
@@ -279,14 +279,14 @@
     }
     private async Task LoadSources()
     {
-        var res = await _sourceSettingConsumer.GetSourcesView(currentPage, pageSize, true);
+        var res = await _sourceSettingConsumer.GetSourcesView(currentPage, pageSize, true,Isload:false);
         sources = res?.Data?.Items.ToList()!;
         totalCount = res.Data.TotalCount;
         totalPages = res.Data.TotalPages;
     }
     private async Task LoadTypes()
     {
-        var res = await _typeSettingConsumer.GetTypesView(currentPage, pageSize, true);
+        var res = await _typeSettingConsumer.GetTypesView(currentPage, pageSize, true,isload:false);
         Types = res?.Data?.Items.ToList()!;
         totalCount = res.Data.TotalCount;
         totalPages = res.Data.TotalPages;

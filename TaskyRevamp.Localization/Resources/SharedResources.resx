@@ -943,7 +943,7 @@
     <value>Level</value>
   </data>
   <data name="DepartmentHasUsersCannotDelete" xml:space="preserve">
-    <value>Can't delete, the department has an active users</value>
+    <value>This department cannot be deleted because it has linked users or sub-departments. Please re-assign or remove all dependencies before proceeding with deletion</value>
   </data>
   <data name="CannotDeletePrivilege" xml:space="preserve">
     <value>You can't delete this privilege, it's linked to a user</value>
@@ -1663,5 +1663,17 @@ This task will be moved to the Recycle Bin and can be restored later or permanen
   </data>
   <data name="ViewedBy" xml:space="preserve">
     <value>Viewed by</value>
+  </data>
+  <data name="SubDepartmentUsers" xml:space="preserve">
+    <value>Sub dept users</value>
+  </data>
+  <data name="LinkedUsersHint" xml:space="preserve">
+    <value>Display the total number of users in this department</value>
+  </data>
+  <data name="UsersWithTasksHint" xml:space="preserve">
+    <value>Display the total number of users in this department who are linked to a task as creator or assignee</value>
+  </data>
+  <data name="SubDepartmentUsersHint" xml:space="preserve">
+    <value>Display the total number of users in this department, including all users in its sub-departments</value>
   </data>
 </root>

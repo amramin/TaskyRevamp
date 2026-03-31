@@ -33,16 +33,16 @@
         @if (ShowPermissionFields)
         {
             <label class="form-label ">@Loc["Permissions"] <span class="text-danger">*</span></label>
-            <SearchableMultiDropdownOffline TInput="Permission" TOutput="int" @key="AvailablePermissions" Datasource="AvailablePermissions"
+            <SearchableMultiDropdownOffline TInput="Permission" TOutput="int" @key="AvailablePermissions" Datasource="PermissionList"
                 TextSelector="(p => Loc[p.ToString()])" OutputSelector="(p => (int)p)" SelectedOptions="Item.PermissionId"
-                                            SelectedOptionsChanged="OnPermissionsChanged" IsDisabled="IsViewMode" SearchInputPlaceHolder="@Loc["Search"]" PlaceHolder="@($"{Loc["Select"]}")" NoMatchPlaceHolder="@Loc["NoResultsFound"]"
+                                            IsDisabled="IsViewMode" SearchInputPlaceHolder="@Loc["Search"]" PlaceHolder="@($"{Loc["Select"]}")" NoMatchPlaceHolder="@Loc["NoResultsFound"]"
                                             SelectAllPlaceHolder="@Loc["SelectAll"]" MinCharacterCount="1" />
             @if (IsSaveClicked && Item.IsActive && (Item.PermissionId == null || !Item.PermissionId.Any()))
             {
                 <div class="text-danger small mt-1">@Loc["Required"]</div>
 
             }
-            @if (Item.PermissionId != null && Item.PermissionId.Any())
+@*             @if (Item.PermissionId != null && Item.PermissionId.Any())
             {
                 <div class="mt-2">
                     <div class="d-flex flex-wrap gap-1">
@@ -60,7 +60,7 @@
                         }
                     </div>
                 </div>
-            }
+            } *@
         }
     </div>
     @if(ShowToggleFields){

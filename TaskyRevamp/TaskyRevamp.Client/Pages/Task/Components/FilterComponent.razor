@@ -273,7 +273,7 @@
         datePickerLocale = isRtlCulture ? "ar" : "en";
         enableRtl = isRtlCulture;
         dateGroupDir = isRtlCulture ? "rtl" : "ltr";
-        var res = await _filterFieldsSettingConsumer.GetFilterFieldsSettings();
+        var res = await _filterFieldsSettingConsumer.GetFilterFieldsSettings(isload: false);
         if (res.Success)
         {
             var settings = res.Data;
@@ -289,12 +289,12 @@
             }
 
         }
-        var taskTypesTask = _typeSettingConsumer.GetTaskTypesForDDL();
-        var taskSourcesTask = _sourceSettingConsumer.GetTaskSourcesForDDL();
-        var usersTask = _userConsumer.GetUsers();
-        var departmentsTask = _departmentConsumer.GetDepartmentsForDDL();
-        var prioritiesTask = _prioritySettingConsumer.GetPriorities();
-        var StatusList = _statusSettingConsumer.GetStatusConfiguration();
+        var taskTypesTask = _typeSettingConsumer.GetTaskTypesForDDL(isload:false);
+        var taskSourcesTask = _sourceSettingConsumer.GetTaskSourcesForDDL(isload:false);
+        var usersTask = _userConsumer.GetUsers(isload: false);
+        var departmentsTask = _departmentConsumer.GetDepartmentsForDDL(isload: false);
+        var prioritiesTask = _prioritySettingConsumer.GetPriorities(isload: false);
+        var StatusList = _statusSettingConsumer.GetStatusConfiguration(isload: false);
         // Run all in parallel
         await Task.WhenAll(
             taskTypesTask,

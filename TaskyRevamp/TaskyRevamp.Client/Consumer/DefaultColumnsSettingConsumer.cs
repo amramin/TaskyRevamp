@@ -12,10 +12,10 @@ namespace TaskyRevamp.Client.Consumer
             _taskyService = taskyService;
         }
 
-        public async Task<CommonApiResponse<List<DefaultColumnsSettingDto>>> GetDefaultColumnsSettings()
+        public async Task<CommonApiResponse<List<DefaultColumnsSettingDto>>> GetDefaultColumnsSettings(bool isload = true)
         {
             var url = $"api/DefaultColumnsSetting/GetDefaultColumnsSettings";
-            var res = await _taskyService.GetFromJsonAsync<CommonApiResponse<List<DefaultColumnsSettingDto>>>(url);
+            var res = await _taskyService.GetFromJsonAsync<CommonApiResponse<List<DefaultColumnsSettingDto>>>(url,isload);
 
             return res;
         }
