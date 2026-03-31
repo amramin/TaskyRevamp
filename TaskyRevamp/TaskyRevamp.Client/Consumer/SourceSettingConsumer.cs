@@ -14,14 +14,14 @@ namespace TaskyRevamp.Client.Consumer
         {
             _taskyService = taskyService;
         }
-        public async Task<CommonApiResponse<List<SourceDto>>> GetTaskSourcesForDDL()
+        public async Task<CommonApiResponse<List<SourceDto>>> GetTaskSourcesForDDL(bool isload = true)
         {
 
 
             var url = $"api/SourceSetting/GetTaskSourcesForDDL";
 
 
-            var res = await _taskyService.GetFromJsonAsync<CommonApiResponse<List<SourceDto>>>(url);
+            var res = await _taskyService.GetFromJsonAsync<CommonApiResponse<List<SourceDto>>>(url,isload);
 
             return res;
         }
@@ -35,7 +35,7 @@ namespace TaskyRevamp.Client.Consumer
 
             return res;
         }
-        public async Task<CommonApiResponse<PagedResult<SourceDto>>> GetSourcesView(int pageNumber, int pageSize, bool IsCompleted = false)
+        public async Task<CommonApiResponse<PagedResult<SourceDto>>> GetSourcesView(int pageNumber, int pageSize, bool IsCompleted = false,bool Isload=true)
         {
             var query = new List<string>
             {
@@ -46,7 +46,7 @@ namespace TaskyRevamp.Client.Consumer
             var queryString = "?" + string.Join("&", query);
             var url = $"api/SourceSetting/GetSourceSettingsView{queryString}";
 
-            var res = await _taskyService.GetFromJsonAsync<CommonApiResponse<PagedResult<SourceDto>>>(url);
+            var res = await _taskyService.GetFromJsonAsync<CommonApiResponse<PagedResult<SourceDto>>>(url,Isload);
 
             return res;
         }

@@ -944,7 +944,7 @@
     <value>المستوى</value>
   </data>
   <data name="DepartmentHasUsersCannotDelete" xml:space="preserve">
-    <value>لا يمكن الحذف، لدى القسم مستخدمين متاحين</value>
+    <value>لا يمكن حذف هذه الإدارة لأنها تحتوي على مستخدمين أو إدارات فرعية مرتبطة بها. يرجى إعادة تعيين أو إزالة جميع التبعيات قبل متابعة الحذف</value>
   </data>
   <data name="CannotDeletePrivilege" xml:space="preserve">
     <value>لا يمكنك حذف هذا الامتياز، فهو مرتبط بمستخدم</value>
@@ -1618,12 +1618,6 @@
   <data name="UsersList" xml:space="preserve">
     <value>قائمة المستخدمين</value>
   </data>
-  <data name="approvedsuccessfully" xml:space="preserve">
-    <value>تم الموافقة على تاريخ الطلب بنجاح</value>
-  </data>
-  <data name="rejectedsuccessfully" xml:space="preserve">
-    <value>تم رفض تاريخ الطلب بنجاح</value>
-  </data>
   <data name="isManagerTilte" xml:space="preserve">
     <value>مدير</value>
   </data>
@@ -1663,7 +1657,19 @@
   <data name="LinkedWithPrivilagesUsers" xml:space="preserve">
     <value>المستخدمون المرتبطون بامتيازات</value>
   </data>
+  <data name="SubDepartmentUsers" xml:space="preserve">
+    <value>مستخدمي الإدارة الفرعية</value>
+  </data>
   <data name="rejectedsuccessfully" xml:space="preserve">
     <value>تم رفض تاريخ الطلب بنجاح</value>
+  </data>
+  <data name="LinkedUsersHint" xml:space="preserve">
+    <value>عرض العدد الإجمالي للمستخدمين في هذا القسم</value>
+  </data>
+  <data name="UsersWithTasksHint" xml:space="preserve">
+    <value>عرض العدد الإجمالي للمستخدمين في هذا القسم المرتبطين بمهمة كمنشئين أو معينين</value>
+  </data>
+  <data name="SubDepartmentUsersHint" xml:space="preserve">
+    <value>عرض العدد الإجمالي للمستخدمين في هذا القسم، بما في ذلك جميع المستخدمين في أقسامه الفرعية</value>
   </data>
 </root>

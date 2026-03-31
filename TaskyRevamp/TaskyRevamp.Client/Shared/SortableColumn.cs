@@ -7,6 +7,6 @@ public class SortableColumn
     public bool IsSortable { get; set; } = true; // Default: sortable 
     public int Order { get; set; }           // Grid order
     public bool IsVisible { get; set; }      // Show / Hide
-
+    public string Hint { get; set; } = string.Empty;
 
 }

@@ -426,11 +426,11 @@ public class TaskyService
         finally { _loader.Hide(); }
     }
 
-    public async Task<T> GetFromJsonAsync<T>(string url) where T : class
+    public async Task<T> GetFromJsonAsync<T>(string url,bool isLoad=true) where T : class
     {
         try
         {
-            _loader.Show();
+            if (isLoad) { _loader.Show(); }
             if (!await CheckForToken())
                 return await Task.FromResult<T>(null);
 
@@ -444,7 +444,7 @@ public class TaskyService
             var result = JsonConvert.DeserializeObject<T>(response, settings);
             return result;
         }
-        finally { _loader.Hide(); }
+        finally { if (isLoad) { _loader.Hide(); } }
     }
 
     public async Task<T> DeleteFromJsonAsync<T>(string url) where T : class

@@ -36,7 +36,7 @@
                     <span class="icon">
                         <SVGCrud SVGType="SVGCrud.SVGTypeEnum.List"></SVGCrud>
                     </span>
-                    List view
+                    @Loc["List"]
                 </button>
 
 
@@ -52,7 +52,7 @@
                         <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Kanban"></SVGCrud>
 
                     </span>
-                    Kanban view
+                    @Loc["Kanban"]
                 </button>
             </li>
         }
@@ -66,7 +66,7 @@
                         <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Gantt"></SVGCrud>
 
                     </span>
-                    Gantt chart
+                    @Loc["Gantt"]
                 </button>
             </li>
         }
@@ -107,14 +107,14 @@
                                checked />
                         <label class="btn" for="mineRadio-task">
                             <SVGCrud SVGType="SVGCrud.SVGTypeEnum.User"></SVGCrud>
-                            <span>Mine</span>
+                            <span>@Loc["Mine"]</span>
                         </label>
 
                         <input type="radio" class="btn-check" name="taskRadio" id="teamRadio-task" autocomplete="off" />
                         <label class="btn" for="teamRadio-task">
                             <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Users"></SVGCrud>
 
-                            <span>Team</span>
+                            <span>@Loc["Team"]</span>
                         </label>
                     </div>
                 </div>
@@ -244,6 +244,7 @@
                         }
                         break;
                     case (int)ViewTypes.SourceView:
+                    if(sources is not null && sources.Any()){
                         @foreach (var source in sources)
                         {
                             <TaskListView IsCardView="isCardView" @key="source.Id" IsCompletedTasks="false"
@@ -257,6 +258,12 @@
                         <Pagination CurrentPage="@currentPage" TotalPages="@totalPages" TotalCount="@totalCount"
                                     PageSize="@pageSize" PageSizeOptions="new[] {5, 8, 10, 15 }" PageChanged="ChangePage"
                                     PageSizeChangedCallback="ChangePageSize" />
+                                    }
+                        else
+                        {
+                            <NoDataAvailable MessageTitle="@Loc["NoTasks"]" MessageSubtitle="@Loc["AddTaskToStart"]"
+                                             ButtonText="@Loc["AddTask"]" OnButtonClick="Add" />
+                        }
                         break;
                     case (int)ViewTypes.StatusView:
                         var statusList = Satuses.Where(s => s.Id != Guid.Parse("D8E94CCE-586A-46D3-223D-08DE3318A61C") &&
@@ -272,23 +279,30 @@
                             OnReopen="OnConfirmReopen" OnReject="Reject" OnRequestChangeDueDate="RequstChangeDueDate"
                             TaskFilterChanged="ApplyClear" TaskFilter="TaskFilter" IsFilter="IsFilter"
                             IsCollapseAll="IsCollapsedAll" @ref="@taskListRefs[$"status-{status.Id}"]"></TaskListView>
+                            }
+                            break;
+                        case (int)ViewTypes.TypeView:
+                            if (Types is not null && Types.Any())
+                            {
+                                @foreach (var type in Types)
+                                {
+                                    <TaskListView IsCardView="isCardView" @key="type.Id" IsCompletedTasks="false"
+                                    Title="@(CultureInfo.CurrentCulture.Name == "ar-EG" ? type.NameArabic : type.NameEnglish)"
+                                    ViewType="@((int)ViewTypes.TypeView)" ViewTypeId="@type.Id" OnAdd="Add" OnEdit="Edit"
+                                    OnReopen="OnConfirmReopen" OnRequestChangeDueDate="RequstChangeDueDate" OnReject="Reject"
+                                    TaskFilterChanged="ApplyClear" TaskFilter="TaskFilter" IsFilter="IsFilter"
+                                    IsCollapseAll="IsCollapsedAll" @ref="@taskListRefs[$"type-{type.Id}"]"></TaskListView>
+                                }
+                                <Pagination CurrentPage="@currentPage" TotalPages="@totalPages" TotalCount="@totalCount"
+                                PageSize="@pageSize" PageSizeOptions="new[] { 5, 8, 10, 15 }" PageChanged="ChangePageType"
+                                PageSizeChangedCallback="ChangePageSizeType" />
                         }
-                        break;
-                    case (int)ViewTypes.TypeView:
-                        @foreach (var type in Types)
+                        else
                         {
-                                <TaskListView IsCardView="isCardView" @key="type.Id" IsCompletedTasks="false"
-                                          Title="@(CultureInfo.CurrentCulture.Name == "ar-EG" ? type.NameArabic : type.NameEnglish)"
-                                          ViewType="@((int)ViewTypes.TypeView)" ViewTypeId="@type.Id" OnAdd="Add" OnEdit="Edit"
-                                          OnReopen="OnConfirmReopen" OnRequestChangeDueDate="RequstChangeDueDate" OnReject="Reject"
-                                          TaskFilterChanged="ApplyClear" TaskFilter="TaskFilter" IsFilter="IsFilter"
-                                          IsCollapseAll="IsCollapsedAll" @ref="@taskListRefs[$"type-{type.Id}"]"></TaskListView>
+                            <NoDataAvailable MessageTitle="@Loc["NoTasks"]" MessageSubtitle="@Loc["AddTaskToStart"]"
+                                             ButtonText="@Loc["AddTask"]" OnButtonClick="Add" />
                         }
-                        <Pagination CurrentPage="@currentPage" TotalPages="@totalPages" TotalCount="@totalCount"
-                                    PageSize="@pageSize" PageSizeOptions="new[] { 5, 8, 10, 15 }" PageChanged="ChangePageType"
-                                    PageSizeChangedCallback="ChangePageSizeType" />
-
-                        break;
+                            break;
                 }
             </div>
         </div>
@@ -374,7 +388,7 @@
     }
     protected override async Task OnInitializedAsync()
     {
-        var res = await _viewTaskSettingConsumer.GetViewTaskSetting();
+        var res = await _viewTaskSettingConsumer.GetViewTaskSetting(isload: false);
         if (res.Success && res.Data != null)
         {
             var orderedEnums = EnumExtensions.GetOrderedValues<ViewType>();
@@ -390,7 +404,7 @@
                 viewtype = 1;
             }
             Viewtype = viewtype;
-            await changeViewType(Viewtype);
+            //await changeViewType(Viewtype);
         }
         else
         {
@@ -425,19 +439,19 @@
         Viewtype = type;
         if (Viewtype == (int)ViewTypes.SourceView)
         {
-            var res = await _sourceSettingConsumer.GetSourcesView(currentPage, pageSize);
+            var res = await _sourceSettingConsumer.GetSourcesView(currentPage, pageSize,Isload: false);
             sources = res?.Data?.Items.ToList();
             totalCount = res.Data.TotalCount;
             totalPages = res.Data.TotalPages;
         }
         else if (Viewtype == (int)ViewTypes.StatusView)
         {
-            var res = await _statusSettingConsumer.GetStatusConfiguration();
+            var res = await _statusSettingConsumer.GetStatusConfiguration(false);
             Satuses = res.Data.ToList();
         }
         else if (Viewtype == (int)ViewTypes.TypeView)
         {
-            var res = await _typeSettingConsumer.GetTypesView(currentPage, pageSize);
+            var res = await _typeSettingConsumer.GetTypesView(currentPage, pageSize,isload:false);
             Types = res.Data.Items.ToList();
             totalCount = res.Data.TotalCount;
             totalPages = res.Data.TotalPages;

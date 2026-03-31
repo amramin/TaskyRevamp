@@ -37,7 +37,7 @@ namespace TaskyRevamp.Dto.Department
         public List<UserDto>? AssignedUsers { get; set; } = new List<UserDto>();
         public int UsersWithTasks { get; set; }
         public int SubDepartmentUsers { get; set; }
-
+        public int LinkedUsers { get; set; }
     }
     public class DepartmentDtoWithName
     {

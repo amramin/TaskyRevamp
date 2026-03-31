@@ -18,10 +18,10 @@ namespace TaskyRevamp.Client.Consumer
 
             return res;
         }
-        public async Task<CommonApiResponse<List<PriorityDto>>> GetPriorities()
+        public async Task<CommonApiResponse<List<PriorityDto>>> GetPriorities(bool isload = true)
         {
             var url = $"api/PrioritySetting/GetPrioritySettings";
-            var res = await _taskyService.GetFromJsonAsync<CommonApiResponse<List<PriorityDto>>>(url);
+            var res = await _taskyService.GetFromJsonAsync<CommonApiResponse<List<PriorityDto>>>(url,isload);
 
             return res;
         }
