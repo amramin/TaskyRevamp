@@ -37,10 +37,10 @@
   font-family: "Almarai", sans-serif;
   direction: rtl;
 }
-.icon-32{
-  svg{
-    width:2rem;
-    height:2rem;
+.icon-32 {
+  svg {
+    width: 2rem;
+    height: 2rem;
   }
 }
 /* start Global */
@@ -247,12 +247,11 @@ html {
 }
 /* end auth*/
 /* start .arabic-content*/
-.arabic-content{
+.arabic-content {
   *:not(i):not(.fa):not(mat-icon):not(.ar-text):not(.e-icons):not(.form-label) {
     font-family: "Almarai", sans-serif;
-  direction: rtl;
-}
-
+    direction: rtl;
+  }
 }
 /* start .arabic-content*/
 /* start treelist*/
@@ -309,13 +308,13 @@ html {
 
   .header {
     display: flex;
-    align-items: center;
+    align-items: start;
     gap: 0.5rem;
     margin-bottom: 1rem;
 
     .action-btn {
       display: flex;
-      align-items: center;
+      align-items: start;
 
       flex-grow: 1;
       justify-content: flex-start;
@@ -323,6 +322,7 @@ html {
       transition: all 0.3s ease-in-out;
       background-color: var(--bs-white);
       z-index: 1;
+     
       .icon {
         width: 2rem;
         background-color: var(--bs-white);
@@ -337,6 +337,10 @@ html {
         svg {
           width: 1.25rem;
         }
+      }
+      .text {
+        width: calc(100% - 2.5rem);
+        text-align: start;
       }
 
       &.btn-expanded {

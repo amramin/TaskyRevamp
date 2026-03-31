@@ -6,18 +6,19 @@
         <li class="item">
             <div class="header">
                 <button type="button" class="btn action-btn @GetButtonClass(dept.IsExpanded, dept.Children.Count > 0)"
-                    @onclick="() => ToggleChildren(dept)">
+                        @onclick="() => ToggleChildren(dept)">
                     <span class="icon ">
                         <SVGCrud SVGType="SVGCrud.SVGTypeEnum.ChevronEnd"></SVGCrud>
                     </span>
                     <span class="text">@dept.Name (@dept.Level)</span>
                 </button>
 
-                <DepartmentActions Department="@dept" ShowUsers="OnShowUsers" OnAdd="@(() => OnAdd.InvokeAsync(dept.Id))" OnLinkUsers="@(()=>OnLinkUsers.InvokeAsync(dept.Id))"
-                    Edit="@(() => OnEdit.InvokeAsync(dept.Id))" Delete="@(() => OnDelete.InvokeAsync(dept.Id))" />
+                <DepartmentActions Department="@dept" ShowUsers="OnShowUsers" OnAdd="@(() => OnAdd.InvokeAsync(dept.Id))"
+                                   OnLinkUsers="@(()=>OnLinkUsers.InvokeAsync(dept.Id))" Edit="@(() => OnEdit.InvokeAsync(dept.Id))"
+                                   Delete="@(() => OnDelete.InvokeAsync(dept.Id))" />
 
-                <button class="btn btn-outline-light-primary btn-32" type="button"
-                    @onclick="() => HandleDepartmentSelection(dept.Id)">
+                <button class="btn btn-outline-light-primary btn-action-24" type="button"
+                        @onclick="() => HandleDepartmentSelection(dept.Id)">
                     <span class="icon">
                         <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Pluse"></SVGCrud>
                     </span>
@@ -30,9 +31,9 @@
                     @foreach (var child in dept.Children)
                     {
                         <li>
-                            <DepartmentTree  IsRoot="false" Departments="new List<DepartmentDto> { child }" OnAdd="OnAdd" OnShowUsers="OnShowUsers"
-                                OnLinkUsers="OnLinkUsers"
-                                OnEdit="OnEdit" OnAddDepartment="OnAdd" OnDelete="OnDelete" />
+                            <DepartmentTree IsRoot="false" Departments="new List<DepartmentDto> { child }" OnAdd="OnAdd"
+                                            OnShowUsers="OnShowUsers" OnLinkUsers="OnLinkUsers" OnEdit="OnEdit" OnAddDepartment="OnAdd"
+                                            OnDelete="OnDelete" />
                         </li>
                     }
                 </ul>
@@ -52,7 +53,7 @@
     [Parameter] public EventCallback<Guid> OnDelete { get; set; }
     [Parameter] public EventCallback<Guid> OnAdd { get; set; }
 
-[Parameter] public bool IsRoot { get; set; } = false;
+    [Parameter] public bool IsRoot { get; set; } = false;
 
     private void ToggleChildren(DepartmentDto dept)
     {
