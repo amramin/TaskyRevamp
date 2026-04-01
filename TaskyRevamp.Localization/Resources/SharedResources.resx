@@ -937,7 +937,7 @@
     <value>Edit department</value>
   </data>
   <data name="AddADepartmentToGetStarted" xml:space="preserve">
-    <value>Add a department to get started</value>
+    <value>Add a new department to get started</value>
   </data>
   <data name="Level" xml:space="preserve">
     <value>Level</value>
@@ -1675,5 +1675,8 @@ This task will be moved to the Recycle Bin and can be restored later or permanen
   </data>
   <data name="SubDepartmentUsersHint" xml:space="preserve">
     <value>Display the total number of users in this department, including all users in its sub-departments</value>
+  </data>
+  <data name="linkOneUser" xml:space="preserve">
+    <value>Link user</value>
   </data>
 </root>

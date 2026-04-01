@@ -530,7 +530,7 @@
     <value>الإدارات</value>
   </data>
   <data name="AddDepartment" xml:space="preserve">
-    <value>إضافة إدارة</value>
+    <value>أضف إدارة</value>
   </data>
   <data name="DepartmentParent" xml:space="preserve">
     <value>الإدارة الرئيسية </value>
@@ -1680,5 +1680,11 @@
   </data>
   <data name="SubDepartmentUsersHint" xml:space="preserve">
     <value>عرض العدد الإجمالي للمستخدمين في هذا القسم، بما في ذلك جميع المستخدمين في أقسامه الفرعية</value>
+  </data>
+  <data name="rejectedsuccessfully" xml:space="preserve">
+    <value>تم رفض تاريخ الطلب بنجاح</value>
+  </data>
+  <data name="linkOneUser" xml:space="preserve">
+    <value>ربط المستخدم</value>
   </data>
 </root>

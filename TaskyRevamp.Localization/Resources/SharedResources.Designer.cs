@@ -151,7 +151,7 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Add a department to get started.
+        ///   Looks up a localized string similar to Add a new department to get started.
         /// </summary>
         public static string AddADepartmentToGetStarted {
             get {
@@ -2155,6 +2155,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string LinkedWithTasksUsers {
             get {
                 return ResourceManager.GetString("LinkedWithTasksUsers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Link user.
+        /// </summary>
+        public static string linkOneUser {
+            get {
+                return ResourceManager.GetString("linkOneUser", resourceCulture);
             }
         }
         
