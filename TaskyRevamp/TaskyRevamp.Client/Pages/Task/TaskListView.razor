@@ -513,7 +513,7 @@ new() { Field = "Planned Weight", DisplayName =Loc["PlannedWeight"], Order = 18,
         isLoading = true;
         try
         {
-            var res = await _defaultColumnsSettingConsumer.GetDefaultColumnsSettings();
+            var res = await _defaultColumnsSettingConsumer.GetDefaultColumnsSettings(isload:false);
             if (res.Success)
             {
                 var settings = res.Data;
@@ -546,7 +546,7 @@ new() { Field = "Planned Weight", DisplayName =Loc["PlannedWeight"], Order = 18,
                 await LocalStorageService.RemoveItemAsync("IsNewLogin");
             }
             await LoadColumns();
-            var statusres = await _statusSettingConsumer.GetStatusConfiguration();
+            var statusres = await _statusSettingConsumer.GetStatusConfiguration(isload: false);
             if (statusres.Success && statusres != null && statusres.Data != null)
             {
                 Statuses = statusres.Data;
@@ -566,13 +566,13 @@ new() { Field = "Planned Weight", DisplayName =Loc["PlannedWeight"], Order = 18,
             // {
             // MainAndParentTasks = resMainTasks.Data;
             // }
-            var prioritiesTask = _prioritySettingConsumer.GetPriorities();
+            var prioritiesTask = _prioritySettingConsumer.GetPriorities(isload: false);
             var prioritiesRes = await prioritiesTask;
             if (prioritiesRes.Success && prioritiesRes.Data != null)
             {
                 Priorities = prioritiesRes.Data.Where(k => k.IsDeleted != true).ToList().OrderBy(q => q.Order).ToList();
             }
-            var addTasksSettingRes = await _addTaskSettingConsumer.GetAddTaskSettings();
+            var addTasksSettingRes = await _addTaskSettingConsumer.GetAddTaskSettings(isload: false);
             if (addTasksSettingRes.Success && addTasksSettingRes.Data != null)
             {
                 addTaskSettingDtos = addTasksSettingRes.Data;
@@ -1110,7 +1110,7 @@ SearchFieldTask.PlannedProgress
     }
     private async Task<int> GetRejectionPeriod()
     {
-        var res = await _rejectionSettingConsumer.GetRejectionSetting();
+        var res = await _rejectionSettingConsumer.GetRejectionSetting(isload: false);
         int RejectionPeriod = 0;
         if (res.Success)
         {

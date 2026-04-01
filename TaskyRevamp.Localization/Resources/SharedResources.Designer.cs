@@ -19,7 +19,7 @@ namespace TaskyRevamp.Localization.Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "18.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class SharedResources {
@@ -1115,7 +1115,7 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Can&apos;t delete, the department has an active users.
+        ///   Looks up a localized string similar to This department cannot be deleted because it has linked users or sub-departments. Please re-assign or remove all dependencies before proceeding with deletion.
         /// </summary>
         public static string DepartmentHasUsersCannotDelete {
             get {
@@ -2128,6 +2128,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string LinkedUsers {
             get {
                 return ResourceManager.GetString("LinkedUsers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Display the total number of users in this department.
+        /// </summary>
+        public static string LinkedUsersHint {
+            get {
+                return ResourceManager.GetString("LinkedUsersHint", resourceCulture);
             }
         }
         
@@ -3565,6 +3574,24 @@ namespace TaskyRevamp.Localization.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Sub dept users.
         /// </summary>
+        public static string SubDepartmentUsers {
+            get {
+                return ResourceManager.GetString("SubDepartmentUsers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Display the total number of users in this department, including all users in its sub-departments.
+        /// </summary>
+        public static string SubDepartmentUsersHint {
+            get {
+                return ResourceManager.GetString("SubDepartmentUsersHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sub dept users.
+        /// </summary>
         public static string SubDeptUsers {
             get {
                 return ResourceManager.GetString("SubDeptUsers", resourceCulture);
@@ -4487,6 +4514,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string UsersWithTasks {
             get {
                 return ResourceManager.GetString("UsersWithTasks", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Display the total number of users in this department who are linked to a task as creator or assignee.
+        /// </summary>
+        public static string UsersWithTasksHint {
+            get {
+                return ResourceManager.GetString("UsersWithTasksHint", resourceCulture);
             }
         }
         

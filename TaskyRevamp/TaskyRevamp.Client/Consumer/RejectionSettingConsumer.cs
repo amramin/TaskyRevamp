@@ -12,10 +12,10 @@ namespace TaskyRevamp.Client.Consumer
 			_taskyService = taskyService;
 		}
 
-		public async Task<CommonApiResponse<RejectionSettingsDto>> GetRejectionSetting()
+		public async Task<CommonApiResponse<RejectionSettingsDto>> GetRejectionSetting(bool isload = true)
 		{
 			var url = $"api/RejectionSetting/GetRejectionSetting";
-			var res = await _taskyService.GetFromJsonAsync<CommonApiResponse<RejectionSettingsDto>>(url);
+			var res = await _taskyService.GetFromJsonAsync<CommonApiResponse<RejectionSettingsDto>>(url,isload);
 
 			return res;
 		}
