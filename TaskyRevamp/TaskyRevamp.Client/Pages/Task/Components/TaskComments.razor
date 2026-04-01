@@ -40,12 +40,13 @@
                     @GetInitials(userName)
                 </div>
                 <div class="comment-input">
-                    <RichTextEditorComponent @key="TaskId" EditorId="RTE_English2" HintMessage="@Loc["CommentHint"]" Assignees="assignedUsers"
+                    @* <RichTextEditorComponent @key="TaskId" EditorId="RTE_English2" HintMessage="@Loc["CommentHint"]" Assignees="assignedUsers"
                                              @ref="RichTextEditorComponentRefDescriptionEnglish" ContentChanged="OnDescriptionChanged"
-                                             Content="@newComment" ButtonText="@Loc["AddDescription"]"> </RichTextEditorComponent>
+                                             Content="@newComment" ButtonText="@Loc["AddDescription"]"> </RichTextEditorComponent> *@
+                    <TiptapEditor @ref="TiptapEditorRef" @bind-Value="newComment" HintMessage="@Loc["CommentHint"]" Users="assignedUsers"/>
                 </div>
             </div>
-            @if (!string.IsNullOrWhiteSpace(newComment))
+            @if (!IsCommentEmpty(newComment))
             {
                 <div class="action-btn-list justify-content-end">
                     <button class="btn btn-light" @onclick="CancelComment" disabled="@IsCommentEmpty(newComment)">
@@ -150,6 +151,7 @@
     string buttonName = $"Post";
     string userName = "";
     private RichTextEditorComponent RichTextEditorComponentRefDescriptionEnglish;
+    private TiptapEditor? TiptapEditorRef;
     private Guid? creatorId { set; get; }
     private bool isCreator => creatorId.HasValue && creatorId.Value == currentId;
     private List<UserDto> assignedUsers => taskDto.assignedUsers.Where(a => !a.IsDeleted && a.IsActive).ToList();
@@ -166,6 +168,7 @@
         userName = await LocalStorageService.GetItemAsStringAsync(key) ?? "";
         currentId = Guid.Parse(current!);
         await LoadComments();
+        Console.WriteLine(assignedUsers.ToList());
     }
     protected override void OnParametersSet()
     {
@@ -205,11 +208,15 @@
     {
         newComment = string.Empty;
         Upatedcomment = new TaskCommentWithNameDto();
-        buttonName = "AddComment";
-        if (RichTextEditorComponentRefDescriptionEnglish != null)
+        buttonName = "Post";
+        if (TiptapEditorRef != null)
         {
-            await RichTextEditorComponentRefDescriptionEnglish.ResetAsync();
+            await TiptapEditorRef.ResetAsync();
         }
+        // if (RichTextEditorComponentRefDescriptionEnglish != null)
+        // {
+        //     await RichTextEditorComponentRefDescriptionEnglish.ResetAsync();
+        // }
         await LoadComments();
         StateHasChanged();
     }
@@ -242,10 +249,13 @@
         }
         newComment = string.Empty;
         Upatedcomment = new TaskCommentWithNameDto();
-        buttonName = "AddComment";
+        buttonName = "Post";
+        if (TiptapEditorRef != null)
+        {
+            await TiptapEditorRef.ResetAsync();
+        }
         await LoadComments();
         StateHasChanged();
-        await LoadComments();
     }
     public async Task LoadComments()
     {
@@ -273,10 +283,12 @@
     private async Task EditTask(Guid id)
     {
         Upatedcomment = comments?.FirstOrDefault(c => c.TaskComment.Id == id);
-        newComment = Upatedcomment.TaskComment.Content;
-        buttonName = "UpdateComment";
-        StateHasChanged();
-
+        if (Upatedcomment != null)
+        {
+            newComment = Upatedcomment.TaskComment.Content;
+            buttonName = "UpdateComment";
+            StateHasChanged();
+        }
     }
     private void OnDescriptionChanged(string newValue)
     {
