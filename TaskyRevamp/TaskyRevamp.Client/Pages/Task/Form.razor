@@ -358,8 +358,7 @@
                                             <span class="text-danger"> *</span>
                                         }
                                     </label>
-                                    <InputNumber class="form-control" id="maxLength" @bind-Value="taskdto.weight"
-                                                 ParsingErrorMessage="" />
+                                    <InputText class="form-control" @bind-Value="weightInput" @oninput="OnWeightInputChanged" />
                                     <ValidationMessage class="small text-danger mt-1" For="@(() => taskdto.weight)" />
 
                                 </div>
@@ -449,6 +448,7 @@
     private SfDatePicker<DateTime?> startDatePicker;
     private SfDatePicker<DateTime?> ReminderDatePicker;
     private SfDatePicker<DateTime?> EndDatePicker;
+    private string weightInput;
     List<Guid> AlllowedToChangeProgress = new List<Guid>()
     {
         Guid.Parse("547022EA-EF8C-4FBC-2236-08DE3318A61C"),
@@ -541,14 +541,12 @@
     }
     private void OnDepartmentsChanged(List<Guid> values)
     {
-        Console.WriteLine("Departments Values Changed");
         taskdto.AssignedDepartmentIds = values != null ? new List<Guid>(values) : new List<Guid>();
         var field = new FieldIdentifier(taskdto, nameof(taskdto.AssignedDepartmentIds));
         Notify(field);
     }
     private void OnAssigneesChanged(List<Guid> values)
     {
-        Console.WriteLine("Assignees Values Changed");
         taskdto.AssignedIds = values != null ? new List<Guid>(values) : new List<Guid>();
         var field = new FieldIdentifier(taskdto, nameof(taskdto.AssignedIds));
         Notify(field);
@@ -568,6 +566,43 @@
             Notify(field);
         }
     }
+    private void OnWeightInputChanged(ChangeEventArgs e)
+    {
+        weightInput = e.Value?.ToString();
+        var field = new FieldIdentifier(taskdto, nameof(taskdto.weight));
+        messageStore.Clear(field);
+        var weightColumn = AddTaskSettings.FirstOrDefault(c => c.NameEnglish == "Weight");
+        bool isMandatory = weightColumn?.IsMandatory == true;
+        if (string.IsNullOrWhiteSpace(weightInput))
+        {
+            taskdto.weight = null;
+            if (isMandatory)
+                messageStore.Add(field, Loc["Required"]);
+            editContext.NotifyValidationStateChanged();
+            return;
+        }
+        weightInput = weightInput.Replace(",", ".");
+        if (!int.TryParse(weightInput, NumberStyles.Any, CultureInfo.InvariantCulture, out var value))
+        {
+            messageStore.Add(field, Loc["WeightMustBeBetween0And100"]);
+            editContext.NotifyValidationStateChanged();
+            return;
+        }
+        if (value % 1 != 0)
+        {
+            messageStore.Add(field, Loc["WeightMustBeBetween0And100"]);
+            editContext.NotifyValidationStateChanged();
+            return;
+        }
+        if (value < 0 || value > 100)
+        {
+            messageStore.Add(field, Loc["WeightMustBeBetween0And100"]);
+            editContext.NotifyValidationStateChanged();
+            return;
+        }
+        taskdto.weight = value;
+        editContext.NotifyValidationStateChanged();
+    }
     private void Notify(FieldIdentifier field)
     {
         messageStore.Clear(field);
@@ -581,11 +616,11 @@
         enableRtl = isRtlCulture;
         dateGroupDir = isRtlCulture ? "rtl" : "ltr";
 
-        editContext = new EditContext(taskdto);
-        maxFileSize = mySettings.Value.MaxFileSize;
+        editContext = new EditContext(taskdto);        
         messageStore = new ValidationMessageStore(editContext);
         editContext.OnValidationRequested += ValidateDynamicFields;
         editContext.OnFieldChanged += OnFieldChanged;
+        maxFileSize = mySettings.Value.MaxFileSize;
 
         var addTaskSettingsTask = _addTaskSettingConsumer.GetAddTaskSettings();
         var taskTypesTask = _typeSettingConsumer.GetTaskTypesForDDL();
@@ -689,11 +724,8 @@
                         messageStore.Add(new FieldIdentifier(taskdto, nameof(taskdto.Dependencies)), Loc["Required"]);
                     break;
                 case "Weight":
-                    var weightField = new FieldIdentifier(taskdto, nameof(taskdto.weight));
                     if (column.IsMandatory && !taskdto.weight.HasValue)
-                        messageStore.Add(weightField, Loc["Required"]);
-                    else if (taskdto.weight.HasValue && (taskdto.weight < 0 || taskdto.weight > 100))
-                        messageStore.Add(weightField, Loc["WeightMustBeBetween0And100"]);
+                        messageStore.Add(new FieldIdentifier(taskdto, nameof(taskdto.weight)), Loc["Required"]);
                     break;
                 case "Comments":
                     if (column.IsMandatory && string.IsNullOrWhiteSpace(taskdto.Content))
@@ -768,14 +800,12 @@
     }
     private async Task HandleValidSubmit(EditContext context)
     {
-        taskdto.Description = RichTextEditorComponentRefDescriptionEnglish.GetContent();
-        taskdto.Content = RichTextEditorComponentRefComment.GetContent();
+        if (RichTextEditorComponentRefDescriptionEnglish != null)
+            taskdto.Description = RichTextEditorComponentRefDescriptionEnglish.GetContent();
+        if (RichTextEditorComponentRefComment != null)
+            taskdto.Content = RichTextEditorComponentRefComment.GetContent();
         var isValid = editContext.Validate();
-        if (!isValid)
-        {
-            StateHasChanged();
-            return;
-        }
+        if (!isValid){ StateHasChanged(); return; }
         await OnValidSubmit.InvokeAsync(context);
     }
     private async Task OnCancelClick() => await OnCancel.InvokeAsync();

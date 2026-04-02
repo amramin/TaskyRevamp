@@ -322,7 +322,7 @@
     <value>Sunday</value>
   </data>
   <data name="WeeklyReport" xml:space="preserve">
-    <value>Weekly report</value>
+    <value>Weekly report send date</value>
   </data>
   <data name="English" xml:space="preserve">
     <value>English</value>
@@ -1435,7 +1435,7 @@
     <value>No parent tasks available </value>
   </data>
   <data name="dependenTasks" xml:space="preserve">
-    <value>dependent tasks</value>
+    <value>Dependent tasks</value>
   </data>
   <data name="NoDependentTasks" xml:space="preserve">
     <value>No dependent tasks are available</value>
@@ -1678,5 +1678,11 @@ This task will be moved to the Recycle Bin and can be restored later or permanen
   </data>
   <data name="linkOneUser" xml:space="preserve">
     <value>Link user</value>
+  </data>
+  <data name="DependingOnHint" xml:space="preserve">
+    <value>Tasks that must be completed for this task to be completed</value>
+  </data>
+  <data name="DependentTasksHint" xml:space="preserve">
+    <value>Tasks that cannot be completed until this task is completed</value>
   </data>
 </root>

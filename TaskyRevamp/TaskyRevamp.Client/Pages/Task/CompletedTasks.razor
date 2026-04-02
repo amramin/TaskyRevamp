@@ -16,14 +16,14 @@
 @inject StatusSettingConsumer _statusSettingConsumer
 @inject TypeSettingConsumer _typeSettingConsumer
 @inject SourceSettingConsumer _sourceSettingConsumer
-
+@inject FilterFieldsSettingConsumer _filterFieldsSettingConsumer
 
 <div class="tab-pills flex-grow-1">
     <div class="tab-content" id="myTabContent">
         <div class="tab-pane fade show active" id="List-view-tab" role="tabpanel" aria-labelledby="List-view-tab">
             <div class="page-header">
                 <div class="title-block">
-                        <h1 class="page-headline">@Loc[((ViewTypes)ViewType).ToString()]</h1>
+                    <h1 class="page-headline">@Loc[((ViewTypes)ViewType).ToString()]</h1>
                     @if (ViewType != (int)ViewTypes.OverAllView)
                     {
                         <div class="view-scope-toggle" role="group" aria-label="Basic radio toggle button group">
@@ -65,11 +65,13 @@
                         </span>
                         @Loc["AddTask"]
                     </button>
-@*                     <Search SearchSubmit="Search" CssClass="form-control"></Search>
- *@                    <button type="button" data-bs-toggle="tooltip" data-bs-placement="top" title="@Loc["Filter"]" @onclick="ExpandFilter"
-                            class="btn btn-action-40 btn-outline-light-pimary">
-                        <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Filter"></SVGCrud>
-                    </button>
+                    @if (FilterFieldsSettings.Any() == true)
+                    {
+                        <button type="button" data-bs-toggle="tooltip" data-bs-placement="top" title="@Loc["Filter"]" @onclick="ExpandFilter"
+                                class="btn btn-action-40 btn-outline-light-pimary">
+                            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Filter"></SVGCrud>
+                        </button>
+                    }
                     <button type="button" data-bs-toggle="tooltip" data-bs-placement="top" title="View column"
                             class="btn btn-action-40 btn-outline-light-pimary" @onclick="OnViewClick">
                         <SVGCrud SVGType="SVGCrud.SVGTypeEnum.AddColumn"></SVGCrud>
@@ -111,67 +113,67 @@
                         <span class="text">@Loc[ViewTypes.TypeView.ToString()]</span>
                     </button>
                 </div>
-                    <!-- MAIN CONTENT -->
-                    <div class="page-body">
+                <!-- MAIN CONTENT -->
+                <div class="page-body">
                     <div class="card table-card collaped-task-card table-caption border border-1 @(DisplayFilter ? "d-block " : "d-none")">
                         <FilterComponent IsCompleted="true" OnClear="ApplyClear" OnFilter="ApplyFilter" FilterDTO="TaskFilter" />
                     </div>
-                        @switch (ViewType)
-                        {
-                            case (int)ViewTypes.OverAllView:
+                    @switch (ViewType)
+                    {
+                        case (int)ViewTypes.OverAllView:
 
-                                <div>
-                                    <TaskListView Title="@Loc[ViewTypes.OverAllView.ToString()]" IsCompleted="true" OnAdd="Add" IsCompletedTasks="true"
+                            <div>
+                                <TaskListView Title="@Loc[ViewTypes.OverAllView.ToString()]" IsCompleted="true" OnAdd="Add" IsCompletedTasks="true"
                                               OnEdit="Edit" OnReopen="Reopen" TaskFilterChanged="ApplyClear" TaskFilter="TaskFilter" IsFilter="IsFilter" @ref="@taskListRefs["overall"]"></TaskListView>
-                                </div>
-                                break;
-                            case (int)ViewTypes.SourceView:
-                                @if (sources != null && sources.Any())
+                            </div>
+                            break;
+                        case (int)ViewTypes.SourceView:
+                            @if (sources != null && sources.Any())
+                            {
+                                @foreach (var source in sources)
                                 {
-                                    @foreach (var source in sources)
-                                    {
-                                        <div>
-                                            <TaskListView IsCompleted="true" @key="source.Id" IsCompletedTasks="true"
-                                                          Title="@(CultureInfo.CurrentCulture.Name == "ar-EG" ? source.NameArabic : source.NameEnglish)"
-                                                          ViewType="@((int)ViewTypes.SourceView)" ViewTypeId="@source.Id" OnAdd="Add" OnEdit="Edit"
+                                    <div>
+                                        <TaskListView IsCompleted="true" @key="source.Id" IsCompletedTasks="true"
+                                                      Title="@(CultureInfo.CurrentCulture.Name == "ar-EG" ? source.NameArabic : source.NameEnglish)"
+                                                      ViewType="@((int)ViewTypes.SourceView)" ViewTypeId="@source.Id" OnAdd="Add" OnEdit="Edit"
                                                       OnReopen="Reopen" IsCollapseAll="IsCollapsedAll" TaskFilterChanged="ApplyClear" IsFilter="IsFilter" TaskFilter="TaskFilter" @ref="@taskListRefs[$" source-{source.Id}"]"></TaskListView>
-                                        </div>
-                                    }
-                                    <Pagination CurrentPage="@currentPage" TotalPages="@totalPages" TotalCount="@totalCount"
-                                                PageSize="@pageSize" PageSizeOptions="new[] { 3, 5, 7, 10 }" PageChanged="ChangePage"
-                                                PageSizeChangedCallback="ChangePageSize" />
+                                    </div>
                                 }
-                                else
+                                <Pagination CurrentPage="@currentPage" TotalPages="@totalPages" TotalCount="@totalCount"
+                                            PageSize="@pageSize" PageSizeOptions="new[] { 3, 5, 7, 10 }" PageChanged="ChangePage"
+                                            PageSizeChangedCallback="ChangePageSize" />
+                            }
+                            else
+                            {
+                                <NoDataAvailable MessageTitle="@Loc["NoTasks"]" MessageSubtitle="@Loc["AddTaskToStart"]"
+                                                 ButtonText="@Loc["AddTask"]" OnButtonClick="Add" />
+                            }
+                            break;
+                        case (int)ViewTypes.TypeView:
+                            @if (Types != null && Types.Any())
+                            {
+                                @foreach (var type in Types)
                                 {
-                                    <NoDataAvailable MessageTitle="@Loc["NoTasks"]" MessageSubtitle="@Loc["AddTaskToStart"]"
-                                                     ButtonText="@Loc["AddTask"]" OnButtonClick="Add" />
-                                }
-                                break;
-                            case (int)ViewTypes.TypeView:
-                                @if (Types != null && Types.Any())
-                                {
-                                    @foreach (var type in Types)
-                                    {
-                                        <div>
-                                            <TaskListView IsCompleted="true" @key="type.Id" IsCompletedTasks="true"
-                                                          Title="@(CultureInfo.CurrentCulture.Name == "ar-EG" ? type.NameArabic : type.NameEnglish)"
-                                                          ViewType="@((int)ViewTypes.TypeView)" ViewTypeId="@type.Id" OnAdd="Add" OnEdit="Edit"
+                                    <div>
+                                        <TaskListView IsCompleted="true" @key="type.Id" IsCompletedTasks="true"
+                                                      Title="@(CultureInfo.CurrentCulture.Name == "ar-EG" ? type.NameArabic : type.NameEnglish)"
+                                                      ViewType="@((int)ViewTypes.TypeView)" ViewTypeId="@type.Id" OnAdd="Add" OnEdit="Edit"
                                                       OnReopen="Reopen" IsCollapseAll="IsCollapsedAll" TaskFilterChanged="ApplyClear" IsFilter="IsFilter" TaskFilter="TaskFilter" @ref="@taskListRefs[$"type-{type.Id}"]"></TaskListView>
-                                        </div>
-                                    }
-                                    <Pagination CurrentPage="@currentPage" TotalPages="@totalPages" TotalCount="@totalCount"
-                                                PageSize="@pageSize" PageSizeOptions="new[] { 3, 5, 7, 10 }" PageChanged="ChangePageType"
-                                                PageSizeChangedCallback="ChangePageSizeType" />
+                                    </div>
                                 }
-                                else
-                                {
-                                    <NoDataAvailable MessageTitle="@Loc["NoTasks"]" MessageSubtitle="@Loc["AddTaskToStart"]"
-                                                     ButtonText="@Loc["AddTask"]" OnButtonClick="Add" />
-                                }
-                                break;
-                        }
-                    </div>
-                
+                                <Pagination CurrentPage="@currentPage" TotalPages="@totalPages" TotalCount="@totalCount"
+                                            PageSize="@pageSize" PageSizeOptions="new[] { 3, 5, 7, 10 }" PageChanged="ChangePageType"
+                                            PageSizeChangedCallback="ChangePageSizeType" />
+                            }
+                            else
+                            {
+                                <NoDataAvailable MessageTitle="@Loc["NoTasks"]" MessageSubtitle="@Loc["AddTaskToStart"]"
+                                                 ButtonText="@Loc["AddTask"]" OnButtonClick="Add" />
+                            }
+                            break;
+                    }
+                </div>
+
             </div>
 
         </div>
@@ -199,6 +201,7 @@
     bool IsFilter = false;
     private bool? IsCollapsedAll = null;
     bool DisplayFilter = false;
+    public List<FilterFieldsSettingDto> FilterFieldsSettings { get; set; } = new();
 
     private async Task ClearSearch()
     {
@@ -207,9 +210,14 @@
         await searchComponent?.SearchSubmit.InvokeAsync("")!;
         // await GetTasks(isSearch: false, null);
     }
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
         ViewType = (int)ViewTypes.OverAllView;
+        var resFilter = await _filterFieldsSettingConsumer.GetFilterFieldsSettings(isload: false);
+        if (resFilter.Success && resFilter.Data != null)
+        {
+            FilterFieldsSettings = resFilter.Data.Where(f => f.IsActive).ToList();
+        }
     }
     private async Task changeViewType(int type)
     {
@@ -217,14 +225,14 @@
         ViewType = type;
         if (ViewType == (int)ViewTypes.SourceView)
         {
-            var res = await _sourceSettingConsumer.GetSourcesView(currentPage, pageSize, true,Isload:false);
+            var res = await _sourceSettingConsumer.GetSourcesView(currentPage, pageSize, true, Isload: false);
             sources = res?.Data?.Items.ToList()!;
             totalCount = res!.Data!.TotalCount;
             totalPages = res.Data.TotalPages;
         }
         else if (ViewType == (int)ViewTypes.TypeView)
         {
-            var res = await _typeSettingConsumer.GetTypesView(currentPage, pageSize, true,isload:false);
+            var res = await _typeSettingConsumer.GetTypesView(currentPage, pageSize, true, isload: false);
             Types = res.Data!.Items.ToList();
             totalCount = res.Data.TotalCount;
             totalPages = res.Data.TotalPages;
@@ -279,14 +287,14 @@
     }
     private async Task LoadSources()
     {
-        var res = await _sourceSettingConsumer.GetSourcesView(currentPage, pageSize, true,Isload:false);
+        var res = await _sourceSettingConsumer.GetSourcesView(currentPage, pageSize, true, Isload: false);
         sources = res?.Data?.Items.ToList()!;
         totalCount = res.Data.TotalCount;
         totalPages = res.Data.TotalPages;
     }
     private async Task LoadTypes()
     {
-        var res = await _typeSettingConsumer.GetTypesView(currentPage, pageSize, true,isload:false);
+        var res = await _typeSettingConsumer.GetTypesView(currentPage, pageSize, true, isload: false);
         Types = res?.Data?.Items.ToList()!;
         totalCount = res.Data.TotalCount;
         totalPages = res.Data.TotalPages;
@@ -312,7 +320,7 @@
     private async Task ApplyFilter(TaskFilterComponent filter)
     {
         TaskFilter = filter;
-        IsFilter=true;
+        IsFilter = true;
         StateHasChanged();
     }
     private async Task ApplyClear(TaskFilterComponent filter)

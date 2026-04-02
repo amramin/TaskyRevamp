@@ -10,7 +10,8 @@
         <div class="d-flex align-items-center gap-2">
 
             <div class="progress position-relative" style="width:@($"{Width}%");
-                cursor:@(IsEditable ? "pointer" : "default")" @onmousedown="OnMouseDown">
+                    cursor:@(IsEditable ? "pointer" : "default")" @onmousedown="StartDrag"
+                    @onmousemove="OnDrag" @onmouseup="StopDrag">
                 <div class="progress-bar  @(IsComplete ? "completed" : "")" role="progressbar"
                      style="width:@($"{ProgressValue}%")" aria-valuemin="0" aria-valuemax="100">
                 </div>
@@ -31,7 +32,9 @@
     [Parameter] public int? ActualProgress { get; set; }
     [Parameter] public EventCallback<int> OnProgressChanged { get; set; }
     [Parameter] public int Width { get; set; } = 400;
+    [Parameter] public bool IsEditableInput { get; set; } = true;
     private bool IsEditable = true;
+    private bool isDragging = false;
     private bool ShouldRenderBar => ActualProgress.HasValue || (Tasks != null && Tasks.Any());
     private bool IsComplete => ProgressValue >= 100;
     private int ProgressValue
@@ -44,19 +47,46 @@
             return (int)Math.Round(Tasks.Sum(t => t.ActualProcess) / (double)Tasks.Count);
         }
     }
-
     protected override void OnParametersSet()
     {
-        IsEditable = ActualProgress.HasValue && ActualProgress < 100;
+        IsEditable = IsEditableInput && ActualProgress.HasValue && ActualProgress < 100;
     }
-    // private string ProgressColor => ProgressValue < 40 ? "bg-danger" : ProgressValue < 70 ? "bg-warning" : "bg-success";
-    private async Task OnMouseDown(MouseEventArgs e)
+    // private async Task OnMouseDown(MouseEventArgs e)
+    // {
+    //     if (!IsEditable)
+    //         return;
+    //     var newValue = (int)Math.Round((e.OffsetX / Width) * 100.0);
+    //     newValue = Math.Clamp(newValue, 0, 100);
+    //     ActualProgress = newValue;
+    //     await OnProgressChanged.InvokeAsync(newValue);
+    // }
+    private void StartDrag(MouseEventArgs e)
     {
         if (!IsEditable)
             return;
+        isDragging = true;
+        UpdateProgress(e);
+    }
+    private async void OnDrag(MouseEventArgs e)
+    {
+        if (!isDragging || !IsEditable)
+            return;
+        UpdateProgress(e);
+    }
+    private async Task StopDrag(MouseEventArgs e)
+    {
+        if (!isDragging)
+            return;
+        isDragging = false;
+        if (ActualProgress.HasValue)
+        {
+            await OnProgressChanged.InvokeAsync(ActualProgress.Value);
+        }
+    }
+    private void UpdateProgress(MouseEventArgs e)
+    {
         var newValue = (int)Math.Round((e.OffsetX / Width) * 100.0);
         newValue = Math.Clamp(newValue, 0, 100);
         ActualProgress = newValue;
-        await OnProgressChanged.InvokeAsync(newValue);
     }
 }
