@@ -295,6 +295,7 @@
     }
 
 </div>
+
 @code {
     List<UserDtoWithName> users = new();
     List<UserDtoWithName> initialUsers = new();
@@ -309,6 +310,8 @@
     private bool? sortAscending = true;
     private List<SortableColumn> tableColumns = new();
     private Search? searchComponent;
+    private string? lastSearchTerm = null;
+    private bool isSearchMode = false;
     private IBrowserFile? fileInput;
     private HashSet<string> systemDepartments = new();
     private HashSet<string> systemPrivileges = new();
@@ -338,9 +341,8 @@
             new() { Field = "UpdateDate", DisplayName = Loc["UpdateDate"] },
             new() { Field = "UpdatedBy", DisplayName = Loc["UpdatedBy"] },
             new() { Field = "Set as Manager", DisplayName = Loc["setAsManager"] },
+            // new() { Field = "Is active", DisplayName = Loc["active"] },
             new() { Field = "Action", DisplayName = Loc["Action"] ,IsSortable = false},
-new() { Field = "Is active", DisplayName = Loc["active"] },
-new() { Field = "Action", DisplayName = Loc["Action"] ,IsSortable = false},
         };
         var statistics= await _userConsumer.GetUsersStatistics();
         if(statistics.Data is not null)
@@ -352,8 +354,14 @@ new() { Field = "Action", DisplayName = Loc["Action"] ,IsSortable = false},
     }
     private async Task LoadUsers(bool isSearch = false, string searchTerm = null)
     {
+        if (isSearchMode && !isSearch)
+        {
+            isSearch = true;
+            searchTerm = lastSearchTerm;
+        }
+        var encodedTerm = searchTerm != null ? Uri.EscapeDataString(searchTerm) : null;
         var resp = await _userConsumer.GetUsersWithPagination(currentPage, pageSize, currentSortColumn, sortAscending.Value,
-                isSearch ? searchFields : null, isSearch ? searchTerm : null);
+                isSearch ? searchFields : null, isSearch ? encodedTerm : null);
 
         if (!(resp?.Success ?? false) || resp.Data is null)
             return;
@@ -441,11 +449,16 @@ new() { Field = "Action", DisplayName = Loc["Action"] ,IsSortable = false},
     };
     public async Task Search(string searchTerm)
     {
+        lastSearchTerm = searchTerm;
+        isSearchMode = true;
+        currentPage = 1;
         await LoadUsers(true, searchTerm);
     }
     private async Task ClearSearch()
     {
         currentPage = 1;
+        lastSearchTerm = null;
+        isSearchMode = false;
         searchComponent?.ClearSearchText();
         await LoadUsers(isSearch: false);
     }

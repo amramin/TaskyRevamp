@@ -170,7 +170,7 @@ else
         }
         var encodedTerm = searchTerm != null ? Uri.EscapeDataString(searchTerm) : null;
         var resp = await _privilegeConsumer.GetPrivileges(currentPage, pageSize, currentSortColumn, sortAscending.Value,
-        isSearch ? searchFields : null, isSearch ? searchTerm : null);
+        isSearch ? searchFields : null, isSearch ? encodedTerm : null);
 
         if (!(resp?.Success ?? false) || resp.Data is null)
             return;

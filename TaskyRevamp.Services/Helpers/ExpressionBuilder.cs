@@ -193,13 +193,21 @@ namespace TaskyRevamp.Services.Helpers
 
 			// Handle string or any other type → fallback to string.Contains()
 			var toStringMethod = member.Type.GetMethod(nameof(object.ToString), Type.EmptyTypes)!;
+			var trimMethod = typeof(string).GetMethod(nameof(string.Trim), Type.EmptyTypes)!;
 			var toLowerMethod = typeof(string).GetMethod(nameof(string.ToLower), Type.EmptyTypes)!;
 			var containsMethod = typeof(string).GetMethod(nameof(string.Contains), new[] { typeof(string) })!;
 
+			var safeToString = Expression.Condition(
+				Expression.Equal(member, Expression.Constant(null, member.Type)),
+				Expression.Constant(string.Empty),
+				Expression.Call(member, toStringMethod)
+			);
+			var trimmed = Expression.Call(safeToString, trimMethod);
 			// Convert any type to string for flexible matching
-			var toStringCall = Expression.Call(member, toStringMethod);
-			var left = Expression.Call(toStringCall, toLowerMethod);
-			var right = Expression.Constant(searchText.ToLower());
+			//var toStringCall = Expression.Call(member, toStringMethod);
+			var left = Expression.Call(trimmed, toLowerMethod);
+			var normalizedSearch = (searchText ?? string.Empty).Trim().ToLower();
+			var right = Expression.Constant(normalizedSearch.ToLower());
 
 			return Expression.Call(left, containsMethod, right);
 		}
