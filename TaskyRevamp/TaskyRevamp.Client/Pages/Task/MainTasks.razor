@@ -84,26 +84,7 @@
                             <span class="ms-1">@timeLineTitle</span>
                         }
                     </h1>
-                    @if (Viewtype != (int)ViewTypes.OverAllView)
-                    {
-                        <div class="view-scope-toggle" role="group" aria-label="Basic radio toggle button group">
-                            <input type="radio" class="btn-check" name="taskRadio" id="mineRadio-task" autocomplete="off"
-                                   checked @onclick="() => ExpandOrCollapse(false)" />
-                            <label class="btn" for="mineRadio-task">
-                                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.ChevronDown"></SVGCrud>
-                                <span>@Loc["ExpandAll"]</span>
-                            </label>
-
-                            <input type="radio" class="btn-check" name="taskRadio" id="teamRadio-task" autocomplete="off"
-                                   @onclick="() => ExpandOrCollapse(true)" />
-                            <label class="btn" for="teamRadio-task">
-                                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.ChevronEnd"></SVGCrud>
-
-                                <span>@Loc["CollapseAll"]</span>
-                            </label>
-                        </div>
-                    }
-
+                   
                     <div class="view-scope-toggle" role="group" aria-label="Basic radio toggle button group">
                         <input type="radio" class="btn-check" name="taskRadio" id="mineRadio-task" autocomplete="off"
                                checked />
@@ -133,6 +114,18 @@
                             <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Filter"></SVGCrud>
                         </button>
                     }
+                    @if (Viewtype != (int)ViewTypes.OverAllView)
+{
+    <button class="btn btn-action-40 btn-outline-light-pimary"   title="@(isExpanded ? Loc["CollapseAll"] : Loc["ExpandAll"])" @onclick="ToggleExpandCollapse">
+        
+        <SVGCrud SVGType="@(isExpanded 
+            ? SVGCrud.SVGTypeEnum.ChevronDoubleUp 
+            : SVGCrud.SVGTypeEnum.ChevronDoubleDown)">
+        </SVGCrud>
+
+        
+    </button>
+}
                     <button type="button" data-bs-toggle="tooltip" data-bs-placement="top" title="@Loc["Viewcolumn"]"
                             class="btn btn-action-40 btn-outline-light-pimary" @onclick="OnViewClick">
                         <SVGCrud SVGType="SVGCrud.SVGTypeEnum.AddColumn"></SVGCrud>
@@ -377,9 +370,15 @@
     private string timeLineTitle => $" - {Loc["TimeLineTilte"]}";
     bool IsKanban = false;
     bool IsGant = false;
+bool isExpanded = false;
     bool isCardView = false;
     public List<FilterFieldsSettingDto> FilterFieldsSettings { get; set; } = new();
 
+void ToggleExpandCollapse()
+{
+    isExpanded = !isExpanded;
+    ExpandOrCollapse(isExpanded);
+}
     void ToggleView()
     {
         isCardView = !isCardView;
