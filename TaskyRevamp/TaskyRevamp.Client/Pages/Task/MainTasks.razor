@@ -41,7 +41,7 @@
                 </button>
             </li>
         }
-  
+
         @if (TaskViews.Any(p => p.ViewType == ViewType.Kanban && p.IsActive))
         {
             <li class="nav-item" role="presentation">
@@ -55,7 +55,7 @@
                 </button>
             </li>
         }
-  
+
         @if (TaskViews.Any(p => p.ViewType == ViewType.Gantt && p.IsActive))
         {
             <li class="nav-item" role="presentation">
@@ -70,7 +70,7 @@
                 </button>
             </li>
         }
- 
+
     </ul>
     <div class="tab-content" id="myTabContent">
         <div class="tab-pane fade @(!IsKanban && !IsGant ? "active show" : "")" id="List-view-tab" role="tabpanel"
@@ -84,7 +84,7 @@
                             <span class="ms-1">@timeLineTitle</span>
                         }
                     </h1>
-                   
+
                     <div class="view-scope-toggle" role="group" aria-label="Basic radio toggle button group">
                         <input type="radio" class="btn-check" name="taskRadio" id="mineRadio-task" autocomplete="off"
                                checked />
@@ -115,17 +115,11 @@
                         </button>
                     }
                     @if (Viewtype != (int)ViewTypes.OverAllView)
-{
-    <button class="btn btn-action-40 btn-outline-light-pimary"   title="@(isExpanded ? Loc["CollapseAll"] : Loc["ExpandAll"])" @onclick="ToggleExpandCollapse">
-        
-        <SVGCrud SVGType="@(isExpanded 
-            ? SVGCrud.SVGTypeEnum.ChevronDoubleUp 
-            : SVGCrud.SVGTypeEnum.ChevronDoubleDown)">
-        </SVGCrud>
-
-        
-    </button>
-}
+                    {
+                        <button class="btn btn-action-40 btn-outline-light-pimary" title="@(isExpanded? Loc["CollapseAll"] : Loc["ExpandAll"])" @onclick="ToggleExpandCollapse">
+                            <SVGCrud SVGType="@(isExpanded? SVGCrud.SVGTypeEnum.ChevronDoubleUp : SVGCrud.SVGTypeEnum.ChevronDoubleDown)"> </SVGCrud>
+                        </button>
+                    }
                     <button type="button" data-bs-toggle="tooltip" data-bs-placement="top" title="@Loc["Viewcolumn"]"
                             class="btn btn-action-40 btn-outline-light-pimary" @onclick="OnViewClick">
                         <SVGCrud SVGType="SVGCrud.SVGTypeEnum.AddColumn"></SVGCrud>
@@ -370,15 +364,15 @@
     private string timeLineTitle => $" - {Loc["TimeLineTilte"]}";
     bool IsKanban = false;
     bool IsGant = false;
-bool isExpanded = false;
+    bool isExpanded = false;
     bool isCardView = false;
     public List<FilterFieldsSettingDto> FilterFieldsSettings { get; set; } = new();
 
-void ToggleExpandCollapse()
-{
-    isExpanded = !isExpanded;
-    ExpandOrCollapse(isExpanded);
-}
+    void ToggleExpandCollapse()
+    {
+        isExpanded = !isExpanded;
+        ExpandOrCollapse(isExpanded);
+    }
     void ToggleView()
     {
         isCardView = !isCardView;
