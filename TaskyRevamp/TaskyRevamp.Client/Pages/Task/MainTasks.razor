@@ -19,15 +19,16 @@
 @inject SourceSettingConsumer _sourceSettingConsumer
 @inject ILocalStorageService LocalStorageService
 @inject ViewTaskSettingConsumer _viewTaskSettingConsumer
+@inject FilterFieldsSettingConsumer _filterFieldsSettingConsumer
 
 <div class="tab-pills flex-grow-1">
     <ul class="nav nav-pills" id="myTab" role="tablist">
         @if (TaskViews.Any(p => (p.ViewType == ViewType.List_Overall && p.IsActive) ||
-                        (p.ViewType == ViewType.List_Status && p.IsActive) ||
-                        (p.ViewType == ViewType.List_Source && p.IsActive) ||
-                        (p.ViewType == ViewType.List_Type && p.IsActive) ||
-                        (p.ViewType == ViewType.List_Timeline && p.IsActive)
-                        ))
+                (p.ViewType == ViewType.List_Status && p.IsActive) ||
+                (p.ViewType == ViewType.List_Source && p.IsActive) ||
+                (p.ViewType == ViewType.List_Type && p.IsActive) ||
+                (p.ViewType == ViewType.List_Timeline && p.IsActive)
+                ))
         {
             <li class="nav-item" role="presentation">
                 <button class="nav-link @(!IsKanban && !IsGant ? "active" : "")" id="List-view" data-bs-toggle="tab"
@@ -38,11 +39,9 @@
                     </span>
                     @Loc["List"]
                 </button>
-
-
-
             </li>
         }
+
         @if (TaskViews.Any(p => p.ViewType == ViewType.Kanban && p.IsActive))
         {
             <li class="nav-item" role="presentation">
@@ -56,6 +55,7 @@
                 </button>
             </li>
         }
+
         @if (TaskViews.Any(p => p.ViewType == ViewType.Gantt && p.IsActive))
         {
             <li class="nav-item" role="presentation">
@@ -70,6 +70,7 @@
                 </button>
             </li>
         }
+
     </ul>
     <div class="tab-content" id="myTabContent">
         <div class="tab-pane fade @(!IsKanban && !IsGant ? "active show" : "")" id="List-view-tab" role="tabpanel"
@@ -83,21 +84,19 @@
                             <span class="active-page">@timeLineTitle</span>
                         }
                     </h1>
-                   
+
                     <div class="view-scope-toggle" role="group" aria-label="Basic radio toggle button group">
                         <input type="radio" class="btn-check" name="taskRadio" id="mineRadio-task" autocomplete="off"
                                checked />
                         <label class="btn" for="mineRadio-task" title="@Loc["Mine"]">
                             <SVGCrud SVGType="SVGCrud.SVGTypeEnum.User"></SVGCrud>
                         </label>
-
                         <input type="radio" class="btn-check" name="taskRadio" id="teamRadio-task" autocomplete="off" />
                         <label class="btn" for="teamRadio-task" title="@Loc["Team"]">
                             <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Users"></SVGCrud>
                         </label>
                     </div>
                 </div>
-
                 <div class="action-btn-list">
                     <button class="btn btn-primary" @onclick="Add">
                         <span class="icon">
@@ -105,246 +104,239 @@
                         </span>
                         @Loc["AddTask"]
                     </button>
-                    @* <Search SearchSubmit="Search" CssClass="form-control"></Search>
- *@                    <button type="button" data-bs-toggle="tooltip" data-bs-placement="top" title="@Loc["Filter"]"
-                                              @onclick="ExpandFilter" class="btn btn-action-40 btn-outline-light-pimary">
-                    <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Filter"></SVGCrud>
-
-                </button>
-                @if (Viewtype != (int)ViewTypes.OverAllView)
-                {
-                    <button class="btn btn-action-40 btn-outline-light-pimary"
-                            title="@(isExpanded? Loc["CollapseAll"] : Loc["ExpandAll"])" @onclick="ToggleExpandCollapse">
-        
-                        <SVGCrud SVGType="@(isExpanded 
-                                                         ? SVGCrud.SVGTypeEnum.ChevronDoubleUp
-                                                     : SVGCrud.SVGTypeEnum.ChevronDoubleDown)">
-                        </SVGCrud>
-
-        
-                    </button>
-                }
-                <button type="button" data-bs-toggle="tooltip" data-bs-placement="top" title="@Loc["Viewcolumn"]"
-                        class="btn btn-action-40 btn-outline-light-pimary" @onclick="OnViewClick">
-                    <SVGCrud SVGType="SVGCrud.SVGTypeEnum.AddColumn"></SVGCrud>
-
-                </button>
-                <button type="button" data-bs-toggle="tooltip" title="@(isCardView ? "List View" : "Card View")"
-                        class="btn btn-action-40 btn-outline-light-pimary" @onclick="ToggleView">
-
-                    @if (isCardView)
+                    @if (FilterFieldsSettings.Any() == true)
                     {
-                        
-                        <SVGCrud SVGType="SVGCrud.SVGTypeEnum.List"></SVGCrud>
+                        <button type="button" data-bs-toggle="tooltip" data-bs-placement="top" title="@Loc["Filter"]"
+                                @onclick="ExpandFilter" class="btn btn-action-40 btn-outline-light-pimary">
+                            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Filter"></SVGCrud>
+                        </button>
                     }
-                    else
+                    @if (Viewtype != (int)ViewTypes.OverAllView)
                     {
-                        <SVGCrud SVGType="SVGCrud.SVGTypeEnum.CardView"></SVGCrud>
-                    }
+                        <button class="btn btn-action-40 btn-outline-light-pimary"
+                                title="@(isExpanded? Loc["CollapseAll"] : Loc["ExpandAll"])" @onclick="ToggleExpandCollapse">
 
-                </button>
-                <button type="button" data-bs-toggle="tooltip" data-bs-placement="top" title="Export Excel"
-                        class="btn btn-action-40 btn-outline-light-pimary">
-                    <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Excel"></SVGCrud>
-                </button>
-            </div>
-        </div>
-        <div class="horizintal-tab">
-            <!-- SIDE BUTTON BAR -->
-            <div class="tab-nav">
-                @if (TaskViews.Any(p => p.ViewType == ViewType.List_Overall && p.IsActive))
-                {
-                    <button class="btn tab-btn @(Viewtype == (int)ViewTypes.OverAllView ? "active" : "")"
-                            @onclick="() => changeViewType((int)ViewTypes.OverAllView)">
-                        <span class="icon">
-                            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.File"></SVGCrud>
-                        </span>
-                        <span class="text"> @Loc[ViewTypes.OverAllView.ToString()]</span>
+                            <SVGCrud SVGType="@(isExpanded? SVGCrud.SVGTypeEnum.ChevronDoubleUp: SVGCrud.SVGTypeEnum.ChevronDoubleDown)"></SVGCrud>
+                        </button>
+                    }
+                    <button type="button" data-bs-toggle="tooltip" data-bs-placement="top" title="@Loc["Viewcolumn"]"
+                            class="btn btn-action-40 btn-outline-light-pimary" @onclick="OnViewClick">
+                        <SVGCrud SVGType="SVGCrud.SVGTypeEnum.AddColumn"></SVGCrud>
+
                     </button>
-                }
-                @if (TaskViews.Any(p => p.ViewType == ViewType.List_Timeline && p.IsActive))
-                {
-                    <button class="btn tab-btn @(Viewtype == (int)ViewTypes.TimeLineView ? "active" : "")"
-                            @onclick="() => changeViewType((int)ViewTypes.TimeLineView)">
-                        <span class="icon">
-                            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Clock" />
-                        </span>
-                        <span class="text">@Loc[ViewTypes.TimeLineView.ToString()]</span>
-                    </button>
-                }
-                @if (TaskViews.Any(p => p.ViewType == ViewType.List_Status && p.IsActive))
-                {
-                    <button class="btn tab-btn @(Viewtype == (int)ViewTypes.StatusView ? "active" : "")"
-                            @onclick="() => changeViewType((int)ViewTypes.StatusView)">
-                        <span class="icon">
-                            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Repeat" />
-                        </span>
-                        <span class="text">@Loc[ViewTypes.StatusView.ToString()]</span>
-                    </button>
-                }
-                @if (TaskViews.Any(p => p.ViewType == ViewType.List_Source && p.IsActive))
-                {
-                    <button class="btn tab-btn @(Viewtype == (int)ViewTypes.SourceView ? "active" : "")"
-                            @onclick="() => changeViewType((int)ViewTypes.SourceView)">
-                        <span class="icon">
-                            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.TaskSource" />
-                        </span>
-                        <span class="text">@Loc[ViewTypes.SourceView.ToString()]</span>
-                    </button>
-                }
-                @if (TaskViews.Any(p => p.ViewType == ViewType.List_Type && p.IsActive))
-                {
-                    <button class="btn tab-btn @(Viewtype == (int)ViewTypes.TypeView ? "active" : "")"
-                            @onclick="() => changeViewType((int)ViewTypes.TypeView)">
-                        <span class="icon">
-                            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.TaskType" />
-                        </span>
-                        <span class="text">@Loc[ViewTypes.TypeView.ToString()]</span>
-                    </button>
-                }
-            </div>
-            <div class="page-body">
-                <div
-                    class="card table-card collaped-task-card table-caption border border-1 @(DisplayFilter ? "d-block " : "d-none")">
-                    <FilterComponent OnFilter="ApplyFilter" OnClear="ApplyClear" FilterDTO="TaskFilter" />
-                </div>
-                @switch (Viewtype)
-                {
-                    case (int)ViewTypes.OverAllView:
-                        <div>
-                            <TaskListView IsCardView="isCardView" Title="@Loc[ViewTypes.OverAllView.ToString()]" OnAdd="Add"
-                                          OnEdit="Edit" IsCompletedTasks="false" OnReopen="OnConfirmReopen" OnReject="Reject"
-                                          OnRequestChangeDueDate="RequstChangeDueDate" TaskFilterChanged="ApplyClear"
-                                          TaskFilter="TaskFilter" IsFilter="IsFilter" @ref="@taskListRefs["overall"]"></TaskListView>
-                        </div>
-                        break;
-                    case (int)ViewTypes.TimeLineView:
-                        int timelineIndex = 0;
-                        @foreach (TimeLineView timeview in Enum.GetValues(typeof(TimeLineView)))
+                    <button type="button" data-bs-toggle="tooltip" title="@(isCardView ? "List View" : "Card View")"
+                            class="btn btn-action-40 btn-outline-light-pimary" @onclick="ToggleView">
+
+                        @if (isCardView)
                         {
-                            var currentIndex = timelineIndex;
+
+                            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.List"></SVGCrud>
+                        }
+                        else
+                        {
+                            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.CardView"></SVGCrud>
+                        }
+
+                    </button>
+                    <button type="button" data-bs-toggle="tooltip" data-bs-placement="top" title="Export Excel"
+                            class="btn btn-action-40 btn-outline-light-pimary">
+                        <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Excel"></SVGCrud>
+                    </button>
+                </div>
+            </div>
+            <div class="horizintal-tab">
+                <!-- SIDE BUTTON BAR -->
+                <div class="tab-nav">
+                    @if (TaskViews.Any(p => p.ViewType == ViewType.List_Overall && p.IsActive))
+                    {
+                        <button class="btn tab-btn @(Viewtype == (int)ViewTypes.OverAllView ? "active" : "")"
+                                @onclick="() => changeViewType((int)ViewTypes.OverAllView)">
+                            <span class="icon">
+                                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.File"></SVGCrud>
+                            </span>
+                            <span class="text"> @Loc[ViewTypes.OverAllView.ToString()]</span>
+                        </button>
+                    }
+                    @if (TaskViews.Any(p => p.ViewType == ViewType.List_Timeline && p.IsActive))
+                    {
+                        <button class="btn tab-btn @(Viewtype == (int)ViewTypes.TimeLineView ? "active" : "")"
+                                @onclick="() => changeViewType((int)ViewTypes.TimeLineView)">
+                            <span class="icon">
+                                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Clock" />
+                            </span>
+                            <span class="text">@Loc[ViewTypes.TimeLineView.ToString()]</span>
+                        </button>
+                    }
+                    @if (TaskViews.Any(p => p.ViewType == ViewType.List_Status && p.IsActive))
+                    {
+                        <button class="btn tab-btn @(Viewtype == (int)ViewTypes.StatusView ? "active" : "")"
+                                @onclick="() => changeViewType((int)ViewTypes.StatusView)">
+                            <span class="icon">
+                                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Repeat" />
+                            </span>
+                            <span class="text">@Loc[ViewTypes.StatusView.ToString()]</span>
+                        </button>
+                    }
+                    @if (TaskViews.Any(p => p.ViewType == ViewType.List_Source && p.IsActive))
+                    {
+                        <button class="btn tab-btn @(Viewtype == (int)ViewTypes.SourceView ? "active" : "")"
+                                @onclick="() => changeViewType((int)ViewTypes.SourceView)">
+                            <span class="icon">
+                                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.TaskSource" />
+                            </span>
+                            <span class="text">@Loc[ViewTypes.SourceView.ToString()]</span>
+                        </button>
+                    }
+                    @if (TaskViews.Any(p => p.ViewType == ViewType.List_Type && p.IsActive))
+                    {
+                        <button class="btn tab-btn @(Viewtype == (int)ViewTypes.TypeView ? "active" : "")"
+                                @onclick="() => changeViewType((int)ViewTypes.TypeView)">
+                            <span class="icon">
+                                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.TaskType" />
+                            </span>
+                            <span class="text">@Loc[ViewTypes.TypeView.ToString()]</span>
+                        </button>
+                    }
+                </div>
+                <div class="page-body">
+                    <div class="card table-card collaped-task-card table-caption border border-1 @(DisplayFilter ? "d-block " : "d-none")">
+                        <FilterComponent OnFilter="ApplyFilter" OnClear="ApplyClear" FilterDTO="TaskFilter" />
+                    </div>
+                    @switch (Viewtype)
+                    {
+                        case (int)ViewTypes.OverAllView:
                             <div>
-                                <TaskListView IsCardView="isCardView" Title="@Loc[timeview.ToString()]"
-                                              ViewType="@((int)ViewTypes.TimeLineView)" IsCompletedTasks="false"
-                                              ViewTypeId="@(Guid.Parse(timeview.GetDescription()))" OnAdd="Add" OnEdit="Edit"
-                                              OnReopen="OnConfirmReopen" OnReject="Reject" OnRequestChangeDueDate="RequstChangeDueDate"
-                                              TaskFilterChanged="ApplyClear" TaskFilter="TaskFilter" IsFilter="IsFilter"
-                                              IsCollapseAll="IsCollapsedAll" @ref="@taskListRefs[$"timeline-{currentIndex}"]">
-                                </TaskListView>
+                                <TaskListView IsCardView="isCardView" Title="@Loc[ViewTypes.OverAllView.ToString()]" OnAdd="Add"
+                                              OnEdit="Edit" IsCompletedTasks="false" OnReopen="OnConfirmReopen" OnReject="Reject"
+                                              OnRequestChangeDueDate="RequstChangeDueDate" TaskFilterChanged="ApplyClear"
+                                              TaskFilter="TaskFilter" IsFilter="IsFilter" @ref="@taskListRefs["overall"]"></TaskListView>
                             </div>
-
-                        }
-                        break;
-                    case (int)ViewTypes.SourceView:
-                        if (sources is not null && sources.Any())
-                        {
-                            @foreach (var source in sources)
+                            break;
+                        case (int)ViewTypes.TimeLineView:
+                            int timelineIndex = 0;
+                            @foreach (TimeLineView timeview in Enum.GetValues(typeof(TimeLineView)))
                             {
-                                <TaskListView IsCardView="isCardView" @key="source.Id" IsCompletedTasks="false"
-                                              Title="@(CultureInfo.CurrentCulture.Name == "ar-EG" ? source.NameArabic : source.NameEnglish)"
-                                              ViewType="@((int)ViewTypes.SourceView)" ViewTypeId="@source.Id" OnAdd="Add" OnEdit="Edit"
+                                var currentIndex = timelineIndex;
+                                <div>
+                                    <TaskListView IsCardView="isCardView" Title="@Loc[timeview.ToString()]"
+                                                  ViewType="@((int)ViewTypes.TimeLineView)" IsCompletedTasks="false"
+                                                  ViewTypeId="@(Guid.Parse(timeview.GetDescription()))" OnAdd="Add" OnEdit="Edit"
+                                                  OnReopen="OnConfirmReopen" OnReject="Reject" OnRequestChangeDueDate="RequstChangeDueDate"
+                                                  TaskFilterChanged="ApplyClear" TaskFilter="TaskFilter" IsFilter="IsFilter"
+                                                  IsCollapseAll="IsCollapsedAll" @ref="@taskListRefs[$"timeline-{currentIndex}"]">
+                                    </TaskListView>
+                                </div>
+
+                            }
+                            break;
+                        case (int)ViewTypes.SourceView:
+                            if (sources is not null && sources.Any())
+                            {
+                                @foreach (var source in sources)
+                                {
+                                    <TaskListView IsCardView="isCardView" @key="source.Id" IsCompletedTasks="false"
+                                                  Title="@(CultureInfo.CurrentCulture.Name == "ar-EG" ? source.NameArabic : source.NameEnglish)"
+                                                  ViewType="@((int)ViewTypes.SourceView)" ViewTypeId="@source.Id" OnAdd="Add" OnEdit="Edit"
+                                                  OnReopen="OnConfirmReopen" OnReject="Reject" OnRequestChangeDueDate="RequstChangeDueDate"
+                                                  TaskFilterChanged="ApplyClear" TaskFilter="TaskFilter" IsFilter="IsFilter"
+                                                  IsCollapseAll="IsCollapsedAll" @ref="@taskListRefs[$"source-{source.Id}"]"></TaskListView>
+
+                                }
+                                <Pagination CurrentPage="@currentPage" TotalPages="@totalPages" TotalCount="@totalCount"
+                                            PageSize="@pageSize" PageSizeOptions="new[] {5, 8, 10, 15 }" PageChanged="ChangePage"
+                                            PageSizeChangedCallback="ChangePageSize" />
+                            }
+                            else
+                            {
+                                <NoDataAvailable MessageTitle="@Loc["NoTasks"]" MessageSubtitle="@Loc["AddTaskToStart"]"
+                                                 ButtonText="@Loc["AddTask"]" OnButtonClick="Add" />
+                            }
+                            break;
+                        case (int)ViewTypes.StatusView:
+                            var statusList = Satuses.Where(s => s.Id != Guid.Parse("D8E94CCE-586A-46D3-223D-08DE3318A61C") &&
+                            s.Id != Guid.Parse("C8D504C7-9402-4F91-223C-08DE3318A61C")).ToList();
+                            @foreach (var status in Satuses.Where(s => s.Id !=
+                                                Guid.Parse("D8E94CCE-586A-46D3-223D-08DE3318A61C") && s.Id !=
+                                                Guid.Parse("C8D504C7-9402-4F91-223C-08DE3318A61C")))
+                            {
+
+                                <TaskListView IsCardView="isCardView"
+                                              Title="@(CultureInfo.CurrentCulture.Name == "ar-EG" ? status.NameArabic : status.NameEnglish)"
+                                              ViewType="@((int)ViewTypes.StatusView)" ViewTypeId="@status.Id" OnAdd="Add" OnEdit="Edit"
                                               OnReopen="OnConfirmReopen" OnReject="Reject" OnRequestChangeDueDate="RequstChangeDueDate"
                                               TaskFilterChanged="ApplyClear" TaskFilter="TaskFilter" IsFilter="IsFilter"
-                                              IsCollapseAll="IsCollapsedAll" @ref="@taskListRefs[$"source-{source.Id}"]"></TaskListView>
-
+                                              IsCollapseAll="IsCollapsedAll" @ref="@taskListRefs[$"status-{status.Id}"]"></TaskListView>
                             }
-                            <Pagination CurrentPage="@currentPage" TotalPages="@totalPages" TotalCount="@totalCount"
-                                        PageSize="@pageSize" PageSizeOptions="new[] {5, 8, 10, 15 }" PageChanged="ChangePage"
-                                        PageSizeChangedCallback="ChangePageSize" />
-                        }
-                        else
-                        {
-                            <NoDataAvailable MessageTitle="@Loc["NoTasks"]" MessageSubtitle="@Loc["AddTaskToStart"]"
-                                             ButtonText="@Loc["AddTask"]" OnButtonClick="Add" />
-                        }
-                        break;
-                    case (int)ViewTypes.StatusView:
-                        var statusList = Satuses.Where(s => s.Id != Guid.Parse("D8E94CCE-586A-46D3-223D-08DE3318A61C") &&
-                        s.Id != Guid.Parse("C8D504C7-9402-4F91-223C-08DE3318A61C")).ToList();
-                        @foreach (var status in Satuses.Where(s => s.Id !=
-                                                                    Guid.Parse("D8E94CCE-586A-46D3-223D-08DE3318A61C") && s.Id !=
-                                                                    Guid.Parse("C8D504C7-9402-4F91-223C-08DE3318A61C")))
-                        {
-
-                            <TaskListView IsCardView="isCardView"
-                                          Title="@(CultureInfo.CurrentCulture.Name == "ar-EG" ? status.NameArabic : status.NameEnglish)"
-                                          ViewType="@((int)ViewTypes.StatusView)" ViewTypeId="@status.Id" OnAdd="Add" OnEdit="Edit"
-                                          OnReopen="OnConfirmReopen" OnReject="Reject" OnRequestChangeDueDate="RequstChangeDueDate"
-                                          TaskFilterChanged="ApplyClear" TaskFilter="TaskFilter" IsFilter="IsFilter"
-                                          IsCollapseAll="IsCollapsedAll" @ref="@taskListRefs[$"status-{status.Id}"]"></TaskListView>
-                        }
-                        break;
-                    case (int)ViewTypes.TypeView:
-                        if (Types is not null && Types.Any())
-                        {
-                            @foreach (var type in Types)
+                            break;
+                        case (int)ViewTypes.TypeView:
+                            if (Types is not null && Types.Any())
                             {
-                                <TaskListView IsCardView="isCardView" @key="type.Id" IsCompletedTasks="false"
-                                              Title="@(CultureInfo.CurrentCulture.Name == "ar-EG" ? type.NameArabic : type.NameEnglish)"
-                                              ViewType="@((int)ViewTypes.TypeView)" ViewTypeId="@type.Id" OnAdd="Add" OnEdit="Edit"
-                                              OnReopen="OnConfirmReopen" OnRequestChangeDueDate="RequstChangeDueDate" OnReject="Reject"
-                                              TaskFilterChanged="ApplyClear" TaskFilter="TaskFilter" IsFilter="IsFilter"
-                                              IsCollapseAll="IsCollapsedAll" @ref="@taskListRefs[$"type-{type.Id}"]"></TaskListView>
+                                @foreach (var type in Types)
+                                {
+                                    <TaskListView IsCardView="isCardView" @key="type.Id" IsCompletedTasks="false"
+                                                  Title="@(CultureInfo.CurrentCulture.Name == "ar-EG" ? type.NameArabic : type.NameEnglish)"
+                                                  ViewType="@((int)ViewTypes.TypeView)" ViewTypeId="@type.Id" OnAdd="Add" OnEdit="Edit"
+                                                  OnReopen="OnConfirmReopen" OnRequestChangeDueDate="RequstChangeDueDate" OnReject="Reject"
+                                                  TaskFilterChanged="ApplyClear" TaskFilter="TaskFilter" IsFilter="IsFilter"
+                                                  IsCollapseAll="IsCollapsedAll" @ref="@taskListRefs[$"type-{type.Id}"]"></TaskListView>
+                                }
+                                <Pagination CurrentPage="@currentPage" TotalPages="@totalPages" TotalCount="@totalCount"
+                                            PageSize="@pageSize" PageSizeOptions="new[] { 5, 8, 10, 15 }" PageChanged="ChangePageType"
+                                            PageSizeChangedCallback="ChangePageSizeType" />
                             }
-                            <Pagination CurrentPage="@currentPage" TotalPages="@totalPages" TotalCount="@totalCount"
-                                        PageSize="@pageSize" PageSizeOptions="new[] { 5, 8, 10, 15 }" PageChanged="ChangePageType"
-                                        PageSizeChangedCallback="ChangePageSizeType" />
-                        }
-                        else
-                        {
-                            <NoDataAvailable MessageTitle="@Loc["NoTasks"]" MessageSubtitle="@Loc["AddTaskToStart"]"
-                                             ButtonText="@Loc["AddTask"]" OnButtonClick="Add" />
-                        }
-                        break;
-                }
-            </div>
-        </div>
-    </div>
-    <div class="tab-pane fade @(IsKanban ? "show active" : "")" id="kanban-view-tab" role="tabpanel"
-         aria-labelledby="kanban-tab">
-        <div class="page-header">
-            <div class="title-block">
-                @* <h1 class="page-headline">@Loc["taskOverall"]</h1> *@
-                <div class="view-scope-toggle" role="group" aria-label="Basic radio toggle button group">
-                    <input type="radio" class="btn-check" name="btnradio" id="mineRadio" autocomplete="off"
-                           checked />
-                    <label class="btn" for="mineRadio" title="@Loc["Mine"]">
-                        <SVGCrud SVGType="SVGCrud.SVGTypeEnum.User"></SVGCrud>
-                     
-                    </label>
-
-                    <input type="radio" class="btn-check" name="btnradio" id="teamRadio" autocomplete="off" />
-                    <label class="btn" for="teamRadio" title="@Loc["Team"]">
-                        <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Users"></SVGCrud>
-                       
-                    </label>
+                            else
+                            {
+                                <NoDataAvailable MessageTitle="@Loc["NoTasks"]" MessageSubtitle="@Loc["AddTaskToStart"]"
+                                                 ButtonText="@Loc["AddTask"]" OnButtonClick="Add" />
+                            }
+                            break;
+                    }
                 </div>
             </div>
-
-            <div class="action-btn-list">
-                <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas"
-                        data-bs-target="#survey-type-modal" aria-controls="offcanvasWithBothOptions">
-                    <span class="icon">
-                        <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Pluse"></SVGCrud>
-                    </span>
-                    Add Task
-                </button>
-
-                <button type="button" data-bs-toggle="tooltip" data-bs-placement="top" title="Filter"
-                        class="btn btn-action-40 btn-outline-light-pimary">
-                    <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Filter"></SVGCrud>
-                </button>
-            </div>
         </div>
-        <div class="page-body"></div>
-    </div>
-    <div class="tab-pane fade @(IsGant ? "show active" : "")" id="gannt-view-tab" role="tabpanel"
-         aria-labelledby="gannt-tab">
-        <div class="page-body"></div>
-    </div>
+        <div class="tab-pane fade @(IsKanban ? "show active" : "")" id="kanban-view-tab" role="tabpanel"
+             aria-labelledby="kanban-tab">
+            <div class="page-header">
+                <div class="title-block">
+                    @* <h1 class="page-headline">@Loc["taskOverall"]</h1> *@
+                    <div class="view-scope-toggle" role="group" aria-label="Basic radio toggle button group">
+                        <input type="radio" class="btn-check" name="btnradio" id="mineRadio" autocomplete="off"
+                               checked />
+                        <label class="btn" for="mineRadio" title="@Loc["Mine"]">
+                            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.User"></SVGCrud>
 
+                        </label>
 
-</div>
+                        <input type="radio" class="btn-check" name="btnradio" id="teamRadio" autocomplete="off" />
+                        <label class="btn" for="teamRadio" title="@Loc["Team"]">
+                            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Users"></SVGCrud>
+
+                        </label>
+                    </div>
+                </div>
+
+                <div class="action-btn-list">
+                    <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas"
+                            data-bs-target="#survey-type-modal" aria-controls="offcanvasWithBothOptions">
+                        <span class="icon">
+                            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Pluse"></SVGCrud>
+                        </span>
+                        Add Task
+                    </button>
+
+                    <button type="button" data-bs-toggle="tooltip" data-bs-placement="top" title="Filter"
+                            class="btn btn-action-40 btn-outline-light-pimary">
+                        <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Filter"></SVGCrud>
+                    </button>
+                </div>
+            </div>
+            <div class="page-body"></div>
+        </div>
+        <div class="tab-pane fade @(IsGant ? "show active" : "")" id="gannt-view-tab" role="tabpanel"
+             aria-labelledby="gannt-tab">
+            <div class="page-body"></div>
+        </div>
+    </div>
 </div>
 
 
@@ -374,26 +366,31 @@
     bool IsKanban = false;
     bool IsGant = false;
     bool isExpanded = false;
+    bool isCardView = false;
+    public List<FilterFieldsSettingDto> FilterFieldsSettings { get; set; } = new();
 
     void ToggleExpandCollapse()
     {
         isExpanded = !isExpanded;
         ExpandOrCollapse(isExpanded);
     }
-    bool isCardView = false;
+
     void ToggleView()
     {
         isCardView = !isCardView;
     }
     protected override async Task OnInitializedAsync()
     {
+        var resFilter = await _filterFieldsSettingConsumer.GetFilterFieldsSettings(isload: false);
+        if (resFilter.Success && resFilter.Data != null)
+        {
+            FilterFieldsSettings = resFilter.Data.Where(f => f.IsActive).ToList();
+        }
         var res = await _viewTaskSettingConsumer.GetViewTaskSetting(isload: false);
         if (res.Success && res.Data != null)
         {
             var orderedEnums = EnumExtensions.GetOrderedValues<ViewType>();
-            TaskViews = orderedEnums.Select(enumVal => res.Data.FirstOrDefault(d => d.ViewType == enumVal))
-            .Where(d => d != null)
-            .ToList()!;
+            TaskViews = orderedEnums.Select(enumVal => res.Data.FirstOrDefault(d => d.ViewType == enumVal)).Where(d => d != null).ToList()!;
         }
         var viewtype = await LocalStorageService.GetItemAsync<int>("TaskListViewType");
         if (viewtype <= 5)
@@ -411,20 +408,6 @@
             if (viewtype == 7) { IsGant = true; }
         }
     }
-    // override on
-    // overr
-    // {
-    // var viewtype =await LocalStorageService.GetItemAsync<int>("TaskListViewType");
-    // if (viewtype == 0)
-    // {
-    // viewtype = 1;
-    // }
-    // ViewType = viewtype;
-    // }
-    // protected override void OnAfterRender(bool firstRender)
-    // {
-    // base.OnAfterRender(firstRender);
-    // }
     private async Task ClearSearch()
     {
         //currentPage = 1;
@@ -473,24 +456,16 @@
         }, ConfirmationType.Other);
     }
     public void Add() => PopupService.ShowNew(@<Create OnValidSubmit="OnInitializedAsync"></Create>,Loc["AddTask"]);
-    private void Edit(Guid id) => PopupService.ShowNew(@<EditTask Id="id" OnValidSubmit="ReloadAfterSave"></EditTask>,
-    headerText: @Loc["EditTask"]);
-public async Task Reopen(Guid id)
-    {
-        Console.WriteLine("Reopen Task with ID: " + id);
-        PopupService.ShowNew(@<ReopenTask Id="id" OnSaved="ReloadAfterSave"></ReopenTask>,Loc["ReOpen"]);
-    }
-    public void Reject(Guid id) => PopupService.ShowNew(@<RejectTask Id="id" OnSaved="ReloadAfterSave"></RejectTask>
-,Loc["Reject"]);
-    public void RequstChangeDueDate(CreateTaskDto taskDto) => PopupService.ShowNew(@<RequestChangeDueDate task="taskDto"
-                                                                                                      OnSaved="ReloadAfterSave"></RequestChangeDueDate>, Loc["RequestDueDate"]);
-private async Task ReloadAfterSave()
+    private void Edit(Guid id) => PopupService.ShowNew(@<EditTask Id="id" OnValidSubmit="ReloadAfterSave"></EditTask>, headerText: @Loc["EditTask"]);
+    public async Task Reopen(Guid id) => PopupService.ShowNew(@<ReopenTask Id="id" OnSaved="ReloadAfterSave"></ReopenTask>,Loc["ReOpen"]);
+    public void Reject(Guid id) => PopupService.ShowNew(@<RejectTask Id="id" OnSaved="ReloadAfterSave"></RejectTask> ,Loc["Reject"]);
+    public void RequstChangeDueDate(CreateTaskDto taskDto) => PopupService.ShowNew(@<RequestChangeDueDate task="taskDto" OnSaved="ReloadAfterSave"></RequestChangeDueDate>, Loc["RequestDueDate"]);
+    private async Task ReloadAfterSave()
     {
         foreach (var taskList in taskListRefs.Values.Where(t => t != null))
         {
             await taskList.GetTasks();
         }
-
         switch (Viewtype)
         {
             case (int)ViewTypes.SourceView:
@@ -551,7 +526,7 @@ private async Task ReloadAfterSave()
     }
     private void OnViewClick() => PopupService.ShowNew(@<ViewColumn OnValidSubmit="RefreshAllColumns" IsCompleted="false">
     </ViewColumn>, headerText: @Loc["Viewcolumn"]);
-private async Task RefreshAllColumns()
+    private async Task RefreshAllColumns()
     {
         foreach (var taskList in taskListRefs.Values.Where(t => t != null))
         {

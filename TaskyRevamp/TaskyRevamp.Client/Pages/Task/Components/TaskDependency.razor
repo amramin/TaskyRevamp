@@ -6,12 +6,12 @@
 <TaskDependencyTable Columns="tableColumns" CurrentPage="currentPage" PageSize="pageSize" TotalCount="totalCount"
                      TotalPages="totalPages" PageChanged="ChangePage" PageSizeChanged="ChangePageSize" Tasks="allDependOnTasks"
                      EmptyMessage="@Loc["NoDependingOnTasks"]" SortAscending="sortAscending" SortColumn="currentSortColumn"
-                     OnSortRequested="HandleSort" Title="@Loc["DependingOn"]"></TaskDependencyTable>
+                     OnSortRequested="HandleSort" Title="@Loc["DependingOn"]" HintMessage="@Loc["DependingOnHint"]"></TaskDependencyTable>
 
 <TaskDependencyTable Columns="tableColumns" CurrentPage="dependent_currentPage" PageSize="dependent_pageSize" TotalCount="dependent_totalCount"
                      TotalPages="dependent_totalPages" PageChanged="ChangePageDependent" PageSizeChanged="ChangePageSizeDependent" Tasks="allDependentTasks"
                      EmptyMessage="@Loc["NoDependentTasks"]" SortAscending="dependent_sortAscending" SortColumn="dependent_currentSortColumn"
-                     OnSortRequested="HandleSortDependent" Title="@Loc["dependenTasks"]"></TaskDependencyTable>
+                     OnSortRequested="HandleSortDependent" Title="@Loc["dependenTasks"]" HintMessage="@Loc["DependentTasksHint"]"></TaskDependencyTable>
 
 @code {
     [Parameter] public CreateTaskDto? Task { get; set; }

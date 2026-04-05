@@ -13,12 +13,11 @@
 @inject NavigationManager navigationManager
 
 
-    <PriorityForm 
-        @ref="form"
+<PriorityForm @ref="form"
               Priority="@Priority"
-        OnValidSubmit="@Save"
-        SubmitButtonText="Save"
-        OnCancel="@Cancel"/>
+              OnValidSubmit="@Save"
+              SubmitButtonText="Save"
+              OnCancel="@Cancel" />
 
 
 @code {
@@ -29,27 +28,30 @@
     private PriorityForm form;
     private PriorityDto? selectedPriority;
     private bool showConfirm;
+
     private async Task Save(EditContext editContext)
     {
-
-
         var alloldPriorty = await _prioritySettingConsumer.GetPriorities();
-        var allOldActivePriorty = alloldPriorty.Data
-            .Where(k => k.IsDeleted != true && k.Id != Priority.Id)
-            .ToList();
-
-        var alloldDeletedPriority = alloldPriorty.Data
-            .Where(k => k.IsDeleted == true)
-            .ToList();
-        if (allOldActivePriorty.Any(m => m.NameEnglish == Priority.NameEnglish) || allOldActivePriorty.Any(m => m.NameArabic == Priority.NameArabic))
+        var allOldActivePriorty = alloldPriorty.Data.Where(k => k.IsDeleted != true && k.Id != Priority.Id).ToList();
+        var alloldDeletedPriority = alloldPriorty.Data.Where(k => k.IsDeleted == true).ToList();
+        form.ClearValidationMessages();
+        var isDuplicateAr = allOldActivePriorty.Any(m => m.NameArabic == Priority.NameArabic);
+        var isDuplicateEn = allOldActivePriorty.Any(m => m.NameEnglish == Priority.NameEnglish);
+        if (isDuplicateAr || isDuplicateEn)
         {
-            await ToastService.ShowToastAsync(Loc["AnactivePrioritywith"], "error");
-
+            if (isDuplicateAr && isDuplicateEn)
+            {
+                form.AddCustomError(nameof(Priority.NameArabic), Loc["PriorityDuplicateValidation"]);
+                form.AddCustomError(nameof(Priority.NameEnglish), Loc["PriorityDuplicateValidation"]);
+            }
+            else if (isDuplicateAr)
+                form.AddCustomError(nameof(Priority.NameArabic), Loc["PriorityDuplicateValidation"]);
+            else if (isDuplicateEn)
+                form.AddCustomError(nameof(Priority.NameEnglish), Loc["PriorityDuplicateValidation"]);
             return;
         }
         else if (alloldDeletedPriority.Any(m => m.NameEnglish == Priority.NameEnglish) || alloldDeletedPriority.Any(m => m.NameArabic == Priority.NameArabic))
         {
-
             var relatedwithcompleted = await _prioritySettingConsumer.CheckRelatedComplatedTaskitemPriority(Priority);
             if (relatedwithcompleted.Data)
             {
@@ -61,9 +63,7 @@
             {
                 var result = await _prioritySettingConsumer.UpdatePriority(Priority);
                 await _prioritySettingConsumer.DeletePriority(Priority.Id);
-
                 await ToastService.ShowToastAsync(Loc["Added successfully"], "success");
-
             }
         }
         else
@@ -94,7 +94,7 @@
             var result = await _prioritySettingConsumer.RetriveDeletePriority(selectedPriority);
             if (result.Data)
             {
-              //  await _prioritySettingConsumer.DeletePriority(Priority.Id);
+                //  await _prioritySettingConsumer.DeletePriority(Priority.Id);
 
                 showConfirm = false;
                 StateHasChanged();

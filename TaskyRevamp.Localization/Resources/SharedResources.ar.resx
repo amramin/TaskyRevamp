@@ -322,7 +322,7 @@
     <value>الأحد</value>
   </data>
   <data name="WeeklyReport" xml:space="preserve">
-    <value>التقرير الإسبوعي</value>
+    <value>وقت ارسال التقرير الإسبوعي</value>
   </data>
   <data name="English" xml:space="preserve">
     <value>اللغة الإنجليزية</value>
@@ -1663,12 +1663,6 @@
   <data name="LinkedWithPrivilagesUsers" xml:space="preserve">
     <value>المستخدمون المرتبطون بامتيازات</value>
   </data>
-  <data name="SubDepartmentUsers" xml:space="preserve">
-    <value>مستخدمي الإدارة الفرعية</value>
-  </data>
-  <data name="rejectedsuccessfully" xml:space="preserve">
-    <value>تم رفض تاريخ الطلب بنجاح</value>
-  </data>
   <data name="CommentHint" xml:space="preserve">
     <value>أضف تعليقًا. استخدم @ للإشارة إلى شخص ما</value>
   </data>
@@ -1677,6 +1671,9 @@
   </data>
   <data name="ViewedBy" xml:space="preserve">
     <value>تمت المشاهدة بواسطة</value>
+  </data>
+  <data name="SubDepartmentUsers" xml:space="preserve">
+    <value>مستخدمي الإدارة الفرعية</value>
   </data>
   <data name="LinkedUsersHint" xml:space="preserve">
     <value>عرض العدد الإجمالي للمستخدمين في هذا القسم</value>
@@ -1687,10 +1684,16 @@
   <data name="SubDepartmentUsersHint" xml:space="preserve">
     <value>عرض العدد الإجمالي للمستخدمين في هذا القسم، بما في ذلك جميع المستخدمين في أقسامه الفرعية</value>
   </data>
-  <data name="rejectedsuccessfully" xml:space="preserve">
-    <value>تم رفض تاريخ الطلب بنجاح</value>
-  </data>
   <data name="linkOneUser" xml:space="preserve">
     <value>ربط المستخدم</value>
+  </data>
+  <data name="DependingOnHint" xml:space="preserve">
+    <value>المهام التي يجب أن تكتمل حتى تكتمل هذه المهمة</value>
+  </data>
+  <data name="DependentTasksHint" xml:space="preserve">
+    <value>المهام التي لا يمكن إكمالها حتى تكتمل هذه المهمة</value>
+  </data>
+  <data name="rejectedsuccessfully" xml:space="preserve">
+    <value>تم رفض تاريخ الطلب بنجاح</value>
   </data>
 </root>

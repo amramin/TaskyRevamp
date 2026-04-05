@@ -168,7 +168,6 @@
         userName = await LocalStorageService.GetItemAsStringAsync(key) ?? "";
         currentId = Guid.Parse(current!);
         await LoadComments();
-        Console.WriteLine(assignedUsers.ToList());
     }
     protected override void OnParametersSet()
     {
