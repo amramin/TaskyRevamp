@@ -538,6 +538,12 @@
   <data name="DefaultColumnsHint" xml:space="preserve">
     <value>قم بتخصيص الأعمدة التي ترغب في عرضها، وحدد العرض الافتراضي للأعمدة الذي سيظهر عند تسجيل دخول المستخدم إلى النظام</value>
   </data>
+   <data name="DefaultColumnsIsDisplayHint" xml:space="preserve">
+    <value>يتم عرض الأعمدة النشطة افتراضيًا عند تسجيل الدخول</value>
+  </data>
+  <data name="DefaultColumnsActiveHint" xml:space="preserve">
+    <value>التحكم في إظهار أو إخفاء الأعمدة في جدول قائمة المهام وقائمة المهام المكتملة</value>
+  </data>
   <data name="TaskFilterHint" xml:space="preserve">
     <value>حدد الحقول التي تريد عرضها في أي مرشح مهمة</value>
   </data>

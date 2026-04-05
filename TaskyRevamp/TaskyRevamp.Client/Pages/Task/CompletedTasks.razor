@@ -24,37 +24,17 @@
             <div class="page-header">
                 <div class="title-block">
                     <h1 class="page-headline">@Loc[((ViewTypes)ViewType).ToString()]</h1>
-                    @if (ViewType != (int)ViewTypes.OverAllView)
-                    {
-                        <div class="view-scope-toggle" role="group" aria-label="Basic radio toggle button group">
-                            <input type="radio" class="btn-check" name="taskRadio" id="mineRadio-task" autocomplete="off"
-                                   checked @onclick="() => ExpandOrCollapse(false)" />
-                            <label class="btn" for="mineRadio-task">
-                                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.ChevronDown"></SVGCrud>
-                                <span>@Loc["ExpandAll"]</span>
-                            </label>
 
-                            <input type="radio" class="btn-check" name="taskRadio" id="teamRadio-task" autocomplete="off" @onclick="() => ExpandOrCollapse(true)" />
-                            <label class="btn" for="teamRadio-task">
-                                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.ChevronEnd"></SVGCrud>
-
-                                <span>@Loc["CollapseAll"]</span>
-                            </label>
-                        </div>
-                    }
                     <div class="view-scope-toggle" role="group" aria-label="Basic radio toggle button group">
                         <input type="radio" class="btn-check" name="taskRadio" id="mineRadio-task" autocomplete="off"
                                checked />
-                        <label class="btn" for="mineRadio-task">
+                        <label class="btn" for="mineRadio-task" title="@Loc["Mine"]">
                             <SVGCrud SVGType="SVGCrud.SVGTypeEnum.User"></SVGCrud>
-                            <span>@Loc["Mine"]</span>
                         </label>
 
                         <input type="radio" class="btn-check" name="taskRadio" id="teamRadio-task" autocomplete="off" />
-                        <label class="btn" for="teamRadio-task">
+                        <label class="btn" for="teamRadio-task" title="@Loc["Team"]">
                             <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Users"></SVGCrud>
-
-                            <span>@Loc["Team"]</span>
                         </label>
                     </div>
                 </div>
@@ -68,8 +48,15 @@
                     @if (FilterFieldsSettings.Any() == true)
                     {
                         <button type="button" data-bs-toggle="tooltip" data-bs-placement="top" title="@Loc["Filter"]" @onclick="ExpandFilter"
-                                class="btn btn-action-40 btn-outline-light-pimary">
+                            class="btn btn-action-40 btn-outline-light-pimary">
                             <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Filter"></SVGCrud>
+                        </button>
+                    }
+                    @if (ViewType != (int)ViewTypes.OverAllView)
+                    {
+                        <button class="btn btn-action-40 btn-outline-light-pimary"
+                                title="@(isExpanded? Loc["CollapseAll"] : Loc["ExpandAll"])" @onclick="ToggleExpandCollapse">
+                            <SVGCrud SVGType="@(isExpanded? SVGCrud.SVGTypeEnum.ChevronDoubleUp: SVGCrud.SVGTypeEnum.ChevronDoubleDown)"></SVGCrud>
                         </button>
                     }
                     <button type="button" data-bs-toggle="tooltip" data-bs-placement="top" title="View column"
@@ -203,6 +190,13 @@
     bool DisplayFilter = false;
     public List<FilterFieldsSettingDto> FilterFieldsSettings { get; set; } = new();
 
+    bool isExpanded = false;
+
+    void ToggleExpandCollapse()
+    {
+        isExpanded = !isExpanded;
+        ExpandOrCollapse(isExpanded);
+    }
     private async Task ClearSearch()
     {
         //currentPage = 1;
