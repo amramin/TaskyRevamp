@@ -8,6 +8,15 @@
     }
   }
 }
+ .multiselect-dropdown {
+  .form-check.select-all{
+    padding:0.25rem 0.5rem;
+    margin-bottom :0;
+  }
+  .custom-select-item{
+    border-radius:calc(var(--bs-border-radius) - 2px) ;
+  }
+ }
 .priority-drop-down {
   border-radius: var(--bs-border-radius);
   .multiselect-dropdown {
@@ -70,6 +79,7 @@
     }
   }
 }
+
 //  start .initials-list
 .initials-list {
   display: flex;

@@ -122,9 +122,29 @@ html {
   justify-content: center;
   width: 2.25rem;
   height: 2.25rem;
+  position: relative;
   svg {
     width: 1rem;
     height: 1rem;
+  }
+  &::after {
+    content: "";
+    position: absolute;
+    width: 0.5rem;
+    height: 0.5rem;
+    top: 0.125rem;
+    inset-inline-end: 0;
+    border-radius: 50%;
+  }
+  &.active {
+    &::after {
+      background-color: rgba(var(--bs-success-rgb), 1);
+    }
+  }
+  &.inactive {
+    &::after {
+      background-color: rgba(var(--bs-danger-rgb), 1);
+    }
   }
 }
 /* end Global */
@@ -322,7 +342,7 @@ html {
       transition: all 0.3s ease-in-out;
       background-color: var(--bs-white);
       z-index: 1;
-     
+
       .icon {
         width: 2rem;
         background-color: var(--bs-white);

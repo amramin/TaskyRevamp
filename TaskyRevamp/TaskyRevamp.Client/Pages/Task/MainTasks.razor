@@ -23,11 +23,11 @@
 <div class="tab-pills flex-grow-1">
     <ul class="nav nav-pills" id="myTab" role="tablist">
         @if (TaskViews.Any(p => (p.ViewType == ViewType.List_Overall && p.IsActive) ||
-                (p.ViewType == ViewType.List_Status && p.IsActive) ||
-                (p.ViewType == ViewType.List_Source && p.IsActive) ||
-                (p.ViewType == ViewType.List_Type && p.IsActive) ||
-                (p.ViewType == ViewType.List_Timeline && p.IsActive)
-                ))
+                        (p.ViewType == ViewType.List_Status && p.IsActive) ||
+                        (p.ViewType == ViewType.List_Source && p.IsActive) ||
+                        (p.ViewType == ViewType.List_Type && p.IsActive) ||
+                        (p.ViewType == ViewType.List_Timeline && p.IsActive)
+                        ))
         {
             <li class="nav-item" role="presentation">
                 <button class="nav-link @(!IsKanban && !IsGant ? "active" : "")" id="List-view" data-bs-toggle="tab"
@@ -80,23 +80,20 @@
                         @Loc[((ViewTypes)Viewtype).ToString()]
                         @if ((ViewTypes)Viewtype == ViewTypes.TimeLineView)
                         {
-                            <span class="ms-1">@timeLineTitle</span>
+                            <span class="active-page">@timeLineTitle</span>
                         }
                     </h1>
                    
                     <div class="view-scope-toggle" role="group" aria-label="Basic radio toggle button group">
                         <input type="radio" class="btn-check" name="taskRadio" id="mineRadio-task" autocomplete="off"
                                checked />
-                        <label class="btn" for="mineRadio-task">
+                        <label class="btn" for="mineRadio-task" title="@Loc["Mine"]">
                             <SVGCrud SVGType="SVGCrud.SVGTypeEnum.User"></SVGCrud>
-                            <span>@Loc["Mine"]</span>
                         </label>
 
                         <input type="radio" class="btn-check" name="taskRadio" id="teamRadio-task" autocomplete="off" />
-                        <label class="btn" for="teamRadio-task">
+                        <label class="btn" for="teamRadio-task" title="@Loc["Team"]">
                             <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Users"></SVGCrud>
-
-                            <span>@Loc["Team"]</span>
                         </label>
                     </div>
                 </div>
@@ -108,24 +105,25 @@
                         </span>
                         @Loc["AddTask"]
                     </button>
-                    @*                     <Search SearchSubmit="Search" CssClass="form-control"></Search>
+                    @* <Search SearchSubmit="Search" CssClass="form-control"></Search>
  *@                    <button type="button" data-bs-toggle="tooltip" data-bs-placement="top" title="@Loc["Filter"]"
                                               @onclick="ExpandFilter" class="btn btn-action-40 btn-outline-light-pimary">
                     <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Filter"></SVGCrud>
 
                 </button>
                 @if (Viewtype != (int)ViewTypes.OverAllView)
-{
-    <button class="btn btn-action-40 btn-outline-light-pimary"   title="@(isExpanded ? Loc["CollapseAll"] : Loc["ExpandAll"])" @onclick="ToggleExpandCollapse">
+                {
+                    <button class="btn btn-action-40 btn-outline-light-pimary"
+                            title="@(isExpanded? Loc["CollapseAll"] : Loc["ExpandAll"])" @onclick="ToggleExpandCollapse">
         
-        <SVGCrud SVGType="@(isExpanded 
-            ? SVGCrud.SVGTypeEnum.ChevronDoubleUp 
-            : SVGCrud.SVGTypeEnum.ChevronDoubleDown)">
-        </SVGCrud>
+                        <SVGCrud SVGType="@(isExpanded 
+                                                         ? SVGCrud.SVGTypeEnum.ChevronDoubleUp
+                                                     : SVGCrud.SVGTypeEnum.ChevronDoubleDown)">
+                        </SVGCrud>
 
         
-    </button>
-}
+                    </button>
+                }
                 <button type="button" data-bs-toggle="tooltip" data-bs-placement="top" title="@Loc["Viewcolumn"]"
                         class="btn btn-action-40 btn-outline-light-pimary" @onclick="OnViewClick">
                     <SVGCrud SVGType="SVGCrud.SVGTypeEnum.AddColumn"></SVGCrud>
@@ -137,7 +135,7 @@
                     @if (isCardView)
                     {
                         
-                         <SVGCrud SVGType="SVGCrud.SVGTypeEnum.List"></SVGCrud>
+                        <SVGCrud SVGType="SVGCrud.SVGTypeEnum.List"></SVGCrud>
                     }
                     else
                     {
@@ -238,21 +236,22 @@
                         }
                         break;
                     case (int)ViewTypes.SourceView:
-                    if(sources is not null && sources.Any()){
-                        @foreach (var source in sources)
+                        if (sources is not null && sources.Any())
                         {
-                            <TaskListView IsCardView="isCardView" @key="source.Id" IsCompletedTasks="false"
-                                          Title="@(CultureInfo.CurrentCulture.Name == "ar-EG" ? source.NameArabic : source.NameEnglish)"
-                                          ViewType="@((int)ViewTypes.SourceView)" ViewTypeId="@source.Id" OnAdd="Add" OnEdit="Edit"
-                                          OnReopen="OnConfirmReopen" OnReject="Reject" OnRequestChangeDueDate="RequstChangeDueDate"
-                                          TaskFilterChanged="ApplyClear" TaskFilter="TaskFilter" IsFilter="IsFilter"
-                                          IsCollapseAll="IsCollapsedAll" @ref="@taskListRefs[$"source-{source.Id}"]"></TaskListView>
+                            @foreach (var source in sources)
+                            {
+                                <TaskListView IsCardView="isCardView" @key="source.Id" IsCompletedTasks="false"
+                                              Title="@(CultureInfo.CurrentCulture.Name == "ar-EG" ? source.NameArabic : source.NameEnglish)"
+                                              ViewType="@((int)ViewTypes.SourceView)" ViewTypeId="@source.Id" OnAdd="Add" OnEdit="Edit"
+                                              OnReopen="OnConfirmReopen" OnReject="Reject" OnRequestChangeDueDate="RequstChangeDueDate"
+                                              TaskFilterChanged="ApplyClear" TaskFilter="TaskFilter" IsFilter="IsFilter"
+                                              IsCollapseAll="IsCollapsedAll" @ref="@taskListRefs[$"source-{source.Id}"]"></TaskListView>
 
+                            }
+                            <Pagination CurrentPage="@currentPage" TotalPages="@totalPages" TotalCount="@totalCount"
+                                        PageSize="@pageSize" PageSizeOptions="new[] {5, 8, 10, 15 }" PageChanged="ChangePage"
+                                        PageSizeChangedCallback="ChangePageSize" />
                         }
-                        <Pagination CurrentPage="@currentPage" TotalPages="@totalPages" TotalCount="@totalCount"
-                                    PageSize="@pageSize" PageSizeOptions="new[] {5, 8, 10, 15 }" PageChanged="ChangePage"
-                                    PageSizeChangedCallback="ChangePageSize" />
-                                    }
                         else
                         {
                             <NoDataAvailable MessageTitle="@Loc["NoTasks"]" MessageSubtitle="@Loc["AddTaskToStart"]"
@@ -263,40 +262,40 @@
                         var statusList = Satuses.Where(s => s.Id != Guid.Parse("D8E94CCE-586A-46D3-223D-08DE3318A61C") &&
                         s.Id != Guid.Parse("C8D504C7-9402-4F91-223C-08DE3318A61C")).ToList();
                         @foreach (var status in Satuses.Where(s => s.Id !=
-                                            Guid.Parse("D8E94CCE-586A-46D3-223D-08DE3318A61C") && s.Id !=
-                                            Guid.Parse("C8D504C7-9402-4F91-223C-08DE3318A61C")))
+                                                                    Guid.Parse("D8E94CCE-586A-46D3-223D-08DE3318A61C") && s.Id !=
+                                                                    Guid.Parse("C8D504C7-9402-4F91-223C-08DE3318A61C")))
                         {
 
                             <TaskListView IsCardView="isCardView"
-                            Title="@(CultureInfo.CurrentCulture.Name == "ar-EG" ? status.NameArabic : status.NameEnglish)"
-                            ViewType="@((int)ViewTypes.StatusView)" ViewTypeId="@status.Id" OnAdd="Add" OnEdit="Edit"
-                            OnReopen="OnConfirmReopen" OnReject="Reject" OnRequestChangeDueDate="RequstChangeDueDate"
-                            TaskFilterChanged="ApplyClear" TaskFilter="TaskFilter" IsFilter="IsFilter"
-                            IsCollapseAll="IsCollapsedAll" @ref="@taskListRefs[$"status-{status.Id}"]"></TaskListView>
-                            }
-                            break;
-                        case (int)ViewTypes.TypeView:
-                            if (Types is not null && Types.Any())
+                                          Title="@(CultureInfo.CurrentCulture.Name == "ar-EG" ? status.NameArabic : status.NameEnglish)"
+                                          ViewType="@((int)ViewTypes.StatusView)" ViewTypeId="@status.Id" OnAdd="Add" OnEdit="Edit"
+                                          OnReopen="OnConfirmReopen" OnReject="Reject" OnRequestChangeDueDate="RequstChangeDueDate"
+                                          TaskFilterChanged="ApplyClear" TaskFilter="TaskFilter" IsFilter="IsFilter"
+                                          IsCollapseAll="IsCollapsedAll" @ref="@taskListRefs[$"status-{status.Id}"]"></TaskListView>
+                        }
+                        break;
+                    case (int)ViewTypes.TypeView:
+                        if (Types is not null && Types.Any())
+                        {
+                            @foreach (var type in Types)
                             {
-                                @foreach (var type in Types)
-                                {
-                                    <TaskListView IsCardView="isCardView" @key="type.Id" IsCompletedTasks="false"
-                                    Title="@(CultureInfo.CurrentCulture.Name == "ar-EG" ? type.NameArabic : type.NameEnglish)"
-                                    ViewType="@((int)ViewTypes.TypeView)" ViewTypeId="@type.Id" OnAdd="Add" OnEdit="Edit"
-                                    OnReopen="OnConfirmReopen" OnRequestChangeDueDate="RequstChangeDueDate" OnReject="Reject"
-                                    TaskFilterChanged="ApplyClear" TaskFilter="TaskFilter" IsFilter="IsFilter"
-                                    IsCollapseAll="IsCollapsedAll" @ref="@taskListRefs[$"type-{type.Id}"]"></TaskListView>
-                                }
-                                <Pagination CurrentPage="@currentPage" TotalPages="@totalPages" TotalCount="@totalCount"
-                                PageSize="@pageSize" PageSizeOptions="new[] { 5, 8, 10, 15 }" PageChanged="ChangePageType"
-                                PageSizeChangedCallback="ChangePageSizeType" />
+                                <TaskListView IsCardView="isCardView" @key="type.Id" IsCompletedTasks="false"
+                                              Title="@(CultureInfo.CurrentCulture.Name == "ar-EG" ? type.NameArabic : type.NameEnglish)"
+                                              ViewType="@((int)ViewTypes.TypeView)" ViewTypeId="@type.Id" OnAdd="Add" OnEdit="Edit"
+                                              OnReopen="OnConfirmReopen" OnRequestChangeDueDate="RequstChangeDueDate" OnReject="Reject"
+                                              TaskFilterChanged="ApplyClear" TaskFilter="TaskFilter" IsFilter="IsFilter"
+                                              IsCollapseAll="IsCollapsedAll" @ref="@taskListRefs[$"type-{type.Id}"]"></TaskListView>
+                            }
+                            <Pagination CurrentPage="@currentPage" TotalPages="@totalPages" TotalCount="@totalCount"
+                                        PageSize="@pageSize" PageSizeOptions="new[] { 5, 8, 10, 15 }" PageChanged="ChangePageType"
+                                        PageSizeChangedCallback="ChangePageSizeType" />
                         }
                         else
                         {
                             <NoDataAvailable MessageTitle="@Loc["NoTasks"]" MessageSubtitle="@Loc["AddTaskToStart"]"
                                              ButtonText="@Loc["AddTask"]" OnButtonClick="Add" />
                         }
-                            break;
+                        break;
                 }
             </div>
         </div>
@@ -309,15 +308,15 @@
                 <div class="view-scope-toggle" role="group" aria-label="Basic radio toggle button group">
                     <input type="radio" class="btn-check" name="btnradio" id="mineRadio" autocomplete="off"
                            checked />
-                    <label class="btn" for="mineRadio">
+                    <label class="btn" for="mineRadio" title="@Loc["Mine"]">
                         <SVGCrud SVGType="SVGCrud.SVGTypeEnum.User"></SVGCrud>
-                        <span>Mine</span>
+                     
                     </label>
 
                     <input type="radio" class="btn-check" name="btnradio" id="teamRadio" autocomplete="off" />
-                    <label class="btn" for="teamRadio">
+                    <label class="btn" for="teamRadio" title="@Loc["Team"]">
                         <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Users"></SVGCrud>
-                        <span>Team</span>
+                       
                     </label>
                 </div>
             </div>
@@ -374,13 +373,13 @@
     private string timeLineTitle => $" - {Loc["TimeLineTilte"]}";
     bool IsKanban = false;
     bool IsGant = false;
-bool isExpanded = false;
+    bool isExpanded = false;
 
-void ToggleExpandCollapse()
-{
-    isExpanded = !isExpanded;
-    ExpandOrCollapse(isExpanded);
-}
+    void ToggleExpandCollapse()
+    {
+        isExpanded = !isExpanded;
+        ExpandOrCollapse(isExpanded);
+    }
     bool isCardView = false;
     void ToggleView()
     {
@@ -439,7 +438,7 @@ void ToggleExpandCollapse()
         Viewtype = type;
         if (Viewtype == (int)ViewTypes.SourceView)
         {
-            var res = await _sourceSettingConsumer.GetSourcesView(currentPage, pageSize,Isload: false);
+            var res = await _sourceSettingConsumer.GetSourcesView(currentPage, pageSize, Isload: false);
             sources = res?.Data?.Items.ToList();
             totalCount = res.Data.TotalCount;
             totalPages = res.Data.TotalPages;
@@ -451,7 +450,7 @@ void ToggleExpandCollapse()
         }
         else if (Viewtype == (int)ViewTypes.TypeView)
         {
-            var res = await _typeSettingConsumer.GetTypesView(currentPage, pageSize,isload:false);
+            var res = await _typeSettingConsumer.GetTypesView(currentPage, pageSize, isload: false);
             Types = res.Data.Items.ToList();
             totalCount = res.Data.TotalCount;
             totalPages = res.Data.TotalPages;
