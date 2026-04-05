@@ -25,7 +25,9 @@ namespace TaskyRevamp.Services.Helpers
 			var parameter = Expression.Parameter(typeof(TEntity), "x");
 			Expression? body = null;
 
-			bool isDateLike = searchText.All(c => char.IsDigit(c) || c == '/' || c == '-');
+			bool hasDateSeparator = searchText.Contains('/') || searchText.Contains('-');
+			bool isDateLike = hasDateSeparator && searchText.All(c => char.IsDigit(c) || c == '/' || c == '-');
+			bool isNumericOnly = searchText.All(char.IsDigit) && !hasDateSeparator; 
 			foreach (var property in properties)
 			{
 				// Get proper member access (handles nested paths like x.CreatedBy.NameEnglish)
@@ -34,11 +36,16 @@ namespace TaskyRevamp.Services.Helpers
 					continue;
 
 				var propertyType = Nullable.GetUnderlyingType(member.Type) ?? member.Type;
+				bool isDateProperty = propertyType == typeof(DateTime) || propertyType == typeof(DateTime?);
+				bool isNumericProperty = propertyType.IsPrimitive || propertyType == typeof(decimal);
 
-				if (isDateLike && propertyType != typeof(DateTime) && propertyType != typeof(DateTime?))
+				if (isDateLike && !isDateProperty)
 					continue;
 
-				if (!isDateLike && (propertyType == typeof(DateTime) || propertyType == typeof(DateTime?)))
+				if (!isDateLike && !isNumericOnly && (isDateProperty || isNumericProperty))
+					continue;
+
+				if (isNumericOnly && isDateProperty )
 					continue;
 
 				var comparison = BuildComparisonExpression(member, searchText);
@@ -182,13 +189,12 @@ namespace TaskyRevamp.Services.Helpers
 			// Handle numeric types
 			if (propertyType.IsPrimitive || propertyType == typeof(decimal))
 			{
-				if (decimal.TryParse(searchText, out var num))
-				{
-					var converted = Expression.Convert(member, typeof(decimal));
-					var constant = Expression.Constant(num);
-					return Expression.Equal(converted, constant);
-				}
-				return null;
+				if (!searchText.All(char.IsDigit))
+					return null;
+
+				var toStr = Expression.Call(member, member.Type.GetMethod(nameof(ToString), Type.EmptyTypes)!);
+				var containMethod = typeof(string).GetMethod(nameof(string.Contains), new[] { typeof(string) })!;
+				return Expression.Call(toStr, containMethod, Expression.Constant(searchText.Trim()));
 			}
 
 			// Handle string or any other type → fallback to string.Contains()

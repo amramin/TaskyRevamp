@@ -299,7 +299,7 @@
 @code {
     List<UserDtoWithName> users = new();
     List<UserDtoWithName> initialUsers = new();
-     UserStatisticsDto UserStatistics = new();
+    UserStatisticsDto UserStatistics = new();
     private bool showConfirm;
     private UserDtoWithName? selectedUser;
     private int currentPage = 1;
@@ -322,13 +322,13 @@
     private async Task ChangePage(int page)
     {
         currentPage = page;
-        await LoadUsers();
+        await LoadUsers(isSearch: isSearchMode, searchTerm: lastSearchTerm);
     }
     private async Task ChangePageSize(int newSize)
     {
         pageSize = newSize;
         currentPage = 1;
-        await LoadUsers();
+        await LoadUsers(isSearch: isSearchMode, searchTerm: lastSearchTerm);
     }
     protected override async Task OnInitializedAsync()
     {
@@ -354,11 +354,6 @@
     }
     private async Task LoadUsers(bool isSearch = false, string searchTerm = null)
     {
-        if (isSearchMode && !isSearch)
-        {
-            isSearch = true;
-            searchTerm = lastSearchTerm;
-        }
         var encodedTerm = searchTerm != null ? Uri.EscapeDataString(searchTerm) : null;
         var resp = await _userConsumer.GetUsersWithPagination(currentPage, pageSize, currentSortColumn, sortAscending.Value,
                 isSearch ? searchFields : null, isSearch ? encodedTerm : null);
@@ -416,7 +411,7 @@
     {
         currentPage = 1;
         PopupService.Hide();
-        await LoadUsers();
+        await LoadUsers(isSearch: isSearchMode, searchTerm: lastSearchTerm);
         StateHasChanged();
     }
     private void ViewPrivilege(Guid? Id)
@@ -450,9 +445,9 @@
     public async Task Search(string searchTerm)
     {
         lastSearchTerm = searchTerm;
-        isSearchMode = true;
+        isSearchMode = !string.IsNullOrEmpty(searchTerm);
         currentPage = 1;
-        await LoadUsers(true, searchTerm);
+        await LoadUsers(isSearch: isSearchMode, searchTerm: lastSearchTerm);
     }
     private async Task ClearSearch()
     {
@@ -472,7 +467,7 @@
             currentSortColumn = ""; // or whatever your default column is
             sortAscending = true;
         }
-        await LoadUsers();
+        await LoadUsers(isSearch: isSearchMode, searchTerm: lastSearchTerm);
     }
     private async Task DownloadExcel(MouseEventArgs args)
     {
@@ -624,7 +619,7 @@
         var res=await _userConsumer.SetUserAsManger(UserId,value);
         if (res.Success)
         {
-            await LoadUsers();
+            await LoadUsers(isSearch: isSearchMode, searchTerm: lastSearchTerm);
             StateHasChanged();
         }
     }
@@ -633,7 +628,7 @@
         var res = await _userConsumer.ActivateDeActivateUser(UserId, value);
         if (res.Success&&res.Data==true)
         {
-            await LoadUsers();
+            await LoadUsers(isSearch: isSearchMode, searchTerm: lastSearchTerm);
             if (value == true)
             {
                 await ToastService.ShowToastAsync(Loc["successactive"], "success");

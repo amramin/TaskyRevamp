@@ -18,7 +18,10 @@
 <div class="page-header">
     <h1 class="page-headline">@Loc["Departments"]</h1>
     <div class="action-btn-list">
-        <Search @ref="searchComponent" SearchSubmit="Search" CssClass="form-control"></Search>
+        @if (currentView == DepartmentViewType.Grid || currentView == DepartmentViewType.Tree)
+        {
+            <Search @ref="searchComponent" SearchSubmit="Search" CssClass="form-control"></Search>
+        }
         <button class="btn btn-action-40 @(currentView == DepartmentViewType.Hierarchy ? "btn-outline-primary" : "btn-outline-light")"
                 data-bs-toggle="tooltip" data-bs-placement="top" title="@Loc["Hierarchy"]"
                 @onclick="@(() => ChangeView(DepartmentViewType.Hierarchy))">
@@ -90,8 +93,6 @@
     </div>
     @if (departmentDtos != null && departmentDtos.Any())
     {
-
-
         @switch (currentView)
         {
             case DepartmentViewType.Grid:
@@ -283,7 +284,7 @@
     {
         pageSize = newSize;
         currentPage = 1;
-        await LoadDepartmentsAsync();
+        await LoadDepartmentsAsync(isSearch: isSearchMode, searchTerm: lastSearchTerm, searches: GetSearchFields());
     }
     protected override async Task OnInitializedAsync()
     {
@@ -308,7 +309,7 @@
     private async Task ChangePage(int page)
     {
         currentPage = page;
-        await LoadDepartmentsAsync();
+        await LoadDepartmentsAsync(isSearch: isSearchMode, searchTerm: lastSearchTerm, searches: GetSearchFields());
     }
     private void Add()
     {
@@ -325,8 +326,10 @@
     private async Task ClearSearch()
     {
         currentPage = 1;
+        searchdata = null;
+        lastSearchTerm = null;
+        isSearchMode = false;
         searchComponent.SearchTerm = "";
-
         await searchComponent?.SearchSubmit.InvokeAsync("");
         await LoadDepartmentsAsync(isSearch: false, null);
 
@@ -418,6 +421,34 @@
         SearchFieldDepartment.ParentName,
         SearchFieldDepartment.Level
     };
+    private List<SearchFieldDepartment> GetSearchFields()
+    {
+        if (currentView == DepartmentViewType.Grid)
+        {
+            return new()
+            {
+                SearchFieldDepartment.Name,
+                SearchFieldDepartment.CreatedBy,
+                SearchFieldDepartment.UpdatedBy,
+                SearchFieldDepartment.CreateDate,
+                SearchFieldDepartment.UpdateDate,
+                SearchFieldDepartment.ParentName,
+                SearchFieldDepartment.Level
+            };
+        }
+        else if (currentView == DepartmentViewType.Tree)
+        {
+            return new()
+            {
+                SearchFieldDepartment.Name,
+                SearchFieldDepartment.CreatedBy,
+                SearchFieldDepartment.UpdatedBy,
+                SearchFieldDepartment.CreateDate,
+                SearchFieldDepartment.UpdateDate
+            };
+        }
+        return null;
+    }
     private void HandleAddDepartment(string parentId)
     {
         navigationManager.NavigateTo($"/Add-Department?parentId={parentId}");
@@ -425,20 +456,17 @@
     public async Task Search(string searchTerm)
     {
         searchdata = searchTerm;
+        lastSearchTerm = searchTerm;
+        isSearchMode = !string.IsNullOrEmpty(searchTerm);
         currentPage = 1;
-        await LoadDepartmentsAsync(true, searchTerm);
+        await LoadDepartmentsAsync(true, searchTerm, GetSearchFields());
     }
-    private async Task LoadDepartmentsAsync(bool isSearch = false, string searchTerm = null)
+    private async Task LoadDepartmentsAsync(bool isSearch = false, string searchTerm = null, List<SearchFieldDepartment> searches = null)
     {
-        var effectivePageSize = (currentView == DepartmentViewType.Tree || currentView == DepartmentViewType.Hierarchy)? 10000 : pageSize;
-        if (isSearchMode && !isSearch)
-        {
-            isSearch = true;
-            searchTerm = lastSearchTerm;
-        }
+        var effectivePageSize = (currentView == DepartmentViewType.Tree || currentView == DepartmentViewType.Hierarchy) ? 10000 : pageSize;
         var encodedTerm = searchTerm != null ? Uri.EscapeDataString(searchTerm) : null;
-        var resp = await _departmentConsumer.GetDepartments(currentPage, effectivePageSize, currentSortColumn, sortAscending.Value, 
-                            isSearch ? searchFields : null, isSearch ? encodedTerm : null);
+        var resp = await _departmentConsumer.GetDepartments(currentPage, effectivePageSize, currentSortColumn, sortAscending.Value,
+                            isSearch ? searches : null, isSearch ? encodedTerm : null);
         if (!(resp?.Success ?? false) || resp.Data is null)
             return;
         var data = resp.Data;
@@ -468,7 +496,7 @@
             currentSortColumn = "";
             sortAscending = true;
         }
-        await LoadDepartmentsAsync();
+        await LoadDepartmentsAsync(isSearch: isSearchMode, searchTerm: lastSearchTerm, searches: GetSearchFields());
         StateHasChanged();
     }
     private enum DepartmentViewType
@@ -496,8 +524,8 @@
     private async Task Export(MouseEventArgs args)
     {
         var effectivePageSize = 100000;
-        var encodedTerm = !string.IsNullOrEmpty(searchdata)? Uri.EscapeDataString(searchdata): null;
-        var resp = await _departmentConsumer.GetDepartments(1, 10000, currentSortColumn,sortAscending ?? true,
+        var encodedTerm = !string.IsNullOrEmpty(searchdata) ? Uri.EscapeDataString(searchdata) : null;
+        var resp = await _departmentConsumer.GetDepartments(1, 10000, currentSortColumn, sortAscending ?? true,
             !string.IsNullOrEmpty(searchdata) ? searchFields : null, !string.IsNullOrEmpty(searchdata) ? encodedTerm : null);
         if (!(resp?.Success ?? false) || resp.Data is null)
             return;
