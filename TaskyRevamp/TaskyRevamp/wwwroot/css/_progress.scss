@@ -22,7 +22,7 @@
         background-color: var(--progress-complete-color);
       }
     }
-    
+
     .circle {
       position: absolute;
       background-color: var(--bs-white);
@@ -36,16 +36,46 @@
     }
   }
   .progress-value {
-      font-size: 0.65rem;
-      background-color: var(--light-200);
-      color: var(--dark-700);
-      padding: 0.125rem 0.25rem;
-      text-align:center;
-      min-width:2.125rem;
-      border-radius: 2px;
-      display:none
+    font-size: 0.65rem;
+    background-color: var(--light-200);
+    color: var(--dark-700);
+    padding: 0.125rem 0.25rem;
+    text-align: center;
+    min-width: 2.125rem;
+    border-radius: 2px;
+    display: none;
+  }
+  .progress-wrapper {
+    position: relative;
+    height: 1rem;
+    .form-range {
+      height: 1rem;
+      transform: translateY(-1px);
+      &::-webkit-slider-runnable-track {
+        background-color: transparent;
+        height: 0.5rem;
+      }
+      &::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        width: 1rem;
+        height: 1rem;
+        background: var(--bs-white);
+        border-radius: 50%;
+        cursor: pointer;
+
+        box-shadow: 0px 4px 8px 0px rgba(167, 177, 195, 1);
+      }
     }
+    .progress {
+      position: absolute;
+      width: 100%;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: -1;
+    }
+  }
 }
+
 .table {
   .progress-overall-bar {
     .content {
@@ -53,9 +83,9 @@
     }
   }
   .progress {
-    display:flex;
+    display: flex;
   }
   .progress-value {
-        display: block;
-      }
+    display: block;
+  }
 }

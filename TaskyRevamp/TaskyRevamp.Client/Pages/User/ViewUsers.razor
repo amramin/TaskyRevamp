@@ -26,9 +26,8 @@
     </div>
     <div class="action-btn-list">
         <Search @ref="searchComponent" SearchSubmit="Search" CssClass="form-control"></Search>
-        <button class="btn btn-action-40 btn-outline-primary ms-1"
-                data-bs-toggle="tooltip" data-bs-placement="top" title="@Loc["Export"]"
-                @onclick="Export">
+        <button class="btn btn-action-40 btn-outline-primary ms-1" data-bs-toggle="tooltip" data-bs-placement="top"
+                title="@Loc["Export"]" @onclick="Export">
             <span class="icon">
                 <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Excel"></SVGCrud>
             </span>
@@ -61,125 +60,132 @@
             </div>
         </label>
         <InputFile id="userFileUpload" OnChange="OnFileSelected" />
-        <button class="btn btn-lg btn-light text-nowrap" @onclick="DownloadExcel">
-            @Loc["DownloadExcelTemplate"]
-        </button>
-        @if (!IsLoading)
-        {
-            <button class="btn btn-lg btn-light text-nowrap" @onclick="SyncUsers">
-                @Loc["SyncUsers"]
+        <div class="d-flex gap-2">
+            <button class="btn btn-lg btn-light text-nowrap" @onclick="DownloadExcel">
+                @Loc["DownloadExcelTemplate"]
             </button>
-        }
-        else
-        {
-            <button class="btn btn-lg btn-light text-nowrap" @onclick="SyncUsers">
-                <span class="spinner-border spinner-border-sm me-2"
-                      role="status" aria-hidden="true"></span>
-                @Loc["SyncUsers"]
-            </button>
-        }
+            @if (!IsLoading)
+            {
+                <button class="btn btn-lg btn-light text-nowrap" @onclick="SyncUsers">
+                    @Loc["SyncUsers"]
+                </button>
+            }
+            else
+            {
+                <button class="btn btn-lg btn-light text-nowrap" @onclick="SyncUsers">
+                    <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                    @Loc["SyncUsers"]
+                </button>
+            }
+        </div>
     </div>
     @if (users != null && users.Any())
     {
-        <div class="row g-3 my-2">
+        <div class="row g-2 mb-2">
 
             <!-- Total Users -->
-            <div class="col-md-4">
-                <div class="card p-2">
-                    <div class="d-flex align-items-center">
-                        <div class="dropdown-item border border-2 rounded-circle m-2" style="width:10%">
-                            <span class="icon">
+            <div class="col-md-4 col-6">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="info-item">
+                            <span class="squer-medium-icon rounded-circle">
                                 <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Users"></SVGCrud>
                             </span>
-                        </div>
-                        <div>
-                            <div class="stat-title">@Loc["totalusers"]</div>
-                            <div class="stat-value">@UserStatistics.TotalUsers</div>
+                        
+                            <div class="text-content">
+                                <div class="headline-8 mb-1">@Loc["totalusers"]</div>
+                                <div class="x-small-medium-text">@UserStatistics.TotalUsers</div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
 
             <!-- Active Users -->
-            <div class="col-md-4">
-                <div class="card p-2">
-                    <div class="d-flex align-items-center">
-                        <div class="dropdown-item border border-2 rounded-circle m-2" style="width:10%">
-                            <span class="icon">
+            <div class="col-md-4 col-6">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="info-item">
+                            <span class="squer-medium-icon rounded-circle active">
                                 <SVGCrud SVGType="SVGCrud.SVGTypeEnum.ActiveUsers"></SVGCrud>
                             </span>
-                        </div>
-                        <div>
-                            <div class="stat-title">@Loc["activeusers"]</div>
-                            <div class="stat-value">@UserStatistics.ActiveUsers</div>
+                        
+                            <div class="text-content">
+                                <div class="headline-8 mb-1">@Loc["activeusers"]</div>
+                                <div class="x-small-medium-text">@UserStatistics.ActiveUsers</div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
 
             <!-- Inactive Users -->
-            <div class="col-md-4">
-                <div class="card p-2">
-                    <div class="d-flex  align-items-center">
-                        <div class="dropdown-item border border-2 rounded-circle m-2" style="width:10%">
-                            <span class="icon">
+    
+            <div class="col-md-4 col-6">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="info-item">
+                            <span class="squer-medium-icon rounded-circle inactive">
                                 <SVGCrud SVGType="SVGCrud.SVGTypeEnum.NonActiveUsers"></SVGCrud>
                             </span>
-                        </div>
-                        <div>
-                            <div class="stat-title">@Loc["InActiveUsers"]</div>
-                            <div class="stat-value">@UserStatistics.InActiveUsers</div>
+                        
+                            <div class="text-content">
+                                <div class="headline-8 mb-1">@Loc["InActiveUsers"]</div>
+                                <div class="x-small-medium-text">@UserStatistics.InActiveUsers</div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
 
             <!-- Linked to Tasks -->
-            <div class="col-md-4">
-                <div class="card p-2">
-                    <div class="d-flex align-items-center">
-                        <div class="dropdown-item border border-2 rounded-circle m-2" style="width:10%">
-                            <span class="icon">
-                                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Relation"></SVGCrud>
+            
+            <div class="col-md-4 col-6">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="info-item">
+                            <span class="squer-medium-icon rounded-circle">
+                                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Link"></SVGCrud>
                             </span>
-                        </div>
-                        <div>
-                            <div class="stat-title">@Loc["LinkedWithTasksUsers"]</div>
-                            <div class="stat-value">@UserStatistics.LinkedWithTasksUsers</div>
+                        
+                            <div class="text-content">
+                                <div class="headline-8 mb-1">@Loc["LinkedWithTasksUsers"]</div>
+                                <div class="x-small-medium-text">@UserStatistics.LinkedWithTasksUsers</div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-
             <!-- Successful Login -->
-            <div class="col-md-4">
-                <div class="card p-2">
-                    <div class="d-flex align-items-center">
-                        <div class="dropdown-item border border-2 rounded-circle m-2" style="width:10%">
-                            <span class="icon">
+            <div class="col-md-4 col-6">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="info-item">
+                            <span class="squer-medium-icon rounded-circle">
                                 <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Login"></SVGCrud>
                             </span>
-                        </div>
-                        <div>
-                            <div class="stat-title">@Loc["LoggedInUsers"]</div>
-                            <div class="stat-value">@UserStatistics.LoggedInUsers</div>
+                        
+                            <div class="text-content">
+                                <div class="headline-8 mb-1">@Loc["LoggedInUsers"]</div>
+                                <div class="x-small-medium-text">@UserStatistics.LoggedInUsers</div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-
             <!-- Linked to Privileges -->
-            <div class="col-md-4">
-                <div class="card p-2">
-                    <div class="d-flex  align-items-center">
-                        <div class="dropdown-item border border-2 rounded-circle m-2" style="width:10%">
-                            <span class="icon">
+            <div class="col-md-4 col-6">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="info-item">
+                            <span class="squer-medium-icon rounded-circle">
                                 <SVGCrud SVGType="SVGCrud.SVGTypeEnum.PrivilegePluse"></SVGCrud>
                             </span>
-                        </div>
-                        <div>
-                            <div class="stat-title">@Loc["LinkedWithPrivilagesUsers"]</div>
-                            <div class="stat-value">@UserStatistics.LinkedWithPrivilagesUsers</div>
+                        
+                            <div class="text-content">
+                                <div class="headline-8 mb-1">@Loc["LinkedWithPrivilagesUsers"]</div>
+                                <div class="x-small-medium-text">@UserStatistics.LinkedWithPrivilagesUsers</div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -206,11 +212,9 @@
                                 <td>@item.UpdatedByName</td>
                                 <td>
                                     <div class="form-check form-switch custom">
-                                        <InputCheckbox id="@checkboxId"
-                                                       Value="item.user.IsManager"
+                                        <InputCheckbox id="@checkboxId" Value="item.user.IsManager"
                                                        ValueChanged="@(value => OnManagerChanged(value, item.user.Id))"
-                                                       ValueExpression="() => item.user.IsManager"
-                                                       class="form-check-input" />
+                                                       ValueExpression="() => item.user.IsManager" class="form-check-input" />
                                         <label for="@checkboxId" class="form-check-label">
                                             <span class="toggler-icon"></span>
                                         </label>
@@ -218,11 +222,9 @@
                                 </td>
                                 <td>
                                     <div class="form-check form-switch custom">
-                                        <InputCheckbox id="@checkboxdeactivate"
-                                                       Value="item.user.IsActive"
+                                        <InputCheckbox id="@checkboxdeactivate" Value="item.user.IsActive"
                                                        ValueChanged="@(value => ActivateDeActivateUser(value, item.user.Id))"
-                                                       ValueExpression="() => item.user.IsActive"
-                                                       class="form-check-input" />
+                                                       ValueExpression="() => item.user.IsActive" class="form-check-input" />
                                         <label for="@checkboxdeactivate" class="form-check-label">
                                             <span class="toggler-icon"></span>
                                         </label>
@@ -235,7 +237,7 @@
                                             <SVGCrud SVGType="SVGCrud.SVGTypeEnum.EllipseVertical"></SVGCrud>
                                         </button>
                                         <ul class="dropdown-menu">
-@*                                             <li>
+                                            @* <li>
 
                                                 <button class="dropdown-item text-danger" @onclick="@(() => DeleteUser(item))">
 
@@ -280,15 +282,13 @@
     }
     else
     {
-        <div class="page-body">
-            <div class="card empty-page">
-                <div class="card-body">
-                    <span class="vector">
-                        <SVGCrud SVGType="SVGCrud.SVGTypeEnum.EmptyPageVector"></SVGCrud>
-                    </span>
-                    <div class="content">
-                        <h5 class="headline-5">@Loc["NoUsersAvailable"]</h5>
-                    </div>
+        <div class="card empty-page">
+            <div class="card-body">
+                <span class="vector">
+                    <SVGCrud SVGType="SVGCrud.SVGTypeEnum.EmptyPageVector"></SVGCrud>
+                </span>
+                <div class="content">
+                    <h5 class="headline-5">@Loc["NoUsersAvailable"]</h5>
                 </div>
             </div>
         </div>
@@ -298,7 +298,7 @@
 @code {
     List<UserDtoWithName> users = new();
     List<UserDtoWithName> initialUsers = new();
-     UserStatisticsDto UserStatistics = new();
+    UserStatisticsDto UserStatistics = new();
     private bool showConfirm;
     private UserDtoWithName? selectedUser;
     private int currentPage = 1;
@@ -342,8 +342,8 @@
 new() { Field = "Is active", DisplayName = Loc["active"] },
 new() { Field = "Action", DisplayName = Loc["Action"] ,IsSortable = false},
         };
-        var statistics= await _userConsumer.GetUsersStatistics();
-        if(statistics.Data is not null)
+        var statistics = await _userConsumer.GetUsersStatistics();
+        if (statistics.Data is not null)
         {
             UserStatistics = statistics.Data;
         }
@@ -537,7 +537,8 @@ new() { Field = "Action", DisplayName = Loc["Action"] ,IsSortable = false},
         var departmentName = row[1].Trim().ToLower();
         var privilegeName = row[2].Trim().ToLower();
         Console.WriteLine($"Email: {email}, Department: {departmentName}, Privilege: {privilegeName}");
-        if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(departmentName) || string.IsNullOrWhiteSpace(privilegeName))
+        if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(departmentName) ||
+string.IsNullOrWhiteSpace(privilegeName))
         {
             Console.WriteLine("case1");
             return false;
@@ -608,7 +609,7 @@ new() { Field = "Action", DisplayName = Loc["Action"] ,IsSortable = false},
     }
     private async Task OnManagerChanged(bool value, Guid UserId)
     {
-        var res=await _userConsumer.SetUserAsManger(UserId,value);
+        var res = await _userConsumer.SetUserAsManger(UserId, value);
         if (res.Success)
         {
             await LoadUsers();
@@ -618,7 +619,7 @@ new() { Field = "Action", DisplayName = Loc["Action"] ,IsSortable = false},
     private async Task ActivateDeActivateUser(bool value, Guid UserId)
     {
         var res = await _userConsumer.ActivateDeActivateUser(UserId, value);
-        if (res.Success&&res.Data==true)
+        if (res.Success && res.Data == true)
         {
             await LoadUsers();
             if (value == true)

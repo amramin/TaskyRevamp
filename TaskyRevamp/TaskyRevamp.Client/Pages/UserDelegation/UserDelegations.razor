@@ -33,29 +33,29 @@
         </button>
     </div>
 </div>
+<div class="page-body">
+    @if (AlluserDelegation == null && !AlluserDelegation.Any())
 
-@if (AlluserDelegation == null && !AlluserDelegation.Any())
+    {
 
-{
+        <NoDataAvailable MessageTitle="@Loc["NoDelegationvailable"]" MessageSubtitle="@Loc["Nodepartmentavailable"]"
+                         ButtonText="@Loc["AddDelegation"]" OnButtonClick="Add" />
+        <h6 class="mb-3">@Loc["NoDelegationavailable"]</h6>
+    }
 
-    <NoDataAvailable MessageTitle="@Loc["NoDelegationvailable"]" MessageSubtitle="@Loc["Nodepartmentavailable"]"
-        ButtonText="@Loc["AddDelegation"]" OnButtonClick="Add" />
-    <h6 class="mb-3">@Loc["NoDelegationavailable"]</h6>
-}
-
-else if (AlluserDelegation != null && AlluserDelegation.Count() == 0)
-{
-    <NoSearchResults OnResetClick="ClearSearch"></NoSearchResults>
-}
+    else if (AlluserDelegation != null && AlluserDelegation.Count() == 0)
+    {
+        <NoSearchResults OnResetClick="ClearSearch"></NoSearchResults>
+    }
 
 
-else
-{
-    <div class="page-body">
+    else
+    {
+   
         <div class="table-responsive sticky-header-custom">
 
             <SortableTable TItem="UserDelegationDto" Columns="@tableColumns" Items="@AlluserDelegation"
-                SortColumn="@currentSortColumn" SortAscending="@sortAscending" OnSortRequested="HandleSort">
+                           SortColumn="@currentSortColumn" SortAscending="@sortAscending" OnSortRequested="HandleSort">
                 <RowTemplate>
 
 
@@ -75,7 +75,7 @@ else
                             <td class="sticky-end-action">
                                 <div class="dropdown actions">
                                     <button class="btn btn-action-24" type="button" data-bs-toggle="dropdown"
-                                        aria-expanded="false">
+                                            aria-expanded="false">
                                         <SVGCrud SVGType="SVGCrud.SVGTypeEnum.EllipseVertical"></SVGCrud>
                                     </button>
                                     <ul class="dropdown-menu">
@@ -94,7 +94,7 @@ else
 
                                         <li>
                                             <button class="dropdown-item text-danger"
-                                                @onclick="@(() => OnDeleteDelegation(p.Id))">
+                                                    @onclick="@(() => OnDeleteDelegation(p.Id))">
                                                 <span class="icon">
                                                     <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Delete"></SVGCrud>
                                                 </span>
@@ -115,11 +115,11 @@ else
 
         </div>
         <Pagination CurrentPage="@currentPage" TotalPages="@totalPages" TotalCount="@totalCount" PageSize="@pageSize"
-            PageChanged="ChangePage" PageSizeChangedCallback="ChangePageSize" />
+                    PageChanged="ChangePage" PageSizeChangedCallback="ChangePageSize" />
 
-    </div>
-}
-
+   
+    }
+</div>
 @code {
     public bool IsAdmine;// = roleService.IsAllowed(int)Modules., (int)ModuleActions.EditReportPermission) ;//true;//
     [Parameter] public EventCallback<Guid> OnEdit { get; set; }

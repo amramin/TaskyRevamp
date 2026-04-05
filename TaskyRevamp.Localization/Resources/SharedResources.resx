@@ -537,6 +537,12 @@
   <data name="DefaultColumnsHint" xml:space="preserve">
     <value>Customize the columns you want to display and set the default column view that will appear when the user logs into the system.</value>
   </data>
+  <data name="DefaultColumnsIsDisplayHint" xml:space="preserve">
+    <value>The default active columns are displayed upon login</value>
+  </data>
+  <data name="DefaultColumnsActiveHint" xml:space="preserve">
+    <value> Control which columns are shown or hidden in the Task List and Completed List grids</value>
+  </data>
   <data name="TaskFilterHint" xml:space="preserve">
     <value>Select which fields to display in any task filter</value>
   </data>
@@ -557,6 +563,9 @@
   </data>
   <data name="EnterDaysNumber" xml:space="preserve">
     <value>Enter number of days</value>
+  </data>
+  <data name="FieldNames" xml:space="preserve">
+    <value>Field names</value>
   </data>
   <data name="FieldNames" xml:space="preserve">
     <value>Field names</value>

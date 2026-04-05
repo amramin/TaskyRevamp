@@ -24,27 +24,27 @@
                     </div>
 
 
-                    <div class="card-order-header d-flex justify-content-between align-items-center">
+                    <div class="card-order-header d-flex justify-content-between align-items-center gap-1">
                         <div class="title  small-medium-text"> @Loc["FieldNames"]</div>
                         <div class="toggle small-medium-text"> @Loc["active"]</div>
                         <div class="order small-medium-text"></div>
                     </div>
 
                     <SortableList Id="defaultColsList" Items="FilterFieldsSettings.OrderBy(x => x.Order).ToList()"
-                        KeySelector="@(item => item.Id)" OnUpdate="(i) => SortSettingsList(i)" Context="setting">
+                                  KeySelector="@(item => item.Id)" OnUpdate="(i) => SortSettingsList(i)" Context="setting">
                         <SortableItemTemplate>
                             <div class="card card-order-control">
                                 <div class="card-body d-flex justify-content-between align-items-center">
 
                                     <div class="flex-fill">
-                                     <span>@setting.Name</span>
+                                        <span>@setting.Name</span>
                                         
                                     </div>
                                     <div class="toggle">
                                         <div class="form-switch custom ">
                                             <input checked="@setting.IsActive" id="IsActive@(setting.Id)"
-                                                type="checkbox"
-                                                @onchange="@(() => setting.IsActive = !setting.IsActive)" />
+                                                   type="checkbox"
+                                                   @onchange="@(() => setting.IsActive = !setting.IsActive)" />
 
                                             <label for="IsActive@(setting.Id)">
                                                 <span class="toggler-icon"></span>
