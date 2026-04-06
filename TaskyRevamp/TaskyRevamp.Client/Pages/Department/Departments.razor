@@ -86,10 +86,13 @@
             </div>
         </label>
         <InputFile id="DepartmentFileUpload" OnChange="HandleFileSelected" accept=".xlsx" />
-        <a class="btn btn-lg btn-light text-nowrap" href=@(Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName ==
+        <a class="btn btn-lg btn-light text-nowrap"  title="@Loc["DownloadExcelTemplate"]" href=@(Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName ==
                                                                "ar" ? "إضافة إدارات.xlsx" : "Add departements.xlsx") download="DepartmentsTemplate.xlsx">
-            @Loc["DownloadExcelTemplate"]
+             <span class="icon">
+                    <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Download"></SVGCrud>
+                </span>
         </a>
+       
     </div>
     @if (departmentDtos != null && departmentDtos.Any())
     {

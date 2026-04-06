@@ -17,8 +17,8 @@
         @foreach (var item in PrivilegeDto.TaskModuleUserDepartmentDto)
         {
             <div class="form-check mb-3">
-                <input class="form-check-input" type="checkbox" disabled="@IsViewMode" id="@item.SelectedOption" checked="@item.IsActive"
-                       @onchange="(e) => ToggleSelection(item, e.Value as bool?)" />
+                <input class="form-check-input" type="checkbox" disabled="@IsViewMode" id="@item.SelectedOption"
+                       checked="@item.IsActive" @onchange="(e) => ToggleSelection(item, e.Value as bool?)" />
                 <label class="form-check-label fw-bold" for="@item.SelectedOption">
                     <div>
                         <h6 class="headline-7 mb-2"> @Loc[item.SelectedOption.ToString()]</h6>
@@ -49,15 +49,15 @@
 
             <div class="row g-2 align-self-stretch">
                 <div class="col-xl-10 col-lg-9 col-sm-9 col-8">
-                    <SearchableMultiDropdownOffline @key="AvailableDepartments" TInput="DepartmentDto" TOutput="Guid" Datasource="AvailableDepartments"
-                                                    TextSelector="(d => d.Name)" OutputSelector="(d => d.Id)" SelectedOptions="@SelectedDepartments"
-                                                    SelectedOptionsChanged="@OnDepartmentsChanged" IsDisabled="IsViewMode" 
-                                                    MinCharacterCount="1"
-                                                    SearchInputPlaceHolder="@Loc["Search"]" PlaceHolder="@($"{Loc["Select"]}")" NoMatchPlaceHolder="@Loc["NoResultsFound"]" 
+                    <SearchableMultiDropdownOffline @key="AvailableDepartments" TInput="DepartmentDto" TOutput="Guid"
+                                                    Datasource="AvailableDepartments" TextSelector="(d => d.Name)" OutputSelector="(d => d.Id)"
+                                                    SelectedOptions="@SelectedDepartments" SelectedOptionsChanged="@OnDepartmentsChanged"
+                                                    IsDisabled="IsViewMode" MinCharacterCount="1" SearchInputPlaceHolder="@Loc["Search"]"
+                                                    PlaceHolder="@($"{Loc["Select"]}")" NoMatchPlaceHolder="@Loc["NoResultsFound"]"
                                                     SelectAllPlaceHolder="@Loc["SelectAll"]" />
                 </div>
                 <div class="col-xl-2 col-lg-3 col-sm-3 col-4 d-flex">
-                    <button class=" btn btn-light-pimary flex-fill" @onclick="AddDepartments"
+                    <button class=" btn btn-light-primary flex-fill" @onclick="AddDepartments"
                             disabled="@(!SelectedDepartments.Any() || IsViewMode)">
                         @Loc["Add"]
                     </button>
@@ -66,10 +66,11 @@
 
         </div>
         @foreach (var dept in PrivilegeDto.TaskModuleExternalDepartmentDto ?? new
-                List<TaskModuleExternalDepartmentDto>())
+                        List<TaskModuleExternalDepartmentDto>())
         {
-            <ExternalDepartmentExtendedFields @key="dept.DepartmentId" Item="dept" DepartmentName="@GetDepartmentName(dept.DepartmentId)" IsSaveClicked="@IsSaveClicked"
-                                 Mode="@Mode" OnRemove="RemoveDepartment" IsViewMode="@IsViewMode" IsExpanded="@(IsViewMode || Mode == "Edit")" />
+            <ExternalDepartmentExtendedFields @key="dept.DepartmentId" Item="dept"
+                                              DepartmentName="@GetDepartmentName(dept.DepartmentId)" IsSaveClicked="@IsSaveClicked" Mode="@Mode"
+                                              OnRemove="RemoveDepartment" IsViewMode="@IsViewMode" IsExpanded="@(IsViewMode || Mode == "Edit")" />
         }
     </div>
 </div>

@@ -147,8 +147,20 @@
   <data name="ParentNotFound" xml:space="preserve">
     <value>لا يوجد اب</value>
   </data>
+     <data name="Dashboard" xml:space="preserve">
+    <value>لوحة التحكم </value>
+  </data>
+    <data name="TaskList" xml:space="preserve">
+    <value>قائمة المهام</value>
+  </data>
+  <data name="CompletedTaskList" xml:space="preserve">
+    <value>قائمة المهام المكتملة</value>
+  </data>
+    <data name="Delegation" xml:space="preserve">
+    <value>التفويض </value>
+  </data>
   <data name="RecycleBinConfiguration" xml:space="preserve">
-    <value>إعدادات سلة المحذوفات</value>
+    <value> سلة المحذوفات</value>
   </data>
   <data name="RetentionPeriodOptions" xml:space="preserve">
     <value>خيارات فترة الإحتفاظ</value>
@@ -178,13 +190,13 @@
     <value>3 أيام</value>
   </data>
   <data name="RejectionConfiguration" xml:space="preserve">
-    <value>إعدادات رفض المهمة</value>
+    <value> رفض المهمة</value>
   </data>
   <data name="RejectionPeriodOptions" xml:space="preserve">
     <value>خيارات فترة الرفض</value>
   </data>
   <data name="Priority" xml:space="preserve">
-    <value>إعدادات أولوية المهام</value>
+    <value> أولوية المهام</value>
   </data>
   <data name="Added successfully" xml:space="preserve">
     <value>تمت الإضافة بنجاح</value>
@@ -223,13 +235,13 @@
     <value>لا يمكنك تكرار اسم الأولوية</value>
   </data>
   <data name="PriorityConfiguration" xml:space="preserve">
-    <value>إعدادات أولوية المهام</value>
+    <value> أولوية المهام</value>
   </data>
   <data name="PriorityOptions" xml:space="preserve">
     <value>خيارات الأولوية</value>
   </data>
   <data name="StatusConfig" xml:space="preserve">
-    <value>إعدادات حالة المهام</value>
+    <value> حالة المهام</value>
   </data>
   <data name="StatusOptions" xml:space="preserve">
     <value>خيارات المهام</value>
@@ -295,7 +307,7 @@
     <value>عرض الخيارات</value>
   </data>
   <data name="WorkingDaysConfiguration" xml:space="preserve">
-    <value>إعدادات أيام العمل</value>
+    <value> أيام العمل</value>
   </data>
   <data name="workingDaysHint" xml:space="preserve">
     <value> حدد أيام العمل الرسمية لمؤسستك. سيتم استخدام هذا الإعداد في جدولة المهام، المواعيد النهائية، وحساب أعباء العمل</value>
@@ -358,7 +370,7 @@
     <value>تعيين فترة الحذف التلقائي من النظام للمهام المحذوفة داخل سلة المحذوفات</value>
   </data>
   <data name="SourceConfiguration" xml:space="preserve">
-    <value>إعدادات مصادر المهام</value>
+    <value> مصادر المهام</value>
   </data>
   <data name="AddTaskSource" xml:space="preserve">
     <value>إضافة مصدر</value>
@@ -457,7 +469,7 @@
     <value>أضف مصدر مهمة جديدًا للبدء</value>
   </data>
   <data name="TaskTypeConfiguration" xml:space="preserve">
-    <value>إعدادات أنواع المهام</value>
+    <value> أنواع المهام</value>
   </data>
   <data name="AddTaskType" xml:space="preserve">
     <value>إضافة نوع </value>
@@ -500,13 +512,13 @@
     <value>إلى تاريخ الإنشاء</value>
   </data>
   <data name="DefaultColumnsConfiguration" xml:space="preserve">
-    <value>إعدادات الأعمدة الافتراضية</value>
+    <value> الأعمدة الافتراضية</value>
   </data>
   <data name="FilterFields" xml:space="preserve">
     <value>حقول المرشح</value>
   </data>
   <data name="AddTaskFieldsConfiguration" xml:space="preserve">
-    <value>إعدادات حقول إضافة المهمة</value>
+    <value> حقول إضافة المهمة</value>
   </data>
   <data name="Nodepartmentavailable" xml:space="preserve">
     <value> لا توجد إدارة متاحة</value>
@@ -578,7 +590,7 @@
     <value>لم يتم العثور على العمود الافتراضي {id}</value>
   </data>
   <data name="System Identity Configuration" xml:space="preserve">
-    <value>إعدادات هوية النظام</value>
+    <value> هوية النظام</value>
   </data>
   <data name="Primary Color" xml:space="preserve">
     <value>اللون الرئيسي</value>
@@ -1215,6 +1227,9 @@
   <data name="Details" xml:space="preserve">
     <value>التفاصيل </value>
   </data>
+   <data name="Information" xml:space="preserve">
+    <value>المعلومات </value>
+  </data>
   <data name="AddComment" xml:space="preserve">
     <value>إضافة تعليق</value>
   </data>
@@ -1334,6 +1349,12 @@
   </data>
   <data name="TypeView" xml:space="preserve">
     <value>النوع</value>
+  </data>
+  <data name="ExpandAll" xml:space="preserve">
+    <value>توسيع الكل</value>
+  </data>
+   <data name="CollapseAll" xml:space="preserve">
+    <value>طي الكل</value>
   </data>
   <data name="StatusView" xml:space="preserve">
     <value>الحالة</value>
@@ -1459,7 +1480,7 @@
     <value>الاعتماديات </value>
   </data>
   <data name="ChangeEndDatesRequests" xml:space="preserve">
-    <value>طلبات تغيير تاريخ الإنتهاء</value>
+    <value>طلبات تغيير تاريخ الانتهاء</value>
   </data>
   <data name="Escalation" xml:space="preserve">
     <value>التصعيد </value>
@@ -1505,6 +1526,9 @@
   </data>
   <data name="RecycleBin" xml:space="preserve">
     <value>سلة المحذوفات</value>
+  </data>
+  <data name="Settings" xml:space="preserve">
+    <value>الإعدادات</value>
   </data>
   <data name="DeletionDate" xml:space="preserve">
     <value>تاريخ الحذف </value>

@@ -1667,11 +1667,11 @@ html[dir=rtl] .progress-overall-bar .circle {
   color: var(--primary-color);
 }
 
-.btn-light-pimary {
+.btn-light-primary {
   background-color: var(--light-200);
   color: var(--primary-color);
 }
-.btn-light-pimary:hover {
+.btn-light-primary:hover {
   background-color: var(--light-btn);
   border: 1px solid var(--primary-color);
   color: var(--primary-color);
@@ -3006,23 +3006,12 @@ fieldset:disabled .btn.btn-primary {
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
-  color: var(--bs-white);
   width: 2rem;
   height: 2rem;
   border-radius: 50px;
   font-size: 0.65rem;
   font-weight: 500;
-  background-color: var(--primary-color);
   border: 1px solid var(--light-200);
-}
-.initial:nth-child(2) {
-  background-color: #a83c8a;
-}
-.initial:nth-child(3) {
-  background-color: #a868b2;
-}
-.initial:nth-child(4) {
-  background-color: #0e0bbf;
 }
 .initial:not(:first-child) {
   -webkit-margin-start: -0.5rem;

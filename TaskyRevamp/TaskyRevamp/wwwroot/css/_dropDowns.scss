@@ -118,23 +118,15 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--bs-white);
+ 
   width: 2rem;
   height: 2rem;
   border-radius: 50px;
   font-size: 0.65rem;
   font-weight: 500;
-  background-color: var(--primary-color);
+ 
   border: 1px solid var(--light-200);
-  &:nth-child(2) {
-    background-color: #a83c8a;
-  }
-  &:nth-child(3) {
-    background-color: #a868b2;
-  }
-  &:nth-child(4) {
-    background-color: #0e0bbf;
-  }
+ 
 
   &:not(:first-child) {
     margin-inline-start: -0.5rem;
