@@ -998,6 +998,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to  Control which columns are shown or hidden in the Task List and Completed List grids.
+        /// </summary>
+        public static string DefaultColumnsActiveHint {
+            get {
+                return ResourceManager.GetString("DefaultColumnsActiveHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Default columns.
         /// </summary>
         public static string DefaultColumnsConfiguration {
@@ -1012,6 +1021,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string DefaultColumnsHint {
             get {
                 return ResourceManager.GetString("DefaultColumnsHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The default active columns are displayed upon login.
+        /// </summary>
+        public static string DefaultColumnsIsDisplayHint {
+            get {
+                return ResourceManager.GetString("DefaultColumnsIsDisplayHint", resourceCulture);
             }
         }
         
@@ -4689,7 +4707,7 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Weekly report send date.
+        ///   Looks up a localized string similar to Weekly report.
         /// </summary>
         public static string WeeklyReport {
             get {
@@ -4703,6 +4721,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string weeklyReportHint {
             get {
                 return ResourceManager.GetString("weeklyReportHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Weekly report send date.
+        /// </summary>
+        public static string WeeklyReportTitle {
+            get {
+                return ResourceManager.GetString("WeeklyReportTitle", resourceCulture);
             }
         }
         

@@ -321,7 +321,7 @@
   <data name="Sunday" xml:space="preserve">
     <value>الأحد</value>
   </data>
-  <data name="WeeklyReport" xml:space="preserve">
+  <data name="WeeklyReportTitle" xml:space="preserve">
     <value>وقت ارسال التقرير الإسبوعي</value>
   </data>
   <data name="English" xml:space="preserve">
@@ -538,7 +538,7 @@
   <data name="DefaultColumnsHint" xml:space="preserve">
     <value>قم بتخصيص الأعمدة التي ترغب في عرضها، وحدد العرض الافتراضي للأعمدة الذي سيظهر عند تسجيل دخول المستخدم إلى النظام</value>
   </data>
-   <data name="DefaultColumnsIsDisplayHint" xml:space="preserve">
+  <data name="DefaultColumnsIsDisplayHint" xml:space="preserve">
     <value>يتم عرض الأعمدة النشطة افتراضيًا عند تسجيل الدخول</value>
   </data>
   <data name="DefaultColumnsActiveHint" xml:space="preserve">
@@ -1695,5 +1695,8 @@
   </data>
   <data name="rejectedsuccessfully" xml:space="preserve">
     <value>تم رفض تاريخ الطلب بنجاح</value>
+  </data>
+  <data name="WeeklyReport" xml:space="preserve">
+    <value>التقرير الإسبوعي</value>
   </data>
 </root>

@@ -321,7 +321,7 @@
   <data name="Sunday" xml:space="preserve">
     <value>Sunday</value>
   </data>
-  <data name="WeeklyReport" xml:space="preserve">
+  <data name="WeeklyReportTitle" xml:space="preserve">
     <value>Weekly report send date</value>
   </data>
   <data name="English" xml:space="preserve">
@@ -563,9 +563,6 @@
   </data>
   <data name="EnterDaysNumber" xml:space="preserve">
     <value>Enter number of days</value>
-  </data>
-  <data name="FieldNames" xml:space="preserve">
-    <value>Field names</value>
   </data>
   <data name="FieldNames" xml:space="preserve">
     <value>Field names</value>
@@ -1693,5 +1690,8 @@ This task will be moved to the Recycle Bin and can be restored later or permanen
   </data>
   <data name="DependentTasksHint" xml:space="preserve">
     <value>Tasks that cannot be completed until this task is completed</value>
+  </data>
+  <data name="WeeklyReport" xml:space="preserve">
+    <value>Weekly report</value>
   </data>
 </root>
