@@ -259,6 +259,7 @@
     private SfDatePicker<DateTime?> ToStartDatePicker;
     private SfDatePicker<DateTime?> FromCreationDatePicker;
     private SfDatePicker<DateTime?> ToCreationDatePicker;
+    private TaskFilterComponent _filterModel = new();
     private EditContext editContext;
     private ValidationMessageStore messageStore;
 
@@ -269,6 +270,16 @@
     string placeholderDate = CultureInfo.CurrentCulture.Name.StartsWith("ar") ? "yyyy-mm-dd" : "dd-mm-yyyy";
     protected async override Task OnInitializedAsync()
     {
+        if (FilterDTO == null)
+            FilterDTO = new TaskFilterComponent();
+
+        if (editContext == null)
+        {
+            editContext = new EditContext(FilterDTO);
+            messageStore = new ValidationMessageStore(editContext);
+            editContext.OnValidationRequested += ValidateDynamicFields;
+        }
+
         isRtlCulture = CultureInfo.CurrentCulture.TwoLetterISOLanguageName.Equals("ar", StringComparison.OrdinalIgnoreCase);
         datePickerLocale = isRtlCulture ? "ar" : "en";
         enableRtl = isRtlCulture;
@@ -317,20 +328,22 @@
     }
     protected override void OnParametersSet()
     {
-    if (FilterDTO == null)
-        FilterDTO = new TaskFilterComponent();
-
-    if (editContext == null || editContext.Model != FilterDTO)
-    {
-        editContext = new EditContext(FilterDTO);
-        messageStore = new ValidationMessageStore(editContext);
-
-        editContext.OnFieldChanged += (sender, eventArgs) =>
+        if (FilterDTO == null)
+            FilterDTO = new TaskFilterComponent();
+        if (editContext == null || !ReferenceEquals(editContext.Model, FilterDTO))
         {
-            messageStore.Clear(eventArgs.FieldIdentifier);
-        };
+            if (editContext != null)
+                editContext.OnValidationRequested -= ValidateDynamicFields;
+
+            editContext = new EditContext(FilterDTO);
+            messageStore = new ValidationMessageStore(editContext);
+
+            editContext.OnFieldChanged += (sender, eventArgs) =>
+            {
+                messageStore.Clear(eventArgs.FieldIdentifier);
+            };
             editContext.OnValidationRequested += ValidateDynamicFields;
-    }
+        }
     }
     private async Task OpenFromStratDatePicker()
     {
@@ -387,8 +400,14 @@
     }
     private async Task Clear(MouseEventArgs args)
     {
-        FilterDTO = new();
-        await OnClear.InvokeAsync();
+        FilterDTO = new TaskFilterComponent();
+        if (editContext != null)
+            editContext.OnValidationRequested -= ValidateDynamicFields;
+
+        editContext = new EditContext(FilterDTO);
+        messageStore = new ValidationMessageStore(editContext);
+        editContext.OnValidationRequested += ValidateDynamicFields;
+        await OnClear.InvokeAsync(FilterDTO);
     }
     public void Dispose()
     {

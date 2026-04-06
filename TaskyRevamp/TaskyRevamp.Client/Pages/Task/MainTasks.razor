@@ -346,7 +346,7 @@
     [Parameter] public EventCallback<Guid> OnDelete { get; set; }
     [Parameter] public EventCallback<Guid> OnShowUsers { get; set; }
     [Parameter] public EventCallback<Guid> OnAdd { get; set; }
-    public TaskFilterComponent TaskFilter { get; set; }
+    public TaskFilterComponent TaskFilter { get; set; } = new();
     private Dictionary<string, TaskListView> taskListRefs = new Dictionary<string, TaskListView>();
     public List<SourceDto> sources = new List<SourceDto>();
     private List<ViewTaskSettingsDto> TaskViews = new List<ViewTaskSettingsDto>();

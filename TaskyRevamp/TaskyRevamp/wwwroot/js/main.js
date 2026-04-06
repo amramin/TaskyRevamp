@@ -1,4 +1,4 @@
-// tooltip initialization
+﻿// tooltip initialization
 document.addEventListener("DOMContentLoaded", function () {
     const tooltipTriggerList = document.querySelectorAll(
         '[data-bs-toggle="tooltip"]'
@@ -275,4 +275,119 @@ window.fileService = {
             }
         });
     }
+};
+
+window.initDropdowns = function () {
+    // Remove all previous listeners
+    document.removeEventListener('click', window._dropdownClickHandler, true);
+    document.removeEventListener('scroll', window._dropdownScrollHandler, true);
+    document.removeEventListener('keydown', window._dropdownKeyHandler, true);
+    // Create a single shared menu container on body
+    let activeToggle = null;
+    function getOrCreateMenu(toggle) {
+        const parent = toggle.closest('.dropdown');
+        if (!parent) return null;
+        const menu = parent.querySelector('.dropdown-menu');
+        return menu || null;
+    }
+    function positionMenu(toggle, menu) {
+        const rect = toggle.getBoundingClientRect();
+        const menuHeight = menu.offsetHeight || 200; 
+        const menuWidth = menu.offsetWidth || 180;
+        const viewportHeight = window.innerHeight;
+        const viewportWidth = window.innerWidth;
+        // Move to body temporarily to measure
+        if (menu.parentElement !== document.body) {
+            document.body.appendChild(menu);
+        }
+        menu.style.position = 'fixed';
+        menu.style.zIndex = '99999';
+        menu.style.display = 'block';
+        menu.style.minWidth = '160px';
+        // Recalculate after appending to body
+        const actualMenuHeight = menu.offsetHeight;
+        const actualMenuWidth = menu.offsetWidth;
+        // Decide vertical: open down or up
+        const spaceBelow = viewportHeight - rect.bottom;
+        const spaceAbove = rect.top;
+        let top;
+        if (spaceBelow >= actualMenuHeight || spaceBelow >= spaceAbove) {
+            top = rect.bottom + 2;
+        }
+        else {
+            top = rect.top - actualMenuHeight - 2;
+        }
+        // Decide horizontal: align to right edge of button, but don't overflow left
+        let left = rect.right - actualMenuWidth;
+        if (left < 8) left = 8;
+        if (left + actualMenuWidth > viewportWidth - 8) {
+            left = viewportWidth - actualMenuWidth - 8;
+        }
+        menu.style.top = top + 'px';
+        menu.style.left = left + 'px';
+    }
+    function closeActive() {
+        if (activeToggle) {
+            const menu = document.querySelector('.dropdown-menu.manually-shown');
+            if (menu) {
+                menu.classList.remove('manually-shown', 'show');
+                menu.style.display = '';
+                menu.style.position = '';
+                menu.style.top = '';
+                menu.style.left = '';
+                menu.style.zIndex = '';
+                // Move menu back to its original parent
+                if (menu._originalParent && menu.parentElement === document.body) {
+                    menu._originalParent.appendChild(menu);
+                }
+            }
+            activeToggle.setAttribute('aria-expanded', 'false');
+            activeToggle = null;
+        }
+    }
+    window._dropdownClickHandler = function (e) {
+        const toggle = e.target.closest('.dropdown-actions-toggle');
+        if (toggle) {
+            e.stopPropagation();
+            e.preventDefault();
+            // Clicking the same toggle → close
+            if (activeToggle === toggle) {
+                closeActive();
+                return;
+            }
+            closeActive();
+            const menu = getOrCreateMenu(toggle);
+            if (!menu) return;
+            // Remember original parent
+            menu._originalParent = toggle.parentElement;
+            activeToggle = toggle;
+            toggle.setAttribute('aria-expanded', 'true');
+            menu.classList.add('manually-shown', 'show');
+            positionMenu(toggle, menu);
+            return;
+        }
+        // Click outside → close
+        const openMenu = document.querySelector('.dropdown-menu.manually-shown');
+        if (openMenu) {
+            if (openMenu.contains(e.target)) {
+                closeActive();
+                return;
+            }
+            closeActive();
+        }
+    };
+    window._dropdownScrollHandler = function () {
+        if (activeToggle) {
+            const menu = document.querySelector('.dropdown-menu.manually-shown');
+            if (menu) {
+                positionMenu(activeToggle, menu);
+            }
+        }
+    };
+    window._dropdownKeyHandler = function (e) {
+        if (e.key === 'Escape') closeActive();
+    };
+    document.addEventListener('click', window._dropdownClickHandler, true);
+    document.addEventListener('scroll', window._dropdownScrollHandler, true);
+    document.addEventListener('keydown', window._dropdownKeyHandler, true);
 };
