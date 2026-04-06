@@ -51,9 +51,9 @@
         // var current = await LocalStorageService.GetItemAsStringAsync("Id");
         //_newSource.CreatedById = Guid.Parse(current);
         var alloldSources = await _sourceSettingConsumer.GetTaskSourcesForDDL();
-        var allOldActiveSource = alloldSources.Data!.Where(k => k.IsActive == true && k.IsDeleted != true).ToList();
+        var allOldSources = alloldSources.Data!.Where(k => k.IsDeleted != true).ToList();
         var alloldDeletedSource = alloldSources.Data!.Where(k => k.IsDeleted == true).ToList(); 
-        if (allOldActiveSource.Any(m => m.NameEnglish == _newSource.NameEnglish) || allOldActiveSource.Any(m => m.NameArabic == _newSource.NameArabic))
+        if (allOldSources.Any(m => m.NameEnglish == _newSource.NameEnglish) || allOldSources.Any(m => m.NameArabic == _newSource.NameArabic))
         {
             await ToastService.ShowToastAsync(Loc["Anactivesourcewith"], "error");
             return;

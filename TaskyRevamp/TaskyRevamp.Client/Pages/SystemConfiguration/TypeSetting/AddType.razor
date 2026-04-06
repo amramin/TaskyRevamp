@@ -27,9 +27,9 @@
     private async Task Save(EditContext editContext)
     {
         var alloldTypes = await _typeSettingConsumer.GetTaskTypesForDDL();
-        var allOldActiveType = alloldTypes.Data!.Where(k => k.IsActive == true && k.IsDeleted != true).ToList();
+        var allOldTypes = alloldTypes.Data!.Where(k => k.IsDeleted != true).ToList();
         var alloldDeletedType = alloldTypes.Data!.Where(k => k.IsDeleted == true).ToList();
-        if (allOldActiveType.Any(m => m.NameEnglish == _newType.NameEnglish) || allOldActiveType.Any(m => m.NameArabic == _newType.NameArabic))
+        if (allOldTypes.Any(m => m.NameEnglish == _newType.NameEnglish) || allOldTypes.Any(m => m.NameArabic == _newType.NameArabic))
         {
             await ToastService.ShowToastAsync(Loc["AnactiveTypewith"], "error");
             return;
