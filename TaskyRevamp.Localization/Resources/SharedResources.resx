@@ -147,8 +147,23 @@
   <data name="ParentNotFound" xml:space="preserve">
     <value>Parent not found</value>
   </data>
+    <data name="Dashboard" xml:space="preserve">
+    <value>Dashboard </value>
+  </data>
+    <data name="TaskList" xml:space="preserve">
+    <value>Task list</value>
+  </data>
+  <data name="CompletedTaskList" xml:space="preserve">
+    <value>Completed task list</value>
+  </data>
+    <data name="Delegation" xml:space="preserve">
+    <value>Delegation </value>
+  </data>
   <data name="RecycleBinConfiguration" xml:space="preserve">
     <value>Recycle bin</value>
+  </data>
+   <data name="Settings" xml:space="preserve">
+    <value>Settings</value>
   </data>
   <data name="RetentionPeriodOptions" xml:space="preserve">
     <value>Retention period options</value>
@@ -1215,6 +1230,9 @@
   <data name="Details" xml:space="preserve">
     <value>Details </value>
   </data>
+  <data name="Information" xml:space="preserve">
+    <value>Information </value>
+  </data>
   <data name="AddComment" xml:space="preserve">
     <value>Add comment</value>
   </data>
@@ -1335,6 +1353,14 @@
   <data name="TypeView" xml:space="preserve">
     <value>Type</value>
   </data>
+   <data name="ExpandAll" xml:space="preserve">
+    <value>Expand All</value>
+  </data>
+   <data name="CollapseAll" xml:space="preserve">
+    <value>Collapse All</value>
+  </data>
+  
+
   <data name="StatusView" xml:space="preserve">
     <value>Status</value>
   </data>
@@ -1459,7 +1485,7 @@
     <value>Dependencies</value>
   </data>
   <data name="ChangeEndDatesRequests" xml:space="preserve">
-    <value>Change End Dates Requests</value>
+    <value>Change end date requests</value>
   </data>
   <data name="Escalation" xml:space="preserve">
     <value>Escalation</value>

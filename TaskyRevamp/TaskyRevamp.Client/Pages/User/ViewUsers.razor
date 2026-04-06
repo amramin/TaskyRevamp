@@ -61,20 +61,25 @@
         </label>
         <InputFile id="userFileUpload" OnChange="OnFileSelected" />
         <div class="d-flex gap-2">
-            <button class="btn btn-lg btn-light text-nowrap" @onclick="DownloadExcel">
-                @Loc["DownloadExcelTemplate"]
+            <button class="btn btn-lg btn-light-primary text-nowrap" @onclick="DownloadExcel"
+                    title="@Loc["DownloadExcelTemplate"]">
+                <span class="icon">
+                    <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Download"></SVGCrud>
+                </span>
             </button>
             @if (!IsLoading)
             {
-                <button class="btn btn-lg btn-light text-nowrap" @onclick="SyncUsers">
-                    @Loc["SyncUsers"]
+                <button class="btn btn-lg btn-light-primary text-nowrap" @onclick="SyncUsers" title="@Loc["SyncUsers"]">
+                    <span class="icon">
+                        <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Repeat"></SVGCrud>
+                    </span>
                 </button>
             }
             else
             {
-                <button class="btn btn-lg btn-light text-nowrap" @onclick="SyncUsers">
+                <button class="btn btn-lg btn-light text-nowrap" @onclick="SyncUsers" title="@Loc["SyncUsers"]">
                     <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
-                    @Loc["SyncUsers"]
+                 
                 </button>
             }
         </div>

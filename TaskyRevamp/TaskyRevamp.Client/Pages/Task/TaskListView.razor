@@ -31,7 +31,8 @@
                     @if (ViewType != (int)ViewTypes.OverAllView)
                     {
                         <span class="chevron-icon">
-                            <SVGCrud SVGType="@(IsCollapse? SVGCrud.SVGTypeEnum.ChevronEnd : SVGCrud.SVGTypeEnum.ChevronDown)" />
+                            <SVGCrud
+                            SVGType="@(IsCollapse? SVGCrud.SVGTypeEnum.ChevronEnd : SVGCrud.SVGTypeEnum.ChevronDown)" />
                         </span>
                     }
                     <span class="text"> @Title</span>
@@ -88,7 +89,7 @@
                                                         </li>
                                                     }
                                                     @if ((task.ActualProcess == 100 && task.TaskStatus ==
-                                                                                        Guid.Parse("6EE4574D-C439-45B4-223A-08DE3318A61C")))
+                                                                                                                                            Guid.Parse("6EE4574D-C439-45B4-223A-08DE3318A61C")))
                                                     {
                                                         <li>
                                                             <button class="dropdown-item" @onclick="@(() => CompleteTask(task.Id))">
@@ -100,7 +101,7 @@
                                                         </li>
                                                     }
                                                     @if (task.ActualProcess == 100 && task.TaskStatus ==
-                                                                                        Guid.Parse("6EE4574D-C439-45B4-223A-08DE3318A61C"))
+                                                                                                                                            Guid.Parse("6EE4574D-C439-45B4-223A-08DE3318A61C"))
                                                     {
                                                         <li>
                                                             <button class="dropdown-item" @onclick="@(() => OnReopen.InvokeAsync(task.Id))">
@@ -167,11 +168,11 @@
                                                     <div class="d-flex justify-content-between gap-3">
                                                         <div class="d-flex gap-2">
                                                             <div class="badge" style="background-color:@task.TaskStatusBackgroundColor;
-                                                                                color:@task.TaskStatusColor;">
+                                                                color:@task.TaskStatusColor;">
                                                                 @task.TaskStatusName
                                                             </div>
                                                             <div class="badge" style="background-color:@task.PriorityBackgroundColor;
-                                                                                color:@task.PriorityColor;">
+                                                                color:@task.PriorityColor;">
                                                                 @task.PriorityName
                                                             </div>
                                                         </div>
@@ -195,8 +196,8 @@
 
                                                             }
                                                             <div class="dropdown ">
-                                                                <button class="btn btn-action-24" type="button" data-bs-toggle="dropdown"
-                                                                        aria-expanded="false">
+                                                                <button class="btn btn-action-24" type="button"
+                                                                        data-bs-toggle="dropdown" aria-expanded="false">
                                                                     <SVGCrud SVGType="SVGCrud.SVGTypeEnum.EllipseVertical"></SVGCrud>
                                                                 </button>
                                                                 <ul class="dropdown-menu">
@@ -204,7 +205,8 @@
                                                                         <button class="dropdown-item"
                                                                                 @onclick="@(() => ViewTaskDetails(task.Id))">
                                                                             <span class="icon">
-                                                                                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.OpenEye"></SVGCrud>
+                                                                                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.OpenEye">
+                                                                                </SVGCrud>
                                                                             </span>
                                                                             @Loc["Taskdetails"]
                                                                         </button>
@@ -222,26 +224,28 @@
                                                                         </li>
                                                                     }
                                                                     @if ((task.ActualProcess == 100 && task.TaskStatus ==
-                                                                                                                        Guid.Parse("6EE4574D-C439-45B4-223A-08DE3318A61C")))
+                                                                                                                                                                                            Guid.Parse("6EE4574D-C439-45B4-223A-08DE3318A61C")))
                                                                     {
                                                                         <li>
                                                                             <button class="dropdown-item"
                                                                                     @onclick="@(() => CompleteTask(task.Id))">
                                                                                 <span class="icon">
-                                                                                    <SVGCrud SVGType="SVGCrud.SVGTypeEnum.OpenEye"></SVGCrud>
+                                                                                    <SVGCrud SVGType="SVGCrud.SVGTypeEnum.OpenEye">
+                                                                                    </SVGCrud>
                                                                                 </span>
                                                                                 @Loc["Complete"]
                                                                             </button>
                                                                         </li>
                                                                     }
                                                                     @if (task.ActualProcess == 100 && task.TaskStatus ==
-                                                                                                                        Guid.Parse("6EE4574D-C439-45B4-223A-08DE3318A61C"))
+                                                                                                                                                                                            Guid.Parse("6EE4574D-C439-45B4-223A-08DE3318A61C"))
                                                                     {
                                                                         <li>
                                                                             <button class="dropdown-item"
                                                                                     @onclick="@(() => OnReopen.InvokeAsync(task.Id))">
                                                                                 <span class="icon">
-                                                                                    <SVGCrud SVGType="SVGCrud.SVGTypeEnum.OpenEye"></SVGCrud>
+                                                                                    <SVGCrud SVGType="SVGCrud.SVGTypeEnum.OpenEye">
+                                                                                    </SVGCrud>
                                                                                 </span>
                                                                                 @Loc["ReOpen"]
                                                                             </button>
@@ -312,12 +316,14 @@
                                                                 <div class="info-item">
                                                                     <span class="squer-medium-icon">
                                                                         <span class="icon">
-                                                                            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.CalnderPluse"></SVGCrud>
+                                                                            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.CalnderPluse">
+                                                                            </SVGCrud>
                                                                         </span>
                                                                     </span>
                                                                     <div class="text-content">
                                                                         <h6 class="headline-8 mb-1">@Loc["StartDate"]</h6>
-                                                                        <span class="x-small-medium-text">@task.StartDate?.ToString(Loc["LocalizeDate"])</span>
+                                                                        <span
+                                                                        class="x-small-medium-text">@task.StartDate?.ToString(Loc["LocalizeDate"])</span>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -325,12 +331,14 @@
                                                                 <div class="info-item">
                                                                     <span class="squer-medium-icon">
                                                                         <span class="icon">
-                                                                            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.CalnderCheck"></SVGCrud>
+                                                                            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.CalnderCheck">
+                                                                            </SVGCrud>
                                                                         </span>
                                                                     </span>
                                                                     <div class="text-content">
                                                                         <h6 class="headline-8 mb-1">@Loc["EndDate"]</h6>
-                                                                        <span class="x-small-medium-text">@task.EndDate?.ToString(Loc["LocalizeDate"])</span>
+                                                                        <span
+                                                                        class="x-small-medium-text">@task.EndDate?.ToString(Loc["LocalizeDate"])</span>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -513,7 +521,7 @@ new() { Field = "Planned Weight", DisplayName =Loc["PlannedWeight"], Order = 18,
         isLoading = true;
         try
         {
-            var res = await _defaultColumnsSettingConsumer.GetDefaultColumnsSettings(isload:false);
+            var res = await _defaultColumnsSettingConsumer.GetDefaultColumnsSettings(isload: false);
             if (res.Success)
             {
                 var settings = res.Data;
@@ -915,6 +923,7 @@ SearchFieldTask.PlannedProgress
                 b.AddAttribute(1, "Names", task.AssigneduserNames);
                 b.AddAttribute(2, "Size", 32);
                 b.AddAttribute(3, "Black", true);
+                b.AddAttribute(4, "VisbleNames", 4);
                 b.CloseComponent();
             }));
                 break;
@@ -1042,6 +1051,7 @@ SearchFieldTask.PlannedProgress
                 b.AddAttribute(1, "Names", task.CreatedByName);
                 b.AddAttribute(2, "Size", 32);
                 b.AddAttribute(3, "Black", true);
+               
                 b.CloseComponent();
             }));
                 break;
