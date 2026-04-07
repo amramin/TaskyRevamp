@@ -268,12 +268,12 @@
     private TaskFilterComponent _filterModel = new();
     private EditContext editContext;
     private ValidationMessageStore messageStore;
-
     private bool isRtlCulture;
     private string datePickerLocale = "en";
     private bool enableRtl = false;
     private string dateGroupDir = "ltr";
     string placeholderDate = CultureInfo.CurrentCulture.Name.StartsWith("ar") ? "yyyy-mm-dd" : "dd-mm-yyyy";
+
     protected async override Task OnInitializedAsync()
     {
         if (FilterDTO == null)
@@ -392,7 +392,7 @@
                 messageStore.Add(new FieldIdentifier(FilterDTO, nameof(FilterDTO.ToEndDate)), Loc["ToEndDateValidation"]);
                 editContext.NotifyValidationStateChanged();
             }
-            if (FilterDTO.FromCreationDate.HasValue && FilterDTO.FromCreationDate.HasValue && FilterDTO.FromCreationDate > FilterDTO.ToCreationDate)
+            if (FilterDTO.FromCreationDate.HasValue && FilterDTO.ToCreationDate.HasValue && FilterDTO.FromCreationDate > FilterDTO.ToCreationDate)
             {
                 messageStore.Add(new FieldIdentifier(FilterDTO, nameof(FilterDTO.FromCreationDate)), Loc["FromCreationDateValidation"]);
                 messageStore.Add(new FieldIdentifier(FilterDTO, nameof(FilterDTO.ToCreationDate)), Loc["ToCreationDateValidation"]);
@@ -414,6 +414,7 @@
         messageStore = new ValidationMessageStore(editContext);
         editContext.OnValidationRequested += ValidateDynamicFields;
         await OnClear.InvokeAsync(FilterDTO);
+        await OnFilter.InvokeAsync(FilterDTO);
     }
     public void Dispose()
     {

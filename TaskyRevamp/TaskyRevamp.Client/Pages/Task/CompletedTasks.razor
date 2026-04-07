@@ -184,7 +184,7 @@
     [Parameter] public EventCallback<Guid> OnDelete { get; set; }
     [Parameter] public EventCallback<Guid> OnShowUsers { get; set; }
     [Parameter] public EventCallback<Guid> OnAdd { get; set; }
-    public TaskFilterComponent TaskFilter { get; set; } = null;
+    public TaskFilterComponent TaskFilter { get; set; } = new();
     private List<ViewTaskSettingsDto> TaskViews = new List<ViewTaskSettingsDto>();
     private Dictionary<string, TaskListView> taskListRefs = new Dictionary<string, TaskListView>();
     public List<SourceDto> sources = new List<SourceDto>();
@@ -331,14 +331,39 @@
     }
     private async Task ApplyFilter(TaskFilterComponent filter)
     {
-        TaskFilter = filter;
+        TaskFilter = new TaskFilterComponent
+        {
+            Title = filter.Title,
+            Priority = filter.Priority,
+            Status = filter.Status,
+            AssignedTo = filter.AssignedTo,
+            AssignedToDepartment = filter.AssignedToDepartment,
+            CreatedBy = filter.CreatedBy,
+            CreatedByDepartment = filter.CreatedByDepartment,
+            Type = filter.Type,
+            Source = filter.Source,
+            FromStartDate = filter.FromStartDate,
+            ToStartDate = filter.ToStartDate,
+            FromEndDate = filter.FromEndDate,
+            ToEndDate = filter.ToEndDate,
+            FromCreationDate = filter.FromCreationDate,
+            ToCreationDate = filter.ToCreationDate
+        };
         IsFilter = true;
+        foreach (var taskList in taskListRefs.Values.Where(t => t != null))
+        {
+            await taskList.GetTasksWithReset();
+        }
         StateHasChanged();
     }
     private async Task ApplyClear(TaskFilterComponent filter)
     {
-        TaskFilter = filter;
-        IsFilter = true;
+        TaskFilter = new TaskFilterComponent();
+        IsFilter = false;
+        foreach (var taskList in taskListRefs.Values.Where(t => t != null))
+        {
+            await taskList.GetTasksWithReset();
+        }
         StateHasChanged();
     }
 }
