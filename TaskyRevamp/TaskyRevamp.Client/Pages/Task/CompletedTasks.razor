@@ -17,6 +17,8 @@
 @inject TypeSettingConsumer _typeSettingConsumer
 @inject SourceSettingConsumer _sourceSettingConsumer
 @inject FilterFieldsSettingConsumer _filterFieldsSettingConsumer
+@inject ViewTaskSettingConsumer _viewTaskSettingConsumer
+@using ViewTypeEnum = TaskyRevamp.Dto.Enums.ViewType;
 
 <div class="tab-pills flex-grow-1">
     <div class="tab-content" id="myTabContent">
@@ -48,7 +50,7 @@
                     @if (FilterFieldsSettings.Any() == true)
                     {
                         <button type="button" data-bs-toggle="tooltip" data-bs-placement="top" title="@Loc["Filter"]" @onclick="ExpandFilter"
-                            class="btn btn-action-40 btn-outline-light-pimary">
+                                class="btn btn-action-40 btn-outline-light-pimary">
                             <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Filter"></SVGCrud>
                         </button>
                     }
@@ -77,28 +79,37 @@
             <div class="horizintal-tab">
                 <!-- SIDE BUTTON BAR -->
                 <div class="tab-nav">
-                    <button class="btn tab-btn @(ViewType == (int)ViewTypes.OverAllView ? "active" : "")"
-                            @onclick="() => changeViewType((int)ViewTypes.OverAllView)">
-                        <span class="icon">
-                            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.File"></SVGCrud>
-                        </span>
-                        <span class="text">@Loc[ViewTypes.OverAllView.ToString()]</span>
-                    </button>
-                    <button class="btn tab-btn @(ViewType == (int)ViewTypes.SourceView ? " active" : "")"
-                            @onclick="() => changeViewType((int)ViewTypes.SourceView)">
-                        <span class="icon">
-                            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.TaskSource" />
-                        </span>
-                        <span class="text">@Loc[ViewTypes.SourceView.ToString()]</span>
-                    </button>
-                    <button class="btn tab-btn @(ViewType == (int)ViewTypes.TypeView ? " active" : "")"
-                            title="@Loc[ViewTypes.TypeView.ToString()]"
-                            @onclick="() => changeViewType((int)ViewTypes.TypeView)">
-                        <span class="icon">
-                            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.TaskType" />
-                        </span>
-                        <span class="text">@Loc[ViewTypes.TypeView.ToString()]</span>
-                    </button>
+                    @if (TaskViews.Any(p => p.ViewType == ViewTypeEnum.List_Overall && p.IsActive))
+                    {
+                        <button class="btn tab-btn @(ViewType == (int)ViewTypes.OverAllView ? "active" : "")"
+                                @onclick="() => changeViewType((int)ViewTypes.OverAllView)">
+                            <span class="icon">
+                                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.File"></SVGCrud>
+                            </span>
+                            <span class="text">@Loc[ViewTypes.OverAllView.ToString()]</span>
+                        </button>
+                    }
+                    @if (TaskViews.Any(p => p.ViewType == ViewTypeEnum.List_Source && p.IsActive))
+                    {
+                        <button class="btn tab-btn @(ViewType == (int)ViewTypes.SourceView ? " active" : "")"
+                                @onclick="() => changeViewType((int)ViewTypes.SourceView)">
+                            <span class="icon">
+                                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.TaskSource" />
+                            </span>
+                            <span class="text">@Loc[ViewTypes.SourceView.ToString()]</span>
+                        </button>
+                    }
+                    @if (TaskViews.Any(p => p.ViewType == ViewTypeEnum.List_Type && p.IsActive))
+                    {
+                        <button class="btn tab-btn @(ViewType == (int)ViewTypes.TypeView ? " active" : "")"
+                                title="@Loc[ViewTypes.TypeView.ToString()]"
+                                @onclick="() => changeViewType((int)ViewTypes.TypeView)">
+                            <span class="icon">
+                                <SVGCrud SVGType="SVGCrud.SVGTypeEnum.TaskType" />
+                            </span>
+                            <span class="text">@Loc[ViewTypes.TypeView.ToString()]</span>
+                        </button>
+                    }
                 </div>
                 <!-- MAIN CONTENT -->
                 <div class="page-body">
@@ -174,6 +185,7 @@
     [Parameter] public EventCallback<Guid> OnShowUsers { get; set; }
     [Parameter] public EventCallback<Guid> OnAdd { get; set; }
     public TaskFilterComponent TaskFilter { get; set; } = null;
+    private List<ViewTaskSettingsDto> TaskViews = new List<ViewTaskSettingsDto>();
     private Dictionary<string, TaskListView> taskListRefs = new Dictionary<string, TaskListView>();
     public List<SourceDto> sources = new List<SourceDto>();
     public List<TypeDto> Types = new List<TypeDto>();
@@ -211,6 +223,12 @@
         if (resFilter.Success && resFilter.Data != null)
         {
             FilterFieldsSettings = resFilter.Data.Where(f => f.IsActive).ToList();
+        }
+        var res = await _viewTaskSettingConsumer.GetViewTaskSetting(isload: false);
+        if (res.Success && res.Data != null)
+        {
+            var orderedEnums = EnumExtensions.GetOrderedValues<ViewType>();
+            TaskViews = orderedEnums.Select(enumVal => res.Data.FirstOrDefault(d => d.ViewType == enumVal)).Where(d => d != null).ToList()!;
         }
     }
     private async Task changeViewType(int type)

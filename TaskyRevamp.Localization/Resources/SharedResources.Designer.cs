@@ -1682,15 +1682,6 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Enter the reason.
-        /// </summary>
-        public static string Enterthereason {
-            get {
-                return ResourceManager.GetString("Enterthereason", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Error database.
         /// </summary>
         public static string Errordatabase {
@@ -3014,6 +3005,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Reason.
+        /// </summary>
+        public static string Reason {
+            get {
+                return ResourceManager.GetString("Reason", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Reassign to the task creator.
         /// </summary>
         public static string ReassignToCreator {
@@ -3068,6 +3068,24 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Task rejected successfully.
+        /// </summary>
+        public static string Rejected {
+            get {
+                return ResourceManager.GetString("Rejected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string rejectedsuccessfully {
+            get {
+                return ResourceManager.GetString("rejectedsuccessfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Task rejection.
         /// </summary>
         public static string RejectionConfiguration {
@@ -3095,7 +3113,7 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Task rejection reason:/.
+        ///   Looks up a localized string similar to Task rejection reason:.
         /// </summary>
         public static string RejectReason {
             get {

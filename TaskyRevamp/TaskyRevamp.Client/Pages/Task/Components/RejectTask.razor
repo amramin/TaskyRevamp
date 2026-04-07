@@ -14,9 +14,8 @@
     <DataAnnotationsValidator />
 
     <div class="offcanvas-body">
-        <label class="form-label">@Loc["Enterthereason"] <span class="text-danger">*</span></label>
+        <label class="form-label">@Loc["Reason"] <span class="text-danger">*</span></label>
         <InputTextArea class="form-control"
-                       placeholder="@Loc["Enterthereason"]"
                        @bind-value="comments.Content"
                        rows="3"></InputTextArea>
         <ValidationMessage For="() => comments.Content" class="text-danger"></ValidationMessage>
@@ -30,7 +29,7 @@
             </div>
             <div class="col-6">
                 <div class="d-grid">
-                    <button type="submit" class="btn btn-lg btn-primary">@Loc["Save"]</button>
+                    <button type="submit" class="btn btn-lg btn-primary">@Loc["Confirm"]</button>
                 </div>
             </div>
         </div>
@@ -55,7 +54,7 @@
         var res = await _taskConsumer.RejectTask(comments);
         if (res.Success)
         {
-            await ToastService.ShowToastAsync(Loc["DataSavedSuccessfully"], "success");
+            await ToastService.ShowToastAsync(Loc["Rejected"], "success");
             await OnSaved.InvokeAsync();
             PopupService.Hide();
         }
