@@ -8,7 +8,10 @@
                 <SVGCrud SVGType="SVGCrud.SVGTypeEnum.BackArrow"></SVGCrud>
             </span>
         </button>
-        <h1 class="page-headline">@Task?.Title</h1>
+        <h1 class="page-headline @(IsOverflow(Task?.Title) ? "is-truncated" : "")">
+            <span class="text">@Task?.Title</span>
+            <span class="more-text">@Task?.Title</span>
+        </h1>
     </div>
     @if (ShowViewedBy && Task?.ViewdByNames != null && Task.ViewdByNames.Any())
     {
@@ -98,5 +101,16 @@
     private void CloseViewersPopup()
     {
         showViewersPopup = false;
+    }
+
+    private bool IsOverflow(string? text)
+    {
+        if (string.IsNullOrWhiteSpace(text))
+            return false;
+
+        int wideChars = text.Count(c => char.IsUpper(c));
+        int score = text.Length + (wideChars / 2);
+
+        return score > 120;
     }
 }
