@@ -19,21 +19,22 @@
                     var visibleViewers = Task.ViewdByNames.Take(2).ToList();
                     var remainingCount = Task.ViewdByNames.Count - 2;
                 }
-                @foreach (var viewer in visibleViewers)
+                @* @foreach (var viewer in visibleViewers)
                 {
                     <li class="initial @(viewer.IsActive ? "" : "opacity-75")" style="z-index: @(visibleViewers.IndexOf(viewer));"
                         title="@viewer.FullName" data-bs-toggle="tooltip">
                         <span>@GetInitials(viewer.FullName)</span>
                     </li>
-                }
-                @if (remainingCount > 0)
+                } *@
+                <Initials  Names="@string.Join(",", Task.ViewdByNames.Select(v => v.FullName))" ></Initials>
+                @* @if (remainingCount > 0)
                 {
                     <li class="dropdown more-user">
                         <button class="btn btn-more" @onclick="ShowAllViewers" data-bs-toggle="tooltip">
                             <span class="fw-semibold">+@remainingCount</span>
                         </button>
                     </li>
-                }
+                } *@
             </ul>
         </div>
     }

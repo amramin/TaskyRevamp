@@ -3,8 +3,12 @@
 <ul class="initials-list">
     @for (int i = 0; i < VisibleNames.Count; i++)
     {
-        <li class="initial" title="@VisibleNames[i]">
-            @GetInitials(VisibleNames[i])
+        var name = VisibleNames[i];
+        var bg = GetUserColor(name);
+        var textColor = GetTextColor(bg);
+
+        <li class="initial" style="background-color:@bg; color:@textColor" title="@name">
+            @GetInitials(name)
         </li>
     }
 
@@ -18,13 +22,17 @@
             <ul class="dropdown-menu">
                 @foreach (var name in HiddenNames)
                 {
+                    var bgHidden = GetUserColor(name);
+                    var textHidden = GetTextColor(bgHidden);
+
                     <li class="dropdown-item">
-                        <span class="initial">@GetInitials(name)</span>
+                        <span class="initial" style="background-color:@bgHidden; color:@textHidden">
+                            @GetInitials(name)
+                        </span>
                         <span class="name">@name</span>
                     </li>
                 }
             </ul>
-
         </li>
     }
 </ul>
@@ -34,13 +42,13 @@
     [Parameter] public int Size { get; set; } = 40;
     [Parameter] public bool Black { get; set; } = false;
 
+    [Parameter] public int VisbleNames { get; set; } = 2;
+
     private const int Spacing = 6;
     private int Half => Size / 2;
     private int TotalWidth => NamesList.Count * (Size + Spacing);
     private string StrokeColor => Black ? "#000000" : "#00f";
     private int FontSize => Size / 2;
-
-
 
     private List<string> NamesList =>
         string.IsNullOrWhiteSpace(Names)
@@ -49,14 +57,11 @@
                 .Select(n => n.Trim())
                 .ToList();
 
-    private List<string> VisibleNames => NamesList.Take(4).ToList();
-
-    private List<string> HiddenNames => NamesList.Skip(4).ToList();
-
+    private List<string> VisibleNames => NamesList.Take(VisbleNames).ToList();
+    private List<string> HiddenNames => NamesList.Skip(VisbleNames).ToList();
     private int RemainingCount => HiddenNames.Count;
 
-
-
+    // --- Get initials from full name ---
     private static string GetInitials(string fullName)
     {
         if (string.IsNullOrWhiteSpace(fullName))
@@ -68,5 +73,39 @@
             return parts[0][0].ToString().ToUpper();
 
         return $"{char.ToUpper(parts[0][0])}{char.ToUpper(parts[^1][0])}";
+    }
+
+    // --- 30 soft and consistent colors ---
+    private readonly string[] Colors = new string[]
+    {
+        "#0B53BF", "#077476", "#405D87", "#BF0B89", "#0BBF95", "#A868B2",
+        "#5B8FF9", "#7BC47F", "#FFA07A", "#9EC5E8", "#A8D5BA", "#FFD6A5",
+        "#C4E1FF", "#B2F0C3", "#FFE4B2", "#8FAADC", "#82C9A0", "#FFBFA3",
+        "#7AA6F7", "#6FC18B", "#FF9C75", "#6A8FEF", "#88CFA2", "#FFC285",
+        "#4F75B7", "#559D8B", "#D186C4", "#9DBBE1", "#A1D1B2", "#FFCA99"
+    };
+
+    // --- Returns a fixed color for each user (stable across logins) ---
+    private string GetUserColor(string name)
+    {
+        if (string.IsNullOrEmpty(name)) return Colors[0];
+
+        // Stable hash: sum ASCII codes of each character
+        int sum = 0;
+        foreach (var c in name) sum += c;
+        int index = sum % Colors.Length;
+
+        return Colors[index];
+    }
+
+    // --- Returns text color based on background brightness ---
+    private string GetTextColor(string bgColor)
+    {
+        int r = int.Parse(bgColor.Substring(1, 2), System.Globalization.NumberStyles.HexNumber);
+        int g = int.Parse(bgColor.Substring(3, 2), System.Globalization.NumberStyles.HexNumber);
+        int b = int.Parse(bgColor.Substring(5, 2), System.Globalization.NumberStyles.HexNumber);
+
+        double brightness = (r * 299 + g * 587 + b * 114) / 1000;
+        return brightness > 150 ? "#333333" : "#FFFFFF";
     }
 }
