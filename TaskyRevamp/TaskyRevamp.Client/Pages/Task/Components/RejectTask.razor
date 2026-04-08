@@ -58,11 +58,6 @@
             await OnSaved.InvokeAsync();
             PopupService.Hide();
         }
-        else
-        {
-            await ToastService.ShowToastAsync(Loc["Erroroccurred"], "error");
-            return;
-        }
     }
     private void HandleInvalidSubmit(EditContext args)
     {
