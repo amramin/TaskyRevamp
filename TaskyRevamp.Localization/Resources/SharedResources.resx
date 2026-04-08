@@ -1696,6 +1696,9 @@ This task will be moved to the Recycle Bin and can be restored later or permanen
   <data name="ViewedBy" xml:space="preserve">
     <value>Viewed by</value>
   </data>
+  <data name="Noviews" xml:space="preserve">
+    <value>No views</value>
+  </data>
   <data name="SubDepartmentUsers" xml:space="preserve">
     <value>Sub dept users</value>
   </data>
