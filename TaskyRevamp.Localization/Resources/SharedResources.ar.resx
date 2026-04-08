@@ -1696,6 +1696,9 @@
   <data name="ViewedBy" xml:space="preserve">
     <value>تمت المشاهدة بواسطة</value>
   </data>
+  <data name="Noviews" xml:space="preserve">
+    <value>لا توجد مشاهدات</value>
+  </data>
   <data name="SubDepartmentUsers" xml:space="preserve">
     <value>مستخدمي الإدارة الفرعية</value>
   </data>
