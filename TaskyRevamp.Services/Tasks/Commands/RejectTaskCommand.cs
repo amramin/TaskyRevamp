@@ -36,18 +36,19 @@ namespace TaskyRevamp.Services.Tasks.Commands
         }
         public async Task<bool> Handle(RejectTaskCommand request, CancellationToken cancellationToken)
         {
-            var task = await _taskRepository.GetTaskById(request.TaskCommentDto.TaskItemId);
+			var currentUserId = Guid.Parse(_httpContextAccessor.GetUserId());
+			var task = await _taskRepository.GetTaskById(request.TaskCommentDto.TaskItemId);
             var RejectionSettings = await _rejectionRepository.AllAsNoTracking();
             int RejectionPeriod = 0;
-            if (RejectionSettings.Value.FirstOrDefault() is not null)
+            if (RejectionSettings.Value!.FirstOrDefault() is not null)
             {
-                if (RejectionSettings.Value.FirstOrDefault().CustomDays != null)
+                if (RejectionSettings.Value!.FirstOrDefault()!.CustomDays != null)
                 {
-                    RejectionPeriod = (int)RejectionSettings.Value.FirstOrDefault().CustomDays;
+                    RejectionPeriod = (int)RejectionSettings.Value!.FirstOrDefault()!.CustomDays!;
                 }
                 else
                 {
-                    RejectionPeriod = (int)RejectionSettings.Value.FirstOrDefault().PeriodType;
+                    RejectionPeriod = (int)RejectionSettings.Value!.FirstOrDefault()!.PeriodType;
                 }
             }
             if (task == null)
@@ -56,34 +57,39 @@ namespace TaskyRevamp.Services.Tasks.Commands
             }
             if (RejectionPeriod!=(int)RejectionPeriodType.Never)
             {
-                if (DateOnly.FromDateTime(task.CreateDate).AddDays(RejectionPeriod) < DateOnly.FromDateTime(DateTime.Now))
+                var taskAssignee = task.TaskAssignees.FirstOrDefault(u => u.UserId == currentUserId);
+                if (taskAssignee == null)
                 {
-                    throw new Exception("Task Cannot Be Rejected");
+                    throw new Exception("User is not an assignee of the task");
                 }
                 else
                 {
-                    if (task.TaskAssignees.Count() == 1)
+                    if (DateOnly.FromDateTime(taskAssignee.AssigneeDate).AddDays(RejectionPeriod) < DateOnly.FromDateTime(DateTime.Now))
                     {
-                        var assignee= new TaskAssignee
-                        {
-                            TaskItemId = request.TaskCommentDto.TaskItemId,
-                            UserId = task.CreatedById,
-                            AssigneeDate = DateTime.Now
-                        };
-                        await _taskAssigneeRepository.Delete(task.TaskAssignees.FirstOrDefault().Id);
-                        await _taskAssigneeRepository.Insert(assignee);
-                        await _taskAssigneeRepository.SaveChangesAsync();
+                        throw new Exception("Task Cannot Be Rejected");
                     }
                     else
                     {
-                        var currentUserId = Guid.Parse(_httpContextAccessor.GetUserId());
-                        _taskAssigneeRepository.Delete(task.TaskAssignees.FirstOrDefault(u=>u.UserId== currentUserId).Id);
-                        await _taskAssigneeRepository.SaveChangesAsync();
+                        if (task.TaskAssignees.Count() == 1)
+                        {
+                            var assignee = new TaskAssignee
+                            {
+                                TaskItemId = request.TaskCommentDto.TaskItemId,
+                                UserId = task.CreatedById,
+                                AssigneeDate = DateTime.Now
+                            };
+                            await _taskAssigneeRepository.Delete(task.TaskAssignees.FirstOrDefault()!.Id);
+                            await _taskAssigneeRepository.Insert(assignee);
+                            await _taskAssigneeRepository.SaveChangesAsync();
+                        }
+                        else
+                        {
+                            await _taskAssigneeRepository.Delete(task.TaskAssignees.FirstOrDefault(u => u.UserId == currentUserId)!.Id);
+                            await _taskAssigneeRepository.SaveChangesAsync();
+                        }
+                        TaskComments taskComment = new TaskComments(request.TaskCommentDto.TaskItemId, request.TaskCommentDto.Content, Guid.Parse(_httpContextAccessor.GetUserId()), request.TaskCommentDto.Type);
+                        await _taskCommentRepository.Insert(taskComment);
                     }
-                    TaskComments taskComment = new TaskComments(request.TaskCommentDto.TaskItemId, request.TaskCommentDto.Content, Guid.Parse(_httpContextAccessor.GetUserId()),request.TaskCommentDto.Type);
-                    //var taskComment=new Domain.Models.Task.TaskComment( request.TaskCommentDto.TaskItemId,
-                    //    request.TaskCommentDto.Content,request.TaskCommentDto.CreatedById);
-                    await _taskCommentRepository.Insert(taskComment);
                 }
             }
             else

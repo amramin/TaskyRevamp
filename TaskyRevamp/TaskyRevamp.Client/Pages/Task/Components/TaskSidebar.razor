@@ -187,7 +187,6 @@
     {
         showNewChecklistInput = true;
     }
-
     private async Task CompleteConfirmed(Guid id)
     {
         var result = await _taskConsumer.CompleteTask(id);
@@ -347,12 +346,16 @@
     private string GetRemainingDays(CreateTaskDto task)
     {
         var today = DateOnly.FromDateTime(DateTime.Now).DayNumber;
-        var expiry = DateOnly.FromDateTime(task.CreateDate ?? DateTime.Now).AddDays(RejectionPeriod).DayNumber;
+        var expiry = DateOnly.FromDateTime(task.AssigneesData?.FirstOrDefault(d => d.UserId == CurrentUser)?.AssigneeDate ?? DateTime.Now).AddDays(RejectionPeriod).DayNumber;
         var res = expiry - today;
         if (res == 1)
+        {
             return $"({res} {Loc["Day"]})";
+        }
         else
+        {
             return $"({res} {Loc["Days"]})";
+        }
     }
     private int GetChecklistProgress(TaskChecklistDto checklist)
     {
