@@ -20,6 +20,18 @@
 @inject PrioritySettingConsumer _prioritySettingConsumer
 @inject AddTaskSettingConsumer _addTaskSettingConsumer
 @inject DefaultColumnsSettingConsumer _defaultColumnsSettingConsumer
+@inject IJSRuntime JS
+
+@* <style>
+    body > .dropdown-menu.manually-shown {
+        z-index: 99999 !important;
+        min-width: 160px;
+        border: 1px solid rgba(0,0,0,.15);
+        border-radius: 0.375rem;
+        background-color: #fff;
+        box-shadow: 0 0.5rem 1rem rgba(0,0,0,.15);
+    }
+</style> *@
 
 @if (!isLoading)
 {
@@ -64,8 +76,7 @@
                                         }
                                         <td>
                                             <div class="dropdown actions">
-                                                <button class="btn btn-action-24" type="button" data-bs-toggle="dropdown"
-                                                        aria-expanded="false">
+                                                <button class="btn btn-action-24 dropdown-actions-toggle" type="button" aria-expanded="false">
                                                     <SVGCrud SVGType="SVGCrud.SVGTypeEnum.EllipseVertical"></SVGCrud>
                                                 </button>
                                                 <ul class="dropdown-menu">
@@ -364,6 +375,7 @@
                         </div>
                     </div>
                 }
+
                 <Pagination CurrentPage="@currentPage" TotalPages="@totalPages" TotalCount="@totalCount" PageSize="@pageSize"
                             PageChanged="ChangePage" PageSizeChangedCallback="ChangePageSize" />
             </div>
@@ -468,29 +480,27 @@
     {
         List<SortableColumn> column = new List<SortableColumn>();
         column = new List<SortableColumn>()
-{
-new() { Field = "Title", DisplayName = Loc["Title"], Order = 0, IsVisible = true },
-new() { Field = "Priority", DisplayName = Loc["Priority2"], Order = 1, IsVisible = true },
-new() { Field = "Status", DisplayName = Loc["TaskStatus"], Order = 2, IsVisible = true },
-new() { Field = "Actual progress", DisplayName = Loc["ActualProgress"], Order = 3, IsVisible = true },
-new() { Field = "Start Date", DisplayName = Loc["StartDate"], Order = 4, IsVisible = true },
-new() { Field = "End Date", DisplayName = Loc["EndDate"], Order = 5, IsVisible = true },
-new() { Field = "weight", DisplayName = Loc["weight"], Order = 6, IsVisible = true },
-new() { Field = "Assigned To", DisplayName = Loc["AssignedTo"], Order = 7, IsVisible = true,IsSortable=false },
-new() { Field = "Assigned To Department", DisplayName =Loc["AssignedToDepartment"], Order = 8, IsVisible =
-true,IsSortable=false },
-new() { Field = "Source", DisplayName =Loc["Source"], Order = 9, IsVisible = true },
-new() { Field = "Dependency", DisplayName = Loc["Dependency"], Order = 10, IsVisible = true,IsSortable=false },
-new() { Field = "Created By", DisplayName = Loc["CreatedBy"], Order = 11, IsVisible = true },
-new() { Field = "Duration", DisplayName = Loc["Duration"], Order = 12, IsVisible = true,IsSortable=false },
-new() { Field = "Created by department", DisplayName = Loc["CreatedByDepartment"], Order = 13, IsVisible = true },
-new() { Field = "Planned Progress", DisplayName = Loc["PlannedProgress"], Order = 14, IsVisible = true,IsSortable=false
-},
-new() { Field = "Creation Date", DisplayName = Loc["CreationDate"], Order = 15, IsVisible = true },
-new() { Field = "Type", DisplayName = Loc["Type"], Order = 16, IsVisible = true },
-new() { Field = "Actual Weight", DisplayName = Loc["ActualWeight"], Order = 17, IsVisible = true,IsSortable=false },
-new() { Field = "Planned Weight", DisplayName =Loc["PlannedWeight"], Order = 18, IsVisible = true,IsSortable=false },
-};
+        {
+            new() { Field = "Title", DisplayName = Loc["Title"], Order = 0, IsVisible = true },
+            new() { Field = "Priority", DisplayName = Loc["Priority2"], Order = 1, IsVisible = true },
+            new() { Field = "Status", DisplayName = Loc["TaskStatus"], Order = 2, IsVisible = true },
+            new() { Field = "Actual progress", DisplayName = Loc["ActualProgress"], Order = 3, IsVisible = true },
+            new() { Field = "Start Date", DisplayName = Loc["StartDate"], Order = 4, IsVisible = true },
+            new() { Field = "End Date", DisplayName = Loc["EndDate"], Order = 5, IsVisible = true },
+            new() { Field = "weight", DisplayName = Loc["weight"], Order = 6, IsVisible = true },
+            new() { Field = "Assigned To", DisplayName = Loc["AssignedTo"], Order = 7, IsVisible = true,IsSortable=false },
+            new() { Field = "Assigned To Department", DisplayName =Loc["AssignedToDepartment"], Order = 8, IsVisible = true,IsSortable=false },
+            new() { Field = "Source", DisplayName =Loc["Source"], Order = 9, IsVisible = true },
+            new() { Field = "Dependency", DisplayName = Loc["Dependency"], Order = 10, IsVisible = true,IsSortable=false },
+            new() { Field = "Created By", DisplayName = Loc["CreatedBy"], Order = 11, IsVisible = true },
+            new() { Field = "Duration", DisplayName = Loc["Duration"], Order = 12, IsVisible = true,IsSortable=false },
+            new() { Field = "Created by department", DisplayName = Loc["CreatedByDepartment"], Order = 13, IsVisible = true },
+            new() { Field = "Planned Progress", DisplayName = Loc["PlannedProgress"], Order = 14, IsVisible = true,IsSortable=false},
+            new() { Field = "Creation Date", DisplayName = Loc["CreationDate"], Order = 15, IsVisible = true },
+            new() { Field = "Type", DisplayName = Loc["Type"], Order = 16, IsVisible = true },
+            new() { Field = "Actual Weight", DisplayName = Loc["ActualWeight"], Order = 17, IsVisible = true,IsSortable=false },
+            new() { Field = "Planned Weight", DisplayName =Loc["PlannedWeight"], Order = 18, IsVisible = true,IsSortable=false },
+        };
 
         var key = IsCompletedTasks ? "CompletedTask_Columns" : "MainTask_Columns";
         if (await LocalStorageService.GetItemAsync<List<SortableColumn>>(key) is null)
@@ -607,11 +617,6 @@ new() { Field = "Planned Weight", DisplayName =Loc["PlannedWeight"], Order = 18,
     }
     protected override async Task OnParametersSetAsync()
     {
-        if (IsFilter)
-        {
-            await GetTasks();
-        }
-
         if (IsCollapseAll.HasValue)
         {
             await CollapseAll((bool)IsCollapseAll.Value);
@@ -697,20 +702,6 @@ new() { Field = "Planned Weight", DisplayName =Loc["PlannedWeight"], Order = 18,
                 await DeleteConfirmed(delegationId);
         }, ConfirmationType.Other);
     }
-    // private async Task OnConfirmDelete(bool confirmed)
-    // {
-    // if (confirmed && itemToDelete != null!)
-    // {
-    // var res = await _taskConsumer.SoftDeleteTask(itemToDelete, CurrentUser);
-    // if (res.Success)
-    // {
-    // allTaks.Remove(allTaks.FirstOrDefault(x => x.Id == itemToDelete)!);
-    // await GetTasks();
-    // }
-    // }
-    // isPopupVisible = false;
-    // StateHasChanged();
-    // }
     public void ShowConfirmation(Guid Id)
     {
         itemToDelete = Id;
@@ -1084,7 +1075,6 @@ SearchFieldTask.PlannedProgress
                 break;
         }
     };
-
     private async Task HandleSort((string Column, bool? Ascending) sortInfo)
     {
         currentSortColumn = sortInfo.Column;
@@ -1117,6 +1107,13 @@ SearchFieldTask.PlannedProgress
             }
         }
         StateHasChanged();
+        await Task.Yield();
+        await JS.InvokeVoidAsync("initDropdowns");
+    }
+    public async Task GetTasksWithReset()
+    {
+        currentPage = 1;
+        await GetTasks();
     }
     private async Task<int> GetRejectionPeriod()
     {
@@ -1187,16 +1184,11 @@ SearchFieldTask.PlannedProgress
         }
         else
         {
-
-            if
-            ((DateOnly.FromDateTime(taskDto.AssigneesData.FirstOrDefault(p => p.UserId == CurrentUser)?.AssigneeDate ??
-DateTime.Now).AddDays(RejectionPeriod)
-            <
-            DateOnly.FromDateTime(DateTime.Now)) || !(taskDto.AssigneesData is not null && taskDto.AssigneesData!.Any(u => u.UserId
-            == CurrentUser))
-            || taskDto.TaskStatus == Guid.Parse("6EE4574D-C439-45B4-223A-08DE3318A61C") || taskDto.TaskStatus ==
-            Guid.Parse("C8D504C7-9402-4F91-223C-08DE3318A61C"))
-
+            if((DateOnly.FromDateTime(taskDto.AssigneesData.FirstOrDefault(p => p.UserId == CurrentUser)?.AssigneeDate ??
+                 DateTime.Now).AddDays(RejectionPeriod) < DateOnly.FromDateTime(DateTime.Now)) || 
+                 !(taskDto.AssigneesData is not null && taskDto.AssigneesData!.Any(u => u.UserId == CurrentUser)) || 
+                   taskDto.TaskStatus == Guid.Parse("6EE4574D-C439-45B4-223A-08DE3318A61C") || 
+                   taskDto.TaskStatus == Guid.Parse("C8D504C7-9402-4F91-223C-08DE3318A61C"))
             {
                 return false;
             }
@@ -1220,25 +1212,6 @@ DateTime.Now).AddDays(RejectionPeriod)
             return true;
         }
     }
-    // private async Task OnTaskProgressChanged(CreateTaskDto task, int value)
-    // {
-    // var progressold = task.ActualProcess;
-    // PopupService.ShowConfirmation(@Loc["SureChangeProgress"], @Loc["Confirm"],
-    // async (confirmed) =>
-    // {
-    // if (confirmed)
-    // {
-    // await ChangeProgressConfirmed(task, value);
-    // }
-    // else
-    // {
-    // task.ActualProcess = progressold;
-    // StateHasChanged();
-    // }
-    // },
-    // ConfirmationType.Other
-    // );
-    // }
     private async Task ChangeProgressConfirmed(CreateTaskDto task, int value)
     {
         task.ActualProcess = value;

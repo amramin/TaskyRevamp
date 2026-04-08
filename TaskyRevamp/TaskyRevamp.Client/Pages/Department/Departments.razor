@@ -369,11 +369,8 @@
             pageSize = 10000;
         }
         else
-        {
             pageSize = 10; // normal pagination for Grid
-        }
-
-        await LoadDepartmentsAsync(isSearch: !string.IsNullOrEmpty(searchdata), searchdata);
+        await LoadDepartmentsAsync(isSearch: !string.IsNullOrEmpty(searchdata), searchdata, searches: GetSearchFields());
     }
     private async Task OnDeleteDepartment(Guid departmentId)
     {
@@ -405,7 +402,6 @@
                     await LoadDepartmentsAsync();
                 }
             }
-
             await ToastService.ShowToastAsync(Loc["Deletedsuccessfully"], "success");
             await LoadDepartmentsAsync();
         }
@@ -529,7 +525,7 @@
         var effectivePageSize = 100000;
         var encodedTerm = !string.IsNullOrEmpty(searchdata) ? Uri.EscapeDataString(searchdata) : null;
         var resp = await _departmentConsumer.GetDepartments(1, 10000, currentSortColumn, sortAscending ?? true,
-            !string.IsNullOrEmpty(searchdata) ? searchFields : null, !string.IsNullOrEmpty(searchdata) ? encodedTerm : null);
+            !string.IsNullOrEmpty(searchdata) ? GetSearchFields() : null, !string.IsNullOrEmpty(searchdata) ? encodedTerm : null);
         if (!(resp?.Success ?? false) || resp.Data is null)
             return;
         var allData = resp.Data.Items;

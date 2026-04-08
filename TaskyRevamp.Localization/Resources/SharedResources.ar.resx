@@ -333,7 +333,7 @@
   <data name="Sunday" xml:space="preserve">
     <value>الأحد</value>
   </data>
-  <data name="WeeklyReport" xml:space="preserve">
+  <data name="WeeklyReportTitle" xml:space="preserve">
     <value>وقت ارسال التقرير الإسبوعي</value>
   </data>
   <data name="English" xml:space="preserve">
@@ -550,7 +550,7 @@
   <data name="DefaultColumnsHint" xml:space="preserve">
     <value>قم بتخصيص الأعمدة التي ترغب في عرضها، وحدد العرض الافتراضي للأعمدة الذي سيظهر عند تسجيل دخول المستخدم إلى النظام</value>
   </data>
-   <data name="DefaultColumnsIsDisplayHint" xml:space="preserve">
+  <data name="DefaultColumnsIsDisplayHint" xml:space="preserve">
     <value>يتم عرض الأعمدة النشطة افتراضيًا عند تسجيل الدخول</value>
   </data>
   <data name="DefaultColumnsActiveHint" xml:space="preserve">
@@ -1305,8 +1305,8 @@
   <data name="ReminderDateBetweenStartAndEnd" xml:space="preserve">
     <value>أدخل تاريخ تذكير صحيح، يجب أن يكون بين تاريخ البدء والإنتهاء</value>
   </data>
-  <data name="Enterthereason" xml:space="preserve">
-    <value>ادخل السبب</value>
+  <data name="Reason" xml:space="preserve">
+    <value>السبب</value>
   </data>
   <data name="Taskdetails" xml:space="preserve">
     <value>تفاصيل المهمة</value>
@@ -1393,7 +1393,7 @@
     <value>مزامنة المستخدمين</value>
   </data>
   <data name="RejectReason" xml:space="preserve">
-    <value>سبب رفض المهمة :/</value>
+    <value>سبب رفض المهمة :</value>
   </data>
   <data name="General" xml:space="preserve">
     <value>عام </value>
@@ -1717,7 +1717,13 @@
   <data name="DependentTasksHint" xml:space="preserve">
     <value>المهام التي لا يمكن إكمالها حتى تكتمل هذه المهمة</value>
   </data>
+  <data name="WeeklyReport" xml:space="preserve">
+    <value>التقرير الإسبوعي</value>
+  </data>
   <data name="rejectedsuccessfully" xml:space="preserve">
     <value>تم رفض تاريخ الطلب بنجاح</value>
+  </data>
+  <data name="Rejected" xml:space="preserve">
+    <value>تم رفض المهمة بنجاح</value>
   </data>
 </root>

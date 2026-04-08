@@ -44,7 +44,6 @@ namespace TaskyRevamp.Domain.Models.SystemConfiguration
                 IsActive = IsActive,
                 CreatedById = CreatedById,
                 CreateDate = CreateDate,
-                UpdatedById = UpdatedById,
                 UpdateDate = UpdateDate,
                 IsDeleted = IsDeleted,
             };

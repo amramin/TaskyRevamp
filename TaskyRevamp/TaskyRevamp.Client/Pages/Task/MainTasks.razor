@@ -346,7 +346,7 @@
     [Parameter] public EventCallback<Guid> OnDelete { get; set; }
     [Parameter] public EventCallback<Guid> OnShowUsers { get; set; }
     [Parameter] public EventCallback<Guid> OnAdd { get; set; }
-    public TaskFilterComponent TaskFilter { get; set; }
+    public TaskFilterComponent TaskFilter { get; set; } = new();
     private Dictionary<string, TaskListView> taskListRefs = new Dictionary<string, TaskListView>();
     public List<SourceDto> sources = new List<SourceDto>();
     private List<ViewTaskSettingsDto> TaskViews = new List<ViewTaskSettingsDto>();
@@ -542,12 +542,20 @@
     {
         TaskFilter = filter;
         IsFilter = true;
+        foreach (var taskList in taskListRefs.Values.Where(t => t != null))
+        {
+            await taskList.GetTasksWithReset();
+        }
         StateHasChanged();
     }
     private async Task ApplyClear(TaskFilterComponent filter)
     {
-        TaskFilter = filter;
-        IsFilter = true;
+        TaskFilter = new TaskFilterComponent();
+        IsFilter = false;
+        foreach (var taskList in taskListRefs.Values.Where(t => t != null))
+        {
+            await taskList.GetTasksWithReset();
+        }
         StateHasChanged();
     }
 }

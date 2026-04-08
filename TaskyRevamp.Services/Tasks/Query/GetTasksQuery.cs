@@ -385,15 +385,23 @@ public class GetTasksHandler : IRequestHandler<GetTasksQuery, PagedResult<Create
     }
     private Expression<Func<TaskItem, bool>> SearchDelegate(TaskFilterComponent taskFilter)
     {
-        Expression<Func<TaskItem, bool>> Expression = null;
+		if (taskFilter.Priority?.Count == 0) taskFilter.Priority = null;
+		if (taskFilter.Status?.Count == 0) taskFilter.Status = null;
+		if (taskFilter.Source?.Count == 0) taskFilter.Source = null;
+		if (taskFilter.Type?.Count == 0) taskFilter.Type = null;
+		if (taskFilter.AssignedTo?.Count == 0) taskFilter.AssignedTo = null;
+		if (taskFilter.AssignedToDepartment?.Count == 0) taskFilter.AssignedToDepartment = null;
+		if (taskFilter.CreatedBy?.Count == 0) taskFilter.CreatedBy = null;
+		if (taskFilter.CreatedByDepartment?.Count == 0) taskFilter.CreatedByDepartment = null;
+		Expression<Func<TaskItem, bool>> Expression = null;
         if (taskFilter != null)
         {
             Expression = t => (string.IsNullOrEmpty(taskFilter.Title) ||(t.Title != null &&t.Title.ToLower().Contains(taskFilter.Title.ToLower()))) &&
             (taskFilter.Priority == null || taskFilter.Priority.Contains(t.PriorityId)) &&
-            (taskFilter.Status == null || taskFilter.Status.Contains(t.StatusId)) &&
-            (taskFilter.Source == null || taskFilter.Source.Contains(t.TaskSourceId)) &&
-            (taskFilter.Type == null || taskFilter.Type.Contains(t.TaskTypeId)) &&
-            (taskFilter.AssignedTo == null || (t.TaskAssignees != null && t.TaskAssignees.Any(ass => taskFilter.AssignedTo.Contains(ass.UserId)))) &&
+		    (taskFilter.Status == null || taskFilter.Status.Any(s => s.HasValue && s.Value == t.StatusId)) &&
+	        (taskFilter.Source == null || taskFilter.Source.Any(s => s == null ? t.TaskSourceId == null : t.TaskSourceId == s.Value)) &&
+	        (taskFilter.Type == null || taskFilter.Type.Any(s => s == null ? t.TaskTypeId == null : t.TaskTypeId == s.Value)) &&
+			(taskFilter.AssignedTo == null || (t.TaskAssignees != null && t.TaskAssignees.Any(ass => taskFilter.AssignedTo.Contains(ass.UserId)))) &&
             (taskFilter.AssignedToDepartment == null || (t.AssignedDepartmentIds != null && t.AssignedDepartmentIds.Any(id => taskFilter.AssignedToDepartment.Contains(id)))) &&
             (taskFilter.CreatedBy==null||taskFilter.CreatedBy.Contains(t.CreatedById))&&
             (taskFilter.CreatedByDepartment == null || taskFilter.CreatedByDepartment.Contains(t.CreatedBy.Department!.Id))
