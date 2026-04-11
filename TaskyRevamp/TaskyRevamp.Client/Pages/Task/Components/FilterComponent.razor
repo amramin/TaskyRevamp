@@ -219,7 +219,7 @@
                         <div class="col-md-3">
                             <label class="form-label">@field.Name</label>
                             <SearchableMultiDropdownOffline TInput=TypeDto TOutput="Guid?" Datasource=taskTypeDtos
-                                                            TextSelector=@(x=>x.DisplayedName) OutputSelector="x=> x.Id"
+                                                            TextSelector=@(x=>CultureInfo.CurrentCulture.Name=="ar-EG"?x.NameArabic:x.NameEnglish) OutputSelector="x=> x.Id"
                                                             @bind-SelectedOptions="@FilterDTO.Type"
                                                             MinCharacterCount="1"
                                                             SearchInputPlaceHolder="@Loc["Search"]" PlaceHolder="@($"{Loc["Select"]}")" NoMatchPlaceHolder="@Loc["NoResultsFound"]"
@@ -230,7 +230,7 @@
                         <div class="col-md-3">
                             <label class="form-label">@field.Name</label>
                             <SearchableMultiDropdownOffline TInput=SourceDto TOutput="Guid?" Datasource=taskSourceDtos
-                                                            TextSelector=@(x=>x.DisplayedName) OutputSelector="x=> x.Id"
+                                                            TextSelector=@(x=>CultureInfo.CurrentCulture.Name=="ar-EG"?x.NameArabic:x.NameEnglish) OutputSelector="x=> x.Id"
                                                             @bind-SelectedOptions="@FilterDTO.Source"
                                                             MinCharacterCount="1"
                                                             SearchInputPlaceHolder="@Loc["Search"]" PlaceHolder="@($"{Loc["Select"]}")" NoMatchPlaceHolder="@Loc["NoResultsFound"]"
@@ -306,8 +306,8 @@
             }
 
         }
-        var taskTypesTask = _typeSettingConsumer.GetTaskTypesForDDL(isload:false);
-        var taskSourcesTask = _sourceSettingConsumer.GetTaskSourcesForDDL(isload:false);
+        var taskTypesTask = _typeSettingConsumer.GetTaskTypesForFilter(isload:false);
+        var taskSourcesTask = _sourceSettingConsumer.GetTaskSourceFillter(isload:false);
         var usersTask = _userConsumer.GetUsers(isload: false);
         var departmentsTask = _departmentConsumer.GetDepartmentsForDDL(isload: false);
         var prioritiesTask = _prioritySettingConsumer.GetPriorities(isload: false);
@@ -321,16 +321,31 @@
             prioritiesTask,
             StatusList
         );
-        taskTypeDtos = (await taskTypesTask).Data!.Where(k => k.IsDeleted != true).ToList();
-        taskSourceDtos = (await taskSourcesTask).Data!.Where(k => k.IsDeleted != true).ToList();
+        if (!IsCompleted)
+        {
+            taskTypeDtos = (await taskTypesTask).Data!.Where(k => k.IsDeleted != true).ToList();
+            taskSourceDtos = (await taskSourcesTask).Data!.Where(k => k.IsDeleted != true).ToList();
+            var prioritiesRes = await prioritiesTask;
+            if (prioritiesRes.Success && prioritiesRes.Data != null)
+            {
+                Priorities = prioritiesRes.Data.Where(k => k.IsDeleted != true).ToList().OrderBy(q => q.Order).ToList();
+            }
+        }
+        else
+        {
+            taskTypeDtos = (await taskTypesTask).Data!.ToList();
+            taskSourceDtos = (await taskSourcesTask).Data!.ToList();
+            var prioritiesRes = await prioritiesTask;
+            if (prioritiesRes.Success && prioritiesRes.Data != null)
+            {
+                Priorities = prioritiesRes.Data.ToList().OrderBy(q => q.Order).ToList();
+            }
+        }
         userDtos = (await usersTask).Data!;
         departmentDtos = (await departmentsTask).Data!;
-        var prioritiesRes = await prioritiesTask;
-        if (prioritiesRes.Success && prioritiesRes.Data != null)
-        {
-            Priorities = prioritiesRes.Data.Where(k => k.IsDeleted != true).ToList().OrderBy(q => q.Order).ToList();
-        }
         Status = StatusList.Result.Data.Where(s => s.Id != Guid.Parse("D8E94CCE-586A-46D3-223D-08DE3318A61C") && s.Id != Guid.Parse("C8D504C7-9402-4F91-223C-08DE3318A61C")).ToList();
+        taskSourceDtos.Add(new SourceDto { NameArabic = "بدون مصدر", NameEnglish = "NoSource", IsActive = true, IsDeleted = false });
+        taskTypeDtos.Add(new TypeDto { NameArabic = "بدون نوع", NameEnglish = "NoType", IsActive = true, IsDeleted = false });
     }
     protected override void OnParametersSet()
     {

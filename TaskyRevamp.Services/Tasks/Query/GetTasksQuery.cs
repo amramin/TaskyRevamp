@@ -396,6 +396,17 @@ public class GetTasksHandler : IRequestHandler<GetTasksQuery, PagedResult<Create
 		Expression<Func<TaskItem, bool>> Expression = null;
         if (taskFilter != null)
         {
+            if (taskFilter.Source is not null &&taskFilter.Source.Contains(Guid.Empty))
+            {
+                taskFilter.Source.RemoveAll(x => x == Guid.Empty);
+                taskFilter.Source.Add(null);
+            }
+
+            if (taskFilter.Type is not null&&taskFilter.Type.Contains(Guid.Empty))
+            {
+                taskFilter.Type.RemoveAll(x => x == Guid.Empty);
+                taskFilter.Type.Add(null);
+            }
             Expression = t => (string.IsNullOrEmpty(taskFilter.Title) ||(t.Title != null &&t.Title.ToLower().Contains(taskFilter.Title.ToLower()))) &&
             (taskFilter.Priority == null || taskFilter.Priority.Contains(t.PriorityId)) &&
 		    (taskFilter.Status == null || taskFilter.Status.Any(s => s.HasValue && s.Value == t.StatusId)) &&
@@ -406,44 +417,48 @@ public class GetTasksHandler : IRequestHandler<GetTasksQuery, PagedResult<Create
             (taskFilter.CreatedBy==null||taskFilter.CreatedBy.Contains(t.CreatedById))&&
             (taskFilter.CreatedByDepartment == null || taskFilter.CreatedByDepartment.Contains(t.CreatedBy.Department!.Id))
             ;
+            //DateOnly.FromDateTime(t.EndDate?.Date ?? default)
             //to Task Start Date
-            if(taskFilter.FromStartDate.HasValue && taskFilter.ToStartDate.HasValue)
+            if (taskFilter.FromStartDate.HasValue && taskFilter.ToStartDate.HasValue)
             {
-                Expression=Expression.And(t => (taskFilter.FromStartDate <= t.StartDate && taskFilter.ToStartDate >= t.StartDate));
+                Expression=Expression.And(t => (DateOnly.FromDateTime(taskFilter.FromStartDate??default) <= DateOnly.FromDateTime(t.StartDate??default)
+                && DateOnly.FromDateTime(taskFilter.ToStartDate??default) >= DateOnly.FromDateTime(t.StartDate??default)));
             }else if (taskFilter.FromStartDate.HasValue && !taskFilter.ToStartDate.HasValue)
             {
-                Expression = Expression.And(t => taskFilter.FromStartDate <= t.StartDate);
+                Expression = Expression.And(t => DateOnly.FromDateTime(taskFilter.FromStartDate??default) <= DateOnly.FromDateTime(t.StartDate??default));
             }else if(!taskFilter.FromStartDate.HasValue && taskFilter.ToStartDate.HasValue)
             {
-                Expression = Expression.And(t => taskFilter.ToStartDate >= t.StartDate);
+                Expression = Expression.And(t => DateOnly.FromDateTime(taskFilter.ToStartDate??default) >= DateOnly.FromDateTime(t.StartDate??default));
             }
 
             //To Task End Date
             if (taskFilter.FromEndDate.HasValue && taskFilter.ToEndDate.HasValue)
             {
-                Expression = Expression.And(t => (taskFilter.FromEndDate <= t.EndDate && taskFilter.ToEndDate >= t.EndDate));
+                Expression = Expression.And(t => (DateOnly.FromDateTime(taskFilter.FromEndDate ?? default) <= DateOnly.FromDateTime(t.EndDate ?? default)
+                && DateOnly.FromDateTime(taskFilter.ToEndDate ?? default) >= DateOnly.FromDateTime(t.EndDate ?? default)));
             }
             else if (taskFilter.FromEndDate.HasValue && !taskFilter.ToEndDate.HasValue)
             {
-                Expression = Expression.And(t => taskFilter.FromEndDate <= t.EndDate);
+                Expression = Expression.And(t => DateOnly.FromDateTime(taskFilter.FromEndDate ?? default) <= DateOnly.FromDateTime(t.EndDate ?? default));
             }
             else if (!taskFilter.FromEndDate.HasValue && taskFilter.ToEndDate.HasValue)
             {
-                Expression = Expression.And(t => taskFilter.ToEndDate >= t.EndDate);
+                Expression = Expression.And(t => DateOnly.FromDateTime(taskFilter.ToEndDate ?? default) >= DateOnly.FromDateTime(t.EndDate ?? default));
             }
 
             //To Task CreationDate Date
             if (taskFilter.FromCreationDate.HasValue && taskFilter.ToCreationDate.HasValue)
             {
-                Expression = Expression.And(t => (taskFilter.FromCreationDate <= t.CreateDate && taskFilter.ToCreationDate >= t.CreateDate));
+                Expression = Expression.And(t => (DateOnly.FromDateTime(taskFilter.FromCreationDate ?? default) <= DateOnly.FromDateTime(t.CreateDate)
+               && DateOnly.FromDateTime(taskFilter.ToCreationDate ?? default) >= DateOnly.FromDateTime(t.CreateDate)));
             }
             else if (taskFilter.FromCreationDate.HasValue && !taskFilter.ToCreationDate.HasValue)
             {
-                Expression = Expression.And(t => taskFilter.FromCreationDate <= t.CreateDate);
+                Expression = Expression.And(t => DateOnly.FromDateTime(taskFilter.FromCreationDate ?? default) <= DateOnly.FromDateTime(t.CreateDate));
             }
             else if (!taskFilter.FromCreationDate.HasValue && taskFilter.ToCreationDate.HasValue)
             {
-                Expression = Expression.And(t => taskFilter.ToCreationDate >= t.CreateDate);
+                Expression = Expression.And(t => DateOnly.FromDateTime(taskFilter.ToCreationDate ?? default) >= DateOnly.FromDateTime(t.CreateDate));
             }
         }
         return Expression;

@@ -29,7 +29,7 @@ public class GetDepartmentsHandler : IRequestHandler<GetDepartmentsQuery, PagedR
 	public async Task<PagedResult<DepartmentDto>> Handle(GetDepartmentsQuery request, CancellationToken cancellationToken)
     {
 		List<DepartmentDto> allSortedDepartments = new List<DepartmentDto>();
-		//var orderBy = GetOrderBy(request.sortByColumnName, request.sortAscending);
+		var orderBy = GetOrderBy(request.sortByColumnName, request.sortAscending);
 		Expression<Func<Department, bool>> searchExpression = null;
         if (request.SearchFields != null && request.SearchFields.Any())
         {
@@ -37,15 +37,15 @@ public class GetDepartmentsHandler : IRequestHandler<GetDepartmentsQuery, PagedR
 			var predicates = request.SearchFields.Select(x => map[x]).ToList();
             searchExpression = ExpressionBuilder.BuildLikeExpression(predicates, request.SearchText);
         }
-        var allDepartments = await _departmentRepository.GetPagedAsync(1, int.MaxValue, null, searchExpression, orderBy: null,
+        var allDepartments = await _departmentRepository.GetPagedAsync(1, int.MaxValue, null, searchExpression, orderBy,
                             includeProperties: $"{nameof(Department.CreatedBy)},{nameof(Department.UpdatedBy)}," +
 								$"{nameof(Department.Parentdepartment)},{nameof(Department.AssignedUser)}");
 
-		var deptList = allDepartments.Items.ToList();
-		var allDeptLookup = deptList.ToDictionary(d => d.Id);
+		//var deptList = allDepartments.Items.ToList();
+		var allDeptLookup = allDepartments.Items.ToDictionary(d => d.Id);
 		// Reorder hierarchically based on sort column
-		var reordered = ReorderHierarchically(deptList, request.sortByColumnName, request.sortAscending);
-		var departments = reordered.Skip((request.pageNumber - 1) * request.pageSize).Take(request.pageSize);
+		//var reordered = ReorderHierarchically(deptList, request.sortByColumnName, request.sortAscending);
+		var departments = allDepartments.Items.Skip((request.pageNumber - 1) * request.pageSize).Take(request.pageSize);
 
 		foreach (var Department in departments)
         {
@@ -191,4 +191,49 @@ public class GetDepartmentsHandler : IRequestHandler<GetDepartmentsQuery, PagedR
 					: departments.OrderByDescending(d => d.CreateDate);
 		}
 	}
+
+    private Func<IQueryable<Department>, IOrderedQueryable<Department>> GetOrderBy(string sortByColumn, bool sortAscending)
+    {
+        string currentCulture = System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
+        switch (sortByColumn)
+        {
+            case "CreateDate":
+                return sortAscending
+                    ? q => q.OrderBy(u => u.CreateDate)
+                    : q => q.OrderByDescending(u => u.CreateDate);
+            case "DisplayedName":
+                return sortAscending
+                    ? q => q.OrderBy(u => currentCulture == "ar" ? u.NameArabic : u.NameEnglish)
+                    : q => q.OrderByDescending(u => currentCulture == "ar" ? u.NameArabic : u.NameEnglish);
+            case "UpdateDate":
+                return sortAscending
+                    ? q => q.OrderBy(u => u.UpdateDate)
+                    : q => q.OrderByDescending(u => u.UpdateDate);
+
+            case "CreatedBy":
+                return sortAscending
+                    ? q => q.OrderBy(u => u.CreatedBy!.NameEnglish)
+                    : q => q.OrderByDescending(u => u.CreatedBy!.NameEnglish);
+
+            case "UpdatedBy":
+                return sortAscending
+                    ? q => q.OrderBy(u => u.UpdatedBy!.NameEnglish)
+                    : q => q.OrderByDescending(u => u.UpdatedBy!.NameEnglish);
+
+            case "DepartmentParent":
+                return sortAscending
+                    ? q => q.OrderBy(u => currentCulture == "ar" ? u.Parentdepartment.NameArabic : u.Parentdepartment.NameEnglish)
+                    : q => q.OrderByDescending(u => currentCulture == "ar" ? u.Parentdepartment.NameArabic : u.Parentdepartment.NameEnglish);
+			case "Level":
+                return sortAscending
+							? q => q.OrderBy(u => u.Level)
+							: q => q.OrderByDescending(u => u.Level);
+            case "LinkedUsers":
+                return sortAscending
+                            ? q => q.OrderBy(u => u.AssignedUser.Count())
+                            : q => q.OrderByDescending(u => u.AssignedUser.Count());
+            default:
+                return q => q.OrderBy(u => u.CreateDate);
+        }
+    }
 }

@@ -1069,16 +1069,16 @@
     <value>ربط مستخدمين</value>
   </data>
   <data name="SubjectEnglish" xml:space="preserve">
-    <value>الموضوع بالانجليزيه</value>
+    <value>الموضوع بالانجليزي</value>
   </data>
   <data name="SubjectArabic" xml:space="preserve">
-    <value>الموضوع بالعربيه</value>
+    <value>الموضوع بالعربي</value>
   </data>
   <data name="EmailbodyinEnglish" xml:space="preserve">
-    <value>محتوى البريد الإلكتروني بالانجليزيه</value>
+    <value>المحتوى بالانجليزي</value>
   </data>
   <data name="EmailbodyinArabic" xml:space="preserve">
-    <value>محتوى البريد الإلكتروني بالعربيه</value>
+    <value>المحتوى بالعربي</value>
   </data>
   <data name="Themessagecontentcannotbeempty" xml:space="preserve">
     <value>لا يمكن أن يكون محتوى الرسالة فارغً</value>
@@ -1147,7 +1147,7 @@
     <value>تم التعديل بنجاح</value>
   </data>
   <data name="Areyousureyouwan" xml:space="preserve">
-    <value>هل انت متأكد انك تريد الغاء التعديل</value>
+    <value>هل أنت متأكد أنك تريد تجاهل هذا التعليق؟</value>
   </data>
   <data name="Edited" xml:space="preserve">
     <value>تم تعديله</value>
@@ -1426,19 +1426,19 @@
     <value>من تاريخ الانتهاء يجب ان يكون اقل من الى تاريخ ال</value>
   </data>
   <data name="FromStartDateValidation" xml:space="preserve">
-    <value>يجب ان تكون اقل من الى تاريخ البدايه</value>
+    <value> يجب ان تكون اقل من او تساوي - الى تاريخ البدء</value>
   </data>
   <data name="ToStartDateValidation" xml:space="preserve">
-    <value>يجب ان تكون اكبر من تاريخ البدايه</value>
+    <value>يجب ان تكون أكبر من او تساوي - من تاريخ البدء</value>
   </data>
   <data name="FromEndDateValidation" xml:space="preserve">
-    <value>يجب ان تكون اقل من الى تاريخ الانتهاء</value>
+    <value>يجب ان تكون اصغر من او تساوي - الى تاريخ الانتهاء</value>
   </data>
   <data name="ToEndDateValidation" xml:space="preserve">
-    <value>يجب ان تكون اكبر من تاريخ الانتهاء</value>
+    <value>يجب ان تكون أكبر من او تساوي - من تاريخ الانتهاء</value>
   </data>
   <data name="FromCreationDateValidation" xml:space="preserve">
-    <value>يجب ان تكون اقل من الى تاريخ الانشاء</value>
+    <value>يجب ان تكون أكبر من او تساوي - من تاريخ الإنشاء</value>
   </data>
   <data name="ToCreationDateValidation" xml:space="preserve">
     <value>يجب ان تكون اكبر من تاريخ الانشاء</value>
@@ -1702,6 +1702,9 @@
   <data name="SubDepartmentUsers" xml:space="preserve">
     <value>مستخدمي الإدارة الفرعية</value>
   </data>
+  <data name="SubDepartmentUsers" xml:space="preserve">
+    <value>مستخدمي الإدارة الفرعية</value>
+  </data>
   <data name="LinkedUsersHint" xml:space="preserve">
     <value>عرض العدد الإجمالي للمستخدمين في هذا القسم</value>
   </data>
@@ -1723,10 +1726,27 @@
   <data name="WeeklyReport" xml:space="preserve">
     <value>التقرير الإسبوعي</value>
   </data>
+  <data name="linkOneUser" xml:space="preserve">
+    <value>ربط المستخدم</value>
+  </data>
+  <data name="LocalizeDateTime" xml:space="preserve">
+    <value>hh:mm tt yyyy:MM:dd</value>
+  </data>
+  <data name="notaskdesc" xml:space="preserve">
+    <value>لم يتم إضافة وصف</value>
+  </data>
   <data name="rejectedsuccessfully" xml:space="preserve">
     <value>تم رفض تاريخ الطلب بنجاح</value>
   </data>
   <data name="Rejected" xml:space="preserve">
     <value>تم رفض المهمة بنجاح</value>
+  <data name="AddanEmailBody" xml:space="preserve">
+    <value>ضف نص البريد الإلكتروني</value>
+  </data>
+  <data name="Usethisoptionemail" xml:space="preserve">
+    <value>استخدم هذا الخيار لتفعيل إشعارات البريد الإلكتروني التي سيتم إرسالها تلقائيًا عند تنفيذ الإجراء المحدد</value>
+  </data>
+  <data name="AddaSystemNotificationBody" xml:space="preserve">
+    <value>.أضف محتوى إشعار النظام</value>
   </data>
 </root>

@@ -63,6 +63,14 @@ namespace TaskyRevamp.WebAPI.Controllers
 
             return Ok(all);
         }
+        [HttpGet("GetTaskTypesForFilter")]
+        public async Task<IActionResult> GetTaskTypesForFilter()
+        {
+
+            var all = await _mediator.Send(new GetTaskTypesForFilterQuery());
+
+            return Ok(all);
+        }
         [HttpPost("RetriveType")]
         public async Task<IActionResult> RetriveType(TypeDto Type)
         {

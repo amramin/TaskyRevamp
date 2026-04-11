@@ -381,7 +381,7 @@
             </div>
 
         }
-        else if (InitialTasks != null && InitialTasks.Any())
+        else if ((InitialTasks != null && InitialTasks.Any())||TaskFilter is not null)
         {
             <NoSearchResults OnResetClick="ClearSearch"></NoSearchResults>
 

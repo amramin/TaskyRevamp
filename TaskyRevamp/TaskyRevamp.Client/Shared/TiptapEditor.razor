@@ -48,7 +48,7 @@ else
                         @onclick="async () => { await HandleToolbarClick(OrderedList); }">1.
                 </button>
                 <span class="divider"></span>
-                @* <button @onclick="UploadImage">🖼</button> *@
+                 <button @onclick="UploadImage">🖼</button>
                 <button @onclick="AddLink">🔗</button>
             </div>
             <div id="@EditorId" class="editor-area"></div>
@@ -75,6 +75,7 @@ else
     .action-btn-list { display: flex; justify-content: flex-end; gap: 8px; margin-top: 10px; }
     .btn-primary { background: #5b6df3; border: none; border-radius: 8px; padding: 6px 14px; }
     .btn-light { background: #f1f3f5; border-radius: 8px; padding: 6px 14px; }
+    .editor-area img {max-width: 100%;height: auto;display: block;}
 </style>
 
 @code {
@@ -96,6 +97,14 @@ else
         await JS.InvokeVoidAsync("tiptapEditor.init", EditorId, Value, objRef, HintMessage, users);
         await JS.InvokeVoidAsync("tiptapEditor.focus", EditorId);
         await RefreshToolbar();
+    }
+    protected override async Task OnInitializedAsync()
+    {
+        if (!string.IsNullOrEmpty(Value))
+        {
+            IsLoaded = true;
+            await LoadEditor();
+        }
     }
     private async Task RefreshToolbar()
     {

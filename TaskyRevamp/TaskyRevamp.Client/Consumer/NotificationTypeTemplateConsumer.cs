@@ -28,10 +28,10 @@ namespace TaskyRevamp.Client.Consumer
             return res;
         }
 
-        public async Task<CommonApiResponse<bool>> AddNotificationTypeTemplate(NotificationTypeTemplateDto NotificationTypeTemplateDto)
+        public async Task<CommonApiResponse<Guid>> AddNotificationTypeTemplate(NotificationTypeTemplateDto NotificationTypeTemplateDto)
         {
             var url = $"api/NotificationTypeTemplate/AddNotificationTypeTemplate";
-            var res = await _taskyService.PostJsonAsync<bool>(url, NotificationTypeTemplateDto);
+            var res = await _taskyService.PostJsonAsync<Guid>(url, NotificationTypeTemplateDto);
 
             return res;
         }

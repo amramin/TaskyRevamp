@@ -25,6 +25,7 @@ else
                       EnableRtl="EnableRtl"
                       ShowCharCount="true"
                       MaxLength="3000"
+                      Placeholder="@(HintMessage??ButtonText)"
                       CssClass="@(EnableRtl ? "arabic-rte" : "")">
         <RichTextEditorToolbarSettings Items="@Tools" />
         <RichTextEditorPasteCleanupSettings Prompt="false" PlainText="false" KeepFormat="true" DeniedTags="@DeniedTags" />
@@ -44,7 +45,7 @@ else
     [Parameter] public EventCallback<string> ContentChanged { get; set; }
     [Parameter] public bool EnableRtl { get; set; } = CultureInfo.CurrentCulture.Name == "ar-EG" ? true : false;
     [Parameter] public string ButtonText { get; set; } = "Add text...";
-    [Parameter] public string HintMessage { get; set; }
+    [Parameter] public string? HintMessage { get; set; }
     [Parameter] public List<UserDto> Assignees { get; set; } = new();
     private bool IsLoaded;
     private bool IsLoading;
@@ -61,7 +62,7 @@ else
         //new ToolbarItemModel() { Command = ToolbarCommand.BackgroundColor },
         //new ToolbarItemModel() { Command = ToolbarCommand.FontColor },
         new ToolbarItemModel() { Command = ToolbarCommand.StrikeThrough },
-       // new ToolbarItemModel() { Command = ToolbarCommand.Image },
+        new ToolbarItemModel() { Command = ToolbarCommand.Image },
         new ToolbarItemModel() { Command = ToolbarCommand.CreateLink },
         new ToolbarItemModel() { Command = ToolbarCommand.Alignments },
         // new ToolbarItemModel() { Command = ToolbarCommand.FontSize },
