@@ -1,18 +1,20 @@
 ﻿@page "/EditTemplate/{Id:guid}"
 @using Microsoft.AspNetCore.Components
 @using TaskyRevamp.Client.Consumer
+@using TaskyRevamp.Client.Services
 @using TaskyRevamp.Dto.Notification
 @using TaskyRevamp.Dto.SystemConfiguration
 @inject NavigationManager navigationManager
 @inject IStringLocalizer<SharedResources> Loc
 @inject NotificationTypeTemplateConsumer _NotificationTypeTemplateConsumer
 @inject NavigationManager navigationManager
+@inject ToastService ToastService
 
 <div class="page-header">
     <div class="title-block">
         @if (loading)
         {
-            <button type="button" class="btn btn-action-24">
+            <button type="button" @onclick="GoBack" class="btn btn-action-24">
                 <span class="icon">
                     <SVGCrud SVGType="SVGCrud.SVGTypeEnum.BackArrow"></SVGCrud>
                 </span>
@@ -36,6 +38,8 @@
             <div class="row g-3">
                 <div class="col-md-6">
                     <div class="d-flex gap-3 flex-column english-content">
+                        @if (NotificationTypeTamplate.moduleType == Dto.Enums.ModuleType.Email)
+                        {
                         <div>
                             <label class="form-label">
                                 @Loc["SubjectEnglish"]
@@ -50,37 +54,41 @@
                             <ValidationMessage class="small text-danger"
                                                For="@(() => NotificationTypeTamplate.SubjectEnglish)"></ValidationMessage>
                         </div>
-                        <div>
-                            <label class="form-label">
-                                @Loc["EmailbodyinEnglish"]
-                                <span class="text-danger">*</span>
-                            </label>
-                            <RichTextEditorComponent EditorId="RTE_EnglishTemplateEnglish"
-                                                     @ref="RichTextEditorComponentRefTemplateEnglish"
-                                                     Content="@NotificationTypeTamplate.TemplateEnglish"
-                                                     ContentChanged="OnDescriptionEnglishChanged">
-                            </RichTextEditorComponent>
-                            <small id="templateCounterEn" class="form-text x-small  text-end ms-auto">
-                                @englishcount/ 10000
-                            </small>
+                        }
+                            <div>
+                                <label class="form-label">
+                                    @Loc["EmailbodyinEnglish"]
+                                    <span class="text-danger">*</span>
+                                </label>
+                                <RichTextEditorComponent EditorId="RTE_EnglishTemplateEnglish"
+                                                         @ref="RichTextEditorComponentRefTemplateEnglish"
+                                                         Content="@NotificationTypeTamplate.TemplateEnglish"
+                                                         ContentChanged="OnDescriptionEnglishChanged"
+                                                     HintMessage="@hintplaceholder">
+                                </RichTextEditorComponent>
+@*                                 <small id="templateCounterEn" class="form-text x-small  text-end ms-auto">
+                                    @englishcount/ 10000
+                                </small> *@
 
-                            <div class="d-flex align-items-center justify-content-between">
-                                <div class="d-flex gap-2">
-                                    <ValidationMessage class="small text-danger"
-                                                       For="@(() => NotificationTypeTamplate.TemplateEnglish)" />
-                                </div>
-                                @if (isEmptyEnglishTemplate)
-                                {
-                                    <div md="3">
-                                        <label class="small text-danger"> @Loc["Themessagecontentcannotbeempty"]</label>
+                                <div class="d-flex align-items-center justify-content-between">
+                                    <div class="d-flex gap-2">
+                                        <ValidationMessage class="small text-danger"
+                                                           For="@(() => NotificationTypeTamplate.TemplateEnglish)" />
                                     </div>
-                                }
+                                    @if (isEmptyEnglishTemplate)
+                                    {
+                                        <div md="3">
+                                            <label class="small text-danger"> @Loc["Themessagecontentcannotbeempty"]</label>
+                                        </div>
+                                    }
+                                </div>
                             </div>
-                        </div>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="d-flex gap-3 flex-column">
+                        @if (NotificationTypeTamplate.moduleType == Dto.Enums.ModuleType.Email)
+                        {
                         <div>
                             <label class="form-label">
                                 @Loc["SubjectArabic"]
@@ -99,34 +107,38 @@
                                                For="@(() => NotificationTypeTamplate.SubjectArabic)">
                             </ValidationMessage>
                         </div>
-                        <div>
-                            <label class="form-label">
-                                @Loc["EmailbodyinArabic"]
-                                <span class="text-danger">*</span>
-                            </label>
-                            <div class="arabic-content">
-                                <RichTextEditorComponent EditorId="RTE_EnglishTemplateArabic"
-                                                         @ref="RichTextEditorComponentRefTemplateArabic"
-                                                         Content="@NotificationTypeTamplate.TemplateArabic"
-                                                         ContentChanged="OnDescriptionArabicChanged">
-                                </RichTextEditorComponent>
-                            </div>
-                            <small id="templateCounterAr" class="form-text x-small  text-end ms-auto">
-                                @arabiccount/ 10000
-                            </small>
-                            <div class="d-flex align-items-center justify-content-between">
-                                <div class="d-flex gap-2">
-                                    <ValidationMessage class="small text-danger"
-                                                       For="@(() => NotificationTypeTamplate.TemplateArabic)" />
+                        }
+
+                            <div>
+                                <label class="form-label">
+                                    @Loc["EmailbodyinArabic"]
+                                    <span class="text-danger">*</span>
+                                </label>
+                                <div class="arabic-content">
+                                    <RichTextEditorComponent EditorId="RTE_EnglishTemplateArabic"
+                                                             @ref="RichTextEditorComponentRefTemplateArabic"
+                                                             Content="@NotificationTypeTamplate.TemplateArabic"
+                                                             ContentChanged="OnDescriptionArabicChanged"
+                                                             HintMessage="@hintplaceholder"
+                                    >
+                                    </RichTextEditorComponent>
                                 </div>
-                                @if (isEmptyArabicTemplate)
-                                {
-                                    <div md="3">
-                                        <label class="small text-danger"> @Loc["Themessagecontentcannotbeempty"]</label>
+@*                                 <small id="templateCounterAr" class="form-text x-small  text-end ms-auto">
+                                    @arabiccount/ 10000
+                                </small> *@
+                                <div class="d-flex align-items-center justify-content-between">
+                                    <div class="d-flex gap-2">
+                                        <ValidationMessage class="small text-danger"
+                                                           For="@(() => NotificationTypeTamplate.TemplateArabic)" />
                                     </div>
-                                }
+                                    @if (isEmptyArabicTemplate)
+                                    {
+                                        <div md="3">
+                                            <label class="small text-danger"> @Loc["Themessagecontentcannotbeempty"]</label>
+                                        </div>
+                                    }
+                                </div>
                             </div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -154,17 +166,18 @@
 
     NotificationTypeTemplateDto NotificationTypeTamplate { get; set; } = new NotificationTypeTemplateDto();
     [Parameter] public EventCallback<EditContext> OnValidSubmit { get; set; }
-    [Parameter] public EventCallback OnCancel { get; set; }
+    // [Parameter] public EventCallback OnCancel { get; set; }
     [Parameter] public string SubmitButtonText { get; set; } = "Save";
     private RichTextEditorComponent RichTextEditorComponentRefTemplateEnglish;
-    int englishcount = 0;
-    int arabiccount = 0;
+    // int englishcount = 0;
+    // int arabiccount = 0;
     private RichTextEditorComponent RichTextEditorComponentRefTemplateArabic;
     bool isEmptyEnglishTemplate = false;
     bool isEmptyArabicTemplate = false;
     private EditContext editContext;
     private ValidationMessageStore messageStore;
     bool loading = false;
+    string hintplaceholder = "";
     protected override void OnParametersSet()
     {
         // Initialize counters for each input field
@@ -172,8 +185,8 @@
         InitializeCounter("nameArabicCounter", NotificationTypeTamplate?.SubjectArabic);
 
 
-        englishcount = NotificationTypeTamplate?.TemplateEnglish?.Length ?? 0;
-        arabiccount = NotificationTypeTamplate?.TemplateArabic?.Length ?? 0;
+        // englishcount = NotificationTypeTamplate?.TemplateEnglish?.Length ?? 0;
+        // arabiccount = NotificationTypeTamplate?.TemplateArabic?.Length ?? 0;
 
     }
     private Dictionary<string, int> Counters { get; set; } = new();
@@ -208,21 +221,33 @@
         var temp = await _NotificationTypeTemplateConsumer.GetNotificationTypeTemplateById(Id);
         NotificationTypeTamplate = temp.Data;
         loading = true;
+        if (NotificationTypeTamplate.moduleType == Dto.Enums.ModuleType.Email)
+        {
+            hintplaceholder = Loc["AddanEmailBody"];
+        }
+        else if (NotificationTypeTamplate.moduleType == Dto.Enums.ModuleType.SystemNotification)
+        {
+            hintplaceholder = Loc["AddaSystemNotificationBody"];
+        }
+        else if (NotificationTypeTamplate.moduleType == Dto.Enums.ModuleType.History)
+        {
+            hintplaceholder = "";
+        }
         StateHasChanged();
     }
     private void OnDescriptionEnglishChanged(string html)
     {
         NotificationTypeTamplate.TemplateEnglish = html;
-        englishcount = html.Length;
-        UpdateCounterTwo(html, "RTE_EnglishTemplateEnglish", 10000);
+        //englishcount = html.Length;
+        //UpdateCounterTwo(html, "RTE_EnglishTemplateEnglish", 10000);
 
     }
 
     private void OnDescriptionArabicChanged(string html)
     {
         NotificationTypeTamplate.TemplateArabic = html;
-        arabiccount = html.Length;
-        UpdateCounterTwo(html, "RTE_EnglishTemplateEnglish", 10000);
+        //arabiccount = html.Length;
+        //UpdateCounterTwo(html, "RTE_EnglishTemplateEnglish", 10000);
     }
     private async Task OnSubmitHandler(EditContext context)
     {
@@ -237,19 +262,27 @@
                 isEmptyArabicTemplate = true;
             return;
         }
+        else
+        {
+            isEmptyEnglishTemplate = false;
+            isEmptyArabicTemplate = false;
+        }
         ClearValidationMessages();
         if (!editContext.Validate())
             return; // client-side validation failed → stop
 
-        await _NotificationTypeTemplateConsumer.AddNotificationTypeTemplate(NotificationTypeTamplate);
-        navigationManager.NavigateTo($"NotificationTypeTemplates/{(int)NotificationTypeTamplate.moduleType}");
+        var res=await _NotificationTypeTemplateConsumer.AddNotificationTypeTemplate(NotificationTypeTamplate);
+        if (res.Success)
+        {
+            await ToastService.ShowToastAsync(Loc["EditSuccess"], "success");
+        }
 
         await OnValidSubmit.InvokeAsync(context);
     }
 
     private async Task OnCancelClick()
     {
-        await OnCancel.InvokeAsync();
+        navigationManager.NavigateTo($"/NotificationTypeTemplates/{(int)NotificationTypeTamplate.moduleType}");
     }
 
 
@@ -258,5 +291,8 @@
         messageStore.Clear();
         editContext.NotifyValidationStateChanged();
     }
-
+    private void GoBack(MouseEventArgs args)
+    {
+        navigationManager.NavigateTo($"/NotificationTypeTemplates/{(int)NotificationTypeTamplate.moduleType}");
+    }
 }

@@ -165,6 +165,7 @@
                 foreach (var col in column)
                 {
                     col.IsVisible = DefaultColumnsSettings.FirstOrDefault(s => string.Equals(s.NameEnglish, col.Field, StringComparison.OrdinalIgnoreCase))?.IsDisplay ?? col.IsVisible;
+                    col.Order = DefaultColumnsSettings.FirstOrDefault(s => string.Equals(s.NameEnglish, col.Field, StringComparison.OrdinalIgnoreCase))?.Order ?? col.Order;
                 }
             }
             await LocalStorageService.SetItemAsync("CompletedTask_Columns", column);
@@ -174,6 +175,7 @@
                 foreach (var col in columns)
                 {
                     col.IsVisible = DefaultColumnsSettings.FirstOrDefault(s => string.Equals(s.NameEnglish, col.Field, StringComparison.OrdinalIgnoreCase))?.IsDisplay ?? col.IsVisible;
+                    col.Order = DefaultColumnsSettings.FirstOrDefault(s => string.Equals(s.NameEnglish, col.Field, StringComparison.OrdinalIgnoreCase))?.Order ?? col.Order;
                 }
             }
             await LocalStorageService.SetItemAsync("MainTask_Columns", columns);

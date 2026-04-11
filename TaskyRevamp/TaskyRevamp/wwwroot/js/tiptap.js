@@ -8,6 +8,7 @@ import Placeholder from "https://esm.sh/@tiptap/extension-placeholder"
 import Image from "https://esm.sh/@tiptap/extension-image"
 import Mention from "https://esm.sh/@tiptap/extension-mention"
 import tippy from "https://esm.sh/tippy.js@6"
+import { BulletList } from "https://esm.sh/@tiptap/extension-bullet-list";
 
 window.tiptapEditor = window.tiptapEditor || {};
 window.tiptapEditor.editors = {};
@@ -19,8 +20,12 @@ window.tiptapEditor.init = function (id, content, dotNetHelper, placeholderText,
     const editor = new Editor({
         element: document.querySelector(`#${id}`),
         extensions: [
-            StarterKit,
+            StarterKit.configure({
+                bulletList: false, // disable default bulletList
+            }),
+            CustomBulletList, // use our custom list
             Underline,
+            CustomImage,
             Strike,
             Link.configure({ openOnClick: true}),
             TextAlign.configure({types: ['heading', 'paragraph']}),
@@ -78,6 +83,9 @@ window.tiptapEditor.init = function (id, content, dotNetHelper, placeholderText,
             })
         ],
         content: content || "",
+        parseOptions: {
+            preserveWhitespace: 'full'
+        },
         editorProps: {
             handlePaste() {
                 return false;
@@ -85,12 +93,24 @@ window.tiptapEditor.init = function (id, content, dotNetHelper, placeholderText,
         },
         onUpdate: ({ editor }) => {
             const html = editor.getHTML();
+            if (html.length > 100000) return;
             this.helpers[id].invokeMethodAsync("OnContentChanged", html);
         }
     });
     this.editors[id] = editor;
 };
-
+const CustomBulletList = BulletList.extend({
+    addAttributes() {
+        return {
+            ...this.parent?.(),
+            style: {
+                default: 'list-style-type: disc; margin-left: 20px;',
+                parseHTML: element => element.getAttribute('style'),
+                renderHTML: attributes => ({ style: attributes.style }),
+            },
+        };
+    },
+});
 function renderList(container, props) {
     container.innerHTML = `
         <div class="dropdown-menu show shadow-sm p-1" style="min-width:200px;">
@@ -138,7 +158,17 @@ window.tiptapEditor.focus = function (id) {
         editor.chain().focus().run();
     }
 };
-
+window.tiptapEditor.setContent = function (id, content) {
+    const editor = window.tiptapEditor.getEditor(id);
+    if (editor) {
+        editor.commands.setContent(content || "", false); // false = do not parse as transaction
+        // Force update styles for existing lists
+        editor.view.dom.querySelectorAll('ul').forEach(ul => {
+            ul.style.listStyleType = 'disc';
+            ul.style.marginLeft = '20px';
+        });
+    }
+};
 window.tiptapEditor.isActive = function (id, type) {
     const editor = window.tiptapEditor.getEditor(id);
     if (!editor) return false;
@@ -157,19 +187,91 @@ window.tiptapEditor.isActive = function (id, type) {
     }
 };
 
-window.tiptapEditor.uploadImage = async function (id, file) {
-    const editor = window.tiptapEditor.getEditor(id);
-    if (!editor) return;
-    const formData = new FormData();
-    formData.append("file", file);
-    const response = await fetch("/api/upload", {
-        method: "POST",
-        body: formData
-    });
-    const data = await response.json();
-    editor.chain().focus().setImage({ src: data.url }).run();
-};
+window.tiptapEditor.pickImage = async function (id) {
+    const fileInput = document.createElement("input");
+    fileInput.type = "file";
+    fileInput.accept = "image/*";
 
+    fileInput.onchange = async () => {
+        const file = fileInput.files[0];
+        if (!file) return;
+
+        // ✅ WAIT for resized image
+        const base64 = await resizeImage(file);
+
+        const editor = window.tiptapEditor.getEditor(id);
+        if (editor) {
+            editor.chain().focus().setImage({
+                src: base64,
+                style: 'border:1px solid gray; width:60%; max-width:70%;'
+            }).run();
+        }
+    };
+
+    fileInput.click();
+};
+function resizeImage(file, maxWidth = 500, maxHeight = 300) {
+    return new Promise((resolve) => {
+        const img = new window.Image(); // ✅ important fix
+        const reader = new FileReader();
+
+        reader.onload = e => img.src = e.target.result;
+
+        img.onload = () => {
+            const canvas = document.createElement('canvas');
+            let { width, height } = img;
+
+            if (width > maxWidth) {
+                height = height * (maxWidth / width);
+                width = maxWidth;
+            }
+
+            if (height > maxHeight) {
+                width = width * (maxHeight / height);
+                height = maxHeight;
+            }
+
+            canvas.width = width;
+            canvas.height = height;
+
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, width, height);
+
+            resolve(canvas.toDataURL('image/jpeg', 0.7)); // ✅ compressed
+        };
+
+        reader.readAsDataURL(file);
+    });
+}
+const CustomImage = Image.extend({
+    inline: false,
+    addOptions() {
+        return {
+            ...this.parent?.(),
+            allowBase64: true
+        };
+    },
+    addAttributes() {
+        return {
+            ...this.parent?.(),
+            style: {
+                default: 'border:1px solid #ccc; width:90%; max-width:100%;',
+                parseHTML: element => element.getAttribute('style'),
+                renderHTML: attributes => ({ style: attributes.style })
+            },
+            width: {
+                default: null,
+                parseHTML: element => element.getAttribute('width'),
+                renderHTML: attributes => ({ width: attributes.width })
+            },
+            height: {
+                default: null,
+                parseHTML: element => element.getAttribute('height'),
+                renderHTML: attributes => ({ height: attributes.height })
+            }
+        };
+    }
+});
 document.addEventListener("click", function (e) {
     const editorEl = e.target.closest(".editor-area");
     if (editorEl) {

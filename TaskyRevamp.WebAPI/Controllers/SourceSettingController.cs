@@ -104,5 +104,13 @@ namespace TaskyRevamp.WebAPI.Controllers
 
             return Ok(all);
         }
+        [HttpGet("GetTaskSourcesForFilter")]
+        public async Task<IActionResult> GetTaskSourcesForFilter()
+        {
+
+            var all = await _mediator.Send(new GetTaskSourceFillterQuery());
+
+            return Ok(all);
+        }
     }
 }

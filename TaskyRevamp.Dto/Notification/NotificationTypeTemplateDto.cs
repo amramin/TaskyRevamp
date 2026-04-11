@@ -22,14 +22,12 @@ namespace TaskyRevamp.Dto.Notification
         public string? TemplateArabic { get; set; }
         public bool IsEnable { get; set; }
         public ModuleType moduleType { get; set; }
-        [Required(ErrorMessageResourceType = typeof(SharedResources), ErrorMessageResourceName = "Themessagecontentcannotbeempty")]
         [MaxLength(250, ErrorMessageResourceType = typeof(SharedResources), ErrorMessageResourceName = "notvald")]
 
-        public string SubjectEnglish { get; set; }
-        [Required(ErrorMessageResourceType = typeof(SharedResources), ErrorMessageResourceName = "Themessagecontentcannotbempty")]
+        public string? SubjectEnglish { get; set; }
         [MaxLength(250, ErrorMessageResourceType = typeof(SharedResources), ErrorMessageResourceName = "notvald")]
 
-        public string SubjectArabic { get; set; }
+        public string? SubjectArabic { get; set; }
 
     }
 }

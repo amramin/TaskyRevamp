@@ -25,6 +25,17 @@ namespace TaskyRevamp.Client.Consumer
 
             return res;
         }
+        public async Task<CommonApiResponse<List<SourceDto>>> GetTaskSourceFillter(bool isload = true)
+        {
+
+
+            var url = $"api/SourceSetting/GetTaskSourcesForFilter";
+
+
+            var res = await _taskyService.GetFromJsonAsync<CommonApiResponse<List<SourceDto>>>(url, isload);
+
+            return res;
+        }
         public async Task<CommonApiResponse<PagedResult<SourceDtoWithName>>> GetSources(int pageNumber, int pageSize, string sortByColumnName, bool sortAscending, List<SearchField> searchFields = null, string searchText = null)
         {
             var queryString = _taskyService.PreparePaginatedSearchQueryString(pageNumber, pageSize, sortByColumnName, sortAscending, searchFields, searchText);

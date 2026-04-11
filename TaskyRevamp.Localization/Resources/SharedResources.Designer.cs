@@ -160,6 +160,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add an email body.
+        /// </summary>
+        public static string AddanEmailBody {
+            get {
+                return ResourceManager.GetString("AddanEmailBody", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add a new privilege to get started.
         /// </summary>
         public static string AddANewPrivilegeToGetStarted {
@@ -192,6 +201,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string AddANewUserToGetStarted {
             get {
                 return ResourceManager.GetString("AddANewUserToGetStarted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add a system notification content..
+        /// </summary>
+        public static string AddaSystemNotificationBody {
+            get {
+                return ResourceManager.GetString("AddaSystemNotificationBody", resourceCulture);
             }
         }
         
@@ -494,7 +512,7 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Are `you sure you want to discard this draft?.
+        ///   Looks up a localized string similar to Are you sure you want to discard this draft?.
         /// </summary>
         public static string Areyousureyouwan {
             get {
@@ -1475,7 +1493,7 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Email body in Arabic.
+        ///   Looks up a localized string similar to Body in Arabic.
         /// </summary>
         public static string EmailbodyinArabic {
             get {
@@ -1484,7 +1502,7 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Email body in English.
+        ///   Looks up a localized string similar to Body in English.
         /// </summary>
         public static string EmailbodyinEnglish {
             get {
@@ -1799,7 +1817,7 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Must be less than to creation date.
+        ///   Looks up a localized string similar to Must be greater than or equal - from creation date.
         /// </summary>
         public static string FromCreationDateValidation {
             get {
@@ -1826,7 +1844,7 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Must be less than to end date.
+        ///   Looks up a localized string similar to Must be less than or equal - to end date.
         /// </summary>
         public static string FromEndDateValidation {
             get {
@@ -1844,7 +1862,7 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Must be less than to start date.
+        ///   Looks up a localized string similar to Must be less than or equal - to start date.
         /// </summary>
         public static string FromStartDateValidation {
             get {
@@ -2267,6 +2285,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to hh:mm tt dd-MM-yyyy.
+        /// </summary>
+        public static string LocalizeDateTime {
+            get {
+                return ResourceManager.GetString("LocalizeDateTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to  Logged-in user.
         /// </summary>
         public static string LoggedInUsers {
@@ -2569,6 +2596,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string NoResultsFound {
             get {
                 return ResourceManager.GetString("NoResultsFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No description has been added..
+        /// </summary>
+        public static string notaskdesc {
+            get {
+                return ResourceManager.GetString("notaskdesc", resourceCulture);
             }
         }
         
@@ -3599,7 +3635,7 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Subject Arabic.
+        ///   Looks up a localized string similar to Subject in Arabic.
         /// </summary>
         public static string SubjectArabic {
             get {
@@ -3608,7 +3644,7 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Subject English.
+        ///   Looks up a localized string similar to Subject in English.
         /// </summary>
         public static string SubjectEnglish {
             get {
@@ -4203,7 +4239,7 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Must be greater than from end date.
+        ///   Looks up a localized string similar to Must be greater than or equal - from end date.
         /// </summary>
         public static string ToEndDateValidation {
             get {
@@ -4221,7 +4257,7 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Must be greater than from start date.
+        ///   Looks up a localized string similar to Must be greater than or equal - from start date.
         /// </summary>
         public static string ToStartDateValidation {
             get {
@@ -4532,6 +4568,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string Usethisoption {
             get {
                 return ResourceManager.GetString("Usethisoption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Use this option to enable email notifications that will be automatically sent when the specified action is triggered..
+        /// </summary>
+        public static string Usethisoptionemail {
+            get {
+                return ResourceManager.GetString("Usethisoptionemail", resourceCulture);
             }
         }
         

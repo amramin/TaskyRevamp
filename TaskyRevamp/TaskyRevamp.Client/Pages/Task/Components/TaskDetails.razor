@@ -32,7 +32,7 @@
                             </span>
                             <div class="text-content">
                                 <h6 class="headline-8 mb-1">@Loc["StartDate"]</h6>
-                                <span class="x-small-medium-text">@Task?.StartDate?.ToString(Loc["LocalizeDate"])</span>
+                                <span class="x-small-medium-text">@(Task?.StartDate?.ToString(Loc["LocalizeDate"])??"-")</span>
                             </div>
                         </div>
 
@@ -44,7 +44,7 @@
                             </span>
                             <div class="text-content">
                                 <h6 class="headline-8 mb-1">@Loc["EndDate"]</h6>
-                                <span class="x-small-medium-text">@Task?.EndDate?.ToString(Loc["LocalizeDate"])</span>
+                                <span class="x-small-medium-text">@(Task?.EndDate?.ToString(Loc["LocalizeDate"]) ?? "-")</span>
                             </div>
                         </div>
                         <div class="info-item">
@@ -55,7 +55,7 @@
                             </span>
                             <div class="text-content">
                                 <h6 class="headline-8 mb-1">@Loc["Source"]</h6>
-                                <span class="x-small-medium-text">@Task?.SourceName</span>
+                                <span class="x-small-medium-text">@(Task?.SourceName ?? "-")</span>
                             </div>
                         </div>
                         <div class="info-item">
@@ -66,7 +66,7 @@
                             </span>
                             <div class="text-content">
                                 <h6 class="headline-8 mb-1">@Loc["weight"]</h6>
-                                <span class="x-small-medium-text">@Task?.weight</span>
+                                <span class="x-small-medium-text">@(Task?.weight)</span>
                             </div>
                         </div>
                         <div class="info-item">
@@ -113,7 +113,7 @@
                             </span>
                             <div class="text-content">
                                 <h6 class="headline-8 mb-1">@Loc["CreatedByDepartment"]</h6>
-                                <span class="x-small-medium-text"> @Task?.CreatorDepartment</span>
+                                <span class="x-small-medium-text"> @(Task?.CreatorDepartment ?? "-")</span>
                             </div>
                         </div>
                     </div>
@@ -128,7 +128,7 @@
                             </span>
                             <div class="text-content">
                                 <h6 class="headline-8 mb-1">@Loc["Type"]</h6>
-                                <span class="x-small-medium-text">@Task?.TypeName</span>
+                                <span class="x-small-medium-text">@(Task?.TypeName ?? "-")</span>
                             </div>
                         </div>
                         <div class="info-item">
@@ -139,7 +139,7 @@
                             </span>
                             <div class="text-content">
                                 <h6 class="headline-8 mb-1">@Loc["CreateDate"]</h6>
-                                <span class="x-small-medium-text">@Task?.CreateDate?.ToString(Loc["LocalizeDate"])</span>
+                                <span class="x-small-medium-text">@(Task?.CreateDate?.ToString(Loc["LocalizeDate"]) ?? "-")</span>
                             </div>
                         </div>
                         <div class="info-item">
@@ -207,9 +207,16 @@
                             <div class="text-content">
                                 <h6 class="headline-8 mb-1">@Loc["Dependency"]</h6>
                                 <div class="d-flex flex-wrap gap-1">
-                                    @foreach (var dep in Task!.DependencyNames!.Split(','))
+                                    @if (string.IsNullOrEmpty(Task!.DependencyNames))
                                     {
-                                        <span class="badge badge-sm badge-light">@dep</span>
+                                        <span>-</span>
+                                    }
+                                    else
+                                    {
+                                        @foreach (var dep in Task!.DependencyNames!.Split(','))
+                                        {
+                                            <span class="badge badge-sm badge-light">@dep</span>
+                                        }
                                     }
                                 </div>
                             </div>
@@ -220,7 +227,7 @@
                                 <i class="bi bi-building fs-5"></i>
                                 <div>
                                     <small class="text-muted d-block">@Loc["DeliveryDate"]</small>
-                                    <span class="fw-medium">@Task?.DeliveryDate?.ToString(Loc["LocalizeDate"])</span>
+                                    <span class="fw-medium">@(Task?.DeliveryDate?.ToString(Loc["LocalizeDate"]) ?? "-")</span>
                                 </div>
                             </div>
                         }

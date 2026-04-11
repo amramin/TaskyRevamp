@@ -50,7 +50,17 @@ namespace TaskyRevamp.Client.Consumer
 
             return res;
         }
+        public async Task<CommonApiResponse<List<TypeDto>>> GetTaskTypesForFilter(bool isload = true)
+        {
 
+
+            var url = $"api/TypeSetting/GetTaskTypesForFilter";
+
+
+            var res = await _taskyService.GetFromJsonAsync<CommonApiResponse<List<TypeDto>>>(url, isload);
+
+            return res;
+        }
         public async Task<CommonApiResponse<TypeDto>> GetTypeById(Guid id)
         {
             var url = $"api/TypeSetting/GetTypeSettingById/{id}";

@@ -20,7 +20,14 @@
     @if (ShowSection)
     {
         <div class="card-body">
-            <div>@((MarkupString)(Task?.Description ?? ""))</div>
+            @if (string.IsNullOrEmpty(Task?.Description))
+            {
+                <div>@Loc["notaskdesc"]</div>
+            }
+            else
+            {
+                <div>@((MarkupString)(Task?.Description ?? ""))</div>
+            }
         </div>
     }
 </div>
