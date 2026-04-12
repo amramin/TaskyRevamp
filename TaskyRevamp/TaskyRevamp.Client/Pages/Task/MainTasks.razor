@@ -542,20 +542,13 @@
     {
         TaskFilter = filter;
         IsFilter = true;
-        foreach (var taskList in taskListRefs.Values.Where(t => t != null))
-        {
-            await taskList.GetTasksWithReset();
-        }
         StateHasChanged();
     }
     private async Task ApplyClear(TaskFilterComponent filter)
     {
-        TaskFilter = new TaskFilterComponent();
-        IsFilter = false;
-        foreach (var taskList in taskListRefs.Values.Where(t => t != null))
-        {
-            await taskList.GetTasksWithReset();
-        }
+        TaskFilter = filter;
+        IsFilter = true;
         StateHasChanged();
     }
+
 }
