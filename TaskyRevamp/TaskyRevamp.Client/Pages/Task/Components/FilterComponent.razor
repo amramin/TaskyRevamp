@@ -421,15 +421,8 @@
     }
     private async Task Clear(MouseEventArgs args)
     {
-        FilterDTO = new TaskFilterComponent();
-        if (editContext != null)
-            editContext.OnValidationRequested -= ValidateDynamicFields;
-
-        editContext = new EditContext(FilterDTO);
-        messageStore = new ValidationMessageStore(editContext);
-        editContext.OnValidationRequested += ValidateDynamicFields;
-        await OnClear.InvokeAsync(FilterDTO);
-        await OnFilter.InvokeAsync(FilterDTO);
+        FilterDTO = new();
+        await OnClear.InvokeAsync();
     }
     public void Dispose()
     {

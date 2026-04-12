@@ -617,6 +617,11 @@
     }
     protected override async Task OnParametersSetAsync()
     {
+        if (IsFilter)
+        {
+            await GetTasks();
+        }
+
         if (IsCollapseAll.HasValue)
         {
             await CollapseAll((bool)IsCollapseAll.Value);
