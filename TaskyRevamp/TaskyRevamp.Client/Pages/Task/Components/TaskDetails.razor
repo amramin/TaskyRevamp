@@ -196,6 +196,21 @@
                                 @* <span class="x-small-medium-text">@Task?.AssignedDepartmentName</span> *@
                                 <div class="d-flex flex-wrap gap-1">
                                     @foreach (var dept in Task!.AssignedDepartmentName!.Split(','))
+                                    {
+                                        <span class="badge badge-sm badge-light">@dept</span>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                        <div class="info-item">
+                            <span class="squer-medium-icon">
+                                <span class="icon">
+                                    <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Dependency"></SVGCrud>
+                                </span>
+                            </span>
+                            <div class="text-content">
+                                <h6 class="headline-8 mb-1">@Loc["Dependency"]</h6>
+                                <div class="d-flex flex-wrap gap-1">
                                     @if (string.IsNullOrEmpty(Task!.DependencyNames))
                                     {
                                         <span>-</span>
@@ -204,12 +219,12 @@
                                     {
                                         @foreach (var dep in Task!.DependencyNames!.Split(','))
                                         {
-                                        <span class="badge badge-sm badge-light">@dept</span>
-                                    }                                       
+                                            <span class="badge badge-sm badge-light">@dep</span>
+                                        }
                                     }
                                 </div>
                             </div>
-                                </div>
+                        </div>
                         @if (Task?.ActualProcess == 100 && (Task?.TaskStatusName == "Pending Review" || Task?.TaskStatusName == "Completed"))
                         {
                             <div class="d-flex gap-3">
