@@ -82,6 +82,11 @@ public class AuthenticateCommandHandler : IRequestHandler<AuthenticateCommand, s
                 }
 
             }
+            else
+            {
+                var userResponse = await _userRepository.FindBy(x => x.Username == request.Username);
+                user = userResponse.Value.FirstOrDefault()!;
+            }
 
 
             var tokenHandler = new JwtSecurityTokenHandler();
