@@ -25,7 +25,7 @@ namespace TaskyRevamp.Services.Tasks.Query
 			{
 				throw new Exception("Task not found");
 			}
-			var taskDto = res.CopyToDto();
+			var taskDto = res.ToDto();
 			return taskDto;
 		}
 	}

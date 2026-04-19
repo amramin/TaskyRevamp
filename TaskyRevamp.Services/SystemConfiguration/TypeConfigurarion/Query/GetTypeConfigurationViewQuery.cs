@@ -6,6 +6,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using TaskyRevamp.Domain.Constants;
 using TaskyRevamp.Domain.Models.SystemConfiguration;
 using TaskyRevamp.Domain.Models.Task;
 using TaskyRevamp.Domain.Repositeries;
@@ -38,15 +39,17 @@ namespace TaskyRevamp.Services.SystemConfiguration.TypeConfigurarion.Query
             bool IsNoType = false;
             if (request.IsCompleted)
             {
-                typeids = _taskRepository.AllAsNoTracking().Result.Value.Where(t=>t.StatusId== Guid.Parse("C8D504C7-9402-4F91-223C-08DE3318A61C")).Select(p => p.TaskTypeId).Distinct().ToList();
-                IsNoType=_taskRepository.AllAsNoTracking().Result.Value.Where(t => t.StatusId == Guid.Parse("C8D504C7-9402-4F91-223C-08DE3318A61C")).Where(p => p.TaskTypeId == null).Any();
+                var allTasks = await _taskRepository.AllAsNoTracking();
+                typeids = allTasks.Value.Where(t=>t.StatusId== TaskStatusConstants.Completed).Select(p => p.TaskTypeId).Distinct().ToList();
+                IsNoType=allTasks.Value.Where(t => t.StatusId == TaskStatusConstants.Completed).Where(p => p.TaskTypeId == null).Any();
 
 
             }
             else
             {
-                typeids = _taskRepository.AllAsNoTracking().Result.Value.Where(t => t.StatusId != Guid.Parse("C8D504C7-9402-4F91-223C-08DE3318A61C")).Select(p => p.TaskTypeId).Distinct().ToList();
-                IsNoType = _taskRepository.AllAsNoTracking().Result.Value.Where(p => p.TaskTypeId == null).Any();
+                var allTasks = await _taskRepository.AllAsNoTracking();
+                typeids = allTasks.Value.Where(t => t.StatusId != TaskStatusConstants.Completed).Select(p => p.TaskTypeId).Distinct().ToList();
+                IsNoType = allTasks.Value.Where(p => p.TaskTypeId == null).Any();
             }
                 Expression<Func<Types, bool>> searchExpression = null;
             searchExpression = s => typeids.Contains(s.Id);

@@ -47,7 +47,7 @@ public class GetTaskByIdHandler : IRequestHandler<GetTaskQuery, CreateTaskDto>
 		}
         res.ActualWeight = new Weight(res.Weight ?? 0);
         res.PlannedWeight = new Weight(res.Weight ?? 0);
-        var taskDto = res.CopyToDto();
+        var taskDto = res.ToDto();
         var dependencies = await _taskDependincesRepository.FindBy(p => p.TaskItemId == taskDto.Id);
         if (dependencies is not null)
         {

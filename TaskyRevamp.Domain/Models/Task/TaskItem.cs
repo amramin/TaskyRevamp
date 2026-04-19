@@ -1,11 +1,9 @@
 using TaskyRevamp.Domain.Interfaces;
 using TaskyRevamp.Domain.Models.SystemConfiguration;
 using TaskyRevamp.Domain.Models.Users;
+using TaskyRevamp.Domain.Services;
 using TaskyRevamp.Dto.ChangeEndDateRequest;
 using TaskyRevamp.Dto.Enums;
-using TaskyRevamp.Dto.SystemConfiguration;
-using TaskyRevamp.Dto.TaskAssignees;
-using TaskyRevamp.Dto.TaskDto;
 using Type = TaskyRevamp.Domain.Models.SystemConfiguration.Type;
 
 namespace TaskyRevamp.Domain.Models.Task;
@@ -32,94 +30,23 @@ public class TaskItem : Entity, IHasCreationMetaData, IHasUpdateMetaData
 	Weight _plannedWeight;
 	public Weight PlannedWeight
 	{
-		get
-		{
-			if (!_subtasks.Any())
-				return _plannedWeight;
-
-			double averageWeight = _subtasks.Average(st => st.PlannedWeight.Value);
-			int roundedWeight = (int)Math.Round(averageWeight, MidpointRounding.AwayFromZero);
-			int finalWeight = Math.Min(100, roundedWeight);
-
-			return new Weight(finalWeight);
-		}
-		set
-		{
-			if(!Weight.HasValue)
-			{
-				_plannedWeight = new Weight(0);
-				return;
-			}
-			var CountWeight = (double)(PlannedProgress.Percentage * Weight) / 100;
-			var RoundedValue = (int)Math.Round(CountWeight, MidpointRounding.AwayFromZero);
-			_plannedWeight = new Weight(RoundedValue);
-		}
+		get => TaskWeightCalculator.CalculatePlannedWeight(_subtasks.AsReadOnly(), _plannedWeight);
+		set => _plannedWeight = TaskWeightCalculator.ComputePlannedWeightValue(Weight, PlannedProgress);
 	}
 	Weight _actualWeight;
 	public Weight ActualWeight
 	{
-		get
-		{
-			if (!_subtasks.Any())
-				return _actualWeight;
-
-			double averageWeight = _subtasks.Average(st => st.ActualWeight.Value);
-			int roundedWeight = (int)Math.Round(averageWeight, MidpointRounding.AwayFromZero);
-			int finalWeight = Math.Min(100, roundedWeight);
-
-			return new Weight(finalWeight);
-		}
-		set
-		{
-			if (!Weight.HasValue)
-			{
-				_actualWeight = new Weight(0);
-				return;
-			}
-			var CountWeight = (double)(Progress * Weight) / 100;
-			var RoundedValue = (int)Math.Round(CountWeight, MidpointRounding.AwayFromZero);
-			_actualWeight = new Weight(RoundedValue);
-		}
+		get => TaskWeightCalculator.CalculateActualWeight(_subtasks.AsReadOnly(), _actualWeight);
+		set => _actualWeight = TaskWeightCalculator.ComputeActualWeightValue(Weight, Progress);
 	}
 	public Progress PlannedProgress
 	{
-		get
-		{
-			if (_subtasks.Any())
-			{
-				double averageProgress = _subtasks.Average(st => st.PlannedProgress.Percentage);
-				int roundedProgress = (int)Math.Round(averageProgress, MidpointRounding.AwayFromZero);
-				int finalProgress = Math.Min(100, roundedProgress);
-				return new Progress(finalProgress);
-			}
-
-			var today = DateTime.UtcNow.Date;
-			var startDate = StartDate!.Value.Date;
-
-			if (today < startDate) return new Progress(0);
-
-			int totalDuration = Duration;
-			int timeElapsed = (today - startDate).Days + 1;
-
-			double percentage = (double)Math.Min(timeElapsed, totalDuration) / totalDuration * 100.0;
-			int roundedPercentage = (int)Math.Round(percentage, MidpointRounding.AwayFromZero);
-			return new Progress(roundedPercentage);
-		}
+		get => TaskWeightCalculator.CalculatePlannedProgress(_subtasks.AsReadOnly(), StartDate, Duration);
 	}
 	Progress _actualProgress;
 	public Progress ActualProgress
 	{
-		get
-		{
-			if (!_subtasks.Any())
-				return _actualProgress;
-
-			double averageProgress = _subtasks.Average(st => st.ActualProgress.Percentage);
-			int roundedProgress = (int)Math.Round(averageProgress, MidpointRounding.AwayFromZero);
-			int finalProgress = Math.Min(100, roundedProgress);
-
-			return new Progress(finalProgress);
-		}
+		get => TaskWeightCalculator.CalculateActualProgress(_subtasks.AsReadOnly(), _actualProgress);
 		set => _actualProgress = value;
 	}
 	public StatusSettings status { set; get; }
@@ -198,29 +125,6 @@ public class TaskItem : Entity, IHasCreationMetaData, IHasUpdateMetaData
 		}
 		return level;
 	}
-	public bool SetData(CreateTaskDto tsakdto)
-	{
-		Id = tsakdto.Id;
-		Description = tsakdto.Description;
-		Title = tsakdto.Title;
-		Progress = tsakdto.ActualProcess;
-		TaskSourceId = tsakdto.SourceId;
-		TaskTypeId = tsakdto.TypeId;
-		StartDate = tsakdto.StartDate;
-		EndDate = tsakdto.EndDate;
-		PriorityId = tsakdto.Priority;
-		Weight = tsakdto.weight;
-		if (Weight.HasValue)
-			_actualWeight = new Weight(Weight.Value);
-		else
-			_actualWeight = new Weight(0);
-		AssignedDepartmentIds = tsakdto.AssignedDepartmentIds;
-		ReminderDate = tsakdto.ReminderDate;
-		Dependencies = tsakdto.Dependencies?.Select(d => new TaskDependencies { TaskItemId = tsakdto.Id, DependentId = d }).ToList();
-        //TaskAssignees = tsakdto.AssignedIds!.Select(userid => new TaskAssignee { TaskItemId = tsakdto.Id, UserId = userid, AssigneeDate = DateTime.Now }).ToList();
-        return true;
-
-	}
 	public void UpdateTitle(string title, User by)
 	{
 		Title = title;
@@ -230,38 +134,6 @@ public class TaskItem : Entity, IHasCreationMetaData, IHasUpdateMetaData
 	{
 		status = taskStus;
 		AddHistoryEntry(by, $"updated the TaskStatus");
-	}
-	public CreateTaskDto CopyToDto()
-	{
-		return new CreateTaskDto
-		{
-			Id = Id,
-			Description = Description,
-			Title = Title,
-			Plannedweight = PlannedWeight.Value,
-			ActualWeight = ActualWeight.Value,
-			weight = Weight,
-			ActualProcess = Progress,
-			PlannedProgress = PlannedProgress.Percentage,
-			//SourceId=Source.Id,
-			CreateDate = CreateDate,
-			UpdateDate = UpdateDate,
-			StartDate = StartDate,
-			EndDate = EndDate,
-			AssignedIds = TaskAssignees?.Select(u => u.UserId).ToList(),
-			AssigneesData = TaskAssignees?.Select(u => new TaskAssigneeDataDto { UserId = u.UserId, AssigneeDate = u.AssigneeDate }).ToList(),
-			DeletionDate = DeleteDate,
-			DeletedBy = DeletedBy?.Username,
-			Priority = PriorityId,
-			CreatedByName = CreatedBy?.Username,
-			UpdatedBy = UpdatedBy?.Username,
-			ReminderDate = ReminderDate,
-			TaskStatusName = status?.NameEnglish,
-			TaskStatus = StatusId,
-			SourceId = TaskSourceId,
-			TypeId = TaskTypeId,
-			AssignedDepartmentIds = AssignedDepartmentIds?.ToList() ?? new List<Guid>()
-		};
 	}
 	public void UpdateDescription(string desc, User by)
 	{

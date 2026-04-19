@@ -47,7 +47,7 @@ public class GetTasksForDDLHandler : IRequestHandler<GetTasksForDDLQuery, List<C
         ids.Add(id);
         foreach (var Task in data.Value)
         {
-            CreateTaskDto dep = Task.CopyToDto();
+            CreateTaskDto dep = Task.ToDto();
             dep.CreatedByName = Task.CreatedBy?.NameEnglish;
             dep.UpdatedBy = Task.UpdatedBy?.NameEnglish;
             allTasks.Add(dep);

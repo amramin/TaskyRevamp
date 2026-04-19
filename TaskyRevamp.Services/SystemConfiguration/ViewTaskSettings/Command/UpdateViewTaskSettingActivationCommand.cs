@@ -25,7 +25,8 @@ namespace TaskyRevamp.Services.SystemConfiguration.ViewTaskSettings.Command
 		public async Task<bool> Handle(UpdateViewTaskSettingActivationCommand request, CancellationToken cancellationToken)
 		{
 			var ViewTaskResponse =  request.TaskViews.ToList();
-			var DefaultSelected =  _defaultviewTaskRepository.AllAsNoTracking().Result.Value.FirstOrDefault();
+			var defaultResult = await _defaultviewTaskRepository.AllAsNoTracking();
+			var DefaultSelected = defaultResult.Value.FirstOrDefault();
 			if(DefaultSelected is not null)
 			{
 				if(ViewTaskResponse.Any(p => !p.IsActive && (int)p.ViewType == DefaultSelected.DefaultSelected))

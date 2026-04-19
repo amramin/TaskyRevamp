@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using TaskyRevamp.Domain.Constants;
 using TaskyRevamp.Domain.Models.Permissions;
 using TaskyRevamp.Domain.Models.Task;
 using TaskyRevamp.Domain.Models.Users;
@@ -34,10 +35,12 @@ namespace TaskyRevamp.Services.Users.Command
             {
                 if (request.IsActive == false)
                 {
-                    var IsHasTasksassignee = _taskAssigneeRepository.FindBy(t => t.UserId == request.UserId, $"{nameof(TaskAssignee.TaskItem)}").Result.Value.Any(t => t.TaskItem.StatusId != Guid.Parse("C8D504C7-9402-4F91-223C-08DE3318A61C") &&
-                                        t.TaskItem.StatusId != Guid.Parse("D8E94CCE-586A-46D3-223D-08DE3318A61C"));
-                    var IsTaskCreator = _taskRepository.FindBy(t => t.CreatedById == request.UserId && t.StatusId != Guid.Parse("C8D504C7-9402-4F91-223C-08DE3318A61C") &&
-                                        t.StatusId != Guid.Parse("D8E94CCE-586A-46D3-223D-08DE3318A61C")).Result.Value.Any();
+                    var assigneeResult = await _taskAssigneeRepository.FindBy(t => t.UserId == request.UserId, $"{nameof(TaskAssignee.TaskItem)}");
+                    var IsHasTasksassignee = assigneeResult.Value.Any(t => t.TaskItem.StatusId != TaskStatusConstants.Completed &&
+                                        t.TaskItem.StatusId != TaskStatusConstants.Deleted);
+                    var creatorResult = await _taskRepository.FindBy(t => t.CreatedById == request.UserId && t.StatusId != TaskStatusConstants.Completed &&
+                                        t.StatusId != TaskStatusConstants.Deleted);
+                    var IsTaskCreator = creatorResult.Value.Any();
                     if (IsHasTasksassignee||IsTaskCreator)
                     {
                         return false;

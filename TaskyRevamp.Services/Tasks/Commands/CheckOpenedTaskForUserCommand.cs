@@ -25,7 +25,7 @@ namespace TaskyRevamp.Services.Tasks.Commands
 			var res = await _taskRepository.AllAsNoTracking(includeProperties: $"{nameof(TaskItems.status)}");
 			if (res.Success && res.Value != null)
 			{
-				tasks = res.Value.Select(t => t.CopyToDto()).ToList();
+				tasks = res.Value.Select(t => t.ToDto()).ToList();
 			}
 			foreach (var task in tasks)
 			{

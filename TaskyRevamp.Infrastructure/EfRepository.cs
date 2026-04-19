@@ -92,15 +92,15 @@ public class EfRepository<TEntity> : IRepository<TEntity> where TEntity : Entity
 		return DbResponse.Ok(list);
 	}
 
-	public TEntity FirstOrDefaultAsNoTracking(Expression<Func<TEntity, bool>> predicate)
+	public async Task<TEntity> FirstOrDefaultAsNoTrackingAsync(Expression<Func<TEntity, bool>> predicate)
 	{
 		_queryable = _baseQueryable.AsQueryable();
-		var entity = _queryable.Where(predicate).AsNoTracking().FirstOrDefaultAsync().Result;
+		var entity = await _queryable.Where(predicate).AsNoTracking().FirstOrDefaultAsync();
 		return entity;
 
 	}
 
-	public TEntity FirstOrDefaultAsNoTracking(Expression<Func<TEntity, bool>> predicate,
+	public async Task<TEntity> FirstOrDefaultAsNoTrackingAsync(Expression<Func<TEntity, bool>> predicate,
 		string includeProperties)
 	{
 		_queryable = _baseQueryable.AsQueryable();
@@ -111,7 +111,7 @@ public class EfRepository<TEntity> : IRepository<TEntity> where TEntity : Entity
 		}
 		if (!string.IsNullOrEmpty(includeProperties))
 			_queryable = GetAllIncluding(includeProperties);
-		var entity = _queryable.Where(predicate).AsNoTracking().FirstOrDefaultAsync().Result;
+		var entity = await _queryable.Where(predicate).AsNoTracking().FirstOrDefaultAsync();
 		return entity;
 
 	}

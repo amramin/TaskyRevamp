@@ -5,6 +5,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using TaskyRevamp.Domain.Constants;
 using TaskyRevamp.Domain.Models.Task;
 using TaskyRevamp.Domain.Repositeries;
 using TaskyRevamp.Dto.Enums.SearchFields;
@@ -34,14 +35,16 @@ namespace TaskyRevamp.Services.SystemConfiguration.SourceConfiguration.Query
             bool IsNoSource = false;
             if (request.IsCompleted)
             {
-                sourceuids = _taskRepository.AllAsNoTracking().Result.Value.Where(t => t.StatusId == Guid.Parse("C8D504C7-9402-4F91-223C-08DE3318A61C")).Select(p => p.TaskSourceId).Distinct().ToList();
-                IsNoSource = _taskRepository.AllAsNoTracking().Result.Value.Where(t => t.StatusId == Guid.Parse("C8D504C7-9402-4F91-223C-08DE3318A61C")).Where(p => p.TaskSourceId==null).Any();
+                var allTasks = await _taskRepository.AllAsNoTracking();
+                sourceuids = allTasks.Value.Where(t => t.StatusId == TaskStatusConstants.Completed).Select(p => p.TaskSourceId).Distinct().ToList();
+                IsNoSource = allTasks.Value.Where(t => t.StatusId == TaskStatusConstants.Completed).Where(p => p.TaskSourceId==null).Any();
 
             }
             else
             {
-                sourceuids = _taskRepository.AllAsNoTracking().Result.Value.Select(p => p.TaskSourceId).Distinct().ToList();
-                IsNoSource = _taskRepository.AllAsNoTracking().Result.Value.Where(p => p.TaskSourceId == null).Any();
+                var allTasks = await _taskRepository.AllAsNoTracking();
+                sourceuids = allTasks.Value.Select(p => p.TaskSourceId).Distinct().ToList();
+                IsNoSource = allTasks.Value.Where(p => p.TaskSourceId == null).Any();
             }
             Expression<Func<Sources, bool>> searchExpression = null;
             searchExpression = s => sourceuids.Contains(s.Id);

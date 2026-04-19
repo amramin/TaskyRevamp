@@ -16,6 +16,7 @@ using System.Text;
 using TaskyRevamp.Domain.Interfaces;
 using TaskyRevamp.Domain.Interfaces.Notification;
 using TaskyRevamp.Domain.Interfaces.Repositeries;
+using TaskyRevamp.Domain.Interfaces.Services;
 using TaskyRevamp.Domain.Repositeries;
 using TaskyRevamp.Dto.Email;
 using TaskyRevamp.Dto.GeneralDto;
@@ -26,7 +27,9 @@ using TaskyRevamp.Infrastructure.Seeders;
 using TaskyRevamp.Infrastructure.Services.Notification;
 using TaskyRevamp.Services;
 using TaskyRevamp.Services.Account.Commands;
+using TaskyRevamp.Services.ActiveDirectory;
 using TaskyRevamp.Services.BackgroundJobs;
+using TaskyRevamp.Services.Tasks.Services;
 using TaskyRevamp.WebAPI;
 using TaskyRevamp.WebAPI.Controllers;
 using TaskyRevamp.WebAPI.Exeptions;
@@ -68,6 +71,10 @@ builder.Services.AddHangfire(x => x.UseSqlServerStorage(builder.Configuration.Ge
 builder.Services.AddHangfireServer();
 
 builder.Services.AddScoped<ITaskRepository, TaskRepository>();
+builder.Services.AddScoped<ITaskStatusDeterminer, TaskStatusDeterminer>();
+builder.Services.AddScoped<IActiveDirectoryService, ActiveDirectoryService>();
+builder.Services.AddScoped<ITaskRejectionService, TaskRejectionService>();
+builder.Services.AddScoped<TaskDtoEnricher>();
 
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<HttpContextAccessor>();

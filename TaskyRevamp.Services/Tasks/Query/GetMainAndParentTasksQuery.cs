@@ -24,7 +24,7 @@ namespace TaskyRevamp.Services.Tasks.Query
 			if (res.Success && res.Value != null && res.Value.Any())
 			{
 				var tasks = res.Value;
-				taskDtos = tasks.Select(t => t.CopyToDto()).ToList();	
+				taskDtos = tasks.Select(t => t.ToDto()).ToList();	
 			}
 			return taskDtos;
 		}
