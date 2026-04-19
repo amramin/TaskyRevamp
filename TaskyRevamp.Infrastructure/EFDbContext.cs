@@ -92,8 +92,9 @@ public class EfDbContext : DbContext
             {
                 if (updateMetaData.UpdatedById == null || (updateMetaData.UpdatedById != null && updateMetaData.UpdatedById == Guid.Empty))
                     updateMetaData.UpdatedById = currentUserId;
-
-                updateMetaData.UpdateDate = DateTime.UtcNow;
+				if (currentUserId != Guid.Empty)
+					updateMetaData.UpdatedById = currentUserId;
+				updateMetaData.UpdateDate = DateTime.UtcNow;
             }
         }
 

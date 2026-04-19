@@ -15,19 +15,21 @@ public class GetDepartmentsHandler : IRequestHandler<GetDepartmentsQuery, PagedR
 {
     private readonly IRepository<Department> _departmentRepository;
     private readonly IRepository<TaskItem> _taskRepository;
+	private readonly IRepository<TaskAssignee> _taskAssigneeRepository;
 	private readonly string currentCulture;
 
-	public GetDepartmentsHandler(IRepository<Department> departmentRepository, IRepository<TaskItem> taskRepository)
+	public GetDepartmentsHandler(IRepository<Department> departmentRepository, IRepository<TaskItem> taskRepository, IRepository<TaskAssignee> taskAssigneeRepository)
 	{
 		_departmentRepository = departmentRepository;
 		currentCulture = System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
 		_taskRepository = taskRepository;
+		_taskAssigneeRepository = taskAssigneeRepository;
 	}
 
 	public async Task<PagedResult<DepartmentDto>> Handle(GetDepartmentsQuery request, CancellationToken cancellationToken)
     {
 		List<DepartmentDto> allSortedDepartments = new List<DepartmentDto>();
-		//var orderBy = GetOrderBy(request.sortByColumnName, request.sortAscending);
+		var orderBy = GetOrderBy(request.sortByColumnName, request.sortAscending);
 		Expression<Func<Department, bool>> searchExpression = null;
         if (request.SearchFields != null && request.SearchFields.Any())
         {
@@ -35,15 +37,15 @@ public class GetDepartmentsHandler : IRequestHandler<GetDepartmentsQuery, PagedR
 			var predicates = request.SearchFields.Select(x => map[x]).ToList();
             searchExpression = ExpressionBuilder.BuildLikeExpression(predicates, request.SearchText);
         }
-        var allDepartments = await _departmentRepository.GetPagedAsync(1, int.MaxValue, null, searchExpression, orderBy: null,
+        var allDepartments = await _departmentRepository.GetPagedAsync(1, int.MaxValue, null, searchExpression, orderBy,
                             includeProperties: $"{nameof(Department.CreatedBy)},{nameof(Department.UpdatedBy)}," +
 								$"{nameof(Department.Parentdepartment)},{nameof(Department.AssignedUser)}");
 
-		var deptList = allDepartments.Items.ToList();
-		var allDeptLookup = deptList.ToDictionary(d => d.Id);
+		//var deptList = allDepartments.Items.ToList();
+		var allDeptLookup = allDepartments.Items.ToDictionary(d => d.Id);
 		// Reorder hierarchically based on sort column
-		var reordered = ReorderHierarchically(deptList, request.sortByColumnName, request.sortAscending);
-		var departments = reordered.Skip((request.pageNumber - 1) * request.pageSize).Take(request.pageSize);
+		//var reordered = ReorderHierarchically(deptList, request.sortByColumnName, request.sortAscending);
+		var departments = allDepartments.Items.Skip((request.pageNumber - 1) * request.pageSize).Take(request.pageSize);
 
 		foreach (var Department in departments)
         {
@@ -51,8 +53,12 @@ public class GetDepartmentsHandler : IRequestHandler<GetDepartmentsQuery, PagedR
 			DepartmentDto dep = Department.CopyToDto();
             dep.CreatedByName = currentCulture == "ar"? Department.CreatedBy?.NameArabic : Department.CreatedBy?.NameEnglish;
             dep.UpdatedByName = currentCulture == "ar" ? Department.UpdatedBy?.NameArabic : Department.UpdatedBy?.NameEnglish;
-			dep.SubDepartmentUsers = allDeptLookup.Values.Count(d => d.ParentdepartmentId == Department.Id);
-			allSortedDepartments.Add(dep);
+			dep.SubDepartmentUsers = CountUsersFromChilds(Department, allDeptLookup);
+			dep.LinkedUsers = Department.AssignedUser?.Count()??0;
+			var assigneeusers =  _taskAssigneeRepository?.FindBy(u => Department.AssignedUser.Select(p => p.Id).Contains(u.UserId))?.Result?.Value?.Distinct().Count()??0;
+			var creatorUsers= _taskRepository?.FindBy(u => Department.AssignedUser.Select(p => p.Id).Contains(u.CreatedById))?.Result?.Value?.DistinctBy(u=>u.CreatedById).Count() ?? 0;
+			dep.UsersWithTasks = assigneeusers + creatorUsers;
+            allSortedDepartments.Add(dep);
         }
         return new PagedResult<DepartmentDto>
         {
@@ -86,7 +92,25 @@ public class GetDepartmentsHandler : IRequestHandler<GetDepartmentsQuery, PagedR
 			AddDepartmentWithChildren(child, lookup, result, sortByColumn, sortAscending);
 		}
 	}
-	private IEnumerable<Department> SortDepartments(IEnumerable<Department> departments, string sortByColumn, bool sortAscending)
+    public int CountUsersFromChilds(Department dept, Dictionary<Guid, Department> lookup)
+    {
+        // Count users in current department
+        int count = dept.AssignedUser?.Count ?? 0;
+
+        // Get children
+        var children = lookup.Values
+                             .Where(d => d.ParentdepartmentId == dept.Id)
+                             .ToList();
+
+        // Add children counts recursively
+        foreach (var child in children)
+        {
+            count += CountUsersFromChilds(child, lookup);
+        }
+
+        return count;
+    }
+    private IEnumerable<Department> SortDepartments(IEnumerable<Department> departments, string sortByColumn, bool sortAscending)
 	{
 		switch (sortByColumn)
 		{
@@ -167,4 +191,49 @@ public class GetDepartmentsHandler : IRequestHandler<GetDepartmentsQuery, PagedR
 					: departments.OrderByDescending(d => d.CreateDate);
 		}
 	}
+
+    private Func<IQueryable<Department>, IOrderedQueryable<Department>> GetOrderBy(string sortByColumn, bool sortAscending)
+    {
+        string currentCulture = System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
+        switch (sortByColumn)
+        {
+            case "CreateDate":
+                return sortAscending
+                    ? q => q.OrderBy(u => u.CreateDate)
+                    : q => q.OrderByDescending(u => u.CreateDate);
+            case "DisplayedName":
+                return sortAscending
+                    ? q => q.OrderBy(u => currentCulture == "ar" ? u.NameArabic : u.NameEnglish)
+                    : q => q.OrderByDescending(u => currentCulture == "ar" ? u.NameArabic : u.NameEnglish);
+            case "UpdateDate":
+                return sortAscending
+                    ? q => q.OrderBy(u => u.UpdateDate)
+                    : q => q.OrderByDescending(u => u.UpdateDate);
+
+            case "CreatedBy":
+                return sortAscending
+                    ? q => q.OrderBy(u => u.CreatedBy!.NameEnglish)
+                    : q => q.OrderByDescending(u => u.CreatedBy!.NameEnglish);
+
+            case "UpdatedBy":
+                return sortAscending
+                    ? q => q.OrderBy(u => u.UpdatedBy!.NameEnglish)
+                    : q => q.OrderByDescending(u => u.UpdatedBy!.NameEnglish);
+
+            case "DepartmentParent":
+                return sortAscending
+                    ? q => q.OrderBy(u => currentCulture == "ar" ? u.Parentdepartment.NameArabic : u.Parentdepartment.NameEnglish)
+                    : q => q.OrderByDescending(u => currentCulture == "ar" ? u.Parentdepartment.NameArabic : u.Parentdepartment.NameEnglish);
+			case "Level":
+                return sortAscending
+							? q => q.OrderBy(u => u.Level)
+							: q => q.OrderByDescending(u => u.Level);
+            case "LinkedUsers":
+                return sortAscending
+                            ? q => q.OrderBy(u => u.AssignedUser.Count())
+                            : q => q.OrderByDescending(u => u.AssignedUser.Count());
+            default:
+                return q => q.OrderBy(u => u.CreateDate);
+        }
+    }
 }

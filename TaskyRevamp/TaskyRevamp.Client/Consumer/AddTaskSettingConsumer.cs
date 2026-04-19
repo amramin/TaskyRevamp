@@ -12,10 +12,10 @@ namespace TaskyRevamp.Client.Consumer
             _taskyService = taskyService;
         }
 
-        public async Task<CommonApiResponse<List<AddTaskSettingDto>>> GetAddTaskSettings()
+        public async Task<CommonApiResponse<List<AddTaskSettingDto>>> GetAddTaskSettings(bool isload = true)
         {
             var url = $"api/AddTaskSetting/GetAddTaskSettings";
-            var res = await _taskyService.GetFromJsonAsync<CommonApiResponse<List<AddTaskSettingDto>>>(url);
+            var res = await _taskyService.GetFromJsonAsync<CommonApiResponse<List<AddTaskSettingDto>>>(url, isload);
 
             return res;
         }

@@ -397,6 +397,13 @@
       }
     }
   }
+  &:has(.form-control) {
+    & > input {
+      & + label {
+        padding-block: 0.444rem;
+      }
+    }
+  }
 }
 .color-group {
   position: relative;
@@ -611,4 +618,5 @@
     }
   }
 }
+
 /* end inputs */

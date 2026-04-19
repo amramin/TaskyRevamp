@@ -39,20 +39,17 @@
                 <span class="icon">
                     <SVGCrud SVGType="SVGCrud.SVGTypeEnum.AddColumn"></SVGCrud>
                 </span>
-                @Loc["LinkUser"]
+                @Loc["linkOneUser"]
             </button>
         </li>
         <li>
-            @if (Department.Level > 1 && Department.ParentdepartmentId != Guid.Empty)
-
-            {
                 <button class="dropdown-item text-danger" @onclick="@(() => Delete.InvokeAsync(Department.Id))">
                     <span class="icon">
                     <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Delete"></SVGCrud>
                 </span>
                 @Loc["Delete"]
             </button>
-            }
+            
         </li>
     </ul>
 </div>

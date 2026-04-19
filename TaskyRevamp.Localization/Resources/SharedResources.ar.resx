@@ -147,8 +147,20 @@
   <data name="ParentNotFound" xml:space="preserve">
     <value>لا يوجد اب</value>
   </data>
+     <data name="Dashboard" xml:space="preserve">
+    <value>لوحة التحكم </value>
+  </data>
+    <data name="TaskList" xml:space="preserve">
+    <value>قائمة المهام</value>
+  </data>
+  <data name="CompletedTaskList" xml:space="preserve">
+    <value>قائمة المهام المكتملة</value>
+  </data>
+    <data name="Delegation" xml:space="preserve">
+    <value>التفويض </value>
+  </data>
   <data name="RecycleBinConfiguration" xml:space="preserve">
-    <value>إعدادات سلة المحذوفات</value>
+    <value> سلة المحذوفات</value>
   </data>
   <data name="RetentionPeriodOptions" xml:space="preserve">
     <value>خيارات فترة الإحتفاظ</value>
@@ -178,13 +190,13 @@
     <value>3 أيام</value>
   </data>
   <data name="RejectionConfiguration" xml:space="preserve">
-    <value>إعدادات رفض المهمة</value>
+    <value> رفض المهمة</value>
   </data>
   <data name="RejectionPeriodOptions" xml:space="preserve">
     <value>خيارات فترة الرفض</value>
   </data>
   <data name="Priority" xml:space="preserve">
-    <value>إعدادات أولوية المهام</value>
+    <value> أولوية المهام</value>
   </data>
   <data name="Added successfully" xml:space="preserve">
     <value>تمت الإضافة بنجاح</value>
@@ -223,13 +235,13 @@
     <value>لا يمكنك تكرار اسم الأولوية</value>
   </data>
   <data name="PriorityConfiguration" xml:space="preserve">
-    <value>إعدادات أولوية المهام</value>
+    <value> أولوية المهام</value>
   </data>
   <data name="PriorityOptions" xml:space="preserve">
     <value>خيارات الأولوية</value>
   </data>
   <data name="StatusConfig" xml:space="preserve">
-    <value>إعدادات حالة المهام</value>
+    <value> حالة المهام</value>
   </data>
   <data name="StatusOptions" xml:space="preserve">
     <value>خيارات المهام</value>
@@ -295,7 +307,7 @@
     <value>عرض الخيارات</value>
   </data>
   <data name="WorkingDaysConfiguration" xml:space="preserve">
-    <value>إعدادات أيام العمل</value>
+    <value> أيام العمل</value>
   </data>
   <data name="workingDaysHint" xml:space="preserve">
     <value> حدد أيام العمل الرسمية لمؤسستك. سيتم استخدام هذا الإعداد في جدولة المهام، المواعيد النهائية، وحساب أعباء العمل</value>
@@ -321,8 +333,8 @@
   <data name="Sunday" xml:space="preserve">
     <value>الأحد</value>
   </data>
-  <data name="WeeklyReport" xml:space="preserve">
-    <value>التقرير الإسبوعي</value>
+  <data name="WeeklyReportTitle" xml:space="preserve">
+    <value>وقت ارسال التقرير الإسبوعي</value>
   </data>
   <data name="English" xml:space="preserve">
     <value>اللغة الإنجليزية</value>
@@ -358,7 +370,7 @@
     <value>تعيين فترة الحذف التلقائي من النظام للمهام المحذوفة داخل سلة المحذوفات</value>
   </data>
   <data name="SourceConfiguration" xml:space="preserve">
-    <value>إعدادات مصادر المهام</value>
+    <value> مصادر المهام</value>
   </data>
   <data name="AddTaskSource" xml:space="preserve">
     <value>إضافة مصدر</value>
@@ -457,7 +469,7 @@
     <value>أضف مصدر مهمة جديدًا للبدء</value>
   </data>
   <data name="TaskTypeConfiguration" xml:space="preserve">
-    <value>إعدادات أنواع المهام</value>
+    <value> أنواع المهام</value>
   </data>
   <data name="AddTaskType" xml:space="preserve">
     <value>إضافة نوع </value>
@@ -500,13 +512,13 @@
     <value>إلى تاريخ الإنشاء</value>
   </data>
   <data name="DefaultColumnsConfiguration" xml:space="preserve">
-    <value>إعدادات الأعمدة الافتراضية</value>
+    <value> الأعمدة الافتراضية</value>
   </data>
   <data name="FilterFields" xml:space="preserve">
     <value>حقول المرشح</value>
   </data>
   <data name="AddTaskFieldsConfiguration" xml:space="preserve">
-    <value>إعدادات حقول إضافة المهمة</value>
+    <value> حقول إضافة المهمة</value>
   </data>
   <data name="Nodepartmentavailable" xml:space="preserve">
     <value> لا توجد إدارة متاحة</value>
@@ -530,13 +542,19 @@
     <value>الإدارات</value>
   </data>
   <data name="AddDepartment" xml:space="preserve">
-    <value>إضافة إدارة</value>
+    <value>أضف إدارة</value>
   </data>
   <data name="DepartmentParent" xml:space="preserve">
     <value>الإدارة الرئيسية </value>
   </data>
   <data name="DefaultColumnsHint" xml:space="preserve">
     <value>قم بتخصيص الأعمدة التي ترغب في عرضها، وحدد العرض الافتراضي للأعمدة الذي سيظهر عند تسجيل دخول المستخدم إلى النظام</value>
+  </data>
+  <data name="DefaultColumnsIsDisplayHint" xml:space="preserve">
+    <value>يتم عرض الأعمدة النشطة افتراضيًا عند تسجيل الدخول</value>
+  </data>
+  <data name="DefaultColumnsActiveHint" xml:space="preserve">
+    <value>التحكم في إظهار أو إخفاء الأعمدة في جدول قائمة المهام وقائمة المهام المكتملة</value>
   </data>
   <data name="TaskFilterHint" xml:space="preserve">
     <value>حدد الحقول التي تريد عرضها في أي مرشح مهمة</value>
@@ -572,7 +590,7 @@
     <value>لم يتم العثور على العمود الافتراضي {id}</value>
   </data>
   <data name="System Identity Configuration" xml:space="preserve">
-    <value>إعدادات هوية النظام</value>
+    <value> هوية النظام</value>
   </data>
   <data name="Primary Color" xml:space="preserve">
     <value>اللون الرئيسي</value>
@@ -944,7 +962,7 @@
     <value>المستوى</value>
   </data>
   <data name="DepartmentHasUsersCannotDelete" xml:space="preserve">
-    <value>لا يمكن الحذف، لدى القسم مستخدمين متاحين</value>
+    <value>لا يمكن حذف هذه الإدارة لأنها تحتوي على مستخدمين أو إدارات فرعية مرتبطة بها. يرجى إعادة تعيين أو إزالة جميع التبعيات قبل متابعة الحذف</value>
   </data>
   <data name="CannotDeletePrivilege" xml:space="preserve">
     <value>لا يمكنك حذف هذا الامتياز، فهو مرتبط بمستخدم</value>
@@ -1051,16 +1069,16 @@
     <value>ربط مستخدمين</value>
   </data>
   <data name="SubjectEnglish" xml:space="preserve">
-    <value>الموضوع بالانجليزيه</value>
+    <value>الموضوع بالانجليزي</value>
   </data>
   <data name="SubjectArabic" xml:space="preserve">
-    <value>الموضوع بالعربيه</value>
+    <value>الموضوع بالعربي</value>
   </data>
   <data name="EmailbodyinEnglish" xml:space="preserve">
-    <value>محتوى البريد الإلكتروني بالانجليزيه</value>
+    <value>المحتوى بالانجليزي</value>
   </data>
   <data name="EmailbodyinArabic" xml:space="preserve">
-    <value>محتوى البريد الإلكتروني بالعربيه</value>
+    <value>المحتوى بالعربي</value>
   </data>
   <data name="Themessagecontentcannotbeempty" xml:space="preserve">
     <value>لا يمكن أن يكون محتوى الرسالة فارغً</value>
@@ -1129,10 +1147,10 @@
     <value>تم التعديل بنجاح</value>
   </data>
   <data name="Areyousureyouwan" xml:space="preserve">
-    <value>هل انت متأكد انك تريد الغاء التعديل</value>
+    <value>هل أنت متأكد أنك تريد تجاهل هذا التعليق؟</value>
   </data>
   <data name="Edited" xml:space="preserve">
-    <value>تم التعديل</value>
+    <value>تم تعديله</value>
   </data>
   <data name="Ares" xml:space="preserve">
     <value>هل انت متأكد من الحذف؟</value>
@@ -1209,6 +1227,9 @@
   <data name="Details" xml:space="preserve">
     <value>التفاصيل </value>
   </data>
+   <data name="Information" xml:space="preserve">
+    <value>المعلومات </value>
+  </data>
   <data name="AddComment" xml:space="preserve">
     <value>إضافة تعليق</value>
   </data>
@@ -1284,8 +1305,8 @@
   <data name="ReminderDateBetweenStartAndEnd" xml:space="preserve">
     <value>أدخل تاريخ تذكير صحيح، يجب أن يكون بين تاريخ البدء والإنتهاء</value>
   </data>
-  <data name="Enterthereason" xml:space="preserve">
-    <value>ادخل السبب</value>
+  <data name="Reason" xml:space="preserve">
+    <value>السبب</value>
   </data>
   <data name="Taskdetails" xml:space="preserve">
     <value>تفاصيل المهمة</value>
@@ -1329,6 +1350,12 @@
   <data name="TypeView" xml:space="preserve">
     <value>النوع</value>
   </data>
+  <data name="ExpandAll" xml:space="preserve">
+    <value>توسيع الكل</value>
+  </data>
+   <data name="CollapseAll" xml:space="preserve">
+    <value>طي الكل</value>
+  </data>
   <data name="StatusView" xml:space="preserve">
     <value>الحالة</value>
   </data>
@@ -1366,7 +1393,7 @@
     <value>مزامنة المستخدمين</value>
   </data>
   <data name="RejectReason" xml:space="preserve">
-    <value>سبب رفض المهمة :/</value>
+    <value>سبب رفض المهمة :</value>
   </data>
   <data name="General" xml:space="preserve">
     <value>عام </value>
@@ -1399,19 +1426,19 @@
     <value>من تاريخ الانتهاء يجب ان يكون اقل من الى تاريخ ال</value>
   </data>
   <data name="FromStartDateValidation" xml:space="preserve">
-    <value>يجب ان تكون اقل من الى تاريخ البدايه</value>
+    <value> يجب ان تكون اقل من او تساوي - الى تاريخ البدء</value>
   </data>
   <data name="ToStartDateValidation" xml:space="preserve">
-    <value>يجب ان تكون اكبر من تاريخ البدايه</value>
+    <value>يجب ان تكون أكبر من او تساوي - من تاريخ البدء</value>
   </data>
   <data name="FromEndDateValidation" xml:space="preserve">
-    <value>يجب ان تكون اقل من الى تاريخ الانتهاء</value>
+    <value>يجب ان تكون اصغر من او تساوي - الى تاريخ الانتهاء</value>
   </data>
   <data name="ToEndDateValidation" xml:space="preserve">
-    <value>يجب ان تكون اكبر من تاريخ الانتهاء</value>
+    <value>يجب ان تكون أكبر من او تساوي - من تاريخ الانتهاء</value>
   </data>
   <data name="FromCreationDateValidation" xml:space="preserve">
-    <value>يجب ان تكون اقل من الى تاريخ الانشاء</value>
+    <value>يجب ان تكون أكبر من او تساوي - من تاريخ الإنشاء</value>
   </data>
   <data name="ToCreationDateValidation" xml:space="preserve">
     <value>يجب ان تكون اكبر من تاريخ الانشاء</value>
@@ -1453,7 +1480,7 @@
     <value>الاعتماديات </value>
   </data>
   <data name="ChangeEndDatesRequests" xml:space="preserve">
-    <value>طلبات تغيير تاريخ الإنتهاء</value>
+    <value>طلبات تغيير تاريخ الانتهاء</value>
   </data>
   <data name="Escalation" xml:space="preserve">
     <value>التصعيد </value>
@@ -1499,6 +1526,9 @@
   </data>
   <data name="RecycleBin" xml:space="preserve">
     <value>سلة المحذوفات</value>
+  </data>
+  <data name="Settings" xml:space="preserve">
+    <value>الإعدادات</value>
   </data>
   <data name="DeletionDate" xml:space="preserve">
     <value>تاريخ الحذف </value>
@@ -1618,12 +1648,6 @@
   <data name="UsersList" xml:space="preserve">
     <value>قائمة المستخدمين</value>
   </data>
-  <data name="approvedsuccessfully" xml:space="preserve">
-    <value>تم الموافقة على تاريخ الطلب بنجاح</value>
-  </data>
-  <data name="rejectedsuccessfully" xml:space="preserve">
-    <value>تم رفض تاريخ الطلب بنجاح</value>
-  </data>
   <data name="isManagerTilte" xml:space="preserve">
     <value>مدير</value>
   </data>
@@ -1663,7 +1687,67 @@
   <data name="LinkedWithPrivilagesUsers" xml:space="preserve">
     <value>المستخدمون المرتبطون بامتيازات</value>
   </data>
+  <data name="CommentHint" xml:space="preserve">
+    <value>أضف تعليقًا. استخدم @ للإشارة إلى شخص ما</value>
+  </data>
+  <data name="Post" xml:space="preserve">
+    <value>نشر </value>
+  </data>
+  <data name="ViewedBy" xml:space="preserve">
+    <value>تمت المشاهدة بواسطة</value>
+  </data>
+  <data name="Noviews" xml:space="preserve">
+    <value>لا توجد مشاهدات</value>
+  </data>
+  <data name="SubDepartmentUsers" xml:space="preserve">
+    <value>مستخدمي الإدارة الفرعية</value>
+  </data>
+  <data name="SubDepartmentUsers" xml:space="preserve">
+    <value>مستخدمي الإدارة الفرعية</value>
+  </data>
+  <data name="LinkedUsersHint" xml:space="preserve">
+    <value>عرض العدد الإجمالي للمستخدمين في هذا القسم</value>
+  </data>
+  <data name="UsersWithTasksHint" xml:space="preserve">
+    <value>عرض العدد الإجمالي للمستخدمين في هذا القسم المرتبطين بمهمة كمنشئين أو معينين</value>
+  </data>
+  <data name="SubDepartmentUsersHint" xml:space="preserve">
+    <value>عرض العدد الإجمالي للمستخدمين في هذا القسم، بما في ذلك جميع المستخدمين في أقسامه الفرعية</value>
+  </data>
+  <data name="linkOneUser" xml:space="preserve">
+    <value>ربط المستخدم</value>
+  </data>
+  <data name="DependingOnHint" xml:space="preserve">
+    <value>المهام التي يجب أن تكتمل حتى تكتمل هذه المهمة</value>
+  </data>
+  <data name="DependentTasksHint" xml:space="preserve">
+    <value>المهام التي لا يمكن إكمالها حتى تكتمل هذه المهمة</value>
+  </data>
+  <data name="WeeklyReport" xml:space="preserve">
+    <value>التقرير الإسبوعي</value>
+  </data>
+  <data name="linkOneUser" xml:space="preserve">
+    <value>ربط المستخدم</value>
+  </data>
+  <data name="LocalizeDateTime" xml:space="preserve">
+    <value>hh:mm tt yyyy:MM:dd</value>
+  </data>
+  <data name="notaskdesc" xml:space="preserve">
+    <value>لم يتم إضافة وصف</value>
+  </data>
   <data name="rejectedsuccessfully" xml:space="preserve">
     <value>تم رفض تاريخ الطلب بنجاح</value>
+  </data>
+	<data name="Rejected" xml:space="preserve">
+    <value>تم رفض المهمة بنجاح</value>
+	  </data>
+  <data name="AddanEmailBody" xml:space="preserve">
+    <value>ضف نص البريد الإلكتروني</value>
+  </data>
+  <data name="Usethisoptionemail" xml:space="preserve">
+    <value>استخدم هذا الخيار لتفعيل إشعارات البريد الإلكتروني التي سيتم إرسالها تلقائيًا عند تنفيذ الإجراء المحدد</value>
+  </data>
+  <data name="AddaSystemNotificationBody" xml:space="preserve">
+    <value>.أضف محتوى إشعار النظام</value>
   </data>
 </root>

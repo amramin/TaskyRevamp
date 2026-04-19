@@ -147,8 +147,23 @@
   <data name="ParentNotFound" xml:space="preserve">
     <value>Parent not found</value>
   </data>
+    <data name="Dashboard" xml:space="preserve">
+    <value>Dashboard </value>
+  </data>
+    <data name="TaskList" xml:space="preserve">
+    <value>Task list</value>
+  </data>
+  <data name="CompletedTaskList" xml:space="preserve">
+    <value>Completed task list</value>
+  </data>
+    <data name="Delegation" xml:space="preserve">
+    <value>Delegation </value>
+  </data>
   <data name="RecycleBinConfiguration" xml:space="preserve">
     <value>Recycle bin</value>
+  </data>
+   <data name="Settings" xml:space="preserve">
+    <value>Settings</value>
   </data>
   <data name="RetentionPeriodOptions" xml:space="preserve">
     <value>Retention period options</value>
@@ -321,8 +336,8 @@
   <data name="Sunday" xml:space="preserve">
     <value>Sunday</value>
   </data>
-  <data name="WeeklyReport" xml:space="preserve">
-    <value>Weekly report</value>
+  <data name="WeeklyReportTitle" xml:space="preserve">
+    <value>Weekly report send date</value>
   </data>
   <data name="English" xml:space="preserve">
     <value>English</value>
@@ -536,6 +551,12 @@
   </data>
   <data name="DefaultColumnsHint" xml:space="preserve">
     <value>Customize the columns you want to display and set the default column view that will appear when the user logs into the system.</value>
+  </data>
+  <data name="DefaultColumnsIsDisplayHint" xml:space="preserve">
+    <value>The default active columns are displayed upon login</value>
+  </data>
+  <data name="DefaultColumnsActiveHint" xml:space="preserve">
+    <value> Control which columns are shown or hidden in the Task List and Completed List grids</value>
   </data>
   <data name="TaskFilterHint" xml:space="preserve">
     <value>Select which fields to display in any task filter</value>
@@ -937,13 +958,13 @@
     <value>Edit department</value>
   </data>
   <data name="AddADepartmentToGetStarted" xml:space="preserve">
-    <value>Add a department to get started</value>
+    <value>Add a new department to get started</value>
   </data>
   <data name="Level" xml:space="preserve">
     <value>Level</value>
   </data>
   <data name="DepartmentHasUsersCannotDelete" xml:space="preserve">
-    <value>Can't delete, the department has an active users</value>
+    <value>This department cannot be deleted because it has linked users or sub-departments. Please re-assign or remove all dependencies before proceeding with deletion</value>
   </data>
   <data name="CannotDeletePrivilege" xml:space="preserve">
     <value>You can't delete this privilege, it's linked to a user</value>
@@ -1048,16 +1069,16 @@
     <value>Link users</value>
   </data>
   <data name="SubjectEnglish" xml:space="preserve">
-    <value>Subject English</value>
+    <value>Subject in English</value>
   </data>
   <data name="SubjectArabic" xml:space="preserve">
-    <value>Subject Arabic</value>
+    <value>Subject in Arabic</value>
   </data>
   <data name="EmailbodyinEnglish" xml:space="preserve">
-    <value>Email body in English</value>
+    <value>Body in English</value>
   </data>
   <data name="EmailbodyinArabic" xml:space="preserve">
-    <value>Email body in Arabic</value>
+    <value>Body in Arabic</value>
   </data>
   <data name="Themessagecontentcannotbeempty" xml:space="preserve">
     <value>The message content cannot be empty</value>
@@ -1126,7 +1147,7 @@
     <value>Edited successfully</value>
   </data>
   <data name="Areyousureyouwan" xml:space="preserve">
-    <value>Are `you sure you want to discard this draft?</value>
+    <value>Are you sure you want to discard this draft?</value>
   </data>
   <data name="Edited" xml:space="preserve">
     <value>Edited</value>
@@ -1206,6 +1227,9 @@
   <data name="Details" xml:space="preserve">
     <value>Details </value>
   </data>
+  <data name="Information" xml:space="preserve">
+    <value>Information </value>
+  </data>
   <data name="AddComment" xml:space="preserve">
     <value>Add comment</value>
   </data>
@@ -1281,8 +1305,8 @@
   <data name="ReminderDateBetweenStartAndEnd" xml:space="preserve">
     <value>Enter a valid reminder date, it should be between the start and end date</value>
   </data>
-  <data name="Enterthereason" xml:space="preserve">
-    <value>Enter the reason</value>
+  <data name="Reason" xml:space="preserve">
+    <value>Reason</value>
   </data>
   <data name="Taskdetails" xml:space="preserve">
     <value>Task details</value>
@@ -1326,6 +1350,14 @@
   <data name="TypeView" xml:space="preserve">
     <value>Type</value>
   </data>
+   <data name="ExpandAll" xml:space="preserve">
+    <value>Expand All</value>
+  </data>
+   <data name="CollapseAll" xml:space="preserve">
+    <value>Collapse All</value>
+  </data>
+  
+
   <data name="StatusView" xml:space="preserve">
     <value>Status</value>
   </data>
@@ -1363,7 +1395,7 @@
     <value>Active Directory Sync</value>
   </data>
   <data name="RejectReason" xml:space="preserve">
-    <value>Task rejection reason:/</value>
+    <value>Task rejection reason:</value>
   </data>
   <data name="General" xml:space="preserve">
     <value>General</value>
@@ -1396,19 +1428,19 @@
     <value>From end date must be less than to end date</value>
   </data>
   <data name="FromStartDateValidation" xml:space="preserve">
-    <value>Must be less than to start date</value>
+    <value>Must be less than or equal - to start date</value>
   </data>
   <data name="ToStartDateValidation" xml:space="preserve">
-    <value>Must be greater than from start date</value>
+    <value>Must be greater than or equal - from start date</value>
   </data>
   <data name="FromEndDateValidation" xml:space="preserve">
-    <value>Must be less than to end date</value>
+    <value>Must be less than or equal - to end date</value>
   </data>
   <data name="ToEndDateValidation" xml:space="preserve">
-    <value>Must be greater than from end date</value>
+    <value>Must be greater than or equal - from end date</value>
   </data>
   <data name="FromCreationDateValidation" xml:space="preserve">
-    <value>Must be less than to creation date</value>
+    <value>Must be greater than or equal - from creation date</value>
   </data>
   <data name="ToCreationDateValidation" xml:space="preserve">
     <value>Must be greater than from creation date</value>
@@ -1435,7 +1467,7 @@
     <value>No parent tasks available </value>
   </data>
   <data name="dependenTasks" xml:space="preserve">
-    <value>dependent tasks</value>
+    <value>Dependent tasks</value>
   </data>
   <data name="NoDependentTasks" xml:space="preserve">
     <value>No dependent tasks are available</value>
@@ -1450,7 +1482,7 @@
     <value>Dependencies</value>
   </data>
   <data name="ChangeEndDatesRequests" xml:space="preserve">
-    <value>Change End Dates Requests</value>
+    <value>Change end date requests</value>
   </data>
   <data name="Escalation" xml:space="preserve">
     <value>Escalation</value>
@@ -1654,5 +1686,62 @@ This task will be moved to the Recycle Bin and can be restored later or permanen
   </data>
   <data name="LinkedWithPrivilagesUsers" xml:space="preserve">
     <value> Users with privileges</value>
+  </data>
+  <data name="CommentHint" xml:space="preserve">
+    <value>Add a comment. Use @ to mention a person.</value>
+  </data>
+  <data name="Post" xml:space="preserve">
+    <value>Post</value>
+  </data>
+  <data name="ViewedBy" xml:space="preserve">
+    <value>Viewed by</value>
+  </data>
+  <data name="Noviews" xml:space="preserve">
+    <value>No views</value>
+  </data>
+  <data name="SubDepartmentUsers" xml:space="preserve">
+    <value>Sub dept users</value>
+  </data>
+  <data name="LinkedUsersHint" xml:space="preserve">
+    <value>Display the total number of users in this department</value>
+  </data>
+  <data name="UsersWithTasksHint" xml:space="preserve">
+    <value>Display the total number of users in this department who are linked to a task as creator or assignee</value>
+  </data>
+  <data name="SubDepartmentUsersHint" xml:space="preserve">
+    <value>Display the total number of users in this department, including all users in its sub-departments</value>
+  </data>
+  <data name="linkOneUser" xml:space="preserve">
+    <value>Link user</value>
+  </data>
+  <data name="DependingOnHint" xml:space="preserve">
+    <value>Tasks that must be completed for this task to be completed</value>
+  </data>
+  <data name="DependentTasksHint" xml:space="preserve">
+    <value>Tasks that cannot be completed until this task is completed</value>
+  </data>
+  <data name="WeeklyReport" xml:space="preserve">
+    <value>Weekly report</value>
+  </data>
+  <data name="rejectedsuccessfully" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Rejected" xml:space="preserve">
+    <value>Task rejected successfully</value>
+  </data>
+  <data name="LocalizeDateTime" xml:space="preserve">
+    <value>hh:mm tt dd-MM-yyyy</value>
+  </data>
+  <data name="notaskdesc" xml:space="preserve">
+    <value>No description has been added.</value>
+  </data>
+  <data name="AddanEmailBody" xml:space="preserve">
+    <value>Add an email body</value>
+  </data>
+  <data name="Usethisoptionemail" xml:space="preserve">
+    <value>Use this option to enable email notifications that will be automatically sent when the specified action is triggered.</value>
+  </data>
+  <data name="AddaSystemNotificationBody" xml:space="preserve">
+    <value>Add a system notification content.</value>
   </data>
 </root>

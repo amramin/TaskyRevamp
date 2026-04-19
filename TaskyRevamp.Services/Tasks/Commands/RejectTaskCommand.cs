@@ -40,6 +40,7 @@ namespace TaskyRevamp.Services.Tasks.Commands
         }
         public async Task<bool> Handle(RejectTaskCommand request, CancellationToken cancellationToken)
         {
+            var currentUserId = Guid.Parse(_httpContextAccessor.GetUserId());
             var task = await _taskRepository.GetTaskById(request.TaskCommentDto.TaskItemId);
             if (task == null)
             {
@@ -50,11 +51,19 @@ namespace TaskyRevamp.Services.Tasks.Commands
             var settings = rejectionSettingsResult.Value?.FirstOrDefault();
             int rejectionPeriod = _rejectionService.GetRejectionPeriodDays(settings);
 
-            if (!_rejectionService.CanRejectTask(task.CreateDate, rejectionPeriod))
-            {
-                if (rejectionPeriod == (int)RejectionPeriodType.Never)
-                    return false;
+            if (rejectionPeriod == (int)RejectionPeriodType.Never)
+                return false;
 
+            // Validate user is an assignee (from master)
+            var taskAssignee = task.TaskAssignees.FirstOrDefault(u => u.UserId == currentUserId);
+            if (taskAssignee == null)
+            {
+                throw new Exception("User is not an assignee of the task");
+            }
+
+            // Check rejection window based on assignee date (from master — changed from task.CreateDate)
+            if (!_rejectionService.CanRejectTask(taskAssignee.AssigneeDate, rejectionPeriod))
+            {
                 throw new Exception("Task Cannot Be Rejected");
             }
 
@@ -66,14 +75,13 @@ namespace TaskyRevamp.Services.Tasks.Commands
                     UserId = task.CreatedById,
                     AssigneeDate = DateTime.Now
                 };
-                await _taskAssigneeRepository.Delete(task.TaskAssignees.FirstOrDefault().Id);
+                await _taskAssigneeRepository.Delete(task.TaskAssignees.FirstOrDefault()!.Id);
                 await _taskAssigneeRepository.Insert(assignee);
                 await _taskAssigneeRepository.SaveChangesAsync();
             }
             else
             {
-                var currentUserId = Guid.Parse(_httpContextAccessor.GetUserId());
-                _taskAssigneeRepository.Delete(task.TaskAssignees.FirstOrDefault(u => u.UserId == currentUserId).Id);
+                await _taskAssigneeRepository.Delete(task.TaskAssignees.FirstOrDefault(u => u.UserId == currentUserId)!.Id);
                 await _taskAssigneeRepository.SaveChangesAsync();
             }
             TaskComments taskComment = new TaskComments(request.TaskCommentDto.TaskItemId, request.TaskCommentDto.Content, Guid.Parse(_httpContextAccessor.GetUserId()), request.TaskCommentDto.Type);

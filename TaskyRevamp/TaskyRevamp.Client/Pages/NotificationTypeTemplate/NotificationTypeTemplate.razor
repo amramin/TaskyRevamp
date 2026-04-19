@@ -1,5 +1,6 @@
 ﻿@page "/NotificationTypeTemplates/{ModuleType:int}"
 
+@using System.Globalization
 @using TaskyRevamp.Client.Consumer
 @using TaskyRevamp.Client.Services
 @using TaskyRevamp.Client.Shared.Popups
@@ -39,7 +40,7 @@
                             <h6 class="headline-6">@Loc["Types of system notification Messages"]</h6>
                             @if (ModuleType == (int)Dto.Enums.ModuleType.Email)
                             {
-                                <p class="small-medium-text hint"> @Loc["Usethisoption"]</p>
+                                <p class="small-medium-text hint"> @Loc["Usethisoptionemail"]</p>
                             }
                             else if (ModuleType == (int)Dto.Enums.ModuleType.SystemNotification)
                             {
@@ -65,7 +66,7 @@
 
                                             <label for="IsActive@(p.Id)">
                                             <span class="d-flex justify-content-between gap-2 align-items-center flex-grow-1">
-                                                @p.NameEnglish
+                                        @(CultureInfo.CurrentCulture.Name == "ar-EG" ? p.NameArabic : p.NameEnglish)
                                                 <span class="toggler-icon"></span>
                                                 </span>
                                                 <div class="actions">
@@ -102,7 +103,6 @@
             <div class="row justify-content-center">
                 <div class="col-xxl-7 col-xl-8 col-lg-9 col-md-11">
                     <div class="action-buttons">
-                        <button class="btn btn-lg btn-light" @onclick="Cancel">@Loc["Cancel"]</button>
                         <button class="btn btn-lg  btn-primary" @onclick="Save">@Loc["Save"]</button>
                     </div>
                 </div>
@@ -121,6 +121,15 @@
     private NotificationTypeTemplateDto? draggedItem;
 
     protected async override Task OnInitializedAsync()
+    {
+        var res = await _NotificationTypeTemplateConsumer.GetNotificationTypeTemplates();
+        if (res.Success && res.Data != null)
+        {
+            NotificationTypeTemplates = res.Data.Where(k => k.moduleType == (Dto.Enums.ModuleType)ModuleType)
+                .ToList();
+        }
+    }
+    protected async override Task OnParametersSetAsync()
     {
         var res = await _NotificationTypeTemplateConsumer.GetNotificationTypeTemplates();
         if (res.Success && res.Data != null)
@@ -171,23 +180,6 @@
 
         }
 
-    }
-    private void Cancel(MouseEventArgs args)
-    {
-        // NotificationTypeTemplates = OriginalNotificationTypeTemplates!.Select(p => new NotificationTypeTemplateDto
-        // {
-        // Id = p.Id,
-        // NameEnglish = p.NameEnglish,
-        // NameArabic = p.NameArabic,
-        // IsEnable = p.IsEnable,
-        // moduleType = p.moduleType,
-        // SubjectArabic = p.SubjectArabic,
-        // SubjectEnglish=p.SubjectEnglish,
-        // TemplateArabic=p.TemplateArabic,
-        // TemplateEnglish=p.TemplateEnglish
-        // }).ToList();
-
-        StateHasChanged();
     }
     private List<NotificationTypeTemplateDto> CopyPriorites()
     {

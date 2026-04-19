@@ -68,8 +68,8 @@ namespace TaskyRevamp.Services.SystemConfiguration.TypeConfigurarion.Query
                 if (request.PageNumber == 1)
                 {
                     
-                    notypedto.NameArabic = "مهام ليس لها نوع";
-                    notypedto.NameEnglish = "No type tasks";
+                    notypedto.NameArabic = "بدون نوع ";
+                    notypedto.NameEnglish = "No Type";
                     items.Insert(0,notypedto);
                 }
             }

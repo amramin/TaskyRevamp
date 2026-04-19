@@ -80,19 +80,32 @@ namespace TaskyRevamp.Client
 		}
 		public async Task UploadStreamFiles(Guid taskId, List<IBrowserFile> files, HashSet<string>? AllowedExtensions = null)
 		{
-			using var content = new MultipartFormDataContent();
-			foreach (var file in files)
+			var memoryStreams = new List<MemoryStream>();
+			try
 			{
-				var sc = new StreamContent(file.OpenReadStream(maxAllowedSize: 26214400));
-				sc.Headers.ContentType = new(string.IsNullOrEmpty(file.ContentType)? "application/octet-stream" : file.ContentType);
-				content.Add(sc, "Files", file.Name);
+				using var content = new MultipartFormDataContent();
+				foreach (var file in files)
+				{
+					var ms = new MemoryStream();
+					using var stream = file.OpenReadStream(maxAllowedSize: 26214400);
+					await stream.CopyToAsync(ms);
+					ms.Position = 0;
+					memoryStreams.Add(ms);
+					var sc = new StreamContent(ms);
+					sc.Headers.ContentType = new(string.IsNullOrEmpty(file.ContentType) ? "application/octet-stream" : file.ContentType);
+					content.Add(sc, "files", file.Name);
+				}
+				if (AllowedExtensions != null && AllowedExtensions.Any())
+				{
+					foreach (var ext in AllowedExtensions)
+						content.Add(new StringContent(ext), "allowedExtensions");
+				}
+				await _taskAttachmentConsumer.AddTaskAttachment(content, taskId);
 			}
-			if (AllowedExtensions != null && AllowedExtensions.Any())
+			catch (Exception ex)
 			{
-				foreach (var ext in AllowedExtensions)
-					content.Add(new StringContent(ext), "allowedExtensions");
+				Console.WriteLine($"Error uploading files: {ex.Message}");
 			}
-			await _taskAttachmentConsumer.AddTaskAttachment(content, taskId);
 		}
 		public bool CanPreview(string fileName)
 		{

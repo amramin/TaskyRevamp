@@ -15,8 +15,8 @@ public interface ITaskRejectionService
     int GetRejectionPeriodDays(RejectionSettings settings);
 
     /// <summary>
-    /// Returns true if the task can still be rejected based on its creation date
+    /// Returns true if the task can still be rejected based on the assignee date
     /// and the configured rejection period.
     /// </summary>
-    bool CanRejectTask(DateTime taskCreationDate, int rejectionPeriodDays);
+    bool CanRejectTask(DateTime referenceDate, int rejectionPeriodDays);
 }

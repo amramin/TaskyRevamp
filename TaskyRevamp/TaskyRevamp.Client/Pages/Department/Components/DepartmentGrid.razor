@@ -23,7 +23,6 @@
                    SortColumn="@SortColumn"
                    SortAscending="@SortAscending"
                    OnSortRequested="HandleSort">
-
         <RowTemplate>
               
             @foreach (var p in Departments)
@@ -36,6 +35,9 @@
                     <td>@p.CreatedByName</td>
                     <td>@p.UpdateDate?.ToString(Loc["LocalizeDate"])</td>
                     <td>@p.UpdatedByName</td>
+                    <td>@p.LinkedUsers</td>
+                    <td>@p.UsersWithTasks</td>
+                    <td>@p.SubDepartmentUsers</td>
                     <td class="sticky-end-action">
                         <div class="dropdown actions">
                             <button class="btn btn-action-24" type="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -76,12 +78,10 @@
                                         <span class="icon">
                                             <SVGCrud SVGType="SVGCrud.SVGTypeEnum.Users"></SVGCrud>
                                         </span>
-                                        @Loc["linkUsers"]
+                                        @Loc["linkOneUser"]
                                     </button>
                                 </li>
                                 <li>
-                                    @if(p.Level > 1 && p.ParentdepartmentId != Guid.Empty)
-                                    {
 
                                         <button class="dropdown-item text-danger" @onclick="@(() => OnDelete.InvokeAsync(p.Id))">
                                             <span class="icon">
@@ -89,7 +89,6 @@
                                             </span>
                                             @Loc["Delete"]
                                         </button>
-                                    }
                                 </li>
                             </ul>
 
@@ -186,6 +185,9 @@
             new() { Field = "CreatedBy", DisplayName = Loc["CreatedBy"] },
             new() { Field = "UpdateDate", DisplayName = Loc["UpdateDate"] },
             new() { Field = "UpdatedBy", DisplayName = Loc["UpdatedBy"] },
+            new() { Field = "LinkedUsers", DisplayName = Loc["LinkedUsers"],Hint="LinkedUsersHint" },
+            new() { Field = "UsersWithTasks", DisplayName = Loc["UsersWithTasks"],IsSortable = false,Hint="UsersWithTasksHint" },
+            new() { Field = "SubDepartmentUsers", DisplayName = Loc["SubDepartmentUsers"],IsSortable = false,Hint="SubDepartmentUsersHint" },
             new() { Field = "Action", DisplayName = Loc["Action"] ,IsSortable = false},
         };
         StateHasChanged();

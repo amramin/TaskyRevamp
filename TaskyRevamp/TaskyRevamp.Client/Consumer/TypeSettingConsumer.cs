@@ -1,4 +1,5 @@
-﻿using TaskyRevamp.Dto.Enums.SearchFields;
+﻿using DocumentFormat.OpenXml.Spreadsheet;
+using TaskyRevamp.Dto.Enums.SearchFields;
 using TaskyRevamp.Dto.GeneralDto;
 using TaskyRevamp.Dto.SystemConfiguration;
 using TaskyRevamp.Dto.TaskTypeDto;
@@ -23,7 +24,7 @@ namespace TaskyRevamp.Client.Consumer
 
             return res;
         }
-        public async Task<CommonApiResponse<PagedResult<TypeDto>>> GetTypesView(int pageNumber, int pageSize,bool IsCompleted = false)
+        public async Task<CommonApiResponse<PagedResult<TypeDto>>> GetTypesView(int pageNumber, int pageSize,bool IsCompleted = false,bool isload=true)
         {
             var query = new List<string>
             {
@@ -34,22 +35,32 @@ namespace TaskyRevamp.Client.Consumer
             var queryString = "?" + string.Join("&", query);
 
             var url = $"api/TypeSetting/GetTypeSettingsView{queryString}";
-            var res = await _taskyService.GetFromJsonAsync<CommonApiResponse<PagedResult<TypeDto>>>(url);
+            var res = await _taskyService.GetFromJsonAsync<CommonApiResponse<PagedResult<TypeDto>>>(url,isload);
 
             return res;
         }
-        public async Task<CommonApiResponse<List<TypeDto>>> GetTaskTypesForDDL()
+        public async Task<CommonApiResponse<List<TypeDto>>> GetTaskTypesForDDL(bool isload = true)
         {
 
 
             var url = $"api/TypeSetting/GetTaskTypesForDDL";
 
 
-            var res = await _taskyService.GetFromJsonAsync<CommonApiResponse<List<TypeDto>>>(url);
+            var res = await _taskyService.GetFromJsonAsync<CommonApiResponse<List<TypeDto>>>(url, isload);
 
             return res;
         }
+        public async Task<CommonApiResponse<List<TypeDto>>> GetTaskTypesForFilter(bool isload = true)
+        {
 
+
+            var url = $"api/TypeSetting/GetTaskTypesForFilter";
+
+
+            var res = await _taskyService.GetFromJsonAsync<CommonApiResponse<List<TypeDto>>>(url, isload);
+
+            return res;
+        }
         public async Task<CommonApiResponse<TypeDto>> GetTypeById(Guid id)
         {
             var url = $"api/TypeSetting/GetTypeSettingById/{id}";

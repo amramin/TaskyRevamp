@@ -12,10 +12,10 @@ namespace TaskyRevamp.Client.Consumer
             _taskyService = taskyService;
         }
 
-        public async Task<CommonApiResponse<List<FilterFieldsSettingDto>>> GetFilterFieldsSettings()
+        public async Task<CommonApiResponse<List<FilterFieldsSettingDto>>> GetFilterFieldsSettings(bool isload = true)
         {
             var url = $"api/FilterFieldsSetting/GetFilterFieldsSettings";
-            var res = await _taskyService.GetFromJsonAsync<CommonApiResponse<List<FilterFieldsSettingDto>>>(url);
+            var res = await _taskyService.GetFromJsonAsync<CommonApiResponse<List<FilterFieldsSettingDto>>>(url,isload);
 
             return res;
         }

@@ -336,7 +336,8 @@
           width: 17rem;
           border-color: var(--light-300);
           padding: 1rem;
-          box-shadow: 0px 8px 24px 6px rgba(0, 0, 0, 0.03),
+          box-shadow:
+            0px 8px 24px 6px rgba(0, 0, 0, 0.03),
             0px 4px 24px 0px rgba(0, 0, 0, 0.04);
 
           .header {
@@ -730,3 +731,90 @@
     }
   }
 }
+/* start .task-detail-page */
+.main-wrapper .main-content .main-page .task-detail-page {
+  position: fixed;
+  top: 0;
+  inset-inline-start: 0;
+  background-color: var(--bs-white);
+  z-index: 1030;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  .page-header {
+    min-height: auto;
+    .title-block {
+      max-width: calc(100% - 10rem);
+      margin-inline-end: 0.5rem;
+      flex-grow: 1;
+      .page-headline {
+        .more-text {
+          display: none;
+        }
+        &.is-truncated {
+          max-width: calc(100% - 3rem);
+          position: relative;
+          .text {
+            display: block;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            padding-inline-end: 0.1rem;
+          }
+          &:hover {
+            .more-text {
+              display: block;
+              position: absolute;
+              font-size: 0.75rem;
+              white-space: wrap;
+              background-color: var(--dark-900);
+              color:var(--bs-white);
+              font-weight: 500;
+              padding: 1rem;
+              border-radius: var(--bs-border-radius);
+              top: 2rem;
+              inset-inline-start: 1rem;
+              z-index: 200;
+              width: 60vw;
+              box-shadow: var(--shadow-modal);
+            }
+          }
+        }
+      }
+    }
+  }
+  .tab-pills {
+    border-inline-end: 1px solid var(--light-300);
+  }
+  .page-body {
+    height: calc(100vh - 10rem);
+    padding: 1rem !important;
+  }
+  .card.collapse-card .card-header {
+    padding-inline-end: 0;
+    .colapse-btn {
+      margin-inline-end: 0;
+      padding: 0.75rem 1rem;
+      &::after {
+        display: none;
+      }
+    }
+  }
+  .task-action-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+    .btn {
+      display: flex;
+      padding: 0.5rem 1rem;
+      gap: 0.5rem;
+      .icon {
+        opacity: var(--dark-500);
+      }
+    }
+  }
+}
+
+/* start .task-detail-page */

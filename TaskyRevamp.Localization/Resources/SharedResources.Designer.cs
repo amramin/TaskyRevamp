@@ -151,11 +151,20 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Add a department to get started.
+        ///   Looks up a localized string similar to Add a new department to get started.
         /// </summary>
         public static string AddADepartmentToGetStarted {
             get {
                 return ResourceManager.GetString("AddADepartmentToGetStarted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add an email body.
+        /// </summary>
+        public static string AddanEmailBody {
+            get {
+                return ResourceManager.GetString("AddanEmailBody", resourceCulture);
             }
         }
         
@@ -192,6 +201,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string AddANewUserToGetStarted {
             get {
                 return ResourceManager.GetString("AddANewUserToGetStarted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add a system notification content..
+        /// </summary>
+        public static string AddaSystemNotificationBody {
+            get {
+                return ResourceManager.GetString("AddaSystemNotificationBody", resourceCulture);
             }
         }
         
@@ -494,7 +512,7 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Are `you sure you want to discard this draft?.
+        ///   Looks up a localized string similar to Are you sure you want to discard this draft?.
         /// </summary>
         public static string Areyousureyouwan {
             get {
@@ -746,6 +764,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add a comment. Use @ to mention a person..
+        /// </summary>
+        public static string CommentHint {
+            get {
+                return ResourceManager.GetString("CommentHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Comments.
         /// </summary>
         public static string Comments {
@@ -989,6 +1016,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to  Control which columns are shown or hidden in the Task List and Completed List grids.
+        /// </summary>
+        public static string DefaultColumnsActiveHint {
+            get {
+                return ResourceManager.GetString("DefaultColumnsActiveHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Default columns.
         /// </summary>
         public static string DefaultColumnsConfiguration {
@@ -1003,6 +1039,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string DefaultColumnsHint {
             get {
                 return ResourceManager.GetString("DefaultColumnsHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The default active columns are displayed upon login.
+        /// </summary>
+        public static string DefaultColumnsIsDisplayHint {
+            get {
+                return ResourceManager.GetString("DefaultColumnsIsDisplayHint", resourceCulture);
             }
         }
         
@@ -1106,7 +1151,7 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Can&apos;t delete, the department has an active users.
+        ///   Looks up a localized string similar to This department cannot be deleted because it has linked users or sub-departments. Please re-assign or remove all dependencies before proceeding with deletion.
         /// </summary>
         public static string DepartmentHasUsersCannotDelete {
             get {
@@ -1214,11 +1259,20 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to dependent tasks.
+        ///   Looks up a localized string similar to Dependent tasks.
         /// </summary>
         public static string dependenTasks {
             get {
                 return ResourceManager.GetString("dependenTasks", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tasks that cannot be completed until this task is completed.
+        /// </summary>
+        public static string DependentTasksHint {
+            get {
+                return ResourceManager.GetString("DependentTasksHint", resourceCulture);
             }
         }
         
@@ -1228,6 +1282,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string DependingOn {
             get {
                 return ResourceManager.GetString("DependingOn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tasks that must be completed for this task to be completed.
+        /// </summary>
+        public static string DependingOnHint {
+            get {
+                return ResourceManager.GetString("DependingOnHint", resourceCulture);
             }
         }
         
@@ -1466,7 +1529,7 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Email body in Arabic.
+        ///   Looks up a localized string similar to Body in Arabic.
         /// </summary>
         public static string EmailbodyinArabic {
             get {
@@ -1475,7 +1538,7 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Email body in English.
+        ///   Looks up a localized string similar to Body in English.
         /// </summary>
         public static string EmailbodyinEnglish {
             get {
@@ -1637,15 +1700,6 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Enter the reason.
-        /// </summary>
-        public static string Enterthereason {
-            get {
-                return ResourceManager.GetString("Enterthereason", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Error database.
         /// </summary>
         public static string Errordatabase {
@@ -1790,7 +1844,7 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Must be less than to creation date.
+        ///   Looks up a localized string similar to Must be greater than or equal - from creation date.
         /// </summary>
         public static string FromCreationDateValidation {
             get {
@@ -1817,7 +1871,7 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Must be less than to end date.
+        ///   Looks up a localized string similar to Must be less than or equal - to end date.
         /// </summary>
         public static string FromEndDateValidation {
             get {
@@ -1835,7 +1889,7 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Must be less than to start date.
+        ///   Looks up a localized string similar to Must be less than or equal - to start date.
         /// </summary>
         public static string FromStartDateValidation {
             get {
@@ -2123,6 +2177,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Display the total number of users in this department.
+        /// </summary>
+        public static string LinkedUsersHint {
+            get {
+                return ResourceManager.GetString("LinkedUsersHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to  Users with privileges.
         /// </summary>
         public static string LinkedWithPrivilagesUsers {
@@ -2137,6 +2200,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string LinkedWithTasksUsers {
             get {
                 return ResourceManager.GetString("LinkedWithTasksUsers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Link user.
+        /// </summary>
+        public static string linkOneUser {
+            get {
+                return ResourceManager.GetString("linkOneUser", resourceCulture);
             }
         }
         
@@ -2236,6 +2308,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string LocalizeDate {
             get {
                 return ResourceManager.GetString("LocalizeDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to hh:mm tt dd-MM-yyyy.
+        /// </summary>
+        public static string LocalizeDateTime {
+            get {
+                return ResourceManager.GetString("LocalizeDateTime", resourceCulture);
             }
         }
         
@@ -2546,6 +2627,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No description has been added..
+        /// </summary>
+        public static string notaskdesc {
+            get {
+                return ResourceManager.GetString("notaskdesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No tasks found.
         /// </summary>
         public static string NoTasks {
@@ -2771,6 +2861,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Post.
+        /// </summary>
+        public static string Post {
+            get {
+                return ResourceManager.GetString("Post", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to This task has tasks depend on it. Please remove the dependency of other tasks before proceeding with deletion.
         /// </summary>
         public static string PreventTaskDeletion {
@@ -2942,6 +3041,15 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Reason.
+        /// </summary>
+        public static string Reason {
+            get {
+                return ResourceManager.GetString("Reason", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Reassign to the task creator.
         /// </summary>
         public static string ReassignToCreator {
@@ -2996,6 +3104,24 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Task rejected successfully.
+        /// </summary>
+        public static string Rejected {
+            get {
+                return ResourceManager.GetString("Rejected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string rejectedsuccessfully {
+            get {
+                return ResourceManager.GetString("rejectedsuccessfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Task rejection.
         /// </summary>
         public static string RejectionConfiguration {
@@ -3023,7 +3149,7 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Task rejection reason:/.
+        ///   Looks up a localized string similar to Task rejection reason:.
         /// </summary>
         public static string RejectReason {
             get {
@@ -3538,6 +3664,24 @@ namespace TaskyRevamp.Localization.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Sub dept users.
         /// </summary>
+        public static string SubDepartmentUsers {
+            get {
+                return ResourceManager.GetString("SubDepartmentUsers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Display the total number of users in this department, including all users in its sub-departments.
+        /// </summary>
+        public static string SubDepartmentUsersHint {
+            get {
+                return ResourceManager.GetString("SubDepartmentUsersHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sub dept users.
+        /// </summary>
         public static string SubDeptUsers {
             get {
                 return ResourceManager.GetString("SubDeptUsers", resourceCulture);
@@ -3545,7 +3689,7 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Subject Arabic.
+        ///   Looks up a localized string similar to Subject in Arabic.
         /// </summary>
         public static string SubjectArabic {
             get {
@@ -3554,7 +3698,7 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Subject English.
+        ///   Looks up a localized string similar to Subject in English.
         /// </summary>
         public static string SubjectEnglish {
             get {
@@ -4149,7 +4293,7 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Must be greater than from end date.
+        ///   Looks up a localized string similar to Must be greater than or equal - from end date.
         /// </summary>
         public static string ToEndDateValidation {
             get {
@@ -4167,7 +4311,7 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Must be greater than from start date.
+        ///   Looks up a localized string similar to Must be greater than or equal - from start date.
         /// </summary>
         public static string ToStartDateValidation {
             get {
@@ -4464,11 +4608,29 @@ namespace TaskyRevamp.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Display the total number of users in this department who are linked to a task as creator or assignee.
+        /// </summary>
+        public static string UsersWithTasksHint {
+            get {
+                return ResourceManager.GetString("UsersWithTasksHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Use this option to enable system notifications that will be automatically sent when the specified action is triggered..
         /// </summary>
         public static string Usethisoption {
             get {
                 return ResourceManager.GetString("Usethisoption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Use this option to enable email notifications that will be automatically sent when the specified action is triggered..
+        /// </summary>
+        public static string Usethisoptionemail {
+            get {
+                return ResourceManager.GetString("Usethisoptionemail", resourceCulture);
             }
         }
         
@@ -4523,6 +4685,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string Viewcolumn {
             get {
                 return ResourceManager.GetString("Viewcolumn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Viewed by.
+        /// </summary>
+        public static string ViewedBy {
+            get {
+                return ResourceManager.GetString("ViewedBy", resourceCulture);
             }
         }
         
@@ -4613,6 +4784,15 @@ namespace TaskyRevamp.Localization.Resources {
         public static string weeklyReportHint {
             get {
                 return ResourceManager.GetString("weeklyReportHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Weekly report send date.
+        /// </summary>
+        public static string WeeklyReportTitle {
+            get {
+                return ResourceManager.GetString("WeeklyReportTitle", resourceCulture);
             }
         }
         

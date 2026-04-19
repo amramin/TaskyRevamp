@@ -8,7 +8,7 @@
 @inject ToastService ToastService
 @inject DefaultViewSettingConsumer _defaultViewSettingConsumer
 <div class="page-header">
- <div class="title-block">
+    <div class="title-block">
         <h1 class="page-headline">@Loc["Subtask_Levels"]</h1>
     </div>
 </div>
@@ -22,21 +22,21 @@
                         <p class="small-medium-text hint">@Loc["subtask_hint"]</p>
                     </div>
                     <div class="mb-3">
-            <label for="maxSubtaskLevel" class="form-label">
-               @Loc["Maximum_Subtask_Level"]
-               <span class="text-danger">*</span>
-            </label>
-            <input type="text" maxlength="10" class="form-control" @bind="ViewSetting.SubTaskLevels" @oninput="OnCustomDaysChange" />
-            <span class="small text-danger">@Error</span>
-        </div>
-
-        @if (ViewSetting.SubTaskLevels > 3)
-        {
-            <div class="alert alert-sm alert-warning mb-3">
-                @Loc["sub_task_warning"]
-            </div>
-        }
-              
+                        <label for="maxSubtaskLevel" class="form-label">
+                            @Loc["Maximum_Subtask_Level"]
+                            <span class="text-danger">*</span>
+                        </label>
+                        <input type="text" maxlength="10" class="form-control"
+                               value="@SubTaskInput"
+                               @oninput="OnCustomDaysChange" />
+                        <span class="small text-danger">@Error</span>
+                    </div>
+                    @if (ViewSetting.SubTaskLevels > 3)
+                    {
+                        <div class="alert alert-sm alert-warning mb-3">
+                            @Loc["sub_task_warning"]
+                        </div>
+                    }
                 </div>
             </div>
         </div>
@@ -44,8 +44,8 @@
             <div class="row justify-content-center">
                 <div class="col-xxl-7 col-xl-8 col-lg-9 col-md-11">
                     <div class="action-buttons">
-                       @*  <button class="btn btn-lg btn-light" @onclick="Cancel">@Loc["Cancel"]</button> *@
-                        <button class="btn btn-lg  btn-primary" @onclick="Save" disabled="@(ViewSetting.SubTaskLevels < 0 || ViewSetting.SubTaskLevels is null)">@Loc["Save"]</button>
+                        @*  <button class="btn btn-lg btn-light" @onclick="Cancel">@Loc["Cancel"]</button> *@
+                        <button class="btn btn-lg  btn-primary" @onclick="Save" disabled="@(IsInvalid || ViewSetting.SubTaskLevels is null)">@Loc["Save"]</button>
                     </div>
                 </div>
             </div>
@@ -57,22 +57,26 @@
     private DefaultViewSettingsDto ViewSetting { get; set; } = new DefaultViewSettingsDto();
     string Error = "";
     long? OldLevel;
+    private string SubTaskInput = "";
+    private bool IsInvalid = false;
+
     protected override async Task OnInitializedAsync()
     {
         var res = await _defaultViewSettingConsumer.GetDefaultViewSetting();
         if (res.Success)
         {
             var resData = res.Data;
-            if(resData != null)
+            if (resData != null)
             {
                 ViewSetting = resData;
                 OldLevel = ViewSetting.SubTaskLevels;
             }
         }
+        SubTaskInput = ViewSetting.SubTaskLevels?.ToString() ?? "";
     }
     private async Task Save(MouseEventArgs args)
     {
-        if (ViewSetting.SubTaskLevels < 0 || ViewSetting.SubTaskLevels==null)
+        if (ViewSetting.SubTaskLevels < 0 || ViewSetting.SubTaskLevels == null)
         {
             return;
         }
@@ -88,25 +92,35 @@
     private void OnCustomDaysChange(ChangeEventArgs e)
     {
         var input = e.Value?.ToString() ?? "";
-        //input = new string(input.Where(char.IsDigit).ToArray());
-        if (input.Length > 10)
-            input = input.Substring(0, 10);
-        if (int.TryParse(input, NumberStyles.AllowLeadingSign, CultureInfo.InvariantCulture, out var number) && number >= 0)
+        SubTaskInput = input;
+        if (string.IsNullOrWhiteSpace(input) || input == "-")
         {
-            ViewSetting.SubTaskLevels = number;
             Error = "";
+            IsInvalid = true;
+            ViewSetting.SubTaskLevels = null;
+            return;
         }
-        else if(number < 0)
+        if (int.TryParse(input, out var number))
         {
-            ViewSetting.SubTaskLevels = number;
-            Error = Loc["LevelValue"];
+            if (number < 0)
+            {
+                Error = "";
+                IsInvalid = true;
+                ViewSetting.SubTaskLevels = null;
+            }
+            else
+            {
+                ViewSetting.SubTaskLevels = number;
+                Error = "";
+                IsInvalid = false;
+            }
         }
-        else 
+        else
         {
-            // ViewSetting.SubTaskLevels = null;
-            Error = Loc["Required"];
+            Error = "";
+            IsInvalid = true;
+            ViewSetting.SubTaskLevels = null;
         }
-
     }
     private void Cancel(MouseEventArgs args)
     {

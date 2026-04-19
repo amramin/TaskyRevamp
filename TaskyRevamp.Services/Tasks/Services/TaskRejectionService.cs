@@ -22,12 +22,12 @@ public class TaskRejectionService : ITaskRejectionService
     }
 
     /// <inheritdoc />
-    public bool CanRejectTask(DateTime taskCreationDate, int rejectionPeriodDays)
+    public bool CanRejectTask(DateTime referenceDate, int rejectionPeriodDays)
     {
         if (rejectionPeriodDays == (int)RejectionPeriodType.Never)
             return false;
 
-        return DateOnly.FromDateTime(taskCreationDate).AddDays(rejectionPeriodDays)
-            >= DateOnly.FromDateTime(DateTime.UtcNow);
+        return DateOnly.FromDateTime(referenceDate).AddDays(rejectionPeriodDays)
+            >= DateOnly.FromDateTime(DateTime.Now);
     }
 }

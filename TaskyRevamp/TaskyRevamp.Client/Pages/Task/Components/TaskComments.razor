@@ -1,10 +1,14 @@
 ﻿@using Blazored.LocalStorage
 @using Syncfusion.Blazor.Buttons.Internal
+@using System.Globalization
+@using System.Text.RegularExpressions
 @using TaskyRevamp.Client.Consumer
 @using TaskyRevamp.Client.Services
+@using TaskyRevamp.Dto.Account
 @using TaskyRevamp.Dto.TaskComment
 @using TaskyRevamp.Dto.TaskDto
 @inject TaskCommentConsumer _taskCommentConsumer
+@inject UserConsumer _userConsumer
 @inject IStringLocalizer<SharedResources> Loc
 @inject ToastService ToastService
 @inject ILocalStorageService LocalStorageService
@@ -16,11 +20,12 @@
 
         <button type="button" class="btn colapse-btn ">
             <h6 class="headline-6 mb-0">@Loc["Comments"]</h6>
-            <span class="icon"> @if (ShowSection)
+            <span class="icon">
+                @if (ShowSection)
                 {
                     <SVGCrud SVGType="SVGCrud.SVGTypeEnum.ChevronDown"></SVGCrud>
                 }
-    else
+                else
                 {
                     <SVGCrud SVGType="SVGCrud.SVGTypeEnum.ChevronUp"></SVGCrud>
                 }
@@ -32,33 +37,35 @@
         <div class="card-body">
             <div class="comment-container">
                 <div class="avatar">
-                    @GetInitials("You")
+                    @GetInitials(userName)
                 </div>
                 <div class="comment-input">
-                    <RichTextEditorComponent @key="TaskId" EditorId="RTE_English2"
+                    @* <RichTextEditorComponent @key="TaskId" EditorId="RTE_English2" HintMessage="@Loc["CommentHint"]" Assignees="assignedUsers"
                                              @ref="RichTextEditorComponentRefDescriptionEnglish" ContentChanged="OnDescriptionChanged"
-                                             Content="@newComment" ButtonText="@Loc["AddDescription"]"> </RichTextEditorComponent>
+                                             Content="@newComment" ButtonText="@Loc["AddDescription"]"> </RichTextEditorComponent> *@
+                    <TiptapEditor @ref="TiptapEditorRef" @bind-Value="newComment" HintMessage="@Loc["CommentHint"]" Users="assignedUsers"/>
                 </div>
             </div>
+            @if (!IsCommentEmpty(newComment) && newComment != OriginalContent)
+            {
+                <div class="action-btn-list justify-content-end">
+                    <button class="btn btn-light" @onclick="CancelComment" disabled="@IsCommentEmpty(newComment)">
+                        @Loc["Cancel"]
+                    </button>
+                    <button class="btn btn-primary end-icon" @onclick="AddComment"
+                            disabled="@IsCommentEmpty(newComment)">
+                        @Loc[buttonName]
+                        <span class="icon">
+                            <SVGCrud SVGType="SVGCrud.SVGTypeEnum.PaperPlane"></SVGCrud>
+                        </span>
+                    </button>
 
-            <div class="action-btn-list justify-content-end">
-                <button class="btn btn-light" @onclick="CancelComment" disabled="@string.IsNullOrWhiteSpace(newComment)">
-                    @Loc["Cancel"]
-                </button>
-                <button class="btn btn-primary end-icon" @onclick="AddComment"
-                        disabled="@string.IsNullOrWhiteSpace(newComment)">
-                    @Loc[buttonName]
-                    <span class="icon">
-                        <SVGCrud SVGType="SVGCrud.SVGTypeEnum.PaperPlane"></SVGCrud>
-                    </span>
-                </button>
-
-            </div>
-
+                </div>
+            }
             @if (comments != null && comments.Any())
             {
                 <div class="mt-4">
-                    @foreach (var comment in comments)
+                    @foreach (var comment in comments.OrderByDescending(c => c.TaskComment.CreateDate))
                     {
                         <div class="comment-container">
                             <div class="avatar">
@@ -70,41 +77,115 @@
                                         <div class="d-flex align-items-center gap-3 mb-2">
                                             <h5 class="headline-8 mb-0">@comment.CreatedByName</h5>
                                             <span class="x-small-medium-text">
-                                                @if (comment.TaskComment.UpdateDate != comment.TaskComment.CreateDate)
+                                                @if (comment.TaskComment.UpdateDate != null &&
+                                                                                    comment.TaskComment.UpdateDate != comment.TaskComment.CreateDate)
                                                 {
                                                     <span>@Loc["Edited"] : </span>
-                                                    @comment.TaskComment.UpdateDate.Value.ToString(Loc["LocalizeDate"])
+                                                    @FormatDateTime(comment.TaskComment.UpdateDate.Value)
                                                 }
+                                                else
+                                                {
+                                                    <span>@FormatDateTime(comment.TaskComment.CreateDate)</span>
+                                                }
+
                                             </span>
                                         </div>
                                         @if (comment.TaskComment.Type == Dto.Enums.CommentType.Reject)
                                         {
-                                            <p class="mb-0">@Loc["RejectReason"]</p>
-                                            <p class="mb-0"> @comment.TaskComment.Content</p>
+                                            <div style="width:100%;overflow:hidden;">
+                                                @if (IsUpdate && comment.TaskComment.Id == UpdateCommentId)
+                                                {
+                                                    <div class="comment-container">
+                                                        <div class="avatar">
+                                                            @GetInitials(userName)
+                                                        </div>
+                                                        <div class="comment-input">
+                                                            @* <RichTextEditorComponent @key="TaskId" EditorId="RTE_English2" HintMessage="@Loc["CommentHint"]" Assignees="assignedUsers"
+                                             @ref="RichTextEditorComponentRefDescriptionEnglish" ContentChanged="OnDescriptionChanged"
+                                             Content="@newComment" ButtonText="@Loc["AddDescription"]"> </RichTextEditorComponent> *@
+                                                            <TiptapEditor @ref="TiptapEditorRefUpdate" @bind-Value="comment.TaskComment.Content" HintMessage="@Loc["CommentHint"]" Users="assignedUsers" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="action-btn-list justify-content-end">
+                                                        <button class="btn btn-light" @onclick="CancelComment" disabled="@IsCommentEmpty(comment.TaskComment.Content)">
+                                                            @Loc["Cancel"]
+                                                        </button>
+                                                            <button class="btn btn-primary end-icon" @onclick="@(() => Updatecomment(comment.TaskComment))"
+                                                                    disabled="@(IsCommentEmpty(comment.TaskComment.Content) || comment.TaskComment.Content == OriginalContent)">
+                                                                @Loc["Update"]
+                                                                <span class="icon">
+                                                                    <SVGCrud SVGType="SVGCrud.SVGTypeEnum.PaperPlane"></SVGCrud>
+                                                                </span>
+                                                            </button>
+                                                    </div>
+                                                }
+                                                else
+                                                {
+                                                    <p class="mb-0">@Loc["RejectReason"]</p>
+                                                    <p class="mb-0"> @comment.TaskComment.Content</p>
+                                                }
+                                            </div>
                                         }
                                         else
                                         {
-                                            <div>
-                                                @((MarkupString)comment.TaskComment.Content)
+                                            <div style="width:100%;overflow:hidden;">
+                                                @if (IsUpdate && comment.TaskComment.Id == UpdateCommentId)
+                                                {
+                                                    <div class="comment-container">
+                                                        <div class="avatar">
+                                                            @GetInitials(userName)
+                                                        </div>
+                                                        <div class="comment-input">
+                                                            @* <RichTextEditorComponent @key="TaskId" EditorId="RTE_English2" HintMessage="@Loc["CommentHint"]" Assignees="assignedUsers"
+                                             @ref="RichTextEditorComponentRefDescriptionEnglish" ContentChanged="OnDescriptionChanged"
+                                             Content="@newComment" ButtonText="@Loc["AddDescription"]"> </RichTextEditorComponent> *@
+                                                            <TiptapEditor @ref="TiptapEditorRefUpdate" @bind-Value="comment.TaskComment.Content" HintMessage="@Loc["CommentHint"]" Users="assignedUsers" />
+                                                        </div>
+                                                    </div>
+                                                        <div class="action-btn-list justify-content-end">
+                                                            <button class="btn btn-light" @onclick="CancelComment" disabled="@IsCommentEmpty(comment.TaskComment.Content)">
+                                                                @Loc["Cancel"]
+                                                            </button>
+                                                            <button class="btn btn-primary end-icon" @onclick="@(() => Updatecomment(comment.TaskComment))"
+                                                                    disabled="@(IsCommentEmpty(comment.TaskComment.Content) || comment.TaskComment.Content == OriginalContent)">
+                                                                @Loc["Update"]
+                                                                <span class="icon">
+                                                                    <SVGCrud SVGType="SVGCrud.SVGTypeEnum.PaperPlane"></SVGCrud>
+                                                                </span>
+                                                            </button>
+                                                        
+                                                    </div>
+                                                }
+                                                else
+                                                {
+                                                    <div>
+                                                        @((MarkupString)comment.TaskComment.Content)
+                                                    </div>
+                                                }
                                             </div>
                                         }
+
                                     </div>
                                 </div>
                                 @if (currentId == comment.TaskComment.CreatedById || isCreator)
                                 {
                                     <div class="mt-2 d-flex align-items-center gap-1">
                                         <button class="btn btn-link btn-text-500"
-                                                @onclick="(() => EditTask(comment.TaskComment.Id))">@Loc["Edit"]</button>
+                                                @onclick="(() => EditTask(comment.TaskComment.Id))">
+                                            @Loc["Edit"]
+                                        </button>
                                         <span class="btn-text-500">.</span>
                                         <button class="btn btn-link btn-text-500"
-                                                @onclick="(() => OnDeleteComment(comment.TaskComment.Id))">@Loc["Delete"]</button>
+                                                @onclick="(() => OnDeleteComment(comment.TaskComment.Id))">
+                                            @Loc["Delete"]
+                                        </button>
                                     </div>
                                 }
+
                             </div>
-
-
                         </div>
                     }
+
                 </div>
             }
             else
@@ -119,7 +200,6 @@
                 </div>
             }
 
-        
         </div>
     }
 </div>
@@ -129,12 +209,19 @@
     [Parameter] public Guid TaskId { get; set; }
     [Parameter] public CreateTaskDto taskDto { get; set; }
     private string newComment = string.Empty;
+    private bool IsUpdate = false;
+    private Guid UpdateCommentId { get; set; }
+    private string OriginalContent = string.Empty;
     private List<TaskCommentWithNameDto>? comments;
     private TaskCommentWithNameDto Upatedcomment = new TaskCommentWithNameDto();
-    string buttonName = $"AddComment";
+    string buttonName = $"Post";
+    string userName = "";
     private RichTextEditorComponent RichTextEditorComponentRefDescriptionEnglish;
+    private TiptapEditor? TiptapEditorRef;
+    private TiptapEditor? TiptapEditorRefUpdate;
     private Guid? creatorId { set; get; }
     private bool isCreator => creatorId.HasValue && creatorId.Value == currentId;
+    private List<UserDto> assignedUsers => taskDto.assignedUsers.Where(a => !a.IsDeleted && a.IsActive).ToList();
     private async Task ToggleSection()
     {
         ShowSection = !ShowSection;
@@ -144,6 +231,8 @@
     protected override async Task OnInitializedAsync()
     {
         var current = await LocalStorageService.GetItemAsStringAsync("Id");
+        var key = CultureInfo.CurrentCulture.Name == "ar-EG" ? "NameArabic" : "NameEnglish";
+        userName = await LocalStorageService.GetItemAsStringAsync(key) ?? "";
         currentId = Guid.Parse(current!);
         await LoadComments();
     }
@@ -154,7 +243,7 @@
     }
     private void OnDeleteComment(Guid Id)
     {
-        PopupService.ShowConfirmation(@Loc["Ares"], @Loc["Confirm"], async (confirmed) =>
+        PopupService.ShowConfirmation(@Loc["Sure"], @Loc["Confirm"], async (confirmed) =>
         {
             if (confirmed)
                 await DeleteConfirmed(Id);
@@ -181,24 +270,66 @@
 
         StateHasChanged();
     }
-
+    // private async Task CancelComment()
+    // {
+    //     newComment = string.Empty;
+    //     Upatedcomment = new TaskCommentWithNameDto();
+    //     buttonName = "Post";
+    //     if (TiptapEditorRef != null)
+    //     {
+    //         await TiptapEditorRef.ResetAsync();
+    //     }
+    //     // if (RichTextEditorComponentRefDescriptionEnglish != null)
+    //     // {
+    //     //     await RichTextEditorComponentRefDescriptionEnglish.ResetAsync();
+    //     // }
+    //     await LoadComments();
+    //     StateHasChanged();
+    // }
     private async Task CancelConfirmed()
     {
         newComment = string.Empty;
         Upatedcomment = new TaskCommentWithNameDto();
-        buttonName = "AddComment";
+        buttonName = "Post";
+        if (TiptapEditorRef != null)
+        {
+            await TiptapEditorRef.ResetAsync();
+        }
+        if (TiptapEditorRefUpdate!=null)
+        {
+            await TiptapEditorRefUpdate.ResetAsync();
+            IsUpdate = false;
+        }
+        // if (RichTextEditorComponentRefDescriptionEnglish != null)
+        // {
+        //     await RichTextEditorComponentRefDescriptionEnglish.ResetAsync();
+        // }
         await LoadComments();
         StateHasChanged();
     }
 
     private async Task CancelComment()
     {
-        PopupService.ShowConfirmation(@Loc["Areyousureyouwan"], @Loc["Confirm"], async (confirmed) =>
+        PopupService.ShowConfirmation(
+        @Loc["Areyousureyouwan"],
+        "Yes",
+        async (confirmed) =>
         {
             if (confirmed)
                 await CancelConfirmed();
         },
-        ConfirmationType.Danger);
+        ConfirmationType.Danger
+        );
+
+
+    }
+    private async Task Updatecomment(TaskCommentDto comment)
+    {
+        await _taskCommentConsumer.UpdateTaskComment(comment);
+        newComment = string.Empty;
+        Upatedcomment = new TaskCommentWithNameDto();
+        await ToastService.ShowToastAsync(Loc["Editedsuccessfully"], "success");
+        IsUpdate = false;
     }
     private async Task AddComment()
     {
@@ -224,14 +355,18 @@
                 TaskItemId = TaskId,
                 Content = newComment
             });
+            await ToastService.ShowToastAsync(Loc["Added successfully"], "success");
             newComment = string.Empty;
         }
         newComment = string.Empty;
         Upatedcomment = new TaskCommentWithNameDto();
-        buttonName = "AddComment";
+        buttonName = "Post";
+        if (TiptapEditorRef != null)
+        {
+            await TiptapEditorRef.ResetAsync();
+        }
         await LoadComments();
         StateHasChanged();
-        await LoadComments();
     }
     public async Task LoadComments()
     {
@@ -259,13 +394,32 @@
     private async Task EditTask(Guid id)
     {
         Upatedcomment = comments?.FirstOrDefault(c => c.TaskComment.Id == id);
-        newComment = Upatedcomment.TaskComment.Content;
-        buttonName = "UpdateComment";
-        StateHasChanged();
-
+        if (Upatedcomment != null)
+        {
+            IsUpdate=true;
+            UpdateCommentId = Upatedcomment.TaskComment.Id;
+            OriginalContent = Upatedcomment.TaskComment.Content;
+            //newComment = Upatedcomment.TaskComment.Content;
+            buttonName = "Update";
+            StateHasChanged();
+        }
     }
-    private void OnDescriptionChanged()
+    private void OnDescriptionChanged(string newValue)
     {
-        newComment = RichTextEditorComponentRefDescriptionEnglish.GetContent();
+        newComment = newValue;
+        StateHasChanged();
+    }
+    private bool IsCommentEmpty(string input)
+    {
+        if (string.IsNullOrWhiteSpace(input))
+            return true;
+        var text = Regex.Replace(input, "<.*?>", "");
+        text = System.Net.WebUtility.HtmlDecode(text);
+        text = text.Replace("&nbsp;", "").Trim();
+        return string.IsNullOrWhiteSpace(text);
+    }
+    private string FormatDateTime(DateTime dateTime)
+    {
+        return dateTime.ToLocalTime().ToString($"{Loc["LocalizeDateTime"]}");
     }
 }

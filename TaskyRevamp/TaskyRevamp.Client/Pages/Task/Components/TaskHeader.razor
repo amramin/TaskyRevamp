@@ -8,45 +8,53 @@
                 <SVGCrud SVGType="SVGCrud.SVGTypeEnum.BackArrow"></SVGCrud>
             </span>
         </button>
-        <h1 class="page-headline">@Task?.Title</h1>
+        <h1 class="page-headline @(IsOverflow(Task?.Title) ? "is-truncated" : "")">
+            <span class="text">@Task?.Title</span>
+            <span class="more-text">@Task?.Title</span>
+        </h1>
     </div>
     @if (ShowViewedBy && Task?.ViewdByNames != null && Task.ViewdByNames.Any())
     {
-
-<div class="d-flex align-items-center gap-1">
-            <span class="headline-8">Viewed By</span>
-        <ul class="initials-list">
-            @{
-                var visibleViewers = Task.ViewdByNames.Take(2).ToList();
-                var remainingCount = Task.ViewdByNames.Count - 2;
-            }
-
-            @foreach (var viewer in visibleViewers)
-            {
-                <li class="initial @(viewer.IsActive ? "" : "opacity-75")"                   style="z-index: @(visibleViewers.IndexOf(viewer));"
-                    title="@viewer.FullName - @viewer.ViewdAt.ToLocalTime().ToString("g")" data-bs-toggle="tooltip">
-                    <span>@GetInitials(viewer.FullName)</span>
-                </li>
-            }
-
-            @if (remainingCount > 0)
-            {
-                <li class="dropdown more-user">
-                    <button                class="btn btn-more"                      @onclick="ShowAllViewers" title="@Loc["ViewMore"]" data-bs-toggle="tooltip">
-                        <span class="fw-semibold">+@remainingCount</span>
-                    </button>
-                </li>
-            }
-        </ul>
+        <div class="d-flex align-items-center gap-1">
+            <span class="headline-8">@Loc["ViewedBy"]</span>
+            <ul class="initials-list">
+                @{
+                    var visibleViewers = Task.ViewdByNames.Take(2).ToList();
+                    var remainingCount = Task.ViewdByNames.Count - 2;
+                }
+                @* @foreach (var viewer in visibleViewers)
+                {
+                    <li class="initial @(viewer.IsActive ? "" : "opacity-75")" style="z-index: @(visibleViewers.IndexOf(viewer));"
+                        title="@viewer.FullName" data-bs-toggle="tooltip">
+                        <span>@GetInitials(viewer.FullName)</span>
+                    </li>
+                } *@
+                <Initials  Names="@string.Join(",", Task.ViewdByNames.Select(v => v.FullName))" ></Initials>
+                @* @if (remainingCount > 0)
+                {
+                    <li class="dropdown more-user">
+                        <button class="btn btn-more" @onclick="ShowAllViewers" data-bs-toggle="tooltip">
+                            <span class="fw-semibold">+@remainingCount</span>
+                        </button>
+                    </li>
+                } *@
+            </ul>
         </div>
+    }
+    else
+    {
+        <div>
+             <span class="headline-8">@Loc["Noviews"]</span>
+      
+        </div>
+       
 
     }
-
 </div>
 
 @if (showViewersPopup && Task?.ViewdByNames != null)
 {
-    <div class="modal fade show d-block" tabindex="-1"   @onclick="CloseViewersPopup">
+    <div class="modal fade show d-block" tabindex="-1" @onclick="CloseViewersPopup">
         <div class="modal-dialog modal-dialog-centered" @onclick:stopPropagation="true">
             <div class="modal-content">
                 <div class="modal-header">
@@ -57,8 +65,8 @@
                     <div class="list-group list-group-flush">
                         @foreach (var viewer in Task.ViewdByNames.OrderByDescending(v => v.ViewdAt))
                         {
-                            <div     class="border rounded mb-2 p-2
-                                d-flex align-items-center gap-3 @(viewer.IsActive ? "" : "text-muted bg-light")">
+                            <div class="border rounded mb-2 p-2
+                                        d-flex align-items-center gap-3 @(viewer.IsActive ? "" : "text-muted bg-light")">
                                 <div class="d-flex align-items-center justify-content-center rounded-circle bg-primary text-white fw-semibold flex-shrink-0 @(viewer.IsActive ? "" : "bg-secondary opacity-75")"
                                      style="width: 48px; height: 48px; font-size: 16px;">
                                     <span>@GetInitials(viewer.FullName)</span>
@@ -66,25 +74,12 @@
                                 <div class="flex-grow-1">
                                     <div class="fw-semibold mb-1">
                                         @viewer.FullName
-                                        @if (!viewer.IsActive)
-                                        {
-                                            <span class="badge bg-secondary ms-2">@Loc["Inactive"]</span>
-                                        }
                                     </div>
-                                    <small class="text-muted">
-                                        <i class="bi bi-clock me-1"></i>
-                                        @viewer.ViewdAt.ToLocalTime().ToString(Loc["LocalizeDate"])
-                                    </small>
                                 </div>
                             </div>
                         }
                     </div>
                 </div>
-                @* <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" @onclick="CloseViewersPopup">
-                        @Loc["Close"]
-                    </button>
-                </div> *@
             </div>
         </div>
     </div>
@@ -115,5 +110,16 @@
     private void CloseViewersPopup()
     {
         showViewersPopup = false;
+    }
+
+    private bool IsOverflow(string? text)
+    {
+        if (string.IsNullOrWhiteSpace(text))
+            return false;
+
+        int wideChars = text.Count(c => char.IsUpper(c));
+        int score = text.Length + (wideChars / 2);
+
+        return score > 120;
     }
 }

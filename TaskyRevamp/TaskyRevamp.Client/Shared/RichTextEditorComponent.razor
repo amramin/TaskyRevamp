@@ -1,49 +1,57 @@
 ﻿@using Syncfusion.Blazor
 @using Syncfusion.Blazor.RichTextEditor
-@inject IStringLocalizer<SharedResources> Loc
 @using System.Globalization
+@using TaskyRevamp.Dto.Account
+@inject IStringLocalizer<SharedResources> Loc
 
 @if (!IsLoaded)
 {
     <div class="form-control"
          style="min-height:120px; cursor:text;"
          @onclick="LoadEditor">
-        @((MarkupString)(InternalContent ?? $"<span class='text-muted'>{ButtonText}</span>"))
-    </div>
+        @((MarkupString)(!string.IsNullOrWhiteSpace(InternalContent)
+            ? InternalContent
+            : $"<span class='text-muted'><i>{HintMessage ?? ButtonText}</i></span>"))
+</div>
 }
-else{
+else
+{
     <SfRichTextEditor @ref="rte"
-                  ID="@EditorId"
-                  SaveInterval="0"
-                  Value="@InternalContent"
-                  ValueChanged="OnValueChange"
-                  EnablePersistence="false"
+                      ID="@EditorId"
+                      SaveInterval="0"
+                      Value="@InternalContent"
+                      ValueChanged="OnValueChange"
+                      EnablePersistence="false"
                       EnableRtl="EnableRtl"
-                  ShowCharCount="true"
-                  MaxLength="3000"
-                  CssClass="@(EnableRtl ? "arabic-rte" : "")">
+                      ShowCharCount="true"
+                      MaxLength="3000"
+                      Placeholder="@(HintMessage??ButtonText)"
+                      CssClass="@(EnableRtl ? "arabic-rte" : "")">
         <RichTextEditorToolbarSettings Items="@Tools" />
         <RichTextEditorPasteCleanupSettings Prompt="false" PlainText="false" KeepFormat="true" DeniedTags="@DeniedTags" />
-        <RichTextEditorQuickToolbarSettings Link="@Link"/>
+        <RichTextEditorQuickToolbarSettings Link="@Link" />
     </SfRichTextEditor>
+
 }
 <style>
-    .arabic-rte .e-rte-content{
+    .arabic-rte .e-rte-content {
         text-align: right;
     }
 </style>
-
 
 @code {
     [Parameter] public string EditorId { get; set; }
     [Parameter] public string Content { set; get; }
     [Parameter] public EventCallback<string> ContentChanged { get; set; }
     [Parameter] public bool EnableRtl { get; set; } = CultureInfo.CurrentCulture.Name == "ar-EG" ? true : false;
+    [Parameter] public string ButtonText { get; set; } = "Add text...";
+    [Parameter] public string? HintMessage { get; set; }
+    [Parameter] public List<UserDto> Assignees { get; set; } = new();
     private bool IsLoaded;
     private bool IsLoading;
     private SfRichTextEditor rte;
-    [Parameter] public string ButtonText { get; set; } = "Add text...";
     private string[] DeniedTags = { "p", "div" };
+    private string currentText = "";
     private List<ToolbarItemModel> Tools = new()
 {
         new ToolbarItemModel() { Command = ToolbarCommand.OrderedList },
@@ -54,7 +62,7 @@ else{
         //new ToolbarItemModel() { Command = ToolbarCommand.BackgroundColor },
         //new ToolbarItemModel() { Command = ToolbarCommand.FontColor },
         new ToolbarItemModel() { Command = ToolbarCommand.StrikeThrough },
-       // new ToolbarItemModel() { Command = ToolbarCommand.Image },
+        new ToolbarItemModel() { Command = ToolbarCommand.Image },
         new ToolbarItemModel() { Command = ToolbarCommand.CreateLink },
         new ToolbarItemModel() { Command = ToolbarCommand.Alignments },
         // new ToolbarItemModel() { Command = ToolbarCommand.FontSize },
@@ -77,6 +85,8 @@ else{
         new LinkToolbarItemModel() { Command = LinkToolbarCommand.Edit },
         new LinkToolbarItemModel() { Command = LinkToolbarCommand.UnLink }
     };
+
+
     public async Task<string> GetValueAsync() => IsLoaded ? await rte.GetXhtmlAsync() : InternalContent;
     private string InternalContent
     {
@@ -90,6 +100,13 @@ else{
             }
         }
     }
+    protected override void OnParametersSet()
+    {
+        if (!IsLoaded && !string.IsNullOrWhiteSpace(Content))
+        {
+            IsLoaded = true;
+        }
+    }
     async Task LoadEditor()
     {
         IsLoading = true;
@@ -97,15 +114,23 @@ else{
         await Task.Yield();
         IsLoaded = true;
         IsLoading = false;
+        await InvokeAsync(StateHasChanged);
     }
     public string GetContent() => Content;
     private async Task OnValueChange(string args)
     {
-        var newValue = args;
-        if (Content != newValue)
+        if (Content != args)
         {
-            Content = newValue;
-            await ContentChanged.InvokeAsync(newValue);
+            Content = args;
+            await ContentChanged.InvokeAsync(args);
         }
+        await InvokeAsync(StateHasChanged);
+    }
+    public async Task ResetAsync()
+    {
+        Content = string.Empty;
+        await ContentChanged.InvokeAsync(Content);
+        IsLoaded = false;
+        await InvokeAsync(StateHasChanged);
     }
 }

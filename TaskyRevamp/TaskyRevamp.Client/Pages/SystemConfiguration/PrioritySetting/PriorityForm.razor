@@ -95,9 +95,6 @@
             messageStore = new ValidationMessageStore(editContext);
         }
     }
-
-
-
     private async Task OnSubmitHandler(EditContext context)
     {
         ClearValidationMessages();
@@ -106,12 +103,10 @@
 
         await OnValidSubmit.InvokeAsync(context);
     }
-
     private async Task OnCancelClick()
     {
         await OnCancel.InvokeAsync();
     }
-
     public void AddErrorsToEditContext(IReadOnlyDictionary<string, List<string>> errors)
     {
         messageStore.Clear();
@@ -134,7 +129,14 @@
         // Tell Blazor to re-render the validation messages
         editContext.NotifyValidationStateChanged();
     }
-
+    public void AddCustomError(string fieldName, string message)
+    {
+        var property = typeof(PriorityDto).GetProperty(fieldName);
+        if (property == null) return;
+        var field = new FieldIdentifier(Priority, property.Name);
+        messageStore.Add(field, message);
+        editContext.NotifyValidationStateChanged();
+    }
     public void ClearValidationMessages()
     {
         messageStore.Clear();

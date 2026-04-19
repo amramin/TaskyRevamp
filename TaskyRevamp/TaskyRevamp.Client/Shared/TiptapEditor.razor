@@ -1,0 +1,174 @@
+﻿@using TaskyRevamp.Dto.Account
+@inject IJSRuntime JS
+
+@if (!IsLoaded)
+{
+    <div class="form-control"
+         style="min-height:120px; cursor:text;"
+         @onclick="LoadEditor">
+        <span class="text-muted"><i>@HintMessage</i></span>
+    </div>
+}
+else
+{
+    <div class="comment-header">
+        <div class="editor-wrapper">
+            <div class="editor-toolbar">
+                <button class="toolbar-btn @(activeStates.GetValueOrDefault("bold") ? "active" : "")"
+                        @onclick="async () => { await HandleToolbarClick(Bold); }">
+                        <b>B</b>
+                </button>
+                <button class="toolbar-btn @(activeStates.GetValueOrDefault("italic") ? "active" : "")"
+                        @onclick="async () => { await HandleToolbarClick(Italic); }">
+                    <i>I</i>
+                </button>
+                <button class="toolbar-btn @(activeStates.GetValueOrDefault("underline") ? "active" : "")"
+                        @onclick="async () => { await HandleToolbarClick(Underline); }">
+                    <u>U</u>
+                </button>
+                <button class="toolbar-btn @(activeStates.GetValueOrDefault("strike") ? "active" : "")"
+                        @onclick="async () => { await HandleToolbarClick(Strike); }">
+                    <s>S</s>
+                </button>
+                <span class="divider"></span>
+                <button class="toolbar-btn @(activeStates.GetValueOrDefault("left") ? "active" : "")"
+                        @onclick="async () => { await HandleToolbarClick(AlignLeft); }">⯇
+                </button>
+                <button class="toolbar-btn @(activeStates.GetValueOrDefault("center") ? "active" : "")"
+                        @onclick="async () => { await HandleToolbarClick(AlignCenter); }">≡
+                </button>
+                <button class="toolbar-btn @(activeStates.GetValueOrDefault("right") ? "active" : "")"
+                        @onclick="async () => { await HandleToolbarClick(AlignRight); }">⯈
+                </button>
+                <span class="divider"></span>
+                <button class="toolbar-btn @(activeStates.GetValueOrDefault("bulletList") ? "active" : "")"
+                        @onclick="async () => { await HandleToolbarClick(BulletList); }">•
+                </button>
+                <button class="toolbar-btn @(activeStates.GetValueOrDefault("orderedList") ? "active" : "")"
+                        @onclick="async () => { await HandleToolbarClick(OrderedList); }">1.
+                </button>
+                <span class="divider"></span>
+                 <button @onclick="UploadImage">🖼</button>
+                <button @onclick="AddLink">🔗</button>
+            </div>
+            <div id="@EditorId" class="editor-area"></div>
+        </div>
+    </div>
+
+}
+<style>
+    .dropdown-menu { border-radius: 10px; font-size: 14px; }
+    .dropdown-item { border-radius: 6px; }
+    .dropdown-item:hover { background: #f1f3f5; }
+    .mention { color: #5b6df3; font-weight: 500; }
+    .toolbar-btn.active { background: #5b6df3; color: white; }
+    .ProseMirror:focus { outline: none !important; }
+    .comment-header { display: flex; gap: 12px; align-items: flex-start; }
+    .editor-wrapper { flex: 1; border: 1px solid #e5e7eb; border-radius: 10px; overflow: hidden;  background: #fff; }
+    .editor-toolbar { display: flex; align-items: center;  gap: 6px; padding: 6px 8px; border-bottom: 1px solid #eee; background: #fafafa; }
+    .editor-toolbar button { border: none; background: transparent; padding: 6px 8px; border-radius: 6px; cursor: pointer; font-size: 13px; transition: all 0.2s ease; }
+    .editor-toolbar button:hover { background: #e9ecef; }
+    .divider { width: 1px; height: 18px; background: #ddd; margin: 0 4px; }
+    .editor-wrapper { flex: 1; border: 1px solid #dee2e6; border-radius: 10px; background: #fff; }
+    .editor-area { min-height: 120px; padding: 10px; outline: none;  border: none; box-shadow: none; cursor: text; }
+    .editor-area:focus { outline: none; box-shadow: none; }
+    .action-btn-list { display: flex; justify-content: flex-end; gap: 8px; margin-top: 10px; }
+    .btn-primary { background: #5b6df3; border: none; border-radius: 8px; padding: 6px 14px; }
+    .btn-light { background: #f1f3f5; border-radius: 8px; padding: 6px 14px; }
+    .editor-area img {max-width: 100%;height: auto;display: block;}
+</style>
+
+@code {
+    [Parameter] public string Value { get; set; }
+    [Parameter] public EventCallback<string> ValueChanged { get; set; }
+    [Parameter] public string HintMessage { get; set; }
+    [Parameter] public List<UserDto> Users { get; set; }
+    private string EditorId = $"editor-{Guid.NewGuid()}";
+    private bool IsLoaded = false;
+    private DotNetObjectReference<TiptapEditor>? objRef;
+    private Dictionary<string, bool> activeStates = new();
+    private async Task LoadEditor()
+    {
+        IsLoaded = true;
+        await Task.Yield();
+        objRef = DotNetObjectReference.Create(this);
+        var users = Users.Select(u => new { id = u.Id, name = u.DisplayedName }).ToList();
+        Console.WriteLine(users.Take(1));
+        await JS.InvokeVoidAsync("tiptapEditor.init", EditorId, Value, objRef, HintMessage, users);
+        await JS.InvokeVoidAsync("tiptapEditor.focus", EditorId);
+        await RefreshToolbar();
+    }
+    protected override async Task OnInitializedAsync()
+    {
+        if (!string.IsNullOrEmpty(Value))
+        {
+            IsLoaded = true;
+            await LoadEditor();
+        }
+    }
+    private async Task RefreshToolbar()
+    {
+        activeStates["bold"] = await IsActive("bold");
+        activeStates["italic"] = await IsActive("italic");
+        activeStates["underline"] = await IsActive("underline");
+        activeStates["strike"] = await IsActive("strike");
+        activeStates["bulletList"] = await IsActive("bulletList");
+        activeStates["orderedList"] = await IsActive("orderedList");
+        activeStates["left"] = await IsActive("left");
+        activeStates["center"] = await IsActive("center");
+        activeStates["right"] = await IsActive("right");
+        StateHasChanged();
+    }
+    private async Task HandleToolbarClick(Func<Task> action)
+    {
+        await action();
+        await Task.Delay(50);
+        await RefreshToolbar();
+    }
+    [JSInvokable]
+    public async Task OnContentChanged(string content)
+    {
+        Value = content;
+        await ValueChanged.InvokeAsync(content);
+    }
+    public async Task SetContent(string content)
+    {
+        if (IsLoaded)
+            await JS.InvokeVoidAsync("tiptapEditor.setContent", EditorId, content);
+        else
+            Value = content;
+    }
+    public async Task ResetAsync()
+    {
+        Value = string.Empty;
+        if (IsLoaded)
+        {
+            await JS.InvokeVoidAsync("tiptapEditor.setContent", EditorId, string.Empty);
+            // await JS.InvokeVoidAsync("tiptapEditor.destroy", EditorId);
+        }
+        IsLoaded = false;
+        await InvokeAsync(StateHasChanged);
+    }
+    private async Task<bool> IsActive(string type)
+    {
+        if (!IsLoaded) return false;
+        return await JS.InvokeAsync<bool>("tiptapEditor.isActive", EditorId, type);
+    }
+    // Toolbar calls
+    private async Task Bold() => await JS.InvokeVoidAsync("tiptapEditor.bold", EditorId);
+    private async Task Italic() => await JS.InvokeVoidAsync("tiptapEditor.italic", EditorId);
+    private async Task Underline() => await JS.InvokeVoidAsync("tiptapEditor.underline", EditorId);
+    private async Task Strike() => await JS.InvokeVoidAsync("tiptapEditor.strike", EditorId);
+    private async Task AlignLeft() => await JS.InvokeVoidAsync("tiptapEditor.alignLeft", EditorId);
+    private async Task AlignCenter() => await JS.InvokeVoidAsync("tiptapEditor.alignCenter", EditorId);
+    private async Task AlignRight() => await JS.InvokeVoidAsync("tiptapEditor.alignRight", EditorId);
+    private async Task BulletList() => await JS.InvokeVoidAsync("tiptapEditor.bulletList", EditorId);
+    private async Task OrderedList() => await JS.InvokeVoidAsync("tiptapEditor.orderedList", EditorId);
+    private async Task UploadImage() => await JS.InvokeVoidAsync("tiptapEditor.pickImage", EditorId);
+    private async Task AddLink()
+    {
+        var url = await JS.InvokeAsync<string>("prompt", "Enter URL:");
+        if (!string.IsNullOrWhiteSpace(url))
+            await JS.InvokeVoidAsync("tiptapEditor.setLink", EditorId, url);
+    }
+}

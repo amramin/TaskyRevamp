@@ -61,7 +61,7 @@ namespace TaskyRevamp.Services.SystemConfiguration.SourceConfiguration.Query
             {
                 if (request.pageNumber == 1)
                 {
-                    var nosource = new SourceDto() { NameArabic = "مهام ليس لها مصدر", NameEnglish = "No sorce tasks" };
+                    var nosource = new SourceDto() { NameArabic = "بدون مصدر", NameEnglish = "No Source" };
                     items.Insert(0, nosource);
                 }
             }

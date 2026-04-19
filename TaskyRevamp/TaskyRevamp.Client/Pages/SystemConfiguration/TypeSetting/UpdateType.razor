@@ -38,18 +38,10 @@
 
     private async Task Save(EditContext editContext)
     {
-        //var current = await LocalStorageService.GetItemAsStringAsync("Id");
-        //type.UpdatedById = Guid.Parse(current);
-
         var alloldTypes = await _typeSettingConsumer.GetTaskTypesForDDL();
-        var allOldActiveType = alloldTypes.Data
-            .Where(k => k.IsActive == true && k.IsDeleted != true && k.Id != type.Id)
-            .ToList();
-
-        var alloldDeletedType = alloldTypes.Data
-            .Where(k => k.IsDeleted == true)
-            .ToList();
-        if (allOldActiveType.Any(m => m.NameEnglish == type.NameEnglish) || allOldActiveType.Any(m => m.NameArabic == type.NameArabic))
+        var allOldTypes = alloldTypes.Data.Where(k =>  k.IsDeleted != true && k.Id != type.Id).ToList();
+        var alloldDeletedType = alloldTypes.Data.Where(k => k.IsDeleted == true).ToList();
+        if (allOldTypes.Any(m => m.NameEnglish == type.NameEnglish) || allOldTypes.Any(m => m.NameArabic == type.NameArabic))
         {
             await ToastService.ShowToastAsync(Loc["AnactiveTypewith"], "error");
 

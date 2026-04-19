@@ -20,7 +20,7 @@ namespace TaskyRevamp.Dto.Department
 		public string NameArabic { get; set; }
 
         public List<DepartmentDto> Children { get; set; } = new(); 
-        public bool IsExpanded { get; set; } = false;
+        public bool IsExpanded { get; set; } = true;
 
         public string Name => Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName.Equals("ar") ? NameArabic : NameEnglish;
         public int Level { get; set; }
@@ -37,7 +37,7 @@ namespace TaskyRevamp.Dto.Department
         public List<UserDto>? AssignedUsers { get; set; } = new List<UserDto>();
         public int UsersWithTasks { get; set; }
         public int SubDepartmentUsers { get; set; }
-
+        public int LinkedUsers { get; set; }
     }
     public class DepartmentDtoWithName
     {

@@ -27,13 +27,10 @@ namespace TaskyRevamp.Services.SystemConfiguration.TypeConfigurarion.Command
 			{
 				var typeData = res.Value;
 				var newData = request.TypeDto;
-
 				typeData.NameEnglish = newData.NameEnglish;
 				typeData.NameArabic = newData.NameArabic;
 				typeData.IsActive = newData.IsActive;
-				typeData.UpdatedById = newData.UpdatedById;
 				await _typeRepository.Update(typeData);
-				//await _typeRepository.SaveChangesAsync();
 			}
 			return true;
 		}

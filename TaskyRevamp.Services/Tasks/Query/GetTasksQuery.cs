@@ -119,43 +119,69 @@ public class GetTasksHandler : IRequestHandler<GetTasksQuery, PagedResult<Create
 
     private static Expression<Func<TaskItem, bool>> SearchDelegate(TaskFilterComponent taskFilter)
     {
+        // Normalize empty lists to null (from master bug fix)
+        if (taskFilter.Priority?.Count == 0) taskFilter.Priority = null;
+        if (taskFilter.Status?.Count == 0) taskFilter.Status = null;
+        if (taskFilter.Source?.Count == 0) taskFilter.Source = null;
+        if (taskFilter.Type?.Count == 0) taskFilter.Type = null;
+        if (taskFilter.AssignedTo?.Count == 0) taskFilter.AssignedTo = null;
+        if (taskFilter.AssignedToDepartment?.Count == 0) taskFilter.AssignedToDepartment = null;
+        if (taskFilter.CreatedBy?.Count == 0) taskFilter.CreatedBy = null;
+        if (taskFilter.CreatedByDepartment?.Count == 0) taskFilter.CreatedByDepartment = null;
+
         Expression<Func<TaskItem, bool>> expression = null;
         if (taskFilter == null) return expression;
+
+        // Convert Guid.Empty to null for Source/Type filters (from master bug fix)
+        if (taskFilter.Source is not null && taskFilter.Source.Contains(Guid.Empty))
+        {
+            taskFilter.Source.RemoveAll(x => x == Guid.Empty);
+            taskFilter.Source.Add(null);
+        }
+
+        if (taskFilter.Type is not null && taskFilter.Type.Contains(Guid.Empty))
+        {
+            taskFilter.Type.RemoveAll(x => x == Guid.Empty);
+            taskFilter.Type.Add(null);
+        }
 
         expression = t =>
             (string.IsNullOrEmpty(taskFilter.Title) || (t.Title != null && t.Title.ToLower().Contains(taskFilter.Title.ToLower()))) &&
             (taskFilter.Priority == null || taskFilter.Priority.Contains(t.PriorityId)) &&
-            (taskFilter.Status == null || taskFilter.Status.Contains(t.StatusId)) &&
-            (taskFilter.Source == null || taskFilter.Source.Contains(t.TaskSourceId)) &&
-            (taskFilter.Type == null || taskFilter.Type.Contains(t.TaskTypeId)) &&
+            (taskFilter.Status == null || taskFilter.Status.Any(s => s.HasValue && s.Value == t.StatusId)) &&
+            (taskFilter.Source == null || taskFilter.Source.Any(s => s == null ? t.TaskSourceId == null : t.TaskSourceId == s.Value)) &&
+            (taskFilter.Type == null || taskFilter.Type.Any(s => s == null ? t.TaskTypeId == null : t.TaskTypeId == s.Value)) &&
             (taskFilter.AssignedTo == null || (t.TaskAssignees != null && t.TaskAssignees.Any(ass => taskFilter.AssignedTo.Contains(ass.UserId)))) &&
             (taskFilter.AssignedToDepartment == null || (t.AssignedDepartmentIds != null && t.AssignedDepartmentIds.Any(id => taskFilter.AssignedToDepartment.Contains(id)))) &&
             (taskFilter.CreatedBy == null || taskFilter.CreatedBy.Contains(t.CreatedById)) &&
             (taskFilter.CreatedByDepartment == null || taskFilter.CreatedByDepartment.Contains(t.CreatedBy.Department!.Id));
 
-        // Start date range
+        // Start date range (using DateOnly for date-only comparison — from master bug fix)
         if (taskFilter.FromStartDate.HasValue && taskFilter.ToStartDate.HasValue)
-            expression = expression.And(t => taskFilter.FromStartDate <= t.StartDate && taskFilter.ToStartDate >= t.StartDate);
+            expression = expression.And(t => DateOnly.FromDateTime(taskFilter.FromStartDate ?? default) <= DateOnly.FromDateTime(t.StartDate ?? default)
+                && DateOnly.FromDateTime(taskFilter.ToStartDate ?? default) >= DateOnly.FromDateTime(t.StartDate ?? default));
         else if (taskFilter.FromStartDate.HasValue)
-            expression = expression.And(t => taskFilter.FromStartDate <= t.StartDate);
+            expression = expression.And(t => DateOnly.FromDateTime(taskFilter.FromStartDate ?? default) <= DateOnly.FromDateTime(t.StartDate ?? default));
         else if (taskFilter.ToStartDate.HasValue)
-            expression = expression.And(t => taskFilter.ToStartDate >= t.StartDate);
+            expression = expression.And(t => DateOnly.FromDateTime(taskFilter.ToStartDate ?? default) >= DateOnly.FromDateTime(t.StartDate ?? default));
 
         // End date range
         if (taskFilter.FromEndDate.HasValue && taskFilter.ToEndDate.HasValue)
-            expression = expression.And(t => taskFilter.FromEndDate <= t.EndDate && taskFilter.ToEndDate >= t.EndDate);
+            expression = expression.And(t => DateOnly.FromDateTime(taskFilter.FromEndDate ?? default) <= DateOnly.FromDateTime(t.EndDate ?? default)
+                && DateOnly.FromDateTime(taskFilter.ToEndDate ?? default) >= DateOnly.FromDateTime(t.EndDate ?? default));
         else if (taskFilter.FromEndDate.HasValue)
-            expression = expression.And(t => taskFilter.FromEndDate <= t.EndDate);
+            expression = expression.And(t => DateOnly.FromDateTime(taskFilter.FromEndDate ?? default) <= DateOnly.FromDateTime(t.EndDate ?? default));
         else if (taskFilter.ToEndDate.HasValue)
-            expression = expression.And(t => taskFilter.ToEndDate >= t.EndDate);
+            expression = expression.And(t => DateOnly.FromDateTime(taskFilter.ToEndDate ?? default) >= DateOnly.FromDateTime(t.EndDate ?? default));
 
         // Creation date range
         if (taskFilter.FromCreationDate.HasValue && taskFilter.ToCreationDate.HasValue)
-            expression = expression.And(t => taskFilter.FromCreationDate <= t.CreateDate && taskFilter.ToCreationDate >= t.CreateDate);
+            expression = expression.And(t => DateOnly.FromDateTime(taskFilter.FromCreationDate ?? default) <= DateOnly.FromDateTime(t.CreateDate)
+                && DateOnly.FromDateTime(taskFilter.ToCreationDate ?? default) >= DateOnly.FromDateTime(t.CreateDate));
         else if (taskFilter.FromCreationDate.HasValue)
-            expression = expression.And(t => taskFilter.FromCreationDate <= t.CreateDate);
+            expression = expression.And(t => DateOnly.FromDateTime(taskFilter.FromCreationDate ?? default) <= DateOnly.FromDateTime(t.CreateDate));
         else if (taskFilter.ToCreationDate.HasValue)
-            expression = expression.And(t => taskFilter.ToCreationDate >= t.CreateDate);
+            expression = expression.And(t => DateOnly.FromDateTime(taskFilter.ToCreationDate ?? default) >= DateOnly.FromDateTime(t.CreateDate));
 
         return expression;
     }
